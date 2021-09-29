@@ -27,7 +27,8 @@ string strip_unsafeAnsi(string arg)
 
 varargs string parse_pinkfish(string msg, int flag)
 {
-    mapping data = ([ "RESET":ANSI("0;37;40"), "BOLD":ANSI(1), "FLASH":ANSI(5),
+    mapping data = ([
+      "RESET":ANSI("0;37;40"), "BOLD":ANSI(1), "FLASH":ANSI(5),
       "BLACK":ANSI(30), "RED":ANSI(31), "GREEN":ANSI(32),
       "YELLOW": ANSI(33), "BLUE": ANSI(34), "CYAN":ANSI(36),
       "MAGENTA":ANSI(35), "BLACK":ANSI(30), "WHITE": ANSI(37),
@@ -41,20 +42,35 @@ varargs string parse_pinkfish(string msg, int flag)
       "ER_EOL" : ESC("[K"), "ER_LINE" : ESC("[2K"), "ER_DOWN" : ESC("[J"),
       "ER_UP" : ESC("[1J")
     ]);
-string *words;
-int size;
+    string *words;
+    int size;
 
-words = explode(msg + "%^", "%^");
-size = sizeof(words);
+    words = explode(msg + "%^", "%^");
+    size = sizeof(words);
 
-if(flag)
-{
-    while(size--) if(data[words[size]]) words[size] = "";
-}
-else while(size--) if(data[words[size]]) words[size] = data[words[size]];
+    if(flag)
+    {
+        while(size--)
+        {
+            if(data[words[size]])
+            {
+                words[size] = "";
+            }
+        }  
+    }
+    else
+    {
+        while(size--)
+        {
+            if(data[words[size]])
+            {
+                words[size] = data[words[size]];
+            }
+        } 
+    } 
 
 
-msg = implode(words, "");
+    msg = implode(words, "");
 
-return msg;
+    return msg;
 }

@@ -267,11 +267,6 @@ int valid_socket(object caller, string func, mixed *info)
     return 1;
 }
 
-int valid_save_binary(string file)
-{
-    return 1;
-}
-
 int valid_read(string file, object user, string func)
 {
     string name, tmp, tmp2;

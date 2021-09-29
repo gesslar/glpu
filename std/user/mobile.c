@@ -338,8 +338,7 @@ void receive_message(string type, string msg)
 {
     if(type != "ignore_ansi")
     {
-        if(query_env("colour") == "enabled")
-            msg = find_object(ANSI_PARSER)->parse_pinkfish(msg);
+        if(query_env("colour") == "enabled") msg = find_object(ANSI_PARSER)->parse_pinkfish(msg);
         else msg = ANSI_PARSER->parse_pinkfish(msg, 1);
     }
     

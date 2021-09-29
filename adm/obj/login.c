@@ -534,3 +534,8 @@ string parseTokens(string text)
     return text;
 }
 
+void receive_message(string type, string msg)
+{
+    msg = ANSI_PARSER->parse_pinkfish(msg, 1);
+    receive(msg);
+}

@@ -13,7 +13,6 @@
 #include <config.h>
 #include <localtime.h>
 
-#pragma save_binary
 #pragma show_error_context
 
 /* inherits */
@@ -24,7 +23,7 @@ inherit "/adm/obj/master/valid";
 
 void flag(string str)
 {
-    write("Flags disabled.\n");
+    debug_message("Flags disabled.\n");
 }
 
 protected object connect()
@@ -51,28 +50,25 @@ protected void epilog(int load_empty)
 
     str = read_file("/adm/etc/preload");
 
-    if (!str) {
-    return;
-    }
+    if (!str) return;
 
     arr = explode(str, "\n");
 
     for (i = 0; i < sizeof(arr); i++) {
-    if (arr[i][0] == '#' || !arr[i] || arr[i] == "") continue;
+        if (arr[i][0] == '#' || !arr[i] || arr[i] == "") continue;
 
-    write("Preloading : " + arr[i] + "...");
-    err = catch(load_object(arr[i]));
+        debug_message("Preloading : " + arr[i] + "...");
+        err = catch(load_object(arr[i]));
 
-    if (err != 0) {
-        write("\nError " + err + " when loading " + arr[i] + "\n");
-
-    }
-
-    else
-    {
-        time = time() - time;
-        write("(" + time/60 + "." + time % 60 + ")\n");
-    }
+        if (err != 0)
+        {
+            debug_message("\nError " + err + " when loading " + arr[i] + "\n");
+        }
+        else
+        {
+            time = time() - time;
+            debug_message("(" + time/60 + "." + time % 60 + ")\n");
+        }
     }
 }
 
