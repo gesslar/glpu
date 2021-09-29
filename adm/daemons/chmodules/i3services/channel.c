@@ -24,7 +24,7 @@ int channel_filter(string channel)
 
 }
 
-staticf void send_channel_listen(string channel, int flag)
+protected void send_channel_listen(string channel, int flag)
 {
     send_packet( ({
       "channel-listen",

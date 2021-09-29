@@ -1,6 +1,6 @@
 ========================================================================
 Full Command Line: ./driver config.lpuni 
-Boot Time: Wed Sep 29 00:22:49 2021
+Boot Time: Wed Sep 29 00:47:52 2021
 Version: fluffos v2019.20210429-71-g0229cba4 (Linux/x86-64)
 jemalloc Version: 5.2.1-0-gea6b3e973b477b8061e0076bb257dbd7f3faa756
 ICU Version: 66.1
@@ -135,7 +135,6 @@ enable mssp : 1
 #define __PACKAGE_SHA1__ 
 #define __PACKAGE_SOCKETS__ 
 #define __PACKAGE_TRIM__ 
-#define __PACKAGE_UIDS__ 
 #define __PARSE_DEBUG__ 
 #define __PORT__ 1336
 #define __PRIVS__ 
@@ -165,12 +164,9 @@ enable mssp : 1
 #define __WARN_OLD_RANGE_BEHAVIOR__ 
 ========================
 Loading simul_efun file : /adm/obj/simul_efun
-/adm/simul_efun/socket.c line 14: 'array' is not a local or a global variable. before  item in socket_stat
-/adm/simul_efun/socket.c line 14: syntax error before  in socket_status())
-/adm/simul_efun/socket.c line 15: Undefined variable 'item' before 0], item[1], item[2]
-/adm/simul_efun/socket.c line 15: Illegal LHS before the end of line
-/adm/simul_efun/socket.c line 18: syntax error before  ret;
-No error handler for error: *Error in loading object '/adm/obj/simul_efun'
-program: (none), object: (none), file: (none)
-The simul_efun (/adm/obj/simul_efun) and master (/adm/obj/master) objects must be loadable.
-Please check log files for exact error. 
+Loading master file: /adm/obj/master
+Accepting telnet connections on 0.0.0.0:1336.
+Initializations complete.
+
+old crypt() password detected, It is only using first 2 character as key and ignore password beyond 8 characters, please upgrade to SHA512 using crypt(password) immediately.
+old crypt() password detected, It is only using first 2 character as key and ignore password beyond 8 characters, please upgrade to SHA512 using crypt(password) immediately.

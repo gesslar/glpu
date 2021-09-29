@@ -18,10 +18,10 @@
 inherit OBJECT;
 
 object soul_d;
-static string tmp_emote_targeted_name;
-static string tmp_emote_untargeted_name;
-static string *tmp_emote_untargeted_msgs;
-static string *tmp_emote_targeted_msgs;
+nosave string tmp_emote_targeted_name;
+nosave string tmp_emote_untargeted_name;
+nosave string *tmp_emote_untargeted_msgs;
+nosave string *tmp_emote_targeted_msgs;
 
 int print_all_emotes();
 int alphabetize(string arg1, string arg2);

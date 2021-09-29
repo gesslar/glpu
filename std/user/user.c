@@ -15,7 +15,7 @@ inherit OBJECT;
 
 private string password, bodyPath;
 
-static private object body;
+private nosave object body;
 
 int save_user();
 void remove();

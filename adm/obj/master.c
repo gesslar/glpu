@@ -27,7 +27,7 @@ void flag(string str)
     write("Flags disabled.\n");
 }
 
-staticf object connect()
+protected object connect()
 {
     object login_ob;
     mixed err;
@@ -42,7 +42,7 @@ staticf object connect()
     return login_ob;
 }
 
-staticf void epilog(int load_empty)
+protected void epilog(int load_empty)
 {
     string str, *arr, err;
     int i, time;
@@ -77,7 +77,7 @@ staticf void epilog(int load_empty)
 }
 
 
-staticf void log_error(string file, string message)
+protected void log_error(string file, string message)
 {
     string username;
 
@@ -93,7 +93,7 @@ staticf void log_error(string file, string message)
 }
 
 //error_handler needs to be rewritten
-staticf void error_handler(mapping map, int flag) {
+protected void error_handler(mapping map, int flag) {
     object ob;
     string logContent = "---\n";
 
@@ -116,7 +116,7 @@ staticf void error_handler(mapping map, int flag) {
     log_file("log", logContent);
 }
 
-staticf void crash(string crash_message, object command_giver, object current_object)
+protected void crash(string crash_message, object command_giver, object current_object)
 {
     foreach (object ob in users())
     {

@@ -15,7 +15,7 @@ class userInfo
     int    gender;
 }
 
-staticv mapping ucache = ([ ]);
+nosave mapping ucache = ([ ]);
 
 void addUserCache(string mudname, string username, string visname, int gender)
 {

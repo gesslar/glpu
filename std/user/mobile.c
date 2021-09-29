@@ -22,7 +22,7 @@ inherit "/std/user/user/alias.c";
 /* Global Variables */
 
 string *path;
-static string *commandHistory = ({});
+nosave string *commandHistory = ({});
 private object link;
 
 /* Prototypes */

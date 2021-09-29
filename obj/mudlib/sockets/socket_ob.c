@@ -15,13 +15,13 @@
 
 #include <socket.h>
 
-static int type;
-static int s = -1;
-static int isBlocked = 0;
-static mixed *queue = ({});
-static address;
+nosave int type;
+nosave int s = -1;
+nosave int isBlocked = 0;
+nosave mixed *queue = ({});
+nosave address;
 
-static function read_callback, close_callback;
+nosave function read_callback, close_callback;
 
 void remove();
 

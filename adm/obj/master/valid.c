@@ -42,7 +42,7 @@ void create()
 void parse_group()
 {
     int i, n;
-    string array arr = parse(read_file(FILE_GROUPDATA));
+    string *arr = parse(read_file(FILE_GROUPDATA));
 
 #ifdef DEBUG
 
@@ -96,7 +96,7 @@ void parse_group()
 void parse_access()
 {
     int i, n;
-    string array arr = parse(read_file(FILE_ACCESSDATA));
+    string *arr = parse(read_file(FILE_ACCESSDATA));
 
 #ifdef DEBUG
 
@@ -254,7 +254,7 @@ int valid_override(string file, string efun_name, string mainfile)
     return 0;
 }
 
-int valid_socket(object caller, string func, mixed array info)
+int valid_socket(object caller, string func, mixed *info)
 {
     //We might code a daemon or something that allows
     //us to ban connections to certain ports/connections

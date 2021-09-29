@@ -20,27 +20,24 @@
  /* Channel and finger daemon */
 #include <mudlib.h>
 
- /* For staticf and staticv */
-#include <global.h>
-
  /* I3 defines */
 #include <intermud3.h>
 
  /* Private Variables */
-staticv mapping  chanIndex;
-staticv mapping  services;
-staticv mapping  history, fileHistory;
-staticv string  *allow_list;
-staticv string  *channelColours = ({
+nosave mapping  chanIndex;
+nosave mapping  services;
+nosave mapping  history, fileHistory;
+nosave string  *allow_list;
+nosave string  *channelColours = ({
   "BLUE", "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW", "WHITE",
 });
 
  /* Socket */
-staticv mixed   *msg_buffer = ({ });
-staticv int      s, isBlocked = 0;
+nosave mixed   *msg_buffer = ({ });
+nosave int      s, isBlocked = 0;
 
  /* Heartbeat timer */
-staticv int      hb_timer = 0;
+nosave int      hb_timer = 0;
 
  /* Public Variables */
 mapping          data;
@@ -51,7 +48,7 @@ mapping          checkNewLPUniMuds = 0;
 #endif
 
  /* Private prototypes */
-staticf void send_channel_listen(string channel, int flag);
+protected void send_channel_listen(string channel, int flag);
 
  /* Public prototypes */
 void create();

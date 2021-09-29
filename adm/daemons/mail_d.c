@@ -18,7 +18,7 @@ mapping inbox = ([]);
 mapping outbox = ([]);
 int curr_in_msg, curr_out_msg;
 int in_end_index, in_start_index, out_end_index, out_start_index;
-static object s_editor;
+nosave object s_editor;
 
 string *get_all_members(string *parent_users);
 

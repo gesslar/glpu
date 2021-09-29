@@ -78,7 +78,7 @@ void parse_files()
 void parse_group()
 {
      int i, n;
-     string array arr;
+     string *arr;
 
       integrityCheck();
 
@@ -136,7 +136,7 @@ void parse_group()
 void parse_access()
 {
      int i, n;
-     string array arr;
+     string *arr;
 
       integrityCheck();
 
@@ -319,7 +319,7 @@ void write_state(int flag)
 void write_gFile(int flag)
 {
      string file = "";
-     string array groupList = keys(groups), group_data;
+     string *groupList = keys(groups), *group_data;
      int i;
      string err = "";
 
@@ -357,7 +357,7 @@ void write_gFile(int flag)
 void write_aFile(int flag)
 {
      string file = "";
-     string array accessList = keys(access), keys, arr = ({});
+     string *accessList = keys(access), *keys, *arr = ({});
      mapping access_data;
      int i, j;
      string err = "";

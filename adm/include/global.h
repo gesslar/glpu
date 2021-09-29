@@ -17,14 +17,6 @@
 #define USER_OB    "/std/user/user"
 #define VOID_OB    "/areas/std/void"
 
-#ifdef __SENSIBLE_MODIFIERS__
-#define staticf protected
-#define staticv nosave
-#else
-#define staticf static
-#define staticv static
-#endif
-
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 #endif

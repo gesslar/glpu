@@ -12,7 +12,7 @@
 int main(string args)
 {
      string cmd, arg, argChannel;
-     string array arr, multipleTune;
+     string *arr, multipleTune;
      int i;
 
      if(!args) return(notify_fail("Sytnax: channel <list/show/tune> <argument>\n"));
