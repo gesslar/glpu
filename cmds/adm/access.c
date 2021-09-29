@@ -388,7 +388,7 @@ int i_DisMenu(string str)
 
 int i_qDirectory(string str)
 {
-     string *keys, arr = ({});
+     string *keys, *arr = ({});
      string output = "";
      mapping access_data;
      int j;
@@ -454,7 +454,7 @@ int i_qGroup(string str)
 void write_gFile(int flag)
 {
      string file = "";
-     string *groupList = keys(groups), group_data;
+     string *groupList = keys(groups), *group_data;
      int i;
 
      i = 0;
@@ -478,7 +478,7 @@ void write_gFile(int flag)
 void write_aFile(int flag)
 {
      string file = "";
-     string *accessList = keys(access), keys, arr = ({});
+     string *accessList = keys(access), *keys, *arr = ({});
      mapping access_data;
      int i, j;
 
