@@ -12,3 +12,20 @@ The LPUniversity Mudlib was downloaded from http://lpmuds.net/downloads.html and
 * This mudlib requires that the driver be compiled with `-DPACKAGE_UIDS=OFF`
 * All original documentation, licenses, copyright information has been moved to `/ARCHIVE`.
 * The first user to login will become admin. This is due to the existence of `/adm/etc/new_install` file. This file is removed following the creation of the first user.
+
+## Runtime Config File ##
+A sample config file has been supplied in `/adm/etc/config.mud`. You will want to configure the following to get the game up and running:
+
+```
+# name of this mud
+name : LPUni
+
+# port number to accept users on
+port number : 1337
+
+# debug.log and author/domain stats are stored here
+# this path is relative to the operating system and you should
+# make it point your log directory if you would like your debug.log
+# file to be inside the lib
+log directory : /path/to/mudlib/log
+```
