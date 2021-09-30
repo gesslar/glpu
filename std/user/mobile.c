@@ -94,7 +94,6 @@ void setup()
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
     if(!query_env("biff")) set_env("biff", "on");
-    if(!query_env("keepalive")) set_env("keepalive", " \b");
     if(!query_env("prompt")) set_env("prompt", ">");
 }
 
@@ -211,14 +210,7 @@ void heart_beat()
         if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
                 && query_env("keepalive") && query_env("keepalive") != "off")
         {
-            string keepAliveString = query_env("keepalive");
-            
-            keepAliveString = replace_string(keepAliveString, "%0", "\0");
-            keepAliveString = replace_string(keepAliveString, "%n", "\n");
-            keepAliveString = replace_string(keepAliveString, "%b", "\b");
-            keepAliveString = replace_string(keepAliveString, "%t", ctime(time()));
-            
-            write(keepAliveString);
+            send_nullbyte(this_object()) ;
         }
     }
 }
