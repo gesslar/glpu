@@ -10,5 +10,5 @@ The LPUniversity Mudlib was downloaded from http://lpmuds.net/downloads.html and
 ## Special notes ##
 
 * This mudlib requires that the driver be compiled with `-DPACKAGE_UIDS=OFF`
-* All original documentation, licenses, copyright information has been moved to /ARCHIVE.
+* All original documentation, licenses, copyright information has been moved to `/ARCHIVE`.
 * The first user to login will become admin. This is due to the existence of `/adm/etc/new_install` file. This file is removed following the creation of the first user.
