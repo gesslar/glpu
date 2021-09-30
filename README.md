@@ -23,6 +23,9 @@ name : LPUni
 # port number to accept users on
 port number : 1337
 
+# absolute pathname of mudlib
+mudlib directory : /path/to/mudlib
+
 # debug.log and author/domain stats are stored here
 # this path is relative to the operating system and you should
 # make it point your log directory if you would like your debug.log
