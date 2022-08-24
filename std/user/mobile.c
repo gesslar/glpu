@@ -17,7 +17,7 @@
 #include <logs.h>
 
 inherit OBJECT;
-inherit "/std/user/user/alias.c";
+inherit __DIR__ "user/alias";
 
 /* Global Variables */
 
@@ -126,8 +126,7 @@ void enter_world()
             foreach(string channel in ch)
                force_me("channel tune in " + channel);
     };
-    
-    
+
     if(file_size(user_path(query_name()) + ".login") > 0)
     {
         write("\n");
@@ -135,9 +134,7 @@ void enter_world()
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
-    
-    
-    
+
     set("last_login", time());
     write("\n");
     say(capitalize(query_name()) + " has entered.\n");
@@ -147,23 +144,23 @@ void exit_world()
 {
     string *cmds;
     int i;
-    
+
     if(this_player() != this_object()) return;
-    
+
     if(file_size(user_path(query_name()) + ".quit") > 0)
     {
         cmds = explode(read_file(user_path(query_name()) + ".quit"), "\n");
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
-    
+
     set("last_login", time());
-    
+
     if(environment(this_player())) say((string)capitalize(query_name())
       + " leaves " + mud_name() + ".\n");
-    
+
     ANNOUNCE_CHDMOD->announce_logoff(query_name());
-    
+
     save_user();
 }
 
@@ -176,7 +173,6 @@ void net_dead()
     set_short(capitalize(query_name()) + " [link dead]");
     log_file(LOG_LOGIN, capitalize(query_name()) + " went link-dead on " + ctime(time()) + "\n");
 }
-
 
 void reconnect()
 {
@@ -197,20 +193,19 @@ void heart_beat()
         if((time() - query("last_login")) > 3600)
         {
             if(environment(this_object()))
-                tell_room(environment(this_object()), capitalize(query_name()) +
-                  " fades out of existance.\n");
+                tell_room(environment(this_object()), capitalize(query_name()) + " fades out of existance.\n");
             log_file(LOG_LOGIN, capitalize(query_name()) + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
             destruct(this_object());
         }
     }
-    
+
     else
     {
         /* Prevent link-dead from idle */
         if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
                 && query_env("keepalive") && query_env("keepalive") != "off")
         {
-            send_nullbyte(this_object()) ;
+            telnet_nop() ;
         }
     }
 }
@@ -333,7 +328,7 @@ void receive_message(string type, string msg)
         if(query_env("colour") == "enabled") msg = find_object(ANSI_PARSER)->parse_pinkfish(msg);
         else msg = ANSI_PARSER->parse_pinkfish(msg, 1);
     }
-    
+
     receive(msg);
 }
 
@@ -344,10 +339,10 @@ string process_input(string arg)
 
 nomask varargs string *query_commandHistory(int index, int range)
 {
-        if(this_player() != this_object() && !adminp(previous_object())) return ({});
-        if(!index) return commandHistory + ({});
-        else if(range) return commandHistory[index..range] + ({});
-        else return ({ commandHistory[index] });
+    if(this_player() != this_object() && !adminp(previous_object())) return ({});
+    if(!index) return commandHistory + ({});
+    else if(range) return commandHistory[index..range] + ({});
+    else return ({ commandHistory[index] });
 }
 
 int commandHook(string arg)
@@ -395,7 +390,7 @@ int commandHook(string arg)
                     {
                         tell_room(environment(this_player())->query_exit(verb), capitalize(query_name()) + " has entered the room.\n", this_player());
                     }
-            
+
                     if(this_player()->query_env("move_out") && wizardp(this_player()))
                     {
                         custom = this_player()->query_env("move_out");            
@@ -443,7 +438,7 @@ int commandHook(string arg)
     if(sizeof(cmds) > 0)
     {
         int returnValue;
-    
+
         i = 0;
         while(returnValue <= 0 && i < sizeof(cmds))
         {
@@ -456,55 +451,54 @@ int commandHook(string arg)
                 i++;
                 continue;
             }
-        
+
             returnValue = command->main(arg);
             i++;
         }
-    
+
         return returnValue;
     }
-    
+
     return 0;
 }
 
 mixed* query_commands()
 {
-    return commands();    
+    return commands();
 }
 
 int force_me(string cmd)
 {
     if(!isMember(query_privs(previous_object()), "admin")) return 0;
-    else command(cmd);
+    else return command(cmd);
 }
 
 //Misc functions
 
 void write_prompt()
 {
-        string prompt = query_env("prompt");
+    string prompt = query_env("prompt");
 
-        catch
-        {
-            if(devp(this_object()))
-            { 
-                    prompt = replace_string(prompt, "%d",
-                        ((query("cwd")[0..(strlen(user_path(query_name())) - 1)] ==
-                             user_path(query_name()) ) ? "~/" +
-                             query("cwd")[(strlen(user_path(query_name())))..] : query("cwd")));
-                    prompt = replace_string(prompt, "%f",
-                        (query("cwf")[0..(strlen(user_path(query_name())) - 1)] ==
-                             user_path(query_name()) ) ? "~" +
-                             query("cwf")[strlen(user_path(query_name()))..] : query("cwf"));
-                    prompt = replace_string(prompt, "%u", "" + sizeof(users()));
-                    prompt = replace_string(prompt, "%l", file_name(environment(this_player())));
-            }
+    catch
+    {
+        if(devp(this_object()))
+        { 
+            prompt = replace_string(prompt, "%d",
+                ((query("cwd")[0..(strlen(user_path(query_name())) - 1)] == user_path(query_name()) ) ? "~/" +
+                query("cwd")[(strlen(user_path(query_name())))..] : query("cwd")));
+                prompt = replace_string(prompt, "%f",
+                (query("cwf")[0..(strlen(user_path(query_name())) - 1)] ==
+                user_path(query_name()) ) ? "~" +
+                query("cwf")[strlen(user_path(query_name()))..] : query("cwf"));
+                prompt = replace_string(prompt, "%u", "" + sizeof(users()));
+                prompt = replace_string(prompt, "%l", file_name(environment(this_player())));
+        }
 
-            prompt = replace_string(prompt, "%n", query_cap_name());
-            prompt = replace_string(prompt, "%m", mud_name());
-            prompt = replace_string(prompt, "%t", ctime(time()));
-            prompt = replace_string(prompt, "$n", "\n");
-        };
+        prompt = replace_string(prompt, "%n", query_cap_name());
+        prompt = replace_string(prompt, "%m", mud_name());
+        prompt = replace_string(prompt, "%t", ctime(time()));
+        prompt = replace_string(prompt, "$n", "\n");
+    };
 
     write(prompt + " ");
 }
