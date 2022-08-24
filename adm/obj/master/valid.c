@@ -196,7 +196,7 @@ string *parse(string str)
 int valid_shadow(object ob)
 {
     string location, name;
-    location = get_base(ob);
+    location = base_name(ob);
     name = query_privs(ob);
     if(ob == this_object() || ob == master()) return 0;
     if(query_access(location, name, 4) && !ob->disallow_shadow(ob)) return 1;
@@ -207,7 +207,7 @@ int valid_bind(object obj, object owner, object victim)
 {
     string name;
     name = query_privs(previous_object());
-    if(query_access(get_base(owner), name, 7) && query_access(get_base(victim), name, 7)) return 1;
+    if(query_access(base_name(owner), name, 7) && query_access(base_name(victim), name, 7)) return 1;
     return 0;
 }
 
@@ -261,7 +261,7 @@ int valid_socket(object caller, string func, mixed *info)
 
     /* string name;
     name = query_privs(caller);
-    if(query_access(get_base(info[1]), name, 3)) return 1;
+    if(query_access(base_name(info[1]), name, 3)) return 1;
     return 0;  */
 
     return 1;

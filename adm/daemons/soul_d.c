@@ -201,14 +201,14 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
 
 nomask void delete_emote(string emote)
 {
-    if(get_base(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
+    if(base_name(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
     map_delete(emotes, emote);
     do_save();
 }
 
 nomask void set_emote(string emote, string *msgs)
 {
-    if(get_base(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
+    if(base_name(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
 
     emotes[emote] = msgs;
     do_save();
@@ -228,7 +228,7 @@ nomask string *query_emote_msgs(string emote)
 
 nomask void reset_emotes()
 {
-    if(get_base(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
+    if(base_name(previous_object()) + ".c" != OBJ_SOUL_TOOL) return;
 
     if(!emotes) restore_object(SAVE_PATH);
     emotes = ([]);

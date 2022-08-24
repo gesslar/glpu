@@ -230,7 +230,7 @@ void save_user()
 varargs int move(mixed ob, int flag)
 {
     if(!::move(ob)) return 0;
-    set("last_location", get_base(ob));
+    set("last_location", base_name(ob));
     if(!flag) command("look");
     return 1;
 }

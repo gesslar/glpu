@@ -55,7 +55,7 @@ int authorizeClient(string filename)
 
     if(!file_exists(filename)) return 0;
 
-    if(member_array(get_base(previous_object()), authorizedClients) != -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) != -1) return 0;
 
     authorizedClients += ({ filename });
 
@@ -66,7 +66,7 @@ int revokeClientAuthorization(string filename)
 {
     if(!adminp(this_player())) return 0;
 
-    if(member_array(get_base(previous_object()), authorizedClients) == -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     authorizedClients -= ({ filename });
 
@@ -75,7 +75,7 @@ int revokeClientAuthorization(string filename)
 
 int clientAction_edit(string group, string contents, int index)
 {
-    if(member_array(get_base(previous_object()), authorizedClients) == -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     if(!data[group]) return 0;
 
@@ -90,7 +90,7 @@ int clientAction_post(string group, string author, string subject, string conten
 {
     mapping new_msg;
 
-    if(member_array(get_base(previous_object()), authorizedClients) == -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     if(!data[group]) return 0;
 
@@ -114,7 +114,7 @@ mapping *getPosts(string group)
 {
     mapping *ret;
 
-    if(member_array(get_base(previous_object()), authorizedClients) == -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     if(!data[group]) return 0;
 
@@ -125,7 +125,7 @@ mapping *getPosts(string group)
 
 string *getGroupListings()
 {
-    if(member_array(get_base(previous_object()), authorizedClients) == -1) return 0;
+    if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     return keys(data);
 }
