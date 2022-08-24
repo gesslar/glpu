@@ -56,7 +56,7 @@ int i_MainMenu(string arg)
     else write(" 3: Lock mud to all but VIP users (" + HIG + "inactive" + NOR + ")\n");
 
     if(LOCKDOWN_D->query_guest_locked()) write(" 4: Enable guest account\n");
-    else write(" 4: Disable guest accont\n");
+    else write(" 4: Disable guest accuont\n");
 
     if(LOCKDOWN_D->query_creation_locked()) write(" 5: Enable new player creation\n");
     else write(" 5: Disable new player creation\n");
