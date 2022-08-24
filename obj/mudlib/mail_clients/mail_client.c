@@ -785,7 +785,7 @@ printf("%-23s- %s\n", "(r)eply [<num>]", "Reply to the current message or messag
 printf("%-23s- %s\n", "(n)ext", "Read the next message.");
 printf("%-23s- %s\n", "(p)rev", "Read the previous message.");
 printf("%-23s- %s\n", "(f)orward [<num>]", "Forward the current message or message num.");
-printf("%-23s- %s\n", "(d)del [<num>,<num>]", "Delete the current message or message num.");
+printf("%-23s- %s\n", "(d)el [<num>,<num>]", "Delete the current message or message num.");
 printf("%25' 's%s\n%25' 's%s\n", "", "You may also delete a range of messages by seperating", "", "two numbers with a comma.");
 printf("%25' 's%s\n%25' 's%s\n", "", "If you wish to delete all of your messages then use", "", "'d all' or 'del all'.");
 printf("%-23s- %s\n", "(s)ave [<num>,<num>]", "Save current message or message num to file.");
