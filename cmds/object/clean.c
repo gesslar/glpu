@@ -27,12 +27,12 @@ int main(string arg)
      }
 
      if(!target) return notify_fail("Error [clean]: Error locating target.\n");
-     write("Success [clean]: Destryoing all objects in '" + target->query_short() + "'.\n");
+     write("Success [clean]: Destroying all objects in '" + target->query_short() + "'.\n");
      inventory = all_inventory(target);
 
      for(i=0; i<sizeof(inventory); i++)
      {
-          if(inventory[i]->query("no_clean") || inventory[i]->clean_up()) continue;
+          if(inventory[i]->query("no_clean") || inventory[i]->can_clean_up()) continue;
           if(living(inventory[i])) continue;
 
           write("\tObject '" + inventory[i]->query_short() + "' destroyed.\n");

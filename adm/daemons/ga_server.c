@@ -12,6 +12,8 @@
 
 #define CONFIG_FILE "/adm/etc/aliases"
 
+inherit DAEMON ;
+
 /* Prototypes */
 
 void parse_config();

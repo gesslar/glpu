@@ -8,6 +8,8 @@ File Transfer Protocal Server
 
 #include <socket.h>
 
+inherit DAEMON ;
+
 #define LOG_FTPD "ftpd"
 
 void write_log(string msg);

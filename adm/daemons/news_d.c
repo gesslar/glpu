@@ -9,6 +9,8 @@
 
 /* Preproccessor Statements */
 
+inherit DAEMON ;
+
 #define DATA_FILE "/data/daemons/news_d"
 
 /* Global Variables */

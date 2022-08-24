@@ -6,6 +6,8 @@
 
 */
 
+inherit DAEMON ;
+
 #include <xterm256.h>
 
 #define ANSI(p) sprintf("%c["+(p)+"m", 27)

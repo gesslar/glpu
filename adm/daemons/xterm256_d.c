@@ -8,6 +8,8 @@
 
 #include <xterm256.h>
 
+inherit DAEMON ;
+
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
 private nosave mapping alt_codes = ([ ]) ;

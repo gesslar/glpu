@@ -8,6 +8,8 @@
 
 */
 
+inherit DAEMON ;
+
 /* Last modified by Tacitus on July 5th, 2006 */
 
 int registerModule(string name, string path);

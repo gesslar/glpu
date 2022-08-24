@@ -16,6 +16,9 @@
  */
 
 #include <socket.h>
+
+inherit DAEMON ;
+
 #define BORDER1 "=+=--=+=--=+=--=+=--=+=--=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=\n"
 
 mixed get_user(string username);

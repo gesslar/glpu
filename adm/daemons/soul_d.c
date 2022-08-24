@@ -8,6 +8,8 @@ LPUni soul daemon
 
 /* Last updated: July 16th, 2006 by Tacitus */
 
+inherit DAEMON ;
+
 /* Defines */
 
 #define SAVE_PATH "/data/daemons/soul_d/soul_d.o"

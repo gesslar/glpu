@@ -15,6 +15,7 @@
 
 /* Standard Inheritables */
 
+#define DAEMON     "/std/daemon/daemon"
 #define OBJECT     "/std/object/object"
 #define OB_E       "/std/object/ob_prop"
 #define ROOM       "/std/area/rooms/room"

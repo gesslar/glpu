@@ -6,6 +6,8 @@
 
 //Last edited on July 17th, 2006 by Parthenon
 
+inherit DAEMON ;
+
 #define SAVE_PATH "/data/daemons/lockdown_d.o"
 
 #define DEV_LOCK_MSG mud_name() + " is currently locked to developers right now.\nPlease try again later."
