@@ -170,8 +170,3 @@ calls relogin() in the login object and it basically transfers (see
 man documentation for exec) the user back to the login object, destroys
 the old body (ie. logs them out) and starts the login process all over
 again.
-
-
-
-
- 

@@ -131,13 +131,3 @@ Other:
    
    - valid_shadow will return 1 if the object being
           shadowed has permission to be shadowed.
-          
-                                                                                                           
- 
-  
- 
- 
- 
-   
-  
-    
