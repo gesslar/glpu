@@ -25,26 +25,26 @@
 
 /* Mudlib Objects */
 
-#define OBJ_PAGER          "/obj/mudlib/pager/pager.c"
-#define OBJ_SOCKET         "/obj/mudlib/sockets/socket_ob.c"
-#define OBJ_NEWS_STDCLIENT "/obj/mudlib/newsclients/std_newsclient.c"
-#define OBJ_SOUL_TOOL      "/obj/mudlib/emote_admin/emote_client.c"
-#define OBJ_MAIL_CLIENT    "/obj/mudlib/mail_clients/mail_client.c"
+#define OBJ_PAGER          "/obj/mudlib/pager/pager"
+#define OBJ_SOCKET         "/obj/mudlib/sockets/socket_ob"
+#define OBJ_NEWS_STDCLIENT "/obj/mudlib/newsclients/std_newsclient"
+#define OBJ_SOUL_TOOL      "/obj/mudlib/emote_admin/emote_client"
+#define OBJ_MAIL_CLIENT    "/obj/mudlib/mail_clients/mail_client"
 
-#define ANNOUNCE_CHDMOD    "/adm/daemons/chmodules/announceNet.c"
+#define ANNOUNCE_CHDMOD    "/adm/daemons/chmodules/announceNet"
 
 /* Daemons */
 
-#define CHAN_D        "/adm/daemons/chan_d.c"
-#define SHUTDOWN_D    "/adm/daemons/shutdown_d.c"
-#define GA_SERVER     "/adm/daemons/ga_server.c"
-#define NEWS_D        "/adm/daemons/news_d.c"
-#define FINGER_D      "/adm/daemons/finger_d.c"
-#define ANSI_PARSER   "/adm/daemons/ansi_parser.c"
+#define CHAN_D        "/adm/daemons/chan_d"
+#define SHUTDOWN_D    "/adm/daemons/shutdown_d"
+#define GA_SERVER     "/adm/daemons/ga_server"
+#define NEWS_D        "/adm/daemons/news_d"
+#define FINGER_D      "/adm/daemons/finger_d"
+#define ANSI_PARSER   "/adm/daemons/ansi_parser"
 #define XTERM256      "/adm/daemons/xterm256_d"
-#define SOUL_D        "/adm/daemons/soul_d.c"
-#define LOCKDOWN_D    "/adm/daemons/lockdown_d.c"
-#define MAIL_D        "/adm/daemons/mail_d.c"
+#define SOUL_D        "/adm/daemons/soul_d"
+#define LOCKDOWN_D    "/adm/daemons/lockdown_d"
+#define MAIL_D        "/adm/daemons/mail_d"
 
 /* Redefinition warnings protection */
 
