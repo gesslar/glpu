@@ -1,0 +1,6 @@
+# Log files
+/log/
+
+# Data files
+*.o
+journal.*
