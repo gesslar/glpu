@@ -1,3 +1,5 @@
+#include "/adm/obj/simul_efun.h"
+
 /* resolve_path.c
 
  Kenon @ LPUniversity

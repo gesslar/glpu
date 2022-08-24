@@ -1,9 +1,9 @@
+#include "/adm/obj/simul_efun.h"
+
 //security.c
 
 //Tacitus @ LPUniversity
 //Grouped on October 22nd, 2005
-
-int devp(mixed user);
 
 int isMember(string user, string group)
 {

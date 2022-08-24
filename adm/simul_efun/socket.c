@@ -1,3 +1,5 @@
+#include "/adm/obj/simul_efun.h"
+
 /* socket.c
 
  Tacitus @ LPUniversity

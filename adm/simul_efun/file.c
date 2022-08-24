@@ -1,4 +1,4 @@
-#include <config.h>
+#include "/adm/obj/simul_efun.h"
 
 //file_owner(string file);
 
@@ -98,7 +98,3 @@ int log_file(string file, string str)
      master()->log_file(file, str);
      return 1;
 }
-
-
-
-
