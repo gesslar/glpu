@@ -27,7 +27,9 @@ int main(string str)
         write("Success: Colour " + str + "\n");
         return 1;
     }
-
+    case "list" :
+        write(XTERM256->get_color_list()) ;
+        return 1 ;
     default : {
         if(this_player()->query_env("colour") == "enabled")
         {
@@ -37,7 +39,7 @@ int main(string str)
         else
         {
         write("Colour: Colour is currently disabled.\n");
-        return 1;                    
+        return 1;
         }
     }
     }

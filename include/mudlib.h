@@ -40,6 +40,7 @@
 #define NEWS_D        "/adm/daemons/news_d.c"
 #define FINGER_D      "/adm/daemons/finger_d.c"
 #define ANSI_PARSER   "/adm/daemons/ansi_parser.c"
+#define XTERM256      "/adm/daemons/xterm256_d"
 #define SOUL_D        "/adm/daemons/soul_d.c"
 #define LOCKDOWN_D    "/adm/daemons/lockdown_d.c"
 #define MAIL_D        "/adm/daemons/mail_d.c"
