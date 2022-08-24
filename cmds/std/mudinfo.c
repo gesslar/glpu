@@ -6,7 +6,6 @@ List information about a mud on the I3 network
 
 */
 
-#include <mudlib.h>
 
 int main(string str)
 {

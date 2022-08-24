@@ -17,9 +17,6 @@
  /* LOG_I3 */
 #include <logs.h>
 
- /* Channel and finger daemon */
-#include <mudlib.h>
-
  /* I3 defines */
 #include <intermud3.h>
 

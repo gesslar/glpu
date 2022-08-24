@@ -6,8 +6,6 @@ Lists muds on the I3 network
 
 */
 
-#include <mudlib.h>
-
 mapping mudlist;
 string *mudlist_arr;
 int up, total;

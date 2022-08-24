@@ -6,7 +6,6 @@
 
  */
 
-#include <mudlib.h>
 #include <intermud3.h>
 
 class userInfo

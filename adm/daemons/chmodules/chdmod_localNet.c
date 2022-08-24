@@ -8,8 +8,6 @@
 
 //Last edited by Parthenon on August 6th, 2006
 
-#include <mudlib.h>
-
 #define SAVE_PATH "/data/daemons/chmodules/localNet.o"
 
 string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});

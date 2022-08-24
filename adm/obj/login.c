@@ -12,7 +12,6 @@
 
 #include <config.h>
 #include <logs.h>
-#include <mudlib.h>
 
 /* #define EMAIL_MUST_RESOLVE */
 

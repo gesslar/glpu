@@ -7,7 +7,6 @@ File Transfer Protocal Server
 */
 
 #include <socket.h>
-#include <mudlib.h>
 
 #define LOG_FTPD "ftpd"
 
