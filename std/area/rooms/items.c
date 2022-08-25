@@ -1,10 +1,12 @@
 private nosave mapping items = ([]);
 
-int set_items(mapping itemData);
-int remove_item(string id);
-int add_item(mixed id, string desc);
+mapping set_items(mapping itemData);
+mapping remove_item(string id);
+mapping add_item(mixed id, string desc);
+mapping query_items() ;
+string query_item(string id) ;
 
-int set_items(mapping itemData)
+mapping set_items(mapping itemData)
 {
     mixed id;
     string key;
@@ -22,14 +24,12 @@ int set_items(mapping itemData)
     }
 
     items = item;
-    return 1;
+    return query_items() ;
 }
 
 mapping query_items()
 {
-    mapping copy;
-    copy = items;
-    return copy;
+    return copy(items) ;
 }
 
 string query_item(string id)
@@ -41,15 +41,14 @@ string query_item(string id)
     }
 }
 
-
-int remove_item(string id)
+mapping remove_item(string id)
 {
-    if(!items[id]) return 1;
+    if(!items[id]) return query_items() ;
     map_delete(items, id);
-    return 1;
+    return query_items() ;
 }
 
-int add_item(mixed id, string desc)
+mapping add_item(mixed id, string desc)
 {
     if(arrayp(id))
     {
@@ -66,5 +65,6 @@ int add_item(mixed id, string desc)
         if(items[id]) map_delete(items, id);
         items += ([id : desc]);
     }
-    return 1;
+
+    return query_items() ;
 }

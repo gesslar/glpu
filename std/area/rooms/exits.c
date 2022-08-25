@@ -1,8 +1,8 @@
 private nosave mapping exits = ([]) ;
 
-void set_exits(mapping exit);
-int remove_exit(string id);
-int add_exit(string id, string path);
+mapping set_exits(mapping exit);
+mapping remove_exit(string id);
+mapping add_exit(string id, string path);
 string query_exit(string id) ;
 int valid_exit(string exit) ;
 mapping query_exits() ;
