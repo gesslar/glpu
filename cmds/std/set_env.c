@@ -6,7 +6,7 @@
 
 /* Last edited on October 4th, 2006 by Tacitus */
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      string var_name, var_value, *keys;
      mapping data;

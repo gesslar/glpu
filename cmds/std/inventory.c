@@ -6,7 +6,7 @@
 
 */
 
-int main(string args)
+int main(object caller, object room, string args)
 {
     object *inventory;
     int i;

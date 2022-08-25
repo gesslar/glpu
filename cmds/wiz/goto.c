@@ -7,7 +7,7 @@
 
 //Last edited on July 22nd, 2006 by Parthenon
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     string custom, tmp;
     object ob;

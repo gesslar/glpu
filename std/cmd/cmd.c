@@ -1,10 +1,10 @@
-// /std/daemon/daemon.c
-// Base daemon inheritible
+// /std/cmd/cmd.c
+// Base command object
 //
-// Created:     2022/08/23: Gesslar
-// Last Change: 2022/08/23: Gesslar
+// Created:     2022/08/24: Gesslar
+// Last Change: 2022/08/24: Gesslar
 //
-// 2022/08/23: Gesslar - Created
+// 2022/08/24: Gesslar - Created
 
 inherit M_CLEAN ;
 

@@ -16,7 +16,7 @@
 
 #include <logs.h>
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      string file, *path, err, output = "";
      object cmd, pager;

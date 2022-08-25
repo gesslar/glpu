@@ -6,7 +6,7 @@
 
 //Last edited on July 1st, 2005 by Tacitus
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      string source, dest;
      if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: mv <source> <dest>\n");

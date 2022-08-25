@@ -4,7 +4,7 @@
 //01-JULY-05
 //Admin wall cmd
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     int i;
     object *users;

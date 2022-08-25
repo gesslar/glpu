@@ -8,7 +8,7 @@
 
 // Last updated on April 15th, 2006 by Tacitus@LPUniversity
 
-int main(string args)
+int main(object caller, object room, string args)
 {
     object client;
 

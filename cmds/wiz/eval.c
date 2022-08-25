@@ -8,22 +8,22 @@
 
 //Lasted updated October 6th, 2006 by Tacitus
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      /* clean up first */
      string err;
-     if(!directory_exists(user_path(this_player()->query_name()))) 
+     if(!directory_exists(user_path(caller->query_name()))) 
           return(notify_fail("Error [eval]: You must have a home directory to use eval.\n"));
      write("%^BOLD%^Evaluating:%^RESET%^ " + arg + "\n\n");
-     if (file_size(user_path(this_player()->query_name()) + "tmp_eval_file.c") != -1)
-     rm (user_path(this_player()->query_name()) + "tmp_eval_file.c");
-     if (find_object(user_path(this_player()->query_name()) + "tmp_eval_file"))
-          destruct(find_object(user_path(this_player()->query_name()) + "tmp_eval_file"));
+     if (file_size(user_path(caller->query_name()) + "tmp_eval_file.c") != -1)
+     rm (user_path(caller->query_name()) + "tmp_eval_file.c");
+     if (find_object(user_path(caller->query_name()) + "tmp_eval_file"))
+          destruct(find_object(user_path(caller->query_name()) + "tmp_eval_file"));
 
-     write_file(user_path(this_player()->query_name()) + "tmp_eval_file.c","mixed eval() { "+arg+"; }\n");
-     err = catch(printf("Result = %O\n", load_object(user_path(this_player()->query_name()) + "tmp_eval_file.c")->eval()));
+     write_file(user_path(caller->query_name()) + "tmp_eval_file.c","mixed eval() { "+arg+"; }\n");
+     err = catch(printf("Result = %O\n", load_object(user_path(caller->query_name()) + "tmp_eval_file.c")->eval()));
      if(err) write("\n%^RED%^Runtime error:%^RESET%^\n " + err + "\n%^MAGENTA%^See logs for more details.%^RESET%^\n");
-     rm(user_path(this_player()->query_name()) + "tmp_eval_file.c");
+     rm(user_path(caller->query_name()) + "tmp_eval_file.c");
      return 1;
 }
 

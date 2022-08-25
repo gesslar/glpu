@@ -10,7 +10,7 @@ Last edited on May 5th, 2006 by Tacitus
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      string targetname;
      string obname;

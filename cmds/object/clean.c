@@ -10,7 +10,7 @@ Last edited on October 29th, 2005 by Tacitus
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      int i;
      object target;

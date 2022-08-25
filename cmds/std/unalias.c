@@ -6,7 +6,7 @@
  
 */
 
-int main(string args)
+int main(object caller, object room, string args)
 {
      if(!args) return(notify_fail("Syntax: unalias <verb>\n"));
      if(this_player()->remove_alias(args))

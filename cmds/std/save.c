@@ -6,7 +6,7 @@
 
 //Last edited on October 8th, 2005 by Tacitus
 
-int main(string args)
+int main(object caller, object room, string args)
 {
   this_player()->save_user();
   write("Successful [save]: User saved.\n");

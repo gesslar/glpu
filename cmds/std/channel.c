@@ -9,7 +9,7 @@
 
 /* Last edited on July 14th, 2006 by Tacitus */
 
-int main(string args)
+int main(object caller, object room, string args)
 {
      string cmd, arg, argChannel;
      string *arr, multipleTune;

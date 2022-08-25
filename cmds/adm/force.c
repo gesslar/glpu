@@ -10,7 +10,7 @@
 
 #include <logs.h>
 
-int main(string args)
+int main(object caller, object room, string args)
 {
     string target, cmd;
 

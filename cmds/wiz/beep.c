@@ -6,7 +6,7 @@
 
 */
 
-int main(string argument)
+int main(object caller, object room, string argument)
 {
     object user;
 

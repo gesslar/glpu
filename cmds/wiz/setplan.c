@@ -20,7 +20,7 @@ int delete_plan();
 
 
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     string tmp = "";
     string user = this_player()->query_name();

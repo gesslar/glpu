@@ -6,18 +6,18 @@
 
 //Last edited July 11th, 2006 by Tacitus
 
-int main(string file)
+int main(object caller, object room, string file)
 {
     object obj;
     string error, *users;
 
     if(!file)
     {
-        if(!this_player()->query("cwf")) return notify_fail("Error [update]: You must provide an argument. Syntax: update <file>\n");
-        file = this_player()->query("cwf");
+        if(!caller->query("cwf")) return notify_fail("Error [update]: You must provide an argument. Syntax: update <file>\n");
+        file = caller->query("cwf");
     }
 
-    file=resolve_path(this_player()->query("cwd"), file);
+    file=resolve_path(caller->query("cwd"), file);
 
     if(obj = find_object(file))
     {
@@ -30,7 +30,7 @@ int main(string file)
 
 
     if(!file_exists(file)) return notify_fail("Error [update]: " + file  + " does not exist.\n");
-    this_player()->set("cwf", file);
+    caller->set("cwf", file);
     error=catch(obj = load_object(file));
 
     if(error){

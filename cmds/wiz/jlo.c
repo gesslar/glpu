@@ -7,7 +7,7 @@
 
 #define TPN this_player()->query("name")
 
-int main(string name)
+int main(object caller, object room, string name)
 {
     string path;
 

@@ -10,7 +10,7 @@
 
 object *addArray( object *oldlist, object *newlist);
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     string ret, mudname;
     mixed *packet;

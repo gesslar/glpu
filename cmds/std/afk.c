@@ -8,22 +8,24 @@
 
 */
 
-int main(string args)
+int main(object caller, object room, string args)
 {
     if(!args) args = "";
 
-    this_player()->set_env("away", args);
+    caller->set_env("away", args);
 
-    write("\nYou are now away" + (!args || args == "" ? ".\n" : ": " + args + "\n"));
-    write("Press "+ HIW + "[ENTER]" + NOR + " to return.\n");
+    caller->tell("\nYou are now away" + (!args || args == "" ? ".\n" : ": " + args + "\n"));
+    caller->tell("Press "+ HIW + "[ENTER]" + NOR + " to return.\n");
     input_to("i_Return");
     return 1;
 }
 
 void i_Return(string arg)
 {
-    write("You return from away\n");
-    this_player()->set_env("away", 0);
+    object caller = this_player() ;
+
+    caller->tell("You return from away\n");
+    caller->set_env("away", 0);
     return;
 }
 
@@ -36,5 +38,3 @@ string help()
     "message, then when others try to talk to you using things\n"+
     "such as tell, they will receieve that message.\n";
 }
-
-

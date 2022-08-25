@@ -7,7 +7,7 @@ List information about a mud on the I3 network
 */
 
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     mapping mudlist;
     object i3_ob;

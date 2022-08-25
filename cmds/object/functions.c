@@ -7,7 +7,7 @@
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     object ob, pager;
     string *funcs, ret;

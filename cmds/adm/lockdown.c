@@ -10,7 +10,7 @@
 
 #define LOCKDOWN_TOOL "/obj/mudlib/lockdown_admin/lockdown_client.c"
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     object lockdown_client;
 

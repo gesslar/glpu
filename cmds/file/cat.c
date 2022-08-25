@@ -5,7 +5,7 @@
 //Pages entire file at once
 
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      string *lines;
      int i;

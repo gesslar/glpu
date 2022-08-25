@@ -12,7 +12,7 @@ Standard nuke command V2
 
 void confirm_nuke(string str, string user);
 
-int main(string user)
+int main(object caller, object room, string user)
 {
      if(!adminp(previous_object())) return notify_fail("Error [nuke]: Access denied.\n");
 

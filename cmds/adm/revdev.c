@@ -10,7 +10,7 @@
 
 #include <logs.h>
 
-int main(string args)
+int main(object caller, object room, string args)
 {
      object user;
      object security_editor;

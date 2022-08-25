@@ -5,7 +5,7 @@ Standard command
 
 */
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     write("%^CLEAR%^\n");
     return 1;

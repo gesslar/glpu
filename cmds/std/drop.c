@@ -10,7 +10,7 @@ Last edited on June 27th, 2006 by Tacitus
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
 

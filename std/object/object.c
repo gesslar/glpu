@@ -30,6 +30,11 @@ string query_long();
 int receive_object(object ob);
 int release_object(object ob);
 
+void create()
+{
+     init_ob() ;
+}
+
 void remove()
 {
      load_object(VOID_OB);

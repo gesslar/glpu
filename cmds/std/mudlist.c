@@ -25,7 +25,7 @@ string getNextArg(string *argv, int argc)
     return ret;
 }
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     object i3_ob, pager;
     string *argv = ({ }), *tmp_argv = ({ });

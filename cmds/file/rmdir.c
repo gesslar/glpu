@@ -4,7 +4,7 @@
 //07-APR-05
 //File system management
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     if(!str) return notify_fail("Syntax: rmdir <directory name>\n");
     str = resolve_path(this_player()->query("cwd"), str);

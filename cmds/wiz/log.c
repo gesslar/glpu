@@ -9,7 +9,7 @@
  
 /* Lasted updated on 14-JUL-06 by Tacitus */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      string logfile;
      

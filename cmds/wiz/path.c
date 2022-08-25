@@ -4,7 +4,7 @@
 //07-APR-05
 //Wizard command
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      string action, arg, *path, ret;
      int i;

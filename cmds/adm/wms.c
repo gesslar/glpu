@@ -78,7 +78,7 @@ string datafile()
      return DATAFILE;
 }
 
-int main(string str)
+int main(object caller, object room, string str)
 {
      if(!adminp(previous_object())) return notify_fail("Error [wms]: Access denied.\n");
 

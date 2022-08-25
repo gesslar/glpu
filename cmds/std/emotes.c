@@ -11,7 +11,7 @@ string *singled_emotes = ({});
 void fix_array(string *arr);
 void print_emotes(string *emotes);
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     string *emotes;
 

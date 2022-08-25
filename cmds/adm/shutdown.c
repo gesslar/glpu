@@ -9,7 +9,7 @@
 
 #include <logs.h>
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      string status;
      int time;

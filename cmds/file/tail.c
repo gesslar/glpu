@@ -6,7 +6,7 @@
 
 //Last edited on July 1st, 2005 by Tacitus
 
-int main(string file)
+int main(object caller, object room, string file)
 {
      if(!file)
      {

@@ -4,7 +4,7 @@
 //01-JULY-05
 //Simple communication command
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     if(!arg) {
     write("You mumble to your self.\n");

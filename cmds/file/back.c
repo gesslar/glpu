@@ -7,7 +7,7 @@
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     if(!arg || arg == "")
     return notify_fail(RED + "Error" + NOR + " [back]: Syntax: back <file name>.\n");

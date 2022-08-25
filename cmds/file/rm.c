@@ -12,7 +12,7 @@ string dir;
 void start_delete();
 void handle_delete(string contents);
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     dir_tree = ({});
     

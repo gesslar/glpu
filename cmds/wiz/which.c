@@ -6,7 +6,7 @@
  
 */
 
-int main(string args)
+int main(object caller, object room, string args)
 {
     string *commandPath = this_player()->query_path();
     mixed *actions = previous_object()->query_commands();

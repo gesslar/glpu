@@ -6,7 +6,7 @@
 
 */
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     mixed *packet;
 

@@ -10,7 +10,7 @@
 //Last edited on September 10th, 2006 by Tricky
 //Last edited on September 18th, 2006 by Tricky
 
-int main(string message)
+int main(object caller, object room, string message)
 {
     object user;
     string d_user, d_mud;

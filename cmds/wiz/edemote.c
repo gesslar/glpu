@@ -10,7 +10,7 @@
 
 
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
     object emote_client;
     int selection;

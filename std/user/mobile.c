@@ -17,7 +17,9 @@
 #include <logs.h>
 
 inherit OBJECT;
-inherit __DIR__ "user/alias";
+
+inherit __DIR__ "alias";
+inherit __DIR__ "tell" ;
 
 /* Global Variables */
 
@@ -349,10 +351,12 @@ int commandHook(string arg)
 {
     string verb, err, *cmds = ({});
     string custom, tmp;
-    object command;
+    object caller, command;
     int i;
+
+    caller = this_player() ;
     
-    if(interactive(this_object())) if(this_player() != this_object()) return 0;
+    if(interactive(caller)) if(caller != this_object()) return 0;
 
     if(query_env("away"))
     {
@@ -452,7 +456,7 @@ int commandHook(string arg)
                 continue;
             }
 
-            returnValue = command->main(arg);
+            returnValue = command->main(caller, environment(), arg);
             i++;
         }
 

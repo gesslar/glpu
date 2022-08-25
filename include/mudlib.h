@@ -13,15 +13,18 @@
 #ifndef MUDLIB
 #define MUDLIB
 
+#include <modules.h>
+
 /* Standard Inheritables */
 
-#define DAEMON     "/std/daemon/daemon"
-#define OBJECT     "/std/object/object"
-#define OB_E       "/std/object/ob_prop"
-#define ROOM       "/std/area/rooms/room"
-#define MOBILE     "/std/user/mobile"
-#define NPC        "/std/area/mobiles/npc"
-#define MONSTER    "/std/area/mobiles/npc"
+#define CMD         "/std/cmd/cmd"
+#define DAEMON      "/std/daemon/daemon"
+#define OBJECT      "/std/object/object"
+#define OB_E        "/std/object/ob_prop"
+#define ROOM        "/std/area/rooms/room"
+#define MOBILE      "/std/user/mobile"
+#define NPC         "/std/area/mobiles/npc"
+#define MONSTER     "/std/area/mobiles/npc"
 
 /* Mudlib Objects */
 

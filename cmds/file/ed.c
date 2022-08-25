@@ -8,7 +8,7 @@
 
 #include <logs.h>
 
-int main(string file)
+int main(object caller, object room, string file)
 {
     if (!file) 
     {

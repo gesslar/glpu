@@ -9,7 +9,7 @@
 #include <logs.h>
 #include <config.h>
 
-int main(string arg)
+int main(object caller, object room, string arg)
 {
      previous_object()->exit_world();
      write("%^BOLD%^YELLOW%^Thank you for visiting " + mud_name() + "%^RESET%^\n");

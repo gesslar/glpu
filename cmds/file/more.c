@@ -10,7 +10,7 @@ Last edited 5-July-06 by Vicore
 
 object pager;
 
-int main(string file)
+int main(object caller, object room, string file)
 {
     string text;
     pager = clone_object("/obj/mudlib/pager/pager.c");

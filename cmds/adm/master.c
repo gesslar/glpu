@@ -6,7 +6,7 @@
 
 #include <config.h>
 
-int main(string arguments)
+int main(object caller, object room, string arguments)
 {
      string err = "";
 

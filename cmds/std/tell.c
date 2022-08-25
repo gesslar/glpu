@@ -11,7 +11,7 @@
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);
 
-int main(string str)
+int main(object caller, object room, string str)
 {
     string who, message, where;
     object user, c;

@@ -6,7 +6,7 @@
 
 */
 
-int main(string str) 
+int main(object caller, object room, string str) 
 { 
     if(!str) 
     return notify_fail("Syntax: echo <argument>\n");
