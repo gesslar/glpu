@@ -29,7 +29,7 @@ int main(object caller, object room, string str)
     return(notify_fail("Error [where]: Player '" + capitalize(str) + "' not found.\n"));
 }               
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX: " + NOR + "where <player>\n\n"
       "This command will tell you where a user is currently located.\n"

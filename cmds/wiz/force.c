@@ -28,7 +28,7 @@ int main(object caller, object room, string args)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     string ret = "%^BOLD%^ SYNTAX:%^RESET%^ force <living> <cmd>\n\n"
     "This command allows you to force a living object to execute\n"

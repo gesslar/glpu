@@ -75,7 +75,7 @@ int main(object caller, object room, string args)
      else return(notify_fail("Syntax: alias [-g] <[$]verb> <alias>\n"));    
 } 
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ alias [-g] <[$]verb> <alias>\n\n"
      "This command allows you to display your current aliases and\n"

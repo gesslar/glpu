@@ -46,7 +46,7 @@ int main(object caller, object room, string args)
 
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^SYNTAX:%^RESET%^ history [range]\n\n"
     "This command allows you to view the history of commands that\n"

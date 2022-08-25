@@ -21,7 +21,7 @@ int main(object caller, object room, string arg)
          {
              if(!item->move(environment(this_player())))
                  write("Error [drop]: " + capitalize(item->query_short()) +
-                     " can not be droped here.\n");
+                     " can not be dropped here.\n");
             else
             {
                 write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
@@ -44,7 +44,7 @@ int main(object caller, object room, string arg)
              if(!item->move(environment(this_player())))
              {
                  write("Error [drop]: " + capitalize(item->query_short()) +
-                     " can not be droped here.\n");
+                     " can not be dropped here.\n");
                  failedObjects += ({ item });
              }
             else
@@ -68,7 +68,7 @@ int main(object caller, object room, string arg)
 
         if(!ob) return(notify_fail("Error [drop]: You don't have a '" + arg + "' in your inventory.\n"));
         if(ob->query("prevent_drop") || ob->prevent_drop()) return(notify_fail("Error [drop]: That object can not be dropped.\n"));
-        if(!ob->move(environment(this_player()))) return(notify_fail("Error [drop]: That object can not be droped here.\n"));
+        if(!ob->move(environment(this_player()))) return(notify_fail("Error [drop]: That object can not be dropped here.\n"));
 
         write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
         say(capitalize(this_player()->query_name()) + " drops a '" + ob->query("short") + "'.\n");
@@ -77,7 +77,7 @@ int main(object caller, object room, string arg)
     }
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "drop <item>\n\n"
      "This command will allow you to drop an object you are currently\n"

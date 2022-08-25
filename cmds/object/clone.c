@@ -54,7 +54,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "clone <file>\n\n" + 
       "This command produces a clone of a file.\n\n" +
       HIW + "See also: " + NOR + "dest");

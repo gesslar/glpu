@@ -97,7 +97,7 @@ int main(object caller, object room, string arg)
     return 0;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "goto <room/user>" + "\n\n" +
       "The goto command allows you to transport to another room by\n"
       "filename or transport to another use. If ther user or room\n"

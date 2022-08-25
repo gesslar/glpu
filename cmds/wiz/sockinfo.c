@@ -12,7 +12,7 @@ int main()
       return 1; 
 }
 
-string help() {
+string help(object caller) {
      return(" %^BOLD%^SYNTAX:%^RESET%^ sockinfo\n\n"
      "The sockinfo command will tell you what sockets are loaded\n"
      "and what they are currently being used for.\n");

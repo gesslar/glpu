@@ -30,7 +30,7 @@ int main(object caller, object room, string args)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ ln <original file> <new refrence>\n\n"
      "This command is a very powerful tool that allows you to create a\n"

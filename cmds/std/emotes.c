@@ -133,7 +133,7 @@ void fix_array(string *arr)
     singled_emotes = sort_array(singled_emotes, "alphabetize");
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX: " + NOR + "emotes\n\n" +
       "This command allows you to see all of the emotes available for you\n"+

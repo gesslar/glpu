@@ -13,7 +13,7 @@ int main()
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "uptime\n\n" + 
      "This command will tell you how the long them mud has been running.\n");     

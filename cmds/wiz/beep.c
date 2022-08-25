@@ -27,7 +27,7 @@ int main(object caller, object room, string argument)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^SYNTAX:%^RESET%^ beep <user>\n\n"
       "This command will 'beep' another user by sending the other user a message that\n"

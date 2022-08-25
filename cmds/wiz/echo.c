@@ -15,7 +15,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^SYNTAX:%^RESET%^ echo <string>\n\n"
       "This command allows you to echo a string of text to the room you are currently\n"

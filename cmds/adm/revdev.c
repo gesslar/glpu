@@ -43,7 +43,7 @@ int main(object caller, object room, string args)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^ revdev <user>\n\n"
      "This command will revoke a user's developer access to\n"

@@ -45,7 +45,7 @@ int main(object caller, object room, string str)
     }
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^WHITE%^SYNTAX:%^RESET%^ colour [<enable>||<disable>]\n\n" 
       "With no arguments, this command will tell you if you currently\n"

@@ -26,7 +26,7 @@ int main(object caller, object room, string arg)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return HIW + " SYNTAX: " + NOR + "mail [<target1>, <target2>, ..., <targetN>]\n\n" +
     "This command will start a mail session for you. If you wish to go\n"+

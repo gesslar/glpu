@@ -18,7 +18,7 @@ int main(object caller, object room, string arg)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^SYNTAX:%^RESET%^ locate <username>\n\n"
      "This command allows you to scan the intermud network\n"

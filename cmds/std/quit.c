@@ -20,7 +20,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX:" + NOR + " quit\n\n" +
      "This command will save your characher and disconnect you from the mud.\n\n" +

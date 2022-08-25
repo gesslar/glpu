@@ -56,7 +56,7 @@ void disp_user(string str);
 void summary();
 string datafile();
 string query_flags(string str);
-string help();
+string help(object caller);
 
 mapping users, notes, types;
 string current;
@@ -1140,7 +1140,7 @@ object restore_data(string name) {
 
 }
 
-string help()
+string help(object caller)
 {
      return("SYNTAX: wms [<username>||add||remove||list||note||read||edit||flag]\n\n"
      "Wms is a wizard management system that allows admins to quickly and easily\n"

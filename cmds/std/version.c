@@ -14,7 +14,7 @@ int main()
      return 1;
 } 
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ version\n\n"
      "This command returns version information about the software\n"

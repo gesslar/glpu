@@ -17,7 +17,7 @@ int main(object caller, object room, string args)
      else return(notify_fail("Error [aliases]: That verb is not aliased locally.\n"));
 }
 
-string help()
+string help(object caller)
 {
      return("%^BOLD%^SYNTAX:%^RESET%^ unalias <verb>\n\n"
      "This command allows you to unalias local aliases. A local alias\n"

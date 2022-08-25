@@ -43,7 +43,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "give <object> <user>\n\n"
      "This command will allow you to give an object that is currently\n"

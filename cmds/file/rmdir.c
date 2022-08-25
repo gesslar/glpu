@@ -19,7 +19,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "rmdir <directory name>" + "\n\n" +
       "This command permanantly removes a specified directory. It will not\n"
       "currently delete a directory that has content (ie. The directory\n"

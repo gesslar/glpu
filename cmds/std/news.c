@@ -36,7 +36,7 @@ int main(object caller, object room, string args)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
     string help = " %^BOLD%^SYNTAX:%^RESET%^ news [check]\n\n"
     "This command launches your news client which will\n"

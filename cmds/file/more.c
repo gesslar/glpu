@@ -25,7 +25,7 @@ int main(object caller, object room, string file)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return("%^BOLD%^SYNTAX: %^RESET%^more <file>\n\n" +
       "This command will allow you to page files to your terminal,\n"

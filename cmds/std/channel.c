@@ -118,7 +118,7 @@ int main(object caller, object room, string args)
      }
 }
 
-string help()
+string help(object caller)
 {
      string *modList = CHAN_D->getMods(), mods;
 

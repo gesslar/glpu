@@ -19,7 +19,7 @@ int main(object caller, object room, string args)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX: " + NOR + "inventory\n\n"
       "This command displays a list of everything that is currently\n"

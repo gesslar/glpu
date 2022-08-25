@@ -22,7 +22,7 @@ int main(object caller, object room, string arg)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(
       HIW + " SYNTAX:" + NOR + " access\n\n"+

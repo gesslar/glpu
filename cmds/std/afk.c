@@ -29,7 +29,7 @@ void i_Return(string arg)
     return;
 }
 
-string help()
+string help(object caller)
 {
     return
     HIW + " SYNTAX:" + NOR + " afk [<message>]\n\n" +

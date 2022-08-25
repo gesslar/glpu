@@ -27,7 +27,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "eval <lpc-statements>\n\n" + 
      "This command allows you to execute stand-alone lpc statements.\n"

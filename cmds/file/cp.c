@@ -41,7 +41,7 @@ int main(object caller, object room, string str)
      return 1;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "cp <source> <destination>\n\n" +
     "This command copies a file from it's current destination to a specified one.\n");
 }

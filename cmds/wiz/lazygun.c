@@ -106,7 +106,7 @@ void snowball_hit(object vict)
     return;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "lazygun\n"
      "Use this at your own risk. There is no telling what it will do.\n");

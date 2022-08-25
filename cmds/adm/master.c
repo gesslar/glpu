@@ -31,7 +31,7 @@ int main(object caller, object room, string arguments)
 
 }
 
-string help() {
+string help(object caller) {
 return (HIW + " SYNTAX: " + NOR + "master\n\n"
     "This command reloads core system files. No argument is taken.\n");
 }

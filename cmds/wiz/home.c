@@ -99,7 +99,7 @@ int main(object caller, object room, string str)
     }     
 }
 
-string help()
+string help(object caller)
 {
     return("%^BOLD%^SYNTAX: %^RESET%^workroom [<user>]\n\n"
       "This command will move you to ~/workroom.c if it\n"

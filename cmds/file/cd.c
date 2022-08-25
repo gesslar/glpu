@@ -52,7 +52,7 @@ int main(object caller, object room, string str)
      return 1;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "cd <directory>\n\n" + 
     "This command allows you to navigate through various directories.\n" + 
     "To use this command, you simply provide the directory (either\n" + 

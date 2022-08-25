@@ -32,7 +32,7 @@ int main()
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(" %^BOLD%^SYNTAX%^RESET%^: what\n\n"
       "This command allows you to view the last command executed by\n"

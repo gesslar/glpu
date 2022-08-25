@@ -37,7 +37,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^WHITE%^SYNTAX:%^RESET%^ set_env [<var_name> <var_value>]\n\n"
      "This command allows you, the user, to set environment values that effect\n"

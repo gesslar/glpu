@@ -168,7 +168,7 @@ int render_container(object caller, object room, string target)
     return notify_fail("Error: Containers are not implemented yet.\n");
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX:" + NOR + " look [<in/at>] <object> [<on/in> <object>]\n\n" +
       "This command will allow you to look at objects in your environment.\n" +

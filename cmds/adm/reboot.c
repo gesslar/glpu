@@ -43,7 +43,7 @@ int main(object caller, object room, string arg)
      }
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX:" + NOR + " rebot [<stop>||<time>/now]\n\n" +
     "This command allows you to start a reboot of the mud. You\n"
     "can either supply the ammount of time intill you the reboot\n"

@@ -21,7 +21,7 @@ int main()
      return 1;    
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "callouts\n\n"
      "This comand will return information about currently active callouts.\n"

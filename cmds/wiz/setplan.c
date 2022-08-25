@@ -120,7 +120,7 @@ void write_plan()
     return;
 }
 
-string help()
+string help(object caller)
 {
     return
     HIW + " SYNTAX:" + NOR + " setplan [-o|-d]\n\n" +

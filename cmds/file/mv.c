@@ -28,7 +28,7 @@ int main(object caller, object room, string str)
      }     
      return 1;
 }
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "mv <source> <destination>\n\n" +
     "This command moves a file to a destination you specify. The first argument\n"
     "is the file you wish to move and the second argument is the destination.\n");

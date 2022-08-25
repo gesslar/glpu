@@ -62,7 +62,7 @@ int main(object caller, object room, string args)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ makedev <user>\n"
      "This command will set up a user with developer access to\n"

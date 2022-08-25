@@ -11,7 +11,7 @@ int main()
      return 1;
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "cwd\n\n" + 
     "This command will inform you of your current working directory\n"
     "and current working file. This is important, as sometimes if you\n"

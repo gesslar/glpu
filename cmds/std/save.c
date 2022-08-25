@@ -13,7 +13,7 @@ int main(object caller, object room, string args)
   return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX:" + NOR + " save\n\n" +
      "This command will save your charachter data.\n\n" +

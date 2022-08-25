@@ -19,7 +19,7 @@ int main(object caller, object room, string user)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     string ret =
     " %^BOLD%^SYNTAX:%^RESET%^ finger <user>\n\n"

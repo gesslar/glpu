@@ -89,7 +89,7 @@ void confirm_nuke(string str, string user)
      }
 }
 
-string help() {
+string help(object caller) {
      return (HIW + " SYNTAX: " + NOR + "nuke <username>\n\n" +
      "This command will delete the target user's pfile, thus \n"
      "removing their account from " + mud_name() + ". Furthermore\n"

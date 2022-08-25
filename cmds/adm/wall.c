@@ -29,7 +29,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help(){
+string help(object caller) {
     return (HIW + " SYNTAX:" + NOR + " wall <msg>\n\n"
       + "This command pages a message to everybody on the MUD.\n");
 }

@@ -33,7 +33,7 @@ void snowball_hit(object vict)
     return;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "snowball [victim]\n"
      "Go back to your childhood and throw snowballs at the players.\n");

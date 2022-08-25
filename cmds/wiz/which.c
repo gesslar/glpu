@@ -67,7 +67,7 @@ int main(object caller, object room, string args)
     return 1;   
 }
 
-string help()
+string help(object caller)
 {
     return " %^BOLD%^SYNTAX:%^RESET%^ which <verb/command>\n\n"
     "This command will search through your command path, local\n"

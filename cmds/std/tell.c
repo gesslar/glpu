@@ -109,7 +109,7 @@ int main(object caller, object room, string str)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX:" + NOR + " tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"

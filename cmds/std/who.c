@@ -116,7 +116,7 @@ object *addArray(object *oldarr, object *newarr )
     return oldarr;
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX: " + NOR + "who [@<mud>]\n\n" +
       "This command will display all the users who are currently logged\n" +

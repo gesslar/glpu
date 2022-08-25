@@ -43,7 +43,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(HIW + " SYNTAX: " + NOR + "clean <object>\n\n"
      "This command will destory all objects within another object (aka\n"

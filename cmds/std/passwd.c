@@ -62,7 +62,7 @@ int confirm_NewPassword(string str, string pass)
      }
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ passwd\n\n"
      "This command allows you to change your current passwd.\n"

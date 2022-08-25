@@ -221,7 +221,7 @@ string buildMudlist(string mudname, string libname, string driver, int all)
     return list;
 }
 
-string help()
+string help(object caller)
 {
     string help = HIW + " SYNTAX: " + NOR;
 

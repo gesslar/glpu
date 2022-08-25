@@ -51,7 +51,7 @@ int main(object caller, object room, string arg)
     }//END IF
 }
 
-string help()
+string help(object caller)
 {
     return(
       " SYNTAX: edemote\n\n"+

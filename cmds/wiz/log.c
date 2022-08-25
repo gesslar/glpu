@@ -34,7 +34,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help()
+string help(object caller)
 {
      return(" %^BOLD%^SYNTAX:%^RESET%^ log <logfile>\n\n"
      "This command allows you to see the tail (ending) of different\n"

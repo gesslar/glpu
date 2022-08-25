@@ -29,7 +29,7 @@ int main(object caller, object room, string file)
         + " on " + ctime(time()) + "\n");
     return 1;
 }
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "ed <file>\n\n" +
     "This command lets you edit a specified file in the mud editor. To\n"
     "access editor specific help, type 'h' while in the editor.\n\n" + 

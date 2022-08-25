@@ -82,7 +82,7 @@ int main(object caller, object room, string message)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX:" + NOR + " reply <message>\n\n"
     "This command will send a message to the last user that sent\n"

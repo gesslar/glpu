@@ -20,7 +20,7 @@ int main(object caller, object room, string arg)
     }
 }
 
-string help()
+string help(object caller)
 {
     return(HIW + " SYNTAX:" + NOR + " say <argument>\n\n" +
       "This command will send a message to everyone in the room.\n" +

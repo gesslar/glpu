@@ -101,7 +101,7 @@ int main(object caller, object room, string str)
 
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "dest <object/filename>\n\n" + 
       "This command removes (destorys) an object from memory.\n\n" +
       HIW + "See also: " + NOR + "clone\n"); 

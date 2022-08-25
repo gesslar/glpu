@@ -36,7 +36,7 @@ int main(object caller, object room, string file)
      return tail(file);
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "tail <filename>\n\n" + 
     "This command prints the last 10 lines of a specified file.\n");
  }

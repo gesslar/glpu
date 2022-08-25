@@ -76,7 +76,7 @@ int main()
 
     return 1;
 }
-string help()
+string help(object caller)
 {
     return " %^BOLD%^SYNTAX:%^RESET%^ jcheck\n\n"
     "This cmd will check the /doc/journal directory for any \n"

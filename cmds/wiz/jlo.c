@@ -27,7 +27,7 @@ int main(object caller, object room, string name)
     return 1;
 }
 
-string help()
+string help(object caller)
 {
     return " %^BOLD%^SYNTAX:%^RESET%^ jlo [<username>]\n\n"
        "This command will return the last ten lines \n"

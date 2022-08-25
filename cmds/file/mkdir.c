@@ -23,7 +23,7 @@ int main(object caller, object room, string str)
 
      
  
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "mkdir <new directory>\n\n" + 
     "This command makes a new directory with the name you specified.\n");
 }

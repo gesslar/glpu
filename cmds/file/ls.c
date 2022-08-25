@@ -35,7 +35,7 @@ string arrange_string(string str, int width);
 string strip_colours(string str);
 int numeric_sort(int field, int sort_order, mixed a, mixed b);
 int main(object caller, object room, string arg);
-string help();
+string help(object caller);
 string filename_prefix(mixed* file_details);
 string filename_suffix(mixed* file_details, int classify);
 
@@ -315,7 +315,7 @@ int main(object caller, object room, string arg)
         return 1;
 }
 
-string help()
+string help(object caller)
 {
         return HIW + " SYNTAX: " + NOR + SYNTAX+@BODY
         

@@ -115,7 +115,7 @@ void handle_delete(string contents)
         rm(implode(dir_tree, "") + contents);
 }
 
-string help() {
+string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "rm <file name | -r dir name>" + "\n\n" + 
     "This command permanantly removes a file. Please note that there is no\n" +
     "'Recycle Bin'. You must be extra careful when dealing with important files.\n" +
