@@ -6,9 +6,11 @@
 
 */
 
-int main(object caller, object room, string str) 
-{ 
-    if(!str) 
+inherit CMD ;
+
+int main(object caller, object room, string str)
+{
+    if(!str)
     return notify_fail("Syntax: echo <argument>\n");
     write("You echoed to the room: " + str + "\n");
     tell_room(environment(this_player()), str, ({ this_player() }));

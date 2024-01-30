@@ -8,6 +8,8 @@
 
 //Last edited on July 19th, 2006 by Parthenon
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     string custom, tmp;
@@ -59,7 +61,7 @@ int main(object caller, object room, string str)
     }
     catch(ob->remove());;
     if(ob) destruct(ob);
-    return 1;          
+    return 1;
     }
 
     if(find_player(str) && adminp(caller))
@@ -102,7 +104,7 @@ int main(object caller, object room, string str)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "dest <object/filename>\n\n" + 
+    return (HIW + " SYNTAX: " + NOR + "dest <object/filename>\n\n" +
       "This command removes (destorys) an object from memory.\n\n" +
-      HIW + "See also: " + NOR + "clone\n"); 
+      HIW + "See also: " + NOR + "clone\n");
 }

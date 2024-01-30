@@ -4,7 +4,9 @@
 //07-APR-05
 //File system management
 
-//Laste edited on July 1st, 2005 by Tacitus
+//Last edited on July 1st, 2005 by Tacitus
+
+inherit CMD ;
 
 int main(object caller, object room, string str)
 {
@@ -21,10 +23,9 @@ int main(object caller, object room, string str)
      return 1;
 }
 
-     
- 
+
+
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "mkdir <new directory>\n\n" + 
+    return (HIW + " SYNTAX: " + NOR + "mkdir <new directory>\n\n" +
     "This command makes a new directory with the name you specified.\n");
 }
-    

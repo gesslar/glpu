@@ -4,6 +4,8 @@
 //07-APR-05
 //File system management
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     if(!str) return notify_fail("Syntax: rmdir <directory name>\n");

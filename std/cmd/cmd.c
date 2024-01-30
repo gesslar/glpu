@@ -7,16 +7,27 @@
 // 2022/08/24: Gesslar - Created
 
 inherit M_CLEAN ;
+inherit M_SETUP ;
 
 // Functions
-void remove() ;
+string help(object caller) ;
 
-protected void create()
-{
-    if(function_exists("setup")) call_other("setup", this_object()) ;
+// Variables
+protected mixed help = (: help :) ;
+
+protected void create() {
+    setup_chain() ;
 }
 
-void remove()
-{
-    destruct(this_object()) ;
+string query_help(object caller) {
+    string temp ;
+printf("HELP: %O\n", help) ;
+    if(valid_function(help))
+        temp = (*help)(caller) ;
+    else if(stringp(help))
+        temp = help ;
+    else
+        temp = "There is no help on this topic." ;
+
+    return temp ;
 }

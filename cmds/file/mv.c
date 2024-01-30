@@ -6,6 +6,8 @@
 
 //Last edited on July 1st, 2005 by Tacitus
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
      string source, dest;
@@ -17,7 +19,7 @@ int main(object caller, object room, string str)
           write("Error [mv]: Permission denied.\n");
           return 1;
      }
-     
+
      if(rename(source, dest) < 0)
      {
           write("Error [mv]: Move failed.\n");
@@ -25,11 +27,11 @@ int main(object caller, object room, string str)
      else
      {
           write("Successful [mv]: " + source + " moved to " + dest + "\n");
-     }     
+     }
      return 1;
 }
 string help(object caller) {
     return (HIW + " SYNTAX: " + NOR + "mv <source> <destination>\n\n" +
     "This command moves a file to a destination you specify. The first argument\n"
     "is the file you wish to move and the second argument is the destination.\n");
-} 
+}

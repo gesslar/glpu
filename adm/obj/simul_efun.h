@@ -1,6 +1,10 @@
 #ifndef __SIMUL_EFUN_H__
 #define __SIMUL_EFUN_H__
 
+// File: description
+string get_short(object ob) ;
+string get_long(object ob) ;
+
 // File: directory
 void mkdirs(string path) ;
 
@@ -49,5 +53,8 @@ string user_mob_data(string name) ;
 string user_data_directory(string priv) ;
 string user_core_data_directory(string priv) ;
 string user_path(string name) ;
+
+// File: valids
+int valid_function(mixed f) ;
 
 #endif // __SIMUL_EFUN_H__

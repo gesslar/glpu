@@ -6,6 +6,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
      printf(" The current date is %s.\n", ctime(time()));

@@ -8,6 +8,8 @@
 
 //Last edited on July 19th, 2006 by Parthenon
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     object ob;
@@ -21,7 +23,7 @@ int main(object caller, object room, string str)
 
     str = resolve_path(caller->query("cwd"), str);
 
-    if(!file_exists(str)) return(notify_fail("Error [clone]: Unable to find file '" + str + "'.\n"));     
+    if(!file_exists(str)) return(notify_fail("Error [clone]: Unable to find file '" + str + "'.\n"));
 
     write("Notice [clone]: Cloning file '" + str + "' to environment...\n");
     err = catch(ob = clone_object(str));
@@ -45,8 +47,8 @@ int main(object caller, object room, string str)
     else
     {
     write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
-    tell_room(environment(caller), 
-      capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n", 
+    tell_room(environment(caller),
+      capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n",
       ({caller}));
     }
 
@@ -55,11 +57,7 @@ int main(object caller, object room, string str)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "clone <file>\n\n" + 
+    return (HIW + " SYNTAX: " + NOR + "clone <file>\n\n" +
       "This command produces a clone of a file.\n\n" +
       HIW + "See also: " + NOR + "dest");
-}     
-
-
-
-
+}

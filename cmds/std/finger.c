@@ -31,5 +31,3 @@ string help(object caller)
 
     return ret;
 }
-
-

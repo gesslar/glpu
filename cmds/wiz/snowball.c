@@ -1,3 +1,6 @@
+
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     object tp = this_player();

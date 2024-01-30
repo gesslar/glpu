@@ -32,4 +32,3 @@ string help(object caller)
       "to ban lists. Also, if you wish to open the mud only to certain\n"+
       "players such as for play-testing something, you may also do that.\n");
 }
-

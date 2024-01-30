@@ -3,12 +3,14 @@
  Tacitus @ LPUniversity
  05-MAY-06
  Std reply command
- 
+
 */
 
 //Last edited on August 11th, 2006 by Parthenon
 //Last edited on September 10th, 2006 by Tricky
 //Last edited on September 18th, 2006 by Tricky
+
+inherit CMD ;
 
 int main(object caller, object room, string message)
 {
@@ -52,9 +54,9 @@ int main(object caller, object room, string message)
     }
 
     user = find_player(who);
-    
+
     if(!objectp(user)) return notify_fail("Error [tell]: User " + who + " is not found.\n");
-    
+
     if(user == caller)
     {
 

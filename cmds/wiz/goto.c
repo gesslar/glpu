@@ -7,6 +7,8 @@
 
 //Last edited on July 22nd, 2006 by Parthenon
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
     string custom, tmp;
@@ -90,10 +92,10 @@ int main(object caller, object room, string arg)
             tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " has teleported to this room.\n", ({ this_player() }) );
 
         write("You have teleported to " + capitalize(ob->query_short()) + "\n");
-    
+
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -102,6 +104,4 @@ string help(object caller) {
       "The goto command allows you to transport to another room by\n"
       "filename or transport to another use. If ther user or room\n"
       "specified is not found, you will not be moved.\n");
-} 
-
-
+}

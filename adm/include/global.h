@@ -17,6 +17,10 @@
 #define USER_OB    "/std/user/user"
 #define VOID_OB    "/areas/std/void"
 
+#define TRUE 1
+#define FALSE 0
+#define UNDEFINED ([])[0]
+
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 #endif

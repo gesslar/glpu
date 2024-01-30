@@ -137,7 +137,7 @@ int get_users_targeted()
     }// END ELSE IF
     else
     {
-        tmp = present(lower_case(list_of_names_in_emote[i]), environment(this_player()));         
+        tmp = present(lower_case(list_of_names_in_emote[i]), environment(this_player()));
 
         if(!tmp)
         return notify_fail(capitalize(list_of_names_in_emote[i]) + " is not present!\n");
@@ -239,4 +239,3 @@ object *get_targets_to_print_to()
 
     return tmp_array;
 }
-

@@ -8,6 +8,8 @@
 
 // Last updated on April 15th, 2006 by Tacitus@LPUniversity
 
+inherit CMD ;
+
 int main(object caller, object room, string args)
 {
     object client;

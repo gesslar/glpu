@@ -3,8 +3,10 @@
  Tacitus @ LPUniveristy
  14-JAN-05
  Unalias command
- 
+
 */
+
+inherit CMD ;
 
 int main(object caller, object room, string args)
 {
@@ -25,5 +27,5 @@ string help(object caller)
      "a verb that is currently aliased locally, simply provide the\n"
      "verb as the argument. If you don't like a global alias, you can\n"
      "create an alias with the same verb to override it.\n\n"
-     "%^BOLD%^See also:%^RESET%^ alias\n");     
+     "%^BOLD%^See also:%^RESET%^ alias\n");
 }

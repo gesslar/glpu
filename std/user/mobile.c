@@ -20,6 +20,7 @@ inherit OBJECT;
 
 inherit __DIR__ "alias";
 inherit __DIR__ "tell" ;
+inherit M_SETUP ;
 
 /* Global Variables */
 
@@ -31,7 +32,6 @@ private object link;
 
 /* Connection functions */
 
-void setup();
 void enter_world();
 void exit_world();
 void net_dead();
@@ -384,7 +384,7 @@ int commandHook(string arg) {
     }
 
     if(sizeof(cmds) > 0) {
-        int returnValue;
+        mixed returnValue;
 
         i = 0;
         while(returnValue <= 0 && i < sizeof(cmds)) {
@@ -399,6 +399,20 @@ int commandHook(string arg) {
 
             returnValue = command->main(caller, environment(), arg);
             i++;
+
+            if(returnValue) {
+                if(stringp(returnValue)) {
+                    if(!strlen(returnValue)) {
+                        returnValue = 0 ;
+                    } else {
+                        if(returnValue[<1] != '\n') returnValue += "\n" ;
+                        message("error", returnValue, this_object()) ;
+                        return 1 ;
+                    }
+                }
+            }
+
+            return 1 ;
         }
 
         return returnValue;

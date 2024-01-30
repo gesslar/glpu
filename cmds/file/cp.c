@@ -4,7 +4,7 @@
 //08-APR-05
 //File system management
 
-//Lasted edited on January 25th, 2006 by Tacitus
+//Last edited on January 25th, 2006 by Tacitus
 
 int main(object caller, object room, string str)
 {
@@ -18,7 +18,7 @@ int main(object caller, object room, string str)
      if(directory_exists(dest) || dest[<1..<1] == "/")
      {
           if(dest[<1..<1] != "/") dest += "/";
-          
+
           if(strsrch(source, "/", -1) != -1)
           {
              dest += source[(strsrch(source, "/", -1) + 1)..<1];
@@ -29,12 +29,12 @@ int main(object caller, object room, string str)
 
      if(source == dest)
           return(notify_fail("Error [cp]: Destination may not match source.\n"));
-          
-     if(!(int)master()->valid_write(dest, this_object(), "cp")) 
+
+     if(!(int)master()->valid_write(dest, this_object(), "cp"))
           return(notify_fail("Error [cp]: Permission Denied.\n"));
 
      if(cp(source, dest) < 0)
-          return(notify_fail("Error [cp]: Copy failed.\n"));    
+          return(notify_fail("Error [cp]: Copy failed.\n"));
      else
           write("Successful [cp]: " + source + " copied to " + dest + "\n");
 

@@ -6,6 +6,8 @@ Lists muds on the I3 network
 
 */
 
+inherit CMD ;
+
 mapping mudlist;
 string *mudlist_arr;
 int up, total;
@@ -279,5 +281,3 @@ ENDHELP;
 
     return help;
 }
-
-

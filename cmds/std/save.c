@@ -6,6 +6,8 @@
 
 //Last edited on October 8th, 2005 by Tacitus
 
+inherit CMD ;
+
 int main(object caller, object room, string args)
 {
   caller->save_user();

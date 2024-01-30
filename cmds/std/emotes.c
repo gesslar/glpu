@@ -140,4 +140,3 @@ string help(object caller)
       "to use.\n\n"+
       HIW + "See also: " + NOR + "emote\n");
 }
-

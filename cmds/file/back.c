@@ -7,6 +7,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
     if(!arg || arg == "")
@@ -21,7 +23,7 @@ int main(object caller, object room, string arg)
     return notify_fail(RED + "Error" + NOR + " [back]: Permission denied.\n");
 
     write(cp(arg, arg + ".bak") ? HIG + "Success" + NOR + " [back]: File successfully backed up.\n" :
-      RED + "Error" + NOR + " [back]: File could not be backed up.\n");
+        RED + "Error" + NOR + " [back]: File could not be backed up.\n");
 
     return 1;
 }
@@ -33,5 +35,3 @@ string help(object caller)
     "This command allows you to create a backup copy of a file.\n" +
     "It will create a copy with the <filename> of '<filename>.back.\n";
 }
-
-

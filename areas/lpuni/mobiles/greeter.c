@@ -12,8 +12,7 @@ int count;
 string *cmdQueue;
 mapping messages;
 
-void setup()
-{
+void setup() {
     set_living_name("johnathon");
     set_name("johnathon");
     set_short("Johnathon stands in front of the Podium");
@@ -23,9 +22,8 @@ void setup()
       "forth as he goes about seating guests.\n");
     set_id( ({"butler", "johnathon", "Johnathon", "john", "John" }) );
 
-    if(clonep(this_object()))
-    {
-            set_heart_beat(1);
+    if(clonep(this_object())) {
+        set_heart_beat(1);
     }
 
     count = 0;
@@ -78,14 +76,13 @@ void catch_tell(string msg)
 
 
     if(sscanf(msg, "%*s slaps you%*s"))
-            cmdQueue += ({ "frown\nsay Please do not slap me." });
+        cmdQueue += ({ "frown\nsay Please do not slap me." });
 
 
     if(sscanf(msg, "%s has entered%*s", target) || sscanf(msg, "%s has entered %*s", target))
-            cmdQueue += ({ "smile\nsay Welcome to the LPUniversity Cafe." });
+        cmdQueue += ({ "smile\nsay Welcome to the LPUniversity Cafe." });
 
-    if(sscanf(msg, "%s has gone link-dead.", target))
-    {
+    if(sscanf(msg, "%s has gone link-dead.", target)) {
         cmdQueue += ({ "emote sweeps " + target + " away." });
         find_player(lower_case(target))->move(VOID_OB);
     }
@@ -94,13 +91,11 @@ void catch_tell(string msg)
         if(adminp(lower_case(target))) cmdQueue += ({ "smile" });
 
     if(sscanf(msg, "%s says: tell %s \"%s\"", from, target, arg) == 3 ||
-        sscanf(msg, "%s says: Tell %s \"%s\"", from, target, arg) == 3)
-    {
+        sscanf(msg, "%s says: Tell %s \"%s\"", from, target, arg) == 3) {
         target = lower_case(target);
         from = lower_case(from);
 
-        if(from == target)
-        {
+        if(from == target) {
             cmdQueue += ({"chuckle\nsay " + arg});
             return;
         }
@@ -112,8 +107,7 @@ void catch_tell(string msg)
     }
 
     if(sscanf(msg, "[%s] %s: tell %s \"%s\"", chan, from, target, arg) == 4 ||
-        sscanf(msg, "[%s] %s: Tell %s \"%s\"", chan, from, target, arg) == 4)
-    {
+        sscanf(msg, "[%s] %s: Tell %s \"%s\"", chan, from, target, arg) == 4) {
         target = lower_case(target);
 
         if(!messages[target]) messages += ([ target : ({}) ]);
@@ -121,5 +115,4 @@ void catch_tell(string msg)
         cmdQueue += ({ lower_case(chan) + " The next time I see " + capitalize(target)
             + ", on this mud, I'll tell them that." });
     }
-
 }

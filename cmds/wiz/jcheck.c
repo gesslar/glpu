@@ -3,13 +3,15 @@
    Scifi@LPUniversity
    Date: August 26, 2006
 
-   Objective: Checks if a journal has been updated 
+   Objective: Checks if a journal has been updated
            and prints the name of the developer.
 */
 
 /*
    Last updated Aug 26, 2006 by Scifi
 */
+
+inherit CMD ;
 
 #define TP this_player()
 #define TPC this_player()->query("cwd")
@@ -35,14 +37,14 @@ int main()
 
     if(file_exists(mypath)) oldjrnl = restore_variable( read_file(mypath));
     else oldjrnl = ([]);
-    
+
     if(sizeof(oldjrnl) == 0) oldjrnl = ([]);
 
     //  Check file size diffs.
     for(ctr = 0; ctr<sizeof(journarr);ctr++)
     {
         sscanf(journarr[ctr],"journal.%s",name);
-        
+
         if ( file_size( JPATH+journarr[ctr] ) !=
           oldjrnl[ name ] )
 
@@ -59,7 +61,7 @@ int main()
     for(ctr = 0; ctr < sizeof(oldjrnl); ctr++)
     {
         if (member_array(sprintf("journal.%s",keys(oldjrnl)[ctr]), journarr)
-                ==-1) 
+                ==-1)
         {
             write ("Journal for "+keys(oldjrnl)[ctr]+" has been deleted\n");
         }
@@ -83,4 +85,3 @@ string help(object caller)
     "file that has been changed since the last time you've \n"
     "checked.\n";
 }
-

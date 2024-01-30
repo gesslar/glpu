@@ -3,58 +3,60 @@
  Tacitus @ LPUniversity
  14-JAN-06
  Alias command
- 
+
 */
+
+inherit CMD ;
 
 int main(object caller, object room, string args)
 {
      string verb, alias;
-     
+
      if(!args)
      {
           mapping data = caller->get_aliases();
           string *keys;
           int i;
-          
+
           if(!mapp(data)) return(notify_fail("Aliases: No local aliases defined.\n"));
-          
+
           keys = keys(data);
-          
+
           if(!sizeof(keys)) return(notify_fail("Aliases: No local aliases defined.\n"));
-          
+
           write("Current local aliases: \n");
-          
+
           for(i = 0; i < sizeof(keys); i++)
           {
                printf("%-10s %-20s\n", keys[i], data[keys[i]]);
-          } 
-          
-          return 1;        
+          }
+
+          return 1;
      }
-     
+
      if(args == "-g")
      {
           mapping data = caller->get_aliases(1);
           string *keys;
           int i;
-          
+
           if(!mapp(data)) return(notify_fail("Aliases: No local aliases defined.\n"));
-          
+
           keys = keys(data);
-          
+
           if(!sizeof(keys)) return(notify_fail("Aliases: No local aliases defined.\n"));
-          
+
           write("Current aliases: \n");
-          
+
           for(i = 0; i < sizeof(keys); i++)
           {
                printf("%-10s %-20s\n", keys[i], data[keys[i]]);
-          } 
-          
-          return 1;          
-          
+          }
+
+          return 1;
+
      }
-     
+
      if(sscanf(args, "%s %s", verb, alias) == 2)
      {
           if(strsrch(alias, "$*") == -1)
@@ -62,18 +64,18 @@ int main(object caller, object room, string args)
                if(alias[<1] != ' ') alias += " $*";
                else alias += "$*";
           }
-          
+
           if(verb == "alias" || verb == "unalias")
                return(notify_fail("Error: You may not alias 'alias' or 'unalias'.\n"));
-          
+
           caller->add_alias(verb, alias);
-          
+
           write("Alias: Added alias '" + verb + " " + alias + "'\n");
-          return 1;         
+          return 1;
      }
-     
-     else return(notify_fail("Syntax: alias [-g] <[$]verb> <alias>\n"));    
-} 
+
+     else return(notify_fail("Syntax: alias [-g] <[$]verb> <alias>\n"));
+}
 
 string help(object caller)
 {

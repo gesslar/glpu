@@ -6,6 +6,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
     mixed *packet;

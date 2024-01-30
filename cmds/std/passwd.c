@@ -10,6 +10,9 @@ int confirm_CurrentPassword(string str);
 int i_NewPassword(string str);
 int confirm_NewPassword(string str, string pass);
 
+inherit CMD ;
+
+
 int main()
 {
      write("Please enter your current password: ");
@@ -55,7 +58,7 @@ int confirm_NewPassword(string str, string pass)
      }
      else
      {
-          if(caller->query_link()->set_password(str)) 
+          if(caller->query_link()->set_password(str))
             write(GRN + "\nSuccess: " + NOR + "Password changed succesfuly.\n");
           else write(RED + "\nError: " + NOR + "Unable to change password.\n");
           return 1;
@@ -72,5 +75,3 @@ string help(object caller)
      "you have provided the requested information, the command\n"
      "will inform you if the change was succesful.\n");
 }
-
-

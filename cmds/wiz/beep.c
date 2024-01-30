@@ -6,6 +6,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string argument)
 {
     object user;
@@ -21,7 +23,7 @@ int main(object caller, object room, string argument)
     if(user == this_player()) return notify_fail("You %^BOLD%^beep%^RESET%^ yourself.\n\a");
 
     tell_object(user, capitalize(this_player()->query_name())
-      + " has %^BOLD%^beeped%^RESET%^ you.\a\n");
+        + " has %^BOLD%^beeped%^RESET%^ you.\a\n");
     write("You %^BOLD%^beep%^RESET%^ " + capitalize(user->query_name()) + ".\n");
 
     return 1;
@@ -36,4 +38,3 @@ string help(object caller)
       "window. This is useful for getting someone's attention when they might be just\n"
       "busy in another window.\n");
 }
-

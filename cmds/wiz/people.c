@@ -7,6 +7,9 @@
 */
 
 /*  Last editted by Tacitus on October 4 */
+
+inherit CMD ;
+
 object *addArray( object  *oldarr, object *newarr);
 int sortName(object member1, object member2);
 
@@ -31,7 +34,7 @@ int main()
             OAdminArr += ({ name });
         else if ( devp(  name  )  )
             ODevArr    += ({ name });
-        else 
+        else
             OUserArr   += ({ name });
     }
 

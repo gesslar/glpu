@@ -6,6 +6,7 @@
 
 //Last Edited on October 20th, 2005 by Tacitus
 
+inherit CMD ;
 
 int main()
 {
@@ -15,6 +16,6 @@ int main()
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "uptime\n\n" + 
-     "This command will tell you how the long them mud has been running.\n");     
+     return(HIW + " SYNTAX: " + NOR + "uptime\n\n" +
+     "This command will tell you how the long them mud has been running.\n");
 }

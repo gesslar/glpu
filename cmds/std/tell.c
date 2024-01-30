@@ -8,6 +8,8 @@
 
 */
 
+inherit CMD ;
+
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);
 
@@ -40,14 +42,14 @@ int main(object caller, object room, string str)
         if(message[0] == ':')
         {
             c->send_emoteto(caller, who, where, message[1..<1]);
-            write(CYN + "You emote to " + capitalize(who) + "@" + where + ": " 
-                + NOR + capitalize(caller->query_name()) 
+            write(CYN + "You emote to " + capitalize(who) + "@" + where + ": "
+                + NOR + capitalize(caller->query_name())
                 + " " + message[1..<1] + "\n");
         }
         else
         {
             c->send_tell(caller, who, where, message);
-            write(CYN + "You tell " + capitalize(who) + "@" + where 
+            write(CYN + "You tell " + capitalize(who) + "@" + where
                 + ": " + NOR + message + "\n");
         }
 
@@ -57,8 +59,8 @@ int main(object caller, object room, string str)
     }
 
     user = find_player(lower_case(who));
-    
-    if(!objectp(user)) return notify_fail("Error [tell]: User " + who 
+
+    if(!objectp(user)) return notify_fail("Error [tell]: User " + who
         + " is not found.\n");
 
     if(user->query_env("away"))
@@ -73,13 +75,13 @@ int main(object caller, object room, string str)
     {
 
         if(message[0] == ':')
-            write(CYN + "You emote to yourself: " + NOR + user->query_cap_name() 
+            write(CYN + "You emote to yourself: " + NOR + user->query_cap_name()
                 + " " + message[1..<1] + "\n" + NOR);
         else
             write(CYN + "You tell yourself: " + NOR + message + "\n" + NOR);
 
-        tell_room(environment(caller), 
-            capitalize(caller->query_name()) 
+        tell_room(environment(caller),
+            capitalize(caller->query_name())
             + " starts talking to themselves.\n" + NOR, caller);
         caller->set("retell", query_privs(user));
 
@@ -88,18 +90,18 @@ int main(object caller, object room, string str)
 
     if(message[0] == ':')
     {
-        tell_object(user, CYN + caller->query_cap_name() + " " + NOR 
+        tell_object(user, CYN + caller->query_cap_name() + " " + NOR
             + message[1..<1] + "\n" + NOR);
-        write(CYN + "You emote to " + capitalize(who) + ": " + NOR 
-            + caller->query_cap_name() + " " + message[1..<1] 
+        write(CYN + "You emote to " + capitalize(who) + ": " + NOR
+            + caller->query_cap_name() + " " + message[1..<1]
             + "\n" + NOR);
     }
-    
+
     else
     {
-        tell_object(user, CYN + capitalize((string)caller->query_name()) 
+        tell_object(user, CYN + capitalize((string)caller->query_name())
             + " tells you: " + NOR + message + "\n" + NOR);
-        write(CYN + "You tell " + capitalize(who) + ": " + NOR + message 
+        write(CYN + "You tell " + capitalize(who) + ": " + NOR + message
             + "\n" + NOR);
     }
 
@@ -122,5 +124,3 @@ string help(object caller)
       "using the tell <user> :<message> syntax.\n\n" +
       HIW + "See also: " + NOR + "say, channel\n");
 }
-
-

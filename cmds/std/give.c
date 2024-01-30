@@ -3,12 +3,14 @@
  Ico2 @ LPUniversity
  28-OCTOBER-05
  Standard command
- 
+
 QC Review: Tacitus on 29-OCT-05
 
 Last edited on May 5th, 2006 by Tacitus
 
 */
+
+inherit CMD ;
 
 int main(object caller, object room, string arg)
 {
@@ -16,7 +18,7 @@ int main(object caller, object room, string arg)
      string obname;
      object ob;
      object target;
-     
+
      if(!arg) return(notify_fail("SYNTAX: give <object> <user>\n"));
 
      if(sscanf(arg, "%s %s", obname, targetname) != 2)
@@ -35,11 +37,11 @@ int main(object caller, object room, string arg)
      if(!living(target)) return(notify_fail("Error [give]: You can not give objects to other non-living objects.\n"));
 
      ob->move(target);
-     
+
      write("You give " + ob->query_short() + " to " + capitalize(target->query_name()) + ".\n");
      tell_object(target, capitalize(caller->query_name()) + " gives you a '" + ob->query("short") + "'.\n");
      say(capitalize(caller->query_name()) + " gives a '" + ob->query("short") + "' to " + capitalize(target->query_name()) + ".\n", ({caller, target}));
-     
+
      return 1;
 }
 
@@ -49,6 +51,5 @@ string help(object caller)
      "This command will allow you to give an object that is currently\n"
      "in your inventory to another user in your current environment.\n"
      "Note: This command will also understand give <object> to <user>.\n\n" +
-     HIW + "See also: " + NOR + "get, drop\n");     
+     HIW + "See also: " + NOR + "get, drop\n");
 }
-     

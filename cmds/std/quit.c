@@ -9,6 +9,8 @@
 #include <logs.h>
 #include <config.h>
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
      previous_object()->exit_world();

@@ -12,6 +12,8 @@ developer to attempt to move into their workroom.
 
 //Last edited on July 22nd, 2006 by Parthenon
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     string custom, tmp;
@@ -53,7 +55,7 @@ int main(object caller, object room, string str)
 
         return 1;
     }
-    else return(notify_fail("Error [home]: You do not have a workroom.\n"));          
+    else return(notify_fail("Error [home]: You do not have a workroom.\n"));
     }
     else
     {
@@ -92,11 +94,11 @@ int main(object caller, object room, string str)
 
         write("You teleported to " + capitalize(str) + "'s workroom.\n");
 
-        return 1;               
+        return 1;
     }
 
-    else return(notify_fail("Error [home]: " + capitalize(str) + " does not have a workroom.\n"));       
-    }     
+    else return(notify_fail("Error [home]: " + capitalize(str) + " does not have a workroom.\n"));
+    }
 }
 
 string help(object caller)
@@ -104,6 +106,5 @@ string help(object caller)
     return("%^BOLD%^SYNTAX: %^RESET%^workroom [<user>]\n\n"
       "This command will move you to ~/workroom.c if it\n"
       "exists. You can also provide the name of another\n"
-      "developer to attempt to move into their workroom.\n");    
+      "developer to attempt to move into their workroom.\n");
 }
-

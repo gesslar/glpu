@@ -8,7 +8,7 @@
 
 /* Last updated: July 16th, 2006 by Tacitus */
 
-
+inherit CMD ;
 
 int main(object caller, object room, string arg)
 {

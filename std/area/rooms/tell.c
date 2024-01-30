@@ -11,7 +11,7 @@ varargs int tell(string message, mixed args ...) {
     string message_class;
     int num_args = (!undefinedp(args) && pointerp(args)) ? sizeof(args) : 0;
 
-    if(num_args) 
+    if(num_args)
     {
         if(stringp(args[0]))
         {
@@ -21,7 +21,7 @@ varargs int tell(string message, mixed args ...) {
         {
             excludes = ({ args[0] });
         }
-        else if (pointerp(args[0])) 
+        else if (pointerp(args[0]))
         {
             args[0] -= ({ 0 });
             args[0] = filter_array(args[0], "filter_object_args", this_object());
@@ -40,7 +40,7 @@ varargs int tell(string message, mixed args ...) {
     }
 
     obs = all_inventory();
-    
+
     if(message_class)
     {
         message(message_class, message, obs, excludes);

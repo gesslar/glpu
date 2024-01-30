@@ -47,12 +47,12 @@ int main(object caller, object room, string str)
 
 string help(object caller)
 {
-    return(" %^BOLD%^WHITE%^SYNTAX:%^RESET%^ colour [<enable>||<disable>]\n\n" 
+    return(" %^BOLD%^WHITE%^SYNTAX:%^RESET%^ colour [<enable>||<disable>]\n\n"
       "With no arguments, this command will tell you if you currently\n"
       "have colour enabled or disabled. You can also toggle colour by\n"
       "providing the arguments 'enable' to enable or 'disable' to disable.\n"
       "It should be noted that 'enable' and 'disable' aren't the only\n"
       "keywords to toggle colour, you can also use 'off', 'start',\n"
-      "and 'none' to name a few. How many can you find?\n\n" 
+      "and 'none' to name a few. How many can you find?\n\n"
       "%^BOLD%^WHITE%^See also:%^RESET%^ set_env\n");
 }

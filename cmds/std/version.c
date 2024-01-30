@@ -6,13 +6,15 @@
 
 */
 
+inherit CMD ;
+
 int main()
 {
      write(mud_name() + " is running " + baselib_name() + " " + lib_version() + "\n");
      write("  on " + driver_version() + " on " + arch() +".\n");
-     
+
      return 1;
-} 
+}
 
 string help(object caller)
 {

@@ -3,15 +3,17 @@
  Kenon @ LPUniversity
  10-OCT-06
  File listing.
- 
+
 */
 
 /* Last edited on October 10th, 2006 by Tacitus */
 
 /* This file needs to be updated to meet LPUniversity Mudlib
     Standards. This file has been tagged since October 10th, 2006
-    by Tacitus. 
+    by Tacitus.
 */
+
+inherit CMD ;
 
 #define SYNTAX "Syntax: ls [-l] [-a] [-S] [-t] [-r] [-F] [-P] [file1...]\n"
 
@@ -318,9 +320,9 @@ int main(object caller, object room, string arg)
 string help(object caller)
 {
         return HIW + " SYNTAX: " + NOR + SYNTAX+@BODY
-        
-This command lists the contents of a directory (current directory if none 
-is specified). '*' and '?' may be used as wildcards. '*' indicates any number 
+
+This command lists the contents of a directory (current directory if none
+is specified). '*' and '?' may be used as wildcards. '*' indicates any number
 of characters, while '?' indicates a single character.
 
         -l, --list

@@ -10,6 +10,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
     object player;
@@ -52,5 +54,3 @@ string help(object caller)
     "This command allows you to move a user to your environment. You cannot\n" +
     "trans admins, and if you are a developer you cannot trans other developers\n";
 }
-
-

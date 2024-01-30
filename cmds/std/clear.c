@@ -5,6 +5,8 @@ Standard command
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
     write("%^CLEAR%^\n");

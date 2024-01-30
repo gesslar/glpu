@@ -6,13 +6,15 @@
 
 //Needs to be redone
 
-//Lasted updated October 6th, 2006 by Tacitus
+//Last updated October 6th, 2006 by Tacitus
+
+inherit CMD ;
 
 int main(object caller, object room, string arg)
 {
      /* clean up first */
      string err;
-     if(!directory_exists(user_path(caller->query_name()))) 
+     if(!directory_exists(user_path(caller->query_name())))
           return(notify_fail("Error [eval]: You must have a home directory to use eval.\n"));
      write("%^BOLD%^Evaluating:%^RESET%^ " + arg + "\n\n");
      if (file_size(user_path(caller->query_name()) + "tmp_eval_file.c") != -1)
@@ -29,9 +31,8 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "eval <lpc-statements>\n\n" + 
+     return(HIW + " SYNTAX: " + NOR + "eval <lpc-statements>\n\n" +
      "This command allows you to execute stand-alone lpc statements.\n"
      "This is considered a more advanced tool and abuse of it is not\n"
      "recommended. Also note that you must have a home directory.\n");
 }
-

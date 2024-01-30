@@ -4,12 +4,13 @@
 //02-OCT-05
 //Pages entire file at once
 
+inherit CMD ;
 
 int main(object caller, object room, string str)
 {
      string *lines;
      int i;
-     
+
      if(!str) {
           write("Error [cat]: No argument passed.\n");
           return 1;
@@ -24,7 +25,7 @@ int main(object caller, object room, string str)
      }
 
      lines = explode(read_file(str), "\n");
-     
+
      for(i = 0; i < sizeof(lines); i++) write(lines[i] + "\n");
      write("\n");
 
@@ -32,7 +33,7 @@ int main(object caller, object room, string str)
 }
 
 string help(object caller) {
-     return (HIW + " SYNTAX: " + NOR + "cat <file>\n\n" + 
-    "This command pages through an entire file at once.\n"); 
-    
+     return (HIW + " SYNTAX: " + NOR + "cat <file>\n\n" +
+    "This command pages through an entire file at once.\n");
+
 }

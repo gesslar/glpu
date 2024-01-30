@@ -1156,4 +1156,3 @@ string help(object caller)
      "The edit argument allows you to edit a wizard's profile. The flag\n"
      "argument allows you to toggle flags on a user.\n");
 }
-

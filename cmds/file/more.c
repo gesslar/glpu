@@ -8,6 +8,8 @@ Last edited 5-July-06 by Vicore
 
 */
 
+inherit CMD ;
+
 object pager;
 
 int main(object caller, object room, string file)

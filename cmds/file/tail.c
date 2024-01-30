@@ -6,6 +6,8 @@
 
 //Last edited on July 1st, 2005 by Tacitus
 
+inherit CMD ;
+
 int main(object caller, object room, string file)
 {
      if(!file)
@@ -37,6 +39,6 @@ int main(object caller, object room, string file)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "tail <filename>\n\n" + 
+    return (HIW + " SYNTAX: " + NOR + "tail <filename>\n\n" +
     "This command prints the last 10 lines of a specified file.\n");
  }

@@ -44,5 +44,4 @@ string help(object caller)
     "You may use the id of the object if it is in your\n" +
     "inventory or environment, otherwise you may use the\n" +
     "filename of the object to try and locate it.\n";
-} 
-
+}

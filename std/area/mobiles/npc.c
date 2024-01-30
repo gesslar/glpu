@@ -8,10 +8,7 @@
 
 inherit MOBILE;
 
-void setup();
-
-void create()
-{
+void create() {
     path = ({ "/cmds/std/" });
     set("prevent_get", 1);
     if(!query("cwd")) set("cwd", "/doc");
@@ -21,11 +18,9 @@ void create()
     setup();
     enable_commands();
     add_action("commandHook", "", 1);
-
 }
 
-void setup()
-{
+void setup() {
     set_name("Generic NPC");
     set_living_name(lower_case(query_name()));
     set_ids(({query_name(), "npc", "generic npc", "NPC" }));
@@ -34,27 +29,15 @@ void setup()
     set_short(query_name());
 }
 
-int commandHook(string arg)
-{
+int commandHook(string arg) {
     return ::commandHook(arg);
 }
 
-void restore_user()
-{
-    return;
-}
-
-void save_user()
-{
-    return;
-}
+void restore_user() {}
+void save_user() {}
+void heart_beat() {}
 
 int force_me(string cmd)
 {
     command(cmd);
-}
-
-void heart_beat()
-{
-    return;
 }

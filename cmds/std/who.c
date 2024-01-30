@@ -8,6 +8,8 @@
 
 //Last edited October 4th, 2006 by Tacitus
 
+inherit CMD ;
+
 object *addArray( object *oldlist, object *newlist);
 
 int main(object caller, object room, string arg)
@@ -58,7 +60,7 @@ int main(object caller, object room, string arg)
             oUserArr += ({ name });
 
     }
-    
+
     oAdminArr = sort_array( oAdminArr, "sort_name");
     oDevArr   = sort_array( oDevArr,   "sort_name");
     oUserArr = sort_array( oUserArr, "sort_name");
@@ -74,16 +76,16 @@ int main(object caller, object room, string arg)
     {
         string tag;
 
-        if( !(string)list[i]->query_name()) 
+        if( !(string)list[i]->query_name())
             continue;
 
         if(list[i]->query_name() == "login")
             tag = "[ %^BOLD%^CYAN%^LOGIN%^RESET%^ ]";
-        else if(adminp(list[i])) 
+        else if(adminp(list[i]))
             tag = "[ %^BOLD%^RED%^Admin%^RESET%^ ]";
-        else if(devp(list[i])) 
+        else if(devp(list[i]))
             tag = "[ %^YELLOW%^Dev%^RESET%^   ]";
-        else 
+        else
             tag = "[ %^GREEN%^User%^RESET%^  ]";
 
         ret += sprintf(" %-s   %-15s %15s\n", tag,
@@ -124,4 +126,3 @@ string help(object caller)
       "editing, in input, and/or idle. You may also find out who is on a mud\n" +
       "on the I3 network by using the 'who @<mud>' syntax\n");
 }
-

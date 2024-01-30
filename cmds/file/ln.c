@@ -3,30 +3,32 @@
  Tacitus @ LPUniversity
  15-JAN-06
  File System Command
- 
+
 */
+
+inherit CMD ;
 
 int main(object caller, object room, string args)
 {
      string file, refrence;
-     
+
      if(!args) return(notify_fail("Syntax: ln <original file> <new refrence>\n"));
-     
-     if(sscanf(args, "%s %s", file, refrence) != 2) 
+
+     if(sscanf(args, "%s %s", file, refrence) != 2)
           return(notify_fail("Syntax: ln <original file> <new refrence>\n"));
-     
+
      file = resolve_path(caller->query("cwd"), file);
      refrence = resolve_path(caller->query("cwd"), refrence);
-     
+
      if(!file_exists(file)) return(notify_fail("Error [ln]: File '" + file + "' does not exist.\n"));
      if(file_exists(refrence)) return(notify_fail("Error [ln]: File '" + refrence + "' already exists.\n"));
      if(directory_exists(file)) return(notify_fail("Error [ln]: '" + file + "' is a directory.\n"));
      if(directory_exists(refrence)) return(notify_fail("Error [ln]: '" + refrence + "' is a directory.\n"));
      if(!master()->valid_link(file, refrence)) return(notify_fail("Error [ln]: Permission denied.\n"));
-     
+
      write((link(file, refrence) ? "Error [ln]: Linking of file '" + refrence + "' to '" + file + "' was unsuccesful.\n"
           : "Success [ln]: File '" + refrence + "' now linked to '" + file + "'.\n" ));
-     
+
      return 1;
 }
 

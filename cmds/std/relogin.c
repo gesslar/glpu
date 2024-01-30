@@ -6,6 +6,8 @@
 
 */
 
+inherit CMD ;
+
 int main()
 {
     LOGIN_OB->relogin();

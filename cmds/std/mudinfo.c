@@ -6,6 +6,7 @@ List information about a mud on the I3 network
 
 */
 
+inherit CMD ;
 
 int main(object caller, object room, string str)
 {
@@ -83,5 +84,3 @@ string help(object caller)
     return(HIW + " SYNTAX: " + NOR + "mudinfo <mudname>\n\n"
       "Lists information about a mud connected to the Intermud 3 network.\n");
 }
-
-

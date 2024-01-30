@@ -6,6 +6,8 @@
 
 /* Last edited on October 4th, 2006 by Tacitus */
 
+inherit CMD ;
+
 int main(object caller, object room, string str)
 {
      string var_name, var_value, *keys;
@@ -22,8 +24,8 @@ int main(object caller, object room, string str)
                if(sizeof(keys) <= 0) return notify_fail("set_env: No environment values currently set.\n");
                write("      >> ENVIRONMENT VARIABLES <<\n\n");
                for(i = 0; i < sizeof(keys); i ++)
-                   message( "ignore_ansi", 
-                        sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]), 
+                   message( "ignore_ansi",
+                        sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]),
                         caller );
                return 1;
           }

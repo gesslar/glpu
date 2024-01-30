@@ -35,6 +35,9 @@
  *
  */
 
+
+inherit CMD ;
+
 #define GETOPT_NOQUOTES         (1 << 0)
 #define GETOPT_KEEPQUOTES       (1 << 1)
 #define GETOPT_KEEPSPACES       (1 << 2)

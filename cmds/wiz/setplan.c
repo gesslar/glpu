@@ -9,16 +9,12 @@ command to allow editing of plan
 
 //Last edited on July 23rd, 2006 by Parthenon
 
-
+inherit CMD ;
 
 mapping in_edits = ([]);
 
-
-
 void write_plan();
 int delete_plan();
-
-
 
 int main(object caller, object room, string arg)
 {
@@ -129,5 +125,3 @@ string help(object caller)
     "otherwise what you type in will be appended to your current plan. You \n"+
     "may also delete your plan by using the '-d' option.\n";
 }
-
-

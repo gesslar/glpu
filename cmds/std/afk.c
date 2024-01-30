@@ -8,6 +8,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string args)
 {
     if(!args) args = "";

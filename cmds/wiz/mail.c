@@ -10,6 +10,8 @@
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
     object mail_client;
@@ -35,4 +37,3 @@ string help(object caller)
     "multiple users at once, then seperate each name by a comma. You can\n"+
     "also mail to groups if you surround the group name with paranthesis.\n";
 }
-

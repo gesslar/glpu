@@ -6,6 +6,8 @@
 
 //Last edited July 11th, 2006 by Tacitus
 
+inherit CMD ;
+
 int main(object caller, object room, string file) {
     object obj;
     string error, *users;

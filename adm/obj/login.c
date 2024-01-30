@@ -38,13 +38,11 @@ string email;
 
 int isConnected = 0, coID;
 
-void create()
-{
+void create() {
     if(clonep(this_object())) coID = call_out("auto_destruct", 60);
 }
 
-void logon()
-{
+void logon() {
     write(loginMsg);
     write("\nPlease select a name: ");
     input_to("get_name");
@@ -60,7 +58,7 @@ void get_name(string str) {
 
     if(LOCKDOWN_D->is_ip_banned(query_ip_number(this_object()))) {
         write("\nYour IP address, " + query_ip_number(this_object()) + " has been banned from " + mud_name() + ".\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
@@ -72,7 +70,7 @@ void get_name(string str) {
 
     if(str == "quit") {
         write("Come back soon!\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
@@ -100,38 +98,38 @@ void get_name(string str) {
         write("Error [login]: Unable to create user object.\n");
         write("It appears that the login object is dysfunctional. Try again later.\n");
         write("Error: " + err + "\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
     if(LOCKDOWN_D->is_user_banned(str)) {
         write("\nThe username " + capitalize(str) + " is banned from " + mud_name() + ".\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
     if(LOCKDOWN_D->query_dev_lock() && wizardp(str) && !adminp(str)) {
         write("\n" + LOCKDOWN_D->query_dev_lock_msg() + "\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
     if(LOCKDOWN_D->query_player_lock() && (!adminp(str) && !wizardp(str))) {
         write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
     if(LOCKDOWN_D->query_vip_lock() && (!adminp(str) && !wizardp(str) && (member_array(str, LOCKDOWN_D->query_play_testers()) == -1))) {
         write("\n" + LOCKDOWN_D->query_vip_lock_msg() + "\n");
-        destruct(this_object());
+        destruct() ;
         return;
     }
 
     if(str == "guest") {
         if(LOCKDOWN_D->query_guest_locked()) {
             write("\n" + LOCKDOWN_D->query_guest_lock_msg() + "\n");
-            destruct(this_object());
+            destruct() ;
             return;
         }
 
@@ -149,7 +147,7 @@ void get_name(string str) {
     if (!file_exists(user_data_file(str) + ".o")) {
         if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
-            destruct(this_object());
+            destruct() ;
             return;
         }
 
@@ -176,8 +174,7 @@ void get_name(string str) {
 
 }
 
-void get_password(string str, int i)
-{
+void get_password(string str, int i) {
     string pass;
 
     if(!i) {
@@ -216,8 +213,7 @@ void get_password(string str, int i)
     }
 }
 
-void verify_password(string str, int i)
-{
+void verify_password(string str, int i) {
     str = crypt(str, str);
     if(str != user->query_password()) {
         write("Your passwords do not match.\n");
@@ -238,28 +234,24 @@ void verify_password(string str, int i)
 
 }
 
-void get_email(string input)
-{
+void get_email(string input) {
     string host;
 
-    if(!input)
-    {
+    if(!input) {
         write("Error [login]: You must provide an e-mail address.\n");
         write("Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
-    if(!sscanf(input, "%*s@%s", host))
-    {
+    if(!sscanf(input, "%*s@%s", host)) {
         write("Error [login]: You must provide a valid e-mail address.\n");
         write("Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
-    if(host == "localhost")
-    {
+    if(host == "localhost") {
         write("Error [login]: Please provide a different e-mail address.\n");
         write("Please input your e-mail address: ");
         input_to("get_email");
@@ -273,26 +265,20 @@ void get_email(string input)
     input_to("idle_email");
 }
 
-void idle_email(string str)
-{
+void idle_email(string str) {
     object security_editor;
 
 #ifdef EMAIL_MUST_RESOLVE
-    if(!isConnected)
-    {
+    if(!isConnected) {
         write("Error [login]: Unable to verify e-mail. Press press any key to try again.\n");
         input_to("idle_email");
         return;
-    }
-
-    else
-    {
+    } else {
 #endif
         set_privs(user, user->query_name());
         body = create_body(query_privs(user));
 
-        if(file_exists("/adm/etc/new_install"))
-        {
+        if(file_exists("/adm/etc/new_install")) {
             if(!directory_exists("/home/" + user->query_name()[0..0])) mkdir ("/home/" + user->query_name()[0..0]);
             mkdir("/home/" + user->query_name()[0..0] + "/" + user->query_name());
             mkdir("/home/" + user->query_name()[0..0] + "/" + user->query_name() + "/public");
@@ -328,8 +314,7 @@ void idle_email(string str)
 void email_verified(string address, string resolved, int key)
 {
 #ifdef EMAIL_MUST_RESOLVE
-    if(!resolved)
-    {
+    if(!resolved) {
         write(" Error [login]: Unable to verify e-mail.\n");
         write("Please input your e-mail address: ");
         input_to("get_email");
@@ -339,10 +324,8 @@ void email_verified(string address, string resolved, int key)
     isConnected = 1;
 }
 
-void new_user(string str, string name)
-{
-    if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed")
-    {
+void new_user(string str, string name) {
+    if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         write("Please enter a password for your account: ");
         user->set_name(name);
         input_to("get_password", 1, 1);
@@ -353,8 +336,7 @@ void new_user(string str, string name)
     input_to("get_name");
 }
 
-void setupNew()
-{
+void setupNew() {
     if(!directory_exists(user_data_directory(user->query_name()))) mkdir(user_data_directory(user->query_name()));
     user->save_user();
     if(objectp(body)) body->save_user();
@@ -362,15 +344,12 @@ void setupNew()
     write("\n");
     write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
     input_to("enterWorld");
-    return;
 }
 
-void reconnect(string str)
-{
+void reconnect(string str) {
     object oldBody = find_player(user->query_name());
 
-    if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed")
-    {
+    if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         tell_object(oldBody, "Warning: Your body has been displaced by another user.\n");
         write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(oldBody->query_name()) + " reconnected from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
@@ -381,30 +360,24 @@ void reconnect(string str)
         body = oldBody;
         input_to("enterWorld");
         return;
-    }
-
-    else
-    {
+    } else {
         write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(user) + " on " + ctime(time()) + "\n");
         write(read + "\n");
         write(" [Hit enter to continue] ");
         input_to("enterWorld");
         return;
-
     }
 
 }
 
-void auto_destruct()
-{
+void auto_destruct() {
     if(isConnected) return;
     if(interactive(this_object())) write("\n\nNotice: I'm sorry, but you are only allowed 60 seconds to attempt to login.\n");
-    destruct(this_object());
+    destruct() ;
 }
 
-void enterWorld(string str)
-{
+void enterWorld(string str) {
     object *obs;
 
     obs = users();
@@ -416,8 +389,7 @@ void enterWorld(string str)
     body->set_link(user);
     user->set_body(body);
 
-    if(devp(user))
-    {
+    if(devp(user)) {
         if(body->query_env("start_location") == "last_location") body->move(body->query("last_location"));
         else if (body->query_env("start_location")) body->move(body->query_env("start_location"));
         else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move(user_path(query_privs(user)) + "workroom.c");
@@ -430,16 +402,14 @@ void enterWorld(string str)
     body->enter_world();
     remove_call_out(coID);
 
-    destruct(this_object());
+    destruct() ;
 }
 
-void catch_tell(string message)
-{
+void catch_tell(string message) {
     receive(ANSI_PARSER->parse_pinkfish(message));
 }
 
-void relogin()
-{
+void relogin() {
     object login = new(LOGIN_OB);
     object user = this_player();
 
@@ -452,16 +422,14 @@ void relogin()
     login->logon();
 }
 
-object create_body(string name)
-{
+object create_body(string name) {
     string err;
 
     if(origin() != "local") return 0;
 
     err = catch(body = new(user->query_bodyPath()));
 
-    if(err)
-    {
+    if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
           "\tBody: " + user->query_bodyPath() + "\n");
     }
@@ -474,13 +442,11 @@ object create_body(string name)
     return body;
 }
 
-string query_name()
-{
+string query_name() {
     return "login";
 }
 
-string parseTokens(string text)
-{
+string parseTokens(string text) {
     catch {
         text = replace_string(text, "%mud_name", mud_name());
         text = replace_string(text, "%users", implode(
@@ -501,8 +467,7 @@ string parseTokens(string text)
     return text;
 }
 
-void receive_message(string type, string msg)
-{
+void receive_message(string type, string msg) {
     msg = ANSI_PARSER->parse_pinkfish(msg, 1);
     receive(msg);
 }

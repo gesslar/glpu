@@ -10,6 +10,8 @@ Last edited on October 29th, 2005 by Tacitus
 
 */
 
+inherit CMD ;
+
 int main(object caller, object room, string arg)
 {
      int i;

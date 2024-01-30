@@ -3,20 +3,22 @@
  Tacitus @ LPUniversity
  14-JUL-06
  Log Viewer
- 
+
  - Originaly coded by Gwegster @ LPUniversity
 */
- 
-/* Lasted updated on 14-JUL-06 by Tacitus */
+
+/* Last updated on 14-JUL-06 by Tacitus */
+
+inherit CMD ;
 
 int main(object caller, object room, string arg)
 {
      string logfile;
-     
+
      if(!arg)
      {
           if(file_exists("/log/compile")) logfile = "/log/compile";
-          if(file_exists(user_path(query_privs(this_player())) + "log")) 
+          if(file_exists(user_path(query_privs(this_player())) + "log"))
                logfile = user_path(query_privs(this_player())) + "log";
      }
      else
@@ -25,12 +27,12 @@ int main(object caller, object room, string arg)
           else return(notify_fail("Error [log]: Logfile '/log/" + arg +"' doesn't exist.\n"));
 
      }
-     
+
      if(!logfile)
           return(notify_fail("Syntax: log <logfile>\n"));
 
      tail(logfile);
-     
+
      return 1;
 }
 
@@ -45,6 +47,4 @@ string help(object caller)
      "exists. If you provide an argument, it will try to show the tail\n"
      "of /log/<logfile>. You can also view the tail of logfiles in the\n"
      "subdirectory of '/log/' (ex. 'log driver/UPRECORD').\n");
-}          
-          
-               
+}

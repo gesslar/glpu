@@ -3,13 +3,14 @@
  Tacitus @ LPUniversity
  05-MAY-06
  Socket info command
- 
+
 */
 
-int main() 
-{
+inherit CMD ;
+
+int main(){
       write(dump_socket_status());
-      return 1; 
+      return 1;
 }
 
 string help(object caller) {
