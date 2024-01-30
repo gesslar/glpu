@@ -11,6 +11,7 @@
 #include <config.h>
 
 inherit OB_E;
+inherit M_SETUP ;
 
 private string *ids, name, short, long;
 
@@ -30,54 +31,56 @@ string query_long();
 int receive_object(object ob);
 int release_object(object ob);
 
-void create()
-{
-     init_ob() ;
+void create() {
+    init_ob() ;
+    setup_chain() ;
 }
 
-void remove()
-{
-     load_object(VOID_OB);
+void event_remove(object prev) {
+    load_object(VOID_OB);
 
-     foreach(object ob in all_inventory())
-     {
-          if(interactive(ob))
-          {
-              tell_object(ob, "You watch as the environment around you disappears.\n");
-              ob->move(VOID_OB);
-          }
-     }
+    foreach(object ob in all_inventory()) {
+        if(interactive(ob)) {
+            tell_object(ob, "You watch as the environment around you disappears.\n");
+            ob->move(VOID_OB);
+        }
+    }
 
-     efun::destruct(this_object());
+    efun::destruct(this_object());
 }
 
-int move(mixed dest)
-{
-     object ob;
-     if(stringp(dest)) ob = load_object(dest);
-     if(objectp(dest)) ob = (object)dest;
-     if(!objectp(ob)) return 0;
-     if(!ob->receive_object(this_object())) return 0;
-     if(environment(this_object())) if(!environment(this_object())->release_object(this_object())) return 0;
-     move_object(dest);
-     return 1;
+int move(mixed dest) {
+    int result ;
+
+    result = moveAllowed(dest) ;
+    if(!result) return result ;
+
+    move_object(dest);
+    return 1;
 }
 
-int moveAllowed(mixed dest)
-{
-     object ob;
-     if(stringp(dest)) ob = load_object(dest);
-     if(objectp(dest)) ob = (object)dest;
-     if(!objectp(ob)) return 0;
-     if(!ob->receive_object(this_object())) return 0;
-     if(environment(this_object())) if(!environment(this_object())->release_object(this_object())) return 0;
-     return 1;
+int moveAllowed(mixed dest) {
+    object ob;
+
+    if(stringp(dest)) ob = load_object(dest);
+    else if(objectp(dest)) ob = dest;
+
+    if(!objectp(ob))
+        return 0;
+
+    if(!ob->receive_object(this_object()))
+        return 0;
+
+    if(environment())
+        if(!environment()->release_object(this_object()))
+            return 0;
+
+    return 1;
 }
 
-void set_id(mixed str)
-{
-     if(arrayp(str)) set_ids(str);
-     else set_ids(({str}));
+void set_id(mixed str) {
+    if(arrayp(str)) set_ids(str);
+    else set_ids(({ str }));
 }
 
 void set_ids(string *arg)
@@ -92,11 +95,10 @@ void set_ids(string *arg)
      }
 }
 
-int id(string arg)
-{
-     if (!arg || !stringp(arg)) {
-          return 0;
-     }
+int id(string arg) {
+    if (!arg || !stringp(arg))
+        return 0;
+
      if(sizeof(ids) < 1) ids = ({query_name()});
      if(member_array(arg, ids) != -1) return 1;
      if(sizeof(query("ids")) > 0)

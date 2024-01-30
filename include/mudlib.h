@@ -13,6 +13,7 @@
 #ifndef MUDLIB
 #define MUDLIB
 
+#include <dirs.h>
 #include <modules.h>
 
 /* Standard Inheritables */
@@ -49,8 +50,4 @@
 #define LOCKDOWN_D    "/adm/daemons/lockdown_d"
 #define MAIL_D        "/adm/daemons/mail_d"
 
-/* Redefinition warnings protection */
-
 #endif
-
-

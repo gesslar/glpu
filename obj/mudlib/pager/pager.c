@@ -68,7 +68,7 @@ int page_more()
     }
 
     if(currentLine < totalLines)
-    {    
+    {
         input_to("prompt");
         return 1;
     }
@@ -124,13 +124,12 @@ int prompt(string arg)
             break;
         }
     }
-    
+
     page_more();
 }
 
 void reset()
 {
-    if(!environment(this_object())) destruct(this_object());
-    if(!in_input(environment(this_object()))) destruct(this_object());
+    if(!environment()) destruct(this_object());
+    if(!in_input(environment())) destruct(this_object());
 }
-

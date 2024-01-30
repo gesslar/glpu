@@ -15,16 +15,13 @@ private nosave int no_clean_up = 1 ;
 int can_clean() ;
 int set_no_clean(int no_clean) ;
 
-protected int clean_up(int inherited)
-{
+protected int clean_up(int inherited) {
     mixed *calls ;
 
     if(no_clean_up == 1) return CLEAN_NEVER_AGAIN ;
 
-    if(clonep())
-    {
-        if(inherited > 1)
-        {
+    if(clonep()) {
+        if(inherited > 1) {
             return CLEAN_LATER ;
         }
     }
@@ -40,13 +37,11 @@ protected int clean_up(int inherited)
     return CLEAN_NEVER_AGAIN ;
 }
 
-int can_clean()
-{
+int can_clean() {
     return !no_clean_up ;
 }
 
-int set_no_clean(int no_clean)
-{
+int set_no_clean(int no_clean) {
     if(nullp(no_clean)) no_clean = 1 ;
 
     if(no_clean != 0 && no_clean != 1) error("Invalid argument 1 to set_no_clean") ;

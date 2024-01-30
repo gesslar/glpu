@@ -51,7 +51,7 @@ void init()
 {
     int i;
 
-    owner = environment(this_object())->query_name();
+    owner = environment()->query_name();
 
     if(!userp(find_player(owner)))
     {
@@ -96,9 +96,9 @@ break;
     if(!curr_out_msg) curr_out_msg = 1;
     if(!in_start_index) in_start_index = 1;
     if(!out_start_index) out_start_index = 1;
-        
+
     save_mailbox();
-        
+
     return;
 }//END init
 
@@ -242,7 +242,7 @@ if(sizeof(outbox) <= MAX_MESSAGES_TO_DISPLAY)
         else
         {
             out_end_index = out_start_index + MAX_MESSAGES_TO_DISPLAY - 1;
-            
+
             if(out_end_index > sizeof(outbox))
             {
                 out_start_index = sizeof(outbox) - MAX_MESSAGES_TO_DISPLAY + 1;
@@ -290,7 +290,7 @@ if(sizeof(inbox) <= MAX_MESSAGES_TO_DISPLAY)
         else
         {
             in_end_index = in_start_index + MAX_MESSAGES_TO_DISPLAY - 1;
-            
+
             if(in_end_index > sizeof(inbox))
             {
                 in_start_index = sizeof(inbox) - MAX_MESSAGES_TO_DISPLAY + 1;
@@ -731,9 +731,9 @@ protected void read_message(int num)
 {
     string ret = "";
     object pager;
-    
+
     pager = clone_object(OBJ_PAGER);
-    
+
     if(in_outbox)
 {
 ret += "\nFROM:    " + outbox[num]["FROM"] + "\n";
@@ -1199,4 +1199,3 @@ void remove()
 {
     if(objectp(s_editor)) destruct(s_editor);
 }
-

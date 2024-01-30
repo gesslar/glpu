@@ -16,8 +16,7 @@ void init_ob();
 
 mapping ob_data;
 
-int set(string name, mixed var)
-{
+int set(string name, mixed var) {
      if(!ob_data || !mapp(ob_data)) init_ob();
      if(!name) return 0;
      if(ob_data[name]) map_delete(ob_data, name);
@@ -25,8 +24,7 @@ int set(string name, mixed var)
      return 1;
 }
 
-int delete(string name)
-{
+int delete(string name) {
      if(!ob_data || !mapp(ob_data)) init_ob();
      if(!name) return 0;
      if(!ob_data[name]) return 0;
@@ -34,8 +32,7 @@ int delete(string name)
      return 1;
 }
 
-int add(string name, mixed var)
-{
+int add(string name, mixed var) {
      mixed temp;
      if(!ob_data || !mapp(ob_data)) init_ob();
      if(!name) return 0;
@@ -46,20 +43,17 @@ int add(string name, mixed var)
      return 1;
 }
 
-mixed query(string name)
-{
-     if(!ob_data || !mapp(ob_data))
-     {
+mixed query(string name) {
+     if(!ob_data || !mapp(ob_data)) {
           init_ob();
           return 0;
      }
-     
+
      if(!name) return 0;
      if(!ob_data[name]) return 0;
      return ob_data[name];
 }
 
-void init_ob()
-{
+void init_ob() {
      ob_data = ([]);
 }

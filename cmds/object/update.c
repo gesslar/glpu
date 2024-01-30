@@ -6,28 +6,26 @@
 
 //Last edited July 11th, 2006 by Tacitus
 
-int main(object caller, object room, string file)
-{
+int main(object caller, object room, string file) {
     object obj;
     string error, *users;
 
-    if(!file)
-    {
-        if(!caller->query("cwf")) return notify_fail("Error [update]: You must provide an argument. Syntax: update <file>\n");
+    if(!file) {
+        if(!caller->query("cwf"))
+            return notify_fail("Error [update]: You must provide an argument. Syntax: update <file>\n");
         file = caller->query("cwf");
     }
 
     file=resolve_path(caller->query("cwd"), file);
 
-    if(obj = find_object(file))
-    {
+    if(obj = find_object(file)) {
         users = filter_array(all_inventory(obj), (: interactive :));
         users->move(load_object(VOID_OB), 1);
-        destruct(obj);
+        obj->remove() ;
+        if(obj) destruct(obj);
     }
 
     if(file[<2..<1] != ".c") file += ".c";
-
 
     if(!file_exists(file)) return notify_fail("Error [update]: " + file  + " does not exist.\n");
     caller->set("cwf", file);

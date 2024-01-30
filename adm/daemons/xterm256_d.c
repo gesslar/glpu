@@ -21,42 +21,47 @@ private void load_all_colours() ;
 public string xterm256_wrap(string str, int wrap_at, int indent_at) ;
 void resync() ;
 
-protected void create()
-{
+void setup() {
     load_all_colours() ;
 }
 
-private void load_all_colours()
-{
+private void load_all_colours() {
     int i ;
     string *lines ;
-
+debug_message("Loading all colours") ;
     // First let's load all the 256 colours into the colour codes
     i = 256 ;
     fg_codes = allocate(i) ;
     bg_codes = allocate(i) ;
-    while(i--)
-    {
-        fg_codes[i] = sprintf("%c[38;5;%dm", 27, i) ;
-        bg_codes[i] = sprintf("%c[48;5;%dm", 27, i) ;
+    while(i--) {
+        fg_codes[i] = sprintf("\e[38;5;%dm", i) ;
+        bg_codes[i] = sprintf("\e[48;5;%dm", i) ;
     }
 
     alt_codes = ([
-        "res" : sprintf("%c[0m",  27), // reset
-        "rev" : sprintf("%c[7m",  27), // reverse video
-        "it0" : sprintf("%c[23m", 27), // italics off
-        "it1" : sprintf("%c[3m",  27), // italics on
-        "ul0" : sprintf("%c[24m", 27), // underline off
-        "ul1" : sprintf("%c[4m",  27), // underline on
-        "fl0" : sprintf("%c[25m", 27), // flash off
-        "fl1" : sprintf("%c[5m",  27), // flash on
+        "res" : "\e[0m",  // reset
+        "re0" : "\e[27m", // reverse video off
+        "re1" : "\e[7m",  // reverse video on
+        "it0" : "\e[23m", // italics off
+        "it1" : "\e[3m",  // italics on
+        "ul0" : "\e[24m", // underline off
+        "ul1" : "\e[4m",  // underline on
+        "fl0" : "\e[25m", // flash off
+        "fl1" : "\e[5m",  // flash on
+        "st0" : "\e[29m", // strike off
+        "st1" : "\e[9m",  // strike on
+        "bl0" : "\e[22m", // bold off
+        "bl1" : "\e[1m",  // bold on
+        "di0" : "\e[22m", // dim off
+        "di1" : "\e[2m",  // dim on
+        "ol0" : "\e[55m", // overline off
+        "ol1" : "\e[53m", // overline on
     ]) ;
 
     lines = explode(read_file("/adm/etc/xterm256/256_to_16_fallback.txt"), "\n") ;
     i = 256 ;
     fallback_codes = allocate(i) ;
-    while(i--)
-    {
+    while(i--) {
         string fallback ;
 
         sscanf(lines[i], "%*s,%s", fallback) ;
@@ -66,44 +71,41 @@ private void load_all_colours()
 
     lines = explode(read_file("/adm/etc/xterm256/xterm_ansi_16_fg.txt"), "\n") ;
     i = 16 ;
-    while(i--)
-    {
+    while(i--) {
         string xterm ;
         string fallback ;
-        
+
         sscanf(lines[i], "%s,%s", xterm, fallback) ;
-        x256_to_16_fg[xterm] = sprintf("%c[%sm", 27, fallback) ;
+        x256_to_16_fg[xterm] = sprintf("\e[%sm", fallback) ;
     }
 
     lines = explode(read_file("/adm/etc/xterm256/xterm_ansi_16_bg.txt"), "\n") ;
     i = 16 ;
-    while(i--)
-    {
+    while(i--) {
         string xterm ;
         string fallback ;
-        
+
         sscanf(lines[i], "%s,%s", xterm, fallback) ;
-        x256_to_16_bg[xterm] = sprintf("%c[%sm", 27, fallback) ;
+        x256_to_16_bg[xterm] = sprintf("\e[%sm", fallback) ;
     }
 }
 
 //:FUNCTION substitute_colour
 // substitute_colour takes a string with tokenized xterm256 colour
-// codes and a mode, parses the tokens and substitutes with 
+// codes and a mode, parses the tokens and substitutes with
 // xterm colour codes suitable for printing.
-// available modes are: 
+// available modes are:
 // plain - strip all colour and style codes
 // vt100 - strip only colour codes
 // xterm - replace all tokens with xterm256 colour codes
 // ansi  - fall back to ansi colour codes
-public varargs string substitute_colour(string text, string mode)
-{
+public varargs string substitute_colour(string text, string mode) {
     mixed *assoc ;
     string *parts, sub ;
     int *matched ;
     int sz, num ;
     string result ;
-    
+
     if(nullp(text)) return "" ;
 
     assoc = pcre_assoc(text, ({ XTERM256_COLOURS }), ({ 1 })) ;
@@ -111,11 +113,9 @@ public varargs string substitute_colour(string text, string mode)
     matched = assoc[1] ;
     sz = sizeof(parts) ;
 
-    switch(mode)
-    {
+    switch(mode) {
         case "plain" :
-            while(sz--)
-            {
+            while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
 
@@ -123,35 +123,29 @@ public varargs string substitute_colour(string text, string mode)
             }
             break ;
         case "vt100" :
-            while(sz--)
-            {
+            while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e<%s>", sub) == 1)
-                {
-                    if(!nullp(sub = alt_codes[sub]))
-                    {
+                if(sscanf(parts[sz], "\e<%s>", sub) == 1) {
+                    if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
                     }
                 }
-                
+
                 parts[sz] = "" ;
             }
             break ;
         case "xterm" :
-            while(sz--)
-            {
+            while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e<%s>", sub) == 1)
-                {
-                    if(!nullp(sub = alt_codes[sub]))
-                    {
+                if(sscanf(parts[sz], "\e<%s>", sub) == 1) {
+                    if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
                     }
@@ -164,16 +158,13 @@ public varargs string substitute_colour(string text, string mode)
             }
             break ;
         case "ansi" :
-            while(sz--)
-            {
+            while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e<%s>", sub) == 1)
-                {
-                    if(!nullp(sub = alt_codes[sub]))
-                    {
+                if(sscanf(parts[sz], "\e<%s>", sub) == 1) {
+                    if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
                     }
@@ -194,26 +185,23 @@ public varargs string substitute_colour(string text, string mode)
     return result ;
 }
 
-public string xterm256_wrap(string str, int wrap_at, int indent_at)
-{
+public string xterm256_wrap(string str, int wrap_at, int indent_at) {
     string *sections ;
 
     sections = map(explode(str, "\n"), function(string section, int wrap_at, int indent_at) {
         string *parts = explode(section, " ");
         mapping running = ([ "length" : 0 ]);
 
-        // this routine strips out the first space, put it back into the 
+        // this routine strips out the first space, put it back into the
         // array if the original string had a leading space
         if(section[0..0] == " ") parts = ({ "", parts... });
 
-        parts = map(parts, function(string part, mapping running, int max, int indent)
-        {
+        parts = map(parts, function(string part, mapping running, int max, int indent) {
             string plain ;
             int len ;
 
             // new lines
-            if(part[0..0] == "\n")
-            {
+            if(part[0..0] == "\n") {
                 running["length"] = 0;
                 return part ;
             }
@@ -223,8 +211,7 @@ public string xterm256_wrap(string str, int wrap_at, int indent_at)
 
             running["length"] += (len + 1);
 
-            if(running["length"] >= max)
-            {
+            if(running["length"] >= max) {
                 running["length"] = sizeof(plain) + indent;
                 return "\n" + repeat_string(" ", indent) + part;
             }
@@ -235,35 +222,28 @@ public string xterm256_wrap(string str, int wrap_at, int indent_at)
 
         return implode(map(explode(implode(parts, " "), "\n"), (: rtrim :)), "\n") ;
     }, wrap_at, indent_at) ;
-    
+
     return implode(sections, "\n") ;
 }
 
-int colorp(string text)
-{
+int colorp(string text) {
     return pcre_match(text, XTERM256_COLOURS) ;
 }
 
-void resync()
-{
+void resync() {
     load_all_colours() ;
 }
 
-string token_to_xterm(string token)
-{
-    if(pcre_match(token, "\\d{3}"))
-    {
+string token_to_xterm(string token) {
+    if(pcre_match(token, "\\d{3}")) {
         int num ;
 
         sscanf(token, "%d", num) ;
         if(num < 0 || num > 255) return "" ;
 // tell(this_user(), sprintf("FROM THE DAEMON: %d => %s\n", num, fg_codes[num][1..])) ;
         return fg_codes[num] ;
-    }
-    else
-    {
-        switch(token)
-        {
+    } else {
+        switch(token) {
             case "black"    : return x256_to_16_fg[fallback_codes[0]] ;
             case "red"      : return x256_to_16_fg[fallback_codes[1]] ;
             case "green"    : return x256_to_16_fg[fallback_codes[2]] ;
@@ -291,8 +271,7 @@ string token_to_xterm(string token)
     return "" ;
 }
 
-string get_color_list()
-{
+string get_color_list() {
     string output = "" ;
     int base ;
     int *xterm256 = ({
@@ -315,27 +294,24 @@ string get_color_list()
         214,  215,  216,  217,  218,  219,  208,  209,  210,  211,  212,  213,
         202,  203,  204,  205,  206,  207,  196,  197,  198,  199,  200,  201,
     });
-      
+
       // render as two 12 cell rows
     int *xterm_greyscale = ({
         232,  233,  234,  235,  236,  237,  238,  239,  240,  241,  242,  243,
         255,  254,  253,  252,  251,  250,  249,  248,  247,  246,  245,  244,
     });
-      
+
       // render as two 8 cell rows
     int *xterm16 = ({
         000,  001,  002,  003,  004,  005,  006,  007,
         008,  009,  010,  011,  012,  013,  014,  015,
     });
-      
+
     // Rainbow
     base = 16 ;
-    for(int i = 0; i < 3; i++)
-    {
-        for(int j = 0; j < 6; j++)
-        {
-            for(int k = 0; k < 12; k++)
-            {
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 6; j++) {
+            for(int k = 0; k < 12; k++) {
                 int color = i*(6*12) + j + k*6 ;
 
                 output += sprintf("  %s%'0'4d\e[0m",
@@ -347,13 +323,11 @@ string get_color_list()
         }
     }
     output += "\n";
-  
+
     // Greyscale
     base = 232 ;
-    for(int i = 0; i < 2; i++)
-    {
-        for(int j = 0; j < 12; j++)
-        {
+    for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 12; j++) {
             int color = i*12 + j;
 
             output += sprintf("  %s%'0'4d\e[0m",
@@ -367,12 +341,10 @@ string get_color_list()
 
     // Base colors
     base = 0 ;
-    for(int i = 0; i < 2; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
+    for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 8; j++) {
             int color = i*8 + j;
-            
+
             output += sprintf("  %s%'0'4d\e[0m",
                 sprintf("\e[38;5;%dm", xterm16[color]),
                 xterm16[color]

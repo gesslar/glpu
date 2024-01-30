@@ -7,16 +7,15 @@
 // 2022/08/23: Gesslar - Created
 
 inherit M_CLEAN ;
+inherit M_SETUP ;
 
 // Functions
 void remove() ;
 
-protected void create()
-{
-    if(function_exists("setup")) call_other("setup", this_object()) ;
+protected void create() {
+    setup_chain() ;
 }
 
-void remove()
-{
-    destruct(this_object()) ;
+void remove() {
+    event("remove", ({ this_object() })) ;
 }
