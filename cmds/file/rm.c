@@ -21,12 +21,12 @@ int main(object caller, object room, string str)
     
     if(sscanf(str, "-r %s", dir) == 1)
     {
-        dir = resolve_path(this_player()->query("cwd"), dir) + "/";
+        dir = resolve_path(caller->query("cwd"), dir) + "/";
         
         if(!directory_exists(dir))
             return notify_fail(RED + "Error:" + NOR + " [rm]: " + str + " is not a directory.\n");
         
-        if(!(int)master()->valid_write(dir, this_player(), "rmdir"))
+        if(!(int)master()->valid_write(dir, caller, "rmdir"))
         {
             write(RED + "Error" + NOR + " [rm]: Permission denied.\n");
             return 1;
@@ -39,12 +39,12 @@ int main(object caller, object room, string str)
         return 1;
     }
     
-    str = resolve_path(this_player()->query("cwd"), str);
+    str = resolve_path(caller->query("cwd"), str);
     
     if(directory_exists(str) || !file_exists(str))
         return notify_fail(RED + "Error" + NOR + " [rm]: " + str + " is not a file.\n");
      
-    if(!(int)master()->valid_write(str, this_player(), "rm"))
+    if(!(int)master()->valid_write(str, caller, "rm"))
     {
         write(RED + "Error" + NOR + " [rm]: Permission denied.\n");
         return 1;

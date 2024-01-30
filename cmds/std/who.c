@@ -29,7 +29,7 @@ int main(object caller, object room, string arg)
     if(arg && sscanf(arg, "@%s", mudname) == 1)
     {
         c = load_object("/adm/daemons/chmodules/chdmod_i3.c");
-        packet = ({ "who-req", 5, mud_name(), this_player()->query_name(), mudname, 0 });
+        packet = ({ "who-req", 5, mud_name(), caller->query_name(), mudname, 0 });
         c->send_packet(packet);
         return 1;
     }

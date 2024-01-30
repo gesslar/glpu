@@ -12,16 +12,16 @@ int main(object caller, object room, string args)
 {
     object client;
 
-    if(adminp(this_player()) && args == "admin")
+    if(adminp(caller) && args == "admin")
     {
         client = clone_object("/adm/obj/news_admin.c");
-        client->move(this_player());
+        client->move(caller);
         client->main_menu();
         return 1;
     }
 
      client = clone_object("/obj/mudlib/newsclients/std_newsclient.c");
-     client->move(this_player());
+     client->move(caller);
 
      if(args == "check")
      {
@@ -46,7 +46,7 @@ string help(object caller)
     "You can provide the optional argument of 'check' and you'll\n"
     "be notified if there are new posts or not but will not enter\n"
     "the news shell.\n";
-    if(adminp(this_player())) help +=
+    if(adminp(caller)) help +=
     "\nAdmins: If you provide 'admin' as an argument to this\n"
     "command then you will enter the news system admin shell.\n";
     return help;

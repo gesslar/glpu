@@ -13,71 +13,71 @@ int main(object caller, object room, string str)
     string custom, tmp;
     object ob;
 
-    if(!str) str = this_player()->query("cwf");
+    if(!str) str = caller->query("cwf");
 
-    if(this_player()->query_env("custom_dest") && wizardp(this_player()))
-    custom = this_player()->query_env("custom_dest");
+    if(caller->query_env("custom_dest") && wizardp(caller))
+    custom = caller->query_env("custom_dest");
 
-    if(present(str, environment(this_player())))
+    if(present(str, environment(caller)))
     {
-    ob = present(str, environment(this_player()));
+    ob = present(str, environment(caller));
     if(custom)
     {
         tmp = custom;
         tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
-        tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+        tmp = replace_string(tmp, "$N", caller->query_cap_name());
 
-        catch(tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player()));
+        catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
     }
     else
     {
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-        catch(tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({this_player()})));
+        catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
     }
     catch(ob->remove());
     if(ob) destruct(ob);
     return 1;
     }
 
-    if(present(str, this_player()))
+    if(present(str, caller))
     {
-    ob = present(str, this_player());
+    ob = present(str, caller);
     if(custom)
     {
         tmp = custom;
         tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
-        tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+        tmp = replace_string(tmp, "$N", caller->query_cap_name());
 
-        catch(tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player()));
+        catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
     }
     else
     {
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-        catch(tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({this_player()})));
+        catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
     }
     catch(ob->remove());;
     if(ob) destruct(ob);
     return 1;          
     }
 
-    if(find_player(str) && adminp(this_player()))
+    if(find_player(str) && adminp(caller))
     {
     ob = find_player(str);
     if(custom)
     {
         tmp = custom;
         tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
-        tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+        tmp = replace_string(tmp, "$N", caller->query_cap_name());
 
-        catch(tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player()));
+        catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
     }
     else
     {
         write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-        catch(tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({this_player()})));
+        catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
     }
     tell_object(ob, "Notice [dest]: You have been nullified and hence disconnected from the mud.\n");
     catch(ob->remove());
@@ -86,12 +86,12 @@ int main(object caller, object room, string str)
     }
 
     if(str[<2..<1] != ".c") str += ".c";
-    str = resolve_path(this_player()->query("cwd"), str);
+    str = resolve_path(caller->query("cwd"), str);
     if(find_object(str))
     {
     ob = find_object(str);
     write("Success [dest]: Destructing master object for '" + str + "'.\n");
-    this_player()->set("cwf", str);
+    caller->set("cwf", str);
     catch(ob->remove());
     if(ob) destruct(ob);
     return 1;

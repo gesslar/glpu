@@ -20,7 +20,7 @@ int main()
 int confirm_CurrentPassword(string str)
 {
 
-     if(crypt(str, str) != this_player()->query_link()->query_password())
+     if(crypt(str, str) != caller->query_link()->query_password())
      {
           write(RED + "\nError: " + NOR + "The password you provided does not match your current password.\n");
           return 1;
@@ -55,7 +55,7 @@ int confirm_NewPassword(string str, string pass)
      }
      else
      {
-          if(this_player()->query_link()->set_password(str)) 
+          if(caller->query_link()->set_password(str)) 
             write(GRN + "\nSuccess: " + NOR + "Password changed succesfuly.\n");
           else write(RED + "\nError: " + NOR + "Unable to change password.\n");
           return 1;

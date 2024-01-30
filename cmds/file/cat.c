@@ -15,7 +15,7 @@ int main(object caller, object room, string str)
           return 1;
      }
 
-     str=resolve_path(this_player()->query("cwd"),str);
+     str=resolve_path(caller->query("cwd"),str);
 
      if(!file_exists(str))
      {

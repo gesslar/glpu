@@ -28,7 +28,7 @@ int main(object caller, object room, string arg)
      {
           if(!status) return notify_fail("Error: There is no shutdown or reboot currently in progress.\n");
           else SHUTDOWN_D->stop();
-          log_file(LOG_SHUTDOWN, capitalize(this_player()->query_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
+          log_file(LOG_SHUTDOWN, capitalize(caller->query_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
           return 1;
      }
 
@@ -37,7 +37,7 @@ int main(object caller, object room, string arg)
           if(arg == "now") time = 0;
           else time = to_int(arg);
           if(time == 0 && arg != "now" && arg != "0") return notify_fail("SYNTAX: shutdown [<stop>||<time>/now]\n");
-          log_file(LOG_SHUTDOWN, capitalize(this_player()->query_name()) + " started shutdown sequence (" + time + "m) on " + ctime(time()) + "\n");
+          log_file(LOG_SHUTDOWN, capitalize(caller->query_name()) + " started shutdown sequence (" + time + "m) on " + ctime(time()) + "\n");
           SHUTDOWN_D->start(time, 1);
           return 1;
      }

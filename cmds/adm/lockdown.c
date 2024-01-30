@@ -17,7 +17,7 @@ int main(object caller, object room, string arg)
     if(!adminp(previous_object())) return(notify_fail("Error [access]: Access denied.\n"));
 
     lockdown_client = clone_object(LOCKDOWN_TOOL);
-    lockdown_client->move(this_player());
+    lockdown_client->move(caller);
     lockdown_client->main();
     return 1;
 }

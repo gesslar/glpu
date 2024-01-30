@@ -10,9 +10,9 @@ int main(object caller, object room, string str)
 {
      string source, dest;
      if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: mv <source> <dest>\n");
-     source = resolve_path(this_player()->query("cwd"), source);
-     dest = resolve_path(this_player()->query("cwd"), dest);
-     if(!(int)master()->valid_write(source, this_player(), "mv") || !(int)master()->valid_write(dest, this_player(), "mv"))
+     source = resolve_path(caller->query("cwd"), source);
+     dest = resolve_path(caller->query("cwd"), dest);
+     if(!(int)master()->valid_write(source, caller, "mv") || !(int)master()->valid_write(dest, caller, "mv"))
      {
           write("Error [mv]: Permission denied.\n");
           return 1;

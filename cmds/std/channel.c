@@ -83,12 +83,12 @@ int main(object caller, object room, string args)
                     {
                          for(i = 0; i < sizeof(multipleTune); i ++)
                          {
-                              if(CHAN_D->tune(multipleTune[i], this_player()->query_name(), 1)) write("Tune: Tuned into channel " + multipleTune[i] + "\n");
+                              if(CHAN_D->tune(multipleTune[i], caller->query_name(), 1)) write("Tune: Tuned into channel " + multipleTune[i] + "\n");
                               else write("Tune: Channel " + multipleTune[i] + " does not exist.\n");
                          }
                          return 1;
                     }
-                    if(CHAN_D->tune(argChannel, this_player()->query_name(), 1)) write("Tune: Tuned into channel " + argChannel + "\n");
+                    if(CHAN_D->tune(argChannel, caller->query_name(), 1)) write("Tune: Tuned into channel " + argChannel + "\n");
                     else write("Tune: Channel " + argChannel + " does not exist.\n");
                     return 1;
                }
@@ -100,12 +100,12 @@ int main(object caller, object room, string args)
                     {
                          for(i = 0; i < sizeof(multipleTune); i ++)
                          {
-                              if(CHAN_D->tune(multipleTune[i], this_player()->query_name(), 0)) write("Tune: Tuned out of channel " +  multipleTune[i] + "\n");
+                              if(CHAN_D->tune(multipleTune[i], caller->query_name(), 0)) write("Tune: Tuned out of channel " +  multipleTune[i] + "\n");
                               else write("Tune: Channel " + multipleTune[i] + " does not exist.\n");
                          }
                          return 1;
                     }
-                    if(CHAN_D->tune(argChannel, this_player()->query_name(), 0)) write("Tune: Tuned out of channel " + argChannel + "\n");
+                    if(CHAN_D->tune(argChannel, caller->query_name(), 0)) write("Tune: Tuned out of channel " + argChannel + "\n");
                     else write("Tune: Channel " + argChannel + " does not exist.\n");
                     return 1;
                }

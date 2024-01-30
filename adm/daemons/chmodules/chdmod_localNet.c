@@ -61,7 +61,7 @@ int rec_msg(string chan, string usr, string msg)
         ob = find_player(usr);
 
         if(!sizeof(history[chan]))
-            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");              
+            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
         else
             foreach(string histLine in history[chan][(sizeof(history[chan]) - 15)..(sizeof(history[chan]) - 1)])
             tell_object(ob, histLine);
@@ -104,7 +104,7 @@ int rec_msg(string chan, string usr, string msg)
         break;
     }
 
-    case "gossip" : { 
+    case "gossip" : {
         CHAN_D->rec_msg(chan, "[" + HIG + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
         history[chan] += ({ ctime(time()) + " [" + HIG + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n" + NOR });
         break;
@@ -128,12 +128,9 @@ int rec_msg(string chan, string usr, string msg)
     return 1;
 }
 
-int isAllowed(string channel, string usr, int flag)
-{
+int isAllowed(string channel, string usr, int flag: (: 0 :)) {
     if(channel == "admin" && !adminp(usr)) return 0;
     if(channel == "wiz" && !devp(usr)) return 0;
     if(channel == "dev" && !devp(usr)) return 0;
     return 1;
 }
-
-

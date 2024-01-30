@@ -16,7 +16,7 @@ int main(object caller, object room, string file)
     pager = clone_object("/obj/mudlib/pager/pager.c");
     if(!file && this_interactive()->query("cwf")) file = this_interactive()->query("cwf");
     else if(!file) return(notify_fail("%^BOLD%^SYNTAX: %^RESET%^more <file>\n"));
-    file = resolve_path(this_player()->query("cwd"), file);
+    file = resolve_path(caller->query("cwd"), file);
     if(!file_exists(file)) return(notify_fail("Error [more]: File '" + file + "' does not exist.\n"));
     text = read_file(file);
     if(file[<2..<1] == ".c") pager->page(text, file, 0, 1);

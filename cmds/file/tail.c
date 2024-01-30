@@ -14,7 +14,7 @@ int main(object caller, object room, string file)
           return 1;
      }
 
-     file = resolve_path(this_player()->query("cwd"), file);
+     file = resolve_path(caller->query("cwd"), file);
 
      if(directory_exists(file))
      {
@@ -28,9 +28,9 @@ int main(object caller, object room, string file)
           return 1;
      }
 
-     if(!this_player()->query("morelines"))
+     if(!caller->query("morelines"))
      {
-          this_player()->set("morelines", 20);
+          caller->set("morelines", 20);
      }
 
      return tail(file);

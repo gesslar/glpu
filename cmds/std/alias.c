@@ -12,7 +12,7 @@ int main(object caller, object room, string args)
      
      if(!args)
      {
-          mapping data = this_player()->get_aliases();
+          mapping data = caller->get_aliases();
           string *keys;
           int i;
           
@@ -34,7 +34,7 @@ int main(object caller, object room, string args)
      
      if(args == "-g")
      {
-          mapping data = this_player()->get_aliases(1);
+          mapping data = caller->get_aliases(1);
           string *keys;
           int i;
           
@@ -66,7 +66,7 @@ int main(object caller, object room, string args)
           if(verb == "alias" || verb == "unalias")
                return(notify_fail("Error: You may not alias 'alias' or 'unalias'.\n"));
           
-          this_player()->add_alias(verb, alias);
+          caller->add_alias(verb, alias);
           
           write("Alias: Added alias '" + verb + " " + alias + "'\n");
           return 1;         

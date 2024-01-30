@@ -12,12 +12,12 @@ int main(object caller, object room, string arg)
     if(!arg || arg == "")
     return notify_fail(RED + "Error" + NOR + " [back]: Syntax: back <file name>.\n");
 
-    arg = resolve_path(this_player()->query("cwd"), arg);
+    arg = resolve_path(caller->query("cwd"), arg);
 
     if(!file_exists(arg))
     return notify_fail(RED + "Error" + NOR + " [back]: That file does not exist.\n");
 
-    if(!(int)master()->valid_write(arg, this_player(), "cp"))
+    if(!(int)master()->valid_write(arg, caller, "cp"))
     return notify_fail(RED + "Error" + NOR + " [back]: Permission denied.\n");
 
     write(cp(arg, arg + ".bak") ? HIG + "Success" + NOR + " [back]: File successfully backed up.\n" :

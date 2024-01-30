@@ -11,7 +11,7 @@
 int exec( object to, object from )
 {
     if(isMember(query_privs(previous_object()), "admin")) return efun::exec(to, from);
-    else return 0;    
+    else return 0;
 }
 
 void destruct(object ob)
@@ -28,7 +28,7 @@ void shutdown( int how )
 void set_privs(object ob, string privs)
 {
     string name;
-    
+
     if(isMember(query_privs(previous_object()), "admin") || ob = master()) efun::set_privs(ob, privs);
     sscanf(file_name(ob), "/home/%*s/%s/%*s", name);
     if(name == privs) efun::set_privs(ob, privs);
@@ -42,10 +42,10 @@ void write(string msg)
 
 varargs void say(string msg, mixed exclude) {
     object me;
-  
+
     if (this_player()) me = this_player();
     else me = previous_object();
-   
+
     if(objectp(exclude)) exclude = ({ me, exclude });
     else if(pointerp(exclude)) exclude += ({ me });
     else if (!exclude) exclude = ({ me });
@@ -76,4 +76,3 @@ varargs void tell_room(mixed room, string msg, mixed exclude)
         message("tell_room", msg, room, exclude);
    }
 }
-

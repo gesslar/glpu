@@ -22,7 +22,7 @@ int main(object caller, object room, string str)
     for(i = 0; i < sizeof(users); i++)
     {
         tell_object(users[i], "**** System Wide Message From: "
-        + capitalize(this_player()->query_name()) + " at " + ctime(time())
+        + capitalize(caller->query_name()) + " at " + ctime(time())
         + " ****\n\n\t" + str + "\n");
     }
 

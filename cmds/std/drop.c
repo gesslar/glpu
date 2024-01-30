@@ -16,16 +16,16 @@ int main(object caller, object room, string arg)
 
      if(arg == "all")
      {
-         object *inv = all_inventory(this_player());
+         object *inv = all_inventory(caller);
          foreach(object item in inv)
          {
-             if(!item->move(environment(this_player())))
+             if(!item->move(environment(caller)))
                  write("Error [drop]: " + capitalize(item->query_short()) +
                      " can not be dropped here.\n");
             else
             {
                 write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
-                say(capitalize(this_player()->query_name()) + " drops a '"
+                say(capitalize(caller->query_name()) + " drops a '"
                     + item->query_short() + "'.\n");
             }
          }
@@ -37,11 +37,11 @@ int main(object caller, object room, string arg)
      {
          object item, *failedObjects = ({});
 
-         item = present(arg, this_player());
+         item = present(arg, caller);
 
          while(objectp(item) && member_array(item, failedObjects) == -1)
          {
-             if(!item->move(environment(this_player())))
+             if(!item->move(environment(caller)))
              {
                  write("Error [drop]: " + capitalize(item->query_short()) +
                      " can not be dropped here.\n");
@@ -50,11 +50,11 @@ int main(object caller, object room, string arg)
             else
             {
                 write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
-                say(capitalize(this_player()->query_name()) + " drops a '"
+                say(capitalize(caller->query_name()) + " drops a '"
                     + item->query_short() + "'.\n");
             }
 
-            item = present(arg, this_player());
+            item = present(arg, caller);
          }
 
          return 1;
@@ -64,14 +64,14 @@ int main(object caller, object room, string arg)
      {
          object ob;
 
-        ob = present(arg, this_player());
+        ob = present(arg, caller);
 
         if(!ob) return(notify_fail("Error [drop]: You don't have a '" + arg + "' in your inventory.\n"));
         if(ob->query("prevent_drop") || ob->prevent_drop()) return(notify_fail("Error [drop]: That object can not be dropped.\n"));
-        if(!ob->move(environment(this_player()))) return(notify_fail("Error [drop]: That object can not be dropped here.\n"));
+        if(!ob->move(environment(caller))) return(notify_fail("Error [drop]: That object can not be dropped here.\n"));
 
         write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
-        say(capitalize(this_player()->query_name()) + " drops a '" + ob->query("short") + "'.\n");
+        say(capitalize(caller->query_name()) + " drops a '" + ob->query("short") + "'.\n");
 
         return 1;
     }

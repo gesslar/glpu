@@ -56,7 +56,7 @@ int main(object caller, object room, string args)
      tell_object(user, "%^BOLD%^GREEN%^Developer Access Granted.%^RESET%^\n");
 
      write("Success [makedev]: User '" + capitalize(user->query_name()) + "' now has developer status.\n");
-     log_file(LOG_PROMOTE, capitalize(query_privs(this_player())) + " promotes " 
+     log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " promotes " 
         + user->query_cap_name() + " to developer status on " + ctime(time())
         + "\n");
      return 1;

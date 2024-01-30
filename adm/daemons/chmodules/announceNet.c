@@ -70,8 +70,7 @@ void announce_logoff(string user)
             + mud_name() + ".\n" });
 }
 
-int isAllowed(string channel, string usr, int flag)
+int isAllowed(string channel, string usr, int flag: (: 0 :))
 {
     return 1;
 }
-

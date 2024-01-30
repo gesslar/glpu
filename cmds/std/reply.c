@@ -14,7 +14,7 @@ int main(object caller, object room, string message)
 {
     object user;
     string d_user, d_mud;
-    string who = this_player()->query("reply");
+    string who = caller->query("reply");
 
     if(!message) return(notify_fail("Error [tell]: You must provide an argument. Syntax: reply <message>\n"));
 
@@ -23,14 +23,14 @@ int main(object caller, object room, string message)
     {
         object I3;
 
-        if(lower_case(d_user) == lower_case(query_privs(this_player())) &&
+        if(lower_case(d_user) == lower_case(query_privs(caller)) &&
            lower_case(d_mud) == lower_case(mud_name()))
         {
 
             if(message[0] == ':') message = message[1..];
 
             write(CYN + "You reply to yourself: " + NOR + message + "\n" + NOR);
-            tell_room(environment(this_player()), this_player()->query_cap_name() + " starts talking to themselves.\n" + NOR, this_player());
+            tell_room(environment(caller), caller->query_cap_name() + " starts talking to themselves.\n" + NOR, caller);
 
             return 1;
         }
@@ -39,12 +39,12 @@ int main(object caller, object room, string message)
 
         if(message[0] == ':')
         {
-            I3->send_emoteto(this_player(), d_user, d_mud, message[1..]);
-            write(CYN + "You reply to " + capitalize(d_user) + "@" + d_mud + ": " + NOR + this_player()->query_cap_name() + " " + message[1..] + "\n" + NOR);
+            I3->send_emoteto(caller, d_user, d_mud, message[1..]);
+            write(CYN + "You reply to " + capitalize(d_user) + "@" + d_mud + ": " + NOR + caller->query_cap_name() + " " + message[1..] + "\n" + NOR);
         }
         else
         {
-            I3->send_tell(this_player(), d_user, d_mud, message);
+            I3->send_tell(caller, d_user, d_mud, message);
             write(CYN + "You reply to " + capitalize(d_user) + "@" + d_mud + ": " + NOR + message + "\n" + NOR);
         }
 
@@ -55,29 +55,29 @@ int main(object caller, object room, string message)
     
     if(!objectp(user)) return notify_fail("Error [tell]: User " + who + " is not found.\n");
     
-    if(user == this_player())
+    if(user == caller)
     {
 
         if(message[0] == ':') message = message[1..];
 
         write(CYN + "You reply to yourself: " + NOR + message + "\n" + NOR);
-        tell_room(environment(this_player()), this_player()->query_cap_name() + " starts talking to themselves.\n" + NOR, this_player());
+        tell_room(environment(caller), caller->query_cap_name() + " starts talking to themselves.\n" + NOR, caller);
 
         return 1;
     }
 
     if(message[0] == ':')
     {
-        tell_object(user, CYN + this_player()->query_cap_name() + " " + message[1..] + "\n" + NOR);
-        write(CYN + "You reply to " + capitalize(who) + ": " + NOR + this_player()->query_cap_name() + " " + message[1..] + "\n" + NOR);
+        tell_object(user, CYN + caller->query_cap_name() + " " + message[1..] + "\n" + NOR);
+        write(CYN + "You reply to " + capitalize(who) + ": " + NOR + caller->query_cap_name() + " " + message[1..] + "\n" + NOR);
     }
     else
     {
-        tell_object(user, CYN + this_player()->query_cap_name() + " tells you: " + NOR + message + "\n" + NOR);
+        tell_object(user, CYN + caller->query_cap_name() + " tells you: " + NOR + message + "\n" + NOR);
         write(CYN + "You reply to " + capitalize(who) + ": " + NOR + message + "\n" + NOR);
     }
 
-    user->set("reply", query_privs(this_player()));
+    user->set("reply", query_privs(caller));
 
     return 1;
 }

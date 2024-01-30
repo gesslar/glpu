@@ -24,12 +24,12 @@ int main(object caller, object room, string arg)
 
      if(targetname[0..2] == "to ") targetname = targetname[3..(strlen(targetname)-1)];
 
-     ob = present(lower_case(obname), this_player());
+     ob = present(lower_case(obname), caller);
 
      if(!ob) return(notify_fail("Error [give]: You do not appear to have that object.\n"));
      if(ob->query("prevent_give")) return(notify_fail("Error [give]: You can not give that object away.\n"));
 
-     target = present(targetname, environment(this_player()));
+     target = present(targetname, environment(caller));
 
      if(!target) return(notify_fail("Error [give]: User '" + targetname + "' not found.\n"));
      if(!living(target)) return(notify_fail("Error [give]: You can not give objects to other non-living objects.\n"));
@@ -37,8 +37,8 @@ int main(object caller, object room, string arg)
      ob->move(target);
      
      write("You give " + ob->query_short() + " to " + capitalize(target->query_name()) + ".\n");
-     tell_object(target, capitalize(this_player()->query_name()) + " gives you a '" + ob->query("short") + "'.\n");
-     say(capitalize(this_player()->query_name()) + " gives a '" + ob->query("short") + "' to " + capitalize(target->query_name()) + ".\n", ({this_player(), target}));
+     tell_object(target, capitalize(caller->query_name()) + " gives you a '" + ob->query("short") + "'.\n");
+     say(capitalize(caller->query_name()) + " gives a '" + ob->query("short") + "' to " + capitalize(target->query_name()) + ".\n", ({caller, target}));
      
      return 1;
 }

@@ -16,14 +16,14 @@ int main(object caller, object room, string arg)
      object target;
      object *inventory;
 
-     if(!arg) target = this_player();
+     if(!arg) target = caller;
      else
      {
-          if(arg[0]!='/') arg = resolve_path(this_player()->query("cwd"), arg);
+          if(arg[0]!='/') arg = resolve_path(caller->query("cwd"), arg);
           if(arg[<2..<1] != ".c") arg += ".c";
           if(!target) target = find_object(arg);
-          if(!target) target = present(arg, this_player());
-          if(!target) target = present(arg, environment(this_player()));
+          if(!target) target = present(arg, caller);
+          if(!target) target = present(arg, environment(caller));
      }
 
      if(!target) return notify_fail("Error [clean]: Error locating target.\n");

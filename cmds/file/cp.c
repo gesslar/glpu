@@ -12,8 +12,8 @@ int main(object caller, object room, string str)
 
      if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: cp <source> <dest>\n");
 
-     source = resolve_path(this_player()->query("cwd"), source);
-     dest = resolve_path(this_player()->query("cwd"), dest);
+     source = resolve_path(caller->query("cwd"), source);
+     dest = resolve_path(caller->query("cwd"), dest);
 
      if(directory_exists(dest) || dest[<1..<1] == "/")
      {

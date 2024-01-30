@@ -25,7 +25,7 @@ string help(object caller)
     return(HIW + " SYNTAX:" + NOR + " say <argument>\n\n" +
       "This command will send a message to everyone in the room.\n" +
       "Example, if you type 'say Hello!' then the others in the\n" +
-      "room will see '" + capitalize(this_player()->query_name()) + " says: Hello!'\n\n" +
+      "room will see '" + capitalize(caller->query_name()) + " says: Hello!'\n\n" +
       HIW + "See also:" + NOR + " tell, tune\n");
 }
 

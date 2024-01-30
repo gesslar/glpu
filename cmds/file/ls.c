@@ -25,7 +25,7 @@
 
 #define SPACEADDEDBYFORMAT 2
 
-/* This REALLY REALLY should call something like this_player()->query_screen() which ultimately gets values  from window_size */
+/* This REALLY REALLY should call something like caller->query_screen() which ultimately gets values  from window_size */
 
 #define SCREEN_WIDTH 80
 
@@ -185,13 +185,13 @@ int main(object caller, object room, string arg)
         /*Parse done, we have a list of paths and some boolean flags.*/
         foreach(__Path in paths)
         {
-                __Path=resolve_path(this_player()->query("cwd"), __Path);
+                __Path=resolve_path(caller->query("cwd"), __Path);
                 if((always_show_path)||(sizeof(paths)>1))
                 {
                         output_str+=__Path+":\n";
                 }
                 if(__Path=="")
-                        __Path=this_player()->query("cwd");
+                        __Path=caller->query("cwd");
 
                 switch(file_size(__Path))
                 {

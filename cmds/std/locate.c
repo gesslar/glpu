@@ -12,7 +12,7 @@ int main(object caller, object room, string arg)
 
     if(!stringp(arg)) return notify_fail("SYNTAX: locae <username>\n");
 
-    packet = ({ "locate-req", 5, mud_name(), this_player()->query_name(), 0, 0, arg});
+    packet = ({ "locate-req", 5, mud_name(), caller->query_name(), 0, 0, arg});
     load_object("/adm/daemons/chmodules/chdmod_i3.c")->send_packet(packet);
     write("Success [locate]: Locate packet sent.\n");
     return 1;

@@ -50,8 +50,7 @@ void logon()
     input_to("get_name");
 }
 
-void get_name(string str)
-{
+void get_name(string str) {
     int i;
     string err;
 
@@ -59,29 +58,25 @@ void get_name(string str)
 
     write("\n");
 
-    if(LOCKDOWN_D->is_ip_banned(query_ip_number(this_object())))
-    {
+    if(LOCKDOWN_D->is_ip_banned(query_ip_number(this_object()))) {
         write("\nYour IP address, " + query_ip_number(this_object()) + " has been banned from " + mud_name() + ".\n");
         destruct(this_object());
         return;
     }
 
-    if(!str || strlen(str) < 2)
-    {
+    if(!str || strlen(str) < 2) {
         write("You must select a name: ");
         input_to("get_name");
         return;
     }
 
-    if(str == "quit")
-    {
+    if(str == "quit") {
         write("Come back soon!\n");
         destruct(this_object());
         return;
     }
 
-    if (strlen(str) > 11)
-    {
+    if (strlen(str) > 11) {
         write("Sorry, your name can't have more than 11 characters.\n");
         write("Please select a name: ");
         input_to("get_name");
@@ -90,12 +85,10 @@ void get_name(string str)
 
     str = lower_case(str);
 
-    for (i = 0; i < strlen(str); i++)
-    {
-        if (str[i] < 'a' || str[i] > 'z')
-        {
-            write("Sorry, your name can only have letters. (a-z)\n" +
-              "Please enter a new name: ");
+    for (i = 0; i < strlen(str); i++) {
+        if (str[i] < 'a' || str[i] > 'z') {
+            write("Sorry, your name can only have letters. (a-z)\n"
+                "Please enter a new name: ");
             input_to("get_name");
             return;
         }
@@ -103,8 +96,7 @@ void get_name(string str)
 
     err = catch(user = new(USER_OB));
 
-    if(err)
-    {
+    if(err) {
         write("Error [login]: Unable to create user object.\n");
         write("It appears that the login object is dysfunctional. Try again later.\n");
         write("Error: " + err + "\n");
@@ -112,43 +104,37 @@ void get_name(string str)
         return;
     }
 
-    if(LOCKDOWN_D->is_user_banned(str))
-    {
+    if(LOCKDOWN_D->is_user_banned(str)) {
         write("\nThe username " + capitalize(str) + " is banned from " + mud_name() + ".\n");
         destruct(this_object());
         return;
     }
 
-    if(LOCKDOWN_D->query_dev_lock() && wizardp(str) && !adminp(str))
-    {
+    if(LOCKDOWN_D->query_dev_lock() && wizardp(str) && !adminp(str)) {
         write("\n" + LOCKDOWN_D->query_dev_lock_msg() + "\n");
         destruct(this_object());
         return;
     }
 
-    if(LOCKDOWN_D->query_player_lock() && (!adminp(str) && !wizardp(str)))
-    {
+    if(LOCKDOWN_D->query_player_lock() && (!adminp(str) && !wizardp(str))) {
         write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
         destruct(this_object());
         return;
     }
 
-    if(LOCKDOWN_D->query_vip_lock() && (!adminp(str) && !wizardp(str) && (member_array(str, LOCKDOWN_D->query_play_testers()) == -1)))
-    {
+    if(LOCKDOWN_D->query_vip_lock() && (!adminp(str) && !wizardp(str) && (member_array(str, LOCKDOWN_D->query_play_testers()) == -1))) {
         write("\n" + LOCKDOWN_D->query_vip_lock_msg() + "\n");
         destruct(this_object());
         return;
     }
 
-    if(str == "guest")
-    {
-        if(LOCKDOWN_D->query_guest_locked())
-        {
+    if(str == "guest") {
+        if(LOCKDOWN_D->query_guest_locked()) {
             write("\n" + LOCKDOWN_D->query_guest_lock_msg() + "\n");
             destruct(this_object());
             return;
         }
-        
+
         user->set_name("guest");
         set_privs(user, "guest");
         body = create_body("guest");
@@ -160,10 +146,8 @@ void get_name(string str)
         return;
     }
 
-    if (!file_exists(user_data_file(str) + ".o"))
-    {
-        if(LOCKDOWN_D->query_player_lock())
-        {
+    if (!file_exists(user_data_file(str) + ".o")) {
+        if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
             destruct(this_object());
             return;
@@ -178,8 +162,7 @@ void get_name(string str)
     user->set_name(str);
     user->restore_user();
 
-    if(!user->query_password() || user->query_password() == "")
-    {
+    if(!user->query_password() || user->query_password() == "") {
         write("Your account has no password. All accounts must have a password.\n");
         write("Please enter a new password: ");
         input_to("get_password", 1, 2);
@@ -187,7 +170,7 @@ void get_name(string str)
     }
 
     write("Please enter your password: ");
-    input_to("get_password", 1);
+    input_to("get_password", 1, 0);
 
     return;
 
@@ -197,21 +180,16 @@ void get_password(string str, int i)
 {
     string pass;
 
-    if(!i)
-    {
+    if(!i) {
         pass = crypt(str, str);
-        if(pass != user->query_password())
-        {
+        if(pass != user->query_password()) {
             write("That password is incorrect.\n");
             write("Please enter your password: ");
-            input_to("get_password", 1);
+            input_to("get_password", 1, 0);
             return;
-        }
-        else
-        {
+        } else {
             isConnected = 1;
-            if(find_player(user->query_name()))
-            {
+            if(find_player(user->query_name())) {
                 write("\nReconnect to currently logged in body? ");
                 input_to("reconnect");
                 return;
@@ -223,14 +201,11 @@ void get_password(string str, int i)
             input_to("enterWorld");
             return;
         }
-    }
-    else
-    {
-        if(!str)
-        {
+    } else {
+        if(!str) {
             write("Your user must have a password.\n");
             write("Please enter a password: ");
-            input_to("get_password", 1);
+            input_to("get_password", 1, 0);
             return;
         }
 
@@ -244,26 +219,19 @@ void get_password(string str, int i)
 void verify_password(string str, int i)
 {
     str = crypt(str, str);
-    if(str != user->query_password())
-    {
+    if(str != user->query_password()) {
         write("Your passwords do not match.\n");
         write("Please enter a password: ");
         input_to("get_password", 1, 1);
         return;
-    }
-    
-    else if(i != 2)
-    {
+    } else if(i != 2) {
         write("\nPlease input your public e-mail address: ");
         input_to("get_email");
         return;
-    }
-    
-    else
-    {
+    } else {
         write("\nYou may now login with the password you just set.\n");
         write("Please enter your password: ");
-        input_to("get_password", 1);
+        input_to("get_password", 1, 0);
         return;
 
     }
@@ -343,7 +311,7 @@ void idle_email(string str)
             rm("/adm/etc/new_install");
             write("\t\tSuccess [login]: You are now an admin.\n\n");
         }
-        
+
         user->set("email", email);
         write_file(LOG_DIR + "/" + LOG_NEWUSER, capitalize(user->query_name()) + " created a new account from "
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
@@ -380,7 +348,7 @@ void new_user(string str, string name)
         input_to("get_password", 1, 1);
         return;
     }
-    
+
     write("Please select another name then: ");
     input_to("get_name");
 }
@@ -411,7 +379,7 @@ void reconnect(string str)
         write(read + "\n");
         write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
         body = oldBody;
-        input_to("enterWorld"); 
+        input_to("enterWorld");
         return;
     }
 
@@ -454,7 +422,7 @@ void enterWorld(string str)
         else if (body->query_env("start_location")) body->move(body->query_env("start_location"));
         else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move(user_path(query_privs(user)) + "workroom.c");
     }
-    
+
     else body->move("/areas/lpuni/entrance.c");
 
     if(!environment(body)) body->move("/areas/lpuni/entrance.c");
@@ -487,7 +455,7 @@ void relogin()
 object create_body(string name)
 {
     string err;
-    
+
     if(origin() != "local") return 0;
 
     err = catch(body = new(user->query_bodyPath()));
@@ -517,7 +485,7 @@ string parseTokens(string text)
         text = replace_string(text, "%mud_name", mud_name());
         text = replace_string(text, "%users", implode(
             filter(users()->query_cap_name(), (: $1 != "login" :))[0..<2], ", ") +
-            ", and " + filter(users()->query_cap_name(), 
+            ", and " + filter(users()->query_cap_name(),
             (: $1 != "login" :) )[<1]);
         text = replace_string(text, "%user_count", "" + sizeof(users()));
         text = replace_string(text, "%date", ctime(time()));
@@ -525,11 +493,11 @@ string parseTokens(string text)
         text = replace_string(text, "%email", ADMIN_EMAIL);
         text = replace_string(text, "%lib_name", lib_name());
         text = replace_string(text, "%lib_version", lib_version());
-        text = replace_string(text, "%cap_mud_name", 
-            implode(explode(mud_name(), ""), (: capitalize($1) 
+        text = replace_string(text, "%cap_mud_name",
+            implode(explode(mud_name(), ""), (: capitalize($1)
             + capitalize($2) :)));
     };
-    
+
     return text;
 }
 

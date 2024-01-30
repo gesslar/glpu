@@ -9,7 +9,7 @@
 int main(object caller, object room, string args)
 {
      if(!args) return(notify_fail("Syntax: unalias <verb>\n"));
-     if(this_player()->remove_alias(args))
+     if(caller->remove_alias(args))
      {
           write("Success [aliases]: Verb '" + args + "' is now longer aliased.\n");
           return 1;

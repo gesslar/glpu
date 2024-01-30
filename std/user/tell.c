@@ -6,9 +6,6 @@
 //
 // 2022/08/24: Gesslar - Created
 
-void tell(string message, string cl)
-{
-    cl = cl || "tell_player" ;
-
+void tell(string message, string cl: (: "tell_player" :)) {
     message(cl, message, this_object()) ;
 }

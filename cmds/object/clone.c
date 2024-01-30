@@ -13,13 +13,13 @@ int main(object caller, object room, string str)
     object ob;
     string err, custom, tmp;
 
-    if(!str) str = this_player()->query("cwf");
+    if(!str) str = caller->query("cwf");
 
     if(!str) return(notify_fail("SYNTAX: clone <filename>\n"));
 
     if(str[<2..<1] != ".c") str += ".c";
 
-    str = resolve_path(this_player()->query("cwd"), str);
+    str = resolve_path(caller->query("cwd"), str);
 
     if(!file_exists(str)) return(notify_fail("Error [clone]: Unable to find file '" + str + "'.\n"));     
 
@@ -29,28 +29,28 @@ int main(object caller, object room, string str)
     if(stringp(err) || !ob)
     return(notify_fail("Error [clone]: An error was encountered when cloning the object:\n" + err + "\n"));
 
-    ob->move(environment(this_player()));
+    ob->move(environment(caller));
 
-    if(this_player()->query_env("custom_clone") && wizardp(this_player()))
-    custom = this_player()->query_env("custom_clone");
+    if(caller->query_env("custom_clone") && wizardp(caller))
+    custom = caller->query_env("custom_clone");
 
     if(custom)
     {
     tmp = custom;
     tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
-    tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
-    tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+    tmp = replace_string(tmp, "$N", caller->query_cap_name());
+    tell_room(environment(caller), capitalize(tmp) + "\n", caller);
     write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
     }
     else
     {
     write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
-    tell_room(environment(this_player()), 
-      capitalize(this_player()->query_name()) + " creates a '" + ob->query_short() + "'.\n", 
-      ({this_player()}));
+    tell_room(environment(caller), 
+      capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n", 
+      ({caller}));
     }
 
-    this_player()->set("cwf", str);
+    caller->set("cwf", str);
     return 1;
 }
 

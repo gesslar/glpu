@@ -21,7 +21,7 @@ int main(object caller, object room, string str)
 
         if(sscanf(str, ". %s", message))
         {
-            who = this_player()->query("retell");
+            who = caller->query("retell");
             sscanf(who, "%s@%s", who, where);
         }
         else
@@ -39,19 +39,19 @@ int main(object caller, object room, string str)
 
         if(message[0] == ':')
         {
-            c->send_emoteto(this_player(), who, where, message[1..<1]);
+            c->send_emoteto(caller, who, where, message[1..<1]);
             write(CYN + "You emote to " + capitalize(who) + "@" + where + ": " 
-                + NOR + capitalize(this_player()->query_name()) 
+                + NOR + capitalize(caller->query_name()) 
                 + " " + message[1..<1] + "\n");
         }
         else
         {
-            c->send_tell(this_player(), who, where, message);
+            c->send_tell(caller, who, where, message);
             write(CYN + "You tell " + capitalize(who) + "@" + where 
                 + ": " + NOR + message + "\n");
         }
 
-        this_player()->set("retell", who + "@" + where);
+        caller->set("retell", who + "@" + where);
 
         return 1;
     }
@@ -69,7 +69,7 @@ int main(object caller, object room, string str)
         return 1;
     }
 
-    if(user == this_player())
+    if(user == caller)
     {
 
         if(message[0] == ':')
@@ -78,33 +78,33 @@ int main(object caller, object room, string str)
         else
             write(CYN + "You tell yourself: " + NOR + message + "\n" + NOR);
 
-        tell_room(environment(this_player()), 
-            capitalize(this_player()->query_name()) 
-            + " starts talking to themselves.\n" + NOR, this_player());
-        this_player()->set("retell", query_privs(user));
+        tell_room(environment(caller), 
+            capitalize(caller->query_name()) 
+            + " starts talking to themselves.\n" + NOR, caller);
+        caller->set("retell", query_privs(user));
 
         return 1;
     }
 
     if(message[0] == ':')
     {
-        tell_object(user, CYN + this_player()->query_cap_name() + " " + NOR 
+        tell_object(user, CYN + caller->query_cap_name() + " " + NOR 
             + message[1..<1] + "\n" + NOR);
         write(CYN + "You emote to " + capitalize(who) + ": " + NOR 
-            + this_player()->query_cap_name() + " " + message[1..<1] 
+            + caller->query_cap_name() + " " + message[1..<1] 
             + "\n" + NOR);
     }
     
     else
     {
-        tell_object(user, CYN + capitalize((string)this_player()->query_name()) 
+        tell_object(user, CYN + capitalize((string)caller->query_name()) 
             + " tells you: " + NOR + message + "\n" + NOR);
         write(CYN + "You tell " + capitalize(who) + ": " + NOR + message 
             + "\n" + NOR);
     }
 
-    user->set("reply", query_privs(this_player()));
-    this_player()->set("retell", query_privs(user));
+    user->set("reply", query_privs(caller));
+    caller->set("retell", query_privs(user));
 
     return 1;
 }
@@ -114,7 +114,7 @@ string help(object caller)
     return(HIW + " SYNTAX:" + NOR + " tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"
       "are online. For example, if you type 'tell tacitus hey' then\n"
-      "he'll see '" + CYN + capitalize(this_player()->query_name()) +
+      "he'll see '" + CYN + capitalize(caller->query_name()) +
       " tells you:" + NOR + " hey'. If you use 'tell . <message>\n" +
       "it will send the message to the last person that you used tell to talk to.\n" +
       "You may also talk to a user on another mud in the I3 network using the\n" +

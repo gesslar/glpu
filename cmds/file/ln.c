@@ -15,8 +15,8 @@ int main(object caller, object room, string args)
      if(sscanf(args, "%s %s", file, refrence) != 2) 
           return(notify_fail("Syntax: ln <original file> <new refrence>\n"));
      
-     file = resolve_path(this_player()->query("cwd"), file);
-     refrence = resolve_path(this_player()->query("cwd"), refrence);           
+     file = resolve_path(caller->query("cwd"), file);
+     refrence = resolve_path(caller->query("cwd"), refrence);
      
      if(!file_exists(file)) return(notify_fail("Error [ln]: File '" + file + "' does not exist.\n"));
      if(file_exists(refrence)) return(notify_fail("Error [ln]: File '" + refrence + "' already exists.\n"));

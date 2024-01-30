@@ -14,7 +14,7 @@ string file_owner(string file) ;
 int file_lines(string file) ;
 int tail(string file) ;
 int log_file(string file, string str) ;
-void mkdirs(string path) ;
+string *explode_file(string file) ;
 
 // File: object
 int getoid(object ob) ;

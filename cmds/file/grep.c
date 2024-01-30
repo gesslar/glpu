@@ -300,7 +300,7 @@ private string grep_file (mapping opt, string pat, string file) {
   return "";
 }
 
-int main (string str) {
+int main(object caller, object room, string str) {
   int i;
   mixed *opt;
   string out, *files;
@@ -310,9 +310,9 @@ int main (string str) {
 
   if (sizeof(opt) < 3) {
     if (opt[0]["R"])
-      str = this_player()->query("cwd");
+      str = caller->query("cwd");
     else
-      str = this_player()->query("cwf");
+      str = caller->query("cwf");
 
     if (!stringp(str))
       return notify_fail("Type 'help grep' for information on how to use this command.\n");
@@ -337,7 +337,7 @@ int main (string str) {
     string dir, *r;
 
     r     = ({ });
-    files = filter(glob_array(opt[2..], this_player()->query("cwd")),
+    files = filter(glob_array(opt[2..], caller->query("cwd")),
       (: file_size($1) == -2 :));
 
     while (sizeof(files) > 0) {
@@ -350,11 +350,11 @@ int main (string str) {
 
     files = r;
   } else {
-    files = glob_array(opt[2..], this_player()->query("cwd"));
+    files = glob_array(opt[2..], caller->query("cwd"));
 
     if (sizeof(files) == 1 && file_size(files[0]) == -2)
       files = glob_array(({ files[1] + (files[1][<1] == '/' ? "*" : "/*") }),
-        this_player()->query("cwd"));
+        caller->query("cwd"));
 
     files = filter(files, (: file_size($1) >= 0 :));
   }

@@ -8,7 +8,7 @@
 
 int main(object caller, object room, string args)
 {
-  this_player()->save_user();
+  caller->save_user();
   write("Successful [save]: User saved.\n");
   return 1;
 }

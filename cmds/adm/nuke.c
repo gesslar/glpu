@@ -77,7 +77,7 @@ void confirm_nuke(string str, string user)
           rmdir(user_data_directory(user));
 
           write("\n%^GREEN%^Successful%^RESET%^ [nuke]: User '" + capitalize(user) + "' has been removed.\n");
-          log_file(LOG_NUKE, capitalize(query_privs(this_player())) + " nukes "
+          log_file(LOG_NUKE, capitalize(query_privs(caller)) + " nukes "
                 + capitalize(user) + " on " + ctime(time()) + "\n");
           return;
      }

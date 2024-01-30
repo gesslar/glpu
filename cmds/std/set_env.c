@@ -14,7 +14,7 @@ int main(object caller, object room, string str)
 
      if(!str)
      {
-          data = this_player()->list_env();
+          data = caller->list_env();
           if(!mapp(data)) return notify_fail("set_env: No environment values currently set.\n");
           else
           {
@@ -24,14 +24,14 @@ int main(object caller, object room, string str)
                for(i = 0; i < sizeof(keys); i ++)
                    message( "ignore_ansi", 
                         sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]), 
-                        this_player() );
+                        caller );
                return 1;
           }
      }
 
     sscanf(str, "%s %s", var_name, var_value);
     if(!var_name) var_name = str;
-    this_player()->set_env(var_name, var_value);
+    caller->set_env(var_name, var_value);
     if(!var_value) write("Success [set_var]: Value '" + var_name + "' cleared.\n");
     else write("Success [set_var]: Value '" + var_name + "' set to '" + var_value + "'.\n");
     return 1;

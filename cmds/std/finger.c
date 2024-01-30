@@ -27,7 +27,7 @@ string help(object caller)
     "existing user such as their e-mail address, last login\n"
     "rank, plan, etc. This command will be able to retrieve\n"
     "the information even if they are offline.\n";
-    if(devp(this_player())) ret += "\n %^BOLD%^See also:%^RESET%^ profile\n";
+    if(devp(caller)) ret += "\n %^BOLD%^See also:%^RESET%^ profile\n";
 
     return ret;
 }

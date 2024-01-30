@@ -17,7 +17,7 @@ int main(object caller, object room, string arg)
     ob = present(arg);
 
     if(!ob)
-    ob = present(arg, environment(this_player()));
+    ob = present(arg, environment(caller));
 
     if(!ob)
     ob = find_object(arg);

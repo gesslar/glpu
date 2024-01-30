@@ -3,8 +3,7 @@
 // mudlib: basis
 // date:   1992/09/05
 // author: Truilkan
-void mkdirs(string path)
-{
+void mkdirs(string path) {
     string *parts, dir;
     int j;
 

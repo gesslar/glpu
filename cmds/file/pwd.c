@@ -6,8 +6,8 @@
 
 int main()
 {
-     write("Current working directory: " + this_player()->query("cwd") + "\n");
-     write("Current working file: " + this_player()->query("cwf") + "\n");
+     write("Current working directory: " + caller->query("cwd") + "\n");
+     write("Current working file: " + caller->query("cwf") + "\n");
      return 1;
 }
 

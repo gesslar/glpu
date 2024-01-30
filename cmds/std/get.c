@@ -17,7 +17,7 @@ int main(object caller, object room, string arg)
     if(!arg)
     return(notify_fail("SYNTAX: get <object>\n"));
 
-    ob = present(arg, environment(this_player()));
+    ob = present(arg, environment(caller));
 
     if(!ob)
     return(notify_fail("Error [get]: The object '" + arg + "' can not be found.\n"));
@@ -25,11 +25,11 @@ int main(object caller, object room, string arg)
     if(ob->query("prevent_get") || ob->prevent_get())
     return(notify_fail("Error [get]: The object '" + arg + "' can not be picked up.\n"));
 
-    if(!ob->move(this_player()))
+    if(!ob->move(caller))
     return(notify_fail("Error [get]: Unable to get '" + arg + "'.\n"));
 
     write("Success [get]: You get a '" + ob->query_short() + "'\n");
-    say(capitalize(this_player()->query_name()) + " gets a '" + ob->query("short") + "'.\n");
+    say(capitalize(caller->query_name()) + " gets a '" + ob->query("short") + "'.\n");
 
     return 1;
 }

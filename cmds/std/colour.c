@@ -13,7 +13,7 @@ int main(object caller, object room, string str)
     case "start" :
     case "ansi" :
     case "begin" : {
-        this_player()->set_env("colour", "enabled");
+        caller->set_env("colour", "enabled");
         write("%^GREEN%^Success:%^RESET%^ Colour " + str + ".\n");
         return 1;
     }
@@ -23,7 +23,7 @@ int main(object caller, object room, string str)
     case "stop" :
     case "none" :
     case "kill" : {
-        this_player()->set_env("colour", "disabled");
+        caller->set_env("colour", "disabled");
         write("Success: Colour " + str + "\n");
         return 1;
     }
@@ -31,7 +31,7 @@ int main(object caller, object room, string str)
         write(XTERM256->get_color_list()) ;
         return 1 ;
     default : {
-        if(this_player()->query_env("colour") == "enabled")
+        if(caller->query_env("colour") == "enabled")
         {
         write("Colour: Colour is currently %^GREEN%^enabled%^RESET%^.\n");
         return 1;

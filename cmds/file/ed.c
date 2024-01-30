@@ -12,20 +12,20 @@ int main(object caller, object room, string file)
 {
     if (!file) 
     {
-        if(!this_player()->query("cwf"))
+        if(!caller->query("cwf"))
             return notify_fail("Error [ed]: No argument supplied.\n");
-        file = this_player()->query("cwf");
+        file = caller->query("cwf");
     }
 
-    file=resolve_path(this_player()->query("cwd"),file);
-    this_player()->set("cwf", file);
+    file=resolve_path(caller->query("cwd"),file);
+    caller->set("cwf", file);
 
     if(directory_exists(file)) 
     return notify_fail("Error: Can not edit a directory.\n");
 
     write(file + "\n");
     ed(file);
-    log_file(LOG_ED, capitalize(query_privs(this_player())) + " edited " + file 
+    log_file(LOG_ED, capitalize(query_privs(caller)) + " edited " + file 
         + " on " + ctime(time()) + "\n");
     return 1;
 }
