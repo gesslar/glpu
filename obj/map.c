@@ -7,18 +7,18 @@
 */
 
 /* INTRODUCTION
- * 
+ *
  * This object represents a map that is
  * parses from a file. Each line is a row (y)
- * in the map and each column (x) is also a 
- * column in the map. 
+ * in the map and each column (x) is also a
+ * column in the map.
  *
  * This object provides a few simple accesor functions
  * to get information from the map and to minipulate the
  * map.
  *
  * This should load on any MudOS mud and most likely ldmud,
- * dgd, and others with ease. 
+ * dgd, and others with ease.
  *
  */
 
@@ -47,7 +47,7 @@ void clear()
     mapSource = "";
 }
 
-/* Load a map from file 
+/* Load a map from file
  *
  * Will return 0 if file does not exist.
  * See comments on parseMap for further
@@ -80,8 +80,8 @@ string getMapSource()
     return mapSource;
 }
 
-/* Parses the map and creates 2D array 
- * 
+/* Parses the map and creates 2D array
+ *
  * This function can only be called internally.
  *
  * Returns -2 when unable to read file.
@@ -100,7 +100,7 @@ private int parseMap(string filename)
     return -2;
 
     fileExploded = explode(fileContents, "\n");
-    if(!arrayp(fileExploded) || sizeof(fileExploded) <= 0)
+    if(!pointerp(fileExploded) || sizeof(fileExploded) <= 0)
     return -3;
 
     map = allocate(sizeof(fileExploded));
@@ -148,7 +148,7 @@ varargs int getWidth(int y)
 int getHeight()
 {
     return sizeof(map);
-} 
+}
 
 /* Returns the tile type at the coordinates provided
  * Will return -1 for invalid or not existing coordinates
@@ -169,7 +169,7 @@ int setTileAt(mixed tileType, int x, int y)
     if(x < 0 || y < 0) return -1;
     if(y >= sizeof(map) || sizeof(map[y]) <= x) return 0;
     map[y][x] = tileType;
-    return 1;    
+    return 1;
 }
 
 /* Returns 1 if tile type at coordinates match the tiletype
@@ -184,4 +184,3 @@ int isTileType(mixed tileType, int x, int y)
     if(map[y][x] == tileType) return 1;
     else return 0;
 }
-

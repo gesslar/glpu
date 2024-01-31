@@ -43,7 +43,7 @@ mapping remove_item(string id) {
 }
 
 mapping add_item(mixed id, string desc) {
-    if(arrayp(id)) {
+    if(pointerp(id)) {
         int i;
 
         for(i = 0; i < sizeof(id); i++) {

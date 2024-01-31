@@ -379,7 +379,7 @@ int query_access(string directory, string id, int type)
 
 
     permissions = data[id];
-    if(!permissions || !arrayp(permissions) || sizeof(permissions) < 1) permissions = track_member(id, directory);
+    if(!permissions || !pointerp(permissions) || sizeof(permissions) < 1) permissions = track_member(id, directory);
 
     if(sizeof(permissions) < 1)
     {
@@ -393,7 +393,7 @@ int query_access(string directory, string id, int type)
     }
 
 
-    if(sizeof(permissions) < 1 || !arrayp(permissions))
+    if(sizeof(permissions) < 1 || !pointerp(permissions))
     {
 
 #ifdef DEBUG
@@ -495,7 +495,7 @@ string *track_member(string id, string directory)
     for(i = 0; i < sizeof(keys); i++)
     {
         groupData = query_group(keys[i]);
-        if(!arrayp(groupData) || sizeof(groupData) < 1) continue;
+        if(!pointerp(groupData) || sizeof(groupData) < 1) continue;
         if(member_array(id, groupData) != -1) return data[keys[i]];
     }
 
@@ -518,7 +518,7 @@ int isMember(string user, string group)
     if(!user || !group) return 0;
 
     data = groups[group];
-    if(!arrayp(data)) return 0;
+    if(!pointerp(data)) return 0;
 
     for(i = 0; i < sizeof(data); i++)
     {

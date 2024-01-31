@@ -38,7 +38,7 @@ varargs string finger_user(string username)
     {
         users = master()->query_group(group);
 
-        if(!arrayp(users) || sizeof(users) <= 0)
+        if(!pointerp(users) || sizeof(users) <= 0)
             return "Error: Group '" + group
              + "' does not exist or has no members.\n";
 

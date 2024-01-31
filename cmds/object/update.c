@@ -38,7 +38,7 @@ int main(object caller, object room, string file) {
         return 1;
     }
 
-    if(arrayp(users)) users->move(obj, 1);
+    if(pointerp(users)) users->move(obj, 1);
     write("Successful [update]: " +  file+" was updated.\n");
     return 1;
 }
