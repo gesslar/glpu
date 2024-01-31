@@ -25,7 +25,7 @@ int main(object caller, object room, string arguments)
      }
      else
      {
-          write("Success [system_update]: System objects updated succesfuly\n");
+          write("Success [system_update]: System objects updated successfully\n");
           return 1;
      }
 

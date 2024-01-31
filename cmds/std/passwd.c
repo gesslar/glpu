@@ -59,7 +59,7 @@ int confirm_NewPassword(string str, object caller, string pass)
      else
      {
           if(caller->query_link()->set_password(str))
-            write("\nSuccess: Password changed succesfuly.\n");
+            write("\nSuccess: Password changed successfully.\n");
           else write("\nError: Unable to change password.\n");
           return 1;
      }
