@@ -406,13 +406,11 @@ int commandHook(string arg) {
                         returnValue = 0 ;
                     } else {
                         if(returnValue[<1] != '\n') returnValue += "\n" ;
-                        message("error", returnValue, this_object()) ;
+                        message("info", returnValue, this_object()) ;
                         return 1 ;
                     }
                 }
             }
-
-            return 1 ;
         }
 
         return returnValue;
