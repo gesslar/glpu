@@ -7,7 +7,5 @@
 #
 # Local channel network -- localNet
 /adm/daemons/chmodules/chdmod_localNet
-# Intermud 3 Network - I3
-/adm/daemons/chmodules/chdmod_i3
 # Announce Net -- announceNet
 /adm/daemons/chmodules/announceNet

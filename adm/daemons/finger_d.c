@@ -24,7 +24,7 @@ inherit DAEMON ;
 mixed get_user(string username);
 mixed get_body(object user);
 
-varargs string finger_user(string username, string where)
+varargs string finger_user(string username)
 {
     string ret, group, *users;
     string rank, last_t, last, idle, plan, away;
@@ -34,68 +34,61 @@ varargs string finger_user(string username, string where)
 
     username = lower_case(username);
 
-    if(where)
-    {
-        packet = ({ "finger-req", 5, mud_name(), query_privs(this_player()), where, 0, username });
-        "/adm/daemons/chmodules/chdmod_i3.c"->send_packet(packet);
-        return "";
-    }
-    
     if(sscanf(username, "(%s)", group))
     {
         users = master()->query_group(group);
-        
+
         if(!arrayp(users) || sizeof(users) <= 0)
-            return "%^RED%^Error:%^RESET%^ Group '" + group 
+            return "%^RED%^Error:%^RESET%^ Group '" + group
              + "' does not exist or has no members.\n";
-            
+
         ret = BORDER1;
         ret += "\t\t%^BOLD%^GROUP:%^RESET%^ " + group + "\n";
         ret += BORDER1;
         ret += sprintf("%-20s %-40s %s\n", "Login", "Rank", "On");
         ret += BORDER1;
-        
+
         foreach(username in users)
         {
             if(sscanf(username, "(%*s)"))
                 ret += sprintf("%-20s %-40s %s\n", username, "(GROUP)", "---");
             else
-            {                
-                                
+            {
+
                  if(find_player(username))
                  {
                      last_t = "On Since";
                      body = find_player(username);
                      last = ctime(body->query("last_login"));
                  }
-                 
+
                  else
                  {
                      if(!objectp(body = get_body(get_user(username)))) continue;
-                     
-                     else 
+
+                     else
                      {
                          last_t = "Last on";
                          last =  ctime(body->query("last_login"));
                          destruct(body);
                      }
-                     
-                 }    
-                 
-                 
+
+                 }
+
+
                  if(adminp(username)) rank = "%^BOLD%^RED%^Admin%^RESET%^";
                  else if(devp(username)) rank = "%^BOLD%^BLUE%^Developer%^RESET%^";
                  else rank = "%^GREEN%^User%^RESET%^";
 
-                 ret += sprintf("%-20s %-40s %s\n", 
+                 ret += sprintf("%-20s %-40s %s\n",
                      capitalize(username), rank, last_t + " " + last);
             }
         }
 
         return ret += BORDER1;
-        
+
     }
-    
+
     else
     {
 
@@ -109,7 +102,7 @@ varargs string finger_user(string username, string where)
             else
             {
                 away = find_player(username)->query_env("away");
-                
+
                 if(query_idle(body))
                 {
                     idle_time = query_idle(body)/60;
@@ -155,7 +148,7 @@ varargs string finger_user(string username, string where)
         if(!interactive(user)) destruct(user);
     }
     return ret;
-    
+
 }
 
 mixed get_user(string username)
@@ -193,4 +186,3 @@ mixed get_body(object user)
 
      return body;
 }
-

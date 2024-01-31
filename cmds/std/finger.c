@@ -11,9 +11,6 @@ int main(object caller, object room, string user)
 
     if(!user) return(notify_fail("Syntax: finger <user>\n"));
 
-    if(sscanf(user, "%s@%s", who, where) == 2)
-    FINGER_D->finger_user(who, where);
-    else
     write(FINGER_D->finger_user(user));
 
     return 1;

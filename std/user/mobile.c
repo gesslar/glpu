@@ -20,7 +20,6 @@ inherit OBJECT;
 
 inherit __DIR__ "alias";
 inherit __DIR__ "tell" ;
-inherit M_SETUP ;
 
 /* Global Variables */
 

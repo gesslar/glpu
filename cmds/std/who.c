@@ -28,14 +28,6 @@ int main(object caller, object room, string arg)
 
     /* Fixed your error. Tricky */
 
-    if(arg && sscanf(arg, "@%s", mudname) == 1)
-    {
-        c = load_object("/adm/daemons/chmodules/chdmod_i3.c");
-        packet = ({ "who-req", 5, mud_name(), caller->query_name(), mudname, 0 });
-        c->send_packet(packet);
-        return 1;
-    }
-
     ret +=
     "\t%^BOLD%^%^WHITE%^ _       _____   _    _         %^RESET%^RED%^_%^RESET%^BOLD%^WHITE%^ \n%^RESET%^"
     "\t%^BOLD%^%^WHITE%^| |     |  __ \\ | |  | |       (%^RESET%^RED%^_%^RESET%^BOLD%^WHITE%^)\n%^RESET%^"

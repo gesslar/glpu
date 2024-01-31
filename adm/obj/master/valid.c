@@ -179,9 +179,9 @@ string *parse(string str)
 
     arr = explode(str, "\n");
 
-    for (i = 0; i < sizeof(arr); i++) 
+    for (i = 0; i < sizeof(arr); i++)
     {
-        if (arr[i][0] == '#') 
+        if (arr[i][0] == '#')
         {
             arr[i] = 0;
             continue;
@@ -189,7 +189,7 @@ string *parse(string str)
         arr[i] = replace_string(arr[i], " ", "");
         arr[i] = replace_string(arr[i], "\t", "");
     }
-    
+
     return arr;
 }
 
@@ -243,12 +243,9 @@ int valid_object(object ob)
     return 0;
 }
 
-int valid_override(string file, string efun_name, string mainfile)
-{
-
-    if (mainfile == "/adm/obj/simul_efun.c") {
-    return 1;
-    }
+int valid_override(string file, string efun_name, string mainfile) {
+    if (mainfile == "/adm/obj/simul_efun.c") return 1 ;
+    if (mainfile == "/adm/simul_efun/overrides.c") return 1 ;
     if(efun_name == "destruct" && mainfile == "/std/object/object.c") return 1;
     if(efun_name == "ed") return 1;
     return 0;
@@ -273,14 +270,14 @@ int valid_read(string file, object user, string func)
 
     if(this_interactive() && query_privs(user) != "[daemon]")
         name = query_privs(this_interactive());
-        
+
     else name = query_privs(user);
     if(!name) name = "noname";
 
     if( strlen(file) > strlen(user_data_directory(name)) )
     {
-        if( file[0..(strlen(user_data_directory(name))-1)] 
-              == user_data_directory(name) ) 
+        if( file[0..(strlen(user_data_directory(name))-1)]
+              == user_data_directory(name) )
             return 1;
     }
 

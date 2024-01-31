@@ -13,50 +13,17 @@ inherit CMD ;
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);
 
-int main(object caller, object room, string str)
+mixed main(object caller, object room, string str)
 {
-    string who, message, where;
+    string who, message;
     object user, c;
 
-    if(!sscanf(str, "%s@%s: %s", who, where, message))
-    {
 
-        if(sscanf(str, ". %s", message))
-        {
-            who = caller->query("retell");
-            sscanf(who, "%s@%s", who, where);
-        }
-        else
-        if(!sscanf(str, "%s %s", who, message))
-            return(notify_fail("Usage: tell <player> <message>\n"));
-
-    }
+    if(!sscanf(str, "%s %s", who, message) != 2)
+        return "Usage: tell <player> <message>\n" ;
 
     if(!message)
-        return(notify_fail("Incorrect syntax, please check the help.\n"));
-
-    if(where)
-    {
-        c = load_object("/adm/daemons/chmodules/chdmod_i3.c");
-
-        if(message[0] == ':')
-        {
-            c->send_emoteto(caller, who, where, message[1..<1]);
-            write(CYN + "You emote to " + capitalize(who) + "@" + where + ": "
-                + NOR + capitalize(caller->query_name())
-                + " " + message[1..<1] + "\n");
-        }
-        else
-        {
-            c->send_tell(caller, who, where, message);
-            write(CYN + "You tell " + capitalize(who) + "@" + where
-                + ": " + NOR + message + "\n");
-        }
-
-        caller->set("retell", who + "@" + where);
-
-        return 1;
-    }
+        return "Incorrect syntax, please check the help.\n" ;
 
     user = find_player(lower_case(who));
 
