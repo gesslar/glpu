@@ -1,11 +1,11 @@
  # Mudlib Documentation
- 
+
    File    : /adm/obj/login.c
    Brief   : Handles logins of users
    Author  : Tacitus @ LPUniversity
-   Date    : 06-Oct-06 
-   Updated : 06-Oct-06 
-   
+   Date    : 06-Oct-06
+   Updated : 06-Oct-06
+
   I. Introduction
  II. Walk through
 III. E-mail host verification
@@ -41,7 +41,7 @@ as the splash (which, by default is /adm/etc/login/splash).
 After the user has provided a username, if the account exists then it
 will ask for a password otherwise it will ask the user if they wish
 to create an account. An exception is if they supply "guest" as a username,
-in this case they will immedaitly be logged in to the "guest" account. 
+in this case they will immediately be logged in to the "guest" account.
 
 NEW USER:
 
@@ -49,10 +49,10 @@ New users will be prompted for the following information by default:
 
  * password (asked to enter twice for confirmation)
  * The user's e-mail address
- 
+
 If EMAIL_MUST_RESOLVE is defined then it will require that the hostname
 of the e-mail address provided resolve. This is disabled by default for
-obvisous reasons.
+obvious reasons.
 
 Notes:
 
@@ -60,7 +60,7 @@ Notes:
 - The user's e-mail address must be in the format <username>@<hostname>
 - When entering the password, local echo is disabled.
 
-After the e-mail address has been collected succesfully, if the file
+After the e-mail address has been collected successfully, if the file
 /adm/etc/new_install exists then the user will be automatically made
 a developer with admin access (as well as setup their home directory).
 
@@ -73,17 +73,17 @@ RETURNING USER:
 A returning user will be prompted for the following information by default:
 
  * password
- 
+
 The password they provide will be encrypted using their password and
 compared to the password on file. If they match, the user will be authenticated
 and the login process will continue. If they do not match, the user will
 be asked to try again. There is currently no limit to the number of times they
 may try (However, the login object will auto destruct in 60 seconds of
-conception if the user is not authenticated by that time). 
+conception if the user is not authenticated by that time).
 
 After authenticating, if this user is already logged in then the option
 to displace (disconnect and take over the body) or to create a new instance
-is provided. 
+is provided.
 
 RETURNING USER + NEW USER:
 
@@ -143,7 +143,7 @@ By default, the following tokens exist:
 
 TOKEN           DESCRIPTION                   EXAMPLE
 ------------------------------------------------------
-%mud_name       Mud's name                    LPUniversity 
+%mud_name       Mud's name                    LPUniversity
 %cap_mud_name   Mud's name in all caps        LPUNIVERSITY
 %users          List of logged in users       Tacitus, Eugenides, and Vicore
 %date           Current date and time         Fri Oct  6 05:02:51 2006
@@ -156,7 +156,7 @@ V. Lock down daemon
 
 The LPUniversity has a very powerful lock down daemon.
 At the time of writing, the lock down daemon documentation
-has not been completed (though it would be in /doc/mudlib/daemons/ if 
+has not been completed (though it would be in /doc/mudlib/daemons/ if
 it were). Several checks to the lock down daemon are made throughout
 the login process (ie. to see if a name is banned, if an ip address
 is banned, if developers are locked out, if users are locked out, if
