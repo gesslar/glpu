@@ -35,5 +35,5 @@ mixed main(object tp, object room, string arg) {
 
     tp->set_cwd(path) ;
 
-    return "Current working directory set to: " + path ;
+    return "Success [work]: CWD set to " + path ;
 }
