@@ -28,8 +28,8 @@ int set_short(string str);
 int set_long(string str);
 string query_short();
 string query_long();
-int receive_object(object ob);
-int release_object(object ob);
+int can_receive(object ob);
+int can_release(object ob);
 
 void create() {
     init_ob() ;
@@ -68,11 +68,11 @@ int moveAllowed(mixed dest) {
     if(!objectp(ob))
         return 0;
 
-    if(!ob->receive_object(this_object()))
+    if(!ob->can_receive(this_object()))
         return 0;
 
     if(environment())
-        if(!environment()->release_object(this_object()))
+        if(!environment()->can_release(this_object()))
             return 0;
 
     return 1;
@@ -162,12 +162,12 @@ string query_long()
      return long;
 }
 
-int receive_object(object ob)
+int can_receive(object ob)
 {
      return 1;
 }
 
-int release_object(object ob)
+int can_release(object ob)
 {
     return 1;
 }
