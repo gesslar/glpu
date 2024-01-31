@@ -2,10 +2,10 @@
 // Command to show all inheritables of a given object
 // Recursively showing as an inheritance tree
 //
-// Created:     2024/01/31: Gesslar
+// Created:     ????/??/??: ?????
 // Last Change: 2024/01/31: Gesslar
 //
-// 2024/01/31: Gesslar - Created
+// ????/??/??: Gesslar - ?????
 
 inherit STD_CMD ;
 
