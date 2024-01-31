@@ -25,7 +25,7 @@ int main()
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "callouts\n\n"
+     return(" SYNTAX: callouts\n\n"
      "This comand will return information about currently active callouts.\n"
      "When you call this command, it will inform you of each object with\n"
      "an active callout, what function will be called, and how many\n"

@@ -25,7 +25,7 @@ int main(object caller, object room, string args)
      if(!devp(query_privs(user))) return(notify_fail("Error [makedev]: That user is not a developer.\n"));
 
      write("Revoking developer access for '" + capitalize(user->query_name()) + "'.\n");
-     tell_object(user, "\n%^BOLD%^RED%^Developer Access Revoked.%^RESET%^\n");
+     tell_object(user, "\nDeveloper Access Revoked.\n");
      user->rem_path("/cmds/wiz/");
      user->rem_path("/cmds/object/");
      user->rem_path("/cmds/file/");
@@ -45,10 +45,10 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^ revdev <user>\n\n"
+     return(" SYNTAX: revdev <user>\n\n"
      "This command will revoke a user's developer access to\n"
      "the mud by removing them from the group 'developer' and\n"
      "by removing the directories '/cmds/wiz/', '/cmds/object/'\n"
      "and '/cmds/file/' from the user's command path.\n\n"
-     "%^BOLD%^See also:%^RESET%^ makedev\n");
+     "See also: makedev\n");
 }

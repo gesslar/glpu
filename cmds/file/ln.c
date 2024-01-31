@@ -34,7 +34,7 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ ln <original file> <new refrence>\n\n"
+     return(" SYNTAX: ln <original file> <new refrence>\n\n"
      "This command is a very powerful tool that allows you to create a\n"
      "file that refrences to another file. This means when you access\n"
      "the new file you created with this command, you'll be actually\n"

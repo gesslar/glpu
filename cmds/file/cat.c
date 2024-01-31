@@ -33,7 +33,7 @@ int main(object caller, object room, string str)
 }
 
 string help(object caller) {
-     return (HIW + " SYNTAX: " + NOR + "cat <file>\n\n" +
+     return (" SYNTAX: cat <file>\n\n" +
     "This command pages through an entire file at once.\n");
 
 }

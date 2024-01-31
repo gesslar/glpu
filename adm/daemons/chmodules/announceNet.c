@@ -37,11 +37,10 @@ int rec_msg(string chan, string usr, string msg)
 
     if(!adminp(usr)) return 0;
 
-    CHAN_D->rec_msg(chan,  "[%^MAGENTA%^"  + capitalize(chan) + NOR + "] " + HIW
-        + capitalize(usr) + NOR + ": " + msg + "\n");
+    CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n");
 
-    history += ({ ctime(time()) + " [%^MAGENTA%^" + capitalize(chan) + NOR + "] "
-            + HIW + capitalize(usr) + NOR + ": " + msg + "\n" + NOR });
+    history += ({ ctime(time()) + " [" + capitalize(chan) + "] " +
+            capitalize(usr) + ": " + msg + "\n" });
 
     return 1;
 }
@@ -49,11 +48,11 @@ int rec_msg(string chan, string usr, string msg)
 void announce_login(string user)
 {
     CHAN_D->rec_msg("announce",
-         "[%^MAGENTA%^Announce%^RESET%^]%^RED%^ System%^RESET%^: "
+         "[Announce] System: "
              + capitalize(user) + " has logged into "
             + mud_name() + ".\n");
     history += ({ ctime(time())
-        + " [%^MAGENTA%^Announce%^RESET%^]%^RED%^ System%^RESET%^: "
+        + " [Announce] System: "
              + capitalize(user) + " has logged into "
             + mud_name() + ".\n" });
 }
@@ -61,11 +60,11 @@ void announce_login(string user)
 void announce_logoff(string user)
 {
     CHAN_D->rec_msg("announce",
-         "[%^MAGENTA%^Announce%^RESET%^]%^RED%^ System%^RESET%^: "
+         "[Announce] System: "
              + capitalize(user) + " has left "
             + mud_name() + ".\n");
     history += ({ ctime(time())
-        + " [%^MAGENTA%^Announce%^RESET%^]%^RED%^ System%^RESET%^: "
+        + " [Announce] System: "
              + capitalize(user) + " has left "
             + mud_name() + ".\n" });
 }

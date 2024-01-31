@@ -19,7 +19,7 @@ int main(object caller, object room, string name)
     else path = path +TPN;
 
     if(!file_exists(path))
-        return notify_fail("%^RED%^Error:%^RESET%^ "
+        return notify_fail("Error: "
          "No journal user '" + capitalize(name) + "' exists.\n");
 
     write("Journal: " + path + "\n\n");
@@ -31,7 +31,7 @@ int main(object caller, object room, string name)
 
 string help(object caller)
 {
-    return " %^BOLD%^SYNTAX:%^RESET%^ jlo [<username>]\n\n"
+    return " SYNTAX: jlo [<username>]\n\n"
        "This command will return the last ten lines \n"
        "from the wizard's journal entry.  If no argument \n"
        "is given, the current user's name will be used.\n";

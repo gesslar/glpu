@@ -98,7 +98,7 @@ object *addArray( object  *oldArr, object *newArr)
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX: " + NOR + "people\n\n"
+    return(" SYNTAX: people\n\n"
       "This command allows you to see all users logged in. They are\n"
       "displayed with their name, rank, ip, location, and minutes of idle\n"
       "time.\n");

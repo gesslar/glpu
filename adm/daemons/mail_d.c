@@ -123,8 +123,8 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
         if(find_player(to_be_notified[i]) && find_player(to_be_notified[i])->query_env("biff") != "off")
                 tell_object(find_player(to_be_notified[i]),
 
-                "\n >>> %^BOLD%^YELLOW%^New mail has arrived from:%^RESET%^ " + mail["FROM"] +
-                "\n >>> %^CYAN%^Subject:%^RESET%^ " + mail["SUBJECT"] + "\n\n");
+                "\n >>> New mail has arrived from: " + mail["FROM"] +
+                "\n >>> Subject: " + mail["SUBJECT"] + "\n\n");
 
     if(file_exists(get_mail_box_file(owner)))
         restore_object(get_mail_box_file(owner));
@@ -257,7 +257,7 @@ mapping restore(string user)
     rtn["in_start_index"] = in_start_index;
     rtn["in_end_index"] = in_end_index;
     rtn["out_start_index"] = out_start_index;
-    rtn["out_end_index"] = out_end_index;    
+    rtn["out_end_index"] = out_end_index;
 
     return rtn;
 }//END restore
@@ -276,4 +276,3 @@ void save(string user, mapping in_box, mapping out_box, int *indices)
     save_object(get_mail_box_file(user));
     return;
 }//END save
-

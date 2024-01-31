@@ -26,11 +26,11 @@ int main(object caller, object room, string str)
         dir = resolve_path(caller->query("cwd"), dir) + "/";
 
         if(!directory_exists(dir))
-            return notify_fail(RED + "Error:" + NOR + " [rm]: " + str + " is not a directory.\n");
+            return notify_fail("Error: [rm]: " + str + " is not a directory.\n");
 
         if(!(int)master()->valid_write(dir, caller, "rmdir"))
         {
-            write(RED + "Error" + NOR + " [rm]: Permission denied.\n");
+            write("Error [rm]: Permission denied.\n");
             return 1;
         }
 
@@ -44,15 +44,15 @@ int main(object caller, object room, string str)
     str = resolve_path(caller->query("cwd"), str);
 
     if(directory_exists(str) || !file_exists(str))
-        return notify_fail(RED + "Error" + NOR + " [rm]: " + str + " is not a file.\n");
+        return notify_fail("Error [rm]: " + str + " is not a file.\n");
 
     if(!(int)master()->valid_write(str, caller, "rm"))
     {
-        write(RED + "Error" + NOR + " [rm]: Permission denied.\n");
+        write("Error [rm]: Permission denied.\n");
         return 1;
     }
 
-    write(rm(str) ? HIG + "Success" + NOR + " [rm]: File removed.\n" : RED + "Error" + NOR + " [rm]: Could not remove file.\n");
+    write(rm(str) ? "Success [rm]: File removed.\n" : "Error [rm]: Could not remove file.\n");
     return 1;
 }
 
@@ -82,8 +82,8 @@ void start_delete()
 
     } while(sizeof(contents) > 0);
 
-    write(rmdir(dir) ? HIG + "Success:" + NOR + " [rm]: All files and folders deleted successfully.\n" :
-        RED + "Error:" + NOR + " [rm]: All files and folders could not be deleted.\n");
+    write(rmdir(dir) ? "Success: [rm]: All files and folders deleted successfully.\n" :
+        "Error: [rm]: All files and folders could not be deleted.\n");
 
     return;
 }
@@ -118,7 +118,7 @@ void handle_delete(string contents)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "rm <file name | -r dir name>" + "\n\n" +
+    return (" SYNTAX: rm <file name | -r dir name>" + "\n\n" +
     "This command permanantly removes a file. Please note that there is no\n" +
     "'Recycle Bin'. You must be extra careful when dealing with important files.\n" +
     "You may also use the -r option to recursively remove all files and folders\n" +

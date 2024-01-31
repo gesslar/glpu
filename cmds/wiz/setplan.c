@@ -16,8 +16,7 @@ mapping in_edits = ([]);
 void write_plan();
 int delete_plan();
 
-int main(object caller, object room, string arg)
-{
+int main(object caller, object room, string arg) {
     string tmp = "";
     string user = this_player()->query_name();
 
@@ -40,18 +39,15 @@ int main(object caller, object room, string arg)
     return 1;
 }
 
-int get_text(string arg)
-{
-    if(arg == "~q")
-    {
-    write("\nSetplan not modified.\n\n");
-    return 1;
+int get_text(string arg) {
+    if(arg == "~q") {
+        write("\nSetplan not modified.\n\n");
+        return 1;
     }
 
-    if(arg == ".")
-    {
-    write_plan();
-    return 1;
+    if(arg == ".") {
+        write_plan();
+        return 1;
     }
 
     in_edits[this_player()->query_name()][0] += arg + "\n";
@@ -61,65 +57,50 @@ int get_text(string arg)
     return 1;
 }
 
-int delete_plan()
-{
+int delete_plan() {
     string file = "/home/" + this_player()->query_name()[0..0] + "/" + this_player()->query_name() + "/.plan";
 
     map_delete(in_edits, this_player()->query_name());
 
     if(!rm(file))
-    return notify_fail(RED + "\nError" + NOR + " [setplan]: could not delete plan file\n");
-    else
-    {
-    write(HIG + "\nSuccess" + NOR + " [setplan]: plan successfully deleted\n");
-    return 1;
+        return notify_fail("\nError [setplan]: could not delete plan file\n");
+    else {
+        write("\nSuccess [setplan]: plan successfully deleted\n");
+        return 1;
     }
 }
 
-void write_plan()
-{
+void write_plan() {
     string file = "/home/" + this_player()->query_name()[0..0] + "/" + this_player()->query_name() + "/.plan";
 
     if(!in_edits[this_player()->query_name()][0] || in_edits[this_player()->query_name()][0] == "") get_text("~q");
 
-    if(in_edits[this_player()->query_name()][1] == 1)
-    {
-    if(!write_file(file, in_edits[this_player()->query_name()][0], 1))
-    {
-        write(RED + "\nError" + NOR + " [setplan]: New plan could not be created\n\n");
-        map_delete(in_edits, this_player()->query_name());
-        return;
+    if(in_edits[this_player()->query_name()][1] == 1) {
+        if(!write_file(file, in_edits[this_player()->query_name()][0], 1)) {
+            write("\nError [setplan]: New plan could not be created\n\n");
+            map_delete(in_edits, this_player()->query_name());
+            return;
+        } else {
+            write("\nSuccess [setplan]: New plan created\n\n");
+            map_delete(in_edits, this_player()->query_name());
+            return;
+        }
+    } else {
+        if(!write_file(file, in_edits[this_player()->query_name()][0])) {
+            write("\nError [setplan]: Plan could not be appended to\n\n");
+            map_delete(in_edits, this_player()->query_name());
+            return;
+        } else {
+            write("\nSuccess [setplan]: Plan successfully edited\n\n");
+            map_delete(in_edits, this_player()->query_name());
+            return;
+        }
     }
-    else
-    {
-        write(HIG + "\nSuccess" + NOR + " [setplan]: New plan created\n\n");
-        map_delete(in_edits, this_player()->query_name());
-        return;
-    }
-    }
-    else
-    {
-    if(!write_file(file, in_edits[this_player()->query_name()][0]))
-    {
-        write(RED + "\nError" + NOR + " [setplan]: Plan could not be appended to\n\n");
-        map_delete(in_edits, this_player()->query_name());
-        return;
-    }
-    else
-    {
-        write(HIG + "\nSuccess" + NOR + " [setplan]: Plan successfully edited\n\n");
-        map_delete(in_edits, this_player()->query_name());
-        return;
-    }
-    }
-
-    return;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return
-    HIW + " SYNTAX:" + NOR + " setplan [-o|-d]\n\n" +
+    " SYNTAX: setplan [-o|-d]\n\n" +
     "This command allows you to edit your plan that is shown in your finger\n"+
     "information. If you use the '-o' option then your plan will be overwritten\n"+
     "otherwise what you type in will be appended to your current plan. You \n"+

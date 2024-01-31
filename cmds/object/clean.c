@@ -47,7 +47,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "clean <object>\n\n"
+     return(" SYNTAX: clean <object>\n\n"
      "This command will destory all objects within another object (aka\n"
      "the objects inventory). Your argument may be an object that is\n"
      "in your inventory, your environment, or a filename. If you do\n"

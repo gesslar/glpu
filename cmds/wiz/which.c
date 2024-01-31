@@ -62,7 +62,7 @@ int main(object caller, object room, string args)
     }
 
 
-    if(!isLocated) return notify_fail("%^RED%^Error:%^RESET%^ '" + args
+    if(!isLocated) return notify_fail("Error: '" + args
         + "' not found in " +  implode(commandPath, ", ")
          + " nor via a local add_action, alias, soul, or exit.\n");
 
@@ -71,9 +71,9 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-    return " %^BOLD%^SYNTAX:%^RESET%^ which <verb/command>\n\n"
+    return " SYNTAX: which <verb/command>\n\n"
     "This command will search through your command path, local\n"
     "and global aliases, through local verbs added via add_action,\n"
     "souls, and exits for the specified command (aka verb).\n\n"
-    " %^BOLD%^See also:%^RESET%^ path, alias\n";
+    " See also: path, alias\n";
 }

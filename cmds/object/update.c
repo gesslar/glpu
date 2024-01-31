@@ -44,7 +44,7 @@ int main(object caller, object room, string file) {
 }
 
 string help(object caller) {
-     return (HIW + " SYNTAX: " + NOR + "update <file>\n\n" +
+     return ("SYNTAX: update <file>\n\n" +
      "The update command loads the specified file. If no argument is given,\n"
      "then it will reloads the current working file. You can also specify here\n"
      "to update the enviroment you are in. Updating a file only affects the\n"

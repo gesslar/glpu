@@ -80,7 +80,7 @@ int main()
 }
 string help(object caller)
 {
-    return " %^BOLD%^SYNTAX:%^RESET%^ jcheck\n\n"
+    return " SYNTAX: jcheck\n\n"
     "This cmd will check the /doc/journal directory for any \n"
     "file that has been changed since the last time you've \n"
     "checked.\n";

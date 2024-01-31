@@ -42,14 +42,14 @@ mixed main(object caller, object room, string str)
     {
 
         if(message[0] == ':')
-            write(CYN + "You emote to yourself: " + NOR + user->query_cap_name()
-                + " " + message[1..<1] + "\n" + NOR);
+            write("You emote to yourself: " + user->query_cap_name()
+                + " " + message[1..<1] + "\n");
         else
-            write(CYN + "You tell yourself: " + NOR + message + "\n" + NOR);
+            write("You tell yourself: " + message + "\n");
 
         tell_room(environment(caller),
             capitalize(caller->query_name())
-            + " starts talking to themselves.\n" + NOR, caller);
+            + " starts talking to themselves.\n", caller);
         caller->set("retell", query_privs(user));
 
         return 1;
@@ -57,19 +57,17 @@ mixed main(object caller, object room, string str)
 
     if(message[0] == ':')
     {
-        tell_object(user, CYN + caller->query_cap_name() + " " + NOR
-            + message[1..<1] + "\n" + NOR);
-        write(CYN + "You emote to " + capitalize(who) + ": " + NOR
-            + caller->query_cap_name() + " " + message[1..<1]
-            + "\n" + NOR);
+        tell_object(user, caller->query_cap_name() + " " +
+            message[1..<1] + "\n");
+        write("You emote to " + capitalize(who) + ": " +
+            caller->query_cap_name() + " " + message[1..<1] + "\n");
     }
 
     else
     {
-        tell_object(user, CYN + capitalize((string)caller->query_name())
-            + " tells you: " + NOR + message + "\n" + NOR);
-        write(CYN + "You tell " + capitalize(who) + ": " + NOR + message
-            + "\n" + NOR);
+        tell_object(user, capitalize((string)caller->query_name())
+            + " tells you: " + message + "\n");
+        write("You tell " + capitalize(who) + ": " + message + "\n");
     }
 
     user->set("reply", query_privs(caller));
@@ -80,14 +78,14 @@ mixed main(object caller, object room, string str)
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX:" + NOR + " tell <player>[@<mud>: | . | :]<message>\n\n"
+    return(" SYNTAX: tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"
       "are online. For example, if you type 'tell tacitus hey' then\n"
-      "he'll see '" + CYN + capitalize(caller->query_name()) +
-      " tells you:" + NOR + " hey'. If you use 'tell . <message>\n" +
+      "he'll see '" + capitalize(caller->query_name()) +
+      " tells you: hey'. If you use 'tell . <message>\n" +
       "it will send the message to the last person that you used tell to talk to.\n" +
       "You may also talk to a user on another mud in the I3 network using the\n" +
       "'tell <user>@<mud>: <message>' syntax. You may also emote to another playter\n" +
       "using the tell <user> :<message> syntax.\n\n" +
-      HIW + "See also: " + NOR + "say, channel\n");
+      "See also: say, channel\n");
 }

@@ -29,12 +29,12 @@ int main(object caller, object room, string arg)
     /* Fixed your error. Tricky */
 
     ret +=
-    "\t%^BOLD%^%^WHITE%^ _       _____   _    _         %^RESET%^RED%^_%^RESET%^BOLD%^WHITE%^ \n%^RESET%^"
-    "\t%^BOLD%^%^WHITE%^| |     |  __ \\ | |  | |       (%^RESET%^RED%^_%^RESET%^BOLD%^WHITE%^)\n%^RESET%^"
-    "\t%^BOLD%^%^WHITE%^| |     | |__) || |  | | _ __   %^RESET%^BLUE%^_%^RESET%^BOLD%^WHITE%^ \n%^RESET%^"
-    "\t%^BOLD%^%^BLUE%^| |     %^BOLD%^%^WHITE%^|  ___/ | |  | || '_ \\ | |\n%^RESET%^"
-    "\t%^BOLD%^%^BLUE%^| |____ | |     | |__| || | | || |\n%^RESET%^"
-    "\t%^BOLD%^%^BLUE%^|______||_|      \\____/ |_| |_|%^BOLD%^%^WHITE%^|%^RESET%^%^BLUE%^_%^BOLD%^WHITE%^|\n\n\n%^RESET%^";
+    "\t _       _____   _    _         _ \n"
+    "\t| |     |  __ \\ | |  | |       (_)\n"
+    "\t| |     | |__) || |  | | _ __   _ \n"
+    "\t| |     |  ___/ | |  | || '_ \\ | |\n"
+    "\t| |____ | |     | |__| || | | || |\n"
+    "\t|______||_|      \\____/ |_| |_||_|\n\n\n";
 
 
 
@@ -72,13 +72,13 @@ int main(object caller, object room, string arg)
             continue;
 
         if(list[i]->query_name() == "login")
-            tag = "[ %^BOLD%^CYAN%^LOGIN%^RESET%^ ]";
+            tag = "[ LOGIN ]";
         else if(adminp(list[i]))
-            tag = "[ %^BOLD%^RED%^Admin%^RESET%^ ]";
+            tag = "[ Admin ]";
         else if(devp(list[i]))
-            tag = "[ %^YELLOW%^Dev%^RESET%^   ]";
+            tag = "[ Dev   ]";
         else
-            tag = "[ %^GREEN%^User%^RESET%^  ]";
+            tag = "[ User  ]";
 
         ret += sprintf(" %-s   %-15s %15s\n", tag,
           capitalize((string)list[i]->query_name()) +
@@ -112,9 +112,8 @@ object *addArray(object *oldarr, object *newarr )
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX: " + NOR + "who [@<mud>]\n\n" +
+    return(" SYNTAX: who\n\n" +
       "This command will display all the users who are currently logged\n" +
       "into " + mud_name() + ". It also lets you know if they are currently\n" +
-      "editing, in input, and/or idle. You may also find out who is on a mud\n" +
-      "on the I3 network by using the 'who @<mud>' syntax\n");
+      "editing, in input, and/or idle.\n") ;
 }

@@ -194,7 +194,7 @@ void get_password(string str, int i) {
             write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             write(read + "\n");
-            write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
+            write(" [Hit enter to continue] ");
             input_to("enterWorld");
             return;
         }
@@ -304,7 +304,7 @@ void idle_email(string str) {
         write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
         write("\n" + parseTokens(read_file(FLOGIN_NEWS)) + "\n");
-        write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
+        write(" [Hit enter to continue] ");
         input_to("setupNew");
 #ifdef EMAIL_MUST_RESOLVE
     }
@@ -342,7 +342,7 @@ void setupNew() {
     if(objectp(body)) body->save_user();
     write(read + "\n");
     write("\n");
-    write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
+    write(" [Hit enter to continue] ");
     input_to("enterWorld");
 }
 
@@ -356,7 +356,7 @@ void reconnect(string str) {
         if(interactive(oldBody)) remove_interactive(oldBody);
         oldBody->reconnect();
         write(read + "\n");
-        write(" [%^BOLD%^Hit enter to continue%^RESET%^] ");
+        write(" [Hit enter to continue] ");
         body = oldBody;
         input_to("enterWorld");
         return;

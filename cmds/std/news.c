@@ -28,7 +28,7 @@ int main(object caller, object room, string args)
      if(args == "check")
      {
          if(client->isNew())
-             write("%^BOLD%^GREEN%^Notice: %^RESET%^There are new news posts.\n");
+             write("Notice: There are new news posts.\n");
          else write("No new posts.\n");
          destruct(client);
          return 1;
@@ -40,7 +40,7 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-    string help = " %^BOLD%^SYNTAX:%^RESET%^ news [check]\n\n"
+    string help = " SYNTAX: news [check]\n\n"
     "This command launches your news client which will\n"
     "allow you to read the news available in the different\n"
     "news groups. Insde a group you may type 'h' or 'help'\n"

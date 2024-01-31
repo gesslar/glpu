@@ -50,7 +50,7 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-    return(" %^BOLD%^SYNTAX:%^RESET%^ history [range]\n\n"
+    return(" SYNTAX: history [range]\n\n"
     "This command allows you to view the history of commands that\n"
     "you've executed. By default is displays the last 15 commands\n"
     "executed by you but you may provide a custom ammount by providing\n"

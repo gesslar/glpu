@@ -17,7 +17,7 @@ int main(object caller, object room, string file)
     string text;
     pager = clone_object("/obj/mudlib/pager/pager.c");
     if(!file && this_interactive()->query("cwf")) file = this_interactive()->query("cwf");
-    else if(!file) return(notify_fail("%^BOLD%^SYNTAX: %^RESET%^more <file>\n"));
+    else if(!file) return(notify_fail("SYNTAX: more <file>\n"));
     file = resolve_path(caller->query("cwd"), file);
     if(!file_exists(file)) return(notify_fail("Error [more]: File '" + file + "' does not exist.\n"));
     text = read_file(file);
@@ -29,7 +29,7 @@ int main(object caller, object room, string file)
 
 string help(object caller)
 {
-    return("%^BOLD%^SYNTAX: %^RESET%^more <file>\n\n" +
+    return("SYNTAX: more <file>\n\n" +
       "This command will allow you to page files to your terminal,\n"
       "a screen at a time. For more information about using this\n"
       "application and it's feature, type 'help' within the pager.\n\n"

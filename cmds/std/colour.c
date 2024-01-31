@@ -14,7 +14,7 @@ int main(object caller, object room, string str)
     case "ansi" :
     case "begin" : {
         caller->set_env("colour", "enabled");
-        write("%^GREEN%^Success:%^RESET%^ Colour " + str + ".\n");
+        write("Success: Colour " + str + ".\n");
         return 1;
     }
 
@@ -33,7 +33,7 @@ int main(object caller, object room, string str)
     default : {
         if(caller->query_env("colour") == "enabled")
         {
-        write("Colour: Colour is currently %^GREEN%^enabled%^RESET%^.\n");
+        write("Colour: Colour is currently enabled.\n");
         return 1;
         }
         else
@@ -47,12 +47,12 @@ int main(object caller, object room, string str)
 
 string help(object caller)
 {
-    return(" %^BOLD%^WHITE%^SYNTAX:%^RESET%^ colour [<enable>||<disable>]\n\n"
+    return(" SYNTAX: colour [<enable>||<disable>]\n\n"
       "With no arguments, this command will tell you if you currently\n"
       "have colour enabled or disabled. You can also toggle colour by\n"
       "providing the arguments 'enable' to enable or 'disable' to disable.\n"
       "It should be noted that 'enable' and 'disable' aren't the only\n"
       "keywords to toggle colour, you can also use 'off', 'start',\n"
       "and 'none' to name a few. How many can you find?\n\n"
-      "%^BOLD%^WHITE%^See also:%^RESET%^ set_env\n");
+      "See also: set_env\n");
 }

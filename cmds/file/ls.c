@@ -319,7 +319,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-        return HIW + " SYNTAX: " + NOR + SYNTAX+@BODY
+        return " SYNTAX: " + SYNTAX+@BODY
 
 This command lists the contents of a directory (current directory if none
 is specified). '*' and '?' may be used as wildcards. '*' indicates any number
@@ -339,7 +339,7 @@ of characters, while '?' indicates a single character.
                 Append an indicator to names.
         -P,
                 Display path for all dirs
- %^BOLD%^See also:%^RESET%^ cd
+ See also: cd
 BODY;
 }
 

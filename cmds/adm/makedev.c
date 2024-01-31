@@ -53,7 +53,7 @@ int main(object caller, object room, string args)
      security_editor->enable_membership(query_privs(user), "developer");
      security_editor->write_state(0);
      tell_object(user, "\n... Success!\n\n");
-     tell_object(user, "%^BOLD%^GREEN%^Developer Access Granted.%^RESET%^\n");
+     tell_object(user, "Developer Access Granted.\n");
 
      write("Success [makedev]: User '" + capitalize(user->query_name()) + "' now has developer status.\n");
      log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " promotes "
@@ -64,10 +64,10 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ makedev <user>\n"
+     return(" SYNTAX: makedev <user>\n"
      "This command will set up a user with developer access to\n"
      "the mud by adding the user to the 'developer' group, creating\n"
      "them a home directory, and adding '/cmds/wiz/', '/cmds/object/',\n"
      "and '/cmds/file/' to the user's directory.\n\n"
-     "%^BOLD%^See also:%^RESET%^ revdev\n");
+     "See also: revdev\n");
 }

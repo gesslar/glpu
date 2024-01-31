@@ -19,7 +19,7 @@ int main(object caller, object room, string arg)
     mail_client = clone_object(OBJ_MAIL_CLIENT);
 
     if(!mail_client)
-    return notify_fail(RED + "Error" + NOR + " [mail]: could not find mail client\n");
+    return notify_fail("Error [mail]: could not find mail client\n");
 
     mail_client->move(this_player());
 
@@ -30,7 +30,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-    return HIW + " SYNTAX: " + NOR + "mail [<target1>, <target2>, ..., <targetN>]\n\n" +
+    return " SYNTAX: mail [<target1>, <target2>, ..., <targetN>]\n\n" +
     "This command will start a mail session for you. If you wish to go\n"+
     "straight to mailing a specific person then you may use the optional\n"+
     "target argument to begin a mail to that person. If you wish to mail\n"+

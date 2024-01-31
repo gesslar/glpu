@@ -32,96 +32,86 @@ void create()
 
 }
 
-int rec_msg(string chan, string usr, string msg)
-{
+int rec_msg(string chan, string usr, string msg) {
     object ob;
     string realMsg;
     int numLines;
 
-    if(sscanf(msg, "/last %d", numLines) == 1)
-    {
-    if(numLines > sizeof(history[chan]))
-        numLines = sizeof(history[chan]);
+    if(sscanf(msg, "/last %d", numLines) == 1) {
+        if(numLines > sizeof(history[chan]))
+            numLines = sizeof(history[chan]);
 
-    ob = find_player(usr);
+        ob = find_player(usr);
 
-    if(!sizeof(history[chan]))
-        tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
-    else
-        foreach(string histLine in history[chan][(sizeof(history[chan]) - numLines)..(sizeof(history[chan]) - 1)])
+        if(!sizeof(history[chan]))
+            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+        else
+            foreach(string histLine in history[chan][(sizeof(history[chan]) - numLines)..(sizeof(history[chan]) - 1)])
         tell_object(ob, histLine);
-    return 1;
-    }
-    else
-    {
-    switch(msg) /* We could do some neat stuff here! */
-    {
-    case "/last" : {
-
-        ob = find_player(usr);
-
-        if(!sizeof(history[chan]))
-            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
-        else
-            foreach(string histLine in history[chan][(sizeof(history[chan]) - 15)..(sizeof(history[chan]) - 1)])
-            tell_object(ob, histLine);
         return 1;
-        break;
-        }
-    case "/all" : {
-        ob = find_player(usr);
+    } else {
+        switch(msg) { /* We could do some neat stuff here! */
+            case "/last" : {
+                    ob = find_player(usr);
 
-        if(!sizeof(history[chan]))
-            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
-        else
-            foreach(string histLine in history[chan][(sizeof(history[chan]) - 50)..(sizeof(history[chan]) - 1)])
-            tell_object(ob, histLine);
-        return 1;
-        break;
+                    if(!sizeof(history[chan]))
+                        tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+                    else
+                        foreach(string histLine in history[chan][(sizeof(history[chan]) - 15)..(sizeof(history[chan]) - 1)])
+                    tell_object(ob, histLine);
+                    return 1;
+                    break;
+                }
+            case "/all" : {
+                    ob = find_player(usr);
+
+                    if(!sizeof(history[chan]))
+                        tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+                    else
+                        foreach(string histLine in history[chan][(sizeof(history[chan]) - 50)..(sizeof(history[chan]) - 1)])
+                    tell_object(ob, histLine);
+                    return 1;
+                    break;
+                }
         }
     }
-    }
 
-    if(msg[0..0] == ":")
-    {
-    msg = msg[1..<1];
-    realMsg = sprintf(" %s", msg);
-    }
-    else
-    realMsg = sprintf(": %s", msg);
+    if(msg[0..0] == ":") {
+        msg = msg[1..<1];
+        realMsg = sprintf(" %s", msg);
+    } else
+        realMsg = sprintf(": %s", msg);
 
-    switch(chan)
-    {
-    case "admin" : {
-        CHAN_D->rec_msg(chan,  "[" + RED + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
-        history[chan] += ({ ctime(time()) + " [" + RED + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n" + NOR });
-        break;
-    }
+    switch(chan) {
+        case "admin" : {
+                CHAN_D->rec_msg(chan,  "[" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n");
+                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n" });
+                break;
+            }
 
-    case "wiz" : {
-        CHAN_D->rec_msg(chan, "[" + HIC + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
-        history[chan] += ({ ctime(time()) + " [" + HIC + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n" + NOR });
-        break;
-    }
+        case "wiz" : {
+                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n");
+                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n" });
+                break;
+            }
 
-    case "gossip" : {
-        CHAN_D->rec_msg(chan, "[" + HIG + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
-        history[chan] += ({ ctime(time()) + " [" + HIG + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n" + NOR });
-        break;
-    }
+        case "gossip" : {
+                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n");
+                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n" });
+                break;
+            }
 
-    case "chat" : {
-        CHAN_D->rec_msg(chan, "[" + HIB + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
-        history[chan] += ({ ctime(time()) + " [" + HIB + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n" + NOR });
-        break;
+        case "chat" : {
+                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n");
+                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n" });
+                break;
+            }
 
-    }
-
-    case "dev" : {
-        CHAN_D->rec_msg(chan, "[" + HIY + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR + realMsg + "\n");
-        history[chan] += ({ ctime(time()) + " [" + HIY + capitalize(chan) + NOR + "] " + HIW + capitalize(usr) + NOR +realMsg + "\n" + NOR });
-        break;
-    }
+        case "dev" : {
+                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n");
+                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + realMsg + "\n" });
+                break;
+            }
     }
 
     save_object(SAVE_PATH);

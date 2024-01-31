@@ -14,7 +14,7 @@ inherit CMD ;
 int main(object caller, object room, string arg)
 {
      previous_object()->exit_world();
-     write("%^BOLD%^YELLOW%^Thank you for visiting " + mud_name() + "%^RESET%^\n");
+     write("Thank you for visiting " + mud_name() + "\n");
      previous_object()->save_user();
      log_file(LOG_LOGIN, capitalize(previous_object()->query_name()) + " logged out from " +
      query_ip_number(previous_object()) + " on " + ctime(time()) + "\n");
@@ -24,7 +24,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX:" + NOR + " quit\n\n" +
+     return(" SYNTAX: quit\n\n" +
      "This command will save your characher and disconnect you from the mud.\n\n" +
-     HIW + "See also: " + NOR + "save\n");
+     "See also: save\n");
 }

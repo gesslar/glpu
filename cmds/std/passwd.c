@@ -25,7 +25,7 @@ int confirm_CurrentPassword(string str, object caller)
 
      if(crypt(str, str) != caller->query_link()->query_password())
      {
-          write(RED + "\nError: " + NOR + "The password you provided does not match your current password.\n");
+          write("\nError: The password you provided does not match your current password.\n");
           return 1;
      }
      else
@@ -53,21 +53,21 @@ int confirm_NewPassword(string str, object caller, string pass)
 {
      if(str != pass)
      {
-          write(RED + "\nError: " + NOR + "Passwords do not match. Please try again.\n");
+          write("\nError: Passwords do not match. Please try again.\n");
           return 1;
      }
      else
      {
           if(caller->query_link()->set_password(str))
-            write(GRN + "\nSuccess: " + NOR + "Password changed succesfuly.\n");
-          else write(RED + "\nError: " + NOR + "Unable to change password.\n");
+            write("\nSuccess: Password changed succesfuly.\n");
+          else write("\nError: Unable to change password.\n");
           return 1;
      }
 }
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ passwd\n\n"
+     return(" SYNTAX: passwd\n\n"
      "This command allows you to change your current passwd.\n"
      "You will be asked to enter your current passwd for\n"
      "security purposes and then it will request you to input\n"

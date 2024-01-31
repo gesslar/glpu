@@ -46,12 +46,13 @@ void create()
 int main()
 {
      if(!adminp(this_interactive())) return notify_fail("Error [access]: Access denied.\n");
-     write("\n\t" + HIW + "--" + NOR + HIY + "'" + NOR + MAG + "Security System Interface" + NOR + HIY + "'" + NOR + HIW + "--\n\t\t" HIY + "Version: 1.3RC" + HIW + "Dev\n\n" + NOR);
-     write(" 1: " + HIB + "Display current access settings\n" + NOR);
-     write(" 2: " + RED + "Modify current access settings\n" + NOR);
-     write(" 3: " + CYN + "Reload data from file\n" + NOR);
-     write(" 4: " + HIR + "Save & Exit\n" + NOR);
-     write(" 5: " + GRN + "Exit without saving\n" + NOR);
+     write("\n\t--'Security System Interface'--\n"
+           "\t\tVersion: 1.3RCDev\n\n");
+     write(" 1: Display current access settings\n");
+     write(" 2: Modify current access settings\n");
+     write(" 3: Reload data from file\n");
+     write(" 4: Save & Exit\n");
+     write(" 5: Exit without saving\n");
      input_to("i_MainMenu");
      return 1;
 }
@@ -62,17 +63,17 @@ int i_MainMenu(string str)
      switch(str)
      {
           case "1" : {
-               write("\n\t" + HIB + "DISPLAY CURRENT ACCESS SETTINGS\n\n" + NOR);
-               write(" 1:" + CYN + " Display raw data\n" + NOR);
-               write(" 2:" + CYN + " List all groups\n" + NOR);
-               write(" 3:" + CYN + " List members of a group\n" + NOR);
-               write(" 4:" + CYN + " List access for directory\n" + NOR);
-               write(" 5:" + HIG + " Main menu\n" + NOR);
+               write("\n\tDISPLAY CURRENT ACCESS SETTINGS\n\n");
+               write(" 1: Display raw data\n");
+               write(" 2: List all groups\n");
+               write(" 3: List members of a group\n");
+               write(" 4: List access for directory\n");
+               write(" 5: Main menu\n");
                input_to("i_DisMenu");
                return 1;
           }
           case "2" : {
-               write("\n\t" + RED + "MODIFY CURRENT ACCESS SETTINGS\n\n" + NOR);
+               write("\n\tMODIFY CURRENT ACCESS SETTINGS\n\n");
                write(" 1: Create group\n");
                write(" 2: Delete group\n");
                write(" 3: Toggle user membership to group\n");
@@ -83,34 +84,34 @@ int i_MainMenu(string str)
           }
           case "3" : {
                parse_files();
-               write(GRN + "\nSuccess: " + NOR + "Data reloaded from file -- All unsaved changes lost.\n");
+               write("\nSuccess: Data reloaded from file -- All unsaved changes lost.\n");
                main();
                return 1;
           }
 
           case "4" : {
-               write(HIY + "Attempting to write data to files...\n" + NOR);
+               write("Attempting to write data to files...\n");
                write_gFile(0);
                write_aFile(0);
                parse_files();
-               write(GRN + "Success" + NOR + " [access]: Exited with data saved.\n");
+               write("Success [access]: Exited with data saved.\n");
                return 1;
           }
           case "5" : {
-               write(GRN + "Success" + NOR + " [access]: Exiting without saving.\n");
+               write("Success [access]: Exiting without saving.\n");
                parse_files();
                return 1;
           }
           default : {
-               write(RED + "Error" + NOR + " [access]: Unknown menu " + str + "\n");
+               write("Error [access]: Unknown menu " + str + "\n");
                return 1;
           }
      }
 }
 
-int i_ModMenu(string str)
-{
+int i_ModMenu(string str) {
      string *arr;
+
      arr = ({});
 
      switch(str)
@@ -211,7 +212,7 @@ int i_mdDirAKey(string str, string dir, string group)
      if(!access[dir]) access += ([dir : ([group : akeys]) ]);
      else access[dir] += ([ group : akeys]);
 
-     write(GRN + "\nSuccess: " + NOR + "Access to '" + dir +"' for group/user '" + group + "' updated.\n");
+     write("\nSuccess: Access to '" + dir +"' for group/user '" + group + "' updated.\n");
      i_MainMenu("2");
      return 1;
 }
@@ -227,7 +228,7 @@ int i_tgMembership(string str)
 
      if(!user_data_file(str))
      {
-          write(RED + "\nError: " + NOR + "User '" + str + "' does not exist.\n");
+          write("\nError: User '" + str + "' does not exist.\n");
           i_MainMenu("2");
           return 1;
      }
@@ -254,7 +255,7 @@ int i_tgMembership2(string str, string user)
 
      if(sizeof(userList) == 0)
      {
-          write(RED + "\nError: " + NOR + " Group '" + str + "' does not exist.\n");
+          write("\nError:  Group '" + str + "' does not exist.\n");
           i_MainMenu("2");
           return 1;
      }
@@ -262,14 +263,14 @@ int i_tgMembership2(string str, string user)
      if(member_array(user, userList) == -1)
      {
           groups[str] += ({user});
-          write(GRN + "\nSuccess:" + NOR + " User '" + user + "' was added to group '" + str + "'\n");
+          write("\nSuccess: User '" + user + "' was added to group '" + str + "'\n");
           i_MainMenu("2");
           return 1;
      }
      else
      {
           groups[str] -= ({user});
-          write(GRN + "\nSuccess:" + NOR + " User '" + user + "' was removed from the group '" + str + "'\n");
+          write("\nSuccess: User '" + user + "' was removed from the group '" + str + "'\n");
           i_MainMenu("2");
           return 1;
      }
@@ -286,7 +287,7 @@ int i_crGroup(string str)
 
      if(groups[str])
      {
-          write(RED + "\nError: " + NOR + " a group with the name '" + str + "' already exists.\n");
+          write("\nError:  a group with the name '" + str + "' already exists.\n");
           i_MainMenu("2");
           return 1;
      }
@@ -294,7 +295,7 @@ int i_crGroup(string str)
      else
      {
           groups[str] = ({query_privs(this_player())});
-          write(GRN + "\nSuccess: " + NOR + " group '" + str + "' created. Note: You were added to the new group.\n");
+          write("\nSuccess:  group '" + str + "' created. Note: You were added to the new group.\n");
           i_MainMenu("2");
           return 1;
      }
@@ -311,14 +312,14 @@ int i_dlGroup(string str)
 
      if(!groups[str])
      {
-          write(RED + "\nError: " + NOR + " group '" + str + "' does not exist.\n");
+          write("\nError:  group '" + str + "' does not exist.\n");
           i_MainMenu("2");
           return 1;
      }
 
      if(str == "admin" || str == "soul")
      {
-          write(RED + "\nError: " + NOR + " group '" + str + "' can not be deleted.\n\t"
+          write("\nError:  group '" + str + "' can not be deleted.\n\t"
                + "The group is a system group and is required for proper functionality of the mudlib.\n");
           i_MainMenu("2");
           return 1;
@@ -327,7 +328,7 @@ int i_dlGroup(string str)
      else
      {
           map_delete(groups, str);
-          write(GRN + "Success: " + NOR + " The group '" + str + "' was deleted.\n");
+          write("Success:  The group '" + str + "' was deleted.\n");
           i_MainMenu("2");
           return 1;
 
@@ -349,9 +350,9 @@ int i_DisMenu(string str)
      switch(str)
      {
           case "1" :  {
-               write(HIC + "\nRaw group data:\n\n" + NOR);
+               write("\nRaw group data:\n\n");
                write_gFile(1);
-               write("\n" + HIC + "Raw access data:\n\n" + NOR);
+               write("\nRaw access data:\n\n");
                write_aFile(1);
                write("\n [Hit enter to continue] ");
                input_to("i_cnDisMenu");
@@ -360,7 +361,7 @@ int i_DisMenu(string str)
 
           case "2" :  {
                arr = keys(groups);
-               write("\nThere is a total of " + GRN + sizeof(arr) + NOR + " groups on " + mud_name() + "\n\n");
+               write("\nThere is a total of " + sizeof(arr) + " groups on " + mud_name() + "\n\n");
                if(sizeof(arr) == 1) write("\t" + arr[0] + "\n");
                else printf("%s, and %s", implode(arr[0..(sizeof(arr)-2)], ","), arr[sizeof(arr)-1]);
                write("\n [Hit enter to continue] ");

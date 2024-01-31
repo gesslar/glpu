@@ -31,21 +31,21 @@ int main(object caller, object room, string message)
 
         if(message[0] == ':') message = message[1..];
 
-        write(CYN + "You reply to yourself: " + NOR + message + "\n" + NOR);
-        tell_room(environment(caller), caller->query_cap_name() + " starts talking to themselves.\n" + NOR, caller);
+        write("You reply to yourself: " + message + "\n");
+        tell_room(environment(caller), caller->query_cap_name() + " starts talking to themselves.\n", caller);
 
         return 1;
     }
 
     if(message[0] == ':')
     {
-        tell_object(user, CYN + caller->query_cap_name() + " " + message[1..] + "\n" + NOR);
-        write(CYN + "You reply to " + capitalize(who) + ": " + NOR + caller->query_cap_name() + " " + message[1..] + "\n" + NOR);
+        tell_object(user, caller->query_cap_name() + " " + message[1..] + "\n");
+        write("You reply to " + capitalize(who) + ": " + caller->query_cap_name() + " " + message[1..] + "\n");
     }
     else
     {
-        tell_object(user, CYN + caller->query_cap_name() + " tells you: " + NOR + message + "\n" + NOR);
-        write(CYN + "You reply to " + capitalize(who) + ": " + NOR + message + "\n" + NOR);
+        tell_object(user, caller->query_cap_name() + " tells you: " + message + "\n");
+        write("You reply to " + capitalize(who) + ": " + message + "\n");
     }
 
     user->set("reply", query_privs(caller));
@@ -55,8 +55,8 @@ int main(object caller, object room, string message)
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX:" + NOR + " reply <message>\n\n"
+    return(" SYNTAX:" + " reply <message>\n\n"
     "This command will send a message to the last user that sent\n"
     "you a message if they are still online.\n\n"
-    HIW + "See also: " + NOR + "say, channel\n");
+    "See also: " + "say, channel\n");
 }

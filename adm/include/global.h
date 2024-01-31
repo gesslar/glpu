@@ -7,7 +7,6 @@
 //Last updated: October 9th, 2006 by Tacitus
 
 #include <mudlib.h>
-#include <ansi.h>
 
 #define LIB_VERSION "A-0610-R7"
 

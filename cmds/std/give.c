@@ -47,9 +47,9 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "give <object> <user>\n\n"
+     return(" SYNTAX: give <object> <user>\n\n"
      "This command will allow you to give an object that is currently\n"
      "in your inventory to another user in your current environment.\n"
      "Note: This command will also understand give <object> to <user>.\n\n" +
-     HIW + "See also: " + NOR + "get, drop\n");
+     "See also: get, drop\n");
 }

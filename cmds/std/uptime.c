@@ -8,14 +8,13 @@
 
 inherit CMD ;
 
-int main()
-{
-     write(HIW + capitalize(mud_name()) + " has been running since " + NOR + HIG + ctime(time() - uptime()) + "\n" + NOR);
+int main(object caller, object room, string arg) {
+     write(capitalize(mud_name()) + " has been running since " + ctime(time() - uptime()) + "\n");
      return 1;
 }
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "uptime\n\n" +
+     return(" SYNTAX: uptime\n\n" +
      "This command will tell you how the long them mud has been running.\n");
 }

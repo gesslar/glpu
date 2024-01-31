@@ -47,7 +47,7 @@ int main(object caller, object room, string str) {
                 tell_room(here, capitalize(tp->query_name()) + " fades out and then fades back into existence.\n", ({ tp }));
             } else {
                 previous_object()->exit_world();
-                write("%^BOLD%^YELLOW%^Thank you for visiting " + mud_name() + "%^RESET%^\n");
+                write("Thank you for visiting " + mud_name() + "\n");
                 previous_object()->save_user();
                 log_file(LOG_LOGIN, capitalize(previous_object()->query_name()) + " logged out from " +
                     query_ip_number(previous_object()) + " on " + ctime(time()) + "\n");
@@ -63,7 +63,7 @@ int main(object caller, object room, string str) {
             break ;
         case 58..65:
             foreach(object u in users())
-                tell_object(u, "[%^MAGENTA%^Announce%^RESET%^] %^RED%^Lazygun%^RESET%^: The Surgeon General has deemed this mud good for your health.\n");
+                tell_object(u, "[Announce] Lazygun: The Surgeon General has deemed this mud good for your health.\n");
         default:
             write("Tacitus says 'Keep coding.'\n");
             break;
@@ -93,6 +93,6 @@ void snowball_hit(object vict) {
 }
 
 string help(object caller) {
-    return(HIW + " SYNTAX: " + NOR + "lazygun\n"
+    return(" SYNTAX: lazygun\n"
     "Use this at your own risk. There is no telling what it will do.\n");
 }

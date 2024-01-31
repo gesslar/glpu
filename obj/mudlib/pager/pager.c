@@ -58,11 +58,11 @@ int page_more()
         switch(this_player()->query_env("page_display"))
         {
             case "percent" :
-                write(HIW + "\n-=-= [" + (currentLine * 100 / totalLines) + "%] =-=-" + NOR + "\n");
+                write("\n-=-= [" + (currentLine * 100 / totalLines) + "%] =-=-\n");
                 break;
             case "lines" :
             default :
-                write(HIW + "\n-=-= [" + start + "-" + end + " of " + totalLines + "] =-=-" + NOR + "\n");
+                write("\n-=-= [" + start + "-" + end + " of " + totalLines + "] =-=-\n");
                 break;
         }
     }

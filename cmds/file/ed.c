@@ -32,8 +32,8 @@ int main(object caller, object room, string file)
     return 1;
 }
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "ed <file>\n\n" +
+    return (" SYNTAX: ed <file>\n\n" +
     "This command lets you edit a specified file in the mud editor. To\n"
     "access editor specific help, type 'h' while in the editor.\n\n" +
-    HIW + " See also: " + NOR + "rm, more, mv, cp, etc.\n");
+    " See also: rm, more, mv, cp, etc.\n");
 }

@@ -108,11 +108,11 @@ void enter_world() {
     catch {
         news_client = new(query_env("news_client"));
         news_client->move(this_object());
-        if(news_client->isNew()) write("\n%^BOLD%^GREEN%^Notice: %^RESET%^There are new news posts.\n\n");
+        if(news_client->isNew()) write("\nNotice: There are new news posts.\n\n");
         destruct(news_client);
         mail_client = new(OBJ_MAIL_CLIENT);
         mail_client->move(this_object());
-        if(mail_client->has_new_mail()) write("%^BOLD%^%^CYAN%^You have new mail!%^RESET%^\n\n");
+        if(mail_client->has_new_mail()) write("You have new mail!\n\n");
         destruct(mail_client);
     };
 

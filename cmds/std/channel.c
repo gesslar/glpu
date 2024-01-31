@@ -32,14 +32,14 @@ int main(object caller, object room, string args)
                    arr = CHAN_D->getMods();
 
                    if(sizeof(arr) == 1)
-                       write("%^BOLD%^The following channel module is installed:%^YELLOW%^\n\t"
-                           + arr[0] + "%^RESET%^\n");
+                       write("The following channel module is installed:\n\t"
+                           + arr[0] + "\n");
 
-                else write("%^BOLD%^The following channel modules are installed: %^YELLOW%^\n\t"
+                else write("The following channel modules are installed: \n\t"
                     + implode(arr[0..(sizeof(arr) - 2)], ", ") + ", " + arr[sizeof(arr) - 1]
-                    + "%^RESET%^\n");
+                    + "\n");
 
-                write("\n%^MAGENTA%^You may list the channels registered by each module by typing:%^RESET%^\n");
+                write("\nYou may list the channels registered by each module by typing:\n");
                 write("\tchannel list [<network_name> || all]\n");
                    return 1;
                }
@@ -128,7 +128,7 @@ string help(object caller)
      if(!sizeof(modList)) mods = "There is no networks currently installed.";
      if(sizeof(modList) == 1) mods = modList[0];
      else mods = implode(modList[0..(sizeof(modList)-2)], ", ") + ", " + modList[sizeof(modList) - 1];
-     return(" %^BOLD%^SYNTAX:%^RESET%^ channel <list/show/tune> <argument>\n\n"
+     return(" SYNTAX: channel <list/show/tune> <argument>\n\n"
      "This command allows you to interact with the different channel networks\n"
      "available here on " + capitalize(mud_name()) + ". More specifically,\n"
      "it currently allows you to list the different channels that you can\n"

@@ -59,7 +59,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX:" + NOR + " emote <string>\n\n" +
+    return(" SYNTAX: emote <string>\n\n" +
       "This command allows you to do custom emotes. Example, if you\n" +
       "type 'emote smiles serenely' then the others in the room will\n" +
       "see '" + TPQCN + " smiles serenly.' You can also use people's names\n" +
@@ -69,7 +69,7 @@ string help(object caller)
       TPQCN + " smiles serenely at Parthenon.' You may also use the\n" +
       "possessive form of the person's name like '$parthenon's' and\n" +
       "Parthenon will see 'your'.\n\n" +
-      HIW + "See also: " + NOR + "say\n");
+      "See also: say\n");
 }
 
 

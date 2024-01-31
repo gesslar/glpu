@@ -61,7 +61,7 @@ int main(object caller, object room, string args) {
 }
 
 string help(object caller) {
-    string ret = "%^BOLD%^ SYNTAX:%^RESET%^ force <living> <cmd>\n\n"
+    string ret = "SYNTAX: force <living> <cmd>\n\n"
     "This command allows you to force a living object to execute\n"
     "a command as if they had typed it themself. This means that\n"
     "the command must be in their path or added by an add_action.\n"

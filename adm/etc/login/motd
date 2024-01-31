@@ -1,13 +1,13 @@
 
-%^BOLD%^ *************************************
- %^RESET%^    %^BOLD%^BLUE%^WELCOME TO THE %cap_mud_name%^RESET%^    %^BOLD%^
- *************************************%^RESET%^
+ *************************************
+     WELCOME TO THE %cap_mud_name
+ *************************************
 
- %^BOLD%^We are currently at version:%^RESET%^
-      %^BOLD%^YELLOW%^ %lib_version %^RESET%^
+ We are currently at version:
+       %lib_version
 
- %^BOLD%^Next release expected for:%^RESET%^
-     %^GREEN%^October 9th, 2006%^RESET%^
+ Next release expected for:
+     October 9th, 2006
 
- %^BOLD%^For more information, visit us at:%^RESET%^
-      %^BOLD%^CYAN%^http://lpuni.org%^RESET%^
+ For more information, visit us at:
+      http://lpuni.org

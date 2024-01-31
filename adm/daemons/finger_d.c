@@ -39,11 +39,11 @@ varargs string finger_user(string username)
         users = master()->query_group(group);
 
         if(!arrayp(users) || sizeof(users) <= 0)
-            return "%^RED%^Error:%^RESET%^ Group '" + group
+            return "Error: Group '" + group
              + "' does not exist or has no members.\n";
 
         ret = BORDER1;
-        ret += "\t\t%^BOLD%^GROUP:%^RESET%^ " + group + "\n";
+        ret += "\t\tGROUP: " + group + "\n";
         ret += BORDER1;
         ret += sprintf("%-20s %-40s %s\n", "Login", "Rank", "On");
         ret += BORDER1;
@@ -76,9 +76,9 @@ varargs string finger_user(string username)
                  }
 
 
-                 if(adminp(username)) rank = "%^BOLD%^RED%^Admin%^RESET%^";
-                 else if(devp(username)) rank = "%^BOLD%^BLUE%^Developer%^RESET%^";
-                 else rank = "%^GREEN%^User%^RESET%^";
+                 if(adminp(username)) rank = "Admin";
+                 else if(devp(username)) rank = "Developer";
+                 else rank = "User";
 
                  ret += sprintf("%-20s %-40s %s\n",
                      capitalize(username), rank, last_t + " " + last);
@@ -98,7 +98,7 @@ varargs string finger_user(string username)
             body = find_player(username);
             user = get_user(username);
             if(!interactive(body))
-                idle = "(%^RED%^Link-Dead%^RESET%^)";
+                idle = "(Link-Dead)";
             else
             {
                 away = find_player(username)->query_env("away");
@@ -118,7 +118,7 @@ varargs string finger_user(string username)
         else
         {
             last_t = "Last on";
-            idle = "(%^RED%^Offline%^RESET%^)";
+            idle = "(Offline)";
             if(!objectp(user = get_user(username)) || !objectp(body = get_body(user)))
             {
                 if(user == -2) return "Error [finger]: That user doesn't exist.\n";
@@ -128,9 +128,9 @@ varargs string finger_user(string username)
 
         last = ctime(body->query("last_login"));
 
-        if(adminp(user)) rank = "%^BOLD%^RED%^Admin%^RESET%^";
-         else if(devp(user)) rank = "%^BOLD%^BLUE%^Developer%^RESET%^";
-         else rank = "%^GREEN%^User%^RESET%^";
+        if(adminp(user)) rank = "Admin";
+         else if(devp(user)) rank = "Developer";
+         else rank = "User";
 
          plan = read_file("/home/" + user->query_name()[0..0] + "/" + user->query_name() + "/.plan");
          if(!plan) plan = " This user has no plan.\n";
@@ -142,7 +142,7 @@ varargs string finger_user(string username)
         "Username: %-10s \tRank: %-10s\n" + (away && away != "" ? "Away: " + away + "\n" : away == "" ? "This user is away.\n" : "") +
         "E-mail: %-10s\n"
         "%s: %-10s %s\n"
-        "Plan:\n%s", "%^BOLD%^" + capitalize(user->query_name()) + "%^RESET%^",
+        "Plan:\n%s", capitalize(user->query_name()) + "",
         rank, user->query("email"), last_t, last, idle, plan);
 
         if(!interactive(user)) destruct(user);

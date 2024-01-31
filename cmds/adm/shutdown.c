@@ -44,7 +44,7 @@ int main(object caller, object room, string arg)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX:" + NOR + " shutdown [<stop>||<time>/now]\n\n" +
+    return (" SYNTAX: shutdown [<stop>||<time>/now]\n\n" +
     "This command allows you to start a shutdown of the mud. You\n"
     "can either supply the ammount of time intill you the shutdown\n"
     "is to occur or stop the current shutdown/reboot by giving the\n"
@@ -53,5 +53,5 @@ string help(object caller) {
     "It is important to remember that this command will shutdown the\n"
     "the mud and will not come back up. If you wish for the mud to\n"
     "restart afterwards, then look at the reboot command.\n\n" +
-    HIW + "See also: " + NOR + "reboot\n");
+    "See also: reboot\n");
 }

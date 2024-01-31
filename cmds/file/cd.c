@@ -55,10 +55,10 @@ int main(object caller, object room, string str)
 }
 
 string help(object caller) {
-    return (HIW + " SYNTAX: " + NOR + "cd <directory>\n\n" +
+    return (" SYNTAX: cd <directory>\n\n" +
     "This command allows you to navigate through various directories.\n" +
     "To use this command, you simply provide the directory (either\n" +
     "an absolute path or one relative to the current directory) as the\n" +
     "argument to this command.\n\n" +
-    HIW + "See also: " + NOR + " mkdir, rmdir, ls\n");
+    "See also:  mkdir, rmdir, ls\n");
 }

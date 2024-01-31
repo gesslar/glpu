@@ -24,7 +24,7 @@ int main(object caller, object room, string arg)
     singled_emotes = ({});
     fix_array(emotes);
 
-    write(HIW + "\nAvailable emotes:\n" + NOR);
+    write("\nAvailable emotes:\n");
 
     //for(i = 0; i < sizeof(singled_emotes); i++)
     //    write(singled_emotes[i]+"\n");
@@ -66,11 +66,11 @@ void print_emotes(string *emotes)
         continue;
 
         if((member_array(emotes[index]+"/t", all_emotes) != -1) && (member_array(emotes[index], all_emotes) != -1))
-        printf("%%^BOLD%%^%%^GREEN%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
         else if((member_array(emotes[index], all_emotes) != -1))
-        printf("%%^BOLD%%^%%^CYAN%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
         else
-        printf("%%^BOLD%%^%%^BLUE%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
     }
     else
     {
@@ -94,11 +94,11 @@ void print_emotes(string *emotes)
         }
 
         if((member_array(emotes[index]+"/t", all_emotes) != -1) && (member_array(emotes[index], all_emotes) != -1))
-        printf("%%^BOLD%%^%%^GREEN%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
         else if((member_array(emotes[index], all_emotes) != -1))
-        printf("%%^BOLD%%^%%^CYAN%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
         else
-        printf("%%^BOLD%%^%%^BLUE%%^%-15s%%^RESET%%^", emotes[index]);
+        printf("%-15s", emotes[index]);
 
         indexes_printed += ({ (index) });
     }
@@ -107,8 +107,8 @@ void print_emotes(string *emotes)
     column_count++;
     }
 
-    write("\n\n" + HIC + "*Cyan* " + NOR + "untargeted only.\n");
-    write(HIB + "*Blue* " + NOR + "targeted only.\n\n");
+    write("\n\n*Cyan* untargeted only.\n");
+    write("*Blue* targeted only.\n\n");
 }
 
 
@@ -135,8 +135,8 @@ void fix_array(string *arr)
 
 string help(object caller)
 {
-    return(HIW + " SYNTAX: " + NOR + "emotes\n\n" +
+    return(" SYNTAX: emotes\n\n" +
       "This command allows you to see all of the emotes available for you\n"+
       "to use.\n\n"+
-      HIW + "See also: " + NOR + "emote\n");
+      "See also: emote\n");
 }

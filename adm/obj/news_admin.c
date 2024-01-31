@@ -101,7 +101,7 @@ int mm_select(string arg)
 
     case 7 :
     {
-        write("\nName of %^BOLD%^news group%^RESET%^ to set permissions for: ");
+        write("\nName of news group to set permissions for: ");
         input_to("set_permissions");
         return 1;
     }
@@ -124,11 +124,11 @@ int set_permissions(string arg)
 
     if(!NEWS_D->groupExists(capitalize(arg)))
     {
-    write(RED + "\nError" + NOR + " [news admin]: news group does not exist\n");
+    write("\nError [news admin]: news group does not exist\n");
     return main_menu();
     }
 
-    write("\n%^BOLD%^User group%^RESET%^ you wish to edit access for: ");
+    write("\nUser group you wish to edit access for: ");
     input_to("select_user_group", 0, arg);
     return 1;
 }
@@ -137,13 +137,13 @@ int select_user_group(string arg, string news_group)
 {
     if(!arg || arg == "")
     {
-    write(RED + "\nError" + NOR + " [news admin]: no user group selected\n");
+    write("\nError [news admin]: no user group selected\n");
     return main_menu();
     }
 
     if(member_array(arg, s_editor->listGroups()) == -1)
     {
-    write(RED + "\nError" + NOR + " [news admin]: user group does not exist\n");
+    write("\nError [news admin]: user group does not exist\n");
     return main_menu();
     }
 
@@ -158,7 +158,7 @@ int select_permissions(string arg, string news_group, string user_group)
 
     if(!arg || arg == "")
     {
-    write(RED + "\nError" + NOR + " [news admin]: incorrect options\n");
+    write("\nError [news admin]: incorrect options\n");
     return main_menu();
     }
 
@@ -187,23 +187,23 @@ int select_permissions(string arg, string news_group, string user_group)
     options = "";
 
     write(NEWS_D->adminAction_setPermissions(news_group, user_group, options) ?
-      HIG + "\nSuccess" + NOR + " [news admin]: permissions for " + user_group + " in group " + news_group + " set to '" + options + "'.\n" :
-      RED + "\nError" + NOR + " [news admin]: could not set permissions for " + user_group + " in group " + news_group + " to '" + options + "'.\n");
+      "\nSuccess [news admin]: permissions for " + user_group + " in group " + news_group + " set to '" + options + "'.\n" :
+      "\nError [news admin]: could not set permissions for " + user_group + " in group " + news_group + " to '" + options + "'.\n");
 
-    return main_menu();    
+    return main_menu();
 }
 
 int create_group(string arg)
 {
     if(!stringp(arg)) return main_menu();
-    write(NEWS_D->adminAction_createGroup(arg) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write(NEWS_D->adminAction_createGroup(arg) ? "\nSuccess.\n" : "\nFailure.\n");
     return main_menu();
 }
 
 int delete_group(string arg)
 {
     if(!stringp(arg)) return main_menu();
-    write(NEWS_D->adminAction_deleteGroup(arg) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write(NEWS_D->adminAction_deleteGroup(arg) ? "\nSuccess.\n" : "\nFailure.\n");
     return main_menu();
 }
 
@@ -219,32 +219,32 @@ int delete_message_final(string id, string group)
     int numerical_id = to_int(id);
     if(!intp(numerical_id))
     {
-    write("\n%^BOLD%^RED%^Invalid Input%^RESET%^\n");
+    write("\nInvalid Input\n");
     return main_menu();
     }
 
-    write(NEWS_D->adminAction_deletePost(group, numerical_id) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write(NEWS_D->adminAction_deletePost(group, numerical_id) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int purge_group(string args)
 {
-    write( NEWS_D->adminAction_deleteGroup(args) && NEWS_D->adminAction_createGroup(args) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write( NEWS_D->adminAction_deleteGroup(args) && NEWS_D->adminAction_createGroup(args) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int add_client(string args)
 {
-    write( NEWS_D->authorizeClient(args) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write( NEWS_D->authorizeClient(args) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int del_client(string args)
 {
-    write( NEWS_D->revokeClientAuthorization(args) ? "\n%^BOLD%^Success.%^RESET%^\n" : "\n%^BOLD%^RED%^Failure.%^RESET%^\n");
+    write( NEWS_D->revokeClientAuthorization(args) ? "\nSuccess.\n" : "\nFailure.n");
 
     return main_menu();
 }
@@ -254,6 +254,3 @@ void remove()
     if(s_editor)
     destruct(s_editor);
 }
-
-
-

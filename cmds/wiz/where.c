@@ -31,7 +31,7 @@ int main(object caller, object room, string str) {
 }
 
 string help(object caller) {
-    return(HIW + " SYNTAX: " + NOR + "where <player>\n\n"
+    return(" SYNTAX: where <player>\n\n"
         "This command will tell you where a user is currently located.\n"
         "If you do not provide an argument, it will default to yourself.\n");
 }

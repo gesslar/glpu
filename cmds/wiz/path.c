@@ -6,18 +6,15 @@
 
 inherit CMD ;
 
-int main(object caller, object room, string str)
-{
+int main(object caller, object room, string str) {
      string action, arg, *path, ret;
      int i;
 
      ret = "";
 
-     if (!str || !sscanf(str, "-%s %s", action, arg))
-     {
+     if (!str || !sscanf(str, "-%s %s", action, arg)) {
           path = this_player()->query_path();
-          for(i = 0; i < sizeof(path); i++)
-          {
+          for(i = 0; i < sizeof(path); i++) {
                ret += path[i][0..<2] + ":";
           }
           write("Current path: " + ret[0..<2] + "\n");
@@ -26,8 +23,7 @@ int main(object caller, object room, string str)
 
      if(arg[<1..< 1] != "/") arg += "/";
 
-     switch(action)
-     {
+     switch(action) {
           case "add" :
                {
                     this_player()->add_path(arg);
@@ -61,7 +57,7 @@ int main(object caller, object room, string str)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "path <-[add/remove]> <directory>\n\n"
+     return(" SYNTAX: path <-[add/remove]> <directory>\n\n"
      "This command allows you to modify the paths that the mud will\n"
      "look in to try and parse your commands sent to the mud. This command\n"
      "can make your user unusable if you remove important directories (such\n"

@@ -16,7 +16,7 @@ int main(object caller, object room, string str)
 
 string help(object caller)
 {
-     return(HIW + "SYNTAX: " + NOR + "date\n\n"
+     return("SYNTAX: date\n\n"
      "This command will return the current date. It is important\n"
      "to note though that the date is in mud time, not in your\n"
      "localtime.\n");

@@ -14,7 +14,7 @@ inherit CMD ;
 
 #define HELP_PATH ({"/doc/general/", "/doc/game/"})
 #define DEV_PATH ({"/doc/wiz/", "/doc/driver/efun/all/", "/doc/driver/applies/", "/doc/driver/lpc/constructs/", "/doc/driver/lpc/types/",})
-#define BORDER HIW + "[=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=]" + NOR + "\n"
+#define BORDER "[=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=]\n"
 
 #include <logs.h>
 
@@ -39,7 +39,7 @@ int main(object caller, object room, string str) {
                 " Please inform an admin.\n\n");
 
             output += BORDER;
-            output += ("\t\t %^BOLD%^YELLOW%^ Help file for command '%^RESET%^MAGENTA%^"+  capitalize(str) + "%^RESET%^BOLD%^YELLOW%^'\n");
+            output += ("\t\t  Help file for command '"+  capitalize(str) + "'\n");
             output += BORDER + "\n";
             output += (file + "\n");
 
@@ -56,7 +56,7 @@ int main(object caller, object room, string str) {
         if(file_exists(path[i] + str)) {
             file = read_file(path[i] + str);
             output += BORDER;
-            output += ("\t\t %^BOLD%^YELLOW%^ Help file for topic '%^RESET%^MAGENTA%^"+  capitalize(str) + "%^RESET%^BOLD%^YELLOW%^'\n");
+            output += ("\t\t  Help file for topic '"+  capitalize(str) + "'\n");
             output += BORDER + "\n";
             output += (file + "\n");
 

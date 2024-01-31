@@ -21,11 +21,11 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     return("%^BOLD%^SYNTAX:%^RESET%^ unalias <verb>\n\n"
+     return("SYNTAX: unalias <verb>\n\n"
      "This command allows you to unalias local aliases. A local alias\n"
      "is an alias that you have set, not global aliases. To unalias\n"
      "a verb that is currently aliased locally, simply provide the\n"
      "verb as the argument. If you don't like a global alias, you can\n"
      "create an alias with the same verb to override it.\n\n"
-     "%^BOLD%^See also:%^RESET%^ alias\n");
+     "See also: alias\n");
 }

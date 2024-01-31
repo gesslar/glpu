@@ -12,17 +12,17 @@ int main(object caller, object room, string arg) {
         say(capitalize((string)previous_object()->query_name()) + " mumbles to themself.\n");
         return 1;
     } else {
-        write("%^BOLD%^YELLOW%^You say:%^RESET%^ " + arg + "\n" + NOR);
-        say("%^YELLOW%^" + capitalize((string)previous_object()->query_name())
-            + " says:%^RESET%^ " +  arg + "\n" + NOR);
+        write("You say: " + arg + "\n");
+        say(capitalize((string)previous_object()->query_name())
+            + " says: " +  arg + "\n");
         return 1;
     }
 }
 
 string help(object caller) {
-    return(HIW + " SYNTAX:" + NOR + " say <argument>\n\n" +
+    return(" SYNTAX: say <argument>\n\n" +
       "This command will send a message to everyone in the room.\n" +
       "Example, if you type 'say Hello!' then the others in the\n" +
       "room will see '" + capitalize(caller->query_name()) + " says: Hello!'\n\n" +
-      HIW + "See also:" + NOR + " tell, tune\n");
+      "See also: tell, tune\n");
 }

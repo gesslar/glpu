@@ -79,7 +79,7 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ alias [-g] <[$]verb> <alias>\n\n"
+     return(" SYNTAX: alias [-g] <[$]verb> <alias>\n\n"
      "This command allows you to display your current aliases and\n"
      "add new ones. If you would like to view your current aliases,\n"
      "then simply type 'alias'. If you'd like to see your current\n"
@@ -94,5 +94,5 @@ string help(object caller)
      "beginning with that verb will be parsed with that alias\n"
      "(ex. 'alias $: emote $*' will result in any command beginning with ':' to\n"
      "be parsed as emote $*).\n\n"
-     "%^BOLD%^See also:%^RESET%^ unalias\n");
+     "See also: unalias\n");
 }

@@ -25,7 +25,7 @@ int main(object caller, object room, string arg)
 string help(object caller)
 {
     return(
-      HIW + " SYNTAX:" + NOR + " access\n\n"+
+      " SYNTAX: access\n\n"+
       "This command allows you as the admin to control whether or not\n"+
       "the mud is locked down. You can allow only admins, or only devs\n"+
       "and above. In addition, you may also add names or IP addresses\n"+

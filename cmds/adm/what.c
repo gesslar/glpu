@@ -34,7 +34,7 @@ int main()
 
 string help(object caller)
 {
-    return(" %^BOLD%^SYNTAX%^RESET%^: what\n\n"
+    return(" SYNTAX: what\n\n"
       "This command allows you to view the last command executed by\n"
       "all users logged in. It is recommended that you review any\n"
       "privacy policy that your mud might have before using this tool.\n");

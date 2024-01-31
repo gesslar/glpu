@@ -256,13 +256,12 @@ private string grep_file (mapping opt, string pat, string file) {
 
     if (color) {
       if (opt["F"]) {
-        line = replace_string(lines[i], pat, "%^B_WHITE%^%^BLACK%^" + pat + "%^RESET%^");
       } else {
         assoc = reg_assoc(lines[i], ({ pat }), ({ 1 }), 0);
 
         for (j = 0; j < sizeof(assoc[0]); j++) {
           if (assoc[1][j])
-            assoc[0][j] = "%^B_WHITE%^%^BLACK%^" + assoc[0][j] + "%^RESET%^";
+            assoc[0][j] = assoc[0][j];
         }
 
         line = implode(assoc[0], "");
@@ -290,7 +289,7 @@ private string grep_file (mapping opt, string pat, string file) {
       line = matches[lines[i]];
 
       if (opt["n"])
-        line = "%^BOLD%^" + sprintf("%4d", lines[i] + 1) + "%^RESET%^  " + line;
+        line = sprintf("%4d", lines[i] + 1) + "  " + line;
 
       lines[i] = line;
     }

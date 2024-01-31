@@ -13,7 +13,7 @@ int main(object caller, object room, string arg)
     string *funcs, ret;
 
     if(!arg || arg == "")
-    return notify_fail(RED + "Error:" + NOR + " [functions]: SYNTAX: functions <object id>|<filename>.\n");
+    return notify_fail("Error: [functions]: SYNTAX: functions <object id>|<filename>.\n");
     ob = present(arg);
 
     if(!ob)
@@ -23,7 +23,7 @@ int main(object caller, object room, string arg)
     ob = find_object(arg);
 
     if(!ob)
-    return notify_fail(RED + "Error:" + NOR + " [functions]: Could not find object " + arg + ".\n");
+    return notify_fail("Error: [functions]: Could not find object " + arg + ".\n");
 
     funcs = functions(ob);
     funcs = sort_array(funcs, 1);

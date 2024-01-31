@@ -81,9 +81,9 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "drop <item>\n\n"
+     return(" SYNTAX: drop <item>\n\n"
      "This command will allow you to drop an object you are currently\n"
      "holding onto the ground. The argument you provide, will be the\n"
      "name of the object you wish to drop.\n\n" +
-     HIW + "See also: " + NOR + "get\n");
+     "See also: get\n");
 }

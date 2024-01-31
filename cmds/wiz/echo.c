@@ -19,7 +19,7 @@ int main(object caller, object room, string str)
 
 string help(object caller)
 {
-    return(" %^BOLD%^SYNTAX:%^RESET%^ echo <string>\n\n"
+    return(" SYNTAX: echo <string>\n\n"
       "This command allows you to echo a string of text to the room you are currently\n"
       "in. Other individuals in the room will see the argument that you pass to this\n"
       "command exactly as you typed it with a newline (aka linebreak) after it.\n\n"

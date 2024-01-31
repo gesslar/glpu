@@ -38,7 +38,7 @@ int main(object caller, object room, string arg)
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ log <logfile>\n\n"
+     return(" SYNTAX: log <logfile>\n\n"
      "This command allows you to see the tail (ending) of different\n"
      "logfiles. If you do not provide an argument and there is a file\n"
      "named 'log' in your home directory, then it will display that.\n"

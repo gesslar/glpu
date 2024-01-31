@@ -18,7 +18,7 @@ int main()
 
 string help(object caller)
 {
-     return(" %^BOLD%^SYNTAX:%^RESET%^ version\n\n"
+     return(" SYNTAX: version\n\n"
      "This command returns version information about the software\n"
      "running this mud.\n");
 }

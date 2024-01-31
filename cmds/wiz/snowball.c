@@ -38,6 +38,6 @@ void snowball_hit(object vict)
 
 string help(object caller)
 {
-     return(HIW + " SYNTAX: " + NOR + "snowball [victim]\n"
+     return(" SYNTAX: snowball [victim]\n"
      "Go back to your childhood and throw snowballs at the players.\n");
 }
