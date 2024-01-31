@@ -13,6 +13,7 @@
 inherit STD_OB_E;
 inherit M_SETUP ;
 inherit __DIR__ "id" ;
+inherit __DIR__ "description" ;
 
 private string name, short, long;
 
@@ -22,10 +23,6 @@ int moveAllowed(mixed dest);
 int set_name(string str);
 string query_name();
 string query_cap_name();
-int set_short(string str);
-int set_long(string str);
-string query_short();
-string query_long();
 int can_receive(object ob);
 int can_release(object ob);
 
@@ -77,7 +74,6 @@ int moveAllowed(mixed dest) {
 }
 
 
-
 int set_name(string str) {
     if(interactive(this_object()) && !isMember(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
@@ -97,11 +93,6 @@ string query_cap_name() {
     if(!name && !stringp(query("name"))) return "";
     else if(!name) return capitalize(query("name"));
     else return capitalize(name);
-}
-
-int set_short(string str) {
-    short = str;
-    set("short", str);
 }
 
 string query_short() {

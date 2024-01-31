@@ -9,7 +9,7 @@
 varargs int tell(string message, mixed args ...) {
     object *excludes = ({ }), *obs ;
     string message_class;
-    int num_args = (!undefinedp(args) && pointerp(args)) ? sizeof(args) : 0;
+    int num_args = (!nullp(args) && pointerp(args)) ? sizeof(args) : 0;
 
     if(num_args)
     {

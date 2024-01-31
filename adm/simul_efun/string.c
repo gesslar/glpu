@@ -23,3 +23,8 @@ string prepend(string source, string to_prepend) {
 
     return source;
 }
+
+varargs string extract(string str, int from, int to) {
+    if (nullp(to)) return str[from ..];
+    else return str[from .. to];
+}

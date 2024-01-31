@@ -20,8 +20,13 @@ int tail(string file) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
 
+// File: identify
+string identify(mixed arg) ;
+
 // File: object
 int getoid(object ob) ;
+varargs object get_object( string str, object player ) ;
+varargs mixed get_objects( string str, object player, int no_arr ) ;
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;
@@ -38,6 +43,7 @@ string dump_socket_status() ;
 // File: string
 string append(string source, string to_append) ;
 string prepend(string source, string to_prepend) ;
+varargs string extract(string str, int from, int to) ;
 
 // File: system
 string mud_name() ;

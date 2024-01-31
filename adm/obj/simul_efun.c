@@ -16,6 +16,7 @@
 #include "/adm/simul_efun/directory.c"
 #include "/adm/simul_efun/exists.c"
 #include "/adm/simul_efun/file.c"
+#include "/adm/simul_efun/identify.c"
 #include "/adm/simul_efun/object.c"
 #include "/adm/simul_efun/overrides.c"
 #include "/adm/simul_efun/resolve_path.c"
