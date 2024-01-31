@@ -1030,7 +1030,7 @@ void disp_user(string str)
 
      if(!users[str])
      {
-          write(help());
+          write(help(this_player()));
           return;
      }
 

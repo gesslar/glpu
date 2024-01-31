@@ -13,14 +13,14 @@ int confirm_NewPassword(string str, string pass);
 inherit CMD ;
 
 
-int main()
+mixed main(object caller, object room, string arg)
 {
      write("Please enter your current password: ");
-     input_to("confirm_CurrentPassword", 1);
+     input_to("confirm_CurrentPassword", 1, caller);
      return 1;
 }
 
-int confirm_CurrentPassword(string str)
+int confirm_CurrentPassword(string str, object caller)
 {
 
      if(crypt(str, str) != caller->query_link()->query_password())
@@ -31,12 +31,12 @@ int confirm_CurrentPassword(string str)
      else
      {
           write("\nPlease enter your new password: ");
-          input_to("i_NewPassword", 1);
+          input_to("i_NewPassword", 1, caller);
           return 1;
      }
 }
 
-int i_NewPassword(string str)
+int i_NewPassword(string str, object caller)
 {
     if(!stringp(str) || str == "")
     {
@@ -45,11 +45,11 @@ int i_NewPassword(string str)
     }
 
      write("\nPlease enter your new password again: ");
-     input_to("confirm_NewPassword", 1, str);
+     input_to("confirm_NewPassword", 1, caller, str);
      return 1;
 }
 
-int confirm_NewPassword(string str, string pass)
+int confirm_NewPassword(string str, object caller, string pass)
 {
      if(str != pass)
      {

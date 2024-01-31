@@ -12,44 +12,40 @@ Standard nuke command V2
 
 void confirm_nuke(string str, string user);
 
-int main(object caller, object room, string user)
-{
-     if(!adminp(previous_object())) return notify_fail("Error [nuke]: Access denied.\n");
+mixed main(object caller, object room, string user) {
+     if(!adminp(previous_object()))
+          return "Error [nuke]: Access denied.\n" ;
 
-     if(!user)
-     {
+     if(!user) {
           write("Usage: nuke <player>\n");
           return 1;
      }
 
      user = lower_case(user);
 
-     if(!user_exists(user))
-     {
+     if(!user_exists(user)) {
           write("Error [nuke]: User '" + user + "' does not exist.\n");
           return 1;
      }
 
      write("%^BOLD%^Are you sure you want to %^RESET%^RED%^delete%^RESET%^BOLD%^ " + user + "?%^RESET%^ [%^RED%^y%^RESET%^/%^GREEN%^n%^RESET%^] ");
-     input_to("confirm_nuke", 0, user);
+     input_to("confirm_nuke", 0, caller, user);
 
      return 1;
 }
 
-void confirm_nuke(string str, string user)
+void confirm_nuke(string str, object caller, string user)
 {
      object security_editor;
      object body;
      string *dir;
 
-     if(str == "y" || str == "yes")
-     {
+     if(str == "y" || str == "yes") {
           write("\n%^YELLOW%^Warning%^RESET%^ [nuke]: Now stripping user of system group memberships.\n");
 
           security_editor = clone_object("/adm/obj/security_editor.c");
 
-          foreach(mixed group in security_editor->listGroups())
-          {
+          foreach(mixed group in security_editor->listGroups()) {
                if(isMember(user, group)) write("\t%^RED%^*%^RESET%^ %^BOLD%^" + group + "%^RESET%^ membership revoked.\n");
                security_editor->disable_membership(user, group);
           }
@@ -57,8 +53,7 @@ void confirm_nuke(string str, string user)
           security_editor->write_state(0);
           destruct(security_editor);
 
-          if(find_player(user))
-          {
+          if(find_player(user)) {
               write("%^YELLOW%^Warning%^RESET%^ [nuke]: Now disconnecting user '" + user + "'.\n");
                body = find_player(user);
                tell_object(body, "You watch as your body dematerializes.\n");
@@ -69,8 +64,7 @@ void confirm_nuke(string str, string user)
           write("%^YELLOW%^Warning%^RESET%^ [nuke]: Now deleting pfile for user '" + user + "'.\n");
 
           dir = get_dir(user_data_directory(user));
-          foreach(string file in dir)
-          {
+          foreach(string file in dir) {
               write("\t%^RED%^*%^RESET%^ %^BOLD%^" + file + "%^RESET%^ deleted.\n");
               if(!rm(user_data_directory(user) + file)) return(notify_fail("\nError [nuke]: Error while deleting " + file + " in user's data directory.\n"));
           }
@@ -82,8 +76,7 @@ void confirm_nuke(string str, string user)
           return;
      }
 
-     else
-     {
+     else {
           write("Warning [nuke]: Aborting nuke.\n");
           return;
      }

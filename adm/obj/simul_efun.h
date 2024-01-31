@@ -35,6 +35,10 @@ int wizardp(mixed user) ;
 // File: socket
 string dump_socket_status() ;
 
+// File: string
+string append(string source, string to_append) ;
+string prepend(string source, string to_prepend) ;
+
 // File: system
 string mud_name() ;
 string lib_name() ;
