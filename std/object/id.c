@@ -42,7 +42,7 @@ void set_ids(mixed arg) {
     else ids = arg;
 
     if(member_array(query_name(), ids) == -1 && query_name()) {
-        ids += ({query_name()});
+        ids += ({ query_name() });
     }
 }
 
