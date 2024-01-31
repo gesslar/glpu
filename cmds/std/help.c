@@ -10,7 +10,7 @@
 
 //Last Edited on October 6th, 2006 by Tacitus
 
-inherit CMD ;
+inherit STD_CMD ;
 
 #define HELP_PATH ({"/doc/general/", "/doc/game/"})
 #define DEV_PATH ({"/doc/wiz/", "/doc/driver/efun/all/", "/doc/driver/applies/", "/doc/driver/lpc/constructs/", "/doc/driver/lpc/types/",})

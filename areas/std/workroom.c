@@ -24,7 +24,7 @@ non-standard values and backwards area support.
 
 /* Last edited on July 11th, 2006 by Tacitus */
 
-inherit ROOM;
+inherit STD_ROOM;
 
 void create()
 {
@@ -47,4 +47,3 @@ void create()
                "it.'\n",
      ]) );
 }
-

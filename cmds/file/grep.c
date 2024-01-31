@@ -36,7 +36,7 @@
  */
 
 
-inherit CMD ;
+inherit STD_CMD ;
 
 #define GETOPT_NOQUOTES         (1 << 0)
 #define GETOPT_KEEPQUOTES       (1 << 1)

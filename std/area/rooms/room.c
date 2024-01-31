@@ -9,7 +9,7 @@
 
 #include <config.h>
 
-inherit OBJECT;
+inherit STD_OBJECT;
 inherit __DIR__ "tell" ;
 inherit __DIR__ "exits" ;
 inherit __DIR__ "light" ;

@@ -8,7 +8,7 @@ Last edited 5-July-06 by Vicore
 
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 object pager;
 

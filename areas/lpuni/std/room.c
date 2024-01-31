@@ -1,1 +1,1 @@
-inherit ROOM;
+inherit STD_ROOM;

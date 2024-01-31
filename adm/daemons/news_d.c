@@ -9,7 +9,7 @@
 
 /* Preproccessor Statements */
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 #define DATA_FILE "/data/daemons/news_d"
 
@@ -210,5 +210,3 @@ int has_permission(string news_group, string action)
 
     return 0;
 }
-
-

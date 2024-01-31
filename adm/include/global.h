@@ -6,7 +6,13 @@
 
 //Last updated: October 9th, 2006 by Tacitus
 
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
 #include <mudlib.h>
+#include <daemons.h>
+#include <modules.h>
+#include <objects.h>
 
 #define LIB_VERSION "A-0610-R7"
 
@@ -20,6 +26,4 @@
 #define FALSE 0
 #define UNDEFINED ([])[0]
 
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
 #endif

@@ -8,7 +8,7 @@
 
 // Last edited by Tacitus on October 4th, 2006
 
-inherit OBJECT;
+inherit STD_OBJECT;
 
 /* Global Variables*/
 
@@ -524,5 +524,3 @@ void callback_exit()
     write("\n" + capitalize(groups[current_group]) + " > ");
     input_to("group_input");
 }
-
-

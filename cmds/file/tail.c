@@ -6,7 +6,7 @@
 
 //Last edited on July 1st, 2005 by Tacitus
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string file)
 {

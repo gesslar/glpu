@@ -6,7 +6,7 @@
 
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main()
 {

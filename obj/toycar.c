@@ -1,4 +1,4 @@
-inherit OBJECT;
+inherit STD_OBJECT;
 
 void create()
 {

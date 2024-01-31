@@ -6,7 +6,7 @@
 
 */
 
-inherit ROOM;
+inherit STD_ROOM;
 
 int i = -1;
 

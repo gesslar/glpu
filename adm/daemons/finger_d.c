@@ -17,7 +17,7 @@
 
 #include <socket.h>
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 #define BORDER1 "=+=--=+=--=+=--=+=--=+=--=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=\n"
 

@@ -4,7 +4,7 @@
 //08-APR-05
 //File system management
 
-inherit CMD ;
+inherit STD_CMD ;
 
 void setup() {
     help =

@@ -6,7 +6,7 @@
 
 //Last Edited on October 20th, 2005 by Tacitus
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string arg) {
      write(capitalize(mud_name()) + " has been running since " + ctime(time() - uptime()) + "\n");

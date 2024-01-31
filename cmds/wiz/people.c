@@ -8,7 +8,7 @@
 
 /*  Last editted by Tacitus on October 4 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 object *addArray( object  *oldarr, object *newarr);
 int sortName(object member1, object member2);

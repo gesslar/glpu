@@ -4,7 +4,7 @@
 //01-JULY-05
 //Simple communication command
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string arg) {
     if(!arg) {

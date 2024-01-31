@@ -8,7 +8,7 @@ LPUni soul daemon
 
 /* Last updated: July 16th, 2006 by Tacitus */
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 /* Defines */
 

@@ -4,9 +4,9 @@
  10-NOV-05
  LPUniversity Cafe
 
-*/ 
+*/
 
-inherit ROOM;
+inherit STD_ROOM;
 
 void create()
 {

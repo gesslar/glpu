@@ -5,7 +5,7 @@
    Objective:  See the tail enf of a wizards journal
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 #define TPN (this_player()->query("name"))
 

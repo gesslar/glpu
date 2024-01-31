@@ -4,7 +4,7 @@
 //07-APR-05
 //File system management
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string str)
 {

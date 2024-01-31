@@ -6,7 +6,7 @@
 
 //Last updated June 9th, 2006 by Tacitus
 
-inherit ROOM;
+inherit STD_ROOM;
 
 void create()
 {

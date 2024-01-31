@@ -10,7 +10,7 @@
 
 #include <logs.h>
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 int start(int minutes, int type);
 int stop();

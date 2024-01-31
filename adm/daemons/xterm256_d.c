@@ -8,7 +8,7 @@
 
 #include <xterm256.h>
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;

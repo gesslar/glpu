@@ -8,7 +8,7 @@
 
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);

@@ -3,7 +3,7 @@
  Tacitus @ LPUniversity
  14-JAN-06
  Global Alias Server
- 
+
 */
 
 /* Preproccessor Statements */
@@ -12,7 +12,7 @@
 
 #define CONFIG_FILE "/adm/etc/aliases"
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 /* Prototypes */
 
@@ -39,19 +39,19 @@ void parse_config()
      int i, total_errors = 0, total_parsed = 0;
      string *conf = parse(read_file(CONFIG_FILE));
      string *cur_groups = ({});
-     
+
      for(i = 0; i < sizeof(conf); i++)
      {
           string groups, verb, alias;
-          
-          if(!conf[i]) continue;          
-          
+
+          if(!conf[i]) continue;
+
           if(sscanf(conf[i], ":;%s:", groups))
           {
                cur_groups = explode(groups, " ");
                continue;
           }
-          
+
           if(!sizeof(cur_groups))
           {
                write("\n");
@@ -59,13 +59,13 @@ void parse_config()
                write("\tGlobal Alias Server Error: Global Aliases were not parsed.\n");
                return;
           }
-          
+
           if(sscanf(conf[i], "%s %s", verb, alias))
           {
                add_alias(verb, alias, cur_groups);
-               total_parsed ++;              
+               total_parsed ++;
           }
-          
+
           else
           {
                write("\n");
@@ -73,7 +73,7 @@ void parse_config()
                total_errors ++;
           }
      }
-     
+
      write("\nGlobal Alias Server: " + total_parsed + " global aliases parsed. " + total_errors + " errors encountered.\n");
 }
 
@@ -104,7 +104,7 @@ void add_alias(string verb, string cmd, string *groups)
      int i;
 
      if(origin() != ORIGIN_LOCAL) return;
-     
+
      if(verb[0] == '$' && strlen(verb) > 1)
      {
           if(!mapp(xverb)) xverb = ([]);
@@ -130,24 +130,24 @@ void add_alias(string verb, string cmd, string *groups)
 mapping get_alias(string priv)
 {
      int i;
-     string *keys = keys(alias);     
+     string *keys = keys(alias);
      mapping ret = ([]);
-     
+
      for(i = 0; i < sizeof(keys); i++)
           if(isMember(priv, keys[i]) || keys[i] == "all") ret += alias[keys[i]];
 
-     
-     return ret;     
+
+     return ret;
 }
 
 mapping get_xverb(string priv)
 {
      int i;
-     string *keys = keys(xverb);     
+     string *keys = keys(xverb);
      mapping ret = ([]);
-     
+
      for(i = 0; i < sizeof(keys); i++)
           if(isMember(priv, keys[i]) || keys[i] == "all") ret += xverb[keys[i]];
-     
-     return ret;     
+
+     return ret;
 }

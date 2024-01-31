@@ -8,7 +8,7 @@
 
 //Last edited October 4th, 2006 by Tacitus
 
-inherit CMD ;
+inherit STD_CMD ;
 
 object *addArray( object *oldlist, object *newlist);
 

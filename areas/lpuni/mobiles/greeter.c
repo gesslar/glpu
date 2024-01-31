@@ -6,7 +6,7 @@
 
 */
 
-inherit NPC;
+inherit STD_NPC;
 
 int count;
 string *cmdQueue;

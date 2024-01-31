@@ -12,7 +12,7 @@ developer to attempt to move into their workroom.
 
 //Last edited on July 22nd, 2006 by Parthenon
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string str)
 {

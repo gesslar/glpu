@@ -6,7 +6,7 @@
 
 // Last updated on August 10th, 2006 by Parthenon@LPUniversity
 
-inherit OBJECT;
+inherit STD_OBJECT;
 
 /* Function Prototypes */
 

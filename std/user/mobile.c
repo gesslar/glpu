@@ -16,7 +16,7 @@
 #include <driver/origin.h>
 #include <logs.h>
 
-inherit OBJECT;
+inherit STD_OBJECT;
 
 inherit __DIR__ "alias";
 inherit __DIR__ "tell" ;

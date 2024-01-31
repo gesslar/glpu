@@ -8,7 +8,7 @@
 
 */
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 /* Last modified by Tacitus on July 5th, 2006 */
 

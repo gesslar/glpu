@@ -10,7 +10,7 @@ int confirm_CurrentPassword(string str);
 int i_NewPassword(string str);
 int confirm_NewPassword(string str, string pass);
 
-inherit CMD ;
+inherit STD_CMD ;
 
 
 mixed main(object caller, object room, string arg)

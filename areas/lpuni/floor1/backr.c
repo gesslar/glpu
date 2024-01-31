@@ -6,7 +6,7 @@
 
 */
 
-inherit ROOM;
+inherit STD_ROOM;
 
 void create() {
     set_short("a hallway");

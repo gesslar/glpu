@@ -13,7 +13,7 @@
     by Tacitus.
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 #define SYNTAX "Syntax: ls [-l] [-a] [-S] [-t] [-r] [-F] [-P] [file1...]\n"
 

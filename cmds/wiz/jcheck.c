@@ -11,7 +11,7 @@
    Last updated Aug 26, 2006 by Scifi
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 #define TP this_player()
 #define TPC this_player()->query("cwd")

@@ -9,7 +9,7 @@
 #include <logs.h>
 #include <config.h>
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string arg)
 {

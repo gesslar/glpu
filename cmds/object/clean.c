@@ -10,7 +10,7 @@ Last edited on October 29th, 2005 by Tacitus
 
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string arg)
 {

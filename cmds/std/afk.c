@@ -8,7 +8,7 @@
 
 */
 
-inherit CMD ;
+inherit STD_CMD ;
 
 int main(object caller, object room, string args)
 {

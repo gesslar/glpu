@@ -10,7 +10,7 @@
 
 #include <config.h>
 
-inherit OB_E;
+inherit STD_OB_E;
 inherit M_SETUP ;
 
 private string *ids, name, short, long;

@@ -6,7 +6,7 @@
 
 */
 
-inherit MOBILE;
+inherit STD_MOBILE;
 
 void create() {
     path = ({ "/cmds/std/" });

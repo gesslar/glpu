@@ -11,7 +11,7 @@
 #include <config.h>
 #include <driver/origin.h>
 
-inherit OBJECT;
+inherit STD_OBJECT;
 
 private string password, bodyPath;
 

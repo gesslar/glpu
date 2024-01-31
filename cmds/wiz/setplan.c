@@ -9,7 +9,7 @@ command to allow editing of plan
 
 //Last edited on July 23rd, 2006 by Parthenon
 
-inherit CMD ;
+inherit STD_CMD ;
 
 mapping in_edits = ([]);
 

@@ -6,7 +6,7 @@
 
 //Last edited on August 18th, 2006 by Parthenon
 
-inherit CMD ;
+inherit STD_CMD ;
 
 string *dir_tree;
 string dir;

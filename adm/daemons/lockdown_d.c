@@ -6,7 +6,7 @@
 
 //Last edited on July 17th, 2006 by Parthenon
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 #define SAVE_PATH "/data/daemons/lockdown_d.o"
 
@@ -483,5 +483,3 @@ void set_player_creation_msg(string arg)
     save_object(SAVE_PATH);
     return;
 }
-
-

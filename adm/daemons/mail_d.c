@@ -10,7 +10,7 @@
 
 */
 
-inherit DAEMON ;
+inherit STD_DAEMON ;
 
 #define MAIL_DIR "/data/users/"
 
