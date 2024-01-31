@@ -289,15 +289,16 @@ void catch_tell(string message) {
 
 void receive_message(string type, string msg) {
     if(type != "ignore_ansi") {
-        if(query_env("colour") == "enabled") msg = find_object(ANSI_PARSER)->parse_pinkfish(msg);
-        else msg = ANSI_PARSER->parse_pinkfish(msg, 1);
+        if(query_env("colour") == "enabled") msg = XTERM256->substitute_colour(msg, "xterm");
+        else msg = XTERM256->substitute_colour(msg, "plain") ;
     }
 
     receive(msg);
 }
 
 string process_input(string arg) {
-    return ANSI_PARSER->strip_unsafeAnsi(arg);
+    // return ANSI_PARSER->strip_unsafeAnsi(arg);
+    return arg ;
 }
 
 nomask varargs string *query_commandHistory(int index, int range) {

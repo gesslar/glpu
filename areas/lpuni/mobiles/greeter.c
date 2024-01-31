@@ -69,7 +69,7 @@ void catch_tell(string msg)
 {
     string target, arg, from, chan;
 
-    msg = ANSI_PARSER->parse_pinkfish(msg, 1);
+    msg = XTERM256->substitute_colour(msg, "plain") ;
 
     if(sscanf(msg, "%s bows%*sto you", target))
         cmdQueue += ({ "bow " + lower_case(target) });

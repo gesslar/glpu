@@ -406,7 +406,7 @@ void enterWorld(string str) {
 }
 
 void catch_tell(string message) {
-    receive(ANSI_PARSER->parse_pinkfish(message));
+    receive(XTERM256->substitute_colour(message));
 }
 
 void relogin() {
@@ -468,6 +468,5 @@ string parseTokens(string text) {
 }
 
 void receive_message(string type, string msg) {
-    msg = ANSI_PARSER->parse_pinkfish(msg, 1);
-    receive(msg);
+    receive(XTERM256->substitute_colour(msg, "plain")) ;
 }

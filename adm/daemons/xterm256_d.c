@@ -28,7 +28,7 @@ void setup() {
 private void load_all_colours() {
     int i ;
     string *lines ;
-debug_message("Loading all colours") ;
+
     // First let's load all the 256 colours into the colour codes
     i = 256 ;
     fg_codes = allocate(i) ;
@@ -99,7 +99,7 @@ debug_message("Loading all colours") ;
 // vt100 - strip only colour codes
 // xterm - replace all tokens with xterm256 colour codes
 // ansi  - fall back to ansi colour codes
-public varargs string substitute_colour(string text, string mode) {
+public string substitute_colour(string text, string mode) {
     mixed *assoc ;
     string *parts, sub ;
     int *matched ;
@@ -107,6 +107,7 @@ public varargs string substitute_colour(string text, string mode) {
     string result ;
 
     if(nullp(text)) return "" ;
+    if(nullp(mode)) mode = "plain" ;
 
     assoc = pcre_assoc(text, ({ XTERM256_COLOURS }), ({ 1 })) ;
     parts = assoc[0] ;

@@ -44,7 +44,6 @@
 #define GA_SERVER     "/adm/daemons/ga_server"
 #define NEWS_D        "/adm/daemons/news_d"
 #define FINGER_D      "/adm/daemons/finger_d"
-#define ANSI_PARSER   "/adm/daemons/ansi_parser"
 #define XTERM256      "/adm/daemons/xterm256_d"
 #define SOUL_D        "/adm/daemons/soul_d"
 #define LOCKDOWN_D    "/adm/daemons/lockdown_d"

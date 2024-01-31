@@ -31,7 +31,7 @@ void set_privs(object ob, string privs) {
 }
 
 void write(string msg) {
-    if(this_player())  message("write", msg + "", this_player());
+    if(this_player()) message("write", msg + "", this_player());
     else debug_message(msg) ;
 }
 
