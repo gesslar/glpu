@@ -20,6 +20,9 @@ int tail(string file) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
 
+// File: function
+varargs string call_trace(int color) ;
+
 // File: identify
 string identify(mixed arg) ;
 
@@ -44,6 +47,7 @@ string dump_socket_status() ;
 string append(string source, string to_append) ;
 string prepend(string source, string to_prepend) ;
 varargs string extract(string str, int from, int to) ;
+string no_ansi(string str) ;
 
 // File: system
 string mud_name() ;

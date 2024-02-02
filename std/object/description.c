@@ -28,11 +28,15 @@ int set_short(mixed str) {
     short = str;
 }
 
-string query_short() {
-    string result ;
+string query_short(object viewer: (: this_player() :)) {
+    mixed result ;
 
-    if(valid_function(short))
-        result = (*short)() ;
+    result = short ;
+debug_message(call_trace(0)) ;
+
+    if(valid_function(result))
+        result = (*result)(viewer) ;
+
     if(!stringp(result))
         result = 0;
 

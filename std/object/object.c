@@ -96,11 +96,10 @@ string query_cap_name() {
 }
 
 string query_short() {
-    if(!short) {
-        if(!query("short")) return name;
-        return query("short");
-    }
-    return short;
+    string result = ::query_short();
+    if(!result) result = query_name() ;
+
+    return result ;
 }
 
 int set_long(string str) {

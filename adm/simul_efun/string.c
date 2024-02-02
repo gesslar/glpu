@@ -28,3 +28,7 @@ varargs string extract(string str, int from, int to) {
     if (nullp(to)) return str[from ..];
     else return str[from .. to];
 }
+
+string no_ansi(string str) {
+    return XTERM256->substitute_colour(str, "plain") ;
+}

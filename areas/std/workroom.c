@@ -24,17 +24,15 @@ non-standard values and backwards area support.
 
 /* Last edited on July 11th, 2006 by Tacitus */
 
+// 2024/02/01: Gesslar - some formatting updates
+
 inherit STD_ROOM;
 
-void create()
-{
-     set_light(1);
+void create() {
      set_short("A workroom");
-     set_long(
-          "This is a bare and generic workroom for developers who don't\n"
-          "have one of their own. To see the source code for this\n"
-          "workroom, you can type 'more here'. There is a sign on the\n"
-          "wall.\n"
+     set_long("This is a bare and generic workroom for developers who don't "
+          "have one of their own. To see the source code for this workroom, "
+          "you can type 'more here'. There is a sign on the wall."
      );
      set_exits( ([
           "cafe" : "/areas/lpuni/entrance.c",
@@ -42,8 +40,9 @@ void create()
      ]) );
      set_items( ([
           "sign" : "The sign reads:\n"
-               "'You are never given a wish without also being given the\n"
-               "power to make it come true. You may, however, have to work for\n"
-               "it.'\n",
+          "'You are never given a wish without also being given the "
+          "power to make it come true. You may, however, have to work for"
+          "it.'",
      ]) );
+     set_light(1);
 }
