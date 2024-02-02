@@ -1,7 +1,7 @@
 # Log files
-log
-/log/
-/home/
+#log
+#/log/
+#/home/
 # Data files
 *.o
-journal.*
+#journal.*
