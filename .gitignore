@@ -1,9 +1,17 @@
 # Keep all .keep files
-!.keep
+
 # Log files
 log
-/log/
-/home/*/workroom.c
+!/doc/driver/efun/floats/log
+!/doc/driver/efun/all/log
+/log/*
+!/log/.keep
+!/log/*/.keep
+
+/home/*
+!/home/*/.keep
+
+!.keep
 # Data files
 *.o
 journal.*
