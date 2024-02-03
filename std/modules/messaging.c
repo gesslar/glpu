@@ -1,3 +1,11 @@
+// /std/modules/messaging.c
+// This modeul is heavily influenced by Lima's messaging system.
+//
+// Created:     2024/02/03: Gesslar
+// Last Change: 2024/02/03: Gesslar
+//
+// 2024/02/03: Gesslar - Created
+
 // Functions
 void do_receive(string message, int message_type);
 
@@ -114,9 +122,10 @@ varargs receive_direct(string msg, int message_type, mixed other) {
 void do_receive(string message, int message_type) {
     string term ;
 
-    if(userp(this_object())) {
+    if(userp()) {
         term = this_object()->query_env("colour");
-        // If colour is not explicitly enabled, set NO_ANSI to disable coloured messages.
+        // If colour is not explicitly enabled, set NO_ANSI to disable
+        // coloured messages.
         if(term == "enabled") {
             term = "xterm" ;
         } else {
@@ -128,7 +137,8 @@ void do_receive(string message, int message_type) {
         message_type |= NO_ANSI;
     }
 
-    // If NO_ANSI flag is set, substitute colours with "plain" (i.e., no colour).
+    // If NO_ANSI flag is set, substitute colours with "plain" (i.e., no
+    // colour).
     if(message_type & NO_ANSI) {
         message = XTERM256->substitute_colour(message, "plain");
     }
