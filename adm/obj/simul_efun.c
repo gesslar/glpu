@@ -19,6 +19,7 @@
 #include "/adm/simul_efun/function.c"
 #include "/adm/simul_efun/identify.c"
 #include "/adm/simul_efun/messaging.c"
+#include "/adm/simul_efun/numbers.c"
 #include "/adm/simul_efun/object.c"
 #include "/adm/simul_efun/overrides.c"
 #include "/adm/simul_efun/resolve_path.c"

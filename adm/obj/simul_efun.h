@@ -33,6 +33,11 @@ varargs void tell_from_inside(object ob, string str, int msg_type, mixed exclude
 varargs void tell_from_outside(object ob, string str, int msg_type, mixed exclude) ;
 varargs void tell(object ob, string str, int msg_type) ;
 
+
+// File: numbers
+float percent_of(float a, float b) ;
+float percent(float a, float b) ;
+
 // File: object
 int getoid(object ob) ;
 varargs object get_object( string str, object player ) ;

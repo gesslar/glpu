@@ -44,3 +44,7 @@ int can_release(object ob) {
 }
 
 void release_effect(object ob) {}
+
+int is_room() {
+    return 1;
+}

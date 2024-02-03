@@ -25,3 +25,7 @@ void remove() {
 
     event(({ this_object() }), "remove") ;
 }
+
+int is_daemon() {
+    return 1 ;
+}
