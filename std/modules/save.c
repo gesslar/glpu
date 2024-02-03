@@ -12,9 +12,8 @@ private nosave string save_file = 0;
 varargs string set_save_file(string file);
 
 // whether this object will save/load
-int set_persistent(int x) {
-    if(x) persistent = 1;
-    else persistent = 0;
+int set_persistent(int x: (: 1 :)) {
+    x = !!x;
 
     if(!save_file) set_save_file();
 

@@ -8,8 +8,6 @@
 
 inherit STD_DAEMON ;
 
-#define SAVE_PATH "/data/daemons/lockdown_d.o"
-
 #define DEV_LOCK_MSG mud_name() + " is currently locked to developers right now.\nPlease try again later."
 #define PLAYER_LOCK_MSG mud_name() + " is currently locked to players right now.\nPlease try again later."
 #define VIP_LOCK_MSG mud_name() + " is currently locked to all but VIP players.\nPlease try again later."
@@ -21,9 +19,6 @@ int guest_lock = 0, player_creation = 0;
 int dev_lock = 0, player_lock = 0, vip_lock = 0;
 string dev_lock_msg = "", vip_lock_msg = "", player_lock_msg = "";
 string guest_lock_msg = "", player_creation_msg = "";
-
-
-
 
 /**************/
 /* PROTOTYPES */
@@ -62,14 +57,16 @@ int is_ip_banned(string ip);
 int is_user_banned(string user);
 
 int setup() {
-    if(file_exists(SAVE_PATH))
-    restore_object(SAVE_PATH);
+    set_persistent() ;
+}
+
+void post_setup() {
     if(!users_banned)
-    users_banned = ({});
+        users_banned = ({});
     if(!ips_banned)
-    ips_banned = ({});
+        ips_banned = ({});
     if(!play_testers)
-    play_testers = ({});
+        play_testers = ({});
 }
 
 /*******************/
@@ -129,348 +126,273 @@ int is_ip_banned(string ip)
     return 0;
 }
 
-int query_player_lock()
-{
+int query_player_lock() {
     int tmp = player_lock;
     return tmp;
 }
 
-int query_dev_lock()
-{
+int query_dev_lock() {
     int tmp = dev_lock;
     return tmp;
 }
 
-string query_vip_lock_msg()
-{
+string query_vip_lock_msg() {
     string tmp = vip_lock_msg;
 
     if(tmp == "")
-    return VIP_LOCK_MSG;
+        return VIP_LOCK_MSG;
     else
-    return tmp;
+        return tmp;
 }
 
-string query_dev_lock_msg()
-{
+string query_dev_lock_msg() {
     string tmp = dev_lock_msg;
 
     if(tmp == "")
-    return DEV_LOCK_MSG;
+        return DEV_LOCK_MSG;
     else
-    return tmp;
+        return tmp;
 }
 
-string query_guest_lock_msg()
-{
+string query_guest_lock_msg() {
     string tmp = guest_lock_msg;
 
     if(tmp == "")
-    return GUEST_LOCK_MSG;
+        return GUEST_LOCK_MSG;
     else
-    return tmp;
+        return tmp;
 }
 
-string query_player_creation_msg()
-{
+string query_player_creation_msg() {
     string tmp = player_creation_msg;
 
     if(tmp == "")
-    return PLAYER_CREATION_MSG;
+        return PLAYER_CREATION_MSG;
     else
-    return tmp;
+        return tmp;
 }
 
-string query_player_lock_msg()
-{
+string query_player_lock_msg() {
     string tmp = player_lock_msg;
 
     if(tmp == "")
-    return PLAYER_LOCK_MSG;
+        return PLAYER_LOCK_MSG;
     else
-    return tmp;
+        return tmp;
 }
 
-int query_vip_lock()
-{
+int query_vip_lock() {
     int tmp;
 
     tmp = vip_lock;
     return tmp;
 }
 
-int query_creation_locked()
-{
+int query_creation_locked() {
     int tmp;
 
     tmp = player_creation;
     return tmp;
 }
 
-int query_guest_locked()
-{
+int query_guest_locked() {
     int tmp;
 
     tmp = guest_lock;
     return guest_lock;
 }
 
-string *query_banned_ips()
-{
+string *query_banned_ips() {
     string *tmp;
-
-    if(!ips_banned)
-    restore_object(SAVE_PATH);
 
     tmp = ips_banned;
     return tmp;
 }
 
-string *query_banned_users()
-{
+string *query_banned_users() {
     string *tmp;
-
-    if(!users_banned)
-    restore_object(SAVE_PATH);
 
     tmp = users_banned;
     return tmp;
 }
 
-string *query_play_testers()
-{
+string *query_play_testers() {
     string *tmp;
-
-    if(!play_testers)
-    restore_object(SAVE_PATH);
 
     tmp = play_testers;
     return tmp;
 }
 
-
-
-
-
-
-
 /**********************/
 /* USER BAN FUNCTIONS */
 /**********************/
 
-mixed add_banned_user(string name)
-{
+mixed add_banned_user(string name) {
     if((member_array(name, users_banned) != -1))
-    return "That user has already been banned.";
+        return "That user has already been banned.";
 
     if(!users_banned)
-    users_banned = ({ name });
+        users_banned = ({ name });
     else
-    users_banned += ({ name });
+        users_banned += ({ name });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-mixed remove_banned_user(string name)
-{
+mixed remove_banned_user(string name) {
     if((member_array(name, users_banned) == -1))
-    return "That user is not currently banned.";
+        return "That user is not currently banned.";
 
     users_banned -= ({ name });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-int remove_all_banned_users()
-{
+int remove_all_banned_users() {
     if(users_banned)
-    users_banned = ({});
+        users_banned = ({});
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
-
-
-
-
-
-
 
 /*****************/
 /* VIP FUNCTIONS */
 /*****************/
 
-mixed add_play_tester(string name)
-{
+mixed add_play_tester(string name) {
     if((member_array(name, play_testers) != -1))
     return "That user has already been banned.";
 
     if(!play_testers)
-    play_testers = ({ name });
+        play_testers = ({ name });
     else
-    play_testers += ({ name });
+        play_testers += ({ name });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-mixed remove_play_tester(string name)
-{
+mixed remove_play_tester(string name) {
     if((member_array(name, play_testers) == -1))
-    return "That user is not currently banned.";
+        return "That user is not currently banned.";
 
     play_testers -= ({ name });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-int remove_all_play_testers()
-{
+int remove_all_play_testers() {
     if(play_testers)
-    play_testers = ({});
+        play_testers = ({});
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
-
-
-
-
-
-
 
 /********************/
 /* IP BAN FUNCTIONS */
 /********************/
 
-mixed add_ip_ban(string ip)
-{
+mixed add_ip_ban(string ip) {
     if((member_array(ip, ips_banned) != -1))
-    return "That IP address has already been banned.";
+        return "That IP address has already been banned.";
 
     if(!ips_banned)
-    ips_banned = ({ ip });
+        ips_banned = ({ ip });
     else
-    ips_banned += ({ ip });
+        ips_banned += ({ ip });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-mixed remove_ip_ban(string ip)
-{
+mixed remove_ip_ban(string ip) {
     if((member_array(ip, ips_banned) == -1))
-    return "That IP address is not currently banned.";
+        return "That IP address is not currently banned.";
 
     ips_banned -= ({ ip });
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-int remove_all_ip_bans()
-{
+int remove_all_ip_bans() {
     if(ips_banned)
-    ips_banned = ({});
+        ips_banned = ({});
 
-    save_object(SAVE_PATH);
+    save_data() ;
 
     return 1;
 }
 
-
-
-
-
-
-
 /******************/
-/* LOCK FUNCTOINS */
+/* LOCK FUNCTIONS */
 /******************/
 
-void unlock_mud()
-{
+void unlock_mud() {
     player_lock = 0;
     dev_lock = 0;
     vip_lock = 0;
 }
 
-void toggle_guest_account()
-{
+void toggle_guest_account() {
     guest_lock = !guest_lock;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void toggle_new_player_creation()
-{
+void toggle_new_player_creation() {
     player_creation = !player_creation;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_dev_lock()
-{
+void set_dev_lock() {
     dev_lock = 1;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_player_lock()
-{
+void set_player_lock() {
     player_lock = 1;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_vip_lock()
-{
+void set_vip_lock() {
     vip_lock = 1;
-    save_object(SAVE_PATH);
+    save_data() ;
 }
 
-void set_player_lock_msg(string arg)
-{
+void set_player_lock_msg(string arg) {
     player_lock_msg = arg;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_dev_lock_msg(string arg)
-{
+void set_dev_lock_msg(string arg) {
     dev_lock_msg = arg;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_vip_lock_msg(string arg)
-{
+void set_vip_lock_msg(string arg) {
     vip_lock_msg = arg;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_guest_lock_msg(string arg)
-{
+void set_guest_lock_msg(string arg) {
     guest_lock_msg = arg;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
 
-void set_player_creation_msg(string arg)
-{
+void set_player_creation_msg(string arg) {
     player_creation_msg = arg;
-    save_object(SAVE_PATH);
-    return;
+    save_data() ;
 }
