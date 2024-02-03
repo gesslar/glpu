@@ -15,7 +15,8 @@ string help(object caller) ;
 // Variables
 protected mixed help = (: help :) ;
 
-protected void create() {
+// Private so only the driver can call it.
+private void create() {
     setup_chain() ;
 }
 

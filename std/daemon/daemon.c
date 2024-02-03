@@ -13,7 +13,8 @@ inherit M_SAVE ;
 // Functions
 void remove() ;
 
-protected void create() {
+// Private so only drivers can call it.
+private void create() {
     setup_chain() ;
     if(query_persistent())
         restore_data() ;

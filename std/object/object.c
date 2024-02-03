@@ -27,7 +27,8 @@ string query_cap_name();
 int can_receive(object ob);
 int can_release(object ob);
 
-void create() {
+// Private so only driver can call it.
+private void create() {
     init_ob() ;
     setup_chain() ;
 }
