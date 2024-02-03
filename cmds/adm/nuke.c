@@ -69,7 +69,6 @@ void confirm_nuke(string str, object caller, string user) {
             tell(caller, "Error [nuke]: Error while deleting " + file + " in user's data directory.\n");
             return ;
         }
-
     }
     rmdir(user_data_directory(user));
 
@@ -78,10 +77,10 @@ void confirm_nuke(string str, object caller, string user) {
 }
 
 string help(object caller) {
-     return (" SYNTAX: nuke <username>\n\n" +
-     "This command will delete the target user's pfile, thus \n"
-     "removing their account from " + mud_name() + ". Furthermore\n"
-     "it will also remove their membership from all groups.\n"
-     "This is NON REVERSABLE, so use with discretion.\n\n"
-     " See also: lockdown\n");
+    return (
+" SYNTAX: nuke <username>\n\n" +
+"This command will delete the target user's pfile, thus removing their account "
+"from " + mud_name() + ". Furthermore it will also remove their membership "
+"from all groups. This is NON REVERSABLE, so use with discretion.\n\n"
+" See also: lockdown");
 }
