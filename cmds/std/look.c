@@ -122,7 +122,7 @@ mixed render_object(object caller, object room, string target) {
 
         if(ob == caller) {
             tell(caller, "You look at yourself.\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at themself.\n", UNDEFINED, ({ caller }) );
+            tell_down(room, caller->query_cap_name() + " looks at themself.\n", UNDEFINED, ({ caller }) );
 
             tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
             tell(caller, get_long(ob) + "\n");
@@ -132,7 +132,7 @@ mixed render_object(object caller, object room, string target) {
         } else {
             tell(caller, "You look at " + ob->query_cap_name() + ".\n");
             tell(ob, caller->query_cap_name() + " looks at you.\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", UNDEFINED, ({ caller, ob }) );
+            tell_down(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", UNDEFINED, ({ caller, ob }) );
 
             tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
             tell(caller, get_long(ob) + "\n");
@@ -144,10 +144,10 @@ mixed render_object(object caller, object room, string target) {
         if(objectp(user)) {
             tell(caller, "You look at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n");
             tell(user, caller->query_cap_name() + " looks at a " + get_short(ob) + " on you.\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n", ({ caller, user }) );
+            tell_down(room, caller->query_cap_name() + " looks at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n", ({ caller, user }) );
         } else {
             tell(caller, "You look at a " + get_short(ob) + ".\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", UNDEFINED, ({ caller }) );
+            tell_down(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", UNDEFINED, ({ caller }) );
         }
 
         tell(caller, get_long(ob) + "\n");

@@ -329,40 +329,45 @@ int commandHook(string arg) {
     if(arg) commandHistory += ({ verb + " " + arg });
     else commandHistory += ({ verb });
 
+    if(environment() && environment()->valid_exit(verb)) {
+        arg = verb ;
+        verb = "go" ;
+    }
+
     catch {
         if(environment()) {
-            if(environment()->valid_exit(verb)) {
-                if(this_player()->moveAllowed(environment(this_player())->query_exit(verb))) {
-                    if(this_player()->query_env("move_in") && wizardp(this_player())) {
-                        custom = this_player()->query_env("move_in");
-                        tmp = custom;
-                        tmp = replace_string(tmp, "$N", query_cap_name());
-                        tell_room(environment(this_player())->query_exit(verb), capitalize(tmp) + "\n", this_player());
-                    } else {
-                        tell_room(environment(this_player())->query_exit(verb), capitalize(query_name()) + " has entered the room.\n", this_player());
-                    }
+            // if(environment()->valid_exit(verb)) {
+            //     if(this_player()->moveAllowed(environment(this_player())->query_exit(verb))) {
+            //         if(this_player()->query_env("move_in") && wizardp(this_player())) {
+            //             custom = this_player()->query_env("move_in");
+            //             tmp = custom;
+            //             tmp = replace_string(tmp, "$N", query_cap_name());
+            //             tell_room(environment(this_player())->query_exit(verb), capitalize(tmp) + "\n", this_player());
+            //         } else {
+            //             tell_room(environment(this_player())->query_exit(verb), capitalize(query_name()) + " has entered the room.\n", this_player());
+            //         }
 
-                    if(this_player()->query_env("move_out") && wizardp(this_player())) {
-                        custom = this_player()->query_env("move_out");
-                        tmp = custom;
-                        tmp = replace_string(tmp, "$N", query_cap_name());
-                        tmp = replace_string(tmp, "$D", verb);
-                        tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
-                    } else {
-                        tell_room(environment(this_player()), capitalize(query_name())
-                            + " leaves through the " + verb + " exit.\n", this_player());
-                    }
+            //         if(this_player()->query_env("move_out") && wizardp(this_player())) {
+            //             custom = this_player()->query_env("move_out");
+            //             tmp = custom;
+            //             tmp = replace_string(tmp, "$N", query_cap_name());
+            //             tmp = replace_string(tmp, "$D", verb);
+            //             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            //         } else {
+            //             tell_room(environment(this_player()), capitalize(query_name())
+            //                 + " leaves through the " + verb + " exit.\n", this_player());
+            //         }
 
-                    write("You move to " + environment(this_player())->query_exit(verb)->query_short() +
-                        ".\n\n");
+            //         write("You move to " + environment(this_player())->query_exit(verb)->query_short() +
+            //             ".\n\n");
 
-                    this_player()->move(environment(this_player())->query_exit(verb));
-                    return 1;
-                } else {
-                    write("Error [move]: Unable to move through that exit.\n");
-                    return 1;
-                }
-            }
+            //         this_player()->move(environment(this_player())->query_exit(verb));
+            //         return 1;
+            //     } else {
+            //         write("Error [move]: Unable to move through that exit.\n");
+            //         return 1;
+            //     }
+            // }
 
             if(SOUL_D->request_emote(verb, arg)) return 1;
         }
@@ -432,7 +437,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             tmp = replace_string(depart_message, "$N", query_cap_name());
             tmp = replace_string(tmp, "$D", dir);
 
-            tell_from_inside(curr, tmp) ;
+            tell_down(curr, tmp) ;
         }
 
         curr = environment() ;
@@ -441,7 +446,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
         if(!arrive_message) arrive_message = "$N arrives.";
         tmp = replace_string(arrive_message, "$N", query_cap_name());
 
-        tell_from_inside(curr, tmp) ;
+        tell_down(curr, tmp, UNDEFINED, ({ this_object() })) ;
     } else {
         tell(this_object(), "You went nowhere.") ;
     }

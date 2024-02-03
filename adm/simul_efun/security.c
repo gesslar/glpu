@@ -11,6 +11,7 @@ int isMember(string user, string group) {
 }
 
 int adminp(mixed user) {
+     if(!user) user = previous_object() ;
      if(stringp(user)) {
           if(isMember(user, "admin")) return 1;
      }
@@ -18,7 +19,8 @@ int adminp(mixed user) {
      else return 0;
 }
 
-int devp(mixed user) {
+varargs int devp(mixed user) {
+     if(!user) user = previous_object();
      if(stringp(user)) {
           if(isMember(user, "developer")) return 1;
      }

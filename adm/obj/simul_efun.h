@@ -33,10 +33,11 @@ mixed json_decode(string str) ;
 mapping json_encode(mixed arg) ;
 
 // File: messaging
-varargs void tell_from_inside(object ob, string str, int msg_type, mixed exclude) ;
-varargs void tell_from_outside(object ob, string str, int msg_type, mixed exclude) ;
-varargs void tell(object ob, string str, int msg_type) ;
-
+varargs void tell_up(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell_down(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell_all(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell_direct(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell(object ob, string str, int msg_type, mixed exclude) ;
 
 // File: numbers
 float percent_of(float a, float b) ;

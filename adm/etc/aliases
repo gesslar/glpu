@@ -3,16 +3,16 @@
 # Aliases for all users
 
 :;all:
-n north $*
-w west $*
-e east $*
-s south $*
-nw northwest $*
-ne noutheast $*
-se southeast $*
-sw southwest $*
-u up $*
-d down $*
+n go north
+w go west
+e go east
+s go south
+nw go northwest
+ne go noutheast
+se go southeast
+sw go southwest
+u go up
+d go down
 l look $*
 exa look at $*
 h history $*

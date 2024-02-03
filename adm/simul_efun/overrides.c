@@ -48,25 +48,29 @@ varargs void say(string msg, mixed exclude) {
 }
 
 varargs void shout(string msg, mixed exclude) {
-   if (objectp(exclude))
-      exclude = ({ exclude });
-   else if (!pointerp(exclude))
-      exclude = ({ });
-   if (this_player())
-      exclude += ({ this_player() });
-   message("shout", msg, users(), exclude);
+    if (objectp(exclude))
+        exclude = ({ exclude });
+    else if (!pointerp(exclude))
+        exclude = ({ });
+    if (this_player())
+        exclude += ({ this_player() });
+    message("shout", msg, users(), exclude);
 }
 
 varargs void tell_object(mixed ob, mixed msg, mixed type) {
-	if(!type) type = "tell_object" ;
-	message(type, msg + "", ob);
+    if(!type) type = "tell_object" ;
+    message(type, msg + "", ob);
 }
 
-varargs void tell_room(mixed room, string msg, mixed exclude)
-{
-   if (!exclude || exclude==0) {
+varargs void tell_room(mixed room, string msg, mixed exclude) {
+    if (!exclude || exclude==0) {
         message ("tell_room",msg,room) ;
-   } else {
+    } else {
         message("tell_room", msg, room, exclude);
-   }
+    }
+}
+
+varargs int userp(object ob) {
+    if(!ob) ob = previous_object() ;
+    return efun::userp(ob);
 }
