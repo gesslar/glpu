@@ -10,16 +10,29 @@ inherit STD_CMD ;
 
 mixed main(object tp, object room, string arg) {
     mixed dest ;
+    mixed result ;
 
-    if(!room->valid_exit(arg))
-        return "There is no exit " + arg + " here." ;
+    result = MOVE_D->allow_walk_direction(tp, room, arg) ;
+    if(result != 1) {
+        if(stringp(result))
+            return result ;
+        else
+            return "You may not move in that direction." ;
+    }
 
-    dest = room->query_exit(arg) ;
-    if(!tp->allow_move(dest))
-        return "You are not allowed to go there." ;
+    result = MOVE_D->prevent_walk_direction(tp, room, arg) ;
+    if(result != 0) {
+        if(stringp(result))
+            return result ;
+        else
+            return "You may not move in that direction." ;
+    }
 
     if(!tp->move_living(dest, arg))
-        return "You are not allowed to go there." ;
+    return "You are not allowed to go there." ;
+
+    MOVE_D->pre_walk_direction(tp, room, arg) ;
+    MOVE_D->post_walk_direction(tp, dest, arg) ;
 
     return 1 ;
 }
