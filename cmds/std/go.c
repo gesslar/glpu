@@ -20,7 +20,8 @@ mixed main(object tp, object room, string arg) {
             return "You may not move in that direction." ;
     }
 
-    result = MOVE_D->prevent_walk_direction(tp, room, arg) ;
+    dest = room->query_exit_dest(arg) ;
+    result = MOVE_D->prevent_walk_direction(tp, room, dest) ;
     if(result != 0) {
         if(stringp(result))
             return result ;

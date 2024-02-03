@@ -6,6 +6,7 @@ mapping set_exits(mapping exit);
 mapping remove_exit(string id);
 mapping add_exit(string id, string path);
 string query_exit(string id) ;
+mixed query_exit_dest(string id) ;
 int valid_exit(string exit) ;
 mapping query_exits() ;
 
@@ -22,6 +23,23 @@ string query_exit(string id) {
     return exits[id] ;
 }
 
+object query_exit_dest(string id) {
+    mixed dest = exits[id] ;
+
+    if(!dest)
+        return 0 ;
+
+    if(valid_function(dest))
+        dest = (*dest)() ;
+
+    if(stringp(dest))
+        dest = load_object(dest) ;
+
+    if(!objectp(dest))
+        return 0 ;
+
+    return dest ;
+}
 int valid_exit(string exit) {
     return !nullp(exits[exit]) ;
 }

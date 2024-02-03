@@ -25,7 +25,7 @@ varargs mixed prevent_walk_direction(object ob, object room, mixed dest) {
     if(!room->can_release(ob))
         return "You cannot leave this room." ;
 
-    if(!dest->can_enter(ob))
+    if(!dest->can_receive(ob))
         return "You cannot enter that room." ;
 
     return 0 ;
