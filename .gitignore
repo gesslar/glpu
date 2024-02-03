@@ -16,5 +16,10 @@ log
 *.o
 journal.*
 
+# Install status file. The existence of this file indicates that the
+# the first user to login has been made a superuser. But, we do not
+# want to keep the file in the repository.
+/adm/etc/first_user
+
 # Customised configuration files
 /adm/etc/config.json

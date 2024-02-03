@@ -1,12 +1,12 @@
 {
-    "BASELIB_VERSION" : "A-0610-R7",
-    "LIB_VERSION" : "0.1",
-    "LIB_NAME" : "gLPU",
+    "LIB_VERSION": "0.1",
+    "LIB_NAME": "gLPU",
     "OPEN_STATUS": "Mudlib Development",
     "ADMIN_EMAIL": "gesslar@gmail.com",
-    "LOG_DIR" : "/log/",
+    "LOG_DIR": "/log/",
     "DISPLAY_NEWS": true,
     "LOGIN_MSG": "/adm/etc/login/splash",
     "LOGIN_NEWS": "/adm/etc/login/motd",
-    "FLOGIN_NEWS": "/adm/etc/login/first_login"
+    "FLOGIN_NEWS": "/adm/etc/login/first_login",
+    "FIRST_USER": "/adm/etc/first_user"
 }

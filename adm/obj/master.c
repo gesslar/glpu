@@ -69,11 +69,13 @@ protected void log_error(string file, string message) {
     string username;
 
     if(this_player()) username = this_player()->query_name();
-    if(stringp(username))
-    {
-        write_file(user_path(username) + "log", "\n" + message);
-        if(this_player()->query_env("error_output") != "disabled")
-            tell_object(this_player(), message);
+    if(stringp(username)) {
+        string path = user_path(username);
+        if(directory_exists(path)) {
+            write_file(path + "log", "\n" + message);
+            if(this_player()->query_env("error_output") != "disabled")
+                tell_object(this_player(), message);
+        }
     }
 
     log_file("compile", message);

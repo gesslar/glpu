@@ -286,7 +286,7 @@ void idle_email(string str) {
         set_privs(user, user->query_name());
         body = create_body(query_privs(user));
 
-        if(file_exists("/adm/etc/new_install")) {
+        if(!file_exists(mud_config("FIRST_USER"))) {
             if(!directory_exists("/home/" + user->query_name()[0..0])) mkdir ("/home/" + user->query_name()[0..0]);
             mkdir("/home/" + user->query_name()[0..0] + "/" + user->query_name());
             mkdir("/home/" + user->query_name()[0..0] + "/" + user->query_name() + "/public");
@@ -302,8 +302,8 @@ void idle_email(string str) {
             security_editor->enable_membership(query_privs(user), "developer");
             security_editor->enable_membership(query_privs(user), "admin");
             security_editor->write_state(0);
-            rm("/adm/etc/new_install");
-            write("\t\tSuccess [login]: You are now an admin.\n\n");
+            write_file(mud_config("FIRST_USER"), user->query_name(), 1) ;
+            write("Success [login]: You are now an admin.\n\n");
         }
 
         user->set("email", email);

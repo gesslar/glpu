@@ -11,7 +11,8 @@ The LPUniversity Mudlib was downloaded from http://dead-souls.net/files/lpuni_fl
 
 * This mudlib requires that the driver be compiled with `-DPACKAGE_UIDS=OFF`
 * All original documentation, licenses, copyright information has been moved to `/ARCHIVE`.
-* The first user to login will become admin. This is due to the existence of `/adm/etc/new_install` file. This file is removed following the creation of the first user.
+* The first user to login will become admin. This is due to the absence of `/adm/etc/first_user` file. This file is created following the creation of the first user.
+* Default in-game configurations are found in `/adm/etc/default.json`. You may provide overrides or new values in `/adm/etc/config.json`, does not exist by default, nor does it get watched by git.
 
 ## Runtime Config File ##
 A sample config file has been supplied in `/adm/etc/config.mud`. You will want to configure the following to get the game up and running:

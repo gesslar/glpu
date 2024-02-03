@@ -8,6 +8,16 @@
 
 #include <config.h>
 
+/* Please keep the following as is */
+string baselib_name() {
+    return "LPUniversity";
+}
+
+string baselib_version() {
+    return "A-0610-R7" ;
+}
+/* Thanks */
+
 string mud_name() {
     return MUD_NAME ;
 }
@@ -16,18 +26,8 @@ string lib_name() {
     return mud_config("LIB_NAME") ;
 }
 
-/* Please keep the following as is */
-string baselib_name() {
-    return "LPUniversity";
-}
-/* Thanks */
-
 string lib_version() {
     return mud_config("LIB_VERSION") ;
-}
-
-string baselib_version() {
-    return mud_config("BASELIB_VERSION") ;
 }
 
 string open_status() {
