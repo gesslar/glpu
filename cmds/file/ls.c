@@ -33,7 +33,7 @@ inherit STD_CMD ;
 
 string arrange_string(string str, int width);
 int numeric_sort(int field, int sort_order, mixed a, mixed b);
-int main(object caller, object room, string arg);
+mixed main(object caller, object room, string arg);
 string help(object caller);
 string filename_prefix(mixed* file_details);
 string filename_suffix(mixed* file_details, int classify);
@@ -73,7 +73,7 @@ int numeric_sort(int field, int sort_order, mixed a, mixed b) {
     return -sort_order;
 }
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, object room, string arg) {
     mixed* output_files;
     mixed* output_file;
     string output_str="";
