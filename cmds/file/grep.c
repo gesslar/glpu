@@ -196,7 +196,7 @@ varargs string *glob_array (string *paths, string cwd) {
 }
 
 private string grep_file (mapping opt, string pat, string file) {
-  int i, j, match, color = 0;
+  int i, j, match, colour = 0;
   string line;
   mixed lines, *assoc;
   mapping matches;
@@ -204,7 +204,7 @@ private string grep_file (mapping opt, string pat, string file) {
   if (!stringp(lines = read_file(file)) || !strlen(lines))
     return "";
 
-  color   = !opt["x"] && !opt["v"] && (strsrch(pat, "%^") < 0);
+  colour   = !opt["x"] && !opt["v"] && (strsrch(pat, "%^") < 0);
 
   lines   = explode(lines, "\n");
   lines   = map(lines, (: replace_string($1, "%^", "%%^^") :));
@@ -254,7 +254,7 @@ private string grep_file (mapping opt, string pat, string file) {
       }
     }
 
-    if (color) {
+    if (colour) {
       if (opt["F"]) {
       } else {
         assoc = reg_assoc(lines[i], ({ pat }), ({ 1 }), 0);

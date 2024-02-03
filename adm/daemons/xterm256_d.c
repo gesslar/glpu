@@ -227,7 +227,7 @@ public string xterm256_wrap(string str, int wrap_at, int indent_at) {
     return implode(sections, "\n") ;
 }
 
-int colorp(string text) {
+int colourp(string text) {
     return pcre_match(text, XTERM256_COLOURS) ;
 }
 
@@ -272,7 +272,7 @@ string token_to_xterm(string token) {
     return "" ;
 }
 
-string get_color_list() {
+string get_colour_list() {
     string output = "" ;
     int base ;
     int *xterm256 = ({
@@ -313,11 +313,11 @@ string get_color_list() {
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 6; j++) {
             for(int k = 0; k < 12; k++) {
-                int color = i*(6*12) + j + k*6 ;
+                int colour = i*(6*12) + j + k*6 ;
 
                 output += sprintf("  %s%'0'4d\e<res>",
-                    sprintf("\e<%'0'4d>", xterm256[color]),
-                    xterm256[color]
+                    sprintf("\e<%'0'4d>", xterm256[colour]),
+                    xterm256[colour]
                 ) ;
             }
             output += "\n";
@@ -329,26 +329,26 @@ string get_color_list() {
     base = 232 ;
     for(int i = 0; i < 2; i++) {
         for(int j = 0; j < 12; j++) {
-            int color = i*12 + j;
+            int colour = i*12 + j;
 
             output += sprintf("  %s%'0'4d\e<res>",
-                sprintf("\e<%'0'4d>", xterm_greyscale[color]),
-                xterm_greyscale[color]
+                sprintf("\e<%'0'4d>", xterm_greyscale[colour]),
+                xterm_greyscale[colour]
             ) ;
         }
         output += "\n";
     }
     output += "\n";
 
-    // Base colors
+    // Base colours
     base = 0 ;
     for(int i = 0; i < 2; i++) {
         for(int j = 0; j < 8; j++) {
-            int color = i*8 + j;
+            int colour = i*8 + j;
 
             output += sprintf("  %s%'0'4d\e<res>",
-                sprintf("\e<%'0'4d>", xterm16[color]),
-                xterm16[color]
+                sprintf("\e<%'0'4d>", xterm16[colour]),
+                xterm16[colour]
             );
         }
       output += "\n";

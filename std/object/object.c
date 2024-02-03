@@ -20,7 +20,7 @@ private string name, short, long;
 
 void remove();
 int move(mixed dest);
-int moveAllowed(mixed dest);
+int allow_move(mixed dest);
 int set_name(string str);
 string query_name();
 string query_cap_name();
@@ -48,14 +48,14 @@ void event_remove(object prev) {
 int move(mixed dest) {
     int result ;
 
-    result = moveAllowed(dest) ;
+    result = allow_move(dest) ;
     if(!result) return result ;
 
     move_object(dest);
     return 1;
 }
 
-int moveAllowed(mixed dest) {
+int allow_move(mixed dest) {
     object ob;
 
     if(stringp(dest)) ob = load_object(dest);

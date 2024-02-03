@@ -28,7 +28,7 @@ int main(object caller, object room, string str)
         return 1;
     }
     case "list" :
-        tell(caller, "Colour List:\n\n" + XTERM256->get_color_list() + "\n");
+        tell(caller, "Colour List:\n\n" + XTERM256->get_colour_list() + "\n");
         return 1 ;
     default : {
         if(caller->query_env("colour") == "enabled") {

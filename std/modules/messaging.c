@@ -65,7 +65,7 @@ void do_receive(string message, int message_type) {
 
     if(userp(this_object())) {
         term = this_object()->query_env("colour");
-        // If colour is not explicitly enabled, set NO_ANSI to disable colored messages.
+        // If colour is not explicitly enabled, set NO_ANSI to disable coloured messages.
         if(term == "enabled") {
             term = "xterm" ;
         } else {
@@ -73,11 +73,11 @@ void do_receive(string message, int message_type) {
             message_type |= NO_ANSI;
         }
     } else {
-        // For non-user objects, also disable colored messages.
+        // For non-user objects, also disable coloured messages.
         message_type |= NO_ANSI;
     }
 
-    // If NO_ANSI flag is set, substitute colors with "plain" (i.e., no color).
+    // If NO_ANSI flag is set, substitute colours with "plain" (i.e., no colour).
     if(message_type & NO_ANSI) {
         message = XTERM256->substitute_colour(message, "plain");
     }

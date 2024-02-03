@@ -23,7 +23,7 @@ string *explode_file(string file) ;
 string query_file_name(object ob) ;
 
 // File: function
-varargs string call_trace(int color) ;
+varargs string call_trace(int colour) ;
 
 // File: identify
 string identify(mixed arg) ;

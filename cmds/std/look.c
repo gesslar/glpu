@@ -131,10 +131,10 @@ mixed render_object(object caller, object room, string target) {
             else tell(caller, "You are carrying:\n" + implode(map(inv, (: get_short :)), "\n") + "\n\n");
         } else {
             tell(caller, "You look at " + ob->query_cap_name() + ".\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", ({ caller, ob }) );
             tell(ob, caller->query_cap_name() + " looks at you.\n");
+            tell_from_inside(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", UNDEFINED, ({ caller, ob }) );
 
-            tell(caller, "\t\e<00015>" + ob->query_cap_name() + "\e<res>\n\n");
+            tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
             tell(caller, get_long(ob) + "\n");
 
             if(sizeof(inv) <= 0) tell(caller, ob->query_cap_name() + " is carrying nothing.\n\n");
@@ -147,7 +147,7 @@ mixed render_object(object caller, object room, string target) {
             tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n", ({ caller, user }) );
         } else {
             tell(caller, "You look at a " + get_short(ob) + ".\n");
-            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", ({ caller }) );
+            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", UNDEFINED, ({ caller }) );
         }
 
         tell(caller, get_long(ob) + "\n");

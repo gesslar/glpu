@@ -1,4 +1,4 @@
-varargs string call_trace(int color) {
+varargs string call_trace(int colour) {
     string res;
     int i, n;
     object *objects;
@@ -33,6 +33,6 @@ varargs string call_trace(int color) {
         );
     }
 
-    if(!color) res = no_ansi(res) ;
+    if(!colour) res = no_ansi(res) ;
     return res;
 }

@@ -5,6 +5,7 @@
 //LPUniversity
 
 //Last updated: October 9th, 2006 by Tacitus
+// Last Change: 2024/02/03: Gesslar
 
 #ifndef __GLOBAL_H__
 #define __GLOBAL_H__

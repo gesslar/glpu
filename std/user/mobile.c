@@ -288,7 +288,6 @@ void catch_tell(string message) {
 }
 
 void receive_message(string type, string msg) {
-debug_message(sprintf("receive_message(%O, %O)", type, msg)) ;
     tell(this_object(), msg) ;
 }
 
@@ -413,6 +412,41 @@ int commandHook(string arg) {
     }
 
     return 0;
+}
+
+varargs int move_living(mixed dest, string dir, string depart_message, string arrive_message) {
+    int result ;
+    object curr = environment() ;
+
+    if(!allow_move(dest)) return 0;
+
+    result = move(dest);
+    if(result != 0) { // Success
+        string tmp ;
+
+        if(curr) {
+            if(!depart_message) depart_message = query_env("move_out");
+            if(!depart_message) depart_message = "$N leaves $D.";
+            if(!dir) dir = "somewhere" ;
+
+            tmp = replace_string(depart_message, "$N", query_cap_name());
+            tmp = replace_string(tmp, "$D", dir);
+
+            tell_from_inside(curr, tmp) ;
+        }
+
+        curr = environment() ;
+
+        if(!arrive_message) arrive_message = query_env("move_in");
+        if(!arrive_message) arrive_message = "$N arrives.";
+        tmp = replace_string(arrive_message, "$N", query_cap_name());
+
+        tell_from_inside(curr, tmp) ;
+    } else {
+        tell(this_object(), "You went nowhere.") ;
+    }
+
+    return result ;
 }
 
 mixed* query_commands() {

@@ -31,7 +31,7 @@ int main(object caller, object room, string str) {
                     if(here->valid_exit(direction)) {
                         object there = here->query_exit(direction);
 
-                        if(tp->moveAllowed(there)) {
+                        if(tp->allow_move(there)) {
                             tell_room(here, capitalize(tp->query_name()) + " leaves through the " + direction + " exit.\n", ({ tp }));
                             write("You move to " + there->query_short() + ".\n\n");
                             tell_room(there, capitalize(tp->query_name()) + " has entered the room.\n", ({ tp }));
