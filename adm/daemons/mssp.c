@@ -5,6 +5,8 @@
 // Programmatic or driver hard-coded values are in the setup() function.
 // Additional values are read from the /adm/etc/mssp.json file.
 //
+// https://tintin.mudhalla.net/protocols/mssp/
+//
 // Created:     2024/02/03: Gesslar
 // Last Change: 2024/02/03: Gesslar
 //
