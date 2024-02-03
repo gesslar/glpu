@@ -6,9 +6,10 @@
 
 //Last updated: October 9th, 2006 by Tacitus
 
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
+#ifndef __GLOBAL_H__
+#define __GLOBAL_H__
 
+#include <config.h>
 #include <daemons.h>
 #include <modules.h>
 #include <messaging.h>
@@ -27,4 +28,4 @@
 #define FALSE 0
 #define UNDEFINED ([])[0]
 
-#endif
+#endif // __GLOBAL_H__

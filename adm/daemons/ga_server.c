@@ -29,8 +29,7 @@ mapping alias = ([]);
 
 /* Functions */
 
-int create()
-{
+int setup() {
      parse_config();
 }
 

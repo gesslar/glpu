@@ -39,6 +39,11 @@ varargs mixed get_objects( string str, object player, int no_arr ) ;
 // File: resolve_path
 string resolve_path(string Current, string Next) ;
 
+// File: save
+string object_save_directory(object ob) ;
+string object_save_file(object ob) ;
+string assure_object_save_dir(object ob) ;
+
 // File: security
 int isMember(string user, string group) ;
 int adminp(mixed user) ;

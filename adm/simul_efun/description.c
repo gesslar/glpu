@@ -1,3 +1,5 @@
+#include "/adm/obj/simul_efun.h"
+
 string get_short(object ob, int extras: (: 1 :)) {
     string result ;
     string *extra_shorts ;

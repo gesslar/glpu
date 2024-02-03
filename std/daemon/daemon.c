@@ -8,14 +8,20 @@
 
 inherit M_CLEAN ;
 inherit M_SETUP ;
+inherit M_SAVE ;
 
 // Functions
 void remove() ;
 
 protected void create() {
     setup_chain() ;
+    if(query_persistent())
+        restore_data() ;
 }
 
 void remove() {
+    if(query_persistent())
+        save_data() ;
+
     event(({ this_object() }), "remove") ;
 }

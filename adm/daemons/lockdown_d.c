@@ -61,10 +61,7 @@ void unlock_mud();
 int is_ip_banned(string ip);
 int is_user_banned(string user);
 
-
-
-int create()
-{
+int setup() {
     if(file_exists(SAVE_PATH))
     restore_object(SAVE_PATH);
     if(!users_banned)
@@ -74,12 +71,6 @@ int create()
     if(!play_testers)
     play_testers = ({});
 }
-
-
-
-
-
-
 
 /*******************/
 /* QUERY FUNCTIONS */

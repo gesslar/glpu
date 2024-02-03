@@ -29,7 +29,7 @@ void rec_msg(string channel, string msg);
 mapping channels;
 mapping modules;
 
-void create() {
+void setup() {
     string str, err, *arr;
     int i, time;
 
