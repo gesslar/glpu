@@ -16,17 +16,17 @@ int main(object caller, object room, string args)
 
     caller->set_env("away", args);
 
-    caller->tell("\nYou are now away" + (!args || args == "" ? ".\n" : ": " + args + "\n"));
-    caller->tell("Press [ENTER] to return.\n");
-    input_to("i_Return");
+    tell(caller, "You are now away" + (!args || args == "" ? ".\n" : ": " + args + "\n"));
+    tell(caller, "Press [ENTER] to return.\n");
+    input_to("i_Return", caller) ;
     return 1;
 }
 
-void i_Return(string arg)
-{
-    object caller = this_player() ;
+void i_Return(string arg, object caller) {
+    if(!caller)
+        return;
 
-    caller->tell("You return from away\n");
+    tell(caller, "You return from away\n");
     caller->set_env("away", 0);
     return;
 }

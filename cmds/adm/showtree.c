@@ -47,7 +47,7 @@ mixed main(object tp, object room, string str) {
     result = dig(file, func, 0);
 
     if(!result) {
-        tp->tell(Error);
+        tell(tp, Error);
         return 1;
     }
 

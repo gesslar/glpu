@@ -30,7 +30,7 @@ varargs receive_inside_message(string msg, object *exclude, int msg_type) {
     do_receive(msg, msg_type) ;
 
     if(!living()) {
-        if(query_environeent_can_hear()) {
+        if(query_environment_can_hear()) {
             environment()->receive_inside_message(msg, exclude, msg_type);
         }
     }

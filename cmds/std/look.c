@@ -90,7 +90,7 @@ mixed render_room(object caller, object room) {
         result += data + "\n" ;
     }
 
-    caller->tell(result);
+    tell(caller, result) ;
     return 1 ;
 }
 
@@ -99,7 +99,7 @@ mixed render_object(object caller, object room, string target) {
     string subtarget;
 
     if(stringp(room->query_item(target))) {
-        caller->tell(highlight_view(room->query_item(target), keys(room->query_items())) + "\n");
+        tell(caller, highlight_view(room->query_item(target), keys(room->query_items())) + "\n");
         return 1;
     }
 
@@ -121,38 +121,36 @@ mixed render_object(object caller, object room, string target) {
         object *inv = all_inventory(ob);
 
         if(ob == caller) {
-            caller->tell("You look at yourself.\n");
-            room->tell(caller->query_cap_name() + " looks at themselfs.\n", ({ ob }));
+            tell(caller, "You look at yourself.\n");
+            tell_from_inside(room, caller->query_cap_name() + " looks at themself.\n", UNDEFINED, ({ caller }) );
 
-            caller->tell("\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
-            caller->tell(ob->query_long() + "\n");
-            caller->tell(implode(filter(inv->query("extra_look"), (: $1 :)),"\n") + "\n\n");
+            tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
+            tell(caller, get_long(ob) + "\n");
 
-            if(sizeof(inv) <= 0) caller->tell("You are carrying nothing.\n\n");
-            else caller->tell("You are carrying:\n" + implode(inv->query_short(), "\n") + "\n\n");
+            if(sizeof(inv) <= 0) tell(caller, "You are carrying nothing.\n\n");
+            else tell(caller, "You are carrying:\n" + implode(map(inv, (: get_short :)), "\n") + "\n\n");
         } else {
-            caller->tell("You look at " + ob->query_cap_name() + ".\n");
-            room->tell(caller->query_cap_name() + " looks at " +ob->query_cap_name() + ".\n", ({ caller, ob }) );
-            ob->tell(caller->query_cap_name() + " looks at you.\n");
+            tell(caller, "You look at " + ob->query_cap_name() + ".\n");
+            tell_from_inside(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", ({ caller, ob }) );
+            tell(ob, caller->query_cap_name() + " looks at you.\n");
 
-            caller->tell("\t\e<00015>" + ob->query_cap_name() + "\e<res>\n\n");
-            caller->tell(ob->query_long() + "\n");
-            caller->tell(implode(filter(inv->query("extra_look"), (: $1 :)),"\n") + "\n\n");
+            tell(caller, "\t\e<00015>" + ob->query_cap_name() + "\e<res>\n\n");
+            tell(caller, get_long(ob) + "\n");
 
-            if(sizeof(inv) <= 0) caller->tell(ob->query_cap_name() + " is carrying nothing.\n\n");
-            else caller->tell(ob->query_cap_name() + " is carrying:\n" + implode(inv->query_short(), "\n") + "\n\n");
+            if(sizeof(inv) <= 0) tell(caller, ob->query_cap_name() + " is carrying nothing.\n\n");
+            else tell(caller, ob->query_cap_name() + " is carrying:\n" + implode(map(inv, (: get_short :)), "\n") + "\n\n");
         }
     } else {
         if(objectp(user)) {
-            caller->tell("You look at a " + ob->query_short() + " on "+ user->query_cap_name() + "\n\n");
-            user->tell(caller->query_cap_name() + " looks you over.\n");
-            room->tell(caller->query_cap_name() +" looks over " + ob->query_short() + "\n", ({ caller, user }));
+            tell(caller, "You look at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n");
+            tell(user, caller->query_cap_name() + " looks at a " + get_short(ob) + " on you.\n");
+            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n", ({ caller, user }) );
         } else {
-            caller->tell("You look at a " + ob->query_short() + "\n\n");
-            room->tell(caller->query_cap_name() + " looks at "+ ob->query_short() + "\n", ({ caller }) );
+            tell(caller, "You look at a " + get_short(ob) + ".\n");
+            tell_from_inside(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", ({ caller }) );
         }
 
-        caller->tell(ob->query_long() + "\n");
+        tell(caller, get_long(ob) + "\n");
     }
 
     return 1 ;

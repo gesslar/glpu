@@ -19,7 +19,7 @@
 inherit STD_OBJECT;
 
 inherit __DIR__ "alias";
-inherit __DIR__ "tell" ;
+// inherit __DIR__ "tell" ;
 
 /* Global Variables */
 
@@ -288,12 +288,8 @@ void catch_tell(string message) {
 }
 
 void receive_message(string type, string msg) {
-    if(type != "ignore_ansi") {
-        if(query_env("colour") == "enabled") msg = XTERM256->substitute_colour(msg, "xterm");
-        else msg = XTERM256->substitute_colour(msg, "plain") ;
-    }
-
-    receive(msg);
+debug_message(sprintf("receive_message(%O, %O)", type, msg)) ;
+    tell(this_object(), msg) ;
 }
 
 string process_input(string arg) {
