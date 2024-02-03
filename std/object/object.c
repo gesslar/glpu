@@ -120,24 +120,3 @@ int can_receive(object ob) {
 int can_release(object ob) {
     return 1;
 }
-
-string query_directory() {
-    string file = base_name(this_object()), *parts;
-    string dir ;
-
-    parts = explode(file, "/");
-    parts = parts[0..<2];
-    dir = implode(parts, "/");
-
-    return prepend(dir, "/");
-}
-
-string query_file_name() {
-    string file = base_name(this_object()), *parts;
-    string dir ;
-
-    parts = explode(file, "/");
-    file = parts[<1];
-
-    return file;
-}

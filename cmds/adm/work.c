@@ -28,7 +28,7 @@ mixed main(object tp, object room, string arg) {
     if(!ob)
         return "No such object: " + arg ;
 
-    path = ob->query_directory() ;
+    path = query_directory(ob) ;
 
     if(!directory_exists(path))
         return "No such directory: " + path ;

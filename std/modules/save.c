@@ -17,7 +17,7 @@ int set_persistent(int x: (: 1 :)) {
 
     if(!save_file) set_save_file();
 
-    return persistent;
+    return persistent = x;
 }
 
 int query_persistent() {
@@ -57,11 +57,10 @@ int save_data() {
     if(!save_file) return 0;
 
     base = get_base_path(save_file);
-
     if(!directory_exists(base)) {
-        if( !mkdirs(base) ) return 0 ;
         if(strsrch(save_file, "/data/") == 0) {
-            mkdirs(base) ;
+            if(!mkdirs(base))
+                return 0;
         }
     }
 

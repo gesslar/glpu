@@ -6,24 +6,21 @@
 
 */
 
-string *history;
+inherit STD_DAEMON ;
 
-void create()
-{
+string *history = ({});
+
+void setup() {
      CHAN_D->registerModule("announceNet", file_name(this_object()));
 
      CHAN_D->registerCh("announceNet", "announce");
-     history = ({});
 }
 
-int rec_msg(string chan, string usr, string msg)
-{
+int rec_msg(string chan, string usr, string msg) {
      object ob;
 
-     switch(msg) /* We could do some neat stuff here! */
-     {
+     switch(msg) { /* We could do some neat stuff here! */
           case "/last" : {
-
                ob = find_player(usr);
 
                if(!sizeof(history)) tell_object(ob,
@@ -45,8 +42,7 @@ int rec_msg(string chan, string usr, string msg)
     return 1;
 }
 
-void announce_login(string user)
-{
+void announce_login(string user) {
     CHAN_D->rec_msg("announce",
          "[Announce] System: "
              + capitalize(user) + " has logged into "
@@ -57,8 +53,7 @@ void announce_login(string user)
             + mud_name() + ".\n" });
 }
 
-void announce_logoff(string user)
-{
+void announce_logoff(string user) {
     CHAN_D->rec_msg("announce",
          "[Announce] System: "
              + capitalize(user) + " has left "
@@ -69,7 +64,6 @@ void announce_logoff(string user)
             + mud_name() + ".\n" });
 }
 
-int isAllowed(string channel, string usr, int flag: (: 0 :))
-{
+int isAllowed(string channel, string usr, int flag: (: 0 :)) {
     return 1;
 }

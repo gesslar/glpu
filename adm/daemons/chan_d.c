@@ -39,6 +39,7 @@ void setup() {
     arr = explode_file("/adm/daemons/chmodules/modInstalled");
 
     if(!sizeof(arr))
+        return ;
 
     for (i = 0; i < sizeof(arr); i++) {
         if(find_object(arr[i]))

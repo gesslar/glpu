@@ -6,7 +6,8 @@ string get_short(object ob) ;
 string get_long(object ob) ;
 
 // File: directory
-void mkdirs(string path) ;
+int mkdirs(string path) ;
+string query_directory(object ob) ;
 
 // File: exists
 int directory_exists(string dirname) ;
@@ -19,6 +20,7 @@ int file_lines(string file) ;
 int tail(string file) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
+string query_file_name(object ob) ;
 
 // File: function
 varargs string call_trace(int color) ;

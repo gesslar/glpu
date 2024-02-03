@@ -1,7 +1,7 @@
 #include "/adm/obj/simul_efun.h"
 
 string object_save_directory(object ob) {
-    string source_dir = ob->query_directory() ;
+    string source_dir = query_directory(ob) ;
     string save_dir ;
 
     save_dir = OB_DATA_DIR + source_dir[1..] + "/" ;
@@ -11,10 +11,10 @@ string object_save_directory(object ob) {
 
 string object_save_file(object ob) {
     string source_dir = object_save_directory(ob) ;
-    string source_file = ob->query_file_name() ;
+    string source_file = query_file_name(ob) ;
     string save_file ;
 
-    save_file = OB_DATA_DIR + source_dir + "/" + source_file;
+    save_file = source_dir + source_file;
 
     return save_file ;
 }

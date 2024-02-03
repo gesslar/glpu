@@ -3,9 +3,16 @@
 // mudlib: basis
 // date:   1992/09/05
 // author: Truilkan
-void mkdirs(string path) {
+int mkdirs(string path) {
     string *parts, dir;
     int j;
+
+    string old_privs ;
+
+    if(file_size(path) == -2) return 1 ;
+
+    old_privs = query_privs(this_object()) ;
+    set_privs(this_object(), query_privs(previous_object())) ;
 
     parts = explode(path, "/");
     dir = "";
@@ -14,4 +21,23 @@ void mkdirs(string path) {
         mkdir(dir);
         dir += "/";
     }
+
+    set_privs(this_object(), old_privs) ;
+
+    return file_size(path) == -2;
+}
+
+string query_directory(object ob) {
+    string file, *parts;
+    string dir ;
+
+    if(!objectp(ob))
+        error("Bad argument 1 to query_directory()") ;
+
+    file = base_name(ob) ;
+    parts = explode(file, "/");
+    parts = parts[0..<2];
+    dir = implode(parts, "/");
+
+    return prepend(dir, "/");
 }

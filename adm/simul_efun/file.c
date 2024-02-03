@@ -112,3 +112,17 @@ string *explode_file(string file) {
     set_privs(this_object(), old_privs) ;
     return lines ;
 }
+
+string query_file_name(object ob) {
+    string file, *parts;
+    string dir ;
+
+    if(!objectp(ob))
+        error("Bad argument 1 to query_file_name().\n") ;
+
+    file = base_name(ob) ;
+    parts = explode(file, "/");
+    file = parts[<1];
+
+    return file;
+}

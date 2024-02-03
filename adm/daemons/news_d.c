@@ -11,8 +11,6 @@
 
 inherit STD_DAEMON ;
 
-#define DATA_FILE "/data/daemons/news_d"
-
 /* Global Variables */
 
 mapping data;
@@ -21,8 +19,11 @@ string *authorizedClients;
 
 /* Functions */
 
-void create()
-{
+void setup() {
+    set_persistent() ;
+}
+
+void post_setup() {
     int i, k;
     string *groups;
     object s_editor;
@@ -34,25 +35,22 @@ void create()
     permissions = ([]);
     data = ([]);
     authorizedClients = ({ "/obj/mudlib/newsclients/std_newsclient" });
-    restore_object(DATA_FILE);
     if(!permissions) permissions = ([]);
     if(!data) data = ([]);
 
-    for(i = 0; i < sizeof(keys(data)); i++)
-    {
-    if(!permissions[keys(data)[i]])
-        permissions[keys(data)[i]] = ([]);
+    for(i = 0; i < sizeof(keys(data)); i++) {
+        if(!permissions[keys(data)[i]])
+            permissions[keys(data)[i]] = ([]);
 
-    for(k = 0; k < sizeof(groups); k++)
-        if(!permissions[keys(data)[i]][groups[k]])
-        permissions[keys(data)[i]][groups[k]] = "r";
+        for(k = 0; k < sizeof(groups); k++)
+            if(!permissions[keys(data)[i]][groups[k]])
+                permissions[keys(data)[i]][groups[k]] = "r";
     }
 
-    save_object(DATA_FILE);
+    save_data() ;
 }
 
-int authorizeClient(string filename)
-{
+int authorizeClient(string filename) {
     if(!adminp(this_player())) return 0;
 
     if(!file_exists(filename)) return 0;
@@ -64,8 +62,7 @@ int authorizeClient(string filename)
     return 1;
 }
 
-int revokeClientAuthorization(string filename)
-{
+int revokeClientAuthorization(string filename) {
     if(!adminp(this_player())) return 0;
 
     if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
@@ -75,15 +72,14 @@ int revokeClientAuthorization(string filename)
     return 1;
 }
 
-int clientAction_edit(string group, string contents, int index)
-{
+int clientAction_edit(string group, string contents, int index) {
     if(member_array(base_name(previous_object()), authorizedClients) == -1) return 0;
 
     if(!data[group]) return 0;
 
     data[group][index]["content"] = contents + "\n\nEDITIED ON " + upper_case(ctime(time()));
 
-    save_object(DATA_FILE);
+    save_data() ;
 
     return 1;
 }
@@ -107,7 +103,7 @@ int clientAction_post(string group, string author, string subject, string conten
 
     data[group] += ({ new_msg });
 
-    save_object(DATA_FILE);
+    save_data() ;
 
     return 1;
 }
@@ -153,7 +149,7 @@ int adminAction_createGroup(string group)
     if(data[group]) return 0;
     data += ([group : ({})]);
 
-    save_object(DATA_FILE);
+    save_data() ;
 
     return 1;
 }
@@ -165,7 +161,7 @@ int adminAction_deleteGroup(string group)
     if(!data[group]) return 0;
     map_delete(data, group);
 
-    save_object(DATA_FILE);
+    save_data() ;
 
     return 1;
 }
@@ -181,7 +177,7 @@ int adminAction_setPermissions(string news_group, string user_group, string opti
 
     permissions[news_group][user_group] = options;
 
-    save_object(DATA_FILE);
+    save_data() ;
 
     return 1;
 }

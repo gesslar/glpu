@@ -8,28 +8,28 @@
 
 //Last edited by Parthenon on August 6th, 2006
 
+inherit STD_DAEMON ;
+
 #define SAVE_PATH "/data/daemons/chmodules/localNet.o"
 
 string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});
 mapping history = ([]);
 
-void create()
-{
+void setup() {
+    set_persistent() ;
+}
+
+void post_setup() {
     int i;
 
-    if(file_exists(SAVE_PATH))
-    restore_object(SAVE_PATH);
+    CHAN_D->registerModule("localNet", file_name());
 
-    CHAN_D->registerModule("localNet", file_name(this_object()));
-
-    for(i = 0; i < sizeof(ch_list); i++)
-    {
-    CHAN_D->registerCh("localNet", ch_list[i]);
-    if(history[ch_list[i]] == 0) history[ch_list[i]] = ({ });
+    for(i = 0; i < sizeof(ch_list); i++) {
+        CHAN_D->registerCh("localNet", ch_list[i]);
+        if(history[ch_list[i]] == 0) history[ch_list[i]] = ({ });
     }
 
-    save_object(SAVE_PATH);
-
+    save_data() ;
 }
 
 int rec_msg(string chan, string usr, string msg) {
@@ -44,7 +44,7 @@ int rec_msg(string chan, string usr, string msg) {
         ob = find_player(usr);
 
         if(!sizeof(history[chan]))
-            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+            tell_object(ob, "LocalNet: Chael " + chan + " has no history yet.\n");
         else
             foreach(string histLine in history[chan][(sizeof(history[chan]) - numLines)..(sizeof(history[chan]) - 1)])
         tell_object(ob, histLine);
@@ -114,7 +114,7 @@ int rec_msg(string chan, string usr, string msg) {
             }
     }
 
-    save_object(SAVE_PATH);
+    save_data() ;
     return 1;
 }
 
