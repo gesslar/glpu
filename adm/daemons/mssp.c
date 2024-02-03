@@ -2,8 +2,8 @@
 // This daemon is called by the master object to respond to the get_mud_stats()
 // apply.
 //
-// Programmatic or driver hard-coded values are in the setup() function.
-// Additional values are read from the /adm/etc/mssp.json file.
+// Dynamic or driver hard-coded values are in this daemon.
+// Static values are read from the /adm/etc/mssp.json file.
 //
 // https://tintin.mudhalla.net/protocols/mssp/
 //
@@ -19,7 +19,11 @@ inherit STD_DAEMON ;
 private nosave mapping mud_stats = ([]) ;
 
 void setup() {
-    mud_stats = ([
+    mud_stats = json_decode(read_file("/adm/etc/mssp.json")) ;
+}
+
+mapping get_mud_stats() {
+    return ([
         "NAME"      : mud_name(),
         "PORT"      : sprintf("%d", __PORT__),
         "UPTIME"    : sprintf("%d", time() - uptime()),
@@ -31,10 +35,5 @@ void setup() {
         "MSP"       : sprintf("%d", get_config(__RC_ENABLE_MSP__)),
         "MCCP"      : "1",
         "UTF-8"     : "1",
-    ]) +
-    json_decode(read_file("/adm/etc/mssp.json")) ;
-}
-
-mapping get_mud_stats() {
-    return copy(mud_stats) ;
+    ]) + mud_stats ;
 }
