@@ -73,7 +73,7 @@ varargs object get_object( string str, object player ) {
     if (!what && (file_size(str) >= 0 || file_size(str + ".c") >= 0)) {
         // Make sure the object is loaded into memory, if it exists
         //  Finally return any object found matching the requested name
-        what = catch(load_object(str));
+        catch(what = load_object(str));
     }
 
     return what;
