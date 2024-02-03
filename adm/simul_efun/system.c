@@ -8,55 +8,48 @@
 
 #include <config.h>
 
-string mud_name()
-{
-     return MUD_NAME;
+string mud_name() {
+    return MUD_NAME ;
 }
 
-string lib_name()
-{
-     return LIB_NAME;
+string lib_name() {
+    return mud_config("LIB_NAME") ;
 }
 
 /* Please keep the following as is */
-string baselib_name()
-{
+string baselib_name() {
     return "LPUniversity";
 }
 /* Thanks */
 
-string lib_version()
-{
-     return LIB_VERSION;
+string lib_version() {
+    return mud_config("LIB_VERSION") ;
 }
 
-string baselib_version()
-{
-     return LIB_VERSION;
+string baselib_version() {
+    return mud_config("BASELIB_VERSION") ;
 }
 
-string open_status()
-{
-    return OPEN_STATUS;
+string open_status() {
+    return mud_config("OPEN_STATUS") ;
 }
 
-string admin_email()
-{
-    return ADMIN_EMAIL;
+string admin_email() {
+    return mud_config("ADMIN_EMAIL") ;
 }
 
-int port()
-{
-     return __PORT__;
+int port() {
+    return __PORT__;
 }
 
-string driver_version()
-{
-     return __VERSION__;
+string driver_version() {
+    return __VERSION__;
 }
 
-string arch() 
-{
-      return __ARCH__; 
+string arch() {
+    return __ARCH__;
 }
 
+mixed mud_config(string str) {
+    return (mixed)CONFIG_D->get_mud_config(str) ;
+}

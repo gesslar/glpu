@@ -17,9 +17,6 @@
 #define LOG_DIR    "/log"
 #define CONFIG_DIR "/adm/etc"
 
-#define LOGIN_MSG   "/adm/etc/login/splash"
-#define LOGIN_NEWS  "/adm/etc/login/motd"
-#define FLOGIN_NEWS "/adm/etc/login/first_login"
 
 #define OB_DATA_DIR     "/data/objects/"
 

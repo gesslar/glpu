@@ -15,3 +15,6 @@ log
 # Data files
 *.o
 journal.*
+
+# Customised configuration files
+/adm/etc/config.json

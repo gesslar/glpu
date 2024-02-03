@@ -82,6 +82,7 @@ string admin_email() ;
 int port() ;
 string driver_version() ;
 string arch() ;
+mixed mud_config(string str) ;
 
 // File: user
 string user_data_file(string name) ;

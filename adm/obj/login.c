@@ -32,8 +32,8 @@ string parseTokens(string text);
 object user;
 object body;
 
-string read = "\n" + parseTokens(read_file(LOGIN_NEWS));
-string loginMsg = parseTokens(read_file(LOGIN_MSG));
+string read = "\n" + parseTokens(read_file(mud_config("LOGIN_NEWS"))) ;
+string loginMsg = parseTokens(read_file(mud_config("LOGIN_MSG")));
 string email;
 
 int isConnected = 0, coID;
@@ -138,9 +138,13 @@ void get_name(string str) {
         body = create_body("guest");
         write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(body) + " on " + ctime(time()) + "\n");
-        write(read + "\n");
-        write(" [Hit enter to continue] ");
-        input_to("enterWorld");
+        if(mud_config("DISPLAY_NEWS")) {
+            write(read + "\n");
+            write(" [Hit enter to continue] ");
+            input_to("enterWorld");
+        } else {
+            enterWorld(0);
+        }
         return;
     }
 
@@ -193,9 +197,13 @@ void get_password(string str, int i) {
             }
             write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
-            write(read + "\n");
-            write(" [Hit enter to continue] ");
-            input_to("enterWorld");
+            if(mud_config("DISPLAY_NEWS")) {
+                write(read + "\n");
+                write(" [Hit enter to continue] ");
+                input_to("enterWorld");
+            } else {
+                enterWorld(0);
+            }
             return;
         }
     } else {
@@ -303,7 +311,7 @@ void idle_email(string str) {
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
-        write("\n" + parseTokens(read_file(FLOGIN_NEWS)) + "\n");
+        write("\n" + parseTokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
         write(" [Hit enter to continue] ");
         input_to("setupNew");
 #ifdef EMAIL_MUST_RESOLVE
