@@ -10,76 +10,71 @@ Standard nuke command V2
 
 #include <logs.h>
 
-void confirm_nuke(string str, string user);
-
 mixed main(object caller, object room, string user) {
-     if(!adminp(previous_object()))
-          return "Error [nuke]: Access denied.\n" ;
+    if(!adminp(previous_object()))
+        return "Error [nuke]: Access denied.\n" ;
 
-     if(!user) {
-          write("Usage: nuke <player>\n");
-          return 1;
-     }
+    if(!user)
+        return "Usage: nuke <player>\n";
 
-     user = lower_case(user);
+    user = lower_case(user);
 
-     if(!user_exists(user)) {
-          write("Error [nuke]: User '" + user + "' does not exist.\n");
-          return 1;
-     }
+    if(!user_exists(user))
+        return "Error [nuke]: User '" + user + "' does not exist.\n";
 
-     write("Are you sure you want to delete " + user + "? [y/n] ");
-     input_to("confirm_nuke", 0, caller, user);
+    tell(caller, "Are you sure you want to delete " + user + "? [y/n] ", MSG_PROMPT) ;
+    input_to("confirm_nuke", 0, caller, user);
 
-     return 1;
+    return 1;
 }
 
-void confirm_nuke(string str, object caller, string user)
-{
-     object security_editor;
-     object body;
-     string *dir;
+void confirm_nuke(string str, object caller, string user) {
+    object security_editor;
+    object body;
+    string *dir;
 
-     if(str == "y" || str == "yes") {
-          write("\nWarning [nuke]: Now stripping user of system group memberships.\n");
+    if(str != "y" && str != "yes") {
+        tell(caller, "Abort [nuke]: Aborting nuke.\n");
+        return;
+    }
 
-          security_editor = clone_object("/adm/obj/security_editor.c");
+    tell(caller, "Warning [nuke]: Now stripping user of system group memberships.\n");
 
-          foreach(mixed group in security_editor->listGroups()) {
-               if(isMember(user, group)) write("\t* " + group + " membership revoked.\n");
-               security_editor->disable_membership(user, group);
-          }
+    security_editor = clone_object("/adm/obj/security_editor.c");
 
-          security_editor->write_state(0);
-          destruct(security_editor);
+    foreach(mixed group in security_editor->listGroups()) {
+        if(isMember(user, group)) write("\t* " + group + " membership revoked.\n");
+        security_editor->disable_membership(user, group);
+    }
 
-          if(find_player(user)) {
-              write("Warning [nuke]: Now disconnecting user '" + user + "'.\n");
-               body = find_player(user);
-               tell_object(body, "You watch as your body dematerializes.\n");
-               if(environment(body)) tell_room(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n", body);
-               body->remove();
-          }
+    security_editor->write_state(0);
+    destruct(security_editor);
 
-          write("Warning [nuke]: Now deleting pfile for user '" + user + "'.\n");
+    if(body = find_player(user)) {
+        tell(caller, "Warning [nuke]: Now disconnecting user '" + user + "'.\n");
+        tell(body, "You watch as your body dematerializes.\n");
+printf("Env: " + environment(body) + "\n");
+        if(environment(body)) {
+            tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n");
+            destruct(body) ;
+        }
+    }
 
-          dir = get_dir(user_data_directory(user));
-          foreach(string file in dir) {
-              write("\t* " + file + " deleted.\n");
-              if(!rm(user_data_directory(user) + file)) return(notify_fail("\nError [nuke]: Error while deleting " + file + " in user's data directory.\n"));
-          }
-          rmdir(user_data_directory(user));
+    tell(caller, "Warning [nuke]: Now deleting pfile for user '" + user + "'.\n");
 
-          write("\nSuccessful [nuke]: User '" + capitalize(user) + "' has been removed.\n");
-          log_file(LOG_NUKE, capitalize(query_privs(caller)) + " nukes "
-                + capitalize(user) + " on " + ctime(time()) + "\n");
-          return;
-     }
+    dir = get_dir(user_data_directory(user));
+    foreach(string file in dir) {
+        tell(caller, "\t* " + file + " deleted.\n");
+        if(!rm(user_data_directory(user) + file)) {
+            tell(caller, "Error [nuke]: Error while deleting " + file + " in user's data directory.\n");
+            return ;
+        }
 
-     else {
-          write("Warning [nuke]: Aborting nuke.\n");
-          return;
-     }
+    }
+    rmdir(user_data_directory(user));
+
+    tell(caller, "\nSuccess [nuke]: User '" + capitalize(user) + "' has been removed.\n");
+    log_file(LOG_NUKE, capitalize(query_privs(caller)) + " nukes " + capitalize(user) + " on " + ctime(time()) + "\n");
 }
 
 string help(object caller) {

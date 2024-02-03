@@ -18,7 +18,6 @@ inherit M_MESSAGING ;
 
 private string name, short, long;
 
-void remove();
 int move(mixed dest);
 int allow_move(mixed dest);
 int set_name(string str);

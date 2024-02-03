@@ -46,10 +46,14 @@ mixed main(object tp, object room, string str) {
 
     result = dig(file, func, 0);
 
-    if(!result) {
-        tell(tp, Error);
-        return 1;
-    }
+    if(!result)
+        if(Error)
+            return Error;
+        else
+            return "No such file " + file + ".c\n";
+
+    if(result == "")
+        return "No such function " + func + " in " + file + ".c\n";
 
     return result ;
 }

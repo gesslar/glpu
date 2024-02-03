@@ -41,7 +41,6 @@ void reconnect();
 varargs int move(mixed ob, int flag);
 void restore_user();
 void save_user();
-void remove();
 object query_link();
 int set_link(object ob);
 
