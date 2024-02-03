@@ -21,7 +21,6 @@ protected void create() {
 
 string query_help(object caller) {
     string temp ;
-printf("HELP: %O\n", help) ;
     if(valid_function(help))
         temp = (*help)(caller) ;
     else if(stringp(help))

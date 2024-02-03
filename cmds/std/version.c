@@ -8,17 +8,15 @@
 
 inherit STD_CMD ;
 
-int main()
-{
-     write(mud_name() + " is running " + baselib_name() + " " + lib_version() + "\n");
-     write("  on " + driver_version() + " on " + arch() +".\n");
+int main(object tp, object room, string args) {
+     tell(tp, mud_name() + " is running " + lib_name() + " " + lib_version() + " (" + baselib_name() + " " + baselib_version() + ")\n");
+     tell(tp, "on " + driver_version() + " on " + arch() +".\n");
 
      return 1;
 }
 
-string help(object caller)
-{
-     return(" SYNTAX: version\n\n"
-     "This command returns version information about the software\n"
-     "running this mud.\n");
+string help(object caller) {
+     return(
+" SYNTAX: version\n\n"
+"This command returns version information about the software running this mud.");
 }

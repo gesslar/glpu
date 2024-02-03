@@ -1,4 +1,7 @@
 {
+    "BASELIB_VERSION" : "A-0610-R7",
+    "LIB_VERSION" : "0.1",
+    "LIB_NAME" : "gLPU",
     "OPEN_STATUS": "Mudlib Development",
     "ADMIN_EMAIL": "gesslar@gmail.com",
     "LOG_DIR" : "/log/",

@@ -18,8 +18,6 @@
 #include <objects.h>
 #include <runtime_config.h>
 
-#define LIB_VERSION "A-0610-R7"
-
 #define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"
 #define LOGIN_OB   "/adm/obj/login"

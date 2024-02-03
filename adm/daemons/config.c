@@ -56,6 +56,4 @@ public void rehash_config() {
             config += temp ;
         }
     }
-
-debug_message(sprintf("%O\n", config)) ;
 }
