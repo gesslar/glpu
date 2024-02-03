@@ -6,6 +6,8 @@
 
 //Last edited on July 17th, 2006 by Parthenon
 
+inherit STD_CMD ;
+
 int main() {
     if(!load_object(LOCKDOWN_D)) {
         write("\n Error [lockdown]: lockdown daemon not found\n");
@@ -50,7 +52,7 @@ int i_MainMenu(string arg) {
             else write(" 3: Lock mud to all but VIP users (inactive)\n");
 
             if(LOCKDOWN_D->query_guest_locked()) write(" 4: Enable guest account\n");
-            else write(" 4: Disable guest accuont\n");
+            else write(" 4: Disable guest account\n");
 
             if(LOCKDOWN_D->query_creation_locked()) write(" 5: Enable new player creation\n");
             else write(" 5: Disable new player creation\n");

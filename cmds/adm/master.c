@@ -6,6 +6,8 @@
 
 #include <config.h>
 
+inherit STD_CMD ;
+
 int main(object caller, object room, string arguments) {
      string err = "";
 

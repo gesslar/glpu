@@ -10,6 +10,8 @@
 
 #include <logs.h>
 
+inherit STD_CMD ;
+
 int main(object caller, object room, string args)
 {
      object user;

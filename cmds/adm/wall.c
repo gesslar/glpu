@@ -4,23 +4,22 @@
 //01-JULY-05
 //Admin wall cmd
 
-int main(object caller, object room, string str)
-{
+inherit STD_CMD ;
+
+int main(object caller, object room, string str) {
     int i;
     object *users;
 
     if(!adminp(previous_object())) return notify_fail("Error [wall]: Access denied.\n");
 
-    if(!stringp(str))
-    {
+    if(!stringp(str)) {
         write("Error [wall]: You must supply an argument. Syntax: wall <msg>\n");
         return 1;
     }
 
     users = users();
 
-    for(i = 0; i < sizeof(users); i++)
-    {
+    for(i = 0; i < sizeof(users); i++) {
         tell_object(users[i], "**** System Wide Message From: "
         + capitalize(caller->query_name()) + " at " + ctime(time())
         + " ****\n\n\t" + str + "\n");

@@ -24,6 +24,8 @@ Ported to LPUniversity     :: 06-MAY-06
 
 #include <config.h>
 
+inherit STD_CMD ;
+
 #define DATAFILE "/data/tools/wms"
 #define WRITEDIR "/open/"
 #define WMS_LOG "adm/wms.log"
@@ -63,8 +65,7 @@ string current_file;
 int idn;
 int did_write;
 
-
-void create() {
+void setup() {
      users = ([]);
      notes = ([]);
      types = ([]);

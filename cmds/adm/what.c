@@ -6,28 +6,25 @@
 
 */
 
-int main()
-{
-    if(!adminp(previous_object())) return 0;
-    write("=----------------------------------------------=\n");
-    printf(" %-15s %-s \n", "Username", "Last Command");
-    write("=----------------------------------------------=\n");
+inherit STD_CMD ;
 
-    foreach(object user in users())
-    {
-    string *commandHistory = user->query_commandHistory();
-    if(!living(user)) continue;
+int main(object tp, object room, string arg) {
+    if(!adminp(tp)) return 0;
+    tell(tp, "=----------------------------------------------=\n");
+    tell(tp, sprintf(" %-15s %-s \n", "Username", "Last Command")) ;
+    tell(tp, "=----------------------------------------------=\n");
 
-    if(sizeof(commandHistory) <= 0)
-        printf("  %-15s %s\n", user->query_cap_name(),
-          "<none>");
-    else
+    foreach(object user in users()) {
+        string *commandHistory = user->query_commandHistory();
+        if(!living(user)) continue;
 
-        printf("  %-15s %s\n", user->query_cap_name(),
-          commandHistory[sizeof(commandHistory)-1]);
+        if(sizeof(commandHistory) <= 0)
+            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), "<none>"));
+        else
+            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), commandHistory[sizeof(commandHistory)-1]));
     }
 
-    write("=----------------------------------------------=\n");
+    tell(tp, "=----------------------------------------------=\n");
 
     return 1;
 }

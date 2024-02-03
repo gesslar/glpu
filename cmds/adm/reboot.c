@@ -9,31 +9,27 @@
 
 #include <logs.h>
 
-int main(object caller, object room, string arg)
-{
+inherit STD_CMD ;
+
+int main(object caller, object room, string arg) {
      string status;
      int time;
      status = SHUTDOWN_D->getStatus();
 
      if(!adminp(previous_object())) return notify_fail("Error [reboot]: Access denied.\n");
 
-     if(!arg)
-     {
+     if(!arg) {
           if(status) write("Shutdown: " + status);
           else write("There is no shutdown or reboot currently in progress.\n");
           return 1;
      }
 
-     if(arg == "stop")
-     {
+     if(arg == "stop") {
           if(!status) return notify_fail("Error: There is no shutdown or reboot currently in progress.\n");
           else SHUTDOWN_D->stop();
           log_file(LOG_SHUTDOWN, capitalize(caller->query_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
           return 1;
-     }
-
-     else
-     {
+     } else {
           if(arg == "now") time = 0;
           else time = to_int(arg);
           if(time == 0 && arg != "now" && arg != "0") return notify_fail("SYNTAX: shutdown [<stop>||<time>/now]\n");

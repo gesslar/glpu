@@ -10,6 +10,8 @@ Standard nuke command V2
 
 #include <logs.h>
 
+inherit STD_CMD ;
+
 mixed main(object caller, object room, string user) {
     if(!adminp(previous_object()))
         return "Error [nuke]: Access denied.\n" ;

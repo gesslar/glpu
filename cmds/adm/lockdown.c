@@ -8,6 +8,8 @@
 
 //Last edited on July 17th, 2006 by Parthenon
 
+inherit STD_CMD ;
+
 #define LOCKDOWN_TOOL "/obj/mudlib/lockdown_admin/lockdown_client.c"
 
 int main(object caller, object room, string arg)
