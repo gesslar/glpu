@@ -1,11 +1,11 @@
 #include "/adm/obj/simul_efun.h"
 
 float percent_of(float a, float b) {
-  return (a / b) * 100.0;
+  return (to_float(a) / to_float(b)) * 100.0;
 }
 
 float percent(float a, float b) {
-    return a * 100.0 / b;
+    return to_float(a) * 100.0 / to_float(b);
 }
 
 float range(float min, float max, float val) {
