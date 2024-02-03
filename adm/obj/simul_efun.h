@@ -26,6 +26,11 @@ varargs string call_trace(int color) ;
 // File: identify
 string identify(mixed arg) ;
 
+// File: messaging
+varargs void tell_from_inside(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell_from_outside(object ob, string str, int msg_type, mixed exclude) ;
+varargs void tell(object ob, string str, int msg_type) ;
+
 // File: object
 int getoid(object ob) ;
 varargs object get_object( string str, object player ) ;

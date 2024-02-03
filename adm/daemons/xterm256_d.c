@@ -315,8 +315,8 @@ string get_color_list() {
             for(int k = 0; k < 12; k++) {
                 int color = i*(6*12) + j + k*6 ;
 
-                output += sprintf("  %s%'0'4d\e[0m",
-                    sprintf("\e[38;5;%dm", xterm256[color]),
+                output += sprintf("  %s%'0'4d\e<res>",
+                    sprintf("\e<%'0'4d>", xterm256[color]),
                     xterm256[color]
                 ) ;
             }
@@ -331,8 +331,8 @@ string get_color_list() {
         for(int j = 0; j < 12; j++) {
             int color = i*12 + j;
 
-            output += sprintf("  %s%'0'4d\e[0m",
-                sprintf("\e[38;5;%dm", xterm_greyscale[color]),
+            output += sprintf("  %s%'0'4d\e<res>",
+                sprintf("\e<%'0'4d>", xterm_greyscale[color]),
                 xterm_greyscale[color]
             ) ;
         }
@@ -346,8 +346,8 @@ string get_color_list() {
         for(int j = 0; j < 8; j++) {
             int color = i*8 + j;
 
-            output += sprintf("  %s%'0'4d\e[0m",
-                sprintf("\e[38;5;%dm", xterm16[color]),
+            output += sprintf("  %s%'0'4d\e<res>",
+                sprintf("\e<%'0'4d>", xterm16[color]),
                 xterm16[color]
             );
         }

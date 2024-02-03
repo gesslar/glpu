@@ -11,9 +11,10 @@
 #include <config.h>
 
 inherit STD_OB_E;
-inherit M_SETUP ;
 inherit __DIR__ "id" ;
 inherit __DIR__ "description" ;
+inherit M_SETUP ;
+inherit M_MESSAGING ;
 
 private string name, short, long;
 

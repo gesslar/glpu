@@ -9,9 +9,10 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#include <mudlib.h>
 #include <daemons.h>
 #include <modules.h>
+#include <messaging.h>
+#include <mudlib.h>
 #include <objects.h>
 
 #define LIB_VERSION "A-0610-R7"

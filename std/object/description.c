@@ -32,7 +32,6 @@ string query_short(object viewer: (: this_player() :)) {
     mixed result ;
 
     result = short ;
-debug_message(call_trace(0)) ;
 
     if(valid_function(result))
         result = (*result)(viewer) ;

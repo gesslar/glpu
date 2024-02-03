@@ -17,5 +17,5 @@ protected void create() {
 }
 
 void remove() {
-    event("remove", ({ this_object() })) ;
+    event(({ this_object() }), "remove") ;
 }

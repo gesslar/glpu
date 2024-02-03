@@ -14,7 +14,7 @@ int main(object caller, object room, string str)
     case "ansi" :
     case "begin" : {
         caller->set_env("colour", "enabled");
-        write("Success: Colour " + str + ".\n");
+        tell(caller, "Success: Colour " + str + ".\n");
         return 1;
     }
 
@@ -24,22 +24,19 @@ int main(object caller, object room, string str)
     case "none" :
     case "kill" : {
         caller->set_env("colour", "disabled");
-        write("Success: Colour " + str + "\n");
+        tell(caller, "Success: Colour " + str + ".\n");
         return 1;
     }
     case "list" :
-        write(XTERM256->get_color_list()) ;
+        tell(caller, "Colour List:\n\n" + XTERM256->get_color_list() + "\n");
         return 1 ;
     default : {
-        if(caller->query_env("colour") == "enabled")
-        {
-        write("Colour: Colour is currently enabled.\n");
-        return 1;
-        }
-        else
-        {
-        write("Colour: Colour is currently disabled.\n");
-        return 1;
+        if(caller->query_env("colour") == "enabled") {
+            tell(caller, "Colour: Colour is currently enabled.\n") ;
+            return 1;
+        } else {
+            tell(caller, "Colour: Colour is currently disabled.\n") ;
+            return 1;
         }
     }
     }
