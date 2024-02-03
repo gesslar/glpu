@@ -70,6 +70,7 @@ string append(string source, string to_append) ;
 string prepend(string source, string to_prepend) ;
 varargs string extract(string str, int from, int to) ;
 string no_ansi(string str) ;
+varargs string simple_list(mixed *arr, string conj) ;
 
 // File: system
 string mud_name() ;

@@ -32,3 +32,13 @@ varargs string extract(string str, int from, int to) {
 string no_ansi(string str) {
     return XTERM256->substitute_colour(str, "plain") ;
 }
+
+varargs string simple_list(string *arr, string conjunction) {
+    if(!arr) error("simple_list: Missing argument 1 for simpple_list");
+    if(!conjunction) conjunction = "and";
+
+    if(sizeof(arr) == 0) error("simple_list: Argument 1 for simple_list is empty");
+    else if(sizeof(arr) == 1) return arr[0];
+    else if(sizeof(arr) == 2) return arr[0] + " " + conjunction + " " + arr[1];
+    else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
+}
