@@ -237,3 +237,7 @@ int save_ed_setup(object user, mixed config) {
 int retrieve_ed_setup(object user) {
     return user->query("ed_setup");
 }
+
+mapping get_mud_stats() {
+    return MSSP_D->get_mud_stats();
+}

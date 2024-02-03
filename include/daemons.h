@@ -3,14 +3,15 @@
 
 #include <dirs.h>
 
-#define CHAN_D        "/adm/daemons/chan_d"
-#define FINGER_D      "/adm/daemons/finger_d"
-#define GA_SERVER     "/adm/daemons/ga_server"
-#define LOCKDOWN_D    "/adm/daemons/lockdown_d"
-#define MAIL_D        "/adm/daemons/mail_d"
-#define NEWS_D        "/adm/daemons/news_d"
-#define SHUTDOWN_D    "/adm/daemons/shutdown_d"
-#define SOUL_D        "/adm/daemons/soul_d"
-#define XTERM256      "/adm/daemons/xterm256_d"
+#define CHAN_D          DIR_DAEMONS "chan_d"
+#define FINGER_D        DIR_DAEMONS "finger_d"
+#define GA_SERVER       DIR_DAEMONS "ga_server"
+#define LOCKDOWN_D      DIR_DAEMONS "lockdown_d"
+#define MAIL_D          DIR_DAEMONS "mail_d"
+#define MSSP_D          DIR_DAEMONS "mssp"
+#define NEWS_D          DIR_DAEMONS "news_d"
+#define SHUTDOWN_D      DIR_DAEMONS "shutdown_d"
+#define SOUL_D          DIR_DAEMONS "soul_d"
+#define XTERM256        DIR_DAEMONS "xterm256_d"
 
-#endif
+#endif // __DAEMONS_H__
