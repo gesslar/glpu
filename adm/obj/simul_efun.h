@@ -28,6 +28,10 @@ varargs string call_trace(int color) ;
 // File: identify
 string identify(mixed arg) ;
 
+// File: json
+mixed json_decode(string str) ;
+mapping json_encode(mixed arg) ;
+
 // File: messaging
 varargs void tell_from_inside(object ob, string str, int msg_type, mixed exclude) ;
 varargs void tell_from_outside(object ob, string str, int msg_type, mixed exclude) ;

@@ -18,6 +18,7 @@
 #include "/adm/simul_efun/file.c"
 #include "/adm/simul_efun/function.c"
 #include "/adm/simul_efun/identify.c"
+#include "/adm/simul_efun/json.c"
 #include "/adm/simul_efun/messaging.c"
 #include "/adm/simul_efun/numbers.c"
 #include "/adm/simul_efun/object.c"
