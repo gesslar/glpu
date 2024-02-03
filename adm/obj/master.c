@@ -13,13 +13,13 @@
 #include <config.h>
 #include <localtime.h>
 
-#pragma show_error_context
-
 /* inherits */
 
 inherit "/adm/obj/master/valid";
 
 /* Functions */
+
+private nosave mapping errors = ([]);
 
 void flag(string str) {
     debug_message("Flags disabled.\n");
@@ -63,6 +63,11 @@ protected void epilog(int load_empty) {
 
         debug_message(out);
     }
+    call_out_walltime("tune_into_error", 0.1) ;
+}
+
+void tune_into_error() {
+    CHAN_D->tune("error", query_privs(this_object()), 1);
 }
 
 protected void log_error(string file, string message) {
@@ -81,6 +86,7 @@ protected void log_error(string file, string message) {
     log_file("compile", message);
 }
 
+#if 0
 //error_handler needs to be rewritten
 protected void error_handler(mapping map, int flag) {
     object ob;
@@ -102,6 +108,92 @@ protected void error_handler(mapping map, int flag) {
     }
 
     log_file("log", logContent);
+}
+#endif
+
+// Blatanly stolen from Lima
+int different(string fn, string pr) {
+    sscanf(fn, "%s#%*d", fn);
+    fn += ".c";
+    return (fn != pr) && (fn != ("/" + pr));
+}
+
+string trace_line(object obj, string prog, string file, int line) {
+    string ret;
+    string objfn = obj ? file_name(obj) : "<none>";
+
+    ret = objfn;
+    if (different(objfn, prog))
+          ret += sprintf(" (%s)", prog);
+    if (file != prog)
+        ret += sprintf(" at %s:%d\n", file, line);
+    else
+        ret += sprintf(" at line %d\n", line);
+    return ret;
+}
+
+varargs string standard_trace(mapping mp, int flag) {
+    string ret;
+    mapping *trace;
+    int i, n;
+
+    ret = ctime(time());
+    ret += "\n";
+    ret += mp["error"] + "Object: " + trace_line(mp["object"], mp["program"], mp["file"], mp["line"]);
+    ret += "\n";
+    trace = mp["trace"];
+
+    n = sizeof(trace);
+
+    for (i = 0; i < n; i++) {
+        if (flag) ret += sprintf("#%d: ", i);
+        ret += sprintf("'%s' at %s",
+            trace[i]["function"],
+            trace_line(trace[i]["object"], trace[i]["program"], trace[i]["file"], trace[i]["line"])
+        );
+    }
+    return ret;
+}
+
+string error_handler(mapping mp, int caught) {
+    string ret;
+    string logfile = caught ? mud_config("LOG_CATCH") : mud_config("LOG_RUNTIME") ;
+    string what = mp["error"];
+    string userid;
+
+    ret = "---\n" + standard_trace(mp);
+    write_file(logfile, ret);
+
+    // If an object didn't load, they get compile errors.  Don't spam
+    // or confuse them
+    if (what[0..23] == "*Error in loading object")
+        return 0;
+
+    if (this_user()) {
+        userid = query_privs(this_user());
+        if (!userid || userid == "")
+            userid = "(none)";
+        printf("%sTrace written to %s\n", what, logfile);
+        errors[userid] = mp;
+    } else {
+        userid = "(none)";
+    }
+    errors["last"] = mp;
+
+    // Strip trailing \n, and indent nicely
+    what = replace_string(what[0.. < 2], "\n", "\n         *");
+debug_message("PRIVS: " + query_privs(this_object()) + "\n");
+    CHAN_D->send_msg(
+        "error",
+        query_privs(this_object()),
+        sprintf("(%s) Error logged to %s\n%s\n" +
+            capitalize(userid),
+            logfile,
+            what,
+            trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
+        )
+    );
+    return 0;
 }
 
 protected void crash(string crash_message, object command_giver, object current_object) {

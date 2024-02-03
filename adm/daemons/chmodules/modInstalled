@@ -9,3 +9,5 @@
 /adm/daemons/chmodules/chdmod_localNet
 # Announce Net -- announceNet
 /adm/daemons/chmodules/announceNet
+# Error channel
+/adm/daemons/chmodules/errorNet
