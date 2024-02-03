@@ -53,7 +53,7 @@ void confirm_nuke(string str, object caller, string user) {
     if(body = find_player(user)) {
         tell(caller, "Warning [nuke]: Now disconnecting user '" + user + "'.\n");
         tell(body, "You watch as your body dematerializes.\n");
-printf("Env: " + environment(body) + "\n");
+
         if(environment(body)) {
             tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n");
             destruct(body) ;
