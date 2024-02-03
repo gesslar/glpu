@@ -67,7 +67,7 @@ varargs void receive_down(string msg, object *exclude, int msg_type) {
 
     if(objectp(exclude)) exclude = ({ exclude });
     if(!pointerp(exclude)) exclude = ({});
-printf("EXCLUDE: %O\n", exclude);
+
     contents = all_inventory();
     contents -= exclude;
     contents->receive_down(msg, exclude, msg_type);
