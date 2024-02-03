@@ -39,18 +39,31 @@ nomask void restore_user() {
 }
 
 nomask void save_user() {
-    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    save_object(user_data_file(query_privs(this_object())));
+    int result ;
+
+    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") &&
+       this_player() != this_object() &&
+       origin() != ORIGIN_LOCAL) {
+        return 0;
+    } else {
+        result = save_object(user_data_file(query_privs(this_object())));
+    }
+
 }
 
 nomask int set_password(string str) {
-    if(adminp(query_privs(previous_object())) || this_player() == body) password = crypt(str, str);
-    else return 0;
+    if(adminp(query_privs(previous_object())) || this_player() == body) {
+        password = crypt(str, 0);
+    } else {
+        return 0;
+    }
+
+    save_user() ;
     return 1;
 }
 
 nomask mixed query_password() {
-    if(adminp(query_privs(previous_object())) || this_player() == body)  return password;
+    if(adminp(query_privs(previous_object())) || this_player() == body) return password;
     else return "Error [user]: Permission Denied.\n";
 }
 

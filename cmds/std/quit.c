@@ -11,8 +11,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
+int main(object caller, object room, string arg) {
      previous_object()->exit_world();
      write("Thank you for visiting " + mud_name() + "\n");
      previous_object()->save_user();
@@ -22,8 +21,7 @@ int main(object caller, object room, string arg)
      return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
      return(" SYNTAX: quit\n\n" +
      "This command will save your characher and disconnect you from the mud.\n\n" +
      "See also: save\n");

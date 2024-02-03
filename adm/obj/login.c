@@ -180,10 +180,12 @@ void get_name(string str) {
 
 void get_password(string str, int i) {
     string pass;
+    string curr ;
 
     if(!i) {
-        pass = crypt(str, str);
-        if(pass != user->query_password()) {
+        curr = user->query_password() ;
+        pass = crypt(str, curr);
+        if(pass != curr) {
             write("That password is incorrect.\n");
             write("Please enter your password: ");
             input_to("get_password", 1, 0);
@@ -222,7 +224,10 @@ void get_password(string str, int i) {
 }
 
 void verify_password(string str, int i) {
-    str = crypt(str, str);
+    string curr ;
+
+    curr = user->query_password() ;
+    str = crypt(str, curr) ;
     if(str != user->query_password()) {
         write("Your passwords do not match.\n");
         write("Please enter a password: ");
@@ -410,7 +415,7 @@ void enterWorld(string str) {
     body->enter_world();
     remove_call_out(coID);
 
-    destruct() ;
+    destruct(this_object()) ;
 }
 
 void catch_tell(string message) {

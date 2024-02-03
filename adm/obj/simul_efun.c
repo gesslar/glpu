@@ -10,8 +10,6 @@
 // 2. When adding new files to the simuL_efun include list, in that file,
 //    #include "/adm/obj/simul_efun.h"
 
-#pragma show_error_context
-
 #include "/adm/simul_efun/description.c"
 #include "/adm/simul_efun/directory.c"
 #include "/adm/simul_efun/exists.c"
