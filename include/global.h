@@ -16,6 +16,7 @@
 #include <messaging.h>
 #include <mudlib.h>
 #include <objects.h>
+#include <runtime_config.h>
 
 #define LIB_VERSION "A-0610-R7"
 

@@ -136,7 +136,7 @@ void get_name(string str) {
         user->set_name("guest");
         set_privs(user, "guest");
         body = create_body("guest");
-        write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(body) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             write(read + "\n");
@@ -195,7 +195,7 @@ void get_password(string str, int i) {
                 input_to("reconnect");
                 return;
             }
-            write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
+            write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
                 write(read + "\n");
@@ -307,9 +307,9 @@ void idle_email(string str) {
         }
 
         user->set("email", email);
-        write_file(LOG_DIR + "/" + LOG_NEWUSER, capitalize(user->query_name()) + " created a new account from "
+        write_file(log_dir() + LOG_NEWUSER, capitalize(user->query_name()) + " created a new account from "
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
-        write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
         write("\n" + parseTokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
         write(" [Hit enter to continue] ");
@@ -359,7 +359,7 @@ void reconnect(string str) {
 
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         tell_object(oldBody, "Warning: Your body has been displaced by another user.\n");
-        write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(oldBody->query_name()) + " reconnected from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(oldBody->query_name()) + " reconnected from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(interactive(oldBody)) remove_interactive(oldBody);
         oldBody->reconnect();
@@ -369,7 +369,7 @@ void reconnect(string str) {
         input_to("enterWorld");
         return;
     } else {
-        write_file(LOG_DIR + "/" + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_name()) + " logged in from " +
           query_ip_number(user) + " on " + ctime(time()) + "\n");
         write(read + "\n");
         write(" [Hit enter to continue] ");

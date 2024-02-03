@@ -14,7 +14,6 @@
 #define OPEN_STATUS "Mudlib Development"
 #define ADMIN_EMAIL "cody.somerville@gmail.com"
 
-#define LOG_DIR    "/log"
 #define CONFIG_DIR "/adm/etc"
 
 

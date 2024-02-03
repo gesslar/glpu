@@ -53,3 +53,7 @@ string arch() {
 mixed mud_config(string str) {
     return (mixed)CONFIG_D->get_mud_config(str) ;
 }
+
+string log_dir() {
+    return mud_config("LOG_DIR") ;
+}

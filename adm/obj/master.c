@@ -197,7 +197,7 @@ void log_file(string file, string msg) {
 
     if(query_privs(previous_object()) == "[open]") return;
 
-    size = file_size(LOG_DIR+"/"+file);
+    size = file_size(log_dir() + file);
     if(size == -2) return;
     if(size > 50000) {
         mixed *localtime_now = localtime(time());
@@ -223,10 +223,10 @@ void log_file(string file, string msg) {
                     localtime_now[LT_HOUR],
                     localtime_now[LT_MIN],
                 );
-            rename(LOG_DIR+"/"+file, LOG_DIR+"/"+backup);
+            rename(log_dir() + file, log_dir() + backup);
     }
 
-    write_file(LOG_DIR + "/" + file, msg);
+    write_file(log_dir() + file, msg);
 }
 
 int save_ed_setup(object user, mixed config) {
