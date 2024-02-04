@@ -5,6 +5,8 @@
 //Object management
 
 //Last edited July 11th, 2006 by Tacitus
+// Last Change: 2024/02/04: Gesslar
+// - Added recursion to the update command
 
 inherit STD_CMD ;
 
