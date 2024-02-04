@@ -23,7 +23,6 @@ int main(object caller, object room, string str) {
                write("      >> ENVIRONMENT VARIABLES <<\n\n");
                for(i = 0; i < sizeof(keys); i ++)
                     tell(caller, sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]), NO_ANSI) ;
-               //     message( "ignore_ansi", sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]), caller );
                return 1;
           }
      }
