@@ -31,7 +31,7 @@ protected object connect(int port) {
 
     err = catch(login_ob = new(LOGIN_OB));
 
-    if (err) {
+    if(err) {
     write("I'm sorry, but it appears that mud is not functional at the moment.\n");
     write(err);
     destruct(this_object());
@@ -54,7 +54,7 @@ protected void epilog(int load_empty) {
         out += "Preloading : " + lines[i] + "..." ;
         err = catch(load_object(lines[i]));
 
-        if (err != 0) {
+        if(err != 0) {
             out += "\nError " + err + " when loading " + lines[i];
         } else {
             time = time() - time;
@@ -123,9 +123,9 @@ string trace_line(object obj, string prog, string file, int line) {
     string objfn = obj ? file_name(obj) : "<none>";
 
     ret = objfn;
-    if (different(objfn, prog))
+    if(different(objfn, prog))
           ret += sprintf(" (%s)", prog);
-    if (file != prog)
+    if(file != prog)
         ret += sprintf(" at %s:%d\n", file, line);
     else
         ret += sprintf(" at line %d\n", line);
@@ -146,7 +146,7 @@ varargs string standard_trace(mapping mp, int flag) {
     n = sizeof(trace);
 
     for (i = 0; i < n; i++) {
-        if (flag) ret += sprintf("#%d: ", i);
+        if(flag) ret += sprintf("#%d: ", i);
         ret += sprintf("'%s' at %s",
             trace[i]["function"],
             trace_line(trace[i]["object"], trace[i]["program"], trace[i]["file"], trace[i]["line"])
@@ -166,12 +166,12 @@ string error_handler(mapping mp, int caught) {
 
     // If an object didn't load, they get compile errors.  Don't spam
     // or confuse them
-    if (what[0..23] == "*Error in loading object")
+    if(what[0..23] == "*Error in loading object")
         return 0;
 
-    if (this_user()) {
+    if(this_user()) {
         userid = query_privs(this_user());
-        if (!userid || userid == "")
+        if(!userid || userid == "")
             userid = "(none)";
         printf("%sTrace written to %s\n", what, logfile);
         errors[userid] = mp;
@@ -208,11 +208,11 @@ protected void crash(string crash_message, object command_giver, object current_
     log_file("crashes", MUD_NAME + " crashed on: " + ctime(time()) +
         ", error: " + crash_message + "\n");
 
-    if (command_giver) {
+    if(command_giver) {
         log_file("crashes", "this_player: " + file_name(command_giver) + " :: " + command_giver->query_name() + "\n");
     }
 
-    if (current_object) {
+    if(current_object) {
         log_file("crashes", "this_object: " + file_name(current_object) + "\n");
     }
 

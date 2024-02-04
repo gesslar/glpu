@@ -30,9 +30,9 @@ int main()
     OUser = users();
     foreach( string name in OUser )
     {
-        if (  adminp(  name  ) && name->query_name() != "login" )
+        if(  adminp(  name  ) && name->query_name() != "login" )
             OAdminArr += ({ name });
-        else if ( devp(  name  )  )
+        else if( devp(  name  )  )
             ODevArr    += ({ name });
         else
             OUserArr   += ({ name });
@@ -84,8 +84,8 @@ int main()
 
 int sortName(object member1, object member2)
 {
-    if ( member1->query_name()  > member2->query_name()  )    return 1;
-    if ( member1->query_name() < member2->query_name() ) return -1;
+    if( member1->query_name()  > member2->query_name()  )    return 1;
+    if( member1->query_name() < member2->query_name() ) return -1;
     else return 0;
 }
 

@@ -31,14 +31,14 @@ string resolve_path(string Current, string Next)
       }
    }
 
-   if (Next[0]!='/')  Next=Current+"/"+Next;
+   if(Next[0]!='/')  Next=Current+"/"+Next;
    pathSegments = explode(Next,"/");
 
    for (index=0;index<sizeof(pathSegments);index++)
    {
-      if (pathSegments[index] == ".") pathSegments[index] = "";
+      if(pathSegments[index] == ".") pathSegments[index] = "";
 
-      if (pathSegments[index] == "..")
+      if(pathSegments[index] == "..")
       {
          pathSegments[index] = "";
          temp = index-1;
@@ -46,11 +46,11 @@ string resolve_path(string Current, string Next)
          while((temp>=0)&&(!sizeof(pathSegments[temp])))
             temp--;
 
-         if (temp!=-1) pathSegments[temp]="";
+         if(temp!=-1) pathSegments[temp]="";
       }
    }
 
-   if (Next[<1]=='/') Next="/"+implode(pathSegments, "/")+"/";
+   if(Next[<1]=='/') Next="/"+implode(pathSegments, "/")+"/";
    else Next= "/" + implode(pathSegments, "/");
 
    while(strsrch(Next,"//")!=-1) Next = replace_string(Next,"//","/");

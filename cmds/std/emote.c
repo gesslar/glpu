@@ -29,7 +29,7 @@ int main(object caller, object room, string arg)
 {
     object *targets_to_print_to;
 
-    if (!arg)
+    if(!arg)
     return notify_fail("Syntax: emote <message>\n");
 
     list_of_names_in_emote = ({});

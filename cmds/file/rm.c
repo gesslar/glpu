@@ -18,7 +18,7 @@ int main(object caller, object room, string str)
 {
     dir_tree = ({});
 
-    if (!str)
+    if(!str)
        return notify_fail("Syntax: rm [-r] <file name>\n");
 
     if(sscanf(str, "-r %s", dir) == 1)

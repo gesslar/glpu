@@ -192,7 +192,7 @@ private nomask void listen_callback(int fd)
      fd = socket_accept(fd, "read_callback", "write_callback");
      new_socket = clone_object(base_name(this_object()) + ".c", SOCKET_ACQUIRE,  read_callback,  close_callback);
      err = socket_release(fd, new_socket, "release_callback");
-     if (err < 0)  error("Error [socket_ob]: " + socket_error(err) + "\n");
+     if(err < 0)  error("Error [socket_ob]: " + socket_error(err) + "\n");
 }
 
 private nomask void release_callback(int fd)
@@ -201,7 +201,7 @@ private nomask void release_callback(int fd)
 
      s = fd;
      err = socket_acquire(s, "read_callback", "write_callback", "close_callback");
-     if (err < 0) error("Error [socket_ob]: " + socket_error(err) + "\n");
+     if(err < 0) error("Error [socket_ob]: " + socket_error(err) + "\n");
 
      catch(evaluate(read_callback, this_object(), 0));
 }
@@ -354,12 +354,12 @@ int status()
           break;
      }
 
-     if (sizeof(queue)) printf("Queue: %O\n", queue);
+     if(sizeof(queue)) printf("Queue: %O\n", queue);
 
      return 1;
 }
 
 void remove()
 {
-     if ( s >= 0 ) socket_close(s);
+     if( s >= 0 ) socket_close(s);
 }

@@ -47,7 +47,7 @@ void setup() {
         write("Loading channel module: " + arr[i] + "...");
         err = catch(load_object(arr[i]));
 
-        if (err != 0) {
+        if(err != 0) {
             write("\t\nError " + err + " when loading " + arr[i] + "\n");
         }
 

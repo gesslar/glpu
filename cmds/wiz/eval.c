@@ -17,9 +17,9 @@ int main(object caller, object room, string arg)
      if(!directory_exists(user_path(caller->query_name())))
           return(notify_fail("Error [eval]: You must have a home directory to use eval.\n"));
      write("Evaluating: " + arg + "\n\n");
-     if (file_size(user_path(caller->query_name()) + "tmp_eval_file.c") != -1)
+     if(file_size(user_path(caller->query_name()) + "tmp_eval_file.c") != -1)
      rm (user_path(caller->query_name()) + "tmp_eval_file.c");
-     if (find_object(user_path(caller->query_name()) + "tmp_eval_file"))
+     if(find_object(user_path(caller->query_name()) + "tmp_eval_file"))
           destruct(find_object(user_path(caller->query_name()) + "tmp_eval_file"));
 
      write_file(user_path(caller->query_name()) + "tmp_eval_file.c","mixed eval() { "+arg+"; }\n");

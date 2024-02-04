@@ -44,9 +44,9 @@ int main(object caller, object room, string arg)
 
     foreach( object name in list )
     {
-        if ( adminp( name ) && name->query_name() != "login" )
+        if( adminp( name ) && name->query_name() != "login" )
             oAdminArr += ({ name });
-        else if ( devp( name ) )
+        else if( devp( name ) )
             oDevArr += ({ name });
         else
             oUserArr += ({ name });
@@ -95,8 +95,8 @@ int main(object caller, object room, string arg)
 
 int sort_name(object ob1, object ob2)
 {
-    if ( ob1->query_name() > ob2->query_name() )    return 1;
-    else if ( ob1->query_name() < ob2 ->query_name() )    return -1;
+    if( ob1->query_name() > ob2->query_name() )    return 1;
+    else if( ob1->query_name() < ob2 ->query_name() )    return -1;
     else return 0;
 }
 

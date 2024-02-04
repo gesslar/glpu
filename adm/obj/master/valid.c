@@ -173,7 +173,7 @@ string *parse(string str)
     string *arr;
     int i;
 
-    if (!str) {
+    if(!str) {
         return ({});
     }
 
@@ -181,7 +181,7 @@ string *parse(string str)
 
     for (i = 0; i < sizeof(arr); i++)
     {
-        if (arr[i][0] == '#')
+        if(arr[i][0] == '#')
         {
             arr[i] = 0;
             continue;
@@ -244,8 +244,8 @@ int valid_object(object ob)
 }
 
 int valid_override(string file, string efun_name, string mainfile) {
-    if (mainfile == "/adm/obj/simul_efun.c") return 1 ;
-    if (mainfile == "/adm/simul_efun/overrides.c") return 1 ;
+    if(mainfile == "/adm/obj/simul_efun.c") return 1 ;
+    if(mainfile == "/adm/simul_efun/overrides.c") return 1 ;
     if(efun_name == "destruct" && mainfile == "/std/object/object.c") return 1;
     if(efun_name == "ed") return 1;
     return 0;

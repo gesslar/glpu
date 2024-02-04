@@ -43,7 +43,7 @@ inherit STD_CMD ;
 #define GETOPT_KEEPSPACES       (1 << 2)
 
 mixed abs (mixed val) {
-  if (val < 0)
+  if(val < 0)
     return -val;
   return val;
 }
@@ -54,15 +54,15 @@ varargs mixed *getopt (string str, string opts, int flags) {
   mapping opt = ([ ]);
   mixed *ret = ({ opt });
 
-  if (!stringp(str) || str == "")
+  if(!stringp(str) || str == "")
     return ret;
 
-  if (!(flags & GETOPT_NOQUOTES)) {
+  if(!(flags & GETOPT_NOQUOTES)) {
     str = replace_string(str, "\t", " ");
     str = replace_string(str, "\n", " ");
   }
 
-  if (!stringp(opts))
+  if(!stringp(opts))
     opts = "";
 
   optslen = strlen(opts);
@@ -73,20 +73,20 @@ varargs mixed *getopt (string str, string opts, int flags) {
     elem    = list[i];
     elemlen = strlen(elem);
 
-    if (parse && !into && elem[0] == '-') {
-      if (elem == "--") {
+    if(parse && !into && elem[0] == '-') {
+      if(elem == "--") {
         parse = 0;
         continue;
       }
 
       for (j = 1; j < elemlen; j++) {
-        if (elem[j] == ':' || (k = strsrch(opts, elem[j])) < 0) {
+        if(elem[j] == ':' || (k = strsrch(opts, elem[j])) < 0) {
           opt["?"] = 1;
           return ret + list[i..];
         }
 
-        if (k < optslen && opts[k + 1] == ':') {
-          if (j < elemlen - 1) {
+        if(k < optslen && opts[k + 1] == ':') {
+          if(j < elemlen - 1) {
             opt["?"] = 1;
             return ret + list[i..];
           }
@@ -99,23 +99,23 @@ varargs mixed *getopt (string str, string opts, int flags) {
       continue;
     }
 
-    if (parse && !into)
+    if(parse && !into)
       parse = 0;
 
-    if (quote) {
-      if (elemlen > 1 && elem[<1] == quote && elem[<2] == '\\') {
+    if(quote) {
+      if(elemlen > 1 && elem[<1] == quote && elem[<2] == '\\') {
         quoted += " " + elem[0..<3] + elem[<1..];
         continue;
-      } else if (elem[<1] == quote) {
-        if (into) {
-          if (flags & GETOPT_KEEPQUOTES)
+      } else if(elem[<1] == quote) {
+        if(into) {
+          if(flags & GETOPT_KEEPQUOTES)
             opt[into] = quoted + " " + elem;
           else
             opt[into] = quoted + " " + elem[0..<2];
 
           into = 0;
         } else {
-          if (flags & GETOPT_KEEPQUOTES)
+          if(flags & GETOPT_KEEPQUOTES)
             ret += ({ quoted + " " + elem });
           else
             ret += ({ quoted + " " + elem[0..<2] });
@@ -127,11 +127,11 @@ varargs mixed *getopt (string str, string opts, int flags) {
 
       quoted += " " + elem;
     } else {
-      if (!(flags & GETOPT_NOQUOTES) && (elem[0] == '\'' || elem[0] == '"' || elem[0] == '`')) {
-        if (elemlen < 2 || elem[<1] != elem[0] || elem[<2] == '\\') {
+      if(!(flags & GETOPT_NOQUOTES) && (elem[0] == '\'' || elem[0] == '"' || elem[0] == '`')) {
+        if(elemlen < 2 || elem[<1] != elem[0] || elem[<2] == '\\') {
           quote = elem[0];
 
-          if (flags & GETOPT_KEEPQUOTES)
+          if(flags & GETOPT_KEEPQUOTES)
             quoted = elem;
           else
             quoted = elem[1..];
@@ -139,20 +139,20 @@ varargs mixed *getopt (string str, string opts, int flags) {
           continue;
         }
 
-        if (!(flags & GETOPT_KEEPQUOTES))
+        if(!(flags & GETOPT_KEEPQUOTES))
           elem = elem[1..<2];
       }
 
-      if (into) {
+      if(into) {
         opt[into] = elem;
         into = 0;
-      } else if (elem != "" || (flags & GETOPT_KEEPSPACES))
+      } else if(elem != "" || (flags & GETOPT_KEEPSPACES))
         ret += ({ elem });
     }
   }
 
-  if (quote) {
-    if (into)
+  if(quote) {
+    if(into)
       opt[into] = quoted;
     else
       ret += ({ quoted });
@@ -165,19 +165,19 @@ varargs string *glob_array (string *paths, string cwd) {
   int i;
   string root, *path, *globbed;
 
-  if (!stringp(cwd))
+  if(!stringp(cwd))
     cwd = "/";
 
   paths = map(paths - ({ "" }), (: resolve_path($2, $1) :), cwd);
 
   for (i = 0; i < sizeof(paths); i++) {
-    if (sizeof(path = explode(paths[i], "/") - ({ "" })) < 1) {
+    if(sizeof(path = explode(paths[i], "/") - ({ "" })) < 1) {
       paths[i] = "/";
       continue;
     }
 
-    if (strsrch(path[<1], "?") >= 0 || strsrch(path[<1], "*") >= 0) {
-      if (pointerp(globbed = get_dir("/" + implode(path, "/"))))
+    if(strsrch(path[<1], "?") >= 0 || strsrch(path[<1], "*") >= 0) {
+      if(pointerp(globbed = get_dir("/" + implode(path, "/"))))
         globbed -= ({ ".", ".." });
       else
         globbed = ({ });
@@ -201,7 +201,7 @@ private string grep_file (mapping opt, string pat, string file) {
   mixed lines, *assoc;
   mapping matches;
 
-  if (!stringp(lines = read_file(file)) || !strlen(lines))
+  if(!stringp(lines = read_file(file)) || !strlen(lines))
     return "";
 
   colour   = !opt["x"] && !opt["v"] && (strsrch(pat, "%^") < 0);
@@ -210,57 +210,57 @@ private string grep_file (mapping opt, string pat, string file) {
   lines   = map(lines, (: replace_string($1, "%^", "%%^^") :));
   matches = ([ ]);
 
-  if (lines[<1] == "")
+  if(lines[<1] == "")
     lines = lines[0..<2];
 
   for (i = 0; i < sizeof(lines); i++) {
     line = lines[i];
 
-    if (opt["i"])
+    if(opt["i"])
       line = lower_case(line);
 
-    if (opt["x"])
+    if(opt["x"])
       match = (line == pat);
-    else if (opt["F"])
+    else if(opt["F"])
       match = strsrch(line, pat) >= 0;
     else
       match = regexp(line, pat);
 
-    if (opt["v"])
+    if(opt["v"])
       match = !match;
 
-    if (!match)
+    if(!match)
       continue;
 
-    if (opt["a"]) {
+    if(opt["a"]) {
       for (j = (i + 1); j <= (i + opt["a"]); j++) {
-        if (j >= sizeof(lines))
+        if(j >= sizeof(lines))
           break;
-        if (matches[j])
+        if(matches[j])
           continue;
 
         matches[j] = lines[j];
       }
     }
 
-    if (opt["b"]) {
+    if(opt["b"]) {
       for (j = (i - opt["b"]); j < i; j++) {
-        if (j < 0)
+        if(j < 0)
           continue;
-        if (matches[j])
+        if(matches[j])
           continue;
 
         matches[j] = lines[j];
       }
     }
 
-    if (colour) {
-      if (opt["F"]) {
+    if(colour) {
+      if(opt["F"]) {
       } else {
         assoc = reg_assoc(lines[i], ({ pat }), ({ 1 }), 0);
 
         for (j = 0; j < sizeof(assoc[0]); j++) {
-          if (assoc[1][j])
+          if(assoc[1][j])
             assoc[0][j] = assoc[0][j];
         }
 
@@ -271,16 +271,16 @@ private string grep_file (mapping opt, string pat, string file) {
 
     matches[i] = line;
 
-    if (opt["l"] || opt["L"])
+    if(opt["l"] || opt["L"])
       break;
   }
 
-  if (sizeof(matches) > 0) {
-    if (opt["l"])
+  if(sizeof(matches) > 0) {
+    if(opt["l"])
       return file;
-    else if (opt["L"])
+    else if(opt["L"])
       return "";
-    else if (opt["c"])
+    else if(opt["c"])
       return sprintf("%d matching lines found in %s", sizeof(matches), file);
 
     lines = sort_array(keys(matches), 0);
@@ -288,14 +288,14 @@ private string grep_file (mapping opt, string pat, string file) {
     for (i = 0; i < sizeof(lines); i++) {
       line = matches[lines[i]];
 
-      if (opt["n"])
+      if(opt["n"])
         line = sprintf("%4d", lines[i] + 1) + "  " + line;
 
       lines[i] = line;
     }
 
     return implode(lines, "\n");
-  } else if (opt["L"]) {
+  } else if(opt["L"]) {
     return file;
   }
 
@@ -307,35 +307,35 @@ int main(object caller, object room, string str) {
   mixed *opt;
   string out, *files;
 
-  if (sizeof(opt = getopt(str, "a:b:cilmnvxEFLMR:")) < 2 || opt[0]["?"])
+  if(sizeof(opt = getopt(str, "a:b:cilmnvxEFLMR:")) < 2 || opt[0]["?"])
     return notify_fail("Type 'help grep' for information on how to use this command.\n");
 
-  if (sizeof(opt) < 3) {
-    if (opt[0]["R"])
+  if(sizeof(opt) < 3) {
+    if(opt[0]["R"])
       str = caller->query("cwd");
     else
       str = caller->query("cwf");
 
-    if (!stringp(str))
+    if(!stringp(str))
       return notify_fail("Type 'help grep' for information on how to use this command.\n");
 
     opt += ({ str });
   }
 
-  if (opt[0]["E"])
+  if(opt[0]["E"])
     opt[0]["F"] = 0;
-  if (opt[0]["M"])
+  if(opt[0]["M"])
     opt[0]["m"] = 0;
 
-  if (opt[0]["a"])
+  if(opt[0]["a"])
     opt[0]["a"] = abs(to_int(opt[0]["a"]));
-  if (opt[0]["b"])
+  if(opt[0]["b"])
     opt[0]["b"] = abs(to_int(opt[0]["b"]));
 
-  if (opt[0]["i"])
+  if(opt[0]["i"])
     opt[1] = lower_case(opt[1]);
 
-  if (opt[0]["R"]) {
+  if(opt[0]["R"]) {
     string dir, *r;
 
     r     = ({ });
@@ -354,19 +354,19 @@ int main(object caller, object room, string str) {
   } else {
     files = glob_array(opt[2..], caller->query("cwd"));
 
-    if (sizeof(files) == 1 && file_size(files[0]) == -2)
+    if(sizeof(files) == 1 && file_size(files[0]) == -2)
       files = glob_array(({ files[1] + (files[1][<1] == '/' ? "*" : "/*") }),
         caller->query("cwd"));
 
     files = filter(files, (: file_size($1) >= 0 :));
   }
 
-  if (sizeof(files) < 1) {
+  if(sizeof(files) < 1) {
     write("No files found.\n");
     return 1;
   }
 
-  if (!opt[0]["F"] && (str = catch(regexp("", opt[1])))) {
+  if(!opt[0]["F"] && (str = catch(regexp("", opt[1])))) {
     write("Invalid regular expression: " + str);
     return 1;
   }
@@ -376,11 +376,11 @@ int main(object caller, object room, string str) {
   for (i = 0; i < sizeof(files); i++) {
     str = grep_file(opt[0], opt[1], files[i]);
 
-    if (str != "") {
-      if (opt[0]["c"] || opt[0]["l"] || opt[0]["L"]) {
+    if(str != "") {
+      if(opt[0]["c"] || opt[0]["l"] || opt[0]["L"]) {
         out = out + str + "\n";
       } else {
-        if (out != "")
+        if(out != "")
           out = out + "\n";
 
         out = out + "[" + files[i] + "]\n" + str + "\n";
@@ -388,7 +388,7 @@ int main(object caller, object room, string str) {
     }
   }
 
-  if (opt[0]["m"] && strlen(out) < __LARGEST_PRINTABLE_STRING__) {
+  if(opt[0]["m"] && strlen(out) < __LARGEST_PRINTABLE_STRING__) {
     write(out + "\n");
   } else {
     object pager;

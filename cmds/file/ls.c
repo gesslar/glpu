@@ -68,8 +68,8 @@ string arrange_string(string str, int width) {
 }
 
 int numeric_sort(int field, int sort_order, mixed a, mixed b) {
-    if (a[field]==b[field]) return 0;
-    if (a[field]>b[field]) return sort_order;
+    if(a[field]==b[field]) return 0;
+    if(a[field]>b[field]) return sort_order;
     return -sort_order;
 }
 
@@ -192,11 +192,11 @@ mixed main(object caller, object room, string arg) {
 
         num_files=sizeof(output_files);
 
-        if (size_sort)
+        if(size_sort)
             output_files=sort_array(output_files, (:numeric_sort, 1, sort_order:));
-        else if (time_sort)
+        else if(time_sort)
             output_files=sort_array(output_files, (:numeric_sort, 2, sort_order:));
-        else if (sort_order==-1)
+        else if(sort_order==-1)
             output_files=sort_array(output_files, sort_order);
 
         if(long_list) {
@@ -234,10 +234,10 @@ mixed main(object caller, object room, string arg) {
             int largest_file_name=0, screen_width, files_per_line;
 
             foreach(output_file in output_files)
-                if ( largest_file_name<i=strlen(output_file[0]) )
+                if( largest_file_name<i=strlen(output_file[0]) )
                     largest_file_name=i;
                 screen_width=SCREEN_WIDTH;
-                if (largest_file_name>=screen_width)
+                if(largest_file_name>=screen_width)
                     files_per_line=1;
                 else
                     files_per_line=(screen_width-2)/(largest_file_name+SPACESBETWEENFILES+SPACEADDEDBYFORMAT);
@@ -245,7 +245,7 @@ mixed main(object caller, object room, string arg) {
                 i=0;
                 largest_file_name+=SPACESBETWEENFILES;
                 foreach(output_file in output_files) {
-                    if (++i==files_per_line) {
+                    if(++i==files_per_line) {
                         i=0;
                         output_str=sprintf("%s%s%s\e<res>%s\n",
                             output_str,
@@ -307,7 +307,7 @@ string filename_prefix(mixed* file_details) {
         default:
             switch(file_details[0][<2..<1]) { //Will hit default if size>2
                 case ".c":
-                    if (stat(__Path+file_details[0])[2])
+                    if(stat(__Path+file_details[0])[2])
                         return "\e<0010>*";
                     return "\e<0002> ";
                 case ".h":

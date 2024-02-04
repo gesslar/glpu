@@ -25,7 +25,7 @@ string prepend(string source, string to_prepend) {
 }
 
 varargs string extract(string str, int from, int to) {
-    if (nullp(to)) return str[from ..];
+    if(nullp(to)) return str[from ..];
     else return str[from .. to];
 }
 

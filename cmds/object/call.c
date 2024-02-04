@@ -127,7 +127,7 @@ private mixed do_call( object ob, string func, mixed args) {
         str += "()";
     }
 
-    if (!s) {
+    if(!s) {
       err = catch(ret = call_other(ob, func));
     } else {
         err = catch(ret = call_other(ob, ({ func }) + args));

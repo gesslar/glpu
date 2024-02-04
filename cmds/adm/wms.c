@@ -1111,7 +1111,7 @@ object restore_data(string name) {
 
     if(!adminp(this_player())) return 0;
 
-    if (find_player(name) && interactive(find_player(name))) {
+    if(find_player(name) && interactive(find_player(name))) {
 
             return (object)find_player(name);
     }

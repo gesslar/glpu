@@ -45,7 +45,7 @@ int main()
     {
         sscanf(journarr[ctr],"journal.%s",name);
 
-        if ( file_size( JPATH+journarr[ctr] ) !=
+        if( file_size( JPATH+journarr[ctr] ) !=
           oldjrnl[ name ] )
 
         {
@@ -54,13 +54,13 @@ int main()
         }
     }
 
-    if (nomaas == 0)
+    if(nomaas == 0)
     write("No journals have been updated since the last time you checked.\n");
 
     // Check for deleted files
     for(ctr = 0; ctr < sizeof(oldjrnl); ctr++)
     {
-        if (member_array(sprintf("journal.%s",keys(oldjrnl)[ctr]), journarr)
+        if(member_array(sprintf("journal.%s",keys(oldjrnl)[ctr]), journarr)
                 ==-1)
         {
             write ("Journal for "+keys(oldjrnl)[ctr]+" has been deleted\n");

@@ -50,7 +50,7 @@ string query_paintint()
           "You look at a painting of an old man that has a long beard.\n"
      });
 
-     if (i < 0) i = random(sizeof(paint));
+     if(i < 0) i = random(sizeof(paint));
      i += 1;
      if(i > sizeof(paint)-1) i = 0;
      return paint[i];

@@ -74,7 +74,7 @@ void get_name(string str) {
         return;
     }
 
-    if (strlen(str) > 11) {
+    if(strlen(str) > 11) {
         write("Sorry, your name can't have more than 11 characters.\n");
         write("Please select a name: ");
         input_to("get_name");
@@ -84,7 +84,7 @@ void get_name(string str) {
     str = lower_case(str);
 
     for (i = 0; i < strlen(str); i++) {
-        if (str[i] < 'a' || str[i] > 'z') {
+        if(str[i] < 'a' || str[i] > 'z') {
             write("Sorry, your name can only have letters. (a-z)\n"
                 "Please enter a new name: ");
             input_to("get_name");
@@ -148,7 +148,7 @@ void get_name(string str) {
         return;
     }
 
-    if (!file_exists(user_data_file(str) + ".o")) {
+    if(!file_exists(user_data_file(str) + ".o")) {
         if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
             destruct() ;
@@ -404,7 +404,7 @@ void enterWorld(string str) {
 
     if(devp(user)) {
         if(body->query_env("start_location") == "last_location") body->move(body->query("last_location"));
-        else if (body->query_env("start_location")) body->move(body->query_env("start_location"));
+        else if(body->query_env("start_location")) body->move(body->query_env("start_location"));
         else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move(user_path(query_privs(user)) + "workroom.c");
     }
 

@@ -12,7 +12,7 @@ int main(object caller, object room, string str) {
 
      ret = "";
 
-     if (!str || !sscanf(str, "-%s %s", action, arg)) {
+     if(!str || !sscanf(str, "-%s %s", action, arg)) {
           path = this_player()->query_path();
           for(i = 0; i < sizeof(path); i++) {
                ret += path[i][0..<2] + ":";

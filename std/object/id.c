@@ -47,7 +47,7 @@ void set_ids(mixed arg) {
 }
 
 int id(string arg) {
-    if (!arg || !stringp(arg))
+    if(!arg || !stringp(arg))
         return 0;
 
     if(sizeof(ids) < 1) ids = ({query_name()});

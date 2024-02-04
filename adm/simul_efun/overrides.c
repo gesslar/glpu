@@ -38,21 +38,21 @@ void write(string msg) {
 varargs void say(string msg, mixed exclude) {
     object me;
 
-    if (this_player()) me = this_player();
+    if(this_player()) me = this_player();
     else me = previous_object();
 
     if(objectp(exclude)) exclude = ({ me, exclude });
     else if(pointerp(exclude)) exclude += ({ me });
-    else if (!exclude) exclude = ({ me });
+    else if(!exclude) exclude = ({ me });
     message("say", msg, environment(me), exclude);
 }
 
 varargs void shout(string msg, mixed exclude) {
-    if (objectp(exclude))
+    if(objectp(exclude))
         exclude = ({ exclude });
-    else if (!pointerp(exclude))
+    else if(!pointerp(exclude))
         exclude = ({ });
-    if (this_player())
+    if(this_player())
         exclude += ({ this_player() });
     message("shout", msg, users(), exclude);
 }
@@ -63,7 +63,7 @@ varargs void tell_object(mixed ob, mixed msg, mixed type) {
 }
 
 varargs void tell_room(mixed room, string msg, mixed exclude) {
-    if (!exclude || exclude==0) {
+    if(!exclude || exclude==0) {
         message ("tell_room",msg,room) ;
     } else {
         message("tell_room", msg, room, exclude);

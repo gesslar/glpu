@@ -451,14 +451,14 @@ string *parse(string str) {
      string *arr;
      int i;
 
-     if (!str) {
+     if(!str) {
           return ({});
      }
 
      arr = explode(str, "\n");
 
      for (i = 0; i < sizeof(arr); i++) {
-          if (arr[i][0] == '#') {
+          if(arr[i][0] == '#') {
                arr[i] = 0;
                continue;
           }

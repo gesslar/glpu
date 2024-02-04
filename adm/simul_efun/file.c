@@ -13,9 +13,9 @@
 string file_owner(string file) {
     string temp;
 
-    if (file[0] != '/') file = "/" + file;
+    if(file[0] != '/') file = "/" + file;
 
-    if (sscanf(file, "/home/%s/%s/%*s", temp, temp) == 2) {
+    if(sscanf(file, "/home/%s/%s/%*s", temp, temp) == 2) {
         return temp;
     }
     if(sscanf(file, "/adm/%s/%*s", temp) == 2) {

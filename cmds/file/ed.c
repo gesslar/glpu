@@ -12,7 +12,7 @@ inherit STD_CMD ;
 
 int main(object caller, object room, string file)
 {
-    if (!file)
+    if(!file)
     {
         if(!caller->query("cwf"))
             return notify_fail("Error [ed]: No argument supplied.\n");
