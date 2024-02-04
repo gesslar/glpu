@@ -13,6 +13,7 @@ The LPUniversity Mudlib was downloaded from http://dead-souls.net/files/lpuni_fl
 * All original documentation, licenses, copyright information has been moved to `/ARCHIVE`.
 * The first user to login will become admin. This is due to the absence of `/adm/etc/first_user` file. This file is created following the creation of the first user.
 * Default in-game configurations are found in `/adm/etc/default.json`. You may provide overrides or new values in `/adm/etc/config.json`, does not exist by default, nor does it get watched by git.
+* FluffOS driver docs do not come by default, but can be added by running the bash script `adm/bash/docs`. Do be sure to read it as there are environment variables that need to be set.
 
 ## Runtime Config File ##
 A sample config file has been supplied in `/adm/etc/config.mud`. You will want to configure the following to get the game up and running:
