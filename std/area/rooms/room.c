@@ -13,7 +13,7 @@ inherit STD_OBJECT;
 inherit __DIR__ "exits" ;
 inherit __DIR__ "light" ;
 inherit __DIR__ "items" ;
-inherit M_MESSAGING ;
+inherit __DIR__ "zone" ;
 
 int query_roomType();
 string query_short();
