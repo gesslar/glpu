@@ -45,7 +45,7 @@ void setup() {
             "status and achievement. With their grand designs and impeccable "
             "maintenance, they stand as silent yet eloquent testimonies to the "
             "village's wealthier denizens.",
-        ({ "financier's bilding", "building" }) :
+        ({ "financier's building", "building" }) :
             "This building, discreet in its elegance, commands respect. Its "
             "polished brass plaque shines as a beacon of professionalism and "
             "trust, inviting those who seek financial wisdom and partnership "
