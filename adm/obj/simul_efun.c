@@ -12,6 +12,7 @@
 
 #include "/adm/simul_efun/description.c"
 #include "/adm/simul_efun/directory.c"
+#include "/adm/simul_efun/english.c"
 #include "/adm/simul_efun/exists.c"
 #include "/adm/simul_efun/file.c"
 #include "/adm/simul_efun/function.c"

@@ -9,6 +9,10 @@ string get_long(object ob) ;
 int mkdirs(string path) ;
 string query_directory(object ob) ;
 
+// File: english
+string cap_words(string str) ;
+varargs string cap_significant_words(string str, int title) ;
+
 // File: exists
 int directory_exists(string dirname) ;
 int file_exists(string file) ;
