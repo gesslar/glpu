@@ -12,8 +12,8 @@
 
 inherit STD_CMD ;
 
-#define HELP_PATH ({"/doc/general/", "/doc/game/"})
-#define DEV_PATH ({"/doc/wiz/", "/doc/driver/efun/all/", "/doc/driver/applies/", "/doc/driver/lpc/constructs/", "/doc/driver/lpc/types/",})
+#define HELP_PATH ({ "/doc/general/", "/doc/game/" })
+#define DEV_PATH ({ "/doc/wiz/", "/doc/driver/efun//", "/doc/driver/apply/" })
 #define BORDER "[=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=]\n"
 
 #include <logs.h>
