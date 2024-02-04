@@ -141,8 +141,7 @@ void do_receive(string message, int message_type) {
     // colour).
     if(message_type & NO_ANSI) {
         message = XTERM256->substitute_colour(message, "plain");
-    }
-    else {
+    } else {
         message = XTERM256->substitute_colour(message, term);
     }
 
