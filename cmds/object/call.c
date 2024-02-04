@@ -38,9 +38,6 @@ mixed main(object tp, object room, string a) {
 
     if( !a ) { notify_fail( SYNTAX ); return 0; }
 
-    // do this first in case something bombs out below
-    // set_privs(query_privs(previous_object()));
-
     exp_a = explode( a, ";" );
     s = sizeof( exp_a );
     objs = exp_a[0];

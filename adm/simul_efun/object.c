@@ -34,9 +34,6 @@ int getoid(object ob) {
 varargs object get_object( string str, object player ) {
     object what;
     mixed tmp;
-    string priv ;
-
-    set_privs(this_object(), query_privs(previous_object())) ;
 
     if( !str ) return 0;
     if( !player || !living( player ) ) player = this_player();
@@ -103,8 +100,6 @@ varargs mixed get_objects( string str, object player, int no_arr ) {
     // Hmm.  i and s do several jobs here.  It would be clearer to use different
     // variables (with longer names) for each job.
     // Is it worth slowing the function (using more memory) to do this?
-
-    set_privs(this_object(), query_privs(previous_object())) ;
 
     if( !str ) return 0;
     s = strlen( str );
