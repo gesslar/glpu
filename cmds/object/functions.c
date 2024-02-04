@@ -7,23 +7,25 @@
 
 */
 
-int main(object caller, object room, string arg)
-{
+// Last Change: 2024/02/04: Gesslar
+// - general formatting
+
+mixed main(object caller, object room, string arg) {
     object ob, pager;
     string *funcs, ret;
 
     if(!arg || arg == "")
-    return notify_fail("Error: [functions]: SYNTAX: functions <object id>|<filename>.\n");
+        return "Error: [functions]: SYNTAX: functions <object id>|<filename>.\n" ;
     ob = present(arg);
 
     if(!ob)
-    ob = present(arg, environment(caller));
+        ob = present(arg, environment(caller));
 
     if(!ob)
-    ob = find_object(arg);
+        ob = find_object(arg);
 
     if(!ob)
-    return notify_fail("Error: [functions]: Could not find object " + arg + ".\n");
+        return "Error: [functions]: Could not find object " + arg + ".\n" ;
 
     funcs = functions(ob);
     funcs = sort_array(funcs, 1);
@@ -36,12 +38,10 @@ int main(object caller, object room, string arg)
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return
-    " SYNTAX: functions <object>\n\n" +
-    "This command will show the functions contained in <object>\n" +
-    "You may use the id of the object if it is in your\n" +
-    "inventory or environment, otherwise you may use the\n" +
-    "filename of the object to try and locate it.\n";
+"SYNTAX: functions <object>\n\n" +
+"This command will show the functions contained in <object> You may use the "
+"id of the object if it is in your inventory or environment, otherwise you may "
+"use the filename of the object to try and locate it.";
 }
