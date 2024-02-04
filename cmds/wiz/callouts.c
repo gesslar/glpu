@@ -10,16 +10,15 @@ inherit STD_CMD ;
 
 #define BORDER "o------------------------------------------------------------------------------o\n"
 
-int main()
-{
+mixed main(object tp, object room, string arg) {
      int i;
      mixed *data = call_out_info();
      if(sizeof(data) < 1) return(notify_fail("Error [callouts]: There are currently no callouts in progress.\n"));
-     printf("%10s %35s %28s\n%s", "Object", "Function", "Delay", BORDER);
+     tell(tp, sprintf("%10s %35s %28s\n%s", "Object", "Function", "Delay", BORDER));
      for(i = 0; i < sizeof(data); i++)
-          printf("%-40s %-30s %-5d\n", file_name(data[i][0]), data[i][1], to_int(data[i][2]));
-     write(BORDER);
-     printf("%48s", "Total Callouts: " + sizeof(data) + "\n");
+          tell(tp, sprintf("%-40s %-30s %-5d\n", file_name(data[i][0]), data[i][1], to_int(data[i][2])));
+     tell(tp, BORDER) ;
+     tell(tp, sprintf("%48s", "Total Callouts: " + sizeof(data) + "\n")) ;
      return 1;
 }
 
