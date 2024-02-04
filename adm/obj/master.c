@@ -182,7 +182,7 @@ string error_handler(mapping mp, int caught) {
 
     // Strip trailing \n, and indent nicely
     what = replace_string(what[0.. < 2], "\n", "\n         *");
-debug_message("PRIVS: " + query_privs(this_object()) + "\n");
+
     CHAN_D->send_msg(
         "error",
         query_privs(this_object()),

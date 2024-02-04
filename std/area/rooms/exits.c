@@ -20,7 +20,19 @@ mapping query_exits() {
 }
 
 string query_exit(string id) {
-    return exits[id] ;
+    mixed dest ;
+
+    if(nullp(exits[id]))
+        return 0 ;
+
+    dest = exits[id] ;
+    if(valid_function(dest))
+        dest = (*dest)() ;
+
+    if(stringp(dest))
+        dest = resolve_path(query_directory(this_object()), dest) ;
+
+    return dest ;
 }
 
 object query_exit_dest(string id) {
@@ -32,8 +44,10 @@ object query_exit_dest(string id) {
     if(valid_function(dest))
         dest = (*dest)() ;
 
-    if(stringp(dest))
+    if(stringp(dest)) {
+        dest = resolve_path(query_directory(this_object()), dest) ;
         dest = load_object(dest) ;
+    }
 
     if(!objectp(dest))
         return 0 ;

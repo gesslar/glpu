@@ -29,11 +29,39 @@ mapping query_items() {
 }
 
 string query_item(string id) {
-    if(items[id]) {
-        if(items[id][0..1] == "@@")
-            return( call_other(this_object(), items[id][2..(strlen(items[id])-1)]));
-        else return items[id];
+    mixed item, value ;
+    string result ;
+
+    if(!nullp(item))
+        return 0 ;
+
+    foreach(item, value in items) {
+        if(pointerp(item)) {
+            int i;
+            for(i = 0; i < sizeof(item); i++) {
+                if(item[i] == id) {
+                    result = value;
+                    break;
+                }
+            }
+        } else {
+            if(item == id) {
+                result = value;
+                break;
+            }
+        }
     }
+
+    if(valid_function(result))
+        result = (*result)(id);
+
+    if(stringp(result) && result[0..1] == "@@")
+        return call_other(this_object(), result[2..], id);
+
+    if(stringp(result))
+        return result;
+
+    return 0 ;
 }
 
 mapping remove_item(string id) {

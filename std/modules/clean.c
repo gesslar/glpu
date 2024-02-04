@@ -12,13 +12,15 @@
 private nosave int no_clean_up = 1 ;
 
 // Functions
-int can_clean() ;
+int can_clean_up() ;
 int set_no_clean(int no_clean) ;
+int request_clean_up() { return 1 ; }
 
 protected int clean_up(int inherited) {
     mixed *calls ;
 
     if(no_clean_up == 1) return CLEAN_NEVER_AGAIN ;
+    if(!can_clean_up()) CLEAN_LATER ;
 
     if(clonep()) {
         if(inherited > 1) {
@@ -38,7 +40,7 @@ protected int clean_up(int inherited) {
 }
 
 int can_clean() {
-    return !no_clean_up ;
+    return request_clean_up() ;
 }
 
 int set_no_clean(int no_clean) {

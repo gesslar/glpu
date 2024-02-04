@@ -6,6 +6,8 @@
 //
 // 2022/08/23: Gesslar - Created
 
+inherit STD_OBJECT ;
+
 inherit M_CLEAN ;
 inherit M_SETUP ;
 inherit M_SAVE ;
