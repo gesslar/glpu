@@ -11,7 +11,8 @@ mixed render_object(object,object,string);
 mixed render_container(object,object,string);
 string highlight_view(string str, string *keys);
 
-private nosave string default_highlight_colour = "0243" ;
+private nosave string default_highlight_colour = mud_config("LOOK_HIGHLIGHT_COLOUR");
+private nosave string look_hightlight_enabled = mud_config("LOOK_HIGHLIGHT");
 
 mixed main(object caller, object room, string arguments) {
     string target;
@@ -28,13 +29,13 @@ string highlight_view(object tp, string str, string *keys) {
     int i;
     string colour ;
 
-    // TODO: Recode following with regexp?
-
+    if(look_hightlight_enabled != "on") return str;
+    if(tp->query_env("highlight") != "on") return str;
     if(sizeof(keys) <= 0) return str;
-    if(!colour = tp->query_env("highlight"))
+    if(!colour = tp->query_env("highlight_colour"))
         colour = default_highlight_colour;
-    else
-        colour = "\e<" + colour + ">";
+
+    colour = "\e<" + colour + ">";
 
     for(i = 0; i < sizeof(keys); i++) {
         str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");

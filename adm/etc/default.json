@@ -10,5 +10,7 @@
     "LOGIN_MSG": "/adm/etc/login/splash",
     "LOGIN_NEWS": "/adm/etc/login/motd",
     "FLOGIN_NEWS": "/adm/etc/login/first_login",
-    "FIRST_USER": "/adm/etc/first_user"
+    "FIRST_USER": "/adm/etc/first_user",
+    "LOOK_HIGHLIGHT" : "on",
+    "LOOK_HIGHLIGHT_COLOUR" : "0243"
 }
