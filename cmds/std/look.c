@@ -35,7 +35,13 @@ string highlight_view(object tp, string str, string *keys) {
     if(!colour = tp->query_env("highlight_colour"))
         colour = default_highlight_colour;
 
-    colour = "\e<" + colour + ">";
+    // need to determine if number is from 0-256 with a leading 0
+    if(!pcre_match(colour, "^0(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
+        colour = "";
+    else
+        colour = "\e<" + colour + ">";
+
+    colour = XTERM256->substitute_too_dark(colour);
 
     for(i = 0; i < sizeof(keys); i++) {
         str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");
