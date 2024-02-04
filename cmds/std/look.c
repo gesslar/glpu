@@ -11,7 +11,7 @@ mixed render_object(object,object,string);
 mixed render_container(object,object,string);
 string highlight_view(string str, string *keys);
 
-private nosave string default_highlight_color = "0243" ;
+private nosave string default_highlight_colour = "0243" ;
 
 mixed main(object caller, object room, string arguments) {
     string target;
@@ -26,25 +26,25 @@ mixed main(object caller, object room, string arguments) {
 
 string highlight_view(object tp, string str, string *keys) {
     int i;
-    string color ;
+    string colour ;
 
     // TODO: Recode following with regexp?
 
     if(sizeof(keys) <= 0) return str;
-    if(!color = tp->query_env("highlight"))
-        color = default_highlight_color;
+    if(!colour = tp->query_env("highlight"))
+        colour = default_highlight_colour;
     else
-        color = "\e<" + color + ">";
+        colour = "\e<" + colour + ">";
 
     for(i = 0; i < sizeof(keys); i++) {
-        str = replace_string(str , " " + keys[i] + " ", " " + color+keys[i] + "\e<res> ");
-        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + color+capitalize(keys[i]) + "\e<res> ");
-        str = replace_string(str , " " + keys[i] + ",", " " + color+keys[i] + "\e<res>,");
-        str = replace_string(str , " " + keys[i] + ".", " " + color+keys[i] + "\e<res>.");
-        str = replace_string(str , " " + keys[i] + "!", " " + color+keys[i] + "\e<res>!");
-        str = replace_string(str , " " + keys[i] + ";", " " + color+keys[i] + "\e<res>;");
-        str = replace_string(str , " " + keys[i] + "'", " " + color+keys[i] + "\e<res>'");
-        str = replace_string(str , " " + keys[i] + ":", " " + color+keys[i] + "\e<res>:");
+        str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");
+        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + colour+capitalize(keys[i]) + "\e<res> ");
+        str = replace_string(str , " " + keys[i] + ",", " " + colour+keys[i] + "\e<res>,");
+        str = replace_string(str , " " + keys[i] + ".", " " + colour+keys[i] + "\e<res>.");
+        str = replace_string(str , " " + keys[i] + "!", " " + colour+keys[i] + "\e<res>!");
+        str = replace_string(str , " " + keys[i] + ";", " " + colour+keys[i] + "\e<res>;");
+        str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "\e<res>'");
+        str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "\e<res>:");
     }
 
     return str;
