@@ -3,7 +3,7 @@
 /* resolve_path.c
 
  Kenon @ LPUniversity
- 06-Oct-06 
+ 06-Oct-06
  Resolve path simul-efun
 
 */
@@ -42,7 +42,7 @@ string resolve_path(string Current, string Next)
       {
          pathSegments[index] = "";
          temp = index-1;
-         
+
          while((temp>=0)&&(!sizeof(pathSegments[temp])))
             temp--;
 
