@@ -51,7 +51,7 @@ mixed render_room(object caller, object room) {
     if(!objectp(room))
         return "You see nothing because you have no environment!\n" ;
 
-    if(devp(caller) && caller->query_env("room_filename") == 1) {
+    if(devp(caller) && caller->query_env("room_filename") == "on") {
         result += prepend(file_name(room), "/") + "\n" ;
     }
 
