@@ -10,17 +10,18 @@ Last edited on October 29th, 2005 by Tacitus
 
 */
 
+// Last Change: 2024/02/04: Gesslar
+// - General formatting + refactor to use newer codes support.
+
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
+mixed main(object caller, object room, string arg) {
      int i;
      object target;
      object *inventory;
 
      if(!arg) target = caller;
-     else
-     {
+     else {
           if(arg[0]!='/') arg = resolve_path(caller->query("cwd"), arg);
           if(arg[<2..<1] != ".c") arg += ".c";
           if(!target) target = find_object(arg);
@@ -28,28 +29,29 @@ int main(object caller, object room, string arg)
           if(!target) target = present(arg, environment(caller));
      }
 
-     if(!target) return notify_fail("Error [clean]: Error locating target.\n");
-     write("Success [clean]: Destroying all objects in '" + target->query_short() + "'.\n");
+     if(!target)
+          return "Error [clean]: Error locating target." ;
+
+     tell(caller, "Success [clean]: Destroying all objects in '" + get_short(target) + "'.\n");
      inventory = all_inventory(target);
 
-     for(i=0; i<sizeof(inventory); i++)
-     {
+     for(i=0; i<sizeof(inventory); i++) {
           if(inventory[i]->query("no_clean") || inventory[i]->can_clean_up()) continue;
           if(living(inventory[i])) continue;
 
-          write("\tObject '" + inventory[i]->query_short() + "' destroyed.\n");
+          tell(caller, "* Object '" + get_short(inventory[i]) + "' destroyed.\n");
           inventory[i]->remove();
-
+          if(inventory[i]) destruct(inventory[i]);
      }
 
      return 1;
 }
 
-string help(object caller)
-{
-     return(" SYNTAX: clean <object>\n\n"
-     "This command will destory all objects within another object (aka\n"
-     "the objects inventory). Your argument may be an object that is\n"
-     "in your inventory, your environment, or a filename. If you do\n"
-     "not speicfy an object, it will remove your inventory.\n");
+string help(object caller) {
+     return
+"SYNTAX: clean <object>\n\n"
+"This command will destory all objects within another object (aka the objects "
+"inventory). Your argument may be an object that is in your inventory, your "
+"environment, or a filename. If you do not speicfy an object, it will remove "
+"your inventory.";
 }
