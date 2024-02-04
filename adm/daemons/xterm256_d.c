@@ -10,6 +10,9 @@
 
 inherit STD_DAEMON ;
 
+private nosave int too_dark_check ;
+private nosave mapping too_dark_map ;
+
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
 private nosave mapping alt_codes = ([ ]) ;
@@ -23,6 +26,11 @@ void resync() ;
 
 void setup() {
     load_all_colours() ;
+
+    too_dark_check = mud_config("XTERM_TOO_DARK") == "on" ;
+    if(too_dark_check == 1) {
+        too_dark_map = mud_config("XTERM_TOO_DARK_SUB") ;
+    }
 }
 
 private void load_all_colours() {
@@ -355,4 +363,29 @@ string get_colour_list() {
     }
 
     return output ;
+}
+
+int is_too_dark(string colour) {
+    string *matches ;
+
+    if(!too_dark_check) return 0 ;
+
+    if(!pcre_match(colour, "^[0-1](?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
+        return 0 ;
+
+    colour = colour[1..] ;
+    if(too_dark_map[colour]) return 1 ;
+}
+
+string substitute_too_dark(string text) {
+    string *matches ;
+    string result ;
+
+    if(!too_dark_check) return text ;
+
+    matches = pcre_extract(text, "([0-1](?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]))") ;
+
+    result = text[1..] ;
+    if(too_dark_map[result]) return too_dark_map[result] ;
+    else return text ;
 }

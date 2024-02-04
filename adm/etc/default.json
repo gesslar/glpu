@@ -12,5 +12,17 @@
     "FLOGIN_NEWS": "/adm/etc/login/first_login",
     "FIRST_USER": "/adm/etc/first_user",
     "LOOK_HIGHLIGHT" : "on",
-    "LOOK_HIGHLIGHT_COLOUR" : "0243"
+    "LOOK_HIGHLIGHT_COLOUR" : "0243",
+    "XTERM_TOO_DARK" : "on",
+    "XTERM_TOO_DARK_SUB" : {
+        "000" : "238",
+        "016" : "238",
+        "017" : "019",
+        "018" : "019",
+        "232" : "238",
+        "233" : "238",
+        "234" : "238",
+        "235" : "238",
+        "236" : "238"
+    }
 }
