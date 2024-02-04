@@ -10,46 +10,44 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str)
-{
+mixed main(object caller, object room, string str) {
     object ob;
     string err, custom, tmp;
 
     if(!str) str = caller->query("cwf");
+    if(!str) return "SYNTAX: clone <filename>" ;
 
-    if(!str) return(notify_fail("SYNTAX: clone <filename>\n"));
-
-    if(str[<2..<1] != ".c") str += ".c";
-
+    str = append(str, ".c");
     str = resolve_path(caller->query("cwd"), str);
 
-    if(!file_exists(str)) return(notify_fail("Error [clone]: Unable to find file '" + str + "'.\n"));
+    if(!file_exists(str)) return "Error [clone]: Unable to find file '" + str + "'.";
 
-    write("Notice [clone]: Cloning file '" + str + "' to environment...\n");
     err = catch(ob = clone_object(str));
 
     if(stringp(err) || !ob)
-    return(notify_fail("Error [clone]: An error was encountered when cloning the object:\n" + err + "\n"));
+        return "Error [clone]: An error was encountered when cloning the object:\n" + err  ;
 
-    ob->move(environment(caller));
+    if(!ob->move(caller)) {
+        if(!ob->move(environment(caller))) {
+            destruct(ob);
+            return "Error [clone]: Unable to move object to your location.";
+        }
+    }
 
     if(caller->query_env("custom_clone") && wizardp(caller))
     custom = caller->query_env("custom_clone");
 
-    if(custom)
-    {
-    tmp = custom;
-    tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
-    tmp = replace_string(tmp, "$N", caller->query_cap_name());
-    tell_room(environment(caller), capitalize(tmp) + "\n", caller);
-    write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
-    }
-    else
-    {
-    write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
-    tell_room(environment(caller),
-      capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n",
-      ({caller}));
+    if(custom) {
+        tmp = custom;
+        tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
+        tmp = replace_string(tmp, "$N", caller->query_cap_name());
+        tell_room(environment(caller), capitalize(tmp) + "\n", caller);
+        write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
+    } else {
+        write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
+        tell_room(environment(caller),
+            capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n",
+        ({caller}));
     }
 
     caller->set("cwf", str);
