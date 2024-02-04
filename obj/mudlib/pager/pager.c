@@ -8,7 +8,7 @@
 
 */
 
-#define DEF_LINESPERCYCLE 20
+#define DEF_LINESPERCYCLE 40
 
 string *exploded;
 function cb;
@@ -22,43 +22,43 @@ int page(string data, string title);
 int page_more();
 int prompt(string arg);
 
-varargs int page(string data, string title, function callback, int no_ansi)
-{
+varargs int page(string data, string title, function callback, int no_ansi) {
     if(!stringp(data)) return 0;
     if(stringp(title)) write("*===| Paging: " + title + " |===*\n\n");
     if(functionp(callback)) cb = callback;
     if(no_ansi) ansi = 0;
+
     currentLine = 0;
 
     if(!this_player()->query_env("morelines"))
-    myLinesPerCycle = DEF_LINESPERCYCLE;
+        myLinesPerCycle = DEF_LINESPERCYCLE;
     else
-    myLinesPerCycle = to_int(this_player()->query_env("morelines"));
+        myLinesPerCycle = to_int(this_player()->query_env("morelines"));
 
     linesPerCycle = myLinesPerCycle - 1;
 
+    data = replace_string(data, "\\e", "\e") ;
     exploded = explode(data, "\n");
     totalLines = sizeof(exploded);
     page_more();
 }
 
-int page_more()
-{
+int page_more() {
     int start, end;
+    int msg_type ;
 
     start = currentLine + 1;
 
+    if(!ansi) msg_type = msg_type | NO_ANSI ;
     for(;currentLine < totalLines && currentLine < linesPerCycle; currentLine++)
-    message((ansi ? "page" : "ignore_ansi"), exploded[currentLine] + "\n", ({ this_player() }) );
+        tell(this_player(), exploded[currentLine], msg_type);
 
     end = currentLine;
 
-    if(totalLines >= myLinesPerCycle)
-    {
-        switch(this_player()->query_env("page_display"))
-        {
+    if(totalLines >= myLinesPerCycle) {
+        switch(this_player()->query_env("page_display")) {
             case "percent" :
-                write("\n-=-= [" + (currentLine * 100 / totalLines) + "%] =-=-\n");
+                write("\n-=-= [" + percent_of(currentLine, totalLines) + "%] =-=-\n");
                 break;
             case "lines" :
             default :
@@ -67,8 +67,7 @@ int page_more()
         }
     }
 
-    if(currentLine < totalLines)
-    {
+    if(currentLine < totalLines) {
         input_to("prompt");
         return 1;
     }
@@ -80,13 +79,10 @@ int page_more()
 }
 
 
-int prompt(string arg)
-{
-    switch(arg)
-    {
+int prompt(string arg) {
+    switch(arg) {
         case "help" :
-        case "h" :
-        {
+        case "h" : {
             write("\n\t -= File Pager Help =-\n\n");
             write("  h, help     : Display this help\n");
             write("  q, Q        : Quit\n");
@@ -96,7 +92,7 @@ int prompt(string arg)
             return 1;
         }
         case "q" :
-        case "Q" :  evaluate(cb);  destruct(this_object()); return 1;
+        case "Q" : evaluate(cb); destruct(this_object()); return 1;
         case "\r" :
         case "\n" :
         case " " :
@@ -109,7 +105,6 @@ int prompt(string arg)
         case "s" :
         case "'" :
         {
-            write("%^ER_UP");
             linesPerCycle = myLinesPerCycle;
             currentLine = 0;
             break;
@@ -128,8 +123,7 @@ int prompt(string arg)
     page_more();
 }
 
-void reset()
-{
+void reset() {
     if(!environment()) destruct(this_object());
     if(!in_input(environment())) destruct(this_object());
 }
