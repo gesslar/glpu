@@ -11,6 +11,8 @@ mixed render_object(object,object,string);
 mixed render_container(object,object,string);
 string highlight_view(string str, string *keys);
 
+private nosave string default_highlight_color = "0243" ;
+
 mixed main(object caller, object room, string arguments) {
     string target;
 
@@ -22,22 +24,27 @@ mixed main(object caller, object room, string arguments) {
     else return render_object(caller, room, arguments) ;
 }
 
-string highlight_view(string str, string *keys) {
+string highlight_view(object tp, string str, string *keys) {
     int i;
+    string color ;
 
     // TODO: Recode following with regexp?
 
     if(sizeof(keys) <= 0) return str;
+    if(!color = tp->query_env("highlight"))
+        color = default_highlight_color;
+    else
+        color = "\e<" + color + ">";
 
     for(i = 0; i < sizeof(keys); i++) {
-        str = replace_string(str , " " + keys[i] + " ", " \e<re1>" + keys[i] + "\e<res> ");
-        str = replace_string(str , " " + capitalize(keys[i]) + " ", " \e<re1>" + capitalize(keys[i]) + "\e<res> ");
-        str = replace_string(str , " " + keys[i] + ",", " \e<re1>" + keys[i] + "\e<res>,");
-        str = replace_string(str , " " + keys[i] + ".", " \e<re1>" + keys[i] + "\e<res>.");
-        str = replace_string(str , " " + keys[i] + "!", " \e<re1>" + keys[i] + "\e<res>!");
-        str = replace_string(str , " " + keys[i] + ";", " \e<re1>" + keys[i] + "\e<res>;");
-        str = replace_string(str , " " + keys[i] + "'", " \e<re1>" + keys[i] + "\e<res>'");
-        str = replace_string(str , " " + keys[i] + ":", " \e<re1>" + keys[i] + "\e<res>:");
+        str = replace_string(str , " " + keys[i] + " ", " " + color+keys[i] + "\e<res> ");
+        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + color+capitalize(keys[i]) + "\e<res> ");
+        str = replace_string(str , " " + keys[i] + ",", " " + color+keys[i] + "\e<res>,");
+        str = replace_string(str , " " + keys[i] + ".", " " + color+keys[i] + "\e<res>.");
+        str = replace_string(str , " " + keys[i] + "!", " " + color+keys[i] + "\e<res>!");
+        str = replace_string(str , " " + keys[i] + ";", " " + color+keys[i] + "\e<res>;");
+        str = replace_string(str , " " + keys[i] + "'", " " + color+keys[i] + "\e<res>'");
+        str = replace_string(str , " " + keys[i] + ":", " " + color+keys[i] + "\e<res>:");
     }
 
     return str;
@@ -52,30 +59,31 @@ mixed render_room(object caller, object room) {
         return "You see nothing because you have no environment!\n" ;
 
     if(devp(caller) && caller->query_env("room_filename") == "on") {
-        result += prepend(file_name(room), "/") + "\n" ;
+        result += "\e<0032>"+prepend(file_name(room), "/") + "\e<res>\n" ;
     }
 
     data = get_short(room);
     if(data) result += data + "\n" ;
     data = get_long(room);
-    if(data) result += highlight_view(data, keys(room->query_items())) + "\n" ;
+    if(data) result += "\n" + highlight_view(caller, data, keys(room->query_items())) + "\n" ;
 
     exits = keys(room->query_exits());
 
     switch(sizeof(exits)) {
         case 0 :
-            result += "\nThere are no obvious exits here.\n";
+            data = "There are no obvious exits here.\n";
             break;
         case 1 :
-            result += "\nThe only obvious exit is " + exits[0] + ".\n";
+            data = "You may go " + exits[0] + ".\n";
             break;
         case 2 :
-            result += "\nThe only obvious exits are " + implode(exits, " and ") + ".\n";
+            data = "You may go " + implode(exits, " or ") + ".\n";
             break;
         default :
-            result += "\nThe only obvious exits are " + implode(exits[0..<2], ", ") + ", and " + exits[<1] + ".\n";
+            data = "You may go " + implode(exits[0..<2], ", ") + ", or " + exits[<1] + ".\n";
             break;
     }
+    if(data) result += "\n" + data ;
 
     users = filter(all_inventory(room), (: living($1) && $1 != $2 :), caller);
     objects = filter(all_inventory(room), (: !living($1) :));
@@ -99,7 +107,7 @@ mixed render_object(object caller, object room, string target) {
     string subtarget;
 
     if(stringp(room->query_item(target))) {
-        tell(caller, highlight_view(room->query_item(target), keys(room->query_items())) + "\n");
+        tell(caller, highlight_view(caller, room->query_item(target), keys(room->query_items())) + "\n");
         return 1;
     }
 
