@@ -14,6 +14,7 @@
 #define NEWS_D          DIR_DAEMONS "news_d"
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown_d"
 #define SOUL_D          DIR_DAEMONS "soul_d"
+#define VIRTUAL_D       DIR_DAEMONS "virtual"
 #define XTERM256        DIR_DAEMONS "xterm256_d"
 
 #endif // __DAEMONS_H__

@@ -11,8 +11,12 @@
 #include <config.h>
 
 inherit STD_OB_E;
+
 inherit __DIR__ "id" ;
 inherit __DIR__ "description" ;
+inherit __DIR__ "stats" ;
+
+inherit M_CLEAN ;
 inherit M_SETUP ;
 inherit M_MESSAGING ;
 

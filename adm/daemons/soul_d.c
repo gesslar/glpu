@@ -26,8 +26,7 @@ nomask varargs int request_emote(string emote, string who);
 nomask varargs void do_emote(string emote, string mods, object target);
 nomask void delete_emote(string emote);
 nomask void set_emote(string emote, string *msgs);
-nomask varargs string build_emote(string msg, string emote, string mods, object target, int plural,
-int to_player);
+nomask varargs string build_emote(string msg, string emote, string mods, object target, int plural, int to_player);
 nomask string *query_emotes();
 nomask string *query_emote_msgs(string emote);
 
@@ -35,6 +34,7 @@ nomask string *query_emote_msgs(string emote);
 
 
 void setup() {
+    set_no_clean() ;
     set_persistent() ;
 }
 

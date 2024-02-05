@@ -247,38 +247,7 @@ string object_name(object ob) {
 }
 
 mixed compile_object(string file) {
-    string *pathExploded, serverPath;
-    object server, virtualObject;
-    int index;
-
-    write_file("/log/virtual_compile", "Request: " + file + " ("+previous_object()+")\n") ;
-
-    pathExploded = explode(file, "/");
-    index = member_array("virtual_area", pathExploded);
-
-    if(index != -1) {
-        serverPath = "/" + implode(pathExploded[0..index], "/") + "/virtual_server.c";
-        if(file_exists(serverPath)) {
-            write_file("/log/virtual_compile", "Server: " + serverPath + " ("+previous_object()+")\n") ;
-
-            catch(server = load_object(serverPath));
-            if(objectp(server)) {
-                virtualObject = server->compile_object(file);
-
-                if(objectp(virtualObject))  {
-                    write_file("/log/virtual_compile", "Virtual object loaded for " + file + " ("+previous_object()+")\n") ;
-                    return virtualObject;
-                } else {
-                    write_file("/log/virtual_compile", "No Virtual object loaded for " + file + " ("+previous_object()+")\n") ;
-                    return 0;
-                }
-            }
-        }
-
-        write("No functional server found at " + serverPath + " ("+previous_object()+")\n") ;
-    }
-
-    return 0;
+    return VIRTUAL_D->compile_object(file);
 }
 
 string make_path_absolute(string file) {

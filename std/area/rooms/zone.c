@@ -27,7 +27,6 @@ void set_zone(mixed z) {
 
     zone = z ;
     zone->add_room(this_object()) ;
-    debug_message(sprintf("Zone set to: %O\n", z)) ;
 }
 
 object query_zone() {

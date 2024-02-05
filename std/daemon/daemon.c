@@ -8,7 +8,6 @@
 
 inherit STD_OBJECT ;
 
-inherit M_CLEAN ;
 inherit M_SETUP ;
 inherit M_SAVE ;
 

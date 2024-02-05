@@ -8,11 +8,13 @@
 
 inherit STD_ROOM;
 
-void create()
-{
+void setup() {
+     set_no_clean() ;
      set_light(1);
      set_short("The void");
      set_long("This is the first room to ever exists on LPUniversity!\n");
-     set_exits((["void2" : "/areas/std/void2.c", "cafe" : "/areas/lpuni/entrance.c"]));
+     set_exits(([
+          "cafe" : "/areas/lpuni/entrance.c"
+     ]));
      set_items((["test" : "Test test test!\n"]));
 }
