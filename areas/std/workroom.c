@@ -35,8 +35,8 @@ void create() {
           "you can type 'more here'. There is a sign on the wall."
      );
      set_exits( ([
-          "cafe" : "/areas/lpuni/entrance.c",
-          "void" : "/areas/std/void.c"
+        "cafe" : "/areas/village/virtual_area/square",
+        "void" : "/areas/std/void"
      ]) );
      set_items( ([
           "sign" : "The sign reads:\n"

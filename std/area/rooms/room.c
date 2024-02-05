@@ -19,6 +19,8 @@ int query_roomType();
 string query_short();
 string query_long();
 
+private nosave string virtual_master = 0;
+
 int query_roomType() {
     return 1;
 }
@@ -47,4 +49,12 @@ void release_effect(object ob) {}
 
 int is_room() {
     return 1;
+}
+
+void set_virtual_master(string str) {
+    virtual_master = str;
+}
+
+string query_virtual_master() {
+    return virtual_master;
 }

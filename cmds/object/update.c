@@ -56,10 +56,20 @@ mixed main(object caller, object room, string arg) {
         users->move(load_object(VOID_OB), 1);
     }
 
+    if(virtualp(obj)) {
+        file = obj->query_virtual_master() ;
+        file = append(file, ".c") ;
+    }
+
+    if(objectp(obj)) {
+        obj->remove() ;
+        if(obj) destruct(obj);
+    }
+
     if(!file_exists(file))
         return "Error [update]: " + file  + " does not exist.\n";
 
-    caller->set("cwf", file);
+    caller->set("cwf", start);
 
     obj = load_object(file);
     files = ({ file_name(obj) }) ;
@@ -68,7 +78,7 @@ mixed main(object caller, object room, string arg) {
     files = map(files, (: append($1, ".c") :)) ;
     filter(files, (: do_update :)) ;
 
-    obj = load_object(file) ;
+    obj = load_object(start) ;
     if(pointerp(users)) users->move(obj, 1);
     return 1 ;
 
@@ -83,7 +93,7 @@ mixed main(object caller, object room, string arg) {
     return "Successful [update]: " +  file+" was updated.\n" ;
 }
 
-void do_update(string file) {
+void do_update(string file, string vfile) {
     object obj;
     string error, *users;
     string *files ;

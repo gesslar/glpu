@@ -20,7 +20,8 @@ void setup() {
 "offerings are a staple of daily existence.") ;
     set_exits(([
         "south" : "square",
-        "north" : "baker",
+        "west" : "baker",
+        "north" : "field?v=field&r=field1",
     ]) ) ;
     set_items(([
         ({ "village square", "square" }) :
