@@ -33,6 +33,8 @@ void setup() {
     string str, err, *arr;
     int i, time;
 
+    set_no_clean() ;
+
     channels = ([]);
     modules = ([]);
 

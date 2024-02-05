@@ -24,6 +24,7 @@ private nosave string CONFIG_FILE = "/adm/etc/config.json" ;
 private nosave mapping config = ([ ]) ;
 
 void setup() {
+    set_no_clean() ;
     rehash_config() ;
 }
 

@@ -6,7 +6,7 @@
 //
 // 2022/08/24: Gesslar - Created
 
-inherit M_CLEAN ;
+inherit STD_OBJECT ;
 inherit M_SETUP ;
 
 // Functions
@@ -30,4 +30,8 @@ string query_help(object caller) {
         temp = "There is no help on this topic." ;
 
     return temp ;
+}
+
+int is_command() {
+    return 1 ;
 }

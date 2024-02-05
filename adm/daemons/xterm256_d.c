@@ -25,6 +25,7 @@ public string xterm256_wrap(string str, int wrap_at, int indent_at) ;
 void resync() ;
 
 void setup() {
+    set_no_clean() ;
     load_all_colours() ;
 
     too_dark_check = mud_config("XTERM_TOO_DARK") == "on" ;
