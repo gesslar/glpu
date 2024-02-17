@@ -16,6 +16,7 @@
 #include "/adm/simul_efun/exists.c"
 #include "/adm/simul_efun/file.c"
 #include "/adm/simul_efun/function.c"
+#include "/adm/simul_efun/grammar.c"
 #include "/adm/simul_efun/identify.c"
 #include "/adm/simul_efun/json.c"
 #include "/adm/simul_efun/messaging.c"

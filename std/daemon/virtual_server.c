@@ -14,24 +14,14 @@ protected mapping virtual_info(string file) {
 
     parts = explode(file, "/") ;
     index = member_array("virtual_area", parts) ;
-    file = implode(parts[index+1..], "/") ;
+    parts = parts[index+1..] ;
+debug_message(sprintf("parts: %O\n", parts)) ;
 
-    parts = explode(file, "?") ;
+    if(sizeof(parts) < 1)
+        return result ;
 
-    if(sizeof(parts) == 1) {
-        result["base"] = UNDEFINED ;
-        file = parts[0] ;
-    } else {
-        result["base"] = parts[0] ;
-        file = parts[1] ;
-    }
-
-    parts = explode(file, "&") ;
-    sz = sizeof(parts) ;
-    while(sz--) {
-        string *pair = explode(parts[sz], "=") ;
-        result[pair[0]] = pair[1] ;
-    }
+    result["base"] = parts[0] ;
+    result["file"] = parts[1..] ;
 
     return result ;
 }
