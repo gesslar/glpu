@@ -25,6 +25,7 @@ string name();
 
 private string *ids = ({});
 private string *_ids = ({});
+private string *_plural_ids = ({});
 private string *_adj = ({});
 
 void set_id(mixed str) {
@@ -86,6 +87,10 @@ string *query_ids() {
     return _ids;
 }
 
+string *query_plural_ids() {
+    return _plural_ids;
+}
+
 string *query_adjs() {
     return _adj;
 }
@@ -106,10 +111,13 @@ void rehash_ids() {
     name = name() ;
 
     tmp = ({ name });
-    tmp += _ids;
+    _plural_ids = map(_ids, (: pluralize :));
+    tmp += _ids + _plural_ids;
     foreach(string id in _ids) {
         tmp += map(_adj, (: $1 + " " + $2 :), id);
     }
+
+    tmp += ({ name }) ;
 
     ids = distinct_array(tmp);
 }
