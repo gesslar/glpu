@@ -13,7 +13,6 @@ string *cmdQueue;
 mapping messages;
 
 void setup() {
-    set_living_name("johnathon");
     set_name("johnathon");
     set_short("Johnathon stands in front of the Podium");
     set_long(

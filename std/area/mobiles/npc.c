@@ -40,7 +40,3 @@ void heart_beat() {}
 int force_me(string cmd) {
     command(cmd);
 }
-
-// void receive_message(string msg_class, string msg) {
-//     tell_object(this_object(), msg);
-// }
