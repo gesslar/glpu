@@ -19,7 +19,7 @@ int main(object caller, object room, string arg)
 
     if(find_player(arg))
     {
-        if(environment(find_player(arg)) == environment(this_player())) return(notify_fail("Error [goto]: You are already with '" + capitalize(find_player(arg)->query_name()) + "'.\n"));
+        if(environment(find_player(arg)) == environment(this_player())) return(notify_fail("Error [goto]: You are already with '" + capitalize(find_player(arg)->name()) + "'.\n"));
 
         if(this_player()->query_env("teleport_out") && wizardp(this_player()))
         {
@@ -32,7 +32,7 @@ int main(object caller, object room, string arg)
             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-            tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " teleports to another location.\n", ({ this_player() }) );
+            tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports to another location.\n", ({ this_player() }) );
 
         this_player()->move(environment(find_player(arg)));
 
@@ -47,9 +47,9 @@ int main(object caller, object room, string arg)
             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-            tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " has teleported to this room.\n", this_player());
+            tell_room(environment(this_player()), capitalize(this_player()->name()) + " has teleported to this room.\n", this_player());
 
-        write("You have teleported to " + capitalize(find_player(arg)->query_name()) + " in " + environment(find_player(arg))->query_short() + "\n");
+        write("You have teleported to " + capitalize(find_player(arg)->name()) + " in " + environment(find_player(arg))->query_short() + "\n");
 
         return 1;
     }
@@ -74,7 +74,7 @@ int main(object caller, object room, string arg)
             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-            tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " teleports to another location.\n", ({ this_player() }) );
+            tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports to another location.\n", ({ this_player() }) );
 
         this_player()->move(ob);
 
@@ -89,7 +89,7 @@ int main(object caller, object room, string arg)
             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-            tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " has teleported to this room.\n", ({ this_player() }) );
+            tell_room(environment(this_player()), capitalize(this_player()->name()) + " has teleported to this room.\n", ({ this_player() }) );
 
         write("You have teleported to " + capitalize(ob->query_short()) + "\n");
 

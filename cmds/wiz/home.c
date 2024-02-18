@@ -20,7 +20,7 @@ int main(object caller, object room, string str)
 
     if(!str)
     {
-    if(file_exists(user_path(this_player()->query_name()) + "workroom.c"))
+    if(file_exists(user_path(this_player()->name()) + "workroom.c"))
     {
         if(this_player()->query_env("teleport_out") && wizardp(this_player()))
         {
@@ -34,9 +34,9 @@ int main(object caller, object room, string str)
 
         }
         else
-        tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " teleports home.\n", ({this_player()}));
+        tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports home.\n", ({this_player()}));
 
-        this_player()->move(user_path(this_player()->query_name()) + "workroom.c");
+        this_player()->move(user_path(this_player()->name()) + "workroom.c");
 
         if(this_player()->query_env("teleport_in") && wizardp(this_player()))
         {
@@ -49,7 +49,7 @@ int main(object caller, object room, string str)
         tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-        tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " teleports here.\n", ({this_player()}));
+        tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports here.\n", ({this_player()}));
 
         write("You teleported to your workroom.\n");
 
@@ -75,7 +75,7 @@ int main(object caller, object room, string str)
         return 1;
         }
         else
-        tell_room(environment(this_player()), capitalize(this_player()->query_name()) + " teleports to someone's workroom.\n", ({this_player()}));
+        tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports to someone's workroom.\n", ({this_player()}));
 
         this_player()->move(user_path(str) + "workroom.c");
 
@@ -90,7 +90,7 @@ int main(object caller, object room, string str)
         tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
         }
         else
-        tell_room(environment(this_player()), capitalize(this_player()->query_name()) + "has teleported here.\n");
+        tell_room(environment(this_player()), capitalize(this_player()->name()) + "has teleported here.\n");
 
         write("You teleported to " + capitalize(str) + "'s workroom.\n");
 

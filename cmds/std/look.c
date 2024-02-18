@@ -70,9 +70,9 @@ mixed render_room(object caller, object room) {
     }
 
     data = get_short(room);
-    if(data) result += data + "\n" ;
+    if(stringp(data) && strlen(data)) result += data + "\n" ;
     data = get_long(room);
-    if(data) result += "\n" + highlight_view(caller, data, keys(room->query_items())) + "\n" ;
+    if(stringp(data) && strlen(data)) result += "\n" + highlight_view(caller, data, keys(room->query_items())) + "\n" ;
 
     exits = keys(room->query_exits());
 

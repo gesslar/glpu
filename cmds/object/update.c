@@ -51,17 +51,18 @@ mixed main(object caller, object room, string arg) {
         return "Error [update]: You cannot update the void object.\n";
     }
 
-    if(obj = find_object(file)) {
+    obj = find_object(file) ;
+    if(obj) {
         users = filter_array(all_inventory(obj), (: interactive :));
         users->move(load_object(VOID_OB), 1);
     }
 
-    if(virtualp(obj)) {
-        file = obj->query_virtual_master() ;
-        file = append(file, ".c") ;
-    }
-
     if(objectp(obj)) {
+        if(virtualp(obj)) {
+            file = obj->query_virtual_master() ;
+            file = append(file, ".c") ;
+        }
+
         obj->remove() ;
         if(obj) destruct(obj);
     }

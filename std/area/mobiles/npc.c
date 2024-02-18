@@ -22,11 +22,11 @@ void create() {
 
 void setup() {
     set_name("Generic NPC");
-    set_living_name(lower_case(query_name()));
-    set_ids(({query_name(), "npc", "generic npc", "NPC" }));
+    set_living_name(lower_case(name()));
+    set_ids(({name(), "npc", "generic npc", "NPC" }));
     if(clonep(this_object())) set_heart_beat(1);
-    set_long(capitalize(query_name()) + " is a generic NPC.");
-    set_short(query_name());
+    set_long(capitalize(name()) + " is a generic NPC.");
+    set_short(name());
 }
 
 int commandHook(string arg) {
@@ -40,7 +40,3 @@ void heart_beat() {}
 int force_me(string cmd) {
     command(cmd);
 }
-
-// void receive_message(string msg_class, string msg) {
-//     tell_object(this_object(), msg);
-// }

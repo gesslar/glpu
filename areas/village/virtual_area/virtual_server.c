@@ -32,18 +32,10 @@ void setup_exits(object room) {
     mapping info = virtual_info(file_name) ;
 
     if(info["base"] == "field") {
-        mapping exits = copy(field_exits[info["r"]]) ;
+        string file = info["file"][0] ;
+        mapping exits = copy(field_exits[file]) ;
         string direction, exit ;
-
-        foreach(direction, exit in exits) {
-            if(exit[0] == '#') {
-                exits[direction] = exit[1..] ;
-            } else {
-                exits[direction] =
-                    sprintf("%s?&v=%s&r=%s",
-                        info["base"], info["v"], exit) ;
-            }
-        }
+debug_message(json_encode(exits)) ;
         room->set_exits(exits) ;
     }
 }
@@ -55,7 +47,7 @@ void setup_field_exits() {
         "field1" : ([
             "north" : "field4",
             "east" : "field2",
-            "south" : "#village_path1"
+            "south" : "/areas/village/virtual_area/village_path1"
         ]),
         "field2" : ([
             "west" : "field1",

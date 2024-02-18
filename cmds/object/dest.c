@@ -32,7 +32,7 @@ mixed main(object caller, object room, string str) {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
         }
         catch(ob->remove());
         if(ob) destruct(ob);
@@ -50,7 +50,7 @@ mixed main(object caller, object room, string str) {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
         }
         catch(ob->remove());
         if(ob) destruct(ob);
@@ -68,7 +68,7 @@ mixed main(object caller, object room, string str) {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
         }
         tell_object(ob, "Notice [dest]: You have been nullified and hence disconnected from the mud.\n");
         catch(ob->remove());

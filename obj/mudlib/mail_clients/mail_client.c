@@ -49,7 +49,7 @@ void create() {
 void init() {
     int i;
 
-    owner = environment()->query_name();
+    owner = environment()->name();
 
     if(!userp(find_player(owner))) {
         destruct(this_object());
@@ -799,9 +799,9 @@ protected varargs void get_cc(string arg, int flag, int forward) {
         write("____________________________________________________________\n");
     }
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_name();
+    current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
         while(file_exists(current_file))
-            current_file = "/tmp/" + random(9999999) + "." + this_player()->query_name();
+            current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
 
         gflag = flag;
         gforward = forward;

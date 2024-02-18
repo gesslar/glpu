@@ -21,7 +21,7 @@ void setup() {
     set_exits(([
         "south" : "square",
         "west" : "baker",
-        "north" : "field?v=field&r=field1",
+        "north" : "field/field1",
     ]) ) ;
     set_items(([
         ({ "village square", "square" }) :

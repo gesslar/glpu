@@ -47,7 +47,7 @@ varargs string identify( mixed a, string indent ) {
     if( floatp( a ) )
         return ind + a;
     if( objectp( a ) ) {
-        if( stringp( ret = a->query_name() ) )
+        if( stringp( ret = a->name() ) )
             ret += " ";
         else
             ret = "";

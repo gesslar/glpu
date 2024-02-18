@@ -13,7 +13,6 @@ string *cmdQueue;
 mapping messages;
 
 void setup() {
-    set_living_name("johnathon");
     set_name("johnathon");
     set_short("Johnathon stands in front of the Podium");
     set_long(
@@ -58,7 +57,7 @@ void heart_beat()
 
             if(!objectp(user)|| !interactive(user)) continue;
 
-            command("tell " + user->query_name() + " " + arr[0]);
+            command("tell " + user->name() + " " + arr[0]);
             messages[key] = messages[key][1..];
         }
 

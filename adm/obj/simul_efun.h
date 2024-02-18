@@ -1,6 +1,9 @@
 #ifndef __SIMUL_EFUN_H__
 #define __SIMUL_EFUN_H__
 
+// File: arrays
+mixed *distinct_array(mixed *arr) ;
+
 // File: description
 string get_short(object ob) ;
 string get_long(object ob) ;
@@ -28,6 +31,10 @@ string query_file_name(object ob) ;
 
 // File: function
 varargs string call_trace(int colour) ;
+
+// File: grammar
+string int_string (int num) ;
+string ordinal (int n) ;
 
 // File: identify
 string identify(mixed arg) ;

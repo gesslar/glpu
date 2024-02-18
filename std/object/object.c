@@ -20,13 +20,18 @@ inherit M_CLEAN ;
 inherit M_SETUP ;
 inherit M_MESSAGING ;
 
-private string name, short, long;
+private string proper_name, name, cap_name, short, long;
 
 int move(mixed dest);
 int allow_move(mixed dest);
 int set_name(string str);
 string query_name();
 string query_cap_name();
+string query_proper_name() ;
+void set_proper_name(string str);
+string name() ;
+string set_cap_name(string str);
+
 int can_receive(object ob);
 int can_release(object ob);
 
@@ -34,6 +39,10 @@ int can_release(object ob);
 private void create() {
     init_ob() ;
     setup_chain() ;
+    if(!proper_name) {
+        set_proper_name(name) ;
+        name = UNDEFINED ;
+    }
 }
 
 void event_remove(object prev) {
@@ -78,25 +87,38 @@ int allow_move(mixed dest) {
     return 1;
 }
 
-
-int set_name(string str) {
+void set_proper_name(string str) {
     if(interactive(this_object()) && !isMember(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
-    else {
-        name = str;
-        set("name", str);
-        return 1;
-    }
+    proper_name = str;
+}
+
+string query_proper_name() {
+    return proper_name;
+}
+
+string name() {
+    return query_proper_name() ;
+}
+
+int set_name(string str) {
+    name = str;
+    set_cap_name(str) ;
+    if(!proper_name) set_proper_name(str);
+    rehash_ids() ;
+}
+
+void set_cap_name(string str) {
+    cap_name = capitalize(str);
+    rehash_ids() ;
 }
 
 string query_name() {
-    if(!name) return query("name");
     return name;
 }
 
 string query_cap_name() {
-    if(!name && !stringp(query("name"))) return "";
-    else if(!name) return capitalize(query("name"));
+    if(!name) return "";
     else return capitalize(name);
 }
 
