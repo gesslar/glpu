@@ -82,7 +82,7 @@ void setup() {
     add_action("commandHook", "", 1);
     set_living_name(name());
     set_ids(({name()}));
-    set_name(name());
+    set_proper_name(name());
     set_heart_beat(1);
     enable_commands();
     set("prevent_get", 1);
