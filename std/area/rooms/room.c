@@ -58,3 +58,6 @@ void set_virtual_master(string str) {
 string query_virtual_master() {
     return virtual_master;
 }
+
+int query_ignore_mass() { return 1; }
+int queyr_ignore_bulk() { return 1; }

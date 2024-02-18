@@ -15,6 +15,8 @@ inherit STD_OB_E;
 inherit __DIR__ "id" ;
 inherit __DIR__ "description" ;
 inherit __DIR__ "stats" ;
+inherit __DIR__ "contents" ;
+inherit __DIR__ "weight" ;
 
 inherit M_CLEAN ;
 inherit M_SETUP ;
@@ -62,29 +64,56 @@ int move(mixed dest) {
     int result ;
 
     result = allow_move(dest) ;
-    if(!result) return result ;
+    if(result > MOVE_OK) return result ;
+
+    if(environment()) {
+        environment()->add_capacity(query_mass());
+        environment()->add_volume(query_bulk());
+    }
+
+    dest->add_capacity(-query_mass());
+    dest->add_volume(-query_bulk());
 
     move_object(dest);
-    return 1;
+
+    return MOVE_OK ;
 }
 
 int allow_move(mixed dest) {
     object ob;
 
-    if(stringp(dest)) ob = load_object(dest);
+    if(stringp(dest)) catch(ob = load_object(dest)) ;
     else if(objectp(dest)) ob = dest;
 
-    if(!objectp(ob))
-        return 0;
+    if(!objectp(ob)) {
+        return MOVE_NO_DEST;
+    }
 
-    if(!ob->can_receive(this_object()))
-        return 0;
+    if(!ob->can_receive(this_object())) {
+        return MOVE_NOT_ALLOWED;
+    }
+
+    if(mud_config("USE_MASS")) {
+        if(!ob->query_ignore_mass()) {
+            if(ob->query_capacity() < query_mass()) {
+                return MOVE_TOO_HEAVY ;
+            }
+        }
+    }
+
+    if(mud_config("USE_BULK")) {
+        if(!ob->query_ignore_bulk()) {
+            if(ob->query_volume() < query_bulk()) {
+                return MOVE_NO_ROOM ;
+            }
+        }
+    }
 
     if(environment())
         if(!environment()->can_release(this_object()))
             return 0;
 
-    return 1;
+    return MOVE_OK ;
 }
 
 void set_proper_name(string str) {

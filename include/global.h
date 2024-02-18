@@ -17,6 +17,7 @@
 #include <mudlib.h>
 #include <objects.h>
 #include <runtime_config.h>
+#include <move.h>
 
 #define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"

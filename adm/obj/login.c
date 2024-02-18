@@ -133,7 +133,7 @@ void get_name(string str) {
             return;
         }
 
-        user->set_name("guest");
+        user->set_proper_name("guest");
         set_privs(user, "guest");
         body = create_body("guest");
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " logged in from " +
@@ -161,7 +161,7 @@ void get_name(string str) {
     }
 
     set_privs(user, str);
-    user->set_name(str);
+    user->set_proper_name(str);
     user->restore_user();
 
     if(!user->query_password() || user->query_password() == "") {
@@ -340,7 +340,7 @@ void email_verified(string address, string resolved, int key)
 void new_user(string str, string name) {
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         write("Please enter a password for your account: ");
-        user->set_name(name);
+        user->set_proper_name(name);
         input_to("get_password", 1, 1);
         return;
     }
@@ -412,6 +412,15 @@ void enterWorld(string str) {
 
     if(!environment(body)) body->move("/areas/lpuni/entrance.c");
 
+    if(!environment(body)) {
+        write("Error [login]: Unable to find a suitable location for your body.\n");
+        write("Please contact an admin for assistance.\n");
+        destruct(user) ;
+        destruct(body) ;
+        destruct() ;
+        return;
+    }
+
     body->enter_world();
     remove_call_out(coID);
 
@@ -447,7 +456,7 @@ object create_body(string name) {
           "\tBody: " + user->query_bodyPath() + "\n");
     }
 
-    body->set_name(query_privs(user));
+    body->set_proper_name(query_privs(user));
     user->set_body(body);
     set_privs(body, body->name());
     body->restore_user();

@@ -32,7 +32,7 @@ mixed main(object caller, object room, string user) {
 
 void confirm_nuke(string str, object caller, string user) {
     object security_editor;
-    object body;
+    object body, link;
     string *dir;
 
     if(str != "y" && str != "yes") {
@@ -57,7 +57,10 @@ void confirm_nuke(string str, object caller, string user) {
         tell(body, "You watch as your body dematerializes.\n");
 
         if(environment(body)) {
-            tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n");
+            tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n",
+                0, ({ body }) );
+            link = body->query_link() ;
+            destruct(link) ;
             destruct(body) ;
         }
     }
