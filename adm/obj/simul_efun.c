@@ -10,6 +10,7 @@
 // 2. When adding new files to the simuL_efun include list, in that file,
 //    #include "/adm/obj/simul_efun.h"
 
+#include "/adm/simul_efun/arrays.c"
 #include "/adm/simul_efun/description.c"
 #include "/adm/simul_efun/directory.c"
 #include "/adm/simul_efun/english.c"

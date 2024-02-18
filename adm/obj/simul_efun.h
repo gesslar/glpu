@@ -1,6 +1,9 @@
 #ifndef __SIMUL_EFUN_H__
 #define __SIMUL_EFUN_H__
 
+// File: arrays
+mixed *distinct_array(mixed *arr) ;
+
 // File: description
 string get_short(object ob) ;
 string get_long(object ob) ;
