@@ -281,7 +281,6 @@ void rem_path(string str) {
 }
 
 /* Communication & Interaction functions */
-
 void catch_tell(string message) {
     receive_message("unknown", message);
 }
@@ -291,7 +290,6 @@ void receive_message(string type, string msg) {
 }
 
 string process_input(string arg) {
-    // return ANSI_PARSER->strip_unsafeAnsi(arg);
     return arg ;
 }
 
@@ -422,10 +420,9 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     int result ;
     object curr = environment() ;
 
-    if(!allow_move(dest)) return 0;
-
     result = move(dest);
-    if(result != 0) { // Success
+
+    if(result == MOVE_OK) { // Success
         string tmp ;
 
         if(curr) {
@@ -450,6 +447,8 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
         tell(this_object(), "You went nowhere.") ;
     }
 
+    defer((: force_me, "look" :)) ;
+
     return result ;
 }
 
@@ -458,8 +457,10 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!isMember(query_privs(previous_object()), "admin")) return 0;
-    else return command(cmd);
+    if(!isMember(query_privs(previous_object()), "admin"))
+        return 0;
+    else
+        return command(cmd);
 }
 
 //Misc functions

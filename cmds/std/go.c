@@ -29,8 +29,8 @@ mixed main(object tp, object room, string arg) {
             return "You may not move in that direction." ;
     }
 
-    if(!tp->move_living(dest, arg))
-    return "You are not allowed to go there." ;
+    if(tp->move_living(dest, arg) != MOVE_OK)
+        return "You are not allowed to go there." ;
 
     MOVE_D->pre_walk_direction(tp, room, arg) ;
     MOVE_D->post_walk_direction(tp, dest, arg) ;
