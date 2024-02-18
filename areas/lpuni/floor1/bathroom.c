@@ -50,7 +50,7 @@ int lock_door(string args) {
 
      lockFlag = 1;
      caller->tell("You lock the door.\n");
-     tell(capitalize(this_player()->query_name()) + " locks the bathroom door.\n", caller);
+     tell(capitalize(this_player()->name()) + " locks the bathroom door.\n", caller);
      catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
      call_out("auto_unlock", 120);
      return 1;
@@ -62,7 +62,7 @@ int unlock_door(string args) {
      if(args != "door") return 0;
      lockFlag = 0;
      caller->tell("You unlock the door.\n");
-     tell(capitalize(this_player()->query_name()) + " unlocks the bathroom door.\n");
+     tell(capitalize(this_player()->name()) + " unlocks the bathroom door.\n");
      catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
      return 1;
 }

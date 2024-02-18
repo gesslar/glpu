@@ -27,9 +27,9 @@ int main(object caller, object room, string args) {
         foreach(object ob in users()) {
             if(adminp(ob)) continue;
 
-            write("Success [force]: You force '" + capitalize(ob->query_name())
+            write("Success [force]: You force '" + capitalize(ob->name())
                 + "' to "    + cmd + "\n");
-            tell_object(ob, capitalize(caller->query_name())
+            tell_object(ob, capitalize(caller->name())
                 + " forces you to " + cmd + "\n");
 
             ob->force_me(cmd);
@@ -51,7 +51,7 @@ int main(object caller, object room, string args) {
 
         write("Success [force]: You force '" + capitalize(target ) + "' to "
             + cmd + "\n");
-        tell_object(ob, capitalize(caller->query_name())
+        tell_object(ob, capitalize(caller->name())
             + " forces you to " + cmd + "\n");
 
         ob->force_me(cmd);

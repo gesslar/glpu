@@ -44,7 +44,7 @@ int main(object caller, object room, string arg)
 
     foreach( object name in list )
     {
-        if( adminp( name ) && name->query_name() != "login" )
+        if( adminp( name ) && name->name() != "login" )
             oAdminArr += ({ name });
         else if( devp( name ) )
             oDevArr += ({ name });
@@ -68,10 +68,10 @@ int main(object caller, object room, string arg)
     {
         string tag;
 
-        if( !(string)list[i]->query_name())
+        if( !(string)list[i]->name())
             continue;
 
-        if(list[i]->query_name() == "login")
+        if(list[i]->name() == "login")
             tag = "[ LOGIN ]";
         else if(adminp(list[i]))
             tag = "[ Admin ]";
@@ -81,7 +81,7 @@ int main(object caller, object room, string arg)
             tag = "[ User  ]";
 
         ret += sprintf(" %-s   %-15s %15s\n", tag,
-          capitalize((string)list[i]->query_name()) +
+          capitalize((string)list[i]->name()) +
           (list[i]->query_env("away") ? " (afk)" : "") +
           (in_edit( list[i] ) ? "*" : "") +
           (in_input( list[i] ) && !list[i]->query_env("away") ? "+" : ""),
@@ -95,8 +95,8 @@ int main(object caller, object room, string arg)
 
 int sort_name(object ob1, object ob2)
 {
-    if( ob1->query_name() > ob2->query_name() )    return 1;
-    else if( ob1->query_name() < ob2 ->query_name() )    return -1;
+    if( ob1->name() > ob2->name() )    return 1;
+    else if( ob1->name() < ob2 ->name() )    return -1;
     else return 0;
 }
 

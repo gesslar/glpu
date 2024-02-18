@@ -27,7 +27,7 @@ int main(object caller, object room, string arg)
             else
             {
                 write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
-                say(capitalize(caller->query_name()) + " drops a '"
+                say(capitalize(caller->name()) + " drops a '"
                     + item->query_short() + "'.\n");
             }
          }
@@ -52,7 +52,7 @@ int main(object caller, object room, string arg)
             else
             {
                 write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
-                say(capitalize(caller->query_name()) + " drops a '"
+                say(capitalize(caller->name()) + " drops a '"
                     + item->query_short() + "'.\n");
             }
 
@@ -73,7 +73,7 @@ int main(object caller, object room, string arg)
         if(!ob->move(environment(caller))) return(notify_fail("Error [drop]: That object can not be dropped here.\n"));
 
         write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
-        say(capitalize(caller->query_name()) + " drops a '" + ob->query("short") + "'.\n");
+        say(capitalize(caller->name()) + " drops a '" + ob->query("short") + "'.\n");
 
         return 1;
     }

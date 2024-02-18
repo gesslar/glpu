@@ -15,7 +15,7 @@ int main(object caller, object room, string arg) {
      previous_object()->exit_world();
      write("Thank you for visiting " + mud_name() + "\n");
      previous_object()->save_user();
-     log_file(LOG_LOGIN, capitalize(previous_object()->query_name()) + " logged out from " +
+     log_file(LOG_LOGIN, capitalize(previous_object()->name()) + " logged out from " +
      query_ip_number(previous_object()) + " on " + ctime(time()) + "\n");
      destruct(previous_object());
      return 1;

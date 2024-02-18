@@ -26,7 +26,7 @@ int main(object caller, object room, string args)
      if(!user) return(notify_fail("Error [makedev]: User '" + args + "' is not online.\n"));
      if(!devp(query_privs(user))) return(notify_fail("Error [makedev]: That user is not a developer.\n"));
 
-     write("Revoking developer access for '" + capitalize(user->query_name()) + "'.\n");
+     write("Revoking developer access for '" + capitalize(user->name()) + "'.\n");
      tell_object(user, "\nDeveloper Access Revoked.\n");
      user->rem_path("/cmds/wiz/");
      user->rem_path("/cmds/object/");
@@ -38,7 +38,7 @@ int main(object caller, object room, string args)
      destruct(security_editor);
      user->save_user();
 
-     write("Success [revdev]: User '" + capitalize(user->query_name()) + "' is no longer a developer.\n");
+     write("Success [revdev]: User '" + capitalize(user->name()) + "' is no longer a developer.\n");
      log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " revoked "
         + user->query_cap_name() + "'s developer status on " + ctime(time())
         + "\n");

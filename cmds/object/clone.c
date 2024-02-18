@@ -46,7 +46,7 @@ mixed main(object caller, object room, string str) {
     } else {
         write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
         tell_room(environment(caller),
-            capitalize(caller->query_name()) + " creates a '" + ob->query_short() + "'.\n",
+            capitalize(caller->name()) + " creates a '" + ob->query_short() + "'.\n",
         ({caller}));
     }
 

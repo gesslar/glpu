@@ -48,7 +48,7 @@ mixed main(object caller, object room, string str)
             write("You tell yourself: " + message + "\n");
 
         tell_room(environment(caller),
-            capitalize(caller->query_name())
+            capitalize(caller->name())
             + " starts talking to themselves.\n", caller);
         caller->set("retell", query_privs(user));
 
@@ -65,7 +65,7 @@ mixed main(object caller, object room, string str)
 
     else
     {
-        tell_object(user, capitalize((string)caller->query_name())
+        tell_object(user, capitalize((string)caller->name())
             + " tells you: " + message + "\n");
         write("You tell " + capitalize(who) + ": " + message + "\n");
     }
@@ -81,7 +81,7 @@ string help(object caller)
     return(" SYNTAX: tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"
       "are online. For example, if you type 'tell tacitus hey' then\n"
-      "he'll see '" + capitalize(caller->query_name()) +
+      "he'll see '" + capitalize(caller->name()) +
       " tells you: hey'. If you use 'tell . <message>\n" +
       "it will send the message to the last person that you used tell to talk to.\n" +
       "You may also talk to a user on another mud in the I3 network using the\n" +

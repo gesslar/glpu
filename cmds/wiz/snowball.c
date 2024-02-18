@@ -7,7 +7,7 @@ int main(object caller, object room, string str)
     object here = environment(tp);
 
     write("You fumble about in your pockets and find a snowball.\n");
-    tell_room(here, capitalize(tp->query_name()) + " fumbles about in some pockets and finds a snowball.\n", ({ tp }));
+    tell_room(here, capitalize(tp->name()) + " fumbles about in some pockets and finds a snowball.\n", ({ tp }));
 
     call_out("throw_snowball", 2, here, tp);
     return 1;
@@ -19,7 +19,7 @@ void throw_snowball(object here, object tp)
     int u_sz = sizeof(u);
 
     tell_object(tp, "You take a step back, aim and launch the snowball.\n");
-    tell_room(here, capitalize(tp->query_name()) + " takes a step back, aims and launches the snowball.\n", ({ tp }));
+    tell_room(here, capitalize(tp->name()) + " takes a step back, aims and launches the snowball.\n", ({ tp }));
 
     call_out("snowball_hit", 5, u[random(u_sz)]);
 
@@ -31,7 +31,7 @@ void snowball_hit(object vict)
     object here = environment(vict);
 
     tell_object(vict, "A large snowball appears out of the sky and hits you on the back of the head.\n");
-    tell_room(here, "A large snowball appears out of the sky and hits " + capitalize(vict->query_name()) + " on the back of the head.\n", ({ vict }));
+    tell_room(here, "A large snowball appears out of the sky and hits " + capitalize(vict->name()) + " on the back of the head.\n", ({ vict }));
 
     return;
 }

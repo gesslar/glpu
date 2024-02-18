@@ -30,7 +30,7 @@ int main()
     OUser = users();
     foreach( string name in OUser )
     {
-        if(  adminp(  name  ) && name->query_name() != "login" )
+        if(  adminp(  name  ) && name->name() != "login" )
             OAdminArr += ({ name });
         else if( devp(  name  )  )
             ODevArr    += ({ name });
@@ -50,7 +50,7 @@ int main()
     foreach(object thisUser in OUser)
     {
         if(environment(thisUser))
-            sorted_users += ({thisUser->query_name()});
+            sorted_users += ({thisUser->name()});
         else
             printf("%-15s%-10s%-20s%-30s%s\n", "LOGIN", "-", query_ip_number(thisUser),
               "[No Environment]", "-");
@@ -84,8 +84,8 @@ int main()
 
 int sortName(object member1, object member2)
 {
-    if( member1->query_name()  > member2->query_name()  )    return 1;
-    if( member1->query_name() < member2->query_name() ) return -1;
+    if( member1->name()  > member2->name()  )    return 1;
+    if( member1->name() < member2->name() ) return -1;
     else return 0;
 }
 

@@ -21,7 +21,7 @@ void set_adjs(mixed arg) ;
 void rehash_ids() ;
 
 // From other objects
-string query_name();
+string name();
 
 private string *ids = ({});
 private string *_ids = ({});
@@ -65,8 +65,8 @@ void set_ids(mixed arg) {
     if(!sizeof(arg)) _ids = ({});
     else _ids = arg;
 
-    if(member_array(query_name(), _ids) == -1 && query_name()) {
-        _ids += ({ query_name() });
+    if(member_array(name(), _ids) == -1 && name()) {
+        _ids += ({ name() });
     }
     rehash_ids();
 }
@@ -82,11 +82,19 @@ void set_adjs(mixed arg) {
     rehash_ids();
 }
 
+string *query_ids() {
+    return _ids;
+}
+
+string *query_adjs() {
+    return _adj;
+}
+
 int id(string arg) {
     if(!arg || !stringp(arg))
         return 0;
 
-    if(sizeof(ids) < 1) ids = ({query_name()});
+    if(sizeof(ids) < 1) ids = ({name()});
     if(member_array(arg, ids) != -1) return 1;
     return 0;
 }
@@ -95,7 +103,7 @@ void rehash_ids() {
     string *tmp = ({});
     string name ;
 
-    name = query_name() ;
+    name = name() ;
 
     tmp = ({ name });
     tmp += _ids;

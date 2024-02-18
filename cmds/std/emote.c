@@ -9,8 +9,8 @@
 
 
 #define TP this_player()
-#define TPQN this_player()->query_name()
-#define TPQCN capitalize(this_player()->query_name())
+#define TPQN this_player()->name()
+#define TPQCN capitalize(this_player()->name())
 
 
 /********* GLOBALS ***************/
@@ -51,9 +51,9 @@ int main(object caller, object room, string arg)
     return 1;
     }// END IF
 
-    write("You emote: " + capitalize(this_player()->query_name()) + " " +
+    write("You emote: " + capitalize(this_player()->name()) + " " +
       arg + "\n");
-    say (capitalize(this_player()->query_name()) + " " + arg + "\n");
+    say (capitalize(this_player()->name()) + " " + arg + "\n");
     return 1;
 }
 
@@ -187,7 +187,7 @@ void print_emotes_to_targets(string arg, object *targets_to_print_to)
     {
     tmp_emote2 = tmp_emote;
     curr_target = targets_to_print_to[i];
-    curr_target_name = capitalize(curr_target->query_name());
+    curr_target_name = capitalize(curr_target->name());
 
     if(targeted_users[i+1] == 1 && curr_target_name[<1] == 's')
         tmp_emote2 = replace_string(tmp_emote2, curr_target_name + "'", "your");
