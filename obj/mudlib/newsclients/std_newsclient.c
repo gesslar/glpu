@@ -49,10 +49,10 @@ void create()
 
 }
 
-void remove()
-{
+int remove() {
     write_file(user_data_directory(query_privs(this_player())) + "std_newsclient.o",
         save_variable(viewed), 1);
+    return 1 ;
 }
 
 int is_new()

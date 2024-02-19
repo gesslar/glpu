@@ -25,8 +25,8 @@ int is_command() ;
 /*protected*/ int clean_up(int refs) {
     object *contents ;
 
-    // If we have an object, straight up don't ask again. We can never lose
-    // our environment and only non-environmented things are cleaned up.
+    // If we have an environment, straight up don't ask again. We can never
+    // lose our environment and only non-environmented things are cleaned up.
     // Things with an environment rely on their environment to clean them up.
     if(environment()) return CLEAN_NEVER_AGAIN ;
 
@@ -37,7 +37,7 @@ int is_command() ;
     if(clean_up_check(this_object()) > 0)
         return CLEAN_NEVER_AGAIN ;
 
-    // Now ask permission to clean up. If we answer true, we'll check again
+    // Now ask permission to clean up. If we answer false, we'll check again
     // later.
     if(request_clean_up() == 0) return CLEAN_LATER ;
 
@@ -71,13 +71,11 @@ int is_command() ;
     event(this_object(), "cleaning_up") ;
 
     contents = all_inventory() ;
-    filter(contents, (: $1->remove() :)) ;
-    contents -= ({ 0 }) ;
     filter(contents, (: destruct :)) ;
     contents -= ({ 0 }) ;
     contents->move(VOID_OB) ;
 
-    destruct(this_object()) ;
+    destruct() ;
 
     return CLEAN_NEVER_AGAIN ;
 }

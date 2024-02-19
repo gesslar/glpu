@@ -18,7 +18,6 @@ private string password, body_path;
 private nosave object body;
 
 int save_user();
-void remove();
 
 void create() {
     if(origin() != ORIGIN_DRIVER) return;

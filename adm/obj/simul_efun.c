@@ -20,6 +20,7 @@
 #include "/adm/simul_efun/grammar.c"
 #include "/adm/simul_efun/identify.c"
 #include "/adm/simul_efun/json.c"
+#include "/adm/simul_efun/mappings.c"
 #include "/adm/simul_efun/messaging.c"
 #include "/adm/simul_efun/numbers.c"
 #include "/adm/simul_efun/object.c"

@@ -23,8 +23,6 @@ nosave address;
 
 nosave function read_callback, close_callback;
 
-void remove();
-
 varargs int create_socket(int socket_type, mixed p1, function read_func, function close_func)
 {
      int err;
@@ -359,7 +357,7 @@ int status()
      return 1;
 }
 
-void remove()
-{
+int remove() {
      if( s >= 0 ) socket_close(s);
+     return 1 ;
 }

@@ -11,9 +11,6 @@ inherit STD_OBJECT ;
 inherit M_SETUP ;
 inherit M_SAVE ;
 
-// Functions
-void remove() ;
-
 // Private so only drivers can call it.
 private void create() {
     setup_chain() ;
@@ -21,11 +18,12 @@ private void create() {
         restore_data() ;
 }
 
-void remove() {
+int remove() {
     if(query_persistent())
         save_data() ;
 
     event(({ this_object() }), "remove") ;
+    return 1 ;
 }
 
 int is_daemon() {

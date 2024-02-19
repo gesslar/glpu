@@ -249,8 +249,8 @@ int del_client(string args)
     return main_menu();
 }
 
-void remove()
-{
+int remove() {
     if(s_editor)
-    destruct(s_editor);
+        destruct(s_editor);
+    return 1;
 }

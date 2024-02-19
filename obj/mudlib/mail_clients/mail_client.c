@@ -958,6 +958,8 @@ protected mixed save_message(string path, mapping message) {
     return 1;
 }
 
-void remove() {
-    if(objectp(s_editor)) destruct(s_editor);
+int remove() {
+    if(objectp(s_editor))
+        destruct(s_editor);
+    return 1 ;
 }

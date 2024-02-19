@@ -58,3 +58,7 @@ public void rehash_config() {
         }
     }
 }
+
+mapping get_all_config() {
+    return copy(config) ;
+}

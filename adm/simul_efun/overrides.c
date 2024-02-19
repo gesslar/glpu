@@ -14,8 +14,10 @@ int exec( object to, object from ) {
 }
 
 void destruct(object ob) {
-    ob->remove();
-    if(ob) efun::destruct(ob);
+    if(!ob) ob = previous_object() ;
+    if(ob->remove()) {
+        if(ob) efun::destruct(ob);
+    }
 }
 
 void shutdown( int how ) {
