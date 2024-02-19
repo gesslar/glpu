@@ -30,7 +30,7 @@ int main(object caller, object room, string arg)
     if(!ob->move(caller))
     return(notify_fail("Error [get]: Unable to get '" + arg + "'.\n"));
 
-    write("Success [get]: You get a '" + ob->query_short() + "'\n");
+    write("Success [get]: You get a '" + get_short(ob) + "'\n");
     say(capitalize(caller->name()) + " gets a '" + ob->query("short") + "'.\n");
 
     return 1;

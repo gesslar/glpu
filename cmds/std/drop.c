@@ -12,48 +12,36 @@ Last edited on June 27th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
-     if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
+int main(object caller, object room, string arg) {
+    if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
 
-     if(arg == "all")
-     {
-         object *inv = all_inventory(caller);
-         foreach(object item in inv)
-         {
-             if(!item->move(environment(caller)))
-                 write("Error [drop]: " + capitalize(item->query_short()) +
-                     " can not be dropped here.\n");
-            else
-            {
-                write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
-                say(capitalize(caller->name()) + " drops a '"
-                    + item->query_short() + "'.\n");
+    if(arg == "all") {
+        object *inv = all_inventory(caller);
+        foreach(object item in inv) {
+            if(item->move(environment(caller) != MOVE_OK))
+                 write("Error [drop]: " + get_short(item) +" can not be dropped here.\n");
+            else {
+                write("Success [drop]: You drop a '" + get_short(item) + "'.\n");
+                say(caller->get_cap_name()) + " drops a '"+ get_short(item) + "'.\n");
             }
-         }
+        }
 
-         return 1;
-     }
+        return 1;
+    }
 
-     if(sscanf(arg, "all %s", arg))
-     {
-         object item, *failed_objects = ({});
+    if(sscanf(arg, "all %s", arg)) {
+        object item, *failed_objects = ({});
 
-         item = present(arg, caller);
+        item = present(arg, caller);
 
-         while(objectp(item) && member_array(item, failed_objects) == -1)
-         {
-             if(!item->move(environment(caller)))
-             {
-                 write("Error [drop]: " + capitalize(item->query_short()) +
-                     " can not be dropped here.\n");
-                 failed_objects += ({ item });
-             }
-            else
-            {
-                write("Success [drop]: You drop a '" + item->query_short() + "'.\n");
+        while(objectp(item) && member_array(item, failed_objects) == -1) {
+            if(item->move(environment(caller) != MOVE_OK)) {
+                write("Error [drop]: " + get_short(item) + " can not be dropped here.\n");
+                failed_objects += ({ item });
+            } else {
+                write("Success [drop]: You drop a '" + get_short(item) + "'.\n");
                 say(capitalize(caller->name()) + " drops a '"
-                    + item->query_short() + "'.\n");
+                    + get_short(item) + "'.\n");
             }
 
             item = present(arg, caller);

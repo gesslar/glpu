@@ -68,7 +68,7 @@ int main(object caller, object room, string arg)
             custom = this_player()->query_env("teleport_out");
 
             tmp = custom;
-            tmp = replace_string(tmp, "$D", ob->query_short());
+            tmp = replace_string(tmp, "$D", get_short(ob));
             tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
 
             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
@@ -91,7 +91,7 @@ int main(object caller, object room, string arg)
         else
             tell_room(environment(this_player()), capitalize(this_player()->name()) + " has teleported to this room.\n", ({ this_player() }) );
 
-        write("You have teleported to " + capitalize(ob->query_short()) + "\n");
+        write("You have teleported to " + capitalize(get_short(ob)) + "\n");
 
         return 1;
     }

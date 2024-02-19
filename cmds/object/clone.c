@@ -27,8 +27,8 @@ mixed main(object caller, object room, string str) {
     if(stringp(err) || !ob)
         return "Error [clone]: An error was encountered when cloning the object:\n" + err  ;
 
-    if(!ob->move(caller)) {
-        if(!ob->move(environment(caller))) {
+    if(ob->move(caller) != MOVE_OK) {
+        if(ob->move(environment(caller) != MOVE_OK)) {
             ob->remove() ;
             return "Error [clone]: Unable to move object to your location.";
         }
@@ -39,14 +39,14 @@ mixed main(object caller, object room, string str) {
 
     if(custom) {
         tmp = custom;
-        tmp = replace_string(tmp, "$O", (ob->query_short()[0] == 'a' ? ob->query_short() : "a " + ob->query_short()));
+        tmp = replace_string(tmp, "$O", (get_short(ob)[0] == 'a' ? get_short(ob) : "a " + get_short(ob)));
         tmp = replace_string(tmp, "$N", caller->query_cap_name());
         tell_room(environment(caller), capitalize(tmp) + "\n", caller);
         write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
     } else {
         write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
         tell_room(environment(caller),
-            capitalize(caller->name()) + " creates a '" + ob->query_short() + "'.\n",
+            capitalize(caller->name()) + " creates a '" + get_short(ob) + "'.\n",
         ({caller}));
     }
 
@@ -56,6 +56,6 @@ mixed main(object caller, object room, string str) {
 
 string help(object caller) {
     return (" SYNTAX: clone <file>\n\n" +
-      "This command produces a clone of a file.\n\n" +
-      "See also: dest");
+        "This command produces a clone of a file.\n\n" +
+        "See also: dest");
 }
