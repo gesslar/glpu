@@ -8,19 +8,16 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args)
-{
-     if(!args) return(notify_fail("Syntax: unalias <verb>\n"));
+mixed main(object caller, object room, string args) {
+     if(!args) return "Syntax: unalias <verb>\n";
+
      if(caller->remove_alias(args))
-     {
-          write("Success [aliases]: Verb '" + args + "' is now longer aliased.\n");
-          return 1;
-     }
-     else return(notify_fail("Error [aliases]: That verb is not aliased locally.\n"));
+          return "Success [aliases]: Verb '" + args + "' is now longer aliased.\n";
+
+     return "Error [aliases]: That verb is not aliased locally.\n";
 }
 
-string help(object caller)
-{
+string help(object caller) {
      return("SYNTAX: unalias <verb>\n\n"
      "This command allows you to unalias local aliases. A local alias\n"
      "is an alias that you have set, not global aliases. To unalias\n"
