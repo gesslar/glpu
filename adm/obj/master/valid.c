@@ -36,6 +36,7 @@ int isMember(string user, string group);
 void parse_group() {
     int i, n;
     string *arr = parse(explode_file(FILE_GROUPDATA));
+    int sz_arr ;
 
 #ifdef DEBUG
 
@@ -45,8 +46,9 @@ void parse_group() {
 
     groups = ([]);
 
-    for(i = 0; i < sizeof(arr); i++) {
+    for(i = 0, sz_arr = sizeof(arr); i < sz_arr; i++) {
         string group, str, *members;
+        int sz_members ;
 
         if(!arr[i]) continue;
 
@@ -64,7 +66,7 @@ void parse_group() {
 
 #endif
 
-        for(n = 0; n < sizeof(members); n++) {
+        for(n = 0, sz_members = sizeof(members); n < sz_members; n++) {
             if(!file_size(user_data_file(members[n])) && !sscanf(members[n], "[%*s]")) {
                 write("Error [security]: Unknown user detected.\n");
                 write("Security alert: User '" + members[n] + "' ignored for group '" + group + "'.\n");
@@ -85,6 +87,7 @@ void parse_group() {
 void parse_access() {
     int i, n;
     string *arr = parse(explode_file(FILE_ACCESSDATA));
+    int sz_arr ;
 
 #ifdef DEBUG
 
@@ -94,9 +97,10 @@ void parse_access() {
 
     access = ([]);
 
-    for(i = 0; i < sizeof(arr); i++) {
+    for(i = 0, sz_arr = sizeof(arr); i < sz_arr; i++) {
         string directory, str, *entries;
         mapping data;
+        int sz_entries;
 
         data = ([]);
 
@@ -120,7 +124,7 @@ void parse_access() {
 
 #endif
 
-        for(n = 0; n < sizeof(entries); n++) {
+        for(n = 0, sz_entries = sizeof(entries); n < sz_entries; n++) {
             string identity, permissions, *permArray = allocate(8);
             if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2) {
                 write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
@@ -430,6 +434,7 @@ string *track_member(string id, string directory) {
     string *keys = keys(data);
     string *groupData = ({});
     int i;
+    int sz_keys ;
 
 #ifdef DEBUG
 
@@ -437,7 +442,7 @@ string *track_member(string id, string directory) {
 
 #endif
 
-    for(i = 0; i < sizeof(keys); i++) {
+    for(i = 0, sz_keys = sizeof(keys); i < sz_keys; i++) {
         groupData = query_group(keys[i]);
         if(!pointerp(groupData) || sizeof(groupData) < 1) continue;
         if(member_array(id, groupData) != -1) return data[keys[i]];
@@ -462,6 +467,7 @@ string *query_group_names() {
 int isMember(string user, string group) {
     string *data;
     int i;
+    int sz_data;
 
     data = ({});
 
@@ -470,7 +476,7 @@ int isMember(string user, string group) {
     data = groups[group];
     if(!pointerp(data)) return 0;
 
-    for(i = 0; i < sizeof(data); i++) {
+    for(i = 0, sz_data = sizeof(data); i < sz_data; i++) {
         string group_name;
 
         if(!stringp(data[i])) continue;
