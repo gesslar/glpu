@@ -26,5 +26,8 @@
         "236" : "238"
     },
     "USE_MASS" : true,
-    "USE_BULK" : true
+    "USE_BULK" : true,
+    "AUTODOC_DIRS" : [
+        [ "/adm/simul_efun/", "/doc/autodoc/simul_efun/" ]
+    ]
 }
