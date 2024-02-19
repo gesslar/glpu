@@ -400,7 +400,7 @@ void enter_world(string str) {
     if(!objectp(body)) body = create_body(query_privs(user));
 
     exec(body, this_object());
-    body->setup();
+    body->setup_body();
     body->set_link(user);
     user->set_body(body);
 
