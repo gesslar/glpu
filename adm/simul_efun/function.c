@@ -39,15 +39,3 @@ varargs string call_trace(int colour) {
     if(!colour) res = no_ansi(res) ;
     return res;
 }
-
-int valid_function(mixed func) {
-    int fp ;
-
-    fp = functionp(func) ;
-
-    if(fp) {
-        return !(fp & FP_OWNER_DESTED) ;
-    }
-
-    return FALSE ;
-}
