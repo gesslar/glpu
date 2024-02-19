@@ -406,6 +406,14 @@ int command_hook(string arg) {
                         message("info", return_value, this_object()) ;
                         return 1 ;
                     }
+                } else if(pointerp(return_value)) {
+                    if(!sizeof(return_value)) {
+                        return_value = 0 ;
+                    } else {
+                        object pager = new(OBJ_PAGER) ;
+                        pager->page(implode(return_value, "\n")) ;
+                        return 1 ;
+                    }
                 }
             }
         }
