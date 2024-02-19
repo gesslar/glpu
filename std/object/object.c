@@ -117,7 +117,7 @@ int allow_move(mixed dest) {
 }
 
 void set_proper_name(string str) {
-    if(interactive(this_object()) && !isMember(query_privs(previous_object()), "admin")
+    if(interactive(this_object()) && !is_member(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
     proper_name = str;
 }

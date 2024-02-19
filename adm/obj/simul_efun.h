@@ -68,7 +68,7 @@ string object_save_file(object ob) ;
 string assure_object_save_dir(object ob) ;
 
 // File: security
-int isMember(string user, string group) ;
+int is_member(string user, string group) ;
 int adminp(mixed user) ;
 int devp(mixed user) ;
 int wizardp(mixed user) ;

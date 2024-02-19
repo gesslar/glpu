@@ -10,20 +10,20 @@
 
 inherit STD_CMD ;
 
-object *addArray( object *oldlist, object *newlist);
+object *add_array( object *oldlist, object *newlist);
 
 int main(object caller, object room, string arg)
 {
     string ret, mudname;
     mixed *packet;
     object *list, c;
-    object *oAdminArr,*oDevArr, *oUserArr;
+    object *admin_arr,*dev_arr, *user_arr;
     int i;
 
 
-    oAdminArr = ({});
-    oDevArr   = ({});
-    oUserArr  = ({});
+    admin_arr = ({});
+    dev_arr   = ({});
+    user_arr  = ({});
     ret = "";
 
     /* Fixed your error. Tricky */
@@ -45,22 +45,22 @@ int main(object caller, object room, string arg)
     foreach( object name in list )
     {
         if( adminp( name ) && name->name() != "login" )
-            oAdminArr += ({ name });
+            admin_arr += ({ name });
         else if( devp( name ) )
-            oDevArr += ({ name });
+            dev_arr += ({ name });
         else
-            oUserArr += ({ name });
+            user_arr += ({ name });
 
     }
 
-    oAdminArr = sort_array( oAdminArr, "sort_name");
-    oDevArr   = sort_array( oDevArr,   "sort_name");
-    oUserArr = sort_array( oUserArr, "sort_name");
+    admin_arr = sort_array( admin_arr, "sort_name");
+    dev_arr   = sort_array( dev_arr,   "sort_name");
+    user_arr = sort_array( user_arr, "sort_name");
 
     list = ({});
-    list = addArray( list, oAdminArr );
-    list = addArray( list, oDevArr );
-    list = addArray( list, oUserArr );
+    list = add_array( list, admin_arr );
+    list = add_array( list, dev_arr );
+    list = add_array( list, user_arr );
 
     //    list = sort_array(list, "sort_users");
 
@@ -100,7 +100,7 @@ int sort_name(object ob1, object ob2)
     else return 0;
 }
 
-object *addArray(object *oldarr, object *newarr )
+object *add_array(object *oldarr, object *newarr )
 {
     foreach( object name in newarr )
     {

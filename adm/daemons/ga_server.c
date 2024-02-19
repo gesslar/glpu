@@ -134,7 +134,7 @@ mapping get_alias(string priv)
      mapping ret = ([]);
 
      for(i = 0; i < sizeof(keys); i++)
-          if(isMember(priv, keys[i]) || keys[i] == "all") ret += alias[keys[i]];
+          if(is_member(priv, keys[i]) || keys[i] == "all") ret += alias[keys[i]];
 
 
      return ret;
@@ -147,7 +147,7 @@ mapping get_xverb(string priv)
      mapping ret = ([]);
 
      for(i = 0; i < sizeof(keys); i++)
-          if(isMember(priv, keys[i]) || keys[i] == "all") ret += xverb[keys[i]];
+          if(is_member(priv, keys[i]) || keys[i] == "all") ret += xverb[keys[i]];
 
      return ret;
 }

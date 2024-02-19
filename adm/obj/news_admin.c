@@ -122,7 +122,7 @@ int set_permissions(string arg)
 {
     if(!arg || arg == "") return main_menu();
 
-    if(!NEWS_D->groupExists(capitalize(arg)))
+    if(!NEWS_D->group_exists(capitalize(arg)))
     {
     write("\nError [news admin]: news group does not exist\n");
     return main_menu();
@@ -141,7 +141,7 @@ int select_user_group(string arg, string news_group)
     return main_menu();
     }
 
-    if(member_array(arg, s_editor->listGroups()) == -1)
+    if(member_array(arg, s_editor->list_groups()) == -1)
     {
     write("\nError [news admin]: user group does not exist\n");
     return main_menu();
@@ -186,7 +186,7 @@ int select_permissions(string arg, string news_group, string user_group)
     if(arg == "none")
     options = "";
 
-    write(NEWS_D->adminAction_setPermissions(news_group, user_group, options) ?
+    write(NEWS_D->admin_action_set_permissions(news_group, user_group, options) ?
       "\nSuccess [news admin]: permissions for " + user_group + " in group " + news_group + " set to '" + options + "'.\n" :
       "\nError [news admin]: could not set permissions for " + user_group + " in group " + news_group + " to '" + options + "'.\n");
 
@@ -196,14 +196,14 @@ int select_permissions(string arg, string news_group, string user_group)
 int create_group(string arg)
 {
     if(!stringp(arg)) return main_menu();
-    write(NEWS_D->adminAction_createGroup(arg) ? "\nSuccess.\n" : "\nFailure.\n");
+    write(NEWS_D->admin_action_create_group(arg) ? "\nSuccess.\n" : "\nFailure.\n");
     return main_menu();
 }
 
 int delete_group(string arg)
 {
     if(!stringp(arg)) return main_menu();
-    write(NEWS_D->adminAction_deleteGroup(arg) ? "\nSuccess.\n" : "\nFailure.\n");
+    write(NEWS_D->admin_action_delete_group(arg) ? "\nSuccess.\n" : "\nFailure.\n");
     return main_menu();
 }
 
@@ -223,28 +223,28 @@ int delete_message_final(string id, string group)
     return main_menu();
     }
 
-    write(NEWS_D->adminAction_deletePost(group, numerical_id) ? "\nSuccess.\n" : "\nFailure.\n");
+    write(NEWS_D->admin_action_delete_post(group, numerical_id) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int purge_group(string args)
 {
-    write( NEWS_D->adminAction_deleteGroup(args) && NEWS_D->adminAction_createGroup(args) ? "\nSuccess.\n" : "\nFailure.\n");
+    write( NEWS_D->admin_action_delete_group(args) && NEWS_D->admin_action_create_group(args) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int add_client(string args)
 {
-    write( NEWS_D->authorizeClient(args) ? "\nSuccess.\n" : "\nFailure.\n");
+    write( NEWS_D->authorize_client(args) ? "\nSuccess.\n" : "\nFailure.\n");
 
     return main_menu();
 }
 
 int del_client(string args)
 {
-    write( NEWS_D->revokeClientAuthorization(args) ? "\nSuccess.\n" : "\nFailure.n");
+    write( NEWS_D->revoke_client_authorization(args) ? "\nSuccess.\n" : "\nFailure.n");
 
     return main_menu();
 }

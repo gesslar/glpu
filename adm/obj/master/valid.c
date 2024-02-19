@@ -29,7 +29,7 @@ string *parse(string *str);
 string *query_group(string group);
 string *track_member(string id, string directory);
 int query_access(string directory, string id, int type);
-int isMember(string user, string group);
+int is_member(string user, string group);
 
 /* Functions */
 
@@ -125,7 +125,7 @@ void parse_access() {
 #endif
 
         for(n = 0, sz_entries = sizeof(entries); n < sz_entries; n++) {
-            string identity, permissions, *permArray = allocate(8);
+            string identity, permissions, *perm_array = allocate(8);
             if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2) {
                 write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
                 error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
@@ -138,16 +138,16 @@ void parse_access() {
 #endif
 
             //read, write, network, shadow, link, execute, bind, ownership
-            if(strsrch(permissions, "r") != -1) permArray[0] = "r";
-            if(strsrch(permissions, "w") != -1) permArray[1] = "w";
-            if(strsrch(permissions, "n") != -1) permArray[2] = "n";
-            if(strsrch(permissions, "s") != -1) permArray[3] = "s";
-            if(strsrch(permissions, "l") != -1) permArray[4] = "l";
-            if(strsrch(permissions, "e") != -1) permArray[5] = "e";
-            if(strsrch(permissions, "b") != -1) permArray[6] = "b";
-            if(strsrch(permissions, "o") != -1) permArray[7] = "o";
+            if(strsrch(permissions, "r") != -1) perm_array[0] = "r";
+            if(strsrch(permissions, "w") != -1) perm_array[1] = "w";
+            if(strsrch(permissions, "n") != -1) perm_array[2] = "n";
+            if(strsrch(permissions, "s") != -1) perm_array[3] = "s";
+            if(strsrch(permissions, "l") != -1) perm_array[4] = "l";
+            if(strsrch(permissions, "e") != -1) perm_array[5] = "e";
+            if(strsrch(permissions, "b") != -1) perm_array[6] = "b";
+            if(strsrch(permissions, "o") != -1) perm_array[7] = "o";
 
-            data += ([ identity : permArray ]);
+            data += ([ identity : perm_array ]);
         }
 
         access += ([directory : data]);
@@ -253,7 +253,7 @@ int valid_read(string file, object user, string func) {
         if(name == tmp || name == "[home_" + tmp + "]") return 1;
         if(tmp2 && tmp2[0..5] == "public") return 1;
         if(tmp2 && tmp2[0..6] == "private" && name == tmp) return 1;
-        if(tmp2 && tmp2[0..6] == "private" && name != tmp && !isMember(name, "admin")) return 0;
+        if(tmp2 && tmp2[0..6] == "private" && name != tmp && !is_member(name, "admin")) return 0;
     }
 
 #ifdef DEBUG
@@ -432,7 +432,7 @@ int query_access(string directory, string id, int type) {
 string *track_member(string id, string directory) {
     mapping data = access[directory];
     string *keys = keys(data);
-    string *groupData = ({});
+    string *group_data = ({});
     int i;
     int sz_keys ;
 
@@ -443,9 +443,9 @@ string *track_member(string id, string directory) {
 #endif
 
     for(i = 0, sz_keys = sizeof(keys); i < sz_keys; i++) {
-        groupData = query_group(keys[i]);
-        if(!pointerp(groupData) || sizeof(groupData) < 1) continue;
-        if(member_array(id, groupData) != -1) return data[keys[i]];
+        group_data = query_group(keys[i]);
+        if(!pointerp(group_data) || sizeof(group_data) < 1) continue;
+        if(member_array(id, group_data) != -1) return data[keys[i]];
     }
 
     return ({});
@@ -464,7 +464,7 @@ string *query_group_names() {
     return keys(groups);
 }
 
-int isMember(string user, string group) {
+int is_member(string user, string group) {
     string *data;
     int i;
     int sz_data;

@@ -15,13 +15,13 @@ int main(object tp, object room, string arg) {
     tell(tp, "=----------------------------------------------=\n");
 
     foreach(object user in users()) {
-        string *commandHistory = user->query_commandHistory();
+        string *command_history = user->query_command_history();
         if(!living(user)) continue;
 
-        if(sizeof(commandHistory) <= 0)
+        if(sizeof(command_history) <= 0)
             tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), "<none>"));
         else
-            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), commandHistory[sizeof(commandHistory)-1]));
+            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), command_history[sizeof(command_history)-1]));
     }
 
     tell(tp, "=----------------------------------------------=\n");

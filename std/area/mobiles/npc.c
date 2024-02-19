@@ -14,10 +14,10 @@ void create() {
     if(!query("cwd")) set("cwd", "/doc");
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "enabled"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
-    if(!query_env("auto_tune")) set_env("auto_tune", "localNet");
+    if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
     setup();
     enable_commands();
-    add_action("commandHook", "", 1);
+    add_action("command_hook", "", 1);
 }
 
 void setup() {
@@ -29,8 +29,8 @@ void setup() {
     set_short(name());
 }
 
-int commandHook(string arg) {
-    return ::commandHook(arg);
+int command_hook(string arg) {
+    return ::command_hook(arg);
 }
 
 void restore_user() {}

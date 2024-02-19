@@ -9,7 +9,7 @@
 //Last edited on December 21st, 2005 by Tacitus
 
 int exec( object to, object from ) {
-    if(isMember(query_privs(previous_object()), "admin")) return efun::exec(to, from);
+    if(is_member(query_privs(previous_object()), "admin")) return efun::exec(to, from);
     else return 0;
 }
 
@@ -25,7 +25,7 @@ void shutdown( int how ) {
 void set_privs(object ob, string privs) {
     string name;
 
-    if(isMember(query_privs(previous_object()), "admin") || ob = master()) efun::set_privs(ob, privs);
+    if(is_member(query_privs(previous_object()), "admin") || ob = master()) efun::set_privs(ob, privs);
     sscanf(file_name(ob), "/home/%*s/%s/%*s", name);
     if(name == privs) efun::set_privs(ob, privs);
 }

@@ -8,7 +8,7 @@
 
 inherit STD_ROOM;
 
-int lockFlag = 0;
+int lock_flag = 0;
 
 int lock_door(string args);
 int unlock_door(string args);
@@ -39,7 +39,7 @@ void init() {
 }
 
 string query_door() {
-    if(lockFlag == 0) return "The big oak door is unlocked.\n";
+    if(lock_flag == 0) return "The big oak door is unlocked.\n";
     else return "The big oak door is currently locked.\n";
 }
 
@@ -48,7 +48,7 @@ int lock_door(string args) {
 
      if(args != "door") return 0;
 
-     lockFlag = 1;
+     lock_flag = 1;
      caller->tell("You lock the door.\n");
      tell(capitalize(this_player()->name()) + " locks the bathroom door.\n", caller);
      catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
@@ -60,7 +60,7 @@ int unlock_door(string args) {
      object caller = this_player() ;
 
      if(args != "door") return 0;
-     lockFlag = 0;
+     lock_flag = 0;
      caller->tell("You unlock the door.\n");
      tell(capitalize(this_player()->name()) + " unlocks the bathroom door.\n");
      catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
@@ -68,18 +68,18 @@ int unlock_door(string args) {
 }
 
 void auto_unlock() {
-     lockFlag = 0;
+     lock_flag = 0;
      tell("The bathroom door automatically unlocks.");
      catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
 }
 
 int can_receive(object ob) {
-     if(lockFlag == 0) return 1;
+     if(lock_flag == 0) return 1;
      else return 0;
 }
 
 int can_release(object ob) {
-     if(lockFlag == 0) return 1;
+     if(lock_flag == 0) return 1;
      else {
           write("Error [move]: The door is currently locked.\n");
           return 0;

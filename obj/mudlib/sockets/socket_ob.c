@@ -17,7 +17,7 @@
 
 nosave int type;
 nosave int s = -1;
-nosave int isBlocked = 0;
+nosave int is_blocked = 0;
 nosave mixed *queue = ({});
 nosave address;
 
@@ -225,7 +225,7 @@ private nomask void close_callback(int fd)
 private nomask void write_callback(int fd)
 {
      int error;
-     isBlocked = 0;
+     is_blocked = 0;
 
      while(sizeof(queue) > 0)
      {
@@ -241,14 +241,14 @@ private nomask void write_callback(int fd)
 
                case EEWOULDBLOCK :
                {
-                    isBlocked = 1;
+                    is_blocked = 1;
                     call_out((: write_callback, s :), 1);
                     return;
                }
 
                case EECALLBACK :
                {
-                    isBlocked = 1;
+                    is_blocked = 1;
                     return;
                }
 
@@ -266,7 +266,7 @@ void send_packet(mixed *packet)
 
      error = socket_write(s, packet);
 
-     if(isBlocked)
+     if(is_blocked)
      {
           queue += ({ packet });
           return;
@@ -281,14 +281,14 @@ void send_packet(mixed *packet)
 
           case EEALREADY :
           {
-               isBlocked = 1;
+               is_blocked = 1;
                queue += ({ packet });
                return;
           }
 
           case EEWOULDBLOCK :
           {
-               isBlocked = 1;
+               is_blocked = 1;
                queue += ({ packet });
                call_out((: write_callback, s :), 1);
                return;
@@ -296,7 +296,7 @@ void send_packet(mixed *packet)
 
           case EECALLBACK :
           {
-               isBlocked = 1;
+               is_blocked = 1;
                return;
           }
 
@@ -307,7 +307,7 @@ void send_packet(mixed *packet)
      }
 }
 
-nomask mixed *getAddress()
+nomask mixed *get_address()
 {
     string tmp;
     string host;

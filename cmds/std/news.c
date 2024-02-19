@@ -27,7 +27,7 @@ int main(object caller, object room, string args)
 
      if(args == "check")
      {
-         if(client->isNew())
+         if(client->is_new())
              write("Notice: There are new news posts.\n");
          else write("No new posts.\n");
          destruct(client);

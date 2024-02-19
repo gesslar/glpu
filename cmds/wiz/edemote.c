@@ -16,7 +16,7 @@ int main(object caller, object room, string arg)
     int selection;
     string emote;
 
-    if(!isMember(query_privs(previous_object()), "soul"))
+    if(!is_member(query_privs(previous_object()), "soul"))
     return(notify_fail("Error [soul]: Access denied.\n"));
 
     emote_client = clone_object(OBJ_SOUL_TOOL);

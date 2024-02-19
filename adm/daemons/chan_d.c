@@ -12,18 +12,18 @@ inherit STD_DAEMON ;
 
 /* Last modified by Tacitus on July 5th, 2006 */
 
-int registerModule(string name, string path);
-int registerCh(string moduleName, string chName);
-int removeModule(string modulename);
-int removeCh(string chName);
+int register_module(string name, string path);
+int register_channel(string module_name, string channel_name);
+int remove_module(string module_name);
+int remove_channel(string channel_name);
 int tune(string channel, string user, int flag);
-int valid_ch(string chName);
-int valid_module(string moduleName);
+int valid_ch(string channel_name);
+int valid_module(string module_name);
 int snd_msg(string channel, string user, string msg);
 int filter_listing(string element);
-string *getChls(string moduleName);
-string *getMods();
-string *getTuned(string argument);
+string *get_channels(string module_name);
+string *get_modules();
+string *get_tuned(string argument);
 void rec_msg(string channel, string msg);
 
 mapping channels;
@@ -38,7 +38,7 @@ void setup() {
     channels = ([]);
     modules = ([]);
 
-    arr = explode_file("/adm/daemons/chmodules/modInstalled");
+    arr = explode_file("/adm/daemons/chmodules/installed_modules");
 
     if(!sizeof(arr))
         return ;
@@ -60,7 +60,7 @@ void setup() {
     }
 }
 
-int registerModule(string name, string path) {
+int register_module(string name, string path) {
     string *keys;
 
     keys = keys(modules);
@@ -75,55 +75,55 @@ int registerModule(string name, string path) {
     return 1;
 }
 
-int unregisterModule(string moduleName) {
+int unregister_module(string module_name) {
     string *keys = keys(modules);
 
-    if(!moduleName || member_array(moduleName, keys) == -1) return 0;
+    if(!module_name || member_array(module_name, keys) == -1) return 0;
 
-    if(modules[moduleName] != file_name(previous_object())) return 0;
+    if(modules[module_name] != file_name(previous_object())) return 0;
 
     foreach(mixed key, mixed value in channels) {
-        if(value["module"] == moduleName) map_delete(channels, key);
+        if(value["module"] == module_name) map_delete(channels, key);
     }
 
     return 1;
 }
 
-int registerCh(string moduleName, string chName) {
+int register_channel(string module_name, string channel_name) {
     string *keys;
-    string newName = chName;
+    string new_name = channel_name;
 
     keys = keys(modules);
-    if(member_array(moduleName, keys) == -1) return -1;
+    if(member_array(module_name, keys) == -1) return -1;
     keys = keys(channels);
 
-    if(modules[moduleName] != file_name(previous_object())) return 0;
+    if(modules[module_name] != file_name(previous_object())) return 0;
 
-    if(member_array(chName, keys) != -1) {
-        if(channels[chName]["module"] == moduleName) {
-            channels[chName]["listeners"] = ({});
+    if(member_array(channel_name, keys) != -1) {
+        if(channels[channel_name]["module"] == module_name) {
+            channels[channel_name]["listeners"] = ({});
             return 1;
         }
-        else newName = moduleName[0..3] + chName;
+        else new_name = module_name[0..3] + channel_name;
     }
-    channels[newName] = (["module" : moduleName, "real_name" : chName, "listeners" : ({})]);
+    channels[new_name] = (["module" : module_name, "real_name" : channel_name, "listeners" : ({})]);
 
     return 1;
 }
 
-int removeCh(string chName) {
+int remove_channel(string channel_name) {
     string *keys;
 
     keys = keys(channels);
-    if(member_array(chName, keys) == -1) return 0;
-    map_delete(channels, chName);
+    if(member_array(channel_name, keys) == -1) return 0;
+    map_delete(channels, channel_name);
 
     return 1;
 }
 
 int tune(string channel, string user, int flag) {
     string *keys;
-    object modObj;
+    object mod_obj;
 
     keys = keys(channels);
     if(member_array(channel, keys) == -1) return 0;
@@ -133,9 +133,9 @@ int tune(string channel, string user, int flag) {
         return 0;
     }
 
-    modObj = find_object(modules[channels[channel]["module"]]);
+    mod_obj = find_object(modules[channels[channel]["module"]]);
 
-    if(!modObj->isAllowed(channels[channel]["real_name"], user, flag)) return 0;
+    if(!mod_obj->is_allowed(channels[channel]["real_name"], user, flag)) return 0;
     if(flag == 1 && member_array(user, channels[channel]["listeners"]) == -1)
         channels[channel]["listeners"] += ({user});
     if(flag == 0 && member_array(user, channels[channel]["listeners"]) != -1)
@@ -144,26 +144,26 @@ int tune(string channel, string user, int flag) {
     return 1;
 }
 
-int valid_ch(string chName) {
+int valid_ch(string channel_name) {
     string *keys;
 
     keys = keys(channels);
-    if(member_array(chName, keys) != -1) return 1;
+    if(member_array(channel_name, keys) != -1) return 1;
 
     return 0;
 }
 
-int valid_module(string moduleName) {
+int valid_module(string module_name) {
     string *keys;
 
     keys = keys(modules);
-    if(member_array(moduleName, keys) != -1) return 1;
+    if(member_array(module_name, keys) != -1) return 1;
 
     return 0;
 }
 
 int snd_msg(string channel, string user, string msg) {
-    object modObj;
+    object mod_obj;
     string *keys;
 
     keys = keys(channels);
@@ -173,25 +173,25 @@ int snd_msg(string channel, string user, string msg) {
         map_delete(channels, channel);
         return 0;
     }
-    modObj = find_object(modules[channels[channel]["module"]]);
+    mod_obj = find_object(modules[channels[channel]["module"]]);
 
     if(member_array(user, channels[channel]["listeners"]) == -1) return 0;
-    if(!modObj->isAllowed(channels[channel]["real_name"], user)) return 0;
+    if(!mod_obj->is_allowed(channels[channel]["real_name"], user)) return 0;
     if(!msg) return(notify_fail("Syntax: <channel> <msg>\n"));
-    if(modObj->rec_msg(channels[channel]["real_name"], user, msg)) return 1;
+    if(mod_obj->rec_msg(channels[channel]["real_name"], user, msg)) return 1;
     else return 0;
 }
 
-string *getChls(string moduleName) {
+string *get_channels(string module_name) {
     string *ret = ({}), *keys;
     int i;
 
     keys = keys(channels);
 
-    if(moduleName == "all") ret = keys;
+    if(module_name == "all") ret = keys;
     else {
         for(i = 0; i < sizeof(keys); i++)
-        if(channels[keys[i]]["module"] == moduleName) ret += ({keys[i]});
+        if(channels[keys[i]]["module"] == module_name) ret += ({keys[i]});
     }
 
     ret = filter_array(ret, "filter_listing", this_object());
@@ -200,7 +200,7 @@ string *getChls(string moduleName) {
     return ret;
 }
 
-string *getTuned(string argument) {
+string *get_tuned(string argument) {
     string *ret = ({});
 
     if(!argument) return ret;
@@ -213,13 +213,13 @@ string *getTuned(string argument) {
 }
 
 int filter_listing(string element) {
-    object modObj;
-    modObj = find_object(modules[channels[element]["module"]]);
-    if(modObj->isAllowed(element, this_player()->name())) return 1;
+    object mod_obj;
+    mod_obj = find_object(modules[channels[element]["module"]]);
+    if(mod_obj->is_allowed(element, this_player()->name())) return 1;
     return 0;
 }
 
-string *getMods() {
+string *get_modules() {
     string *keys = keys(modules);
 
     return keys;

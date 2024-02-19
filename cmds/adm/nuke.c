@@ -44,8 +44,8 @@ void confirm_nuke(string str, object caller, string user) {
 
     security_editor = clone_object("/adm/obj/security_editor.c");
 
-    foreach(mixed group in security_editor->listGroups()) {
-        if(isMember(user, group)) write("\t* " + group + " membership revoked.\n");
+    foreach(mixed group in security_editor->list_groups()) {
+        if(is_member(user, group)) write("\t* " + group + " membership revoked.\n");
         security_editor->disable_membership(user, group);
     }
 

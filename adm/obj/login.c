@@ -21,29 +21,29 @@ void verify_password(string str, int i);
 void new_user(string str, string name);
 void auto_destruct();
 void reconnect(string str);
-void setupNew();
-void enterWorld(string str);
+void setup_new();
+void enter_world(string str);
 void email_verified(string address, string resolved, int key);
 void get_email(string input);
 void idle_email(string str);
 object create_body(string name);
-string parseTokens(string text);
+string parse_tokens(string text);
 
 object user;
 object body;
 
-string read = "\n" + parseTokens(read_file(mud_config("LOGIN_NEWS"))) ;
-string loginMsg = parseTokens(read_file(mud_config("LOGIN_MSG")));
+string read = "\n" + parse_tokens(read_file(mud_config("LOGIN_NEWS"))) ;
+string login_message = parse_tokens(read_file(mud_config("LOGIN_MSG")));
 string email;
 
-int isConnected = 0, coID;
+int is_connected = 0, call_out_id;
 
 void create() {
-    if(clonep(this_object())) coID = call_out("auto_destruct", 60);
+    if(clonep(this_object())) call_out_id = call_out("auto_destruct", 60);
 }
 
 void logon() {
-    write(loginMsg);
+    write(login_message);
     write("\nPlease select a name: ");
     input_to("get_name");
 }
@@ -141,9 +141,9 @@ void get_name(string str) {
         if(mud_config("DISPLAY_NEWS")) {
             write(read + "\n");
             write(" [Hit enter to continue] ");
-            input_to("enterWorld");
+            input_to("enter_world");
         } else {
-            enterWorld(0);
+            enter_world(0);
         }
         return;
     }
@@ -191,7 +191,7 @@ void get_password(string str, int i) {
             input_to("get_password", 1, 0);
             return;
         } else {
-            isConnected = 1;
+            is_connected = 1;
             if(find_player(user->name())) {
                 write("\nReconnect to currently logged in body? ");
                 input_to("reconnect");
@@ -202,9 +202,9 @@ void get_password(string str, int i) {
             if(mud_config("DISPLAY_NEWS")) {
                 write(read + "\n");
                 write(" [Hit enter to continue] ");
-                input_to("enterWorld");
+                input_to("enter_world");
             } else {
-                enterWorld(0);
+                enter_world(0);
             }
             return;
         }
@@ -282,7 +282,7 @@ void idle_email(string str) {
     object security_editor;
 
 #ifdef EMAIL_MUST_RESOLVE
-    if(!isConnected) {
+    if(!is_connected) {
         write("Error [login]: Unable to verify e-mail. Press press any key to try again.\n");
         input_to("idle_email");
         return;
@@ -316,9 +316,9 @@ void idle_email(string str) {
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
-        write("\n" + parseTokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
+        write("\n" + parse_tokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
         write(" [Hit enter to continue] ");
-        input_to("setupNew");
+        input_to("setup_new");
 #ifdef EMAIL_MUST_RESOLVE
     }
 #endif
@@ -334,7 +334,7 @@ void email_verified(string address, string resolved, int key)
         return;
     }
 #endif
-    isConnected = 1;
+    is_connected = 1;
 }
 
 void new_user(string str, string name) {
@@ -349,48 +349,48 @@ void new_user(string str, string name) {
     input_to("get_name");
 }
 
-void setupNew() {
+void setup_new() {
     if(!directory_exists(user_data_directory(user->name()))) mkdir(user_data_directory(user->name()));
     user->save_user();
     if(objectp(body)) body->save_user();
     write(read + "\n");
     write("\n");
     write(" [Hit enter to continue] ");
-    input_to("enterWorld");
+    input_to("enter_world");
 }
 
 void reconnect(string str) {
-    object oldBody = find_player(user->name());
+    object old_body = find_player(user->name());
 
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
-        tell_object(oldBody, "Warning: Your body has been displaced by another user.\n");
-        write_file(log_dir() + LOG_LOGIN, capitalize(oldBody->name()) + " reconnected from " +
+        tell_object(old_body, "Warning: Your body has been displaced by another user.\n");
+        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->name()) + " reconnected from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
-        if(interactive(oldBody)) remove_interactive(oldBody);
-        oldBody->reconnect();
+        if(interactive(old_body)) remove_interactive(old_body);
+        old_body->reconnect();
         write(read + "\n");
         write(" [Hit enter to continue] ");
-        body = oldBody;
-        input_to("enterWorld");
+        body = old_body;
+        input_to("enter_world");
         return;
     } else {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " logged in from " +
           query_ip_number(user) + " on " + ctime(time()) + "\n");
         write(read + "\n");
         write(" [Hit enter to continue] ");
-        input_to("enterWorld");
+        input_to("enter_world");
         return;
     }
 
 }
 
 void auto_destruct() {
-    if(isConnected) return;
+    if(is_connected) return;
     if(interactive(this_object())) write("\n\nNotice: I'm sorry, but you are only allowed 60 seconds to attempt to login.\n");
     destruct() ;
 }
 
-void enterWorld(string str) {
+void enter_world(string str) {
     object *obs;
 
     obs = users();
@@ -422,7 +422,7 @@ void enterWorld(string str) {
     }
 
     body->enter_world();
-    remove_call_out(coID);
+    remove_call_out(call_out_id);
 
     destruct(this_object()) ;
 }
@@ -468,7 +468,7 @@ string name() {
     return "login";
 }
 
-string parseTokens(string text) {
+string parse_tokens(string text) {
     catch {
         text = replace_string(text, "%mud_name", mud_name());
         text = replace_string(text, "%users", implode(

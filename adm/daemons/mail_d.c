@@ -61,7 +61,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     for(i = 0; i < sizeof(recipients); i++)
     {
-        if(recipients[i][0] == '(' && recipients[i][<1] == ')' && member_array(recipients[i][1..<2], s_editor->listGroups()) != -1)
+        if(recipients[i][0] == '(' && recipients[i][<1] == ')' && member_array(recipients[i][1..<2], s_editor->list_groups()) != -1)
             tmp_recipients += filter(get_all_members(master()->query_group(recipients[i])), (: $1[0] != '[' :));
         else
             tmp_recipients += ({ lower_case(recipients[i]) });
@@ -92,7 +92,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     for(i = 0; i < sizeof(cc); i++)
     {
-        if(cc[i][0] == '(' && cc[i][<1] == ')' && member_array(cc[i][1..<2], s_editor->listGroups()) != -1)
+        if(cc[i][0] == '(' && cc[i][<1] == ')' && member_array(cc[i][1..<2], s_editor->list_groups()) != -1)
             tmp_cc += filter(get_all_members(master()->query_group(cc[i])), (: $1[0] != '[' :));
         else
             tmp_cc += ({ lower_case(cc[i]) });
@@ -151,7 +151,7 @@ string *get_all_members(string *parent_users)
 
     for(i = 0; i < sizeof(parent_users); i++)
     {
-        if(parent_users[i][0] == '(' && parent_users[i][<1] == ')' && member_array(parent_users[i][1..<2], s_editor->listGroups()) != -1)
+        if(parent_users[i][0] == '(' && parent_users[i][<1] == ')' && member_array(parent_users[i][1..<2], s_editor->list_groups()) != -1)
             users += get_all_members(master()->query_group(parent_users[i]));
         else
             users += ({ parent_users[i] });

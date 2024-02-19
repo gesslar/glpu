@@ -10,19 +10,19 @@ inherit STD_CMD ;
 
 int main(object caller, object room, string args)
 {
-    string *commandPath = this_player()->query_path();
+    string *command_path = this_player()->query_path();
     mixed *actions = previous_object()->query_commands();
     mapping aliases = this_player()->get_aliases(1);
-    int i, isLocated = 0;
+    int i, is_located = 0;
 
     if(!args) return notify_fail("Error: Syntax: which <verb/command>\n");
 
-    for(i = 0; i < sizeof(commandPath); i ++)
+    for(i = 0; i < sizeof(command_path); i ++)
     {
-        if(file_exists(commandPath[i] + args + ".c"))
+        if(file_exists(command_path[i] + args + ".c"))
         {
-            isLocated = 1;
-            write(commandPath[i] + args + "\n");
+            is_located = 1;
+            write(command_path[i] + args + "\n");
         }
     }
 
@@ -30,40 +30,40 @@ int main(object caller, object room, string args)
     {
         if(actions[i][0] == args)
         {
-            isLocated = 1;
+            is_located = 1;
             write("Local:  " + actions[i][2] + "\n");
         }
     }
 
     if(mapp(aliases) && aliases[args])
     {
-        isLocated = 1;
+        is_located = 1;
         write("Alias: " + args + " -> " + aliases[args] + "\n");
     }
 
     if(member_array(args, SOUL_D->query_emotes()) != -1)
     {
-        isLocated = 1;
+        is_located = 1;
         write("Soul: " + args + "\n");
     }
 
 
     if(member_array(args + "/t", SOUL_D->query_emotes()) != -1)
     {
-        isLocated = 1;
+        is_located = 1;
         write("Targetted Soul: " + args + "\n");
     }
 
     if(environment(previous_object())->valid_exit(args))
     {
-        isLocated = 1;
+        is_located = 1;
         write("Local Exit: " +
             environment(this_player())->query_exit(args) + "\n");
     }
 
 
-    if(!isLocated) return notify_fail("Error: '" + args
-        + "' not found in " +  implode(commandPath, ", ")
+    if(!is_located) return notify_fail("Error: '" + args
+        + "' not found in " +  implode(command_path, ", ")
          + " nor via a local add_action, alias, soul, or exit.\n");
 
     return 1;

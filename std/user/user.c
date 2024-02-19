@@ -34,14 +34,14 @@ nomask void net_dead() {
 }
 
 nomask void restore_user() {
-    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(isMember(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_player())) restore_object(user_data_file(query_privs(this_object())));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_player())) restore_object(user_data_file(query_privs(this_object())));
 }
 
 nomask void save_user() {
     int result ;
 
-    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") &&
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") &&
        this_player() != this_object() &&
        origin() != ORIGIN_LOCAL) {
         return 0;

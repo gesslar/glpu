@@ -20,7 +20,7 @@ int current_group;
 int edit_post;
 int did_write;
 int current_post;
-int currentIndex;
+int current_index;
 string current_file = "";
 string current_subject;
 
@@ -35,8 +35,8 @@ void callback_edit();
 int edit_msg(int num);
 int display_msg();
 void done_page();
-int isAllRead(int group);
-int isNew();
+int is_all_read(int group);
+int is_new();
 
 /* Functions */
 
@@ -55,15 +55,15 @@ void remove()
         save_variable(viewed), 1);
 }
 
-int isNew()
+int is_new()
 {
     int i;
-    groups = NEWS_D->getGroupListings();
+    groups = NEWS_D->get_group_listings();
 
     for(i = 0; i < sizeof(groups); i++)
     {
         if(!viewed[groups[i]]) viewed += ([groups[i] : ([]) ]);
-        if(!isAllRead(i)) return 1;
+        if(!is_all_read(i)) return 1;
     }
 
     return 0;
@@ -73,13 +73,13 @@ int start_client()
 {
     int i;
 
-    groups = NEWS_D->getGroupListings();
+    groups = NEWS_D->get_group_listings();
 
     for(i = 0; i < sizeof(groups); i++)
     {
         if((i % 3)==0) printf("\n");
         if(!viewed[groups[i]]) viewed += ([groups[i] : ([]) ]);
-        printf("%-20s", (i + 1) + ". " + capitalize(groups[i]) + (isAllRead(i) ? "" : "*"));
+        printf("%-20s", (i + 1) + ". " + capitalize(groups[i]) + (is_all_read(i) ? "" : "*"));
     }
 
     write("\n News Prompt> ");
@@ -88,11 +88,11 @@ int start_client()
     return 1;
 }
 
-int isAllRead(int group)
+int is_all_read(int group)
 {
     int i;
 
-    messages = NEWS_D->getPosts(groups[group]);
+    messages = NEWS_D->get_posts(groups[group]);
 
     for(i = 0; i < sizeof(messages); i++)
     {
@@ -159,15 +159,15 @@ int select_group(string arg)
         return 1;
     }
 
-    messages = NEWS_D->getPosts(groups[current_group]);
+    messages = NEWS_D->get_posts(groups[current_group]);
 
-    if(nullp(currentIndex) || currentIndex > sizeof(messages) - 18)
-            currentIndex = sizeof(messages) - 18;
-    if(currentIndex < 0) currentIndex = 0;
+    if(nullp(current_index) || current_index > sizeof(messages) - 18)
+            current_index = sizeof(messages) - 18;
+    if(current_index < 0) current_index = 0;
 
     write("\n");
 
-    for(b = 0, i = currentIndex ; i < sizeof(messages); i++, b++)
+    for(b = 0, i = current_index ; i < sizeof(messages); i++, b++)
     {
         if(b >= 20) break;
         if(!viewed[groups[current_group]][i]) viewed[groups[current_group]] += ([i : 0]);
@@ -185,20 +185,20 @@ int select_group(string arg)
 int group_input(string args)
 {
     string cmd, arg;
-    int numericalArg, i, b;
+    int numerical_arg, i, b;
     mapping posts = ([]);
 
     if(!args || args == "")
     {
-        messages = NEWS_D->getPosts(groups[current_group]);
+        messages = NEWS_D->get_posts(groups[current_group]);
 
-        if(nullp(currentIndex) || currentIndex > sizeof(messages) - 18)
-            currentIndex = sizeof(messages) - 18;
-        if(currentIndex < 0) currentIndex = 0;
+        if(nullp(current_index) || current_index > sizeof(messages) - 18)
+            current_index = sizeof(messages) - 18;
+        if(current_index < 0) current_index = 0;
 
         write("\n");
 
-        for(b = 0, i = currentIndex ; i < sizeof(messages); i++, b++)
+        for(b = 0, i = current_index ; i < sizeof(messages); i++, b++)
         {
             if(b >= 20) continue;
 
@@ -216,7 +216,7 @@ int group_input(string args)
 
     if(sscanf(args, "%s %s", cmd, arg) != 2) cmd = args;
 
-    numericalArg = to_int(arg);
+    numerical_arg = to_int(arg);
 
     switch(cmd)
     {
@@ -243,9 +243,9 @@ int group_input(string args)
         case "e" :
         case "edit" :
             {
-            posts = NEWS_D->getPosts(groups[current_group]);
+            posts = NEWS_D->get_posts(groups[current_group]);
 
-            if(lower_case(posts[numericalArg - 1]["author"]) != this_player()->name()
+            if(lower_case(posts[numerical_arg - 1]["author"]) != this_player()->name()
                 && !adminp(this_player()))
             {
                 write("\nYou cannot edit a post that you did not write.\n");
@@ -262,13 +262,13 @@ int group_input(string args)
                 return 1;
             }
 
-            if(!numericalArg)
+            if(!numerical_arg)
             {
                 if(current_post >= 0)
                 edit_msg(current_post);
             }
 
-            else    edit_msg(numericalArg-1);
+            else    edit_msg(numerical_arg-1);
 
             return 1;
             break;
@@ -277,15 +277,15 @@ int group_input(string args)
         case "l" :
         case "list" :
             {
-                messages = NEWS_D->getPosts(groups[current_group]);
+                messages = NEWS_D->get_posts(groups[current_group]);
 
-                if(nullp(currentIndex) || currentIndex > sizeof(messages) - 18)
-                    currentIndex = sizeof(messages) - 18;
-                if(currentIndex < 0) currentIndex = 0;
+                if(nullp(current_index) || current_index > sizeof(messages) - 18)
+                    current_index = sizeof(messages) - 18;
+                if(current_index < 0) current_index = 0;
 
                 write("\n");
 
-                for(b = 0, i = currentIndex ; i < sizeof(messages); i++, b++)
+                for(b = 0, i = current_index ; i < sizeof(messages); i++, b++)
                 {
                     if(b >= 20) continue;
                     if(!viewed[groups[current_group]][i])
@@ -324,7 +324,7 @@ int group_input(string args)
         case "i" :
         case "index" :
             {
-                if(numericalArg) currentIndex = numericalArg - 1;
+                if(numerical_arg) current_index = numerical_arg - 1;
                 break;
             }
 
@@ -361,7 +361,7 @@ int group_input(string args)
                     return 1;
                 }
 
-                if(!numericalArg)
+                if(!numerical_arg)
                 {
                     if(current_post >= 0)
                     {
@@ -373,9 +373,9 @@ int group_input(string args)
                     return 1;
                 }
 
-                if((numericalArg-1) < sizeof(messages))
+                if((numerical_arg-1) < sizeof(messages))
                 {
-                    create_msg("RE: " + messages[numericalArg - 1]["subject"]);
+                    create_msg("RE: " + messages[numerical_arg - 1]["subject"]);
                     return 1;
                 }
             }
@@ -386,7 +386,7 @@ int group_input(string args)
     if(current_post < sizeof(messages) && current_post >= 0)
     {
         display_msg();
-        currentIndex = current_post;
+        current_index = current_post;
         return 1;
     }
 
@@ -436,7 +436,7 @@ int edit_msg(int num)
     mapping posts = ([]);
 
     edit_post = num;
-    posts = NEWS_D->getPosts(groups[current_group]);
+    posts = NEWS_D->get_posts(groups[current_group]);
 
     write("Editing post: " + posts[num]["subject"] + "\n");
     write("=--------------------------------------=\n\n");
@@ -493,7 +493,7 @@ void callback_edit()
         return;
     }
 
-    NEWS_D->clientAction_edit(groups[current_group], contents, edit_post);
+    NEWS_D->client_action_edit(groups[current_group], contents, edit_post);
 
     rm(current_file);
     current_file = "";
@@ -514,7 +514,7 @@ void callback_exit()
         return;
     }
 
-    NEWS_D->clientAction_post(groups[current_group], capitalize(this_player()->name()),
+    NEWS_D->client_action_post(groups[current_group], capitalize(this_player()->name()),
         current_subject, contents);
 
     rm(current_file);

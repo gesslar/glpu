@@ -14,7 +14,7 @@ string resolve_path(string Current, string Next)
 {
    int index;
    int temp;
-   string* pathSegments;
+   string* path_segments;
 
    if(Next=="here")
       return file_name(environment(this_player())) + ".c";
@@ -32,26 +32,26 @@ string resolve_path(string Current, string Next)
    }
 
    if(Next[0]!='/')  Next=Current+"/"+Next;
-   pathSegments = explode(Next,"/");
+   path_segments = explode(Next,"/");
 
-   for (index=0;index<sizeof(pathSegments);index++)
+   for (index=0;index<sizeof(path_segments);index++)
    {
-      if(pathSegments[index] == ".") pathSegments[index] = "";
+      if(path_segments[index] == ".") path_segments[index] = "";
 
-      if(pathSegments[index] == "..")
+      if(path_segments[index] == "..")
       {
-         pathSegments[index] = "";
+         path_segments[index] = "";
          temp = index-1;
 
-         while((temp>=0)&&(!sizeof(pathSegments[temp])))
+         while((temp>=0)&&(!sizeof(path_segments[temp])))
             temp--;
 
-         if(temp!=-1) pathSegments[temp]="";
+         if(temp!=-1) path_segments[temp]="";
       }
    }
 
-   if(Next[<1]=='/') Next="/"+implode(pathSegments, "/")+"/";
-   else Next= "/" + implode(pathSegments, "/");
+   if(Next[<1]=='/') Next="/"+implode(path_segments, "/")+"/";
+   else Next= "/" + implode(path_segments, "/");
 
    while(strsrch(Next,"//")!=-1) Next = replace_string(Next,"//","/");
 

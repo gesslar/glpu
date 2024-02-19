@@ -13,15 +13,15 @@ inherit STD_CMD ;
 
 int main(object caller, object room, string args)
 {
-     string cmd, arg, argChannel;
-     string *arr, multipleTune;
+     string cmd, arg, arg_channel;
+     string *arr, multiple_tune;
      int i;
 
      if(!args) return(notify_fail("Sytnax: channel <list/show/tune> <argument>\n"));
 
      sscanf(args, "%s", cmd);
      sscanf(args, "%s %s", cmd, arg);
-     sscanf(args, "%s %s %s", cmd, arg, argChannel);
+     sscanf(args, "%s %s %s", cmd, arg, arg_channel);
 
      switch(cmd)
      {
@@ -29,7 +29,7 @@ int main(object caller, object room, string args)
           {
                if(!arg)
                {
-                   arr = CHAN_D->getMods();
+                   arr = CHAN_D->get_modules();
 
                    if(sizeof(arr) == 1)
                        write("The following channel module is installed:\n\t"
@@ -44,7 +44,7 @@ int main(object caller, object room, string args)
                    return 1;
                }
 
-               arr = CHAN_D->getChls(arg);
+               arr = CHAN_D->get_channels(arg);
                if(sizeof(arr) > 0)
                {
                     if(sizeof(arr) == 1) write("The channels are as follows for '"
@@ -64,7 +64,7 @@ int main(object caller, object room, string args)
           {
                if(!arg) return(notify_fail("Sytnax: channel <list/show/tune> <argument>\n"));
                if(!CHAN_D->valid_ch(arg)) return notify_fail("Channel: Channel " + arg + " does not exist.\n");
-               arr = CHAN_D->getTuned(arg);
+               arr = CHAN_D->get_tuned(arg);
                if(sizeof(arr) > 0)
                {
                     if(sizeof(arr) == 1) write("The the following user is tuned into '" + arg + "':\n\t" + capitalize(arr[0]) + "\n");
@@ -76,39 +76,39 @@ int main(object caller, object room, string args)
           }
           case "tune" :
           {
-               if(!argChannel) return(notify_fail("Syntax: channel tune <in/out> <channel/network>\n"));
+               if(!arg_channel) return(notify_fail("Syntax: channel tune <in/out> <channel/network>\n"));
 
                if(arg == "in")
                {
-                    multipleTune = CHAN_D->getChls(argChannel);
-                    if(sizeof(multipleTune) > 0)
+                    multiple_tune = CHAN_D->get_channels(arg_channel);
+                    if(sizeof(multiple_tune) > 0)
                     {
-                         for(i = 0; i < sizeof(multipleTune); i ++)
+                         for(i = 0; i < sizeof(multiple_tune); i ++)
                          {
-                              if(CHAN_D->tune(multipleTune[i], caller->name(), 1)) write("Tune: Tuned into channel " + multipleTune[i] + "\n");
-                              else write("Tune: Channel " + multipleTune[i] + " does not exist.\n");
+                              if(CHAN_D->tune(multiple_tune[i], caller->name(), 1)) write("Tune: Tuned into channel " + multiple_tune[i] + "\n");
+                              else write("Tune: Channel " + multiple_tune[i] + " does not exist.\n");
                          }
                          return 1;
                     }
-                    if(CHAN_D->tune(argChannel, caller->name(), 1)) write("Tune: Tuned into channel " + argChannel + "\n");
-                    else write("Tune: Channel " + argChannel + " does not exist.\n");
+                    if(CHAN_D->tune(arg_channel, caller->name(), 1)) write("Tune: Tuned into channel " + arg_channel + "\n");
+                    else write("Tune: Channel " + arg_channel + " does not exist.\n");
                     return 1;
                }
 
                if(arg == "out")
                {
-                    multipleTune = CHAN_D->getChls(argChannel);
-                    if(sizeof(multipleTune) > 0)
+                    multiple_tune = CHAN_D->get_channels(arg_channel);
+                    if(sizeof(multiple_tune) > 0)
                     {
-                         for(i = 0; i < sizeof(multipleTune); i ++)
+                         for(i = 0; i < sizeof(multiple_tune); i ++)
                          {
-                              if(CHAN_D->tune(multipleTune[i], caller->name(), 0)) write("Tune: Tuned out of channel " +  multipleTune[i] + "\n");
-                              else write("Tune: Channel " + multipleTune[i] + " does not exist.\n");
+                              if(CHAN_D->tune(multiple_tune[i], caller->name(), 0)) write("Tune: Tuned out of channel " +  multiple_tune[i] + "\n");
+                              else write("Tune: Channel " + multiple_tune[i] + " does not exist.\n");
                          }
                          return 1;
                     }
-                    if(CHAN_D->tune(argChannel, caller->name(), 0)) write("Tune: Tuned out of channel " + argChannel + "\n");
-                    else write("Tune: Channel " + argChannel + " does not exist.\n");
+                    if(CHAN_D->tune(arg_channel, caller->name(), 0)) write("Tune: Tuned out of channel " + arg_channel + "\n");
+                    else write("Tune: Channel " + arg_channel + " does not exist.\n");
                     return 1;
                }
           }
@@ -122,12 +122,12 @@ int main(object caller, object room, string args)
 
 string help(object caller)
 {
-     string *modList = CHAN_D->getMods(), mods;
+     string *mod_list = CHAN_D->get_modules(), mods;
 
 
-     if(!sizeof(modList)) mods = "There is no networks currently installed.";
-     if(sizeof(modList) == 1) mods = modList[0];
-     else mods = implode(modList[0..(sizeof(modList)-2)], ", ") + ", " + modList[sizeof(modList) - 1];
+     if(!sizeof(mod_list)) mods = "There is no networks currently installed.";
+     if(sizeof(mod_list) == 1) mods = mod_list[0];
+     else mods = implode(mod_list[0..(sizeof(mod_list)-2)], ", ") + ", " + mod_list[sizeof(mod_list) - 1];
      return(" SYNTAX: channel <list/show/tune> <argument>\n\n"
      "This command allows you to interact with the different channel networks\n"
      "available here on " + capitalize(mud_name()) + ". More specifically,\n"

@@ -13,7 +13,7 @@ int main(object caller, object room, string args)
     int range, i;
     string *history = ({});
 
-    history = this_player()->query_commandHistory();
+    history = this_player()->query_command_history();
 
     if(stringp(args))
     {

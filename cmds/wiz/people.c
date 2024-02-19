@@ -40,21 +40,21 @@ mixed main(object tp, object room, string arg) {
     OUser = OAdminArr + ODevArr + OUserArr;
 
     foreach(object user in OUser) {
-        string thisRank, thisIP, thisEnv;
-        int thisIdle ;
+        string this_rank, this_ip, this_env;
+        int this_idle ;
         string name ;
 
-        thisEnv = file_name(environment(user));
+        this_env = file_name(environment(user));
 
-        if(adminp(user)) thisRank = "Admin";
-        else if(devp(user)) thisRank = "Dev";
-        else thisRank = "User";
+        if(adminp(user)) this_rank = "Admin";
+        else if(devp(user)) this_rank = "Dev";
+        else this_rank = "User";
 
-        thisIdle = query_idle(user)/60;
-        thisIP = query_ip_number(user);
+        this_idle = query_idle(user)/60;
+        this_ip = query_ip_number(user);
 
         name = capitalize(user->name());
-        printf("%-15s%-10s%-20s%5d %-30s\n", name, thisRank, thisIP, thisIdle, thisEnv);
+        printf("%-15s%-10s%-20s%5d %-30s\n", name, this_rank, this_ip, this_idle, this_env);
     }
 
     return 1;

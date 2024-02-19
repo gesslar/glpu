@@ -1,17 +1,17 @@
 private nosave mapping items = ([]);
 
-mapping set_items(mapping itemData);
+mapping set_items(mapping item_data);
 mapping remove_item(string id);
 mapping add_item(mixed id, string desc);
 mapping query_items() ;
 string query_item(string id) ;
 
-mapping set_items(mapping itemData) {
+mapping set_items(mapping item_data) {
     mixed id;
     string key;
     mapping item = ([]);
 
-    foreach(id, key in itemData) {
+    foreach(id, key in item_data) {
         if(pointerp(id)) {
             int i;
             for(i = 0; i < sizeof(id); i++)

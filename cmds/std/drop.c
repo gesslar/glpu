@@ -37,17 +37,17 @@ int main(object caller, object room, string arg)
 
      if(sscanf(arg, "all %s", arg))
      {
-         object item, *failedObjects = ({});
+         object item, *failed_objects = ({});
 
          item = present(arg, caller);
 
-         while(objectp(item) && member_array(item, failedObjects) == -1)
+         while(objectp(item) && member_array(item, failed_objects) == -1)
          {
              if(!item->move(environment(caller)))
              {
                  write("Error [drop]: " + capitalize(item->query_short()) +
                      " can not be dropped here.\n");
-                 failedObjects += ({ item });
+                 failed_objects += ({ item });
              }
             else
             {

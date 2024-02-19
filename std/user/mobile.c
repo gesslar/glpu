@@ -24,7 +24,7 @@ inherit __DIR__ "alias";
 /* Global Variables */
 
 string *path;
-nosave string *commandHistory = ({});
+nosave string *command_history = ({});
 private object link;
 
 /* Prototypes */
@@ -61,7 +61,7 @@ void rem_path(string str);
 void catch_tell(string message);
 void receive_message(string type, string msg);
 string process_input(string arg);
-int commandHook(string arg);
+int command_hook(string arg);
 mixed* query_commands();
 int force_me(string cmd);
 
@@ -79,7 +79,7 @@ void create() {
 /* Connection functions */
 
 void setup() {
-    add_action("commandHook", "", 1);
+    add_action("command_hook", "", 1);
     set_living_name(name());
     set_ids(({name()}));
     set_proper_name(name());
@@ -100,14 +100,14 @@ void enter_world() {
     int i;
     object news_client, mail_client;
 
-    if(!isMember(query_privs(previous_object()), "admin")) return;
+    if(!is_member(query_privs(previous_object()), "admin")) return;
 
     ANNOUNCE_CHDMOD->announce_login(name());
 
     catch {
         news_client = new(query_env("news_client"));
         news_client->move(this_object());
-        if(news_client->isNew()) write("\nNotice: There are new news posts.\n\n");
+        if(news_client->is_new()) write("\nNotice: There are new news posts.\n\n");
         destruct(news_client);
         mail_client = new(OBJ_MAIL_CLIENT);
         mail_client->move(this_object());
@@ -194,12 +194,12 @@ void heart_beat() {
 }
 
 void restore_user() {
-    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(isMember(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->name()) restore_object(user_mob_data(name()));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->name()) restore_object(user_mob_data(name()));
 }
 
 void save_user() {
-    if(!isMember(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
     catch(save_object(user_mob_data(name())));
 }
 
@@ -293,14 +293,14 @@ string process_input(string arg) {
     return arg ;
 }
 
-nomask varargs string *query_commandHistory(int index, int range) {
+nomask varargs string *query_command_history(int index, int range) {
     if(this_player() != this_object() && !adminp(previous_object())) return ({});
-    if(!index) return commandHistory + ({});
-    else if(range) return commandHistory[index..range] + ({});
-    else return ({ commandHistory[index] });
+    if(!index) return command_history + ({});
+    else if(range) return command_history[index..range] + ({});
+    else return ({ command_history[index] });
 }
 
-int commandHook(string arg) {
+int command_hook(string arg) {
     string verb, err, *cmds = ({});
     string custom, tmp;
     object caller, command;
@@ -323,8 +323,8 @@ int commandHook(string arg) {
     if(arg == "") arg = 0;
     verb = lower_case(verb);
 
-    if(arg) commandHistory += ({ verb + " " + arg });
-    else commandHistory += ({ verb });
+    if(arg) command_history += ({ verb + " " + arg });
+    else command_history += ({ verb });
 
     if(environment() && environment()->valid_exit(verb)) {
         arg = verb ;
@@ -334,7 +334,7 @@ int commandHook(string arg) {
     catch {
         if(environment()) {
             // if(environment()->valid_exit(verb)) {
-            //     if(this_player()->moveAllowed(environment(this_player())->query_exit(verb))) {
+            //     if(this_player()->move_allowed(environment(this_player())->query_exit(verb))) {
             //         if(this_player()->query_env("move_in") && wizardp(this_player())) {
             //             custom = this_player()->query_env("move_in");
             //             tmp = custom;
@@ -381,10 +381,10 @@ int commandHook(string arg) {
     }
 
     if(sizeof(cmds) > 0) {
-        mixed returnValue;
+        mixed return_value;
 
         i = 0;
-        while(returnValue <= 0 && i < sizeof(cmds)) {
+        while(return_value <= 0 && i < sizeof(cmds)) {
             err = catch(command = load_object(cmds[i]));
 
             if(err) {
@@ -394,23 +394,23 @@ int commandHook(string arg) {
                 continue;
             }
 
-            returnValue = command->main(caller, environment(), arg);
+            return_value = command->main(caller, environment(), arg);
             i++;
 
-            if(returnValue) {
-                if(stringp(returnValue)) {
-                    if(!strlen(returnValue)) {
-                        returnValue = 0 ;
+            if(return_value) {
+                if(stringp(return_value)) {
+                    if(!strlen(return_value)) {
+                        return_value = 0 ;
                     } else {
-                        if(returnValue[<1] != '\n') returnValue += "\n" ;
-                        message("info", returnValue, this_object()) ;
+                        if(return_value[<1] != '\n') return_value += "\n" ;
+                        message("info", return_value, this_object()) ;
                         return 1 ;
                     }
                 }
             }
         }
 
-        return returnValue;
+        return return_value;
     }
 
     return 0;
@@ -457,7 +457,7 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!isMember(query_privs(previous_object()), "admin"))
+    if(!is_member(query_privs(previous_object()), "admin"))
         return 0;
     else
         return command(cmd);

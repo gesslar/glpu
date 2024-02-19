@@ -219,22 +219,22 @@ int i_tgMembership(string str, object tp) {
 }
 
 int i_tgMembership2(string str, object tp, string user) {
-     string *userList;
+     string *user_list;
      if(!str) {
           write("\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
-     userList = groups[str];
+     user_list = groups[str];
 
-     if(sizeof(userList) == 0) {
+     if(sizeof(user_list) == 0) {
           write("\nError:  Group '" + str + "' does not exist.\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
-     if(member_array(user, userList) == -1) {
+     if(member_array(user, user_list) == -1) {
           groups[str] += ({user});
           write("\nSuccess: User '" + user + "' was added to group '" + str + "'\n");
           i_MainMenu("2", tp);
@@ -399,21 +399,21 @@ int i_qGroup(string str, object tp) {
 
 void write_gFile(int flag) {
      string file = "";
-     string *groupList = keys(groups), *group_data;
+     string *group_list = keys(groups), *group_data;
      int i;
 
      i = 0;
-     groupList = keys(groups);
+     group_list = keys(groups);
      group_data = ({});
      file = "";
 
 
-     for(i = 0; i < sizeof(groupList); i ++) {
-          group_data = groups[groupList[i]];
-          file += "(" + groupList[i] + ")";
+     for(i = 0; i < sizeof(group_list); i ++) {
+          group_data = groups[group_list[i]];
+          file += "(" + group_list[i] + ")";
           if(sizeof(group_data) > 1) file += sprintf("%s%s\n",implode(group_data[0..(sizeof(group_data)-2)], ":"), ":" + group_data[sizeof(group_data)-1]);
           else if(sizeof(group_data) == 1) file += group_data[0] + "\n";
-          else error("ERROR: Group '" + groupList[i] + "' has no members!");
+          else error("ERROR: Group '" + group_list[i] + "' has no members!");
      }
      if(flag) write(file + "\n");
      else parse_files();
@@ -421,21 +421,21 @@ void write_gFile(int flag) {
 
 void write_aFile(int flag) {
      string file = "";
-     string *accessList = keys(access), *keys, *arr = ({});
+     string *access_list = keys(access), *keys, *arr = ({});
      mapping access_data;
      int i, j;
 
      i = 0;
      j = 0;
      access_data = ([]);
-     accessList = keys(access);
+     access_list = keys(access);
      keys = ({});
      arr = ({});
      file = "";
 
-     for(i = 0; i < sizeof(accessList); i++) {
-          access_data = access[accessList[i]];
-          file += "(" + accessList[i] + ") ";
+     for(i = 0; i < sizeof(access_list); i++) {
+          access_data = access[access_list[i]];
+          file += "(" + access_list[i] + ") ";
           keys = keys(access_data);
           arr = ({});
           for(j = 0; j < sizeof(keys); j ++)
@@ -555,7 +555,7 @@ void parse_access() {
 #endif
 
           for(n = 0; n < sizeof(entries); n++) {
-               string identity, permissions, *permArray = allocate(8);
+               string identity, permissions, *perm_array = allocate(8);
                if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2) {
                     write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
                     error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
@@ -568,16 +568,16 @@ void parse_access() {
 #endif
 
                //read, write, network, shadow, link, execute, bind, ownership
-               if(strsrch(permissions, "r") != -1) permArray[0] = "r";
-               if(strsrch(permissions, "w") != -1) permArray[1] = "w";
-               if(strsrch(permissions, "n") != -1) permArray[2] = "n";
-               if(strsrch(permissions, "s") != -1) permArray[3] = "s";
-               if(strsrch(permissions, "l") != -1) permArray[4] = "l";
-               if(strsrch(permissions, "e") != -1) permArray[5] = "e";
-               if(strsrch(permissions, "b") != -1) permArray[6] = "b";
-               if(strsrch(permissions, "o") != -1) permArray[7] = "o";
+               if(strsrch(permissions, "r") != -1) perm_array[0] = "r";
+               if(strsrch(permissions, "w") != -1) perm_array[1] = "w";
+               if(strsrch(permissions, "n") != -1) perm_array[2] = "n";
+               if(strsrch(permissions, "s") != -1) perm_array[3] = "s";
+               if(strsrch(permissions, "l") != -1) perm_array[4] = "l";
+               if(strsrch(permissions, "e") != -1) perm_array[5] = "e";
+               if(strsrch(permissions, "b") != -1) perm_array[6] = "b";
+               if(strsrch(permissions, "o") != -1) perm_array[7] = "o";
 
-               data += ([ identity : permArray ]);
+               data += ([ identity : perm_array ]);
           }
 
           access += ([directory : data]);

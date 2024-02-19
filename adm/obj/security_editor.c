@@ -19,7 +19,7 @@ int toggle_membership(string user, string group);
 int enable_membership(string user, string group);
 int disable_membership(string user, string group);
 int set_access(string dir, string id, string *akeys);
-string *listGroups();
+string *list_groups();
 string *parse(string str);
 void parse_files();
 void parse_group();
@@ -28,7 +28,7 @@ void write_state(int flag);
 void write_gFile(int flag);
 void write_aFile(int flag);
 
-void integrityCheck();
+void integrity_check();
 
 /* Global Variables */
 
@@ -49,7 +49,7 @@ string *parse(string str)
      string *arr;
      int i;
 
-     integrityCheck();
+     integrity_check();
 
      if(!str) {
           return ({});
@@ -70,7 +70,7 @@ string *parse(string str)
 
 void parse_files()
 {
-    integrityCheck();
+    integrity_check();
      parse_group();
      parse_access();
 }
@@ -80,7 +80,7 @@ void parse_group()
      int i, n;
      string *arr;
 
-      integrityCheck();
+      integrity_check();
 
       arr = parse(read_file(FILE_GROUPDATA));
 
@@ -138,7 +138,7 @@ void parse_access()
      int i, n;
      string *arr;
 
-      integrityCheck();
+      integrity_check();
 
       arr = parse(read_file(FILE_ACCESSDATA));
 
@@ -181,7 +181,7 @@ void parse_access()
 
           for(n = 0; n < sizeof(entries); n++)
           {
-               string identity, permissions, *permArray = allocate(8);
+               string identity, permissions, *perm_array = allocate(8);
                if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2)
                {
                     write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
@@ -195,16 +195,16 @@ void parse_access()
 #endif
 
                //read, write, network, shadow, link, execute, bind, ownership
-               if(strsrch(permissions, "r") != -1) permArray[0] = "r";
-               if(strsrch(permissions, "w") != -1) permArray[1] = "w";
-               if(strsrch(permissions, "n") != -1) permArray[2] = "n";
-               if(strsrch(permissions, "s") != -1) permArray[3] = "s";
-               if(strsrch(permissions, "l") != -1) permArray[4] = "l";
-               if(strsrch(permissions, "e") != -1) permArray[5] = "e";
-               if(strsrch(permissions, "b") != -1) permArray[6] = "b";
-               if(strsrch(permissions, "o") != -1) permArray[7] = "o";
+               if(strsrch(permissions, "r") != -1) perm_array[0] = "r";
+               if(strsrch(permissions, "w") != -1) perm_array[1] = "w";
+               if(strsrch(permissions, "n") != -1) perm_array[2] = "n";
+               if(strsrch(permissions, "s") != -1) perm_array[3] = "s";
+               if(strsrch(permissions, "l") != -1) perm_array[4] = "l";
+               if(strsrch(permissions, "e") != -1) perm_array[5] = "e";
+               if(strsrch(permissions, "b") != -1) perm_array[6] = "b";
+               if(strsrch(permissions, "o") != -1) perm_array[7] = "o";
 
-               data += ([ identity : permArray ]);
+               data += ([ identity : perm_array ]);
 
           }
 
@@ -214,7 +214,7 @@ void parse_access()
 
 int create_group(string group, string *members)
 {
-    integrityCheck();
+    integrity_check();
 
      if(groups[group]) return 0;
      if(!sizeof(members)) return 0;
@@ -224,7 +224,7 @@ int create_group(string group, string *members)
 
 int delete_group(string group)
 {
-    integrityCheck();
+    integrity_check();
 
      if(!groups[group]) return 0;
      map_delete(groups, group);
@@ -233,14 +233,14 @@ int delete_group(string group)
 
 int enable_membership(string user, string group)
 {
-     string *userList;
+     string *user_list;
 
-     integrityCheck();
+     integrity_check();
 
      if(!groups[group]) return 0;
-     userList = groups[group];
+     user_list = groups[group];
 
-     if(member_array(user, userList) == -1)
+     if(member_array(user, user_list) == -1)
            groups[group] += ({user});
 
      else return 0;
@@ -249,14 +249,14 @@ int enable_membership(string user, string group)
 
 int disable_membership(string user, string group)
 {
-     string *userList;
+     string *user_list;
 
-     integrityCheck();
+     integrity_check();
 
      if(!groups[group]) return 0;
-     userList = groups[group];
+     user_list = groups[group];
 
-     if(member_array(user, userList) != -1)
+     if(member_array(user, user_list) != -1)
            groups[group] -= ({user});
 
      else return 0;
@@ -265,14 +265,14 @@ int disable_membership(string user, string group)
 
 int toggle_membership(string user, string group)
 {
-     string *userList;
+     string *user_list;
 
-     integrityCheck();
+     integrity_check();
 
      if(!groups[group]) return 0;
-     userList = groups[group];
+     user_list = groups[group];
 
-     if(member_array(user, userList) == -1)
+     if(member_array(user, user_list) == -1)
      {
           write("DEBUG: Adding user!\n");
            groups[group] += ({user});
@@ -288,7 +288,7 @@ int toggle_membership(string user, string group)
 
 int set_access(string dir, string id, string *akeys)
 {
-    integrityCheck();
+    integrity_check();
 
      if(!sizeof(akeys)) return 0;
 
@@ -297,11 +297,11 @@ int set_access(string dir, string id, string *akeys)
      return 1;
 }
 
-string *listGroups()
+string *list_groups()
 {
     string *keys;
 
-    integrityCheck();
+    integrity_check();
 
      keys = keys(groups);
     return keys;
@@ -309,7 +309,7 @@ string *listGroups()
 
 void write_state(int flag)
 {
-    integrityCheck();
+    integrity_check();
      if(!adminp(previous_object()) && !adminp(this_player())) return;
      write_gFile(flag);
      write_aFile(flag);
@@ -319,27 +319,27 @@ void write_state(int flag)
 void write_gFile(int flag)
 {
      string file = "";
-     string *groupList = keys(groups), *group_data;
+     string *group_list = keys(groups), *group_data;
      int i;
      string err = "";
 
-    integrityCheck();
+    integrity_check();
 
      if(!adminp(previous_object()) && !adminp(this_player())) return;
 
      i = 0;
-     groupList = keys(groups);
+     group_list = keys(groups);
      group_data = ({});
      file = "";
 
 
-     for(i = 0; i < sizeof(groupList); i ++)
+     for(i = 0; i < sizeof(group_list); i ++)
      {
-          group_data = groups[groupList[i]];
-          file += "(" + groupList[i] + ")";
+          group_data = groups[group_list[i]];
+          file += "(" + group_list[i] + ")";
           if(sizeof(group_data) > 1) file += sprintf("%s%s\n",implode(group_data[0..(sizeof(group_data)-2)], ":"), ":" + group_data[sizeof(group_data)-1]);
           else if(sizeof(group_data) == 1) file += group_data[0] + "\n";
-          else error("ERROR: Group '" + groupList[i] + "' has no members!");
+          else error("ERROR: Group '" + group_list[i] + "' has no members!");
      }
      if(flag) write(file + "\n");
      else
@@ -357,27 +357,27 @@ void write_gFile(int flag)
 void write_aFile(int flag)
 {
      string file = "";
-     string *accessList = keys(access), *keys, *arr = ({});
+     string *access_list = keys(access), *keys, *arr = ({});
      mapping access_data;
      int i, j;
      string err = "";
 
-     integrityCheck();
+     integrity_check();
 
      if(!adminp(previous_object()) && !adminp(this_player())) return;
 
      i = 0;
      j = 0;
      access_data = ([]);
-     accessList = keys(access);
+     access_list = keys(access);
      keys = ({});
      arr = ({});
      file = "";
 
-     for(i = 0; i < sizeof(accessList); i++)
+     for(i = 0; i < sizeof(access_list); i++)
      {
-          access_data = access[accessList[i]];
-          file += "(" + accessList[i] + ") ";
+          access_data = access[access_list[i]];
+          file += "(" + access_list[i] + ") ";
           keys = keys(access_data);
           arr = ({});
           for(j = 0; j < sizeof(keys); j ++)
@@ -398,7 +398,7 @@ void write_aFile(int flag)
       }
 }
 
-void integrityCheck()
+void integrity_check()
 {
     if(!clonep(this_object()))
         error("Error [security_editor]: This object must be cloned to be used.\n");

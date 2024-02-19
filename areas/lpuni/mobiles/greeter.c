@@ -9,7 +9,7 @@
 inherit STD_NPC;
 
 int count;
-string *cmdQueue;
+string *cmd_queue;
 mapping messages;
 
 void setup() {
@@ -26,7 +26,7 @@ void setup() {
     }
 
     count = 0;
-    cmdQueue = ({});
+    cmd_queue = ({});
     messages = ([]);
 }
 
@@ -38,11 +38,11 @@ void heart_beat()
         command("say Please feel free to make your way inside.");
     }
 
-    if(sizeof(cmdQueue) > 0)
+    if(sizeof(cmd_queue) > 0)
     {
-            foreach(string cmd in explode(cmdQueue[0], "\n"))
+            foreach(string cmd in explode(cmd_queue[0], "\n"))
                 command(cmd);
-            cmdQueue = cmdQueue[1..];
+            cmd_queue = cmd_queue[1..];
         }
 
         foreach(string key, string *arr in messages)
@@ -70,23 +70,23 @@ debug_message(msg) ;
     msg = XTERM256->substitute_colour(msg, "plain") ;
 debug_message(msg) ;
     if(sscanf(msg, "%s bows%*sto you", target))
-        cmdQueue += ({ "bow " + lower_case(target) });
+        cmd_queue += ({ "bow " + lower_case(target) });
 
 
     if(sscanf(msg, "%*s slaps you%*s"))
-        cmdQueue += ({ "frown\nsay Please do not slap me." });
+        cmd_queue += ({ "frown\nsay Please do not slap me." });
 
 
     if(sscanf(msg, "%s has entered%*s", target) || sscanf(msg, "%s has entered %*s", target))
-        cmdQueue += ({ "smile\nsay Welcome to the LPUniversity Cafe." });
+        cmd_queue += ({ "smile\nsay Welcome to the LPUniversity Cafe." });
 
     if(sscanf(msg, "%s has gone link-dead.", target)) {
-        cmdQueue += ({ "emote sweeps " + target + " away." });
+        cmd_queue += ({ "emote sweeps " + target + " away." });
         find_player(lower_case(target))->move(VOID_OB);
     }
 
     if(sscanf(msg, "%s pats you on the head.", target))
-        if(adminp(lower_case(target))) cmdQueue += ({ "smile" });
+        if(adminp(lower_case(target))) cmd_queue += ({ "smile" });
 
     if(sscanf(msg, "%s says: tell %s \"%s\"", from, target, arg) == 3 ||
         sscanf(msg, "%s says: Tell %s \"%s\"", from, target, arg) == 3) {
@@ -94,13 +94,13 @@ debug_message(msg) ;
         from = lower_case(from);
 
         if(from == target) {
-            cmdQueue += ({"chuckle\nsay " + arg});
+            cmd_queue += ({"chuckle\nsay " + arg});
             return;
         }
 
         if(!messages[target]) messages += ([ target : ({}) ]);
         messages[target] += ({ capitalize(from) + " asked me to tell you: '" + arg + "'." });
-        cmdQueue += ({ "nod\nsay The next time I see " + capitalize(target)
+        cmd_queue += ({ "nod\nsay The next time I see " + capitalize(target)
             + " I'll tell them that." });
     }
 
@@ -110,7 +110,7 @@ debug_message(msg) ;
 
         if(!messages[target]) messages += ([ target : ({}) ]);
         messages[target] += ({ capitalize(from) + " asked me to tell you: '" + arg + "' at " + ctime(time()) + "." });
-        cmdQueue += ({ lower_case(chan) + " The next time I see " + capitalize(target)
+        cmd_queue += ({ lower_case(chan) + " The next time I see " + capitalize(target)
             + ", on this mud, I'll tell them that." });
     }
 }

@@ -12,10 +12,10 @@
 
 string *exploded;
 function cb;
-int currentLine = 0;
-int totalLines;
-int linesPerCycle = DEF_LINESPERCYCLE;
-int myLinesPerCycle;
+int current_line = 0;
+int total_lines;
+int lines_per_cycle = DEF_LINESPERCYCLE;
+int my_lines_per_cycle;
 int ansi = 1;
 
 int page(string data, string title);
@@ -28,18 +28,18 @@ varargs int page(string data, string title, function callback, int no_ansi) {
     if(functionp(callback)) cb = callback;
     if(no_ansi) ansi = 0;
 
-    currentLine = 0;
+    current_line = 0;
 
     if(!this_player()->query_env("morelines"))
-        myLinesPerCycle = DEF_LINESPERCYCLE;
+        my_lines_per_cycle = DEF_LINESPERCYCLE;
     else
-        myLinesPerCycle = to_int(this_player()->query_env("morelines"));
+        my_lines_per_cycle = to_int(this_player()->query_env("morelines"));
 
-    linesPerCycle = myLinesPerCycle - 1;
+    lines_per_cycle = my_lines_per_cycle - 1;
 
     data = replace_string(data, "\\e", "\e") ;
     exploded = explode(data, "\n");
-    totalLines = sizeof(exploded);
+    total_lines = sizeof(exploded);
     page_more();
 }
 
@@ -47,27 +47,27 @@ int page_more() {
     int start, end;
     int msg_type ;
 
-    start = currentLine + 1;
+    start = current_line + 1;
 
     if(!ansi) msg_type = msg_type | NO_ANSI ;
-    for(;currentLine < totalLines && currentLine < linesPerCycle; currentLine++)
-        tell(this_player(), exploded[currentLine], msg_type);
+    for(;current_line < total_lines && current_line < lines_per_cycle; current_line++)
+        tell(this_player(), exploded[current_line], msg_type);
 
-    end = currentLine;
+    end = current_line;
 
-    if(totalLines >= myLinesPerCycle) {
+    if(total_lines >= my_lines_per_cycle) {
         switch(this_player()->query_env("page_display")) {
             case "percent" :
-                write("\n-=-= [" + percent_of(currentLine, totalLines) + "%] =-=-\n");
+                write("\n-=-= [" + percent_of(current_line, total_lines) + "%] =-=-\n");
                 break;
             case "lines" :
             default :
-                write("\n-=-= [" + start + "-" + end + " of " + totalLines + "] =-=-\n");
+                write("\n-=-= [" + start + "-" + end + " of " + total_lines + "] =-=-\n");
                 break;
         }
     }
 
-    if(currentLine < totalLines) {
+    if(current_line < total_lines) {
         input_to("prompt");
         return 1;
     }
@@ -99,22 +99,22 @@ int prompt(string arg) {
         case "" :
         case "\n\r" :
         {
-            linesPerCycle += myLinesPerCycle - 1;
+            lines_per_cycle += my_lines_per_cycle - 1;
             break;
         }
         case "s" :
         case "'" :
         {
-            linesPerCycle = myLinesPerCycle;
-            currentLine = 0;
+            lines_per_cycle = my_lines_per_cycle;
+            current_line = 0;
             break;
         }
         default :
         {
             if(intp(to_int(arg)))
             {
-                currentLine = to_int(arg);
-                linesPerCycle = to_int(arg) + myLinesPerCycle;
+                current_line = to_int(arg);
+                lines_per_cycle = to_int(arg) + my_lines_per_cycle;
             }
             break;
         }

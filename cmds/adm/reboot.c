@@ -14,7 +14,7 @@ inherit STD_CMD ;
 int main(object caller, object room, string arg) {
      string status;
      int time;
-     status = SHUTDOWN_D->getStatus();
+     status = SHUTDOWN_D->get_status();
 
      if(!adminp(previous_object())) return notify_fail("Error [reboot]: Access denied.\n");
 
