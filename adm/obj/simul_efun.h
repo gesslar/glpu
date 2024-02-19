@@ -31,6 +31,7 @@ string query_file_name(object ob) ;
 
 // File: function
 varargs string call_trace(int colour) ;
+int valid_function(mixed func) ;
 
 // File: grammar
 string int_string (int num) ;

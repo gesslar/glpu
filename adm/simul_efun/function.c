@@ -1,3 +1,6 @@
+#include "/adm/obj/simul_efun.h"
+#include <function.h>
+
 varargs string call_trace(int colour) {
     string res;
     int i, n;
@@ -35,4 +38,16 @@ varargs string call_trace(int colour) {
 
     if(!colour) res = no_ansi(res) ;
     return res;
+}
+
+int valid_function(mixed func) {
+    int fp ;
+
+    fp = functionp(func) ;
+
+    if(fp) {
+        return !(fp & FP_OWNER_DESTED) ;
+    }
+
+    return FALSE ;
 }
