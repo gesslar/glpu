@@ -13,6 +13,7 @@ inherit STD_CMD ;
 mixed main(object tp, object room, string arg) {
      int i;
      mixed *data = call_out_info();
+
      if(sizeof(data) < 1) return(notify_fail("Error [callouts]: There are currently no callouts in progress.\n"));
      tell(tp, sprintf("%10s %35s %28s\n%s", "Object", "Function", "Delay", BORDER));
      for(i = 0; i < sizeof(data); i++)
@@ -22,8 +23,7 @@ mixed main(object tp, object room, string arg) {
      return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
      return(" SYNTAX: callouts\n\n"
      "This comand will return information about currently active callouts.\n"
      "When you call this command, it will inform you of each object with\n"
