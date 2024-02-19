@@ -32,6 +32,9 @@ string query_directory(object ob) {
     string dir ;
 
     if(!objectp(ob))
+        ob = previous_object() ;
+
+    if(!objectp(ob))
         error("Bad argument 1 to query_directory()") ;
 
     file = base_name(ob) ;
@@ -39,5 +42,5 @@ string query_directory(object ob) {
     parts = parts[0..<2];
     dir = implode(parts, "/");
 
-    return prepend(dir, "/");
+    return append(prepend(dir, "/"), "/");
 }

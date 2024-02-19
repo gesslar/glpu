@@ -118,6 +118,9 @@ string query_file_name(object ob) {
     string dir ;
 
     if(!objectp(ob))
+        ob = previous_object() ;
+
+    if(!objectp(ob))
         error("Bad argument 1 to query_file_name().\n") ;
 
     file = base_name(ob) ;
