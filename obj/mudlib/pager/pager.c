@@ -52,19 +52,20 @@ int page_more() {
     start = current_line + 1;
 
     if(!ansi) msg_type = msg_type | NO_ANSI ;
-    for(;current_line < total_lines && current_line < lines_per_cycle; current_line++)
+    for(;current_line < total_lines && current_line < lines_per_cycle; current_line++) {
         tell(this_player(), exploded[current_line], msg_type);
+    }
 
     end = current_line;
 
     if(total_lines >= my_lines_per_cycle) {
         switch(this_player()->query_env("page_display")) {
             case "percent" :
-                write("\n-=-= [" + percent_of(current_line, total_lines) + "%] =-=-\n");
+                write("-=-= [" + percent_of(current_line, total_lines) + "%] =-=-\n", MSG_PROMPT);
                 break;
             case "lines" :
             default :
-                write("\n-=-= [" + start + "-" + end + " of " + total_lines + "] =-=-\n");
+                write("-=-= [" + start + "-" + end + " of " + total_lines + "] =-=-\n", MSG_PROMPT);
                 break;
         }
     }
@@ -74,7 +75,7 @@ int page_more() {
         return 1;
     }
 
-    write("\n");
+    // write("\n");
     evaluate(cb);
     remove() ;
     return 1;
