@@ -10,94 +10,57 @@
 
 inherit STD_CMD ;
 
-object *addArray( object  *oldarr, object *newarr);
-int sortName(object member1, object member2);
-
-int main()
-{
-    string *sorted_users=({});
-    object  *OAdminArr, *ODevArr,*OUserArr;
+mixed main(object tp, object room, string arg) {
+    object *OAdminArr, *ODevArr,*OUserArr;
     object *OUser;
 
-    OUser   = ({});
-    OAdminArr = ({});
-    ODevArr     = ({});
-    OUserArr   = ({});
-
-    printf("%-15s%-10s%-20s%-30s%s\n", "Name:", "Rank:", "IP:", "Location:", "Idle:");
-    printf("%-15s%-10s%-20s%-30s%s\n", "-----", "-----", "---", "---------", "-----");
-
-    OUser = users();
-    foreach( string name in OUser )
-    {
-        if(  adminp(  name  ) && name->name() != "login" )
-            OAdminArr += ({ name });
-        else if( devp(  name  )  )
-            ODevArr    += ({ name });
-        else
-            OUserArr   += ({ name });
-    }
-
-    OAdminArr = sort_array(OAdminArr,"sortName");
-    ODevArr    = sort_array(ODevArr,     "sortName");
-    OUserArr   = sort_array(OUserArr,   "sortName");
-
     OUser = ({});
-    OUser = addArray(OUser,OAdminArr);
-    OUser = addArray(OUser, ODevArr);
-    OUser = addArray(OUser, OUserArr);
+    OAdminArr = ({});
+    ODevArr = ({});
+    OUserArr = ({});
 
-    foreach(object thisUser in OUser)
-    {
-        if(environment(thisUser))
-            sorted_users += ({thisUser->name()});
+    printf("%-15s%-10s%-20s%-5s %-30s\n", "Name:", "Rank:", "IP:", "Idle:", "Location:");
+    printf("%-15s%-10s%-20s%-5s %-30s\n", "-----", "-----", "---", "-----", "---------");
+
+    OUser = filter(users(), (: environment($1) && interactive($1) :)) ;
+
+    foreach(object user in OUser) {
+        if(adminp(user) && user->name() != "login")
+            OAdminArr += ({ user });
+        else if(devp(user))
+            ODevArr += ({ user });
         else
-            printf("%-15s%-10s%-20s%-30s%s\n", "LOGIN", "-", query_ip_number(thisUser),
-              "[No Environment]", "-");
+            OUserArr += ({ user });
     }
 
+    OAdminArr = sort_array(OAdminArr, (: strcmp($1->name(), $2->name()) :) );
+    ODevArr = sort_array(ODevArr, (: strcmp($1->name(), $2->name()) :) );
+    OUserArr = sort_array(OUserArr, (: strcmp($1->name(), $2->name()) :) );
 
-    foreach(string thisName in sorted_users)
-    {
-        object thisUser;
-        string thisRank,thisIP,thisEnv,thisIdle;
+    OUser = OAdminArr + ODevArr + OUserArr;
 
-        thisUser=find_player(thisName);
+    foreach(object user in OUser) {
+        string thisRank, thisIP, thisEnv;
+        int thisIdle ;
+        string name ;
 
-        if(objectp(environment(thisUser))) thisEnv = file_name(environment(thisUser));
-        else thisEnv = "[No Environment]";
+        thisEnv = file_name(environment(user));
 
-        if(adminp(thisUser)) thisRank = "Admin";
-        else if(devp(thisUser)) thisRank = "Dev";
-
-
+        if(adminp(user)) thisRank = "Admin";
+        else if(devp(user)) thisRank = "Dev";
         else thisRank = "User";
 
-        thisIdle = ""+query_idle(thisUser)/60;
-        thisIP = ""+query_ip_number(thisUser);
+        thisIdle = query_idle(user)/60;
+        thisIP = query_ip_number(user);
 
-        printf("%-15s%-10s%-20s%-30s%s\n", capitalize(thisName), thisRank, thisIP, thisEnv, thisIdle);
+        name = capitalize(user->name());
+        printf("%-15s%-10s%-20s%5d %-30s\n", name, thisRank, thisIP, thisIdle, thisEnv);
     }
 
     return 1;
 }
 
-int sortName(object member1, object member2)
-{
-    if( member1->name()  > member2->name()  )    return 1;
-    if( member1->name() < member2->name() ) return -1;
-    else return 0;
-}
-
-object *addArray( object  *oldArr, object *newArr)
-{
-    foreach( object member in newArr)
-        oldArr += ({ member });
-    return oldArr;
-}
-
-string help(object caller)
-{
+string help(object caller) {
     return(" SYNTAX: people\n\n"
       "This command allows you to see all users logged in. They are\n"
       "displayed with their name, rank, ip, location, and minutes of idle\n"
