@@ -108,11 +108,11 @@ void enter_world() {
         news_client = new(query_env("news_client"));
         news_client->move(this_object());
         if(news_client->is_new()) write("\nNotice: There are new news posts.\n\n");
-        destruct(news_client);
+        news_client->remove() ;
         mail_client = new(OBJ_MAIL_CLIENT);
         mail_client->move(this_object());
         if(mail_client->has_new_mail()) write("You have new mail!\n\n");
-        destruct(mail_client);
+        mail_client->remove() ;
     };
 
     catch {

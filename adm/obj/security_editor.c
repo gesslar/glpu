@@ -350,7 +350,8 @@ void write_gFile(int flag)
           err += catch(destruct(find_object("/adm/obj/master/valid")));
           err += catch(load_object("/adm/obj/master/valid"));
           err += catch(load_object("/adm/obj/master"));
-          if(err != "0000") write(err);
+          err += catch(CONFIG_D->rehash_config()) ;
+          if(err != "00000") write(err);
      }
 }
 
@@ -394,7 +395,8 @@ void write_aFile(int flag)
           err += catch(destruct(find_object("/adm/obj/master/valid")));
           err += catch(load_object("/adm/obj/master/valid"));
           err += catch(load_object("/adm/obj/master"));
-          if(err != "0000") write(err);
+          err += catch(CONFIG_D->rehash_config()) ;
+          if(err != "00000") write(err);
       }
 }
 

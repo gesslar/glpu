@@ -52,7 +52,7 @@ mixed main(object caller, object room, string str) {
             write("Success [dest]: Destroyed object '" + ob->query_short() + "'.\n");
             catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
         }
-        catch(ob->remove());
+        ob->remove();
         if(ob) destruct(ob);
         return 1;
     }
@@ -71,18 +71,16 @@ mixed main(object caller, object room, string str) {
             catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + ob->query_short() + ".\n", ({caller})));
         }
         tell_object(ob, "Notice [dest]: You have been nullified and hence disconnected from the mud.\n");
-        catch(ob->remove());
         if(ob) destruct(ob);
         return 1;
     }
 
     if(str[<2..<1] != ".c") str += ".c";
     str = resolve_path(caller->query("cwd"), str);
-    if(find_object(str)) {
-        ob = find_object(str);
+    if(ob = find_object(str)) {
         write("Success [dest]: Destructing master object for '" + str + "'.\n");
         caller->set("cwf", str);
-        catch(ob->remove());
+        ob->remove() ;
         if(ob) destruct(ob);
         return 1;
     }

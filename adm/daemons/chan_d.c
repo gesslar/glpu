@@ -32,6 +32,7 @@ mapping modules;
 void setup() {
     string str, err, *arr;
     int i, time;
+    object ob ;
 
     set_no_clean() ;
 
@@ -44,8 +45,8 @@ void setup() {
         return ;
 
     for (i = 0; i < sizeof(arr); i++) {
-        if(find_object(arr[i]))
-            destruct(find_object(arr[i]));
+        if(ob = find_object(arr[i]))
+            ob->remove() ;
         write("Loading channel module: " + arr[i] + "...");
         err = catch(load_object(arr[i]));
 

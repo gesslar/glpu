@@ -11,13 +11,13 @@ inherit STD_CMD ;
 int main() {
     if(!load_object(LOCKDOWN_D)) {
         write("\n Error [lockdown]: lockdown daemon not found\n");
-            destruct(this_object());
+            remove() ;
             return 1;
     }//END IF
 
     if(!adminp(query_privs(this_player()))) {
         write("\n Error [lockdown]: access denied\n");
-        destruct(this_object());
+        remove() ;
         return 1;
     }//END IF
 
@@ -94,7 +94,7 @@ int i_MainMenu(string arg) {
             break;
         case "5":
             write("\n Exiting lockdown tool...\n\n");
-            destruct(this_object());
+            remove() ;
             return 1;
             break;
         default:

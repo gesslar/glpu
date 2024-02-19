@@ -47,17 +47,15 @@ private void create() {
     }
 }
 
-void event_remove(object prev) {
-    load_object(VOID_OB);
-
-    foreach(object ob in all_inventory()) {
-        if(interactive(ob)) {
-            tell_object(ob, "You watch as the environment around you disappears.\n");
-            ob->move(VOID_OB);
-        }
+int remove() {
+    if(environment()) {
+        environment()->add_capacity(query_mass());
+        environment()->add_volume(query_bulk());
     }
 
-    efun::destruct(this_object());
+    destruct() ;
+
+    return 1 ;
 }
 
 int move(mixed dest) {

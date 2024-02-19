@@ -30,7 +30,7 @@ void post_setup() {
 
     s_editor = clone_object("/adm/obj/security_editor.c");
     groups = s_editor->list_groups();
-    destruct(s_editor);
+    s_editor->remove() ;
 
     permissions = ([]);
     data = ([]);

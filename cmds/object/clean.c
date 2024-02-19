@@ -41,7 +41,7 @@ mixed main(object caller, object room, string arg) {
 
           tell(caller, "* Object '" + get_short(inventory[i]) + "' destroyed.\n");
           inventory[i]->remove();
-          if(inventory[i]) destruct(inventory[i]);
+          if(inventory[i]) inventory[i]->remove() ;
      }
 
      return 1;

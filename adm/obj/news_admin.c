@@ -109,7 +109,7 @@ int mm_select(string arg)
     case 8 :
     {
         write("\nExiting news daemon admin interface...\n");
-        destruct(this_object());
+        remove() ;
         return 1;
     }
 
@@ -252,5 +252,5 @@ int del_client(string args)
 int remove() {
     if(s_editor)
         destruct(s_editor);
-    return 1;
+    return ::remove() ;
 }

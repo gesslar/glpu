@@ -52,12 +52,12 @@ void init() {
     owner = environment()->name();
 
     if(!userp(find_player(owner))) {
-        destruct(this_object());
+        remove() ;
         return;
     }
 
     if(!owner) {
-        destruct(this_object());
+        remove() ;
         return;
     }
 
@@ -96,7 +96,7 @@ void init() {
 
 int start_mail(string arg) {
     if(file_name(previous_object()) != "/cmds/wiz/mail") {
-        destruct(this_object());
+        remove() ;
         error("\nError [mail]: You must use the mail command to access mail\n");
     }
 
@@ -139,7 +139,7 @@ protected varargs void i_MainMenu(string arg, int flag, int forward) {
             case "3": {
                     write("\nExiting " + mud_name() + " Mailer\n");
                     save_mailbox();
-                    destruct(this_object());
+                    remove() ;
                     return;
                 }
 
@@ -439,7 +439,7 @@ protected varargs void parse_mailcmd(string arg) {
         case "quit": {
                 write("\nExiting " + mud_name() + " Mailer\n");
                 save_mailbox();
-                destruct(this_object());
+                remove() ;
                 return;
             }
 
@@ -846,7 +846,7 @@ void callback_exit() {
         rm(current_file);
 
         if(gflag) {
-            destruct(this_object());
+            remove() ;
             return;
         } else {
             main_menu();
@@ -883,7 +883,7 @@ void callback_exit() {
     rm(current_file);
     current_file = "";
 
-    if(gflag) destruct(this_object());
+    if(gflag) remove() ;
     else main_menu();
 }
 
@@ -960,6 +960,6 @@ protected mixed save_message(string path, mapping message) {
 
 int remove() {
     if(objectp(s_editor))
-        destruct(s_editor);
-    return 1 ;
+        s_editor->remove() ;
+    return ::remove() ;
 }

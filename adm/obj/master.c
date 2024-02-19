@@ -39,9 +39,9 @@ protected object connect(int port) {
     err = catch(login_ob = new(LOGIN_OB));
 
     if(err) {
-    write("I'm sorry, but it appears that mud is not functional at the moment.\n");
-    write(err);
-    destruct(this_object());
+        write("I'm sorry, but it appears that mud is not functional at the moment.\n");
+        write(err);
+        destruct(this_object());
     }
     return login_ob;
 }

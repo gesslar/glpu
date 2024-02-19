@@ -10,27 +10,43 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
-     /* clean up first */
-     string err;
-     if(!directory_exists(user_path(caller->name())))
-          return(notify_fail("Error [eval]: You must have a home directory to use eval.\n"));
-     write("Evaluating: " + arg + "\n\n");
-     if(file_size(user_path(caller->name()) + "tmp_eval_file.c") != -1)
-     rm (user_path(caller->name()) + "tmp_eval_file.c");
-     if(find_object(user_path(caller->name()) + "tmp_eval_file"))
-          destruct(find_object(user_path(caller->name()) + "tmp_eval_file"));
+mixed main(object caller, object room, string arg) {
+    string file ;
+    object ob ;
+    string err ;
+    mixed result ;
 
-     write_file(user_path(caller->name()) + "tmp_eval_file.c","mixed eval() { "+arg+"; }\n");
-     err = catch(printf("Result = %O\n", load_object(user_path(caller->name()) + "tmp_eval_file.c")->eval()));
-     if(err) write("\nRuntime error:\n " + err + "\nSee logs for more details.\n");
-     rm(user_path(caller->name()) + "tmp_eval_file.c");
-     return 1;
+    if(!directory_exists(user_path(caller->name())))
+        return "Error [eval]: You must have a home directory to use eval.\n" ;
+
+    tell(caller, "Evaluating: " + arg + "\n\n");
+    file = user_path(caller->name()) + "tmp_eval_file.c" ;
+    if(file_size(file) != -1)
+        rm(file) ;
+
+    if(ob = find_object(file))
+        destruct(ob) ;
+
+    write_file(file,"mixed eval() { "+arg+"; }\n");
+    if(err = catch(ob = load_object(file))) {
+        tell(caller, "\nError loading file " + file + "\n"+err+"\n");
+        rm(file);
+        return 1 ;
+    }
+
+    if(err = catch(result = ob->eval())) {
+        tell(caller, "\nRuntime error:\n " + err + "\nSee logs for more details.\n");
+        rm(file);
+        return 1 ;
+    }
+
+    tell(caller, sprintf("Result = %O\n", result));
+    destruct(ob);
+    rm(file);
+    return 1 ;
 }
 
-string help(object caller)
-{
+string help(object caller) {
      return("SYNTAX: eval <lpc-statements>\n\n" +
      "This command allows you to execute stand-alone lpc statements.\n"
      "This is considered a more advanced tool and abuse of it is not\n"

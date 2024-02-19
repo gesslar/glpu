@@ -13,6 +13,8 @@
 #include <config.h>
 #include <logs.h>
 
+inherit STD_OBJECT ;
+
 /* #define EMAIL_MUST_RESOLVE */
 
 void get_name(string str);
@@ -58,7 +60,7 @@ void get_name(string str) {
 
     if(LOCKDOWN_D->is_ip_banned(query_ip_number(this_object()))) {
         write("\nYour IP address, " + query_ip_number(this_object()) + " has been banned from " + mud_name() + ".\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
@@ -70,7 +72,7 @@ void get_name(string str) {
 
     if(str == "quit") {
         write("Come back soon!\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
@@ -98,38 +100,38 @@ void get_name(string str) {
         write("Error [login]: Unable to create user object.\n");
         write("It appears that the login object is dysfunctional. Try again later.\n");
         write("Error: " + err + "\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
     if(LOCKDOWN_D->is_user_banned(str)) {
         write("\nThe username " + capitalize(str) + " is banned from " + mud_name() + ".\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_dev_lock() && wizardp(str) && !adminp(str)) {
         write("\n" + LOCKDOWN_D->query_dev_lock_msg() + "\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_player_lock() && (!adminp(str) && !wizardp(str))) {
         write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_vip_lock() && (!adminp(str) && !wizardp(str) && (member_array(str, LOCKDOWN_D->query_play_testers()) == -1))) {
         write("\n" + LOCKDOWN_D->query_vip_lock_msg() + "\n");
-        destruct() ;
+        remove() ;
         return;
     }
 
     if(str == "guest") {
         if(LOCKDOWN_D->query_guest_locked()) {
             write("\n" + LOCKDOWN_D->query_guest_lock_msg() + "\n");
-            destruct() ;
+            remove() ;
             return;
         }
 
@@ -151,7 +153,7 @@ void get_name(string str) {
     if(!file_exists(user_data_file(str) + ".o")) {
         if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
-            destruct() ;
+            remove() ;
             return;
         }
 
@@ -387,7 +389,7 @@ void reconnect(string str) {
 void auto_destruct() {
     if(is_connected) return;
     if(interactive(this_object())) write("\n\nNotice: I'm sorry, but you are only allowed 60 seconds to attempt to login.\n");
-    destruct() ;
+    remove() ;
 }
 
 void enter_world(string str) {
@@ -415,16 +417,16 @@ void enter_world(string str) {
     if(!environment(body)) {
         write("Error [login]: Unable to find a suitable location for your body.\n");
         write("Please contact an admin for assistance.\n");
-        destruct(user) ;
-        destruct(body) ;
-        destruct() ;
+        user->remove() ;
+        body->remove() ;
+        remove() ;
         return;
     }
 
     body->enter_world();
     remove_call_out(call_out_id);
 
-    destruct(this_object()) ;
+    remove() ;
 }
 
 void catch_tell(string message) {

@@ -8,6 +8,8 @@
 
 */
 
+inherit STD_OBJECT ;
+
 #define DEF_LINESPERCYCLE 40
 
 string *exploded;
@@ -74,7 +76,7 @@ int page_more() {
 
     write("\n");
     evaluate(cb);
-    destruct(this_object());
+    remove() ;
     return 1;
 }
 
@@ -92,7 +94,7 @@ int prompt(string arg) {
             return 1;
         }
         case "q" :
-        case "Q" : evaluate(cb); destruct(this_object()); return 1;
+        case "Q" : evaluate(cb); remove() ; return 1;
         case "\r" :
         case "\n" :
         case " " :
@@ -124,6 +126,6 @@ int prompt(string arg) {
 }
 
 void reset() {
-    if(!environment()) destruct(this_object());
-    if(!in_input(environment())) destruct(this_object());
+    if(!environment()) remove() ;
+    if(!in_input(environment())) remove() ;
 }

@@ -21,6 +21,7 @@ int request_clean_up() { return 1 ; }
 // Functions from other objects
 int is_daemon() ;
 int is_command() ;
+int remove() ;
 
 /*protected*/ int clean_up(int refs) {
     object *contents ;
@@ -71,11 +72,11 @@ int is_command() ;
     event(this_object(), "cleaning_up") ;
 
     contents = all_inventory() ;
-    filter(contents, (: destruct :)) ;
+    filter(contents, (: $1->remove() :)) ;
     contents -= ({ 0 }) ;
     contents->move(VOID_OB) ;
 
-    destruct() ;
+    remove() ;
 
     return CLEAN_NEVER_AGAIN ;
 }

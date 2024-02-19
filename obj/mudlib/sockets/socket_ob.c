@@ -15,6 +15,8 @@
 
 #include <socket.h>
 
+inherit STD_OBJECT ;
+
 nosave int type;
 nosave int s = -1;
 nosave int is_blocked = 0;
@@ -23,8 +25,7 @@ nosave address;
 
 nosave function read_callback, close_callback;
 
-varargs int create_socket(int socket_type, mixed p1, function read_func, function close_func)
-{
+varargs int create_socket(int socket_type, mixed p1, function read_func, function close_func) {
      int err;
 
      if(functionp(read_func)) read_callback = read_func;
@@ -32,8 +33,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
 
      address = p1;
 
-     switch(socket_type)
-     {
+     switch(socket_type) {
           case SOCKET_STREAM :
           {
                s = socket_create(STREAM, "read_callback", "close_callback");
@@ -41,7 +41,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(s < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -50,7 +50,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -64,7 +64,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(s < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -73,7 +73,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -82,7 +82,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -97,7 +97,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(s < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -106,7 +106,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -120,7 +120,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(s < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -129,7 +129,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -144,7 +144,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(s < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -153,7 +153,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -162,7 +162,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
                if(err < 0)
                {
                     socket_close(s);
-                    destruct(this_object());
+                    remove() ;
                     return error("Error [socket_ob]: " + socket_error(s) + "\n");
                }
 
@@ -182,8 +182,7 @@ varargs int create_socket(int socket_type, mixed p1, function read_func, functio
      }
 }
 
-private nomask void listen_callback(int fd)
-{
+private nomask void listen_callback(int fd) {
      object new_socket;
      int err;
 
@@ -193,8 +192,7 @@ private nomask void listen_callback(int fd)
      if(err < 0)  error("Error [socket_ob]: " + socket_error(err) + "\n");
 }
 
-private nomask void release_callback(int fd)
-{
+private nomask void release_callback(int fd) {
      int err;
 
      s = fd;

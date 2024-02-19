@@ -10,32 +10,29 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args)
-{
+int main(object caller, object room, string args) {
     object client;
 
-    if(adminp(caller) && args == "admin")
-    {
+    if(adminp(caller) && args == "admin") {
         client = clone_object("/adm/obj/news_admin.c");
         client->move(caller);
         client->main_menu();
         return 1;
     }
 
-     client = clone_object("/obj/mudlib/newsclients/std_newsclient.c");
-     client->move(caller);
+    client = clone_object("/obj/mudlib/newsclients/std_newsclient.c");
+    client->move(caller);
 
-     if(args == "check")
-     {
-         if(client->is_new())
-             write("Notice: There are new news posts.\n");
-         else write("No new posts.\n");
-         destruct(client);
-         return 1;
-     }
+    if(args == "check") {
+        if(client->is_new())
+            write("Notice: There are new news posts.\n");
+        else write("No new posts.\n");
+        client->remove() ;
+        return 1;
+    }
 
-     client->start_client();
-     return 1;
+    client->start_client();
+    return 1;
 }
 
 string help(object caller)

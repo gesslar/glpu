@@ -22,8 +22,7 @@ int remove() {
     if(query_persistent())
         save_data() ;
 
-    event(({ this_object() }), "remove") ;
-    return 1 ;
+    return ::remove() ;
 }
 
 int is_daemon() {

@@ -147,7 +147,7 @@ int select_group(string arg)
     else if(stringp(cmd))
     {
         write("\nExiting News Client...\n");
-        destruct(this_object());
+        remove() ;
         return 1;
     }
 
@@ -315,7 +315,7 @@ int group_input(string args)
             }
 
         case "q" :
-        case "quit" : write("\nExiting News Client...\n"); destruct(this_object()); return 1;
+        case "quit" : write("\nExiting News Client...\n"); remove() ; return 1;
 
         case "return" :
         case "main" :

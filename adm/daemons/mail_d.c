@@ -139,7 +139,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
     save_object(get_mail_box_file(owner));
 
     if(s_editor)
-        destruct(s_editor);
+        s_editor->remove() ;
 
     return 1;
 }

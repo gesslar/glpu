@@ -13,13 +13,6 @@ int exec( object to, object from ) {
     else return 0;
 }
 
-void destruct(object ob) {
-    if(!ob) ob = previous_object() ;
-    if(ob->remove()) {
-        if(ob) efun::destruct(ob);
-    }
-}
-
 void shutdown( int how ) {
     if(file_name(previous_object()) == "/adm/daemons/shutdown_d") efun::shutdown(how);
 }

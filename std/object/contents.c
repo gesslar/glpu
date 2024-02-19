@@ -13,7 +13,7 @@ void clean_contents() {
     object *obs = deep_inventory() ;
 
     obs->clean_contents() ;
-    destruct(obs) ;
+    obs->remove() ;
 }
 
 void set_max_capacity(int x) {

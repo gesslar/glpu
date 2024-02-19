@@ -35,7 +35,7 @@ int main(object caller, object room, string args)
      security_editor = clone_object("/adm/obj/security_editor.c");
      security_editor->disable_membership(query_privs(user), "developer");
      security_editor->write_state(0);
-     destruct(security_editor);
+     security_editor->remove() ;
      user->save_user();
 
      write("Success [revdev]: User '" + capitalize(user->name()) + "' is no longer a developer.\n");

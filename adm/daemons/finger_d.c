@@ -57,7 +57,7 @@ varargs string finger_user(string username) {
                     else {
                         last_t = "Last on";
                         last =  ctime(body->query("last_login"));
-                        destruct(body);
+                        body->remove() ;
                     }
                 }
                 if(adminp(username)) rank = "Admin";
@@ -109,7 +109,7 @@ varargs string finger_user(string username) {
                 "Username: %-10s \tRank: %-10s\n" + (away && away != "" ? "Away: " + away + "\n" : away == "" ? "This user is away.\n" : "") +
                 "E-mail: %-10s\n"
                 "%s: %-10s %s\nPlan:\n%s", capitalize(user->name()) + "", rank, user->query("email"), last_t, last, idle, plan);
-        if(!interactive(user)) destruct(user);
+        if(!interactive(user)) user->remove();
     }
     return ret;
 }

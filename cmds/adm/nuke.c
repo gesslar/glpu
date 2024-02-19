@@ -50,7 +50,7 @@ void confirm_nuke(string str, object caller, string user) {
     }
 
     security_editor->write_state(0);
-    destruct(security_editor);
+    security_editor->remove();
 
     if(body = find_player(user)) {
         tell(caller, "Warning [nuke]: Now disconnecting user '" + user + "'.\n");
@@ -60,8 +60,8 @@ void confirm_nuke(string str, object caller, string user) {
             tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n",
                 0, ({ body }) );
             link = body->query_link() ;
-            destruct(link) ;
-            destruct(body) ;
+            link->remove() ;
+            body->remove() ;
         }
     }
 

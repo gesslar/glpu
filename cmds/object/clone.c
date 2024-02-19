@@ -29,7 +29,7 @@ mixed main(object caller, object room, string str) {
 
     if(!ob->move(caller)) {
         if(!ob->move(environment(caller))) {
-            destruct(ob);
+            ob->remove() ;
             return "Error [clone]: Unable to move object to your location.";
         }
     }

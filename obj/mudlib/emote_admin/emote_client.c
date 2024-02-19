@@ -52,7 +52,7 @@ int menu_selection(string arg)
     if(lower_case(arg) == "q" || lower_case(arg) == "quit")
     {
         tell_object(this_player(), "Exiting emote editor.\n");
-            destruct(this_object());
+            remove() ;
             return 1;
     }
 
@@ -692,7 +692,7 @@ int main_or_quit(string arg)
     if(lower_case(arg) == "q" || lower_case(arg) == "quit")
     {
         tell_object(this_player(), "Exiting emote editor.\n");
-        destruct(this_object());
+        remove() ;
         return 1;
     }
 
