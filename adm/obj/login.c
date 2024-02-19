@@ -449,11 +449,11 @@ object create_body(string name) {
 
     if(origin() != "local") return 0;
 
-    err = catch(body = new(user->query_bodyPath()));
+    err = catch(body = new(user->query_body_path()));
 
     if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
-          "\tBody: " + user->query_bodyPath() + "\n");
+          "\tBody: " + user->query_body_path() + "\n");
     }
 
     body->set_proper_name(query_privs(user));

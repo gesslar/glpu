@@ -13,7 +13,7 @@
 
 inherit STD_OBJECT;
 
-private string password, bodyPath;
+private string password, body_path;
 
 private nosave object body;
 
@@ -22,7 +22,7 @@ void remove();
 
 void create() {
     if(origin() != ORIGIN_DRIVER) return;
-    if(!bodyPath) bodyPath = "/std/user/mobile";
+    if(!body_path) body_path = "/std/user/mobile";
 }
 
 nomask void net_dead() {
@@ -69,15 +69,15 @@ nomask mixed query_password() {
     else return "Error [user]: Permission Denied.\n";
 }
 
-nomask int set_bodyPath(string file) {
+nomask int set_body_path(string file) {
     if(!adminp(query_privs(previous_object())) && this_player() != body) return 0;
     if(!file_exists(file)) return 0;
-    bodyPath = file;
+    body_path = file;
     return 1;
 }
 
-nomask string query_bodyPath() {
-    return bodyPath;
+nomask string query_body_path() {
+    return body_path;
 }
 
 nomask int set_body(object ob) {

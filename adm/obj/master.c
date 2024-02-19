@@ -21,6 +21,13 @@ inherit "/adm/obj/master/valid";
 
 private nosave mapping errors = ([]);
 
+void create() {
+    // In master/valid.c
+    parse_group();
+    parse_access();
+
+}
+
 void flag(string str) {
     debug_message("Flags disabled.\n");
 }
