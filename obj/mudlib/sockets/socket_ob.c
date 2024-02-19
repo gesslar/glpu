@@ -28,8 +28,8 @@ nosave function read_callback, close_callback;
 varargs int create_socket(int socket_type, mixed p1, function read_func, function close_func) {
      int err;
 
-     if(functionp(read_func)) read_callback = read_func;
-     if(functionp(close_func)) close_callback = close_func;
+     if(valid_function(read_func)) read_callback = read_func;
+     if(valid_function(close_func)) close_callback = close_func;
 
      address = p1;
 
@@ -214,7 +214,7 @@ private nomask void udp_read_callback(int fd, mixed message, string address)
 
 private nomask void close_callback(int fd)
 {
-     if(functionp(close_callback)) catch(evaluate(close_callback, this_object()));
+     if(valid_function(close_callback)) catch(evaluate(close_callback, this_object()));
      remove();
 }
 

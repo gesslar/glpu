@@ -27,7 +27,7 @@ int prompt(string arg);
 varargs int page(string data, string title, function callback, int no_ansi) {
     if(!stringp(data)) return 0;
     if(stringp(title)) write("*===| Paging: " + title + " |===*\n\n");
-    if(functionp(callback)) cb = callback;
+    if(valid_function(callback)) cb = callback;
     if(no_ansi) ansi = 0;
 
     current_line = 0;

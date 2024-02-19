@@ -62,7 +62,7 @@ varargs string identify( mixed a, string indent ) {
         a = replace_string( a, "\t", "\\t" );
         return ind + a;
     }
-    if( functionp( a ) )
+    if( valid_function( a ) )
         return ind + sprintf("%O", a) ;
     if( recursion == MAX_RECURSION )
         return ind + "TOO_DEEP_RECURSION";
