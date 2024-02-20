@@ -18,8 +18,8 @@
 
 inherit STD_OBJECT;
 
-inherit __DIR__ "alias";
-// inherit __DIR__ "tell" ;
+inherit __DIR__ "alias" ;
+inherit __DIR__ "wealth" ;
 
 /* Global Variables */
 
@@ -68,6 +68,7 @@ int force_me(string cmd);
 /* Misc functions */
 
 void write_prompt();
+void init_capacity() ;
 
 /* Functions */
 
@@ -77,8 +78,7 @@ void create() {
 }
 
 /* Connection functions */
-
-void setup() {
+void setup_body() {
     add_action("command_hook", "", 1);
     set_living_name(name());
     set_ids(({name()}));
@@ -93,6 +93,8 @@ void setup() {
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
+    init_capacity() ;
+    init_wealth() ;
 }
 
 void enter_world() {
@@ -476,4 +478,9 @@ void write_prompt() {
     string prompt = query_env("prompt");
 
     write(prompt + " ");
+}
+
+void init_capacity() {
+    set_max_capacity(1000) ;
+    rehash_capacity() ;
 }

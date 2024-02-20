@@ -12,17 +12,20 @@ Last edited on June 27th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, object room, string arg) {
     if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
 
     if(arg == "all") {
         object *inv = all_inventory(caller);
         foreach(object item in inv) {
-            if(item->move(environment(caller) != MOVE_OK))
-                 write("Error [drop]: " + get_short(item) +" can not be dropped here.\n");
-            else {
+            int result ;
+
+            if(!(result = item->move(environment(caller)) & MOVE_OK)) {
+                write("Error [drop]: " + get_short(item) +" can not be dropped here.\n");
+                write("Result: " + result + "\n") ;
+            } else {
                 write("Success [drop]: You drop a '" + get_short(item) + "'.\n");
-                say(caller->get_cap_name()) + " drops a '"+ get_short(item) + "'.\n");
+                say(caller->query_cap_name() + " drops "+ get_short(item) + "'.\n");
             }
         }
 
@@ -35,35 +38,42 @@ int main(object caller, object room, string arg) {
         item = present(arg, caller);
 
         while(objectp(item) && member_array(item, failed_objects) == -1) {
-            if(item->move(environment(caller) != MOVE_OK)) {
+            int result ;
+            if(!(result = item->move(environment(caller)) != MOVE_OK)) {
                 write("Error [drop]: " + get_short(item) + " can not be dropped here.\n");
+                printf("Result: %d\n", result) ;
                 failed_objects += ({ item });
             } else {
-                write("Success [drop]: You drop a '" + get_short(item) + "'.\n");
-                say(capitalize(caller->name()) + " drops a '"
-                    + get_short(item) + "'.\n");
+                write("Success [drop]: You drop " + get_short(item) + ".\n");
+                say(capitalize(caller->name()) + " drops "+ get_short(item) + ".\n");
             }
 
             item = present(arg, caller);
-         }
+        }
 
-         return 1;
-     }
+        return 1;
+    }
 
-     else
-     {
-         object ob;
+    else {
+        object ob;
 
         ob = present(arg, caller);
 
-        if(!ob) return(notify_fail("Error [drop]: You don't have a '" + arg + "' in your inventory.\n"));
-        if(ob->query("prevent_drop") || ob->prevent_drop()) return(notify_fail("Error [drop]: That object can not be dropped.\n"));
-        if(!ob->move(environment(caller))) return(notify_fail("Error [drop]: That object can not be dropped here.\n"));
-
-        write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
-        say(capitalize(caller->name()) + " drops a '" + ob->query("short") + "'.\n");
-
+        if(!ob) {
+            return "Error [drop]: You don't have a '" + arg + "' in your inventory.\n";
+        } else if(ob->query("prevent_drop") || ob->prevent_drop()) {
+            return "Error [drop]: That object can not be dropped.\n";
+        } else {
+            int result ;
+            if((result = ob->move(environment(caller)) != MOVE_OK)) {
+                write("Error [drop]: " + get_short(ob) + " can not be dropped here.\n");
+                printf("Result: %d\n", result) ;
+            } else {
+                write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
+                say(capitalize(caller->name()) + " drops a '" + ob->query("short") + "'.\n");
+            }
         return 1;
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 #include "/adm/obj/simul_efun.h"
+#include <daemons.h>
 
 //overrides.c
 
@@ -83,4 +84,10 @@ varargs string query_num(int x, int many) {
     x = abs(x) ;
 
     return sign + efun::query_num(x, many) ;
+}
+
+void debug_message(string str) {
+    str = XTERM256->substitute_colour(str, "xterm") ;
+
+    efun::debug_message(str) ;
 }

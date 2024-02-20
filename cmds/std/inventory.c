@@ -12,19 +12,26 @@ mixed main(object caller, object room, string args) {
     object *inventory;
     string *shorts ;
     int i;
+    int cap, max_cap ;
 
     inventory = all_inventory(caller);
     if(sizeof(inventory) < 1)
         return "You are not currently carrying anything.\n";
 
     shorts = map(inventory, (: get_short :) );
-    shorts -= ({ 0 });
+    shorts -= ({ 0, "" });
 
     if(sizeof(shorts) < 1)
-        return "You are not currently carrying anything.\n";
+        shorts = ({ "" }) ;
 
     shorts = map(shorts, (: "    " + $1 :) );
     shorts = ({ "You are carrying the following:" }) + shorts;
+
+    cap = caller->query_capacity() ;
+    max_cap = caller->query_max_capacity() ;
+
+    shorts += ({ sprintf("Capacity: %d/%d", cap, max_cap) }) ;
+
     return shorts ;
 }
 

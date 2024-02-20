@@ -6,6 +6,9 @@
 //
 // 2024/02/18: Gesslar - Created
 
+// Functions from other objects
+int query_total_coins() ;
+
 int max_capacity, max_volume ;
 int capacity, volume ;
 
@@ -43,8 +46,12 @@ int query_volume() {
 int add_capacity(int x) {
     if (capacity + x > max_capacity) {
         return 0 ;
+    } else if(capacity + x < 0) {
+        return 0 ;
     }
+
     capacity += x ;
+
     return 1 ;
 }
 
@@ -70,4 +77,21 @@ int remove_volume(int x) {
     }
     volume -= x ;
     return 1 ;
+}
+
+void rehash_capacity() {
+    object ob, *obs = all_inventory() ;
+    int total ;
+
+    total = 0 ;
+    foreach(ob in obs) {
+        ob->rehash_capacity() ;
+        total += ob->query_capacity() ;
+    }
+
+    if(living()) {
+        total += query_total_coins() ;
+    }
+
+    capacity = max_capacity - total ;
 }

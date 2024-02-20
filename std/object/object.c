@@ -49,32 +49,37 @@ private void create() {
 
 int remove() {
     if(environment()) {
-        environment()->add_capacity(query_mass());
-        environment()->add_volume(query_bulk());
+        environment()->add_capacity(-query_mass());
+        environment()->add_volume(-query_bulk());
     }
 
     destruct() ;
-
     return 1 ;
 }
 
 int move(mixed dest) {
     int result ;
+    object prev ;
 
     result = allow_move(dest) ;
-    if(result > MOVE_OK) return result ;
+    if(!(result & MOVE_OK)) return result ;
 
-    if(environment()) {
-        environment()->add_capacity(query_mass());
-        environment()->add_volume(query_bulk());
+    prev = environment() ;
+    if(prev) {
+        prev->add_capacity(-query_mass());
+        prev->add_volume(-query_bulk());
     }
 
-    dest->add_capacity(-query_mass());
-    dest->add_volume(-query_bulk());
+    dest->add_capacity(query_mass());
+    dest->add_volume(query_bulk());
 
     move_object(dest);
+    event(this_object(), "moved", prev) ;
+    if(prev && this_object()) event(prev, "released", environment()) ;
+    if(this_object()) event(environment(), "received", prev) ;
 
-    return MOVE_OK ;
+    if(this_object()) return MOVE_OK ;
+    else return MOVE_OK | MOVE_DESTRUCTED ;
 }
 
 int allow_move(mixed dest) {

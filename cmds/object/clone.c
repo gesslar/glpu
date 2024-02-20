@@ -11,8 +11,9 @@
 inherit STD_CMD ;
 
 mixed main(object caller, object room, string str) {
-    object ob;
-    string err, custom, tmp;
+    object ob, dest ;
+    string err, custom, tmp, short, file ;
+    int result ;
 
     if(!str) str = caller->query("cwf");
     if(!str) return "SYNTAX: clone <filename>" ;
@@ -20,15 +21,22 @@ mixed main(object caller, object room, string str) {
     str = append(str, ".c");
     str = resolve_path(caller->query("cwd"), str);
 
-    if(!file_exists(str)) return "Error [clone]: Unable to find file '" + str + "'.";
+    if(!file_exists(str))
+        return "Error [clone]: Unable to find file '" + str + "'.";
 
     err = catch(ob = clone_object(str));
 
     if(stringp(err) || !ob)
         return "Error [clone]: An error was encountered when cloning the object:\n" + err  ;
 
-    if(ob->move(caller) != MOVE_OK) {
-        if(ob->move(environment(caller) != MOVE_OK)) {
+    short = get_short(ob);
+    file = file_name(ob);
+    dest = caller ;
+    if(!(result = ob->move(dest)) & MOVE_OK) {
+        printf("Result: %d\n", result);
+        dest = environment(caller);
+        if(!(result = ob->move(dest) & MOVE_OK)) {
+            printf("Result: %d\n", result);
             ob->remove() ;
             return "Error [clone]: Unable to move object to your location.";
         }
@@ -39,15 +47,16 @@ mixed main(object caller, object room, string str) {
 
     if(custom) {
         tmp = custom;
-        tmp = replace_string(tmp, "$O", (get_short(ob)[0] == 'a' ? get_short(ob) : "a " + get_short(ob)));
+        tmp = replace_string(tmp, "$O", short);
         tmp = replace_string(tmp, "$N", caller->query_cap_name());
         tell_room(environment(caller), capitalize(tmp) + "\n", caller);
-        write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
+        write("Success [clone]: New object '" + file + "' cloned to " +
+            get_short(dest) + " (" +file_name(dest)+ ").\n") ;
     } else {
-        write("Success [clone]: New object '" + file_name(ob) + "' cloned.\n");
+        write("Success [clone]: New object '" + file + "' cloned to " +
+            get_short(dest) + " (" +file_name(dest)+ ").\n") ;
         tell_room(environment(caller),
-            capitalize(caller->name()) + " creates a '" + get_short(ob) + "'.\n",
-        ({caller}));
+            capitalize(caller->name()) + " creates " + short + ".\n", caller);
     }
 
     caller->set("cwf", str);

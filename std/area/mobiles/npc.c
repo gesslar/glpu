@@ -20,17 +20,13 @@ void create() {
     add_action("command_hook", "", 1);
 }
 
-void setup() {
+void setup_body() {
     set_name("Generic NPC");
     set_living_name(lower_case(name()));
     set_ids(({name(), "npc", "generic npc", "NPC" }));
     if(clonep(this_object())) set_heart_beat(1);
     set_long(capitalize(name()) + " is a generic NPC.");
     set_short(name());
-}
-
-int command_hook(string arg) {
-    return ::command_hook(arg);
 }
 
 void restore_user() {}
