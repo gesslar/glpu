@@ -113,7 +113,7 @@ void parse_file(string *file_info) {
 }
 
 void finish_scan() {
-    debug_message("Autodoc scan finished in " + (time_ns() / 1_000_000 - start_time_ms) + "ms.") ;
+    debug("Autodoc scan finished in " + (time_ns() / 1_000_000 - start_time_ms) + "ms.") ;
 }
 
 int check_running() {

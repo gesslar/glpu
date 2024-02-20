@@ -57,3 +57,14 @@ mixed mud_config(string str) {
 string log_dir() {
     return mud_config("LOG_DIR") ;
 }
+
+void debug(string str) {
+    str = XTERM256->substitute_colour(str, "xterm") ;
+
+    debug_message(str) ;
+}
+
+varargs void debugf(string str, mixed args...) {
+    str = sprintf(str, args...) ;
+    debug(str) ;
+}

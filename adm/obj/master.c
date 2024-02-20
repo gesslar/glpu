@@ -25,7 +25,6 @@ void create() {
     // In master/valid.c
     parse_group();
     parse_access();
-
 }
 
 void flag(string str) {
@@ -70,7 +69,7 @@ protected void epilog(int load_empty) {
 
         debug_message(out);
     }
-    call_out_walltime("tune_into_error", 0.1) ;
+    call_out_walltime("tune_into_error", 0.01) ;
 }
 
 void tune_into_error() {

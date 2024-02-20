@@ -39,8 +39,6 @@ void check_running() {
 }
 
 void runit(object who) {
-    // if(!__DEV_MODE__) { write("You can't run this in production.\n") ; destruct() ; ; return ; }
-
     notify = who ;
 
     started = time() ;

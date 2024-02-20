@@ -41,7 +41,7 @@ string email;
 int is_connected = 0, call_out_id;
 
 void create() {
-    if(clonep(this_object())) call_out_id = call_out("auto_destruct", 60);
+    if(clonep()) call_out_id = call_out("auto_destruct", 60);
 }
 
 void logon() {

@@ -66,9 +66,9 @@ void heart_beat()
 
 void catch_tell(string msg) {
     string target, arg, from, chan;
-debug_message(msg) ;
+debug(msg) ;
     msg = XTERM256->substitute_colour(msg, "plain") ;
-debug_message(msg) ;
+debug(msg) ;
     if(sscanf(msg, "%s bows%*sto you", target))
         cmd_queue += ({ "bow " + lower_case(target) });
 

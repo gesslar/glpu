@@ -87,17 +87,19 @@ string no_ansi(string str) ;
 varargs string simple_list(mixed *arr, string conj) ;
 
 // File: system
-string mud_name() ;
-string lib_name() ;
-string baselib_name() ;
-string lib_version() ;
-string baselib_version() ;
-string open_status() ;
-string admin_email() ;
 int port() ;
-string driver_version() ;
-string arch() ;
 mixed mud_config(string str) ;
+string admin_email() ;
+string arch() ;
+string baselib_name() ;
+string baselib_version() ;
+string driver_version() ;
+string lib_name() ;
+string lib_version() ;
+string mud_name() ;
+string open_status() ;
+varargs void debugf(string str, mixed args...) ;
+void debug(string str) ;
 
 // File: user
 string user_data_file(string name) ;

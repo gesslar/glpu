@@ -15,7 +15,7 @@ protected mapping virtual_info(string file) {
     parts = explode(file, "/") ;
     index = member_array("virtual_area", parts) ;
     parts = parts[index+1..] ;
-debug_message(sprintf("parts: %O\n", parts)) ;
+debugf("parts: %O\n", parts) ;
 
     if(sizeof(parts) < 1)
         return result ;

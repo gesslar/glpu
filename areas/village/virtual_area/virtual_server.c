@@ -35,7 +35,7 @@ void setup_exits(object room) {
         string file = info["file"][0] ;
         mapping exits = copy(field_exits[file]) ;
         string direction, exit ;
-debug_message(json_encode(exits)) ;
+debug(json_encode(exits)) ;
         room->set_exits(exits) ;
     }
 }
