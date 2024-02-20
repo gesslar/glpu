@@ -20,8 +20,6 @@ int main(object caller, object room, string message)
 
     if(!message) return(notify_fail("Error [tell]: You must provide an argument. Syntax: reply <message>\n"));
 
-    /* Reply to I3 user */
-
     user = find_player(who);
 
     if(!objectp(user)) return notify_fail("Error [tell]: User " + who + " is not found.\n");
