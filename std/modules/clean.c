@@ -25,6 +25,7 @@ int remove() ;
 
 /*protected*/ int clean_up(int refs) {
     object *contents ;
+    int check ;
 
     // If we have an environment, straight up don't ask again. We can never
     // lose our environment and only non-environmented things are cleaned up.
@@ -35,7 +36,9 @@ int remove() ;
     // * We are a user
     // * We are interactive
     // * We have the no_clean_up flag set
-    if(clean_up_check(this_object()) > 0)
+    check = clean_up_check(this_object()) ;
+
+    if(check > 0)
         return CLEAN_NEVER_AGAIN ;
 
     // Now ask permission to clean up. If we answer false, we'll check again
@@ -76,7 +79,8 @@ int remove() ;
     contents -= ({ 0 }) ;
     contents->move(VOID_OB) ;
 
-    remove() ;
+    if(function_exists("remove", this_object()))
+        remove() ;
 
     return CLEAN_NEVER_AGAIN ;
 }
@@ -101,7 +105,7 @@ private int clean_up_check(mixed ob) {
 
     ob = filter(ob, (:
         objectp($1) &&
-        $1->query_no_clean() == 1 &&
+        $1->query_no_clean() == 1 ||
         (userp($1) ||
         interactive($1))
     :) ) ;
