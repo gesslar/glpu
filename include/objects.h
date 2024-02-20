@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define OBJ_COMBAT              DIR_OBJ "mudlib/combat/combat"
 #define OBJ_PAGER               DIR_OBJ "mudlib/pager/pager"
 #define OBJ_SOCKET              DIR_OBJ "mudlib/sockets/socket_ob"
 #define OBJ_NEWS_STDCLIENT      DIR_OBJ "mudlib/newsclients/std_newsclient"

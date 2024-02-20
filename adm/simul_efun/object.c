@@ -169,7 +169,7 @@ varargs mixed get_objects( string str, object player, int no_arr ) {
   NB
 
   It would be fairly simple to combine these two functions into one
-varargs object get_object( string str, object player, int arr_poss )
+  varargs object get_object( string str, object player, int arr_poss )
   which will only return a single object unless the array_possible flag
   is passed.
 
@@ -177,3 +177,35 @@ varargs object get_object( string str, object player, int arr_poss )
   use the more complicated search routines and keeping get_objects() as
   a seperate simul_efun makes it easier to disable.
 */
+
+varargs object find_ob(mixed ob, mixed cont, function f) {
+    // First let's deal with dest.
+    if(nullp(cont))
+        cont = previous_object();
+    if(stringp(cont))
+        cont = load_object(cont);
+
+    if(objectp(ob))
+        return present(ob, cont) ? ob : 0;
+
+    if(stringp(ob)) {
+        if(ob[0] == '/') {
+            object *obs = all_inventory(cont);
+
+            if(strsrch(ob, "#") > -1) {
+                foreach(object o in obs) {
+                    if(file_name(o) == ob)
+                        return o;
+                }
+            } else {
+                ob = chop(ob, ".c", -1) ;
+                foreach(object o in obs) {
+                    if(base_name(o) == ob)
+                        return o;
+                }
+            }
+        }
+    }
+
+    return 0;
+}

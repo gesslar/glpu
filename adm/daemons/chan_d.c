@@ -215,7 +215,8 @@ string *get_tuned(string argument) {
 
 int filter_listing(string element) {
     object mod_obj;
-    mod_obj = find_object(modules[channels[element]["module"]]);
+    catch(mod_obj = load_object(modules[channels[element]["module"]])) ;
+    if(!mod_obj) return 0;
     if(mod_obj->is_allowed(element, this_player()->name())) return 1;
     return 0;
 }

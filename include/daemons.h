@@ -4,6 +4,7 @@
 #include <dirs.h>
 
 #define CHAN_D          DIR_DAEMONS "chan_d"
+#define COMBAT_D        DIR_DAEMONS "combat"
 #define CONFIG_D        DIR_DAEMONS "config"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"

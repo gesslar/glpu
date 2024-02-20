@@ -10,6 +10,7 @@
 
 #include <config.h>
 #include <driver/origin.h>
+#include <clean.h>
 
 inherit STD_OBJECT;
 
@@ -95,4 +96,12 @@ void setup() {
 
 void catch_tell(string message) {
     receive(message);
+}
+
+int clean_up(int refs) {
+    if(body) {
+        return CLEAN_LATER ;
+    }
+
+    return ::clean_up(refs) ;
 }

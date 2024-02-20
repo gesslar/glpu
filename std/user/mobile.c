@@ -213,7 +213,25 @@ varargs int move(mixed ob, int flag) {
 }
 
 void event_remove(object prev) {
+    object *all ;
+
     if(objectp(query_link())) destruct(query_link());
+
+    all = all_inventory() ;
+    foreach(object ob in all) {
+        if(ob->prevent_drop()) {
+            ob->remove() ;
+        } else {
+            if(environment()) {
+                int result = ob->move(environment()) ;
+                if(result & MOVE_OK) {
+                    if(!(result & MOVE_DESTRUCTED)) {
+                        ob->remove() ;
+                    }
+                }
+            }
+        }
+    }
 }
 
 object query_link() {

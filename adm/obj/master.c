@@ -25,6 +25,7 @@ void create() {
     // In master/valid.c
     parse_group();
     parse_access();
+    call_out_walltime("tune_into_error", 0.01) ;
 }
 
 void flag(string str) {
@@ -69,7 +70,6 @@ protected void epilog(int load_empty) {
 
         debug_message(out);
     }
-    call_out_walltime("tune_into_error", 0.01) ;
 }
 
 void tune_into_error() {
@@ -136,7 +136,7 @@ varargs string standard_trace(mapping mp, int flag) {
     return ret;
 }
 
-string error_handler(mapping mp, int caught) {
+void error_handler(mapping mp, int caught) {
     string ret;
     string logfile = caught ? mud_config("LOG_CATCH") : mud_config("LOG_RUNTIME") ;
     string what = mp["error"];
@@ -145,10 +145,10 @@ string error_handler(mapping mp, int caught) {
     ret = "---\n" + standard_trace(mp);
     write_file(logfile, ret);
 
-    // If an object didn't load, they get compile errors.  Don't spam
+    // If an object didn't load, they get compile errors. Don't spam
     // or confuse them
     if(what[0..23] == "*Error in loading object")
-        return 0;
+        return ;
 
     if(this_user()) {
         userid = query_privs(this_user());
@@ -174,7 +174,6 @@ string error_handler(mapping mp, int caught) {
             trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
         )
     );
-    return 0;
 }
 
 protected void crash(string crash_message, object command_giver, object current_object) {

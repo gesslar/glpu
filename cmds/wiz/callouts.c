@@ -17,7 +17,7 @@ mixed main(object tp, object room, string arg) {
      if(sizeof(data) < 1) return(notify_fail("Error [callouts]: There are currently no callouts in progress.\n"));
      tell(tp, sprintf("%10s %35s %28s\n%s", "Object", "Function", "Delay", BORDER));
      for(i = 0; i < sizeof(data); i++)
-          tell(tp, sprintf("%-40s %-30s %-5d\n", file_name(data[i][0]), data[i][1], to_int(data[i][2])));
+          tell(tp, sprintf("%-40s %-30s %-f\n", file_name(data[i][0]), data[i][1], data[i][2]));
      tell(tp, BORDER) ;
      tell(tp, sprintf("%48s", "Total Callouts: " + sizeof(data) + "\n")) ;
      return 1;

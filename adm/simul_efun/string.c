@@ -24,6 +24,30 @@ string prepend(string source, string to_prepend) {
     return source;
 }
 
+varargs string chop(string str, string sub, int dir) {
+    int sub_len;
+
+    if(nullp(str)) error("chop: Missing argument 1 for chop");
+    if(nullp(sub)) error("chop: Missing argument 2 for chop");
+
+    if(dir != -1)
+        dir = 1;
+
+    sub_len = strlen(sub);
+
+    if(dir == 1) {
+        if(str[<sub_len..] == sub) {
+            str = str[0..<sub_len-1];
+        }
+    } else if(dir == -1) {
+        if(str[0..sub_len-1] == sub) {
+            str = str[sub_len..];
+        }
+    }
+
+    return str;
+}
+
 varargs string extract(string str, int from, int to) {
     if(nullp(to)) return str[from ..];
     else return str[from .. to];
