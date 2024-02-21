@@ -8,34 +8,29 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string file)
-{
-     if(!file)
-     {
-          write("Usage: tail <filename>\n");
-          return 1;
-     }
+mixed main(object caller, object room, string file) {
+    int morelines ;
+    string *out ;
 
-     file = resolve_path(caller->query("cwd"), file);
+    if(!file)
+        return "Usage: tail <filename>\n" ;
 
-     if(directory_exists(file))
-     {
-          write("Error [tail]: File specified is a directory.\n");
-          return 1;
-     }
+    file = resolve_path(caller->query("cwd"), file);
 
-     if(!file_exists(file))
-     {
-          write("Error [tail]: That file does not exist.\n");
-          return 1;
-     }
+    if(directory_exists(file))
+        return "Error [tail]: File specified is a directory.\n" ;
 
-     if(!caller->query("morelines"))
-     {
-          caller->set("morelines", 20);
-     }
+    if(!file_exists(file))
+        return "Error [tail]: That file does not exist.\n" ;
 
-     return tail(file);
+    if(!caller->query_env("morelines"))
+        caller->set_env("morelines", "20");
+
+    morelines = to_int(caller->query_env("morelines"));
+    out = explode(tail(file, morelines-2), "\n");
+    out = ({ "File: " + file }) + out;
+
+    return out ;
 }
 
 string help(object caller) {

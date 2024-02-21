@@ -60,25 +60,120 @@ int file_lines(string file) {
 // function: tail
 // returns: -1 for no file, 0 if nothing entered, and 1 if it all worked
 
+#if 0
+private nosave int chunk_size = 80 * 5 ;
+
 int tail(string file) {
+    int len, num ;
+    object tp = this_player() ;
+    string data ;
+    int done = FALSE, cursor ;
+
     if(!file) {
         return 0;
     }
 
-    file = resolve_path(this_player()->query("cwd"),file);
+    file = resolve_path(tp->query("cwd"),file);
 
     if(!file_exists(file)) {
         return -1;
     }
 
-    if(!this_player()->query("morelines")) {
-        this_player()->set("morelines", 20);
-    }
+    num = to_int(tp->query_env("morelines")) || 20;
+    len = fize_size(file);
+debugf("file: %s, len: %d, num: %d, len-num: %d", file, len, num, len - num);
 
-    write(read_file(file, (file_lines(file) - this_player()->query("morelines")), (file_lines(file))));
-    write("\n");
+    data = "" ;
+    cursor = -chunk_size ;
+    while(done != TRUE) {
+        string in = read_bytes(file, cursor, chunk_size) ;
+        int count
+
+    }
+    data = read_file(file, len - num, num);
+    if(!sizeof(data))
+        return 0;
+
+    data = append(data, "\n");
+    write(data);
     return 1;
 }
+
+#endif
+
+varargs string tail(string path, int line_count) {
+    int chunk_size = 80 * 5; // Chunk size for each read operation
+    string result = ""; // Accumulator for the result
+    int total_lines = 0; // Counter for total lines found
+    int file_size ; // Total size of the file
+    int start, end; // Variables to define the read range
+    int read_chars = 0; // Counter for characters read without finding a newline
+    int newlines_found = 0; // Counter for newlines found in the current chunk
+
+    if(nullp(path)) error("No file specified for tail(). [" + previous_object() + "]");
+    if(nullp(line_count)) line_count = 25 ; // Default to 25 lines if not specified
+
+    // Get the total size of the file
+    file_size = file_size(path);
+    // Initialize reading position at the end of the file
+    end = file_size;
+
+    // Ensure we don't start reading beyond the start of the file
+    if (end < 0) return "File does not exist or is empty.";
+
+    while (total_lines < line_count && end > 0) {
+        string chunk; // Variable to hold the data read in each chunk
+        start = end - chunk_size;
+        if (start < 0) start = 0; // Adjust start to not go below file beginning
+
+        // Read the chunk from the file
+        chunk = read_bytes(path, start, end - start);
+
+        if (!strlen(chunk)) break; // Break if no data was read
+
+        // Iterate through the chunk to count newlines
+        for (int i = strlen(chunk) - 1; i >= 0; i--) {
+            if (chunk[i] == '\n') {
+                newlines_found++;
+                if (newlines_found >= line_count) break; // Stop if we have enough lines
+            }
+            read_chars++;
+
+            // Check if we've read too many characters without a newline
+            if (read_chars > 2000) break;
+        }
+
+        // Prepend the current chunk to the result
+        result = chunk + result;
+
+        // Adjust counters based on what was found
+        total_lines += newlines_found;
+        end = start; // Move the end position for the next read
+
+        // Reset counters for the next iteration
+        read_chars = 0;
+        newlines_found = 0;
+
+        // Break early if we've read too many characters without finding a newline
+        if (read_chars > 2000) break;
+    }
+
+    // Trim the result if we've collected more lines than needed
+    if (total_lines > line_count) {
+        int lines_to_trim = total_lines - line_count;
+        int pos = 0;
+        for (int i = 0; i < strlen(result) && lines_to_trim > 0; i++) {
+            if (result[i] == '\n') {
+                lines_to_trim--;
+                pos = i + 1;
+            }
+        }
+        result = result[pos..]; // Keep only the required number of lines from the end
+    }
+
+    return result;
+}
+
 
 //log_file(string file, string str)
 

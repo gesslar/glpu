@@ -9,8 +9,9 @@ inherit STD_CMD ;
 
 #define TPN (this_player()->name())
 
-int main(object caller, object room, string name)
-{
+mixed main(object caller, object room, string name) {
+    int morelines ;
+    string *out ;
     string path;
 
     path = "/doc/journals/journal.";
@@ -19,14 +20,16 @@ int main(object caller, object room, string name)
     else path = path +TPN;
 
     if(!file_exists(path))
-        return notify_fail("Error: "
-         "No journal user '" + capitalize(name) + "' exists.\n");
+        return "Error: No journal user '" + capitalize(name) + "' exists.\n";
 
-    write("Journal: " + path + "\n\n");
+    if(!caller->query_env("morelines"))
+    caller->set_env("morelines", "20");
 
-    tail(path);
+    morelines = to_int(caller->query_env("morelines"));
+    out = explode(tail(path, morelines-2), "\n");
+    out = ({ "Journal: " + path }) + out;
 
-    return 1;
+    return out;
 }
 
 string help(object caller)

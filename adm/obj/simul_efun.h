@@ -24,7 +24,7 @@ int user_exists(string user) ;
 // File: file
 string file_owner(string file) ;
 int file_lines(string file) ;
-int tail(string file) ;
+varargs string tail(string path, int line_count) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
 string query_file_name(object ob) ;

@@ -11,29 +11,31 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
+mixed main(object caller, object room, string arg) {
      string logfile;
+     int morelines ;
+     string *out ;
 
-     if(!arg)
-     {
+     if(!arg) {
           if(file_exists("/log/compile")) logfile = "/log/compile";
           if(file_exists(user_path(query_privs(this_player())) + "log"))
                logfile = user_path(query_privs(this_player())) + "log";
-     }
-     else
-     {
+     } else {
           if(file_exists("/log/" + arg)) logfile = "/log/" + arg;
           else return(notify_fail("Error [log]: Logfile '/log/" + arg +"' doesn't exist.\n"));
-
      }
 
      if(!logfile)
           return(notify_fail("Syntax: log <logfile>\n"));
 
-     tail(logfile);
+     if(!caller->query_env("morelines"))
+        caller->set_env("morelines", "20");
 
-     return 1;
+     morelines = to_int(caller->query_env("morelines"));
+     out = explode(tail(logfile, morelines-2), "\n");
+     out = ({ logfile + ":" }) + out;
+
+     return out ;
 }
 
 string help(object caller)
