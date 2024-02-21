@@ -35,5 +35,11 @@
         [ "silver", 10 ],
         [ "gold", 100 ],
         [ "platinum", 1000 ]
-    ]
+    ],
+    "TIMEOUT_PLAYERS" : "on",
+    "TIMEOUT_PLAYERS_TIME" : 3600,
+    "TIMEOUT_DEVS" : "off",
+    "TIMEOUT_DEVS_TIME" : 86400,
+    "TIMEOUT_ADMINS" : "off",
+    "TIMEOUT_ADMINS_TIME" : 604800
 }
