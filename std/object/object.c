@@ -22,7 +22,8 @@ inherit M_CLEAN ;
 inherit M_SETUP ;
 inherit M_MESSAGING ;
 
-private string proper_name, name, cap_name, short, long;
+private string proper_name, short, long;
+private nosave string name, cap_name ;
 
 int move(mixed dest);
 int allow_move(mixed dest);
