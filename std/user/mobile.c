@@ -177,7 +177,6 @@ void reconnect() {
 }
 
 /* User Object Functions */
-
 void heart_beat() {
     if(!interactive(this_object())) {
         if((time() - query("last_login")) > 3600) {
@@ -502,3 +501,6 @@ void init_capacity() {
     set_max_capacity(1000) ;
     rehash_capacity() ;
 }
+
+int is_pc() { return 1 ; }
+int is_npc() { return 0 ; }

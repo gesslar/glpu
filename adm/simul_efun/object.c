@@ -209,3 +209,28 @@ varargs object find_ob(mixed ob, mixed cont, function f) {
 
     return 0;
 }
+
+object top_environment(object ob) {
+    object test, env ;
+
+    if(!objectp(ob))
+        ob = previous_object() ;
+
+    if(!objectp(ob))
+        error("Missing argument 1 to top_environment()") ;
+
+    if(ob->query_room())
+        return ob ;
+
+    if(!environment(ob))
+        return ob ;
+
+    while(test = environment(ob)) {
+        env = test ;
+        ob = env ;
+        if(test->is_room())
+            break ;
+    }
+
+    return env ;
+}

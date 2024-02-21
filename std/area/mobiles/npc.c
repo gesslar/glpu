@@ -36,3 +36,6 @@ void heart_beat() {}
 int force_me(string cmd) {
     command(cmd);
 }
+
+int is_npc() { return 1; }
+int is_pc() { return 0; }

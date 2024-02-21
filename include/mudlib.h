@@ -17,6 +17,7 @@
 
 /* Standard Inheritables */
 
+#define STD_ACT             DIR_STD "cmd/act"
 #define STD_CMD             DIR_STD "cmd/cmd"
 #define STD_DAEMON          DIR_STD "daemon/daemon"
 #define STD_MOBILE          DIR_STD "user/mobile"

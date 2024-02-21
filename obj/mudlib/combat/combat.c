@@ -94,6 +94,14 @@ void update_victims() {
     :)) ;
 }
 
+object query_target() {
+    return victims[0] ;
+}
+
+object *query_victims() {
+    return victims ;
+}
+
 int prevent_drop() {
     return 1 ;
 }

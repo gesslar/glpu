@@ -62,6 +62,7 @@ int getoid(object ob) ;
 varargs mixed get_objects( string str, object player, int no_arr ) ;
 varargs object find_ob(mixed ob, mixed cont) ;
 varargs object get_object( string str, object player ) ;
+object top_environment(object ob) ;
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;
