@@ -25,7 +25,11 @@ void create() {
     // In master/valid.c
     parse_group();
     parse_access();
-    call_out_walltime("tune_into_error", 0.01) ;
+
+    // Set privs to master
+    call_out_walltime( (: set_privs, this_object(), "[master]" :), 0.01);
+    // Tune into error channel
+    call_out_walltime("tune_into_error", 0.02) ;
 }
 
 void flag(string str) {
@@ -164,11 +168,10 @@ void error_handler(mapping mp, int caught) {
     // Strip trailing \n, and indent nicely
     what = replace_string(what[0.. < 2], "\n", "\n         *");
 
-    CHAN_D->send_msg(
+    CHAN_D->snd_msg(
         "error",
         query_privs(this_object()),
-        sprintf("(%s) Error logged to %s\n%s\n" +
-            capitalize(userid),
+        sprintf("(%s) Error logged %s\n%s\n" +
             logfile,
             what,
             trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
