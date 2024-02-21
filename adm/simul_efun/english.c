@@ -26,3 +26,66 @@ varargs string cap_significant_words(string str, int title) {
 
     return str ;
 }
+
+string possessive_noun(mixed ob) {
+    if(objectp(ob)) ob = ob->query_cap_name() ;
+    if(!stringp(ob)) return "its" ;
+
+    if(ob[<1] == 's') return ob + "'" ;
+    else return ob + "'s" ;
+}
+
+string possessive_pronoun(mixed ob) {
+    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
+    if(!stringp(ob)) return "its" ;
+
+    switch(ob) {
+        case "male" : return "his" ;
+        case "female" : return "hers" ;
+        default: return "its" ;
+    }
+}
+
+string possessive(mixed ob) {
+    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
+    if(!stringp(ob)) return "its" ;
+
+    switch(ob) {
+        case "male" : return "his" ;
+        case "female" : return "her" ;
+        default: return "its" ;
+    }
+}
+
+string reflexive(mixed ob) {
+    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
+    if(!stringp(ob)) return "itself" ;
+
+    switch(ob) {
+        case "male" : return "himself" ;
+        case "female" : return "herself" ;
+        default: return "itself" ;
+    }
+}
+
+string objective(mixed ob) {
+    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
+    if(!stringp(ob)) return "it" ;
+
+    switch(ob) {
+        case "male" : return "him" ;
+        case "female" : return "her" ;
+        default: return "it" ;
+    }
+}
+
+string subjective(mixed ob) {
+    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
+    if(!stringp(ob)) return "it" ;
+
+    switch(ob) {
+        case "male" : return "he" ;
+        case "female" : return "she" ;
+        default: return "it" ;
+    }
+}

@@ -155,23 +155,6 @@ string query_cap_name() {
     else return capitalize(name);
 }
 
-string query_short() {
-    string result = ::query_short();
-    if(!result) result = query_name() ;
-
-    return result ;
-}
-
-int set_long(string str) {
-    long = str;
-    set("long", str);
-}
-
-string query_long() {
-    if(!long) return query("long");
-    return long;
-}
-
 int can_receive(object ob) {
     return 1;
 }

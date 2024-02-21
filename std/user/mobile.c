@@ -87,7 +87,7 @@ void setup_body() {
     enable_commands();
     set("prevent_get", 1);
     if(!query("cwd")) set("cwd", "/doc");
-    if(!query_long()) set_long(capitalize(name()) + "");
+    if(!query_short()) set_short(query_cap_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "enabled"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "all");

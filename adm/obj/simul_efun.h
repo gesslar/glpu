@@ -15,6 +15,12 @@ string query_directory(object ob) ;
 // File: english
 string cap_words(string str) ;
 varargs string cap_significant_words(string str, int title) ;
+string possessive_noun(mixed ob) ;
+string possessive_pronoun(mixed ob) ;
+string possessive(mixed ob) ;
+string reflexive(mixed ob) ;
+string objective(mixed ob) ;
+string subjective(mixed ob) ;
 
 // File: exists
 int directory_exists(string dirname) ;

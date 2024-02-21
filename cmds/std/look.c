@@ -6,9 +6,12 @@
 
 */
 
+inherit STD_ACT ;
+
 mixed render_room(object,object);
 mixed render_object(object,object,string);
 mixed render_container(object,object,string);
+mixed render_living(object,object,object);
 string highlight_view(string str, string *keys);
 
 private nosave string default_highlight_colour = mud_config("LOOK_HIGHLIGHT_COLOUR");
@@ -112,19 +115,20 @@ mixed render_room(object caller, object room) {
 mixed render_object(object caller, object room, string target) {
     object ob, user;
     string subtarget;
+    string desc = "" ;
+    string temp ;
+    string name ;
+
+    name = caller->query_name();
 
     if(stringp(room->query_item(target))) {
         tell(caller, highlight_view(caller, room->query_item(target), keys(room->query_items())) + "\n");
+        tell_down(room, name + " looks at " + target + ".", UNDEFINED, ({ caller }) );
         return 1;
     }
 
     if(target == "me") {
         ob = caller;
-    } else if(sscanf(target, "%s in %s", target, subtarget) == 2 ||
-        sscanf(target, "%s on %s", target, subtarget) == 2 && subtarget != "me") {
-        user = present(subtarget, room);
-        if(!objectp(user)) return "You do not see " + subtarget+ ".\n" ;
-        ob = present(target, user);
     } else {
         ob = present(target, room);
         if(!objectp(ob)) ob = present(target, caller);
@@ -132,42 +136,40 @@ mixed render_object(object caller, object room, string target) {
 
     if(!objectp(ob)) return "You do not see " + target + ".\n" ;
 
-    if(living(ob)) {
-        object *inv = all_inventory(ob);
+    if(living(ob)) return render_living(caller, room, ob) ;
 
-        if(ob == caller) {
-            tell(caller, "You look at yourself.\n");
-            tell_down(room, caller->query_cap_name() + " looks at themself.\n", UNDEFINED, ({ caller }) );
+    temp = get_short(ob);
+    if(stringp(temp)) desc += temp + "\n" ;
+    temp = get_long(ob);
+    if(stringp(temp)) desc += "\n" + temp + "\n" ;
 
-            tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
-            tell(caller, get_long(ob) + "\n");
+    tell(ob, name + " looks at you.") ;
+    tell_down(room, name + " looks at " + ob->query_short() + ".", UNDEFINED, ({ caller, ob }) );
 
-            if(sizeof(inv) <= 0) tell(caller, "You are carrying nothing.\n\n");
-            else tell(caller, "You are carrying:\n" + implode(map(inv, (: get_short :)), "\n") + "\n\n");
-        } else {
-            tell(caller, "You look at " + ob->query_cap_name() + ".\n");
-            tell(ob, caller->query_cap_name() + " looks at you.\n");
-            tell_down(room, caller->query_cap_name() + " looks at " + ob->query_cap_name() + ".\n", UNDEFINED, ({ caller, ob }) );
+    tell(caller, desc) ;
 
-            tell(caller, "\t\e<0015>" + ob->query_cap_name() + "\e<res>\n\n");
-            tell(caller, get_long(ob) + "\n");
+    return 1 ;
+}
 
-            if(sizeof(inv) <= 0) tell(caller, ob->query_cap_name() + " is carrying nothing.\n\n");
-            else tell(caller, ob->query_cap_name() + " is carrying:\n" + implode(map(inv, (: get_short :)), "\n") + "\n\n");
-        }
+mixed render_living(object caller, object room, object target, object user) {
+    object *inv;
+    string temp, result = "" ;
+    string name ;
+
+    if(stringp(temp = get_short(target))) result += temp + "\n" ;
+    if(stringp(temp = get_long(target))) result += "\n" + temp + "\n" ;
+
+    name = caller->query_cap_name() ;
+    if(target == caller) {
+        string refl = reflexive(caller) ;
+        tell_down(room, name + " looks at "+refl+".\n", UNDEFINED, ({ caller }) );
     } else {
-        if(objectp(user)) {
-            tell(caller, "You look at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n");
-            tell(user, caller->query_cap_name() + " looks at a " + get_short(ob) + " on you.\n");
-            tell_down(room, caller->query_cap_name() + " looks at a " + get_short(ob) + " on " + user->query_cap_name() + ".\n", ({ caller, user }) );
-        } else {
-            tell(caller, "You look at a " + get_short(ob) + ".\n");
-            tell_down(room, caller->query_cap_name() + " looks at a " + get_short(ob) + ".\n", UNDEFINED, ({ caller }) );
-        }
-
-        tell(caller, get_long(ob) + "\n");
+        string vname = target->query_cap_name() ;
+        tell(target, name + " looks at you.\n") ;
+        tell_down(room, name + " looks at " + vname + ".\n", UNDEFINED, ({ caller, target }) );
     }
 
+    tell(caller, result) ;
     return 1 ;
 }
 
