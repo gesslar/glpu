@@ -85,3 +85,12 @@ varargs string query_num(int x, int many) {
 
     return sign + efun::query_num(x, many) ;
 }
+
+string ctime(int x) {
+    string fmt ;
+
+    if(nullp(x)) x = time() ;
+
+    fmt = "%Y-%m-%d %H:%M:%S" ;
+    return strftime(fmt, x) ;
+}

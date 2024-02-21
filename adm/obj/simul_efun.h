@@ -103,6 +103,10 @@ string open_status() ;
 varargs void debugf(string str, mixed args...) ;
 void debug(string str) ;
 
+// File: time
+varargs string ldate(int x, int brief) ;
+varargs string ltime(int x, int brief) ;
+
 // File: user
 string user_data_file(string name) ;
 string user_mob_data(string name) ;
