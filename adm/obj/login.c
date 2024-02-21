@@ -405,14 +405,16 @@ void enter_world(string str) {
     user->set_body(body);
 
     if(devp(user)) {
-        if(body->query_env("start_location") == "last_location") body->move(body->query("last_location"));
-        else if(body->query_env("start_location")) body->move(body->query_env("start_location"));
-        else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move(user_path(query_privs(user)) + "workroom.c");
+        if(body->query_env("start_location") == "last_location") body->move_living(body->query("last_location"), 0, "SNEAK");
+        else if(body->query_env("start_location")) body->move_living(body->query_env("start_location"), 0, "SNEAK");
+
+        else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move_living(user_path(query_privs(user)) + "workroom.c", 0, "SNEAK");
+        else body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK") ;
     }
 
-    else body->move("/areas/lpuni/entrance.c");
+    else body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK") ;
 
-    if(!environment(body)) body->move("/areas/lpuni/entrance.c");
+    if(!environment(body)) body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK");
 
     if(!environment(body)) {
         write("Error [login]: Unable to find a suitable location for your body.\n");

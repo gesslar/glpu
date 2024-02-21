@@ -25,31 +25,15 @@ int query_roomType() {
     return 1;
 }
 
-string query_short() {
-    if(::query_short()) return ::query_short();
-    else return query("short");
-}
-
-string query_long() {
-    if(::query_long()) return ::query_long();
-    else return query("long");
-}
-
 int can_receive(object ob) {
     return 1;
 }
-
 void receive_effect(object ob) {}
 
 int can_release(object ob) {
     return 1;
 }
-
 void release_effect(object ob) {}
-
-int is_room() {
-    return 1;
-}
 
 void set_virtual_master(string str) {
     virtual_master = str;
@@ -60,4 +44,5 @@ string query_virtual_master() {
 }
 
 int query_ignore_mass() { return 1; }
-int queyr_ignore_bulk() { return 1; }
+int query_ignore_bulk() { return 1; }
+int is_room() { return 1; }

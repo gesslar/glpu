@@ -33,7 +33,9 @@ string highlight_view(object tp, string str, string *keys) {
     string colour ;
 
     if(look_hightlight_enabled != "on") return str;
+debug_message("highlight_view 1: " + str + "\n") ;
     if(tp->query_env("highlight") != "on") return str;
+debug_message("highlight_view 2: " + str + "\n") ;
     if(sizeof(keys) <= 0) return str;
     if(!colour = tp->query_env("highlight_colour"))
         colour = default_highlight_colour;
@@ -43,8 +45,9 @@ string highlight_view(object tp, string str, string *keys) {
         colour = "";
     else
         colour = "\e<" + colour + ">";
-
-    colour = XTERM256->substitute_too_dark(colour);
+debug_message("color: " + colour + "\n") ;
+colour = XTERM256->substitute_too_dark(colour);
+debug_message("color: " + colour + "\n") ;
 
     for(i = 0; i < sizeof(keys); i++) {
         str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");
@@ -56,7 +59,7 @@ string highlight_view(object tp, string str, string *keys) {
         str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "\e<res>'");
         str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "\e<res>:");
     }
-
+debug_message("highlight_view: " + str + "\n") ;
     return str;
 }
 
@@ -64,7 +67,7 @@ mixed render_room(object caller, object room) {
     string *exits, *users, *objects;
     string result = "" ;
     mixed data, datum ;
-
+debug(call_trace(1)) ;
     if(!objectp(room))
         return "You see nothing because you have no environment!\n" ;
 
@@ -93,7 +96,7 @@ mixed render_room(object caller, object room) {
             data = "You may go " + implode(exits[0..<2], ", ") + ", or " + exits[<1] + ".\n";
             break;
     }
-    if(data) result += "\n" + data ;
+    if(data) result += "\n" + data + "\n";
 
     users = filter(all_inventory(room), (: living($1) && $1 != $2 :), caller);
     objects = filter(all_inventory(room), (: !living($1) :));

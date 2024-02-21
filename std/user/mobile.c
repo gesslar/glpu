@@ -207,7 +207,6 @@ void save_user() {
 varargs int move(mixed ob, int flag) {
     if(!::move(ob)) return 0;
     set("last_location", base_name(ob));
-    if(!flag) command("look");
     return 1;
 }
 
@@ -449,27 +448,31 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 
     result = move(dest);
 
-    if(result == MOVE_OK) { // Success
+    if(result & MOVE_OK) { // Success
         string tmp ;
 
         if(curr) {
-            if(!depart_message) depart_message = query_env("move_out");
-            if(!depart_message) depart_message = "$N leaves $D.";
-            if(!dir) dir = "somewhere" ;
+            if(depart_message != "SNEAK") {
+                if(!depart_message) depart_message = query_env("move_out");
+                if(!depart_message) depart_message = "$N leaves $D.";
+                if(!dir) dir = "somewhere" ;
 
-            tmp = replace_string(depart_message, "$N", query_cap_name());
-            tmp = replace_string(tmp, "$D", dir);
+                tmp = replace_string(depart_message, "$N", query_cap_name());
+                tmp = replace_string(tmp, "$D", dir);
 
-            tell_down(curr, tmp) ;
+                tell_down(curr, tmp) ;
+            }
         }
 
-        curr = environment() ;
+        if(arrive_message != "SNEAK") {
+            curr = environment() ;
 
-        if(!arrive_message) arrive_message = query_env("move_in");
-        if(!arrive_message) arrive_message = "$N arrives.";
-        tmp = replace_string(arrive_message, "$N", query_cap_name());
+            if(!arrive_message) arrive_message = query_env("move_in");
+            if(!arrive_message) arrive_message = "$N arrives.";
+            tmp = replace_string(arrive_message, "$N", query_cap_name());
 
-        tell_down(curr, tmp, UNDEFINED, ({ this_object() })) ;
+            tell_down(curr, tmp, UNDEFINED, ({ this_object() })) ;
+        }
     } else {
         tell(this_object(), "You went nowhere.") ;
     }

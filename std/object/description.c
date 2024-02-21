@@ -28,6 +28,7 @@ int set_short(mixed str) {
     short = str;
 }
 
+
 string query_short(object viewer: (: this_player() :)) {
     mixed result ;
 
@@ -35,7 +36,6 @@ string query_short(object viewer: (: this_player() :)) {
 
     if(valid_function(result))
         result = (*result)(viewer) ;
-
     if(!stringp(result))
         result = 0;
 
@@ -46,11 +46,14 @@ int set_long(mixed str) {
     long = str;
 }
 
-string query_long() {
-    string result ;
+string query_long(object viewer: (: this_player() :)) {
+    mixed result ;
 
-    if(valid_function(long))
-        result = (*long)() ;
+    result = long ;
+
+    if(valid_function(result))
+        result = (*result)(viewer) ;
+
     if(!stringp(result))
         result = 0;
 
