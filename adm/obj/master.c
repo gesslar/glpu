@@ -171,7 +171,7 @@ void error_handler(mapping mp, int caught) {
     CHAN_D->snd_msg(
         "error",
         query_privs(this_object()),
-        sprintf("(%s) Error logged %s\n%s\n" +
+        sprintf("(%s) Error logged %s\n%s\n",
             logfile,
             what,
             trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
