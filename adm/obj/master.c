@@ -12,6 +12,7 @@
 
 #include <config.h>
 #include <localtime.h>
+#include <logs.h>
 
 /* inherits */
 
@@ -246,29 +247,20 @@ void log_file(string file, string msg) {
     size = file_size(log_dir() + file);
     if(size == -2) return;
     if(size > 50000) {
-        mixed *localtime_now = localtime(time());
         string t1;
         string backup;
         int ret = sscanf(file, "%s.log", t1);
 
         if(ret == 0)
             backup  =
-                sprintf("archive/%s-%02d%02d%02d%02d",
+                sprintf("archive/%s-%s",
                     file,
-                    localtime_now[LT_MON],
-                    localtime_now[LT_MDAY],
-                    localtime_now[LT_HOUR],
-                    localtime_now[LT_MIN],
-                );
+                    strftime(ARCHIVE_STAMP, time())) ;
         else
             backup  =
-                sprintf("archive/%s-%02d%02d%02d%02d.log",
+                sprintf("archive/%s-%s.log",
                     t1,
-                    localtime_now[LT_MON],
-                    localtime_now[LT_MDAY],
-                    localtime_now[LT_HOUR],
-                    localtime_now[LT_MIN],
-                );
+                    strftime(ARCHIVE_STAMP, time())) ;
             rename(log_dir() + file, log_dir() + backup);
     }
 

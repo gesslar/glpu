@@ -30,4 +30,8 @@
 #define FALSE 0
 #define UNDEFINED ([])[0]
 
+#define DATE "%F"
+#define TIME "%T"
+#define DATE_TIME "%F %T"
+
 #endif // __GLOBAL_H__
