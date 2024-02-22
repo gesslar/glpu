@@ -103,6 +103,9 @@ private int clean_up_check(mixed ob) {
     if(objectp(ob)) ob = ({ ob }) ;
     if(!pointerp(ob)) return 0 ;
 
+    ob -= ({ 0 }) ;
+    if(!sizeof(ob)) return 0 ;
+
     ob = filter(ob, (:
         objectp($1) &&
         $1->query_no_clean() == 1 ||
