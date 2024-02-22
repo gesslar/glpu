@@ -8,42 +8,43 @@
 
 #include <daemons.h>
 
-inherit STD_OBJECT ;
+inherit __DIR__ "module" ;
 
-void stop_combat() ;
 void update_victims() ;
 void process_attack(int num) ;
 
-private nosave object attacker, *victims = ({ }) ;
+private nosave object *victims = ({ }) ;
 private nosave int tick = 0 ;
 private nosave float gametick = get_config(__RC_GAMETICK_MSEC__) ;
 private nosave float tick_speed = to_float(gametick) / 1_000.0 ;
 private nosave float attack_speed = 2.0 ;
 
-void start_combat(object me, object victim) {
-    if(!objectp(me))
-        return stop_combat() ;
+void setup() {
+    module_name = "combat" ;
+}
 
-    if(!objectp(victim))
-        return stop_combat() ;
+int start_module(object victim) {
+    if(!objectp(victim)) {
+        detach() ;
+        return 0 ;
+    }
 
-    if(!environment())
-        move(me) ;
+    if(member_array(victim, victims) > -1) {
+        return 1 ;
+    }
 
-    if(member_array(victim, victims) > -1)
-        return ;
-
-    attacker = me ;
     victims += ({ victim }) ;
 
     if(sizeof(victims) > 0) {
         call_out("combat_tick", tick_speed) ;
     }
+
+    victim->add_module(module_name, owner) ;
 }
 
-void stop_combat() {
-    if(objectp(attacker))
-        tell(attacker, "You stop fighting.\n") ;
+void stop_module() {
+    if(objectp(owner))
+        tell(owner, "You stop fighting.\n") ;
 
     remove() ;
 }
@@ -51,12 +52,12 @@ void stop_combat() {
 void combat_tick() {
     int required_ticks ;
 
-    if(!objectp(attacker) || !environment(attacker))
-        return stop_combat();
+    if(!objectp(owner) || !environment(owner))
+        return detach();
 
     update_victims();
     if(sizeof(victims) == 0)
-        return stop_combat();
+        return detach();
 
     // Increment tick
     tick++;
@@ -78,19 +79,23 @@ void combat_tick() {
 
 void process_attack(int num) {
     object victim, room ;
+    string name, vname ;
 
     victim = victims[0] ;
-    room = environment(attacker) ;
+    room = environment(owner) ;
 
-    tell_down(room, attacker->query_name() + " attacks " + victim->query_name() + ".\n", 0, ({ attacker, victim })) ;
-    tell(victim, attacker->query_name() + " attacks you.\n") ;
-    tell(attacker, "You attack " + victim->query_name() + ".\n") ;
+    name = owner->query_cap_name() ;
+    vname = victim->query_cap_name() ;
+
+    tell_down(room, name + " attacks " + vname + ".\n", 0, ({ owner, victim })) ;
+    tell(victim, name + " attacks you.\n") ;
+    tell(owner, "You attack " + vname + ".\n") ;
 }
 
 void update_victims() {
     victims = filter(victims, (:
         objectp($1) &&
-        environment($1) == environment(attacker)
+        environment($1) == environment(owner)
     :)) ;
 }
 

@@ -37,7 +37,6 @@ void net_dead();
 void reconnect();
 
 /* User object functions */
-
 varargs int move(mixed ob, int flag);
 void restore_user();
 void save_user();
@@ -64,6 +63,13 @@ string process_input(string arg);
 int command_hook(string arg);
 mixed* query_commands();
 int force_me(string cmd);
+
+// Module functions
+void add_module(string module);
+void remove_module(string module);
+object get_module(string module);
+
+private nosave mapping modules = ([]);
 
 /* Misc functions */
 
@@ -503,6 +509,56 @@ void write_prompt() {
 void init_capacity() {
     set_max_capacity(1000) ;
     rehash_capacity() ;
+}
+
+varargs void add_module(string module, mixed args...) {
+    object ob ;
+    string path ;
+
+    if(!module || module == "") error("Error [add_module]: Invalid module name.\n") ;
+    if(modules[module]) error("Error [add_module]: Module " + module + " already exists.\n") ;
+
+    path = "/std/modules/mobile/" + module + ".c" ;
+    path = replace_string(path, " ", "_") ;
+    if(!file_exists(path))
+        error("Error [add_module]: Module " + module + " does not exist.\n") ;
+
+    catch(ob = new(path)) ;
+    if(!ob)
+        error("Error [add_module]: Module " + module + " failed to load.\n") ;
+
+    if(ob->attach(this_object(), args...) == 0) {
+        ob->remove() ;
+        return ;
+    }
+
+    modules[module] = ob ;
+}
+
+void remove_module(string module) {
+    object ob ;
+
+    if(!module || module == "") error("Error [remove_module]: Invalid module name.\n") ;
+    if(!modules[module]) error("Error [remove_module]: Module " + module + " does not exist.\n") ;
+
+    ob = modules[module] ;
+    if(!objectp(ob))
+        return ;
+
+    ob->remove() ;
+    map_delete(modules, module) ;
+}
+
+object get_module(string module) {
+    object ob ;
+
+    if(!module || module == "") error("Error [get_module]: Invalid module name.\n") ;
+    ob = modules[module] ;
+
+    if(!objectp(ob))
+        return 0 ;
+
+    return modules[module] ;
 }
 
 int is_pc() { return 1 ; }

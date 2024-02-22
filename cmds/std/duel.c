@@ -30,7 +30,7 @@ mixed main(object tp, object room, string arg) {
     tell_down(room, name + " engages " + vname + " in combat.", 0,
         ({ tp, victim }) ) ;
 
-    COMBAT_D->start_combat(tp, victim) ;
+    tp->add_module("combat", victim) ;
 
     return 1;
 }
