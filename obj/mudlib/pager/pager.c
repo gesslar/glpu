@@ -127,6 +127,12 @@ int prompt(string arg) {
 }
 
 void reset() {
-    if(!environment()) remove() ;
-    if(!in_input(environment())) remove() ;
+    if(!environment()) {
+        remove() ;
+        return ;
+    }
+    if(!in_input(environment())) {
+        remove() ;
+        return ;
+    }
 }
