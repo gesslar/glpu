@@ -59,7 +59,7 @@ int save_data() {
     base = get_base_path(save_file);
     if(!directory_exists(base)) {
         if(strsrch(save_file, "/data/") == 0) {
-            if(!mkdirs(base))
+            if(!assure_dir(base))
                 return 0;
         }
     }

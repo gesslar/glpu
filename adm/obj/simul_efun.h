@@ -9,7 +9,7 @@ string get_short(object ob) ;
 string get_long(object ob) ;
 
 // File: directory
-int mkdirs(string path) ;
+int assure_dir(string path) ;
 string query_directory(object ob) ;
 
 // File: english
@@ -25,16 +25,17 @@ string subjective(mixed ob) ;
 // File: exists
 int directory_exists(string dirname) ;
 int file_exists(string file) ;
+int cfile_exists(string file) ;
 int user_exists(string user) ;
 
 // File: file
-string file_owner(string file) ;
 int file_lines(string file) ;
-varargs string tail(string path, int line_count) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
+string file_owner(string file) ;
 string query_file_name(object ob) ;
-
+varargs string tail(string path, int line_count) ;
+void assure_file(string file) ;
 // File: function
 varargs string call_trace(int colour) ;
 

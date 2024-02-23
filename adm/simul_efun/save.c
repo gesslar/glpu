@@ -25,7 +25,7 @@ string assure_object_save_dir(object ob) {
     if(directory_exists(dir))
         return dir ;
 
-    mkdirs(dir) ;
+    assure_dir(dir) ;
 
     if(directory_exists(dir))
         return dir ;

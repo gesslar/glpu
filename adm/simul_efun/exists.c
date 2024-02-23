@@ -19,6 +19,10 @@ int file_exists(string file) {
     return (file_size(file) >= 0);
 }
 
+int cfile_exists(string file) {
+    return file_exists(append(file, ".c"));
+}
+
 int user_exists(string user) {
     return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + ".o"));
 }

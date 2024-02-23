@@ -1,5 +1,23 @@
 #include "/adm/obj/simul_efun.h"
 
+#include <config.h>
+
+void assure_file(string file) {
+    string *path;
+    string dir;
+    int i;
+
+    if(file_size(file) != -1) return;
+
+    path = explode(file, "/");
+    dir = "";
+
+    for(i = 0; i < sizeof(path) - 1; i++) {
+        dir += "/" + path[i];
+        if(file_size(dir) == -1) mkdir(dir);
+    }
+}
+
 //file_owner(string file);
 
 //Tacitus @ LPUniversity
@@ -7,8 +25,6 @@
 //Simul-Efun
 
 //Last edited on July 1st, 2005 by Tacitus
-
-#include <config.h>
 
 string file_owner(string file) {
     string temp;

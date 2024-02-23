@@ -3,7 +3,7 @@
 // mudlib: basis
 // date:   1992/09/05
 // author: Truilkan
-int mkdirs(string path) {
+int assure_dir(string path) {
     string *parts, dir;
     int j;
 

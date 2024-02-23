@@ -48,7 +48,7 @@ void check_dir() {
     source_dir = current[0] ;
     dest_dir = current[1] ;
 
-    mkdirs(dest_dir) ;
+    assure_dir(dest_dir) ;
 
     source_dir = append(source_dir, "/") ;
     files = get_dir(append(source_dir, "*.c")) ;
