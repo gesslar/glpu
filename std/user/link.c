@@ -14,6 +14,8 @@
 
 inherit STD_OBJECT;
 
+inherit M_GMCP ;
+
 private string password, body_path;
 
 private nosave object body;
@@ -22,7 +24,7 @@ int save_user();
 
 void create() {
     if(origin() != ORIGIN_DRIVER) return;
-    if(!body_path) body_path = "/std/user/mobile";
+    if(!body_path) body_path = STD_BODY ;
 }
 
 nomask void net_dead() {

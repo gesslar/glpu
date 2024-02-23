@@ -18,9 +18,10 @@
 /* Standard Inheritables */
 
 #define STD_ACT             DIR_STD "cmd/act"
+#define STD_BODY            DIR_STD "user/body"
 #define STD_CMD             DIR_STD "cmd/cmd"
 #define STD_DAEMON          DIR_STD "daemon/daemon"
-#define STD_MOBILE          DIR_STD "user/mobile"
+#define STD_LINK            DIR_STD "user/link"
 #define STD_MONSTER         DIR_STD "area/mobiles/npc"
 #define STD_NPC             DIR_STD "area/mobiles/npc"
 #define STD_OB_E            DIR_STD "object/ob_prop"

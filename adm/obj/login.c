@@ -94,7 +94,7 @@ void get_name(string str) {
         }
     }
 
-    err = catch(user = new(USER_OB));
+    err = catch(user = new(STD_LINK));
 
     if(err) {
         write("Error [login]: Unable to create user object.\n");

@@ -23,7 +23,6 @@
 #define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"
 #define LOGIN_OB   "/adm/obj/login"
-#define USER_OB    "/std/user/user"
 #define VOID_OB    "/areas/std/void"
 
 #define TRUE 1

@@ -21,8 +21,9 @@ inherit STD_OBJECT;
 inherit __DIR__ "alias" ;
 inherit __DIR__ "wealth" ;
 
-/* Global Variables */
+inherit M_GMCP ;
 
+/* Global Variables */
 string *path;
 nosave string *command_history = ({});
 private object link;

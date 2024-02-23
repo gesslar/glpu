@@ -10,7 +10,7 @@
 inherit STD_CMD ;
 
 #define SYNTAX "Syntax: trace -[d/v] [object/filename]\n"
-#define PROTECT ({ "/std/user/mobile" })
+#define PROTECT ({ STD_LINK, STD_BODY })
 
 mixed main(object tp, object room, string str) {
     object target;
