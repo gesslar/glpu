@@ -20,32 +20,32 @@ public int gmcp_enabled() {
 }
 
 void gmcp(string message) {
-    class ClassGMCP g ;
+    class ClassGMCP gmcp ;
     mixed err ;
     string module ;
 
-    g = GMCP_D->convert_message(message) ;
+    gmcp = GMCP_D->convert_message(message) ;
 
-    if(g == null || (g.package == null && g.command == null))
+    if(gmcp == null || (gmcp.package == null && gmcp.command == null))
         return ;
 
-    module = DIR_STD_MODULES "gmcp/" + g.package + ".c" ;
+    module = DIR_STD_MODULES "gmcp/" + gmcp.package + ".c" ;
     if(!file_exists(module))
         return ;
 
     if(err = catch(load_object(module)))
         return ;
 
-    if(g.subpackage)
-        if(g.payload)
-            catch(call_other(module, g.subpackage, g.command, g.payload)) ;
+    if(gmcp.subpackage)
+        if(gmcp.payload)
+            catch(call_other(module, gmcp.subpackage, gmcp.command, gmcp.payload)) ;
         else
-            catch(call_other(module, g.subpackage, g.command)) ;
+            catch(call_other(module, gmcp.subpackage, gmcp.command)) ;
     else
-        if(g.payload)
-            catch(call_other(module, g.command, g.payload)) ;
+        if(gmcp.payload)
+            catch(call_other(module, gmcp.command, gmcp.payload)) ;
         else
-            catch(call_other(module, g.command)) ;
+            catch(call_other(module, gmcp.command)) ;
 }
 
 varargs void do_gmcp(string package, mixed data) {
