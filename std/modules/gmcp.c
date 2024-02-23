@@ -20,6 +20,16 @@ int set_env(string var_name, string var_value) ;
 public int gmcp_enabled() ;
 private mixed gmcp_stringify(mixed data) ;
 
+// This apply receives the GMCP messages from the client. We parse out the
+// information into what package, subpackage, command, and payload. We then
+// call the appropriate module to handle the GMCP message.
+//
+// We do not check if the player has GMCP enabled here. We assume that the
+// client will not send GMCP messages if it is not enabled, and, we want to
+// ensure that we still get Core.Hello and Core.Supports if available during
+// login, since they are most likely only sent at that time. If a module does
+// respond to the client, it should route its message through the GMCP_D which
+// will check if the player has GMCP enabled and behave accordingly.
 void gmcp(string message) {
     class ClassGMCP gmcp ;
     mixed err ;
@@ -49,6 +59,9 @@ void gmcp(string message) {
             catch(call_other(module, gmcp.command)) ;
 }
 
+// This function sends a GMCP message to the client. It will only send the
+// message if the player has GMCP enabled. If the player does not have GMCP
+// enabled, the message will be ignored.
 varargs void do_gmcp(string package, mixed data) {
     string message ;
 
@@ -68,6 +81,10 @@ varargs void do_gmcp(string package, mixed data) {
     send_gmcp(message) ;
 }
 
+// This funcation sanitises the data to be sent to the client. It will convert
+// the data to a string if it is not already a string. For mappings and arrays,
+// it will convert the data to a string representation of the data. GMCP should
+// always send keys and values as strings, so we convert them here.
 mixed gmcp_stringify(mixed data) {
     switch(typeof(data)) {
         case T_STRING:
