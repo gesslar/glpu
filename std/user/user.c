@@ -58,7 +58,7 @@ nomask int set_password(string str) {
         return 0;
     }
 
-    if(file_exists(user_data_file(query_privs(this_object())) + __SAVE_EXTENSION__))
+    if(ofile_exists(user_data_file(query_privs(this_object()))))
         save_user() ;
 
     return 1;

@@ -150,7 +150,7 @@ void get_name(string str) {
         return;
     }
 
-    if(!file_exists(user_data_file(str) + ".o")) {
+    if(!ofile_exists(user_data_file(str))) {
         if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
             remove() ;

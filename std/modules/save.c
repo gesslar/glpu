@@ -32,7 +32,7 @@ varargs string set_save_file(string file) {
         file = object_save_file(this_object());
     }
 
-    if(file[<2..] == __SAVE_EXTENSION__) file = file[0..<3];
+    file = chop(file, __SAVE_EXTENSION__, -1);
     save_file = file;
 
     return save_file ;
@@ -72,6 +72,6 @@ int restore_data() {
 
     if(!save_file) save_file = object_save_file(this_object());
 
-    if(!file_exists(save_file + __SAVE_EXTENSION__)) return 0;
+    if(!ofile_exists(save_file)) return 0;
     return restore_object(save_file);
 }

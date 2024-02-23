@@ -664,7 +664,7 @@ protected varargs void do_mail(string arg, int flag, int forward) {
     recipients_tmp = recipients;
 
     for(i = 0; i < sizeof(recipients); i++) {
-        if(!file_exists(user_data_file(recipients[i])+ ".o")) {
+        if(!ofile_exists(user_data_file(recipients[i]))) {
             if(recipients[i][0] == '(' && recipients[i][<1] == ')') {
                 if(member_array(recipients[i][1..<2], s_editor->list_groups()) == -1)
                     recipients_tmp -= ({ recipients[i] });
@@ -699,7 +699,7 @@ protected void get_recipient(string arg, int flag, int forward) {
     recipients_tmp = recipients;
 
     for(i = 0; i < sizeof(recipients); i++) {
-        if(!file_exists(user_data_file(recipients[i])+ ".o")) {
+        if(!ofile_exists(user_data_file(recipients[i]))) {
             if(recipients[i][0] == '(' && recipients[i][<1] == ')') {
                 if(member_array(recipients[i][1..<2], s_editor->list_groups()) == -1)
                     recipients_tmp -= ({ recipients[i] });
@@ -755,7 +755,7 @@ protected varargs void get_cc(string arg, int flag, int forward) {
         cc_tmp = cc;
 
         for(i = 0; i < sizeof(cc); i++) {
-            if(!file_exists(user_data_file(cc[i])+ ".o")) {
+            if(!ofile_exists(user_data_file(cc[i]))) {
                 if(cc[i][0] == '(' && cc[i][<1] == ')') {
                     if(member_array(cc[i][1..<2], s_editor->list_groups()) == -1)
                         cc_tmp -= ({ cc[i] });

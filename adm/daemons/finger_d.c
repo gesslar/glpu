@@ -122,7 +122,7 @@ mixed get_user(string username) {
 
     error = catch(user = new(USER_OB));
     if(error) return -1;
-    if(!file_exists(user_data_file(username) + ".o")) return -2;
+    if(!ofile_exists(user_data_file(username)))) return -2;
 
      set_privs(user, username);
      user->set_name(username);
@@ -139,7 +139,7 @@ mixed get_body(object user) {
 
     error = catch(body = new(user->query_body_path()));
     if(error) return -1;
-    if(!file_exists(user_mob_data(query_privs(user)) + ".o")) return -2;
+    if(!ofile_exists(user_mob_data(query_privs(user)))) return -2;
 
      set_privs(body, query_privs(user));
      body->set_name(user->name());

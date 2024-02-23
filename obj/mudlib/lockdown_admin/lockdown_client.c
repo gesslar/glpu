@@ -509,7 +509,7 @@ varargs int i_GetUserName(string arg, int state, int confirm) {
     if(tmp[0] == '*' && tmp[<1] == '*')
     arg = ".*" + arg[1..<2] + ".*";
 
-    if(!file_exists(user_data_file(arg) + ".o") && state == 1 && !confirm) {
+    if(!ofile_exists(user_data_file(arg)) && state == 1 && !confirm) {
         write("\n That user does not exist... do you still wish to add it to\n"+
             "the ban list?\n");
         input_to("i_ConfirmUserBan", arg);
@@ -688,7 +688,7 @@ varargs int i_GetPlayTester(string arg, int state, int confirm) {
         return 1;
     }//END IF
 
-    if(!file_exists(user_data_file(arg) + ".o") && state == 1 && !confirm) {
+    if(!ofile_exists(user_data_file(arg)) && state == 1 && !confirm) {
         write("\n That user does not exist... do you still wish to add it to\n"+
             "the VIP user list?\n");
         input_to("i_ConfirmPlayTesterAdd", arg);
