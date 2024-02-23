@@ -122,7 +122,7 @@ mixed get_user(string username) {
 
     error = catch(user = new(USER_OB));
     if(error) return -1;
-    if(!ofile_exists(user_data_file(username)))) return -2;
+    if(!ofile_exists(user_data_file(username))) return -2;
 
      set_privs(user, username);
      user->set_name(username);
