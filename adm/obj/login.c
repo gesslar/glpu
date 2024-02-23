@@ -415,8 +415,6 @@ void enter_world(string str) {
     body->set_user(user);
     user->set_body(body);
     if(body->gmcp_enabled()) {
-        body->set_gmcp_client(login_gmcp_data["client"]);
-        body->set_gmcp_supports(login_gmcp_data["supports"]);
         GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUSVARS) ;
         GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUS) ;
     }
