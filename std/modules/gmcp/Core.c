@@ -1,4 +1,5 @@
 #include <daemons.h>
+#include <gmcp.h>
 
 void Hello(mapping data) {
     object prev = previous_object();
