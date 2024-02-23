@@ -120,7 +120,7 @@ mixed get_user(string username) {
 
     if(origin() != "local" && !adminp(query_privs(previous_object()))) return 0;
 
-    error = catch(user = new(STD_LINK));
+    error = catch(user = new(STD_USER));
     if(error) return -1;
     if(!ofile_exists(user_data_file(username))) return -2;
 

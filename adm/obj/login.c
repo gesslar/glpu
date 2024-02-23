@@ -94,7 +94,7 @@ void get_name(string str) {
         }
     }
 
-    err = catch(user = new(STD_LINK));
+    err = catch(user = new(STD_USER));
 
     if(err) {
         write("Error [login]: Unable to create user object.\n");
@@ -150,7 +150,7 @@ void get_name(string str) {
         return;
     }
 
-    if(!ofile_exists(user_data_file(str))) {
+    if(!file_exists(user_data_file(str) + ".o")) {
         if(LOCKDOWN_D->query_player_lock()) {
             write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
             remove() ;
