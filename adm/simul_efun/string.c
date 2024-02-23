@@ -106,3 +106,34 @@ varargs string simple_list(string *arr, string conjunction) {
     else if(sizeof(arr) == 2) return arr[0] + " " + conjunction + " " + arr[1];
     else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
 }
+
+//:FUNCTION substr
+//Return a substring of a string, starting from 0 and ending at the first
+//occurrence of another string within it.
+//
+//If the reverse flag is set, the substring will start at the last occurrence
+//of the substring within the string, skipping over the whole substring, and
+//ending at the end of the string.
+//
+// arg1 - str - the string to extract from
+// arg2 - sub - the substring to extract to
+// arg3 - reverse - if set, the substring will start at the last occurrence
+//        (optoinal)
+varargs string substr(string str, string sub, int reverse) {
+    int sub_len;
+    int pos ;
+
+    if(nullp(str)) error("substr: Missing argument 1 for substr");
+    if(nullp(sub)) error("substr: Missing argument 2 for substr");
+
+    reverse = !!reverse ;
+    sub_len = strlen(sub);
+    pos = strsrch(str, sub, reverse) ;
+
+    if(pos == -1) return "" ;
+
+    if(reverse)
+        return str[pos+sub_len..] ;
+    else
+        return str[0..pos-1] ;
+}

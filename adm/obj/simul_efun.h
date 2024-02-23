@@ -96,6 +96,7 @@ string prepend(string source, string to_prepend) ;
 varargs string chop(string str, string sub, int dir) ;
 varargs string extract(string str, int from, int to) ;
 varargs string simple_list(mixed *arr, string conj) ;
+varargs string substr(string str, string sub, int reverse) ;
 
 // File: system
 int port() ;
