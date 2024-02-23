@@ -66,5 +66,5 @@ void Ping(int time) {
     if(!time)
         return;
 
-    GMCP_D->send_gmcp(prev, "Core.Ping") ;
+    GMCP_D->send_gmcp(prev, GMCP_PKG_CORE_PING) ;
 }
