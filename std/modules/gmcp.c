@@ -15,9 +15,6 @@ inherit CLASS_GMCP ;
 mixed query_env(string var_name);
 int set_env(string var_name, string var_value) ;
 
-// Variables
-private nosave mapping gmcp_data = ([]) ;
-
 public int gmcp_enabled() {
     return has_gmcp(this_object()) && query_env("gmcp") == "on";
 }
@@ -62,20 +59,4 @@ varargs void do_gmcp(string package, mixed data) {
     message = trim(sprintf("%s %s", package, data)) ;
 
     send_gmcp(message) ;
-}
-
-mapping query_gmcp_client() {
-    return copy(gmcp_data["client"]);
-}
-
-mapping query_gmcp_supports() {
-    return copy(gmcp_data["supports"]);
-}
-
-void set_gmcp_supports(mapping supports) {
-    gmcp_data["supports"] = supports ;
-}
-
-void set_gmcp_client(mapping client) {
-    gmcp_data["client"] = client ;
 }
