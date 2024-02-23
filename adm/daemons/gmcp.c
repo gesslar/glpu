@@ -71,7 +71,6 @@ class ClassGMCP convert_message(string message) {
         message_info = message[pos+1..] ;
     }
 
-    package_info = normalize_package_info(package_info) ;
     parts = explode(package_info, ".") ;
     sz = sizeof(parts) ;
     if(sz >= 1) {
@@ -104,13 +103,4 @@ class ClassGMCP convert_message(string message) {
     }
 
     return gmcp ;
-}
-
-string normalize_package_info(string package_info) {
-    string *parts ;
-
-    parts = explode(package_info, ".");
-    parts = map(parts, (: capitalize(lower_case($1)) :)) ;
-
-    return implode(parts, ".") ;
 }

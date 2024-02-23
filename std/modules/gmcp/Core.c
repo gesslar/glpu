@@ -71,12 +71,11 @@ void Supports(string command, mixed data) {
 
 void Ping(int time) {
     object prev = previous_object();
-    string cooldown = GMCP_PKG_CORE_PING ;
 
-    if(!cooldown_check(prev, cooldown))
+    if(!cooldown_check(GMCP_PKG_CORE_PING, prev))
         return;
 
-    apply_cooldown(prev, cooldown) ;
+    apply_cooldown(GMCP_PKG_CORE_PING, prev) ;
 
     if(!time)
         return;

@@ -9,15 +9,28 @@
 
 inherit STD_DAEMON ;
 
-void Status(object who) {
-    mapping status ;
+void StatusVars(object who) {
+    mapping data ;
 
-    status = ([
+    data = ([
+        GMCP_LBL_CHAR_STATUS_NAME        : GMCP_DIS_CHAR_STATUS_NAME,
+        GMCP_LBL_CHAR_STATUS_CAP_NAME    : GMCP_DIS_CHAR_STATUS_CAP_NAME,
+        GMCP_LBL_CHAR_STATUS_CAPACITY    : GMCP_DIS_CHAR_STATUS_CAPACITY,
+        GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: GMCP_DIS_CHAR_STATUS_MAX_CAPACITY,
+    ]);
+
+    who->do_gmcp(GMCP_PKG_CHAR_STATUSVARS, data) ;
+}
+
+void Status(object who) {
+    mapping data ;
+
+    data = ([
         GMCP_LBL_CHAR_STATUS_NAME        : who->query_name(),
         GMCP_LBL_CHAR_STATUS_CAP_NAME    : who->query_cap_name(),
         GMCP_LBL_CHAR_STATUS_CAPACITY    : who->query_capacity(),
         GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: who->query_max_capacity(),
     ]) ;
 
-    who->do_gmcp(GMCP_PKG_CHAR_STATUS, status) ;
+    who->do_gmcp(GMCP_PKG_CHAR_STATUS, data) ;
 }
