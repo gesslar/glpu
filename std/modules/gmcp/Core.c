@@ -38,7 +38,7 @@ void Supports(string command, mixed data) {
 
     switch(command) {
         case "Set" :
-            // we're not doing anything cos we're setting later
+            // we're not doing anything here cos we're setting later
             break ;
         case "Add" :
             curr = prev->query_gmcp_supports() ;
