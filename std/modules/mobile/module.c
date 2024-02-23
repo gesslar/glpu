@@ -18,7 +18,7 @@ void mudlib_setup() {
     module_name = "module" ;
 }
 
-varargs void attach(object ob, mixed args...) {
+varargs mixed attach(object ob, mixed args...) {
     owner = ob ;
     owner->attach_module(this_object(), args...) ;
     return start_module(args...) ;

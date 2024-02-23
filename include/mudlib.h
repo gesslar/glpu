@@ -26,6 +26,8 @@
 #define STD_OB_E            DIR_STD "object/ob_prop"
 #define STD_OBJECT          DIR_STD "object/object"
 #define STD_ROOM            DIR_STD "area/rooms/room"
+#define STD_SKILL           DIR_STD "cmd/skill"
+#define STD_SPELL           DIR_STD "cmd/spell"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
 #define STD_ZONE            DIR_STD "area/zones/zone"
 
