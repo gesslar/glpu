@@ -1,6 +1,9 @@
 #include <daemons.h>
 #include <gmcp.h>
 
+private nosave mapping PingCooldown = ([]) ;
+private nosave int PingInterval = 60 ;
+
 void Hello(mapping data) {
     object prev = previous_object();
     string key, value ;
@@ -63,6 +66,12 @@ void Supports(string command, mixed data) {
 
 void Ping(int time) {
     object prev = previous_object();
+
+    // Only allow one ping per interval
+    if(Ping[prev] && (time() - Ping[prev]) < PingInterval)
+        return;
+
+    Ping[prev] = time() ;
 
     if(!time)
         return;
