@@ -108,7 +108,7 @@ private int clean_up_check(mixed ob) {
     result = catch {
         ob -= ({ 0 }) ;
         if(!sizeof(ob)) return 0 ;
-debugf("clean_up_check: ob = %O", ob) ;
+
         ob = filter(ob, (:
             objectp($1) &&
             $1->query_no_clean() == 1 ||
@@ -116,6 +116,6 @@ debugf("clean_up_check: ob = %O", ob) ;
             interactive($1))
         :) ) ;
     } ;
-debugf("%O - clean_up_check: result = %O", this_object(), result) ;
+
     return sizeof(ob) ;
 }
