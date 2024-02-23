@@ -23,6 +23,10 @@ int cfile_exists(string file) {
     return file_exists(append(file, ".c"));
 }
 
+int ofile_exists(string file) {
+    return file_exists(append(file, ".o"));
+}
+
 int user_exists(string user) {
     return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + ".o"));
 }

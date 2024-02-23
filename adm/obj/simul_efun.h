@@ -26,6 +26,7 @@ string subjective(mixed ob) ;
 int directory_exists(string dirname) ;
 int file_exists(string file) ;
 int cfile_exists(string file) ;
+int ofile_exists(string file) ;
 int user_exists(string user) ;
 
 // File: file
