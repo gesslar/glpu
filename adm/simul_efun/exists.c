@@ -24,7 +24,7 @@ int cfile_exists(string file) {
 }
 
 int ofile_exists(string file) {
-    return file_exists(append(file, ".o"));
+    return file_exists(append(file, SAVE_EXTENSION));
 }
 
 int user_exists(string user) {
