@@ -53,3 +53,14 @@ mixed gmcp_status(object tp) {
     }
     return "GMCP is currently disabled." ;
 }
+
+string help(object who) {
+    return
+"Syntax: gmcp\n"
+"        gmcp <on/off>\n\n"
+"Displays your current GMCP status or enables/disables GMCP. GMCP is a "
+"protocol that allows the server to send information to the client. This "
+"information can be used to enhance the user interface and provide additional "
+"information to the player. GMCP is only available if the client supports it "
+"and it is enabled in the client and the server." ;
+}
