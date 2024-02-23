@@ -17,6 +17,7 @@ mixed query_env(string var_name);
 int set_env(string var_name, string var_value) ;
 
 // Functions
+public int gmcp_enabled() ;
 private mixed gmcp_stringify(mixed data) ;
 
 void gmcp(string message) {
@@ -50,6 +51,12 @@ void gmcp(string message) {
 
 varargs void do_gmcp(string package, mixed data) {
     string message ;
+
+    if(!get_config(__RC_ENABLE_GMCP__))
+        return ;
+
+    if(!gmcp_enabled())
+        return ;
 
     if(data)
         data = json_encode(gmcp_stringify(data)) ;

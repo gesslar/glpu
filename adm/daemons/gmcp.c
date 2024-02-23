@@ -7,6 +7,7 @@
 // 2024/02/22: Gesslar - Created
 
 #include <classes.h>
+#include <gmcp.h>
 
 inherit STD_DAEMON ;
 inherit CLASS_GMCP ;
@@ -25,7 +26,13 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     string module ;
     mixed err ;
 
+    if(!get_config(__RC_ENABLE_GMCP__))
+        return ;
+
     if(!body || !gmcp_package)
+        return ;
+
+    if(!body->gmcp_enabled())
         return ;
 
     gmcp = convert_message(gmcp_package) ;
@@ -103,4 +110,9 @@ class ClassGMCP convert_message(string message) {
     }
 
     return gmcp ;
+}
+
+void init_gmcp(object who) {
+    GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_STATUSVARS) ;
+    GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_STATUS) ;
 }

@@ -14,9 +14,7 @@
 
 // Labels and display values
 #define GMCP_LBL_CHAR_STATUS_NAME           "name"
-#define GMCP_DIS_CHAR_STATUS_NAME           "name"
-#define GMCP_LBL_CHAR_STATUS_CAP_NAME       "cap_name"
-#define GMCP_DIS_CHAR_STATUS_CAP_NAME       "Display Name"
+#define GMCP_DIS_CHAR_STATUS_NAME           "Name"
 #define GMCP_LBL_CHAR_STATUS_CAPACITY       "capacity"
 #define GMCP_DIS_CHAR_STATUS_CAPACITY       "Capacity"
 #define GMCP_LBL_CHAR_STATUS_MAX_CAPACITY   "max_capacity"

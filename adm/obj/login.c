@@ -13,7 +13,6 @@
 #include <config.h>
 #include <logs.h>
 #include <daemons.h>
-#include <gmcp.h>
 
 inherit STD_OBJECT ;
 
@@ -415,8 +414,7 @@ void enter_world(string str) {
     body->set_user(user);
     user->set_body(body);
     if(body->gmcp_enabled()) {
-        GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUSVARS) ;
-        GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUS) ;
+        GMCP_D->init_gmcp(body) ;
     }
 
     if(devp(user)) {
