@@ -34,14 +34,13 @@ varargs string chop(string str, string sub, int dir) {
         dir = 1;
 
     sub_len = strlen(sub);
-
     if(dir == 1) {
-        if(str[<sub_len..] == sub) {
-            str = str[0..<sub_len-1];
+        if(sub[0..sub_len-1] == sub) {
+            str = str[0..sub_len];
         }
     } else if(dir == -1) {
-        if(str[0..sub_len-1] == sub) {
-            str = str[sub_len..];
+        if(str[<sub_len..] == sub) {
+            str = str[0..<sub_len+1];
         }
     }
 
