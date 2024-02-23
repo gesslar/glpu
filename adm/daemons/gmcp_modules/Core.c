@@ -5,8 +5,10 @@
 //
 // 2024/02/23: Gesslar - Created
 
+#include <gmcp.h>
+
 inherit STD_DAEMON ;
 
 void Ping(object who) {
-    who->do_gmcp("Core.Ping") ;
+    who->do_gmcp(GMCP_PKG_CORE_PING) ;
 }
