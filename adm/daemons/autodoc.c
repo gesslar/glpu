@@ -26,7 +26,7 @@ void parse_file(string *file) ;
 void autodoc_scan() {
     mixed *config ;
 
-    if(check_running() == TRUE)
+    if(check_running() == true)
         return ;
 
     start_time_ms = time_ns() / 1_000_000 ;
@@ -41,7 +41,7 @@ void check_dir() {
     string source_dir, dest_dir ;
     string orig ;
 
-    if(check_running() == FALSE)
+    if(check_running() == false)
         return finish_scan() ;
 
     current = dirs_to_check[0] ;
@@ -67,7 +67,7 @@ void check_dir() {
 void check_file() {
     string *file ;
 
-    if(check_running() == FALSE)
+    if(check_running() == false)
         return finish_scan() ;
 
     file = files_to_check[0] ;
@@ -107,7 +107,7 @@ void parse_file(string *file_info) {
 
         curr++ ;
         line = lines[num] ;
-        if(pcre_match(line, "^//:") == TRUE) {
+        if(pcre_match(line, "^//:") == true) {
             line = line[3..] ;
     }
 }

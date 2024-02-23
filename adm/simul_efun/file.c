@@ -83,7 +83,7 @@ int tail(string file) {
     int len, num ;
     object tp = this_player() ;
     string data ;
-    int done = FALSE, cursor ;
+    int done = false, cursor ;
 
     if(!file) {
         return 0;
@@ -101,7 +101,7 @@ debugf("file: %s, len: %d, num: %d, len-num: %d", file, len, num, len - num);
 
     data = "" ;
     cursor = -chunk_size ;
-    while(done != TRUE) {
+    while(done != true) {
         string in = read_bytes(file, cursor, chunk_size) ;
         int count
 

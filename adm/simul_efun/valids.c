@@ -9,5 +9,5 @@ int valid_function(mixed f) {
         return !(fp & FP_OWNER_DESTED) ;
     }
 
-    return FALSE ;
+    return false ;
 }

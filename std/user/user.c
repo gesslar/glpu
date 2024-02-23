@@ -14,8 +14,6 @@
 
 inherit STD_OBJECT;
 
-inherit M_GMCP ;
-
 private string password, body_path;
 
 private nosave object body;

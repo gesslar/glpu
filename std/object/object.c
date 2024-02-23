@@ -44,7 +44,7 @@ private void create() {
     setup_chain() ;
     if(!proper_name) {
         set_proper_name(name) ;
-        name = UNDEFINED ;
+        name = null ;
     }
 }
 

@@ -147,7 +147,7 @@ mixed render_object(object caller, object room, string target) {
     if(stringp(temp)) desc += "\n" + temp + "\n" ;
 
     tell(ob, name + " looks at you.") ;
-    tell_down(room, name + " looks at " + ob->query_short() + ".", UNDEFINED, ({ caller, ob }) );
+    tell_down(room, name + " looks at " + ob->query_short() + ".", null, ({ caller, ob }) );
 
     tell(caller, desc) ;
 
@@ -165,11 +165,11 @@ mixed render_living(object caller, object room, object target, object user) {
     name = caller->query_cap_name() ;
     if(target == caller) {
         string refl = reflexive(caller) ;
-        tell_down(room, name + " looks at "+refl+".\n", UNDEFINED, ({ caller }) );
+        tell_down(room, name + " looks at "+refl+".\n", null, ({ caller }) );
     } else {
         string vname = target->query_cap_name() ;
         tell(target, name + " looks at you.\n") ;
-        tell_down(room, name + " looks at " + vname + ".\n", UNDEFINED, ({ caller, target }) );
+        tell_down(room, name + " looks at " + vname + ".\n", null, ({ caller, target }) );
     }
 
     tell(caller, result) ;

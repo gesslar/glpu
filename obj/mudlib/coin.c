@@ -15,7 +15,7 @@ int value ;
 void set_up(string type, int num) ;
 
 void mudlib_setup() {
-    set_up(UNDEFINED, UNDEFINED) ;
+    set_up(null, null) ;
 }
 
 void set_up(string type, int num) {

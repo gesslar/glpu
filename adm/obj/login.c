@@ -15,6 +15,13 @@
 
 inherit STD_OBJECT ;
 
+inherit M_GMCP ;
+
+private nosave mapping login_gmcp_data = ([
+    "client" : null,
+    "supports" : null,
+]) ;
+
 /* #define EMAIL_MUST_RESOLVE */
 
 void get_name(string str);
@@ -403,6 +410,7 @@ void enter_world(string str) {
     body->setup_body();
     body->set_user(user);
     user->set_body(body);
+    transfer_gmcp_to_body(this_object(), body, login_gmcp_data) ;
 
     if(devp(user)) {
         if(body->query_env("start_location") == "last_location") body->move_living(body->query("last_location"), 0, "SNEAK");

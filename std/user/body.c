@@ -478,7 +478,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             if(!arrive_message) arrive_message = "$N arrives.";
             tmp = replace_string(arrive_message, "$N", query_cap_name());
 
-            tell_down(curr, tmp, UNDEFINED, ({ this_object() })) ;
+            tell_down(curr, tmp, null, ({ this_object() })) ;
         }
     } else {
         tell(this_object(), "You went nowhere.") ;

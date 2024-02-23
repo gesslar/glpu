@@ -25,9 +25,10 @@
 #define LOGIN_OB   "/adm/obj/login"
 #define VOID_OB    "/areas/std/void"
 
-#define TRUE 1
-#define FALSE 0
-#define UNDEFINED ([])[0]
+#define true 1
+#define false 0
+#define null ([])[0]
+#define undefined ([])[0]
 
 #define DATE "%F"
 #define TIME "%T"
