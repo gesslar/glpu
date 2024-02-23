@@ -52,6 +52,18 @@ void create() {
 }
 
 void logon() {
+    mixed err ;
+
+    err = catch(user = new(STD_USER));
+
+    if(err) {
+        write("Error [login]: Unable to create user object.\n");
+        write("It appears that the login object is dysfunctional. Try again later.\n");
+        write("Error: " + err + "\n");
+        remove() ;
+        return;
+    }
+
     write(login_message);
     write("\nPlease select a name: ");
     input_to("get_name");
@@ -99,16 +111,6 @@ void get_name(string str) {
             input_to("get_name");
             return;
         }
-    }
-
-    err = catch(user = new(STD_USER));
-
-    if(err) {
-        write("Error [login]: Unable to create user object.\n");
-        write("It appears that the login object is dysfunctional. Try again later.\n");
-        write("Error: " + err + "\n");
-        remove() ;
-        return;
     }
 
     if(LOCKDOWN_D->is_user_banned(str)) {
@@ -410,7 +412,8 @@ void enter_world(string str) {
     body->setup_body();
     body->set_user(user);
     user->set_body(body);
-    transfer_gmcp_to_body(this_object(), body, login_gmcp_data) ;
+    body->set_gmcp_client(login_gmcp_data["client"]);
+    body->set_gmcp_supports(login_gmcp_data["supports"]);
 
     if(devp(user)) {
         if(body->query_env("start_location") == "last_location") body->move_living(body->query("last_location"), 0, "SNEAK");
@@ -505,4 +508,16 @@ string parse_tokens(string text) {
 
 void receive_message(string type, string msg) {
     receive(XTERM256->substitute_colour(msg, "plain")) ;
+}
+
+void set_gmcp_client(mapping client) {
+    user->set_gmcp_client(client);
+}
+
+void set_gmcp_supports(string *supports) {
+    user->set_gmcp_supports(supports);
+}
+
+object query_user() {
+    return user;
 }

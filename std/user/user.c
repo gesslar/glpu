@@ -17,6 +17,7 @@ inherit STD_OBJECT;
 private string password, body_path;
 
 private nosave object body;
+private nosave mapping gmcp_data = ([ ]);
 
 int save_user();
 
@@ -104,4 +105,20 @@ int clean_up(int refs) {
     }
 
     return ::clean_up(refs) ;
+}
+
+void set_gmcp_client(mapping data) {
+    gmcp_data["client"] = data;
+}
+
+mapping query_gmcp_client() {
+    return copy(gmcp_data["client"]);
+}
+
+void set_gmcp_supports(string *data) {
+    gmcp_data["supports"] = data;
+}
+
+string *query_gmcp_supports() {
+    return copy(gmcp_data["supports"]);
 }

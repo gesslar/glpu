@@ -8,6 +8,7 @@
 #define CONFIG_D        DIR_DAEMONS "config"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
+#define GMCP_D          DIR_DAEMONS "gmcp"
 #define LOCKDOWN_D      DIR_DAEMONS "lockdown_d"
 #define MAIL_D          DIR_DAEMONS "mail_d"
 #define MOVE_D          DIR_DAEMONS "movement"
