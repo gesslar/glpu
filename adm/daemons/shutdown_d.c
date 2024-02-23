@@ -20,7 +20,7 @@ string get_status();
 int start_time;
 int end_time;
 int type;
-int true = 0;
+int running = 0;
 
 int start(int minutes, int type_in) {
      int i;
@@ -28,7 +28,7 @@ int start(int minutes, int type_in) {
 
      type = type_in;
      if(previous_object() != find_object("/cmds/adm/shutdown.c") && previous_object() != find_object("/cmds/adm/reboot.c")) return 0;
-     if(true) return 0;
+     if(running) return 0;
 
      message("warning",
           sprintf("The mud will be %s %s.\n",
@@ -50,7 +50,7 @@ int start(int minutes, int type_in) {
      {
           start_time = time();
           end_time = time() + (60 * minutes);
-          true = 1;
+          running = 1;
           call_out("check", 1);
      }
      return 1;
@@ -58,11 +58,11 @@ int start(int minutes, int type_in) {
 
 int stop()
 {
-     if(!true) return 0;
+     if(!running) return 0;
      if(previous_object() != find_object("/cmds/adm/shutdown.c") && previous_object() != find_object("/cmds/adm/reboot.c")) return 0;
      message("warning", "Shutdown/Reboot Canceled.\n", users());
      remove_call_out("check");
-     true = 0;
+     running = 0;
      return 1;
 
 }
@@ -72,7 +72,7 @@ void check()
      int time_left;
      int i;
      object *users = users();
-     if(!true) return;
+     if(!running) return;
      time_left = end_time - time();
      if(time_left <= 0)
      {
@@ -100,5 +100,5 @@ void check()
 
 string get_status()
 {
-     if(true) return sprintf("The mud will be %s in %d minutes and %d seconds.\n", type ? "shutting down" : "rebooting", (end_time - time()) / 60, (end_time - time()) % 60  );
+     if(running) return sprintf("The mud will be %s in %d minutes and %d seconds.\n", type ? "shutting down" : "rebooting", (end_time - time()) / 60, (end_time - time()) % 60  );
 }
