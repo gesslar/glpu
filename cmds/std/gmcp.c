@@ -40,7 +40,7 @@ mixed main(object tp, object room, string arg) {
         return "GMCP is now disabled." ;
     }
 
-    return "Syntax: gmcp [on|off]" ;
+    return "Syntax: gmcp OR gmcp [on|off]" ;
 }
 
 mixed gmcp_status(object tp) {
