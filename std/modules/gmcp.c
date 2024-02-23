@@ -64,11 +64,6 @@ varargs void do_gmcp(string package, mixed data) {
     send_gmcp(message) ;
 }
 
-// Since this gets called in the login object, there isn't really a lot to
-// use this for. Just leaving empty for now. /shrug
-void gmcp_enable() {
-}
-
 mapping query_gmcp_client() {
     return copy(gmcp_data["client"]);
 }
