@@ -10,7 +10,7 @@
 void do_receive(string message, int message_type);
 
 // Variables
-int _contents_can_hear = 1, _environment_can_hear = 1;
+private nosave int _contents_can_hear = 1, _environment_can_hear = 1;
 
 // This function enables messages to be propogated to the contents of an object
 int set_contents_can_hear(int i) {

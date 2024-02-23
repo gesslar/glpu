@@ -9,8 +9,8 @@
 // Functions from other objects
 int query_total_coins() ;
 
-int max_capacity, max_volume ;
-int capacity, volume ;
+private int max_capacity, max_volume ;
+private nosave int capacity, volume ;
 
 void clean_contents() {
     object *obs = deep_inventory() ;

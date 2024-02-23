@@ -401,7 +401,7 @@ void enter_world(string str) {
 
     exec(body, this_object());
     body->setup_body();
-    body->set_link(user);
+    body->set_user(user);
     user->set_body(body);
 
     if(devp(user)) {

@@ -59,7 +59,7 @@ void confirm_nuke(string str, object caller, string user) {
         if(environment(body)) {
             tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n",
                 0, ({ body }) );
-            link = body->query_link() ;
+            link = body->query_user() ;
             link->remove() ;
             body->remove() ;
         }

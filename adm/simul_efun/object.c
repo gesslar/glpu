@@ -91,7 +91,7 @@ varargs object get_object( string str, object player ) {
 //   "users:e:guard" - searches the environments of all users for a guard.
 //   "/std/ghost:c" - all the children of /std/ghost
 //   "users:s" - all the shadows of users
-//   "users:>query_link" - all the connection objects in the game
+//   "users:>query_user" - all the connection objects in the game
 varargs mixed get_objects( string str, object player, int no_arr ) {
     mixed base, tmp, ret;
     object what;

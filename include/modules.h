@@ -5,6 +5,7 @@
 
 #define M_CHECKS        DIR_STD_MODULES "checks"
 #define M_CLEAN         DIR_STD_MODULES "clean"
+#define M_GMCP          DIR_STD_MODULES "gmcp"
 #define M_MESSAGING     DIR_STD_MODULES "messaging"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_SAVE          DIR_STD_MODULES "save"

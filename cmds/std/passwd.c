@@ -20,7 +20,7 @@ mixed main(object caller, object room, string arg) {
 }
 
 int confirm_CurrentPassword(string str, object caller) {
-    string curr = caller->query_link()->query_password();
+    string curr = caller->query_user()->query_password();
     if(crypt(str, curr) != curr) {
         tell(caller, "\nError: The password you provided does not match your current password.\n");
         return 1;
@@ -47,7 +47,7 @@ int confirm_NewPassword(string str, object caller, string pass) {
         tell(caller, "\nError: Passwords do not match. Please try again.\n");
         return 1;
     } else {
-        if(caller->query_link()->set_password(str))
+        if(caller->query_user()->set_password(str))
             tell(caller, "\nSuccess: Password changed successfully.\n");
         else
             tell(caller, "\nError: Unable to change password.\n");

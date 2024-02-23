@@ -100,18 +100,22 @@ int query_no_clean() {
 }
 
 private int clean_up_check(mixed ob) {
+    mixed result ;
+
     if(objectp(ob)) ob = ({ ob }) ;
     if(!pointerp(ob)) return 0 ;
 
-    ob -= ({ 0 }) ;
-    if(!sizeof(ob)) return 0 ;
-
-    ob = filter(ob, (:
-        objectp($1) &&
-        $1->query_no_clean() == 1 ||
-        (userp($1) ||
-        interactive($1))
-    :) ) ;
-
+    result = catch {
+        ob -= ({ 0 }) ;
+        if(!sizeof(ob)) return 0 ;
+debugf("clean_up_check: ob = %O", ob) ;
+        ob = filter(ob, (:
+            objectp($1) &&
+            $1->query_no_clean() == 1 ||
+            (userp($1) ||
+            interactive($1))
+        :) ) ;
+    } ;
+debugf("%O - clean_up_check: result = %O", this_object(), result) ;
     return sizeof(ob) ;
 }

@@ -6,7 +6,7 @@
 
 */
 
-/* This object represents a charachter in the mud.
+/* This object represents a character in the mud.
  Another object that inherits this represents NPCs
  */
 
@@ -26,7 +26,7 @@ inherit M_GMCP ;
 /* Global Variables */
 string *path;
 nosave string *command_history = ({});
-private object link;
+private nosave object link;
 
 /* Prototypes */
 
@@ -41,8 +41,8 @@ void reconnect();
 varargs int move(mixed ob, int flag);
 void restore_user();
 void save_user();
-object query_link();
-int set_link(object ob);
+object query_user();
+int set_user(object ob);
 
 /* User environmental variable functions */
 
@@ -220,7 +220,7 @@ varargs int move(mixed ob, int flag) {
 void event_remove(object prev) {
     object *all ;
 
-    if(objectp(query_link())) destruct(query_link());
+    if(objectp(query_user())) destruct(query_user());
 
     all = all_inventory() ;
     foreach(object ob in all) {
@@ -239,11 +239,11 @@ void event_remove(object prev) {
     }
 }
 
-object query_link() {
+object query_user() {
     return link;
 }
 
-int set_link(object ob) {
+int set_user(object ob) {
     if(query_privs(previous_object()) != query_privs(this_object())
         && !adminp(previous_object())) return 0;
     link = ob;

@@ -84,7 +84,7 @@ nomask string query_body_path() {
 
 nomask int set_body(object ob) {
     if(!adminp(query_privs(previous_object())) && this_player() != body) return 0;
-    ob->set_link(this_object());
+    ob->set_user(this_object());
     body = ob;
 }
 
