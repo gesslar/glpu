@@ -2,7 +2,7 @@
 #include <gmcp.h>
 
 private nosave mapping PingCooldown = ([]) ;
-private nosave int PingInterval = 60 ;
+private nosave int PingInterval = 60 ; // Throttle pings to once per minute
 
 void Hello(mapping data) {
     object prev = previous_object();
