@@ -12,6 +12,8 @@
 
 #include <config.h>
 #include <logs.h>
+#include <daemons.h>
+#include <gmcp.h>
 
 inherit STD_OBJECT ;
 
@@ -412,8 +414,12 @@ void enter_world(string str) {
     body->setup_body();
     body->set_user(user);
     user->set_body(body);
-    body->set_gmcp_client(login_gmcp_data["client"]);
-    body->set_gmcp_supports(login_gmcp_data["supports"]);
+    if(body->gmcp_enabled()) {
+        body->set_gmcp_client(login_gmcp_data["client"]);
+        body->set_gmcp_supports(login_gmcp_data["supports"]);
+        GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUSVARS) ;
+        GMCP_D->send_gmcp(body, GMCP_PKG_CHAR_STATUS) ;
+    }
 
     if(devp(user)) {
         if(body->query_env("start_location") == "last_location") body->move_living(body->query("last_location"), 0, "SNEAK");
