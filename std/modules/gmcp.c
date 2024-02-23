@@ -19,10 +19,6 @@ int set_env(string var_name, string var_value) ;
 // Functions
 private mixed gmcp_stringify(mixed data) ;
 
-public int gmcp_enabled() {
-    return has_gmcp(this_object()) && query_env("gmcp") == "on";
-}
-
 void gmcp(string message) {
     class ClassGMCP gmcp ;
     mixed err ;
@@ -103,4 +99,8 @@ mixed gmcp_stringify(mixed data) {
     }
 
     return "" ;
+}
+
+public int gmcp_enabled() {
+    return has_gmcp(this_object()) && query_env("gmcp") == "on";
 }
