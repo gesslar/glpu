@@ -1,8 +1,13 @@
 #include <daemons.h>
 #include <gmcp.h>
 
-private nosave mapping PingCooldown = ([]) ;
-private nosave int PingInterval = 60 ; // Throttle pings to once per minute
+inherit __DIR__ "gmcp_module" ;
+
+void setup() {
+    cooldown_limits = ([
+        GMCP_PKG_CORE_PING : 60,
+    ]) ;
+}
 
 void Hello(mapping data) {
     object prev = previous_object();
@@ -66,12 +71,12 @@ void Supports(string command, mixed data) {
 
 void Ping(int time) {
     object prev = previous_object();
+    string cooldown = GMCP_PKG_CORE_PING ;
 
-    // Only allow one ping per interval
-    if(Ping[prev] && (time() - Ping[prev]) < PingInterval)
+    if(!cooldown_check(prev, cooldown))
         return;
 
-    Ping[prev] = time() ;
+    apply_cooldown(prev, cooldown) ;
 
     if(!time)
         return;
