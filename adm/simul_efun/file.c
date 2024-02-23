@@ -61,62 +61,6 @@ int file_lines(string file) {
     return sizeof(lines);
 }
 
-// tail(string file)
-
-// Gwegster @ LPUniversity
-// 30-JULY-05
-// A simple tail command
-
-/* Changes:
-
-   Gwegster, 06/30/05 - changed default morelines to 20
-   Gwegster, 06/30/05 - made tail a simul_efun
-*/
-
-// function: tail
-// returns: -1 for no file, 0 if nothing entered, and 1 if it all worked
-
-#if 0
-private nosave int chunk_size = 80 * 5 ;
-
-int tail(string file) {
-    int len, num ;
-    object tp = this_player() ;
-    string data ;
-    int done = false, cursor ;
-
-    if(!file) {
-        return 0;
-    }
-
-    file = resolve_path(tp->query("cwd"),file);
-
-    if(!file_exists(file)) {
-        return -1;
-    }
-
-    num = to_int(tp->query_env("morelines")) || 20;
-    len = fize_size(file);
-debugf("file: %s, len: %d, num: %d, len-num: %d", file, len, num, len - num);
-
-    data = "" ;
-    cursor = -chunk_size ;
-    while(done != true) {
-        string in = read_bytes(file, cursor, chunk_size) ;
-        int count
-
-    }
-    data = read_file(file, len - num, num);
-    if(!sizeof(data))
-        return 0;
-
-    data = append(data, "\n");
-    write(data);
-    return 1;
-}
-
-#endif
-
 varargs string tail(string path, int line_count) {
     int chunk_size = 80 * 5; // Chunk size for each read operation
     string result = ""; // Accumulator for the result
