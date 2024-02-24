@@ -36,9 +36,13 @@ int setup() {
 
 void parse_config() {
      int i, total_errors = 0, total_parsed = 0;
-     string *conf = parse(read_file(CONFIG_FILE));
+     string *conf ;
      string *cur_groups = ({});
+     string out = "" ;
+     float time ;
 
+     time = time_ns() / 1_000_000.0 ;
+     conf = parse(read_file(CONFIG_FILE));
      for(i = 0; i < sizeof(conf); i++) {
           string groups, verb, alias;
 
@@ -50,9 +54,9 @@ void parse_config() {
           }
 
           if(!sizeof(cur_groups)) {
-               write("\n");
-               write("\tGlobal Alias Server Error: No assignment definition found.\n");
-               write("\tGlobal Alias Server Error: Global Aliases were not parsed.\n");
+               out += "\n" ;
+               out += "\tGlobal Alias Server Error: No assignment definition found.\n" ;
+               out += "\tGlobal Alias Server Error: Global Aliases were not parsed.\n" ;
                return;
           }
 
@@ -62,13 +66,15 @@ void parse_config() {
           }
 
           else {
-               write("\n");
-               write("\tGlobal Alias Server Error: Definition found (" + i +") but in invalid format.\n");
+               out += "\n" ;
+               out += "\tGlobal Alias Server Error: Definition found (" + i +") but in invalid format.\n" ;
                total_errors ++;
           }
      }
 
-     write("\nGlobal Alias Server: " + total_parsed + " global aliases parsed. " + total_errors + " errors encountered.\n");
+     out += "\nGlobal Alias Server: " + total_parsed + " global aliases parsed. " + total_errors + " errors encountered. " +
+          sprintf("(%.2fms)\n", time_ns() / 1_000_000.0 - time) ;
+     debug_message(out) ;
 }
 
 string *parse(string str) {

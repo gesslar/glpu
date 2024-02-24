@@ -53,7 +53,8 @@ protected object connect(int port) {
 
 protected void epilog(int load_empty) {
     string str, *lines, err;
-    int i, time;
+    int i;
+    float time ;
     string out = "" ;
 
     set_privs(this_object(), "[master]");
@@ -64,13 +65,12 @@ protected void epilog(int load_empty) {
     for (i = 0; i < sizeof(lines); i++) {
         out = "" ;
         out += "Preloading : " + lines[i] + "..." ;
+        time = time_ns() / 1_000_000.0;
         err = catch(load_object(lines[i]));
-
         if(err != 0) {
             out += "\nError " + err + " when loading " + lines[i];
         } else {
-            time = time() - time;
-            out += "Done (" + time/60 + "." + time % 60 + ")";
+            out += sprintf(" Done (%.2fms)", time_ns() / 1_000_000.0 - time);
         }
 
         debug_message(out);

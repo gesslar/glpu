@@ -31,7 +31,8 @@ mapping modules;
 
 void setup() {
     string str, err, *arr;
-    int i, time;
+    int i;
+    float time;
     object ob ;
 
     set_no_clean() ;
@@ -45,19 +46,23 @@ void setup() {
         return ;
 
     for (i = 0; i < sizeof(arr); i++) {
+        string out = "" ;
         if(ob = find_object(arr[i]))
             ob->remove() ;
-        write("Loading channel module: " + arr[i] + "...");
+
+        out += "> Loading channel module: " + arr[i] + "...";
+        time = time_ns() / 1_000_000.0 ;
         err = catch(load_object(arr[i]));
 
         if(err != 0) {
-            write("\t\nError " + err + " when loading " + arr[i] + "\n");
+            out += "\t\nError " + err + " when loading " + arr[i] + "";
         }
 
         else {
-            time = time() - time;
-            write("(" + time/60 + "." + time % 60 + ")\n");
+            out += sprintf(" Done (%.2fms)", time_ns() / 1_000_000.0 - time) ;
         }
+
+        debug_message(out) ;
     }
 }
 
