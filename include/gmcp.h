@@ -17,6 +17,11 @@
 #define GMCP_PKG_COMM_CHANNEL_LIST          GMCP_PKG_COMM_CHANNEL".List"
 #define GMCP_PKG_COMM_CHANNEL_TEXT          GMCP_PKG_COMM_CHANNEL".Text"
 
+#define GMCP_PKG_EXTERNAL                    "External"
+#define GMCP_PKG_EXTERNAL_DISCORD            GMCP_PKG_EXTERNAL".Discord"
+#define GMCP_PKG_EXTERNAL_DISCORD_HELLO      GMCP_PKG_EXTERNAL_DISCORD".Hello"
+#define GMCP_PKG_EXTERNAL_DISCORD_GET        GMCP_PKG_EXTERNAL_DISCORD".Get"
+
 // Labels and display values
 #define GMCP_LBL_CHAR_STATUS_NAME           "name"
 #define GMCP_DIS_CHAR_STATUS_NAME           "Name"

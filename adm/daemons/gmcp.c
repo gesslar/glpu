@@ -33,8 +33,15 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(!body || !gmcp_package)
         return ;
 
-    if(!body->gmcp_enabled())
+    if(base_name(body) == LOGIN_OB) {
+        if(!has_gmcp(body))
+            return ;
+    } else if(base_name(body) == STD_BODY) {
+        if(!body->gmcp_enabled())
+            return ;
+    } else {
         return ;
+    }
 
     gmcp = convert_message(gmcp_package) ;
     if(gmcp == null || (gmcp.package == null && gmcp.module == null))
@@ -48,7 +55,9 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
         log_file("system/gmcp", "[%s] Module %s not found [%O]",
             ctime(),
             gmcp_module,
-            previous_object()
+            previous_object()->query_gmcp_module() ?
+                previous_object(1) :
+                previous_object()
         ) ;
         return ;
     }
@@ -87,6 +96,7 @@ class ClassGMCP convert_message(string message) {
     int sz ;
 
     message = trim(message) ;
+
     pos = strsrch(message, " ") ;
     if(pos == -1) {
         package_info = message ;

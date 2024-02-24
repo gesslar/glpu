@@ -48,3 +48,7 @@ void apply_cooldown(string cooldown, object prev) {
 mapping query_cooldowns() {
     return copy(cooldowns) ;
 }
+
+int query_gmcp_module() {
+    return 1 ;
+}

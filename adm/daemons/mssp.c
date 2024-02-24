@@ -28,7 +28,6 @@ mapping get_mud_stats() {
         "PORT"      : sprintf("%d", __PORT__),
         "UPTIME"    : sprintf("%d", time() - uptime()),
         "PLAYERS"   : sprintf("%d", sizeof( users() )),
-        "GMCP"      : sprintf("%d", get_config(__RC_ENABLE_GMCP__)),
         "MCP"       : "0",
         "GMCP"      : sprintf("%d", get_config(__RC_ENABLE_GMCP__)),
         "MXP"       : sprintf("%d", get_config(__RC_ENABLE_MXP__)),

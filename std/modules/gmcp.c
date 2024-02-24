@@ -148,5 +148,6 @@ mixed gmcp_stringify(mixed data) {
 }
 
 public int gmcp_enabled() {
-    return has_gmcp(this_object()) && query_env("gmcp") == "on";
+    return  has_gmcp(this_object()) &&
+            query_env("gmcp") != "off";
 }

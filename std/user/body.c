@@ -177,7 +177,7 @@ void net_dead() {
 void reconnect() {
     restore_user();
     set("last_login", time());
-    write("Success: Reconnected.\n");
+    tell(this_object(), "Success: Reconnected.\n");
     if(environment()) tell_room(environment(), capitalize(name()) + " has reconnected.\n", this_player());
     set_short(capitalize(name()));
     /* reconnection logged in login object */

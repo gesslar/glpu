@@ -28,11 +28,11 @@ void Hello(mapping data) {
     prev->set_gmcp_client(data) ;
 }
 
-void Supports(string command, mixed data) {
+void Supports(string submodule, mixed data) {
     object prev = previous_object();
     mapping supports ;
 
-    switch(command) {
+    switch(submodule) {
         case "Set": {
                 supports = ([ ]);
                 foreach (string item in data) {
@@ -137,6 +137,16 @@ void Supports(string command, mixed data) {
     prev->set_gmcp_supports(supports) ;
 }
 
+void manage_hierarchy(mapping current, string key, int version, int depth) {
+    if (depth == 1) { // Directly under root
+        current[key] = ([ "version": version ]);
+    } else { // Module or submodule
+        string type = (depth == 2) ? "modules" : "submodules";
+        if (!current[type]) current[type] = ([ ]);
+        current[type][key] = ([ "version": version ]);
+    }
+}
+
 void Ping(int time) {
     object prev = previous_object();
 
@@ -149,14 +159,4 @@ void Ping(int time) {
         return;
 
     GMCP_D->send_gmcp(prev, GMCP_PKG_CORE_PING) ;
-}
-
-void manage_hierarchy(mapping current, string key, int version, int depth) {
-    if (depth == 1) { // Directly under root
-        current[key] = ([ "version": version ]);
-    } else { // Module or submodule
-        string type = (depth == 2) ? "modules" : "submodules";
-        if (!current[type]) current[type] = ([ ]);
-        current[type][key] = ([ "version": version ]);
-    }
 }
