@@ -2,6 +2,7 @@
 #define __CLASS_GMCP__
 
 class ClassGMCP {
+    string name ;
     string package ;
     string module ;
     string submodule ;

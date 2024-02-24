@@ -141,9 +141,9 @@ varargs string tail(string path, int line_count) {
 //15-APR-05
 //Simul-efuns
 
-int log_file(string file, string str) {
+varargs int log_file(string file, string str, mixed arg...) {
     if(!file || !str) return 0;
-    master()->log_file(file, str);
+    master()->log_file(file, str, arg...);
     return 1;
 }
 

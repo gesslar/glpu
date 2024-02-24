@@ -239,7 +239,7 @@ string make_path_absolute(string file) {
     return file;
 }
 
-void log_file(string file, string msg) {
+varargs void log_file(string file, string msg, mixed arg...) {
     int size;
 
     if(query_privs(previous_object()) == "[open]") return;
@@ -264,6 +264,8 @@ void log_file(string file, string msg) {
             rename(log_dir() + file, log_dir() + backup);
     }
 
+    msg = sprintf(msg, arg...);
+    msg = append(msg, "\n");
     write_file(log_dir() + file, msg);
 }
 

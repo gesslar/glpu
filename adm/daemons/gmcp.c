@@ -25,6 +25,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     class ClassGMCP gmcp ;
     string gmcp_module ;
     mixed err ;
+    object ob ;
 
     if(!get_config(__RC_ENABLE_GMCP__))
         return ;
@@ -43,22 +44,40 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
 
     gmcp_module = __DIR__ "gmcp_modules/" + gmcp.package + ".c" ;
 
-    if(!file_exists(gmcp_module))
+    if(!file_exists(gmcp_module)) {
+        log_file("system/gmcp", "[%s] [%s] Module not found for %s [%O]",
+            ctime(),
+            __DIR__ "gmcp_modules/",
+            gmcp.package,
+            previous_object()
+        ) ;
+        return ;
+    }
+
+    if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
-    if(err = catch(load_object(gmcp_module)))
+    if(!function_exists(gmcp.module, ob)) {
+        log_file("system/gmcp", "[%s] [%s] Function %s not found in %s [%O]",
+            ctime(),
+            __DIR__ "gmcp_modules/",
+            gmcp.module,
+            gmcp.package,
+            previous_object()
+        ) ;
         return ;
+    }
 
     if(gmcp.submodule)
         if(gmcp.payload)
-            catch(call_other(gmcp_module, body, gmcp.module, gmcp.submodule, gmcp.payload)) ;
+            catch(call_other(gmcp_module, gmcp.module, body, gmcp.submodule, gmcp.payload)) ;
         else
-            catch(call_other(gmcp_module, body, gmcp.module, gmcp.submodule)) ;
+            catch(call_other(gmcp_module, gmcp.module, body, gmcp.submodule)) ;
     else
         if(gmcp.payload)
-            catch(call_other(gmcp_module, body, gmcp.module, gmcp.payload)) ;
+            catch(call_other(gmcp_module, gmcp.module, body, gmcp.payload)) ;
         else
-            catch(call_other(gmcp_module, body, gmcp.module)) ;
+            catch(call_other(gmcp_module, gmcp.module, body)) ;
 }
 
 class ClassGMCP convert_message(string message) {
@@ -77,6 +96,8 @@ class ClassGMCP convert_message(string message) {
         package_info = message[0..pos-1] ;
         message_info = message[pos+1..] ;
     }
+
+    gmcp.name = package_info ;
 
     parts = explode(package_info, ".") ;
     sz = sizeof(parts) ;

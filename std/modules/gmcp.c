@@ -34,6 +34,7 @@ void gmcp(string message) {
     class ClassGMCP gmcp ;
     mixed err ;
     string gmcp_module ;
+    object ob ;
 
     gmcp = GMCP_D->convert_message(message) ;
 
@@ -44,11 +45,29 @@ void gmcp(string message) {
         return ;
 
     gmcp_module = DIR_STD_MODULES "gmcp/" + gmcp.package + ".c" ;
-    if(!file_exists(gmcp_module))
+    if(!file_exists(gmcp_module)) {
+        log_file("system/gmcp", "[%s] [%s] Module not found for %s [%O]",
+            ctime(),
+            DIR_STD_MODULES "gmcp/",
+            gmcp.package,
+            previous_object()
+        ) ;
         return ;
+    }
 
     if(err = catch(load_object(gmcp_module)))
         return ;
+
+    if(!function_exists(gmcp.module, ob)) {
+        log_file("system/gmcp", "[%s] [%s] Function %s in %s for [%O]",
+            ctime(),
+            DIR_STD_MODULES "gmcp/",
+            gmcp.module,
+            gmcp.package,
+            previous_object()
+        ) ;
+        return ;
+    }
 
     if(gmcp.submodule)
         if(gmcp.payload)
