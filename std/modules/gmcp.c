@@ -46,25 +46,24 @@ void gmcp(string message) {
 
     gmcp_module = DIR_STD_MODULES "gmcp/" + gmcp.package + ".c" ;
     if(!file_exists(gmcp_module)) {
-        log_file("system/gmcp", "[%s] [%s] Module not found for %s [%O]",
+        log_file("system/gmcp", "[%s] Module %s not found [%O]",
             ctime(),
-            DIR_STD_MODULES "gmcp/",
-            gmcp.package,
-            previous_object()
+            gmcp_module,
+            previous_object() || this_object()
         ) ;
         return ;
     }
 
-    if(err = catch(load_object(gmcp_module)))
+    if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
     if(!function_exists(gmcp.module, ob)) {
-        log_file("system/gmcp", "[%s] [%s] Function %s in %s for [%O]",
+        log_file("system/gmcp", "[%s] [%s] Function %s not found in %s [%O]",
             ctime(),
             DIR_STD_MODULES "gmcp/",
             gmcp.module,
             gmcp.package,
-            previous_object()
+            previous_object() || this_object()
         ) ;
         return ;
     }

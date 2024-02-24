@@ -45,10 +45,9 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     gmcp_module = __DIR__ "gmcp_modules/" + gmcp.package + ".c" ;
 
     if(!file_exists(gmcp_module)) {
-        log_file("system/gmcp", "[%s] [%s] Module not found for %s [%O]",
+        log_file("system/gmcp", "[%s] Module %s not found [%O]",
             ctime(),
-            __DIR__ "gmcp_modules/",
-            gmcp.package,
+            gmcp_module,
             previous_object()
         ) ;
         return ;
