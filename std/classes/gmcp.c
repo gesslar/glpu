@@ -3,8 +3,8 @@
 
 class ClassGMCP {
     string package ;
-    string subpackage ;
-    string command ;
+    string module ;
+    string submodule ;
     mixed payload ;
 }
 

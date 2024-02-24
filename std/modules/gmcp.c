@@ -33,30 +33,34 @@ private mixed gmcp_stringify(mixed data) ;
 void gmcp(string message) {
     class ClassGMCP gmcp ;
     mixed err ;
-    string module ;
+    string gmcp_module ;
 
     gmcp = GMCP_D->convert_message(message) ;
 
-    if(gmcp == null || (gmcp.package == null && gmcp.command == null))
+    if(gmcp == null)
         return ;
 
-    module = DIR_STD_MODULES "gmcp/" + gmcp.package + ".c" ;
-    if(!file_exists(module))
+    if(gmcp.package == null || gmcp.module == null)
         return ;
 
-    if(err = catch(load_object(module)))
+    gmcp_module = DIR_STD_MODULES "gmcp/" + gmcp.package + ".c" ;
+    if(!file_exists(gmcp_module))
         return ;
 
-    if(gmcp.subpackage)
+    if(err = catch(load_object(gmcp_module)))
+        return ;
+
+    if(gmcp.submodule)
         if(gmcp.payload)
-            catch(call_other(module, gmcp.subpackage, gmcp.command, gmcp.payload)) ;
+            catch(call_other(gmcp_module, gmcp.module, gmcp.submodule, gmcp.payload)) ;
         else
-            catch(call_other(module, gmcp.subpackage, gmcp.command)) ;
+            catch(call_other(gmcp_module, gmcp.module, gmcp.submodule)) ;
     else
         if(gmcp.payload)
-            catch(call_other(module, gmcp.command, gmcp.payload)) ;
+            catch(call_other(gmcp_module, gmcp.module, gmcp.payload)) ;
         else
-            catch(call_other(module, gmcp.command)) ;
+            catch(call_other(gmcp_module, gmcp.module)) ;
+
 }
 
 // This function sends a GMCP message to the client. It will only send the

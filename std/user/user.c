@@ -11,8 +11,10 @@
 #include <config.h>
 #include <driver/origin.h>
 #include <clean.h>
+#include <classes.h>
 
 inherit STD_OBJECT;
+inherit CLASS_GMCP ;
 
 private string password, body_path;
 
@@ -115,10 +117,42 @@ mapping query_gmcp_client() {
     return copy(gmcp_data["client"]);
 }
 
-void set_gmcp_supports(string *data) {
+void set_gmcp_supports(mapping data) {
     gmcp_data["supports"] = data;
 }
 
-string *query_gmcp_supports() {
+mapping query_gmcp_supports() {
     return copy(gmcp_data["supports"]);
+}
+
+// Function to determine if a specific package (and optionally module/
+// submodule) is supported
+int query_gmcp_supported(string fullname) {
+    string *parts, package, module, submodule;
+    mapping supports = query_gmcp_supports();
+    class ClassGMCP gmcp ;
+
+    gmcp = GMCP_D->convert_message(fullname) ;
+
+    // Check if the package is supported
+    if (!supports[package]) return 0; // Package not found
+
+    // If a module is specified, check for its support
+    if (module && supports[package]["modules"]) {
+        if (!supports[package]["modules"][module]) return 0; // Module not found
+
+        // If a submodule is specified, check for its support
+        if (submodule && supports[package]["modules"][module]["submodules"]) {
+            if (!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
+        } else if (submodule) {
+            // Submodule specified but no submodules are supported under the module
+            return 0;
+        }
+    } else if (module) {
+        // Module specified but no modules are supported under the package
+        return 0;
+    }
+
+    // If we've reached this point, the specified package (and optionally module/submodule) is supported
+    return 1;
 }
