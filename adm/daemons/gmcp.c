@@ -23,7 +23,7 @@ void setup() {
 varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     mixed *packet ;
     class ClassGMCP gmcp ;
-    string module ;
+    string gmcp_module ;
     mixed err ;
 
     if(!get_config(__RC_ENABLE_GMCP__))
@@ -36,29 +36,29 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
         return ;
 
     gmcp = convert_message(gmcp_package) ;
-    if(gmcp == null || (gmcp.package == null && gmcp.command == null))
+    if(gmcp == null || (gmcp.package == null && gmcp.module == null))
         return ;
 
     gmcp.payload = arg ;
 
-    module = __DIR__ "gmcp_modules/" + gmcp.package + ".c" ;
+    gmcp_module = __DIR__ "gmcp_modules/" + gmcp.package + ".c" ;
 
-    if(!file_exists(module))
+    if(!file_exists(gmcp_module))
         return ;
 
-    if(err = catch(load_object(module)))
+    if(err = catch(load_object(gmcp_module)))
         return ;
 
-    if(gmcp.subpackage)
+    if(gmcp.submodule)
         if(gmcp.payload)
-            catch(call_other(module, gmcp.subpackage, body, gmcp.command, gmcp.payload)) ;
+            catch(call_other(gmcp_module, body, gmcp.module, gmcp.submodule, gmcp.payload)) ;
         else
-            catch(call_other(module, gmcp.subpackage, body, gmcp.command)) ;
+            catch(call_other(gmcp_module, body, gmcp.module, gmcp.submodule)) ;
     else
         if(gmcp.payload)
-            catch(call_other(module, gmcp.command, body, gmcp.payload)) ;
+            catch(call_other(gmcp_module, body, gmcp.module, gmcp.payload)) ;
         else
-            catch(call_other(module, gmcp.command, body)) ;
+            catch(call_other(gmcp_module, body, gmcp.module)) ;
 }
 
 class ClassGMCP convert_message(string message) {
@@ -84,17 +84,17 @@ class ClassGMCP convert_message(string message) {
         gmcp.package = parts[0] ;
         if(sz >= 2) {
             if(sz == 2)
-                gmcp.command = parts[1] ;
+                gmcp.module = parts[1] ;
             else if(sz == 3) {
-                gmcp.subpackage = parts[1] ;
-                gmcp.command = parts[2] ;
+                gmcp.module = parts[1] ;
+                gmcp.submodule = parts[2] ;
             }
         }
     }
 
     if(!gmcp.package)
         return null ;
-    if(!gmcp.command && !gmcp.subpackage)
+    if(!gmcp.module)
         return null ;
 
     if(message_info == null) {

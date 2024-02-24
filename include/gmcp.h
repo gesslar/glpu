@@ -12,6 +12,11 @@
 #define GMCP_PKG_CHAR_STATUSVARS            GMCP_PKG_CHAR".StatusVars"
 #define GMCP_PKG_CHAR_VITALS                GMCP_PKG_CHAR".Vitals"
 
+#define GMCP_PKG_COMM                       "Comm"
+#define GMCP_PKG_COMM_CHANNEL               GMCP_PKG_COMM".Channel"
+#define GMCP_PKG_COMM_CHANNEL_LIST          GMCP_PKG_COMM_CHANNEL".List"
+#define GMCP_PKG_COMM_CHANNEL_TEXT          GMCP_PKG_COMM_CHANNEL".Text"
+
 // Labels and display values
 #define GMCP_LBL_CHAR_STATUS_NAME           "name"
 #define GMCP_DIS_CHAR_STATUS_NAME           "Name"

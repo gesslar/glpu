@@ -516,8 +516,16 @@ void set_gmcp_client(mapping client) {
     user->set_gmcp_client(client);
 }
 
-void set_gmcp_supports(string *supports) {
+mapping query_gmcp_client() {
+    return user->query_gmcp_client();
+}
+
+void set_gmcp_supports(mapping supports) {
     user->set_gmcp_supports(supports);
+}
+
+mapping query_gmcp_supports() {
+    return user->query_gmcp_supports();
 }
 
 object query_user() {
