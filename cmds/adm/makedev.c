@@ -51,7 +51,7 @@ int main(object caller, object room, string args)
      user->add_path("/cmds/wiz/");
      user->add_path("/cmds/object/");
      user->add_path("/cmds/file/");
-     security_editor = clone_object("/adm/obj/security_editor.c");
+     security_editor = new("/adm/obj/security_editor.c");
      security_editor->enable_membership(query_privs(user), "developer");
      security_editor->write_state(0);
      tell_object(user, "\n... Success!\n\n");

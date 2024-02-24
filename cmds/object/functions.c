@@ -32,7 +32,7 @@ mixed main(object caller, object room, string arg) {
 
     ret = sprintf("%-#79.3s\n\n", implode(funcs, "\n"));
 
-    pager = clone_object(OBJ_PAGER);
+    pager = new(OBJ_PAGER);
 
     pager->page(ret);
     return 1;

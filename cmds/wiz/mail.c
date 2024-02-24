@@ -16,7 +16,7 @@ int main(object caller, object room, string arg)
 {
     object mail_client;
 
-    mail_client = clone_object(OBJ_MAIL_CLIENT);
+    mail_client = new(OBJ_MAIL_CLIENT);
 
     if(!mail_client)
     return notify_fail("Error [mail]: could not find mail client\n");

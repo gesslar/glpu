@@ -28,7 +28,7 @@ void post_setup() {
     string *groups;
     object s_editor;
 
-    s_editor = clone_object("/adm/obj/security_editor.c");
+    s_editor = new("/adm/obj/security_editor.c");
     groups = s_editor->list_groups();
     s_editor->remove() ;
 

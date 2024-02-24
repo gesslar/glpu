@@ -43,7 +43,7 @@ void done_reading();
 void create() {
     inbox = ([ ]);
     outbox = ([ ]);
-    s_editor = clone_object("/adm/obj/security_editor.c");
+    s_editor = new("/adm/obj/security_editor.c");
 }//END create
 
 void init() {
@@ -589,7 +589,7 @@ protected void read_message(int num) {
     string ret = "";
     object pager;
 
-    pager = clone_object(OBJ_PAGER);
+    pager = new(OBJ_PAGER);
 
     if(in_outbox) {
         ret += "\nFROM:    " + outbox[num]["FROM"] + "\n";

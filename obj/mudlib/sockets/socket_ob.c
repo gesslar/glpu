@@ -187,7 +187,7 @@ private nomask void listen_callback(int fd) {
      int err;
 
      fd = socket_accept(fd, "read_callback", "write_callback");
-     new_socket = clone_object(base_name(this_object()) + ".c", SOCKET_ACQUIRE,  read_callback,  close_callback);
+     new_socket = new(base_name(this_object()) + ".c", SOCKET_ACQUIRE,  read_callback,  close_callback);
      err = socket_release(fd, new_socket, "release_callback");
      if(err < 0)  error("Error [socket_ob]: " + socket_error(err) + "\n");
 }

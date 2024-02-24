@@ -9,7 +9,7 @@
 inherit STD_ROOM;
 
 void create() {
-    object mob = clone_object(__DIR__ + "mobiles/greeter.c");
+    object mob = new(__DIR__ + "mobiles/greeter.c");
     set_light(1);
     set_short("The entrance to LPUniversity cafe");
     set_long(

@@ -32,7 +32,7 @@ int main(object caller, object room, string args)
      user->rem_path("/cmds/object/");
      user->rem_path("/cmds/file/");
      user->rem_path("/cmds/adm/");
-     security_editor = clone_object("/adm/obj/security_editor.c");
+     security_editor = new("/adm/obj/security_editor.c");
      security_editor->disable_membership(query_privs(user), "developer");
      security_editor->write_state(0);
      security_editor->remove() ;

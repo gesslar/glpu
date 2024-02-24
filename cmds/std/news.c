@@ -14,13 +14,13 @@ int main(object caller, object room, string args) {
     object client;
 
     if(adminp(caller) && args == "admin") {
-        client = clone_object("/adm/obj/news_admin.c");
+        client = new("/adm/obj/news_admin.c");
         client->move(caller);
         client->main_menu();
         return 1;
     }
 
-    client = clone_object("/obj/mudlib/newsclients/std_newsclient.c");
+    client = new("/obj/mudlib/newsclients/std_newsclient.c");
     client->move(caller);
 
     if(args == "check") {

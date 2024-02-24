@@ -393,7 +393,7 @@ int main(object caller, object room, string str) {
   } else {
     object pager;
 
-    pager = clone_object("/obj/mudlib/pager/pager");
+    pager = new("/obj/mudlib/pager/pager");
     pager->page(out, "grep " + opt[1] + " (in " + implode(opt[2..], " ") + ")");
   }
 

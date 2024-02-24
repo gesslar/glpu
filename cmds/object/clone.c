@@ -24,7 +24,7 @@ mixed main(object caller, object room, string str) {
     if(!file_exists(str))
         return "Error [clone]: Unable to find file '" + str + "'.";
 
-    err = catch(ob = clone_object(str));
+    err = catch(ob = new(str));
 
     if(stringp(err) || !ob)
         return "Error [clone]: An error was encountered when cloning the object:\n" + err  ;

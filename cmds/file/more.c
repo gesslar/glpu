@@ -15,7 +15,7 @@ object pager;
 int main(object caller, object room, string file)
 {
     string text;
-    pager = clone_object("/obj/mudlib/pager/pager.c");
+    pager = new("/obj/mudlib/pager/pager.c");
     if(!file && this_interactive()->query("cwf")) file = this_interactive()->query("cwf");
     else if(!file) return(notify_fail("SYNTAX: more <file>\n"));
     file = resolve_path(caller->query("cwd"), file);

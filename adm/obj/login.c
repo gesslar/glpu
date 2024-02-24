@@ -315,7 +315,7 @@ void idle_email(string str) {
             body->add_path("/cmds/object/");
             body->add_path("/cmds/file/");
             body->add_path("/cmds/adm/");
-            security_editor = clone_object("/adm/obj/security_editor.c");
+            security_editor = new("/adm/obj/security_editor.c");
             security_editor->enable_membership(query_privs(user), "developer");
             security_editor->enable_membership(query_privs(user), "admin");
             security_editor->write_state(0);

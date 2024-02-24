@@ -23,7 +23,7 @@ int main(object caller, object room, string str) {
     object cmd, pager;
     int i;
 
-    pager = clone_object(OBJ_PAGER);
+    pager = new(OBJ_PAGER);
     if(!str) str = "help";
     path = this_player()->query_path();
 
