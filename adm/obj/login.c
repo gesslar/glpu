@@ -16,6 +16,7 @@
 
 inherit STD_OBJECT ;
 
+inherit M_MESSAGING ;
 inherit M_GMCP ;
 
 private nosave mapping login_gmcp_data = ([
@@ -54,8 +55,8 @@ void create() {
 }
 
 void logon() {
-    write(login_message);
-    write("\nPlease select a name: ");
+    tell(this_object(), login_message) ;
+    tell(this_object(), "\nPlease select a name: ", MSG_PROMPT) ;
     input_to("get_name");
 }
 
@@ -64,29 +65,27 @@ void get_name(string str) {
 
     load_object(LOCKDOWN_D);
 
-    write("\n");
-
     if(LOCKDOWN_D->is_ip_banned(query_ip_number(this_object()))) {
-        write("\nYour IP address, " + query_ip_number(this_object()) + " has been banned from " + mud_name() + ".\n");
+        tell(this_object(),"\nYour IP address, " + query_ip_number(this_object()) + " has been banned from " + mud_name() + ".\n");
         remove() ;
         return;
     }
 
     if(!str || strlen(str) < 2) {
-        write("You must select a name: ");
+        tell(this_object(),"You must select a name: ", MSG_PROMPT);
         input_to("get_name");
         return;
     }
 
     if(str == "quit") {
-        write("Come back soon!\n");
+        tell(this_object(),"Come back soon!\n");
         remove() ;
         return;
     }
 
     if(strlen(str) > 11) {
-        write("Sorry, your name can't have more than 11 characters.\n");
-        write("Please select a name: ");
+        tell(this_object(),"Sorry, your name can't have more than 11 characters.\n");
+        tell(this_object(),"Please select a name: ");
         input_to("get_name");
         return;
     }
@@ -95,40 +94,40 @@ void get_name(string str) {
 
     for (i = 0; i < strlen(str); i++) {
         if(str[i] < 'a' || str[i] > 'z') {
-            write("Sorry, your name can only have letters. (a-z)\n"
-                "Please enter a new name: ");
+            tell(this_object(),"Sorry, your name can only have letters. (a-z)\n"
+                "Please enter a new name: ", MSG_PROMPT);
             input_to("get_name");
             return;
         }
     }
 
     if(LOCKDOWN_D->is_user_banned(str)) {
-        write("\nThe username " + capitalize(str) + " is banned from " + mud_name() + ".\n");
+        tell(this_object(),"\nThe username " + capitalize(str) + " is banned from " + mud_name() + ".\n");
         remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_dev_lock() && wizardp(str) && !adminp(str)) {
-        write("\n" + LOCKDOWN_D->query_dev_lock_msg() + "\n");
+        tell(this_object(),"\n" + LOCKDOWN_D->query_dev_lock_msg() + "\n");
         remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_player_lock() && (!adminp(str) && !wizardp(str))) {
-        write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
+        tell(this_object(),"\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
         remove() ;
         return;
     }
 
     if(LOCKDOWN_D->query_vip_lock() && (!adminp(str) && !wizardp(str) && (member_array(str, LOCKDOWN_D->query_play_testers()) == -1))) {
-        write("\n" + LOCKDOWN_D->query_vip_lock_msg() + "\n");
+        tell(this_object(),"\n" + LOCKDOWN_D->query_vip_lock_msg() + "\n");
         remove() ;
         return;
     }
 
     if(str == "guest") {
         if(LOCKDOWN_D->query_guest_locked()) {
-            write("\n" + LOCKDOWN_D->query_guest_lock_msg() + "\n");
+            tell(this_object(),"\n" + LOCKDOWN_D->query_guest_lock_msg() + "\n");
             remove() ;
             return;
         }
@@ -142,8 +141,8 @@ void get_name(string str) {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
-            write(read + "\n");
-            write(" [Hit enter to continue] ");
+            tell(this_object(),read + "\n");
+            tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
             enter_world(0);
@@ -153,12 +152,12 @@ void get_name(string str) {
 
     if(!file_exists(user_data_file(str) + ".o")) {
         if(LOCKDOWN_D->query_player_lock()) {
-            write("\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
+            tell(this_object(),"\n" + LOCKDOWN_D->query_player_lock_msg() + "\n");
             remove() ;
             return;
         }
 
-        write("The user " + str + " does not exist. Would you like to create it? ");
+        tell(this_object(),"The user " + str + " does not exist. Would you like to create it? ", MSG_PROMPT);
         input_to("new_user", str);
         return;
     }
@@ -184,13 +183,13 @@ void get_name(string str) {
     }
 
     if(!user->query_password() || user->query_password() == "") {
-        write("Your account has no password. All accounts must have a password.\n");
-        write("Please enter a new password: ");
+        tell(this_object(),"Your account has no password. All accounts must have a password.\n");
+        tell(this_object(),"Please enter a new password: ", MSG_PROMPT);
         input_to("get_password", 1, 2);
         return;
     }
 
-    write("Please enter your password: ");
+    tell(this_object(),"Please enter your password: ", MSG_PROMPT);
     input_to("get_password", 1, 0);
 }
 
@@ -202,14 +201,14 @@ void get_password(string str, int i) {
         curr = user->query_password() ;
         pass = crypt(str, curr);
         if(pass != curr) {
-            write("That password is incorrect.\n");
-            write("Please enter your password: ");
+            tell(this_object(),"That password is incorrect.\n");
+            tell(this_object(),"Please enter your password: ", MSG_PROMPT);
             input_to("get_password", 1, 0);
             return;
         } else {
             is_connected = 1;
             if(find_player(user->name())) {
-                write("\nReconnect to currently logged in body? ");
+                tell(this_object(),"\nReconnect to currently logged in body? ", MSG_PROMPT);
                 input_to("reconnect");
                 return;
             }
@@ -218,8 +217,8 @@ void get_password(string str, int i) {
             write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
-                write(read + "\n");
-                write(" [Hit enter to continue] ");
+                tell(this_object(),read + "\n");
+                tell(this_object()," [Hit enter to continue] ");
                 input_to("enter_world");
             } else {
                 enter_world(0);
@@ -228,14 +227,14 @@ void get_password(string str, int i) {
         }
     } else {
         if(!str) {
-            write("Your user must have a password.\n");
-            write("Please enter a password: ");
+            tell(this_object(),"Your user must have a password.\n");
+            tell(this_object(),"Please enter a password: ", MSG_PROMPT);
             input_to("get_password", 1, 0);
             return;
         }
 
         user->set_password(str);
-        write("\nPlease enter your password again to verify: ");
+        tell(this_object(),"\nPlease enter your password again to verify: ", MSG_PROMPT);
         input_to("verify_password", 1, i);
         return;
     }
@@ -247,17 +246,17 @@ void verify_password(string str, int i) {
     curr = user->query_password() ;
     str = crypt(str, curr) ;
     if(str != user->query_password()) {
-        write("Your passwords do not match.\n");
-        write("Please enter a password: ");
+        tell(this_object(),"Your passwords do not match.\n");
+        tell(this_object(),"Please enter a password: ", MSG_PROMPT);
         input_to("get_password", 1, 1);
         return;
     } else if(i != 2) {
-        write("\nPlease input your public e-mail address: ");
+        tell(this_object(),"\nPlease input your public e-mail address: ", MSG_PROMPT);
         input_to("get_email");
         return;
     } else {
-        write("\nYou may now login with the password you just set.\n");
-        write("Please enter your password: ");
+        tell(this_object(),"\nYou may now login with the password you just set.\n");
+        tell(this_object(),"Please enter your password: ", MSG_PROMPT);
         input_to("get_password", 1, 0);
         return;
     }
@@ -267,22 +266,22 @@ void get_email(string input) {
     string host;
 
     if(!input) {
-        write("Error [login]: You must provide an e-mail address.\n");
-        write("Please input your e-mail address: ");
+        tell(this_object(),"Error [login]: You must provide an e-mail address.\n");
+        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
         input_to("get_email");
         return;
     }
 
     if(!sscanf(input, "%*s@%s", host)) {
-        write("Error [login]: You must provide a valid e-mail address.\n");
-        write("Please input your e-mail address: ");
+        tell(this_object(),"Error [login]: You must provide a valid e-mail address.\n");
+        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
         input_to("get_email");
         return;
     }
 
     if(host == "localhost") {
-        write("Error [login]: Please provide a different e-mail address.\n");
-        write("Please input your e-mail address: ");
+        tell(this_object(),"Error [login]: Please provide a different e-mail address.\n");
+        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
         input_to("get_email");
         return;
     }
@@ -290,7 +289,7 @@ void get_email(string input) {
     email = input;
 
     resolve(host, "email_verified");
-    write("\n Please hit any key to continue.\n");
+    tell(this_object(),"\n Please hit any key to continue.\n");
     input_to("idle_email");
 }
 
@@ -299,7 +298,7 @@ void idle_email(string str) {
 
 #ifdef EMAIL_MUST_RESOLVE
     if(!is_connected) {
-        write("Error [login]: Unable to verify e-mail. Press press any key to try again.\n");
+        tell(this_object(),"Error [login]: Unable to verify e-mail. Press press any key to try again.\n");
         input_to("idle_email");
         return;
     } else {
@@ -325,7 +324,7 @@ void idle_email(string str) {
             security_editor->enable_membership(query_privs(user), "admin");
             security_editor->write_state(0);
             write_file(mud_config("FIRST_USER"), user->name(), 1) ;
-            write("Success [login]: You are now an admin.\n\n");
+            tell(this_object(),"Success [login]: You are now an admin.\n\n");
         }
 
         user->set("email", email);
@@ -333,8 +332,8 @@ void idle_email(string str) {
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
-        write("\n" + parse_tokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
-        write(" [Hit enter to continue] ");
+        tell(this_object(),"\n" + parse_tokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
+        tell(this_object()," [Hit enter to continue] ");
         input_to("setup_new");
 #ifdef EMAIL_MUST_RESOLVE
     }
@@ -345,8 +344,8 @@ void email_verified(string address, string resolved, int key)
 {
 #ifdef EMAIL_MUST_RESOLVE
     if(!resolved) {
-        write(" Error [login]: Unable to verify e-mail.\n");
-        write("Please input your e-mail address: ");
+        tell(this_object()," Error [login]: Unable to verify e-mail.\n");
+        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
         input_to("get_email");
         return;
     }
@@ -356,13 +355,13 @@ void email_verified(string address, string resolved, int key)
 
 void new_user(string str, string name) {
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
-        write("Please enter a password for your account: ");
         user->set_name(name);
+        tell(this_object(),"Please enter a password for your account: ", MSG_PROMPT);
         input_to("get_password", 1, 1);
         return;
     }
 
-    write("Please select another name then: ");
+    tell(this_object(),"Please select another name then: ", MSG_PROMPT);
     input_to("get_name");
 }
 
@@ -372,9 +371,9 @@ void setup_new() {
     user->save_user();
     if(objectp(body)) body->save_user();
     if(mud_config("DISPLAY_NEWS")) {
-        write(read + "\n");
-        write("\n");
-        write(" [Hit enter to continue] ");
+        tell(this_object(),read + "\n");
+        tell(this_object(),"\n");
+        tell(this_object()," [Hit enter to continue] ");
         input_to("enter_world");
     } else {
         enter_world(0);
@@ -392,8 +391,8 @@ void reconnect(string str) {
         old_body->reconnect();
         body = old_body;
         if(mud_config("DISPLAY_NEWS")) {
-            write(read + "\n");
-            write(" [Hit enter to continue] ");
+            tell(this_object(),read + "\n");
+            tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
             enter_world(0);
@@ -403,8 +402,8 @@ void reconnect(string str) {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
-            write(read + "\n");
-            write(" [Hit enter to continue] ");
+            tell(this_object(),read + "\n");
+            tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
             enter_world(0);
@@ -416,7 +415,7 @@ void reconnect(string str) {
 
 void auto_destruct() {
     if(is_connected) return;
-    if(interactive(this_object())) write("\n\nNotice: I'm sorry, but you are only allowed 60 seconds to attempt to login.\n");
+    if(interactive(this_object())) tell(this_object(),"\n\nNotice: I'm sorry, but you are only allowed 60 seconds to attempt to login.\n");
     remove() ;
 }
 
@@ -449,8 +448,8 @@ void enter_world(string str) {
     if(!environment(body)) body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK");
 
     if(!environment(body)) {
-        write("Error [login]: Unable to find a suitable location for your body.\n");
-        write("Please contact an admin for assistance.\n");
+        tell(this_object(),"Error [login]: Unable to find a suitable location for your body.\n");
+        tell(this_object(),"Please contact an admin for assistance.\n");
         user->remove() ;
         body->remove() ;
         remove() ;
@@ -512,9 +511,9 @@ object create_user() {
     err = catch(user = new(STD_USER));
 
     if(err) {
-        write("Error [login]: Unable to create user object.\n");
-        write("It appears that the login object is dysfunctional. Try again later.\n");
-        write("Error: " + err + "\n");
+        tell(this_object(),"Error [login]: Unable to create user object.\n");
+        tell(this_object(),"It appears that the login object is dysfunctional. Try again later.\n");
+        tell(this_object(),"Error: " + err + "\n");
         remove() ;
         return 0 ;
     }
