@@ -25,7 +25,8 @@ varargs string call_trace(int colour) {
     }) ;
 
     n = sizeof(programs);
-    while(n--) {
+    // We don't want to include the call_trace() function itself
+    while(n-- > 1) {
         i = n ;
         res += sprintf("[\e<0039>%O\e<res>] \e<0119>%s\e<res>:\e<0206>%s\e<res>::\e<0208>%s\e<res>() (\e<0172>%s\e<res>)\n",
             objects[i],
