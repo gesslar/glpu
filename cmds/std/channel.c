@@ -11,8 +11,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args)
-{
+int main(object caller, object room, string args) {
      string cmd, arg, arg_channel;
      string *arr, multiple_tune;
      int i;
@@ -23,30 +22,27 @@ int main(object caller, object room, string args)
      sscanf(args, "%s %s", cmd, arg);
      sscanf(args, "%s %s %s", cmd, arg, arg_channel);
 
-     switch(cmd)
-     {
+     switch(cmd)      {
           case "list" :
           {
-               if(!arg)
-               {
+               if(!arg) {
                    arr = CHAN_D->get_modules();
 
                    if(sizeof(arr) == 1)
                        write("The following channel module is installed:\n\t"
                            + arr[0] + "\n");
 
-                else write("The following channel modules are installed: \n\t"
-                    + implode(arr[0..(sizeof(arr) - 2)], ", ") + ", " + arr[sizeof(arr) - 1]
-                    + "\n");
+                    else write("The following channel modules are installed: \n\t"
+                         + implode(arr[0..(sizeof(arr) - 2)], ", ") + ", " + arr[sizeof(arr) - 1]
+                         + "\n");
 
-                write("\nYou may list the channels registered by each module by typing:\n");
-                write("\tchannel list [<network_name> || all]\n");
-                   return 1;
+                    write("\nYou may list the channels registered by each module by typing:\n");
+                    write("\tchannel list [<network_name> || all]\n");
+                    return 1;
                }
 
                arr = CHAN_D->get_channels(arg);
-               if(sizeof(arr) > 0)
-               {
+               if(sizeof(arr) > 0) {
                     if(sizeof(arr) == 1) write("The channels are as follows for '"
                         + arg + "':\n\t" + arr[0] + "\n");
                     else if(sizeof(arr) > 7) printf("The channels are as follows for '"
@@ -65,8 +61,7 @@ int main(object caller, object room, string args)
                if(!arg) return(notify_fail("Sytnax: channel <list/show/tune> <argument>\n"));
                if(!CHAN_D->valid_ch(arg)) return notify_fail("Channel: Channel " + arg + " does not exist.\n");
                arr = CHAN_D->get_tuned(arg);
-               if(sizeof(arr) > 0)
-               {
+               if(sizeof(arr) > 0) {
                     if(sizeof(arr) == 1) write("The the following user is tuned into '" + arg + "':\n\t" + capitalize(arr[0]) + "\n");
                     else printf("The following users are tuned into '" + arg + "':\n\t%s, and %s.\n", implode(arr[0..sizeof(arr)-2], ", "), arr[sizeof(arr)-1]);
                     return 1;
@@ -78,13 +73,10 @@ int main(object caller, object room, string args)
           {
                if(!arg_channel) return(notify_fail("Syntax: channel tune <in/out> <channel/network>\n"));
 
-               if(arg == "in")
-               {
+               if(arg == "in") {
                     multiple_tune = CHAN_D->get_channels(arg_channel);
-                    if(sizeof(multiple_tune) > 0)
-                    {
-                         for(i = 0; i < sizeof(multiple_tune); i ++)
-                         {
+                    if(sizeof(multiple_tune) > 0) {
+                         for(i = 0; i < sizeof(multiple_tune); i ++) {
                               if(CHAN_D->tune(multiple_tune[i], caller->name(), 1)) write("Tune: Tuned into channel " + multiple_tune[i] + "\n");
                               else write("Tune: Channel " + multiple_tune[i] + " does not exist.\n");
                          }
@@ -95,13 +87,10 @@ int main(object caller, object room, string args)
                     return 1;
                }
 
-               if(arg == "out")
-               {
+               if(arg == "out") {
                     multiple_tune = CHAN_D->get_channels(arg_channel);
-                    if(sizeof(multiple_tune) > 0)
-                    {
-                         for(i = 0; i < sizeof(multiple_tune); i ++)
-                         {
+                    if(sizeof(multiple_tune) > 0) {
+                         for(i = 0; i < sizeof(multiple_tune); i ++) {
                               if(CHAN_D->tune(multiple_tune[i], caller->name(), 0)) write("Tune: Tuned out of channel " +  multiple_tune[i] + "\n");
                               else write("Tune: Channel " + multiple_tune[i] + " does not exist.\n");
                          }
@@ -120,10 +109,8 @@ int main(object caller, object room, string args)
      }
 }
 
-string help(object caller)
-{
+string help(object caller) {
      string *mod_list = CHAN_D->get_modules(), mods;
-
 
      if(!sizeof(mod_list)) mods = "There is no networks currently installed.";
      if(sizeof(mod_list) == 1) mods = mod_list[0];

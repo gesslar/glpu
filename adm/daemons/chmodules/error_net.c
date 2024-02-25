@@ -37,7 +37,7 @@ int rec_msg(string chan, string usr, string msg) {
 
     CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n");
 
-    history += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n" });
+    history += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n" });
 
     return 1;
 }

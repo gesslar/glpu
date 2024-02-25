@@ -10,8 +10,6 @@
 
 inherit STD_DAEMON ;
 
-#define SAVE_PATH "/data/daemons/chmodules/local_net.o"
-
 string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});
 mapping history = ([]);
 private nosave string net_name = query_file_name(this_object()) ;
@@ -86,31 +84,31 @@ int rec_msg(string chan, string usr, string msg) {
     switch(chan) {
         case "admin" : {
                 CHAN_D->rec_msg(chan,  "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
                 break;
             }
 
         case "wiz" : {
                 CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
                 break;
             }
 
         case "gossip" : {
                 CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
                 break;
             }
 
         case "chat" : {
                 CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
                 break;
             }
 
         case "dev" : {
                 CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ctime(time()) + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
                 break;
             }
     }
