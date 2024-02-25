@@ -483,7 +483,7 @@ void relogin() {
 
 object create_body(string name) {
     string err;
-debug(call_trace(1)) ;
+
     if(origin() != "local") return 0;
 
     err = catch(body = new(user->query_body_path()));
@@ -506,7 +506,7 @@ debug(call_trace(1)) ;
 object create_user() {
     object user;
     mixed err;
-debug(call_trace(1)) ;
+
     if(origin() != "local") return 0;
 
     err = catch(user = new(STD_USER));
