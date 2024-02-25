@@ -9,11 +9,11 @@
 inherit STD_DAEMON ;
 
 string *history = ({});
-string net_name = query_file_name(this_object()) ;
+string module_name = query_file_name(this_object()) ;
 
 void setup() {
-     CHAN_D->register_module("announce_net", file_name(this_object()));
-     CHAN_D->register_channel(net_name, "announce");
+     CHAN_D->register_module(module_name, file_name());
+     CHAN_D->register_channel(module_name, "announce");
 }
 
 int rec_msg(string chan, string usr, string msg) {
@@ -23,7 +23,7 @@ int rec_msg(string chan, string usr, string msg) {
           case "/last" : {
                ob = find_player(usr);
 
-               if(!sizeof(history)) tell_object(ob, net_name + ": "
+               if(!sizeof(history)) tell_object(ob, module_name + ": "
                 "Channel " + chan + " has no history yet.\n");
                else tell_object(ob,
                     implode(history[(sizeof(history) - 15)..(sizeof(history) - 1)], ""));
@@ -47,7 +47,7 @@ void announce_login(string user) {
          "[Announce] System: "
              + capitalize(user) + " has logged into "
             + mud_name() + ".\n");
-    history += ({ ctime(time())
+    history += ({ ldate(time(),1) +" "+ltime()
         + " [Announce] System: "
              + capitalize(user) + " has logged into "
             + mud_name() + ".\n" });
@@ -58,7 +58,7 @@ void announce_logoff(string user) {
          "[Announce] System: "
              + capitalize(user) + " has left "
             + mud_name() + ".\n");
-    history += ({ ctime(time())
+    history += ({ ldate(time(),1) +" "+ltime()
         + " [Announce] System: "
              + capitalize(user) + " has left "
             + mud_name() + ".\n" });

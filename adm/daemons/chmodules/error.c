@@ -8,13 +8,13 @@
 
 inherit STD_DAEMON ;
 
-private nosave string net_name = query_file_name(this_object()) ;
+private nosave string module_name = query_file_name(this_object()) ;
 private nosave string *channels = ({ "error" });
 string *history = ({});
 
 void setup() {
-     CHAN_D->register_module(net_name, file_name());
-     filter(channels, (: CHAN_D->register_channel($(net_name), $1) :));
+     CHAN_D->register_module(module_name, file_name());
+     filter(channels, (: CHAN_D->register_channel($(module_name), $1) :));
 }
 
 int rec_msg(string chan, string usr, string msg) {
@@ -25,7 +25,7 @@ int rec_msg(string chan, string usr, string msg) {
                ob = find_player(usr);
 
                if(!sizeof(history))
-                    tell(ob, net_name + ": Channel " + chan + " has no history yet.\n");
+                    tell(ob, module_name + ": Channel " + chan + " has no history yet.\n");
                else
                     tell(ob, implode(history[(sizeof(history) - 15)..(sizeof(history) - 1)], ""));
 

@@ -37,7 +37,7 @@ int main(object caller, object room, string args) {
                          + "\n");
 
                     write("\nYou may list the channels registered by each module by typing:\n");
-                    write("\tchannel list [<network_name> || all]\n");
+                    write("\tchannel list [<module_name> || all]\n");
                     return 1;
                }
 

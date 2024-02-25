@@ -12,7 +12,7 @@ inherit STD_DAEMON ;
 
 string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});
 mapping history = ([]);
-private nosave string net_name = query_file_name(this_object()) ;
+private nosave string module_name = query_file_name(this_object()) ;
 
 void setup() {
     set_persistent() ;
@@ -21,10 +21,10 @@ void setup() {
 void post_setup() {
     int i;
 
-    CHAN_D->register_module(net_name, file_name());
+    CHAN_D->register_module(module_name, file_name());
 
     for(i = 0; i < sizeof(ch_list); i++) {
-        CHAN_D->register_channel(net_name, ch_list[i]);
+        CHAN_D->register_channel(module_name, ch_list[i]);
         if(history[ch_list[i]] == 0) history[ch_list[i]] = ({ });
     }
 
