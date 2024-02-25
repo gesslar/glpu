@@ -71,6 +71,7 @@ void remove_module(string module);
 object get_module(string module);
 
 private nosave mapping modules = ([]);
+private nosave int finished_setup = 0 ;
 
 /* Misc functions */
 
@@ -86,6 +87,9 @@ void create() {
 
 /* Connection functions */
 void setup_body() {
+    if(finished_setup)
+        return;
+
     add_action("command_hook", "", 1);
     set_living_name(name());
     set_ids(({name()}));
@@ -109,7 +113,8 @@ void enter_world() {
     int i;
     object news_client, mail_client;
 
-    if(!is_member(query_privs(previous_object()), "admin")) return;
+    if(!is_member(query_privs(previous_object()), "admin"))
+        return;
 
     ANNOUNCE_CHDMOD->announce_login(name());
 

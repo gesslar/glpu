@@ -37,6 +37,7 @@ void email_verified(string address, string resolved, int key);
 void get_email(string input);
 void idle_email(string str);
 object create_body(string name);
+object create_user() ;
 string parse_tokens(string text);
 
 object user;
@@ -53,18 +54,6 @@ void create() {
 }
 
 void logon() {
-    mixed err ;
-
-    err = catch(user = new(STD_USER));
-
-    if(err) {
-        write("Error [login]: Unable to create user object.\n");
-        write("It appears that the login object is dysfunctional. Try again later.\n");
-        write("Error: " + err + "\n");
-        remove() ;
-        return;
-    }
-
     write(login_message);
     write("\nPlease select a name: ");
     input_to("get_name");
@@ -72,7 +61,6 @@ void logon() {
 
 void get_name(string str) {
     int i;
-    string err;
 
     load_object(LOCKDOWN_D);
 
@@ -145,11 +133,14 @@ void get_name(string str) {
             return;
         }
 
+        if(!user = create_user())
+            return ;
+
         user->set_name("guest");
         set_privs(user, "guest");
         body = create_body("guest");
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
-          query_ip_number(body) + " on " + ctime(time()) + "\n");
+          query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             write(read + "\n");
             write(" [Hit enter to continue] ");
@@ -172,9 +163,25 @@ void get_name(string str) {
         return;
     }
 
-    set_privs(user, str);
-    user->set_name(str);
-    user->restore_user();
+    if(!body = find_player(str)) {
+        if(!user = create_user())
+            return ;
+        else {
+            set_privs(user, str);
+            user->set_name(str);
+            user->restore_user();
+        }
+    } else {
+        if(!user = body->query_user()) {
+            if(!user = create_user())
+                return ;
+            else {
+                set_privs(user, str);
+                user->set_name(str);
+                user->restore_user();
+            }
+        }
+    }
 
     if(!user->query_password() || user->query_password() == "") {
         write("Your account has no password. All accounts must have a password.\n");
@@ -185,9 +192,6 @@ void get_name(string str) {
 
     write("Please enter your password: ");
     input_to("get_password", 1, 0);
-
-    return;
-
 }
 
 void get_password(string str, int i) {
@@ -209,6 +213,8 @@ void get_password(string str, int i) {
                 input_to("reconnect");
                 return;
             }
+            if(!body)
+                body = create_body(query_privs(user));
             write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
@@ -254,9 +260,7 @@ void verify_password(string str, int i) {
         write("Please enter your password: ");
         input_to("get_password", 1, 0);
         return;
-
     }
-
 }
 
 void get_email(string input) {
@@ -301,7 +305,8 @@ void idle_email(string str) {
     } else {
 #endif
         set_privs(user, user->name());
-        body = create_body(query_privs(user));
+        if(!body)
+            body = create_body(query_privs(user));
 
         if(!file_exists(mud_config("FIRST_USER"))) {
             if(!directory_exists("/home/" + user->name()[0..0])) mkdir ("/home/" + user->name()[0..0]);
@@ -362,13 +367,18 @@ void new_user(string str, string name) {
 }
 
 void setup_new() {
-    if(!directory_exists(user_data_directory(user->name()))) mkdir(user_data_directory(user->name()));
+    if(!directory_exists(user_data_directory(user->name())))
+        mkdir(user_data_directory(user->name()));
     user->save_user();
     if(objectp(body)) body->save_user();
-    write(read + "\n");
-    write("\n");
-    write(" [Hit enter to continue] ");
-    input_to("enter_world");
+    if(mud_config("DISPLAY_NEWS")) {
+        write(read + "\n");
+        write("\n");
+        write(" [Hit enter to continue] ");
+        input_to("enter_world");
+    } else {
+        enter_world(0);
+    }
 }
 
 void reconnect(string str) {
@@ -380,17 +390,25 @@ void reconnect(string str) {
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(interactive(old_body)) remove_interactive(old_body);
         old_body->reconnect();
-        write(read + "\n");
-        write(" [Hit enter to continue] ");
         body = old_body;
-        input_to("enter_world");
+        if(mud_config("DISPLAY_NEWS")) {
+            write(read + "\n");
+            write(" [Hit enter to continue] ");
+            input_to("enter_world");
+        } else {
+            enter_world(0);
+        }
         return;
     } else {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
-          query_ip_number(user) + " on " + ctime(time()) + "\n");
-        write(read + "\n");
-        write(" [Hit enter to continue] ");
-        input_to("enter_world");
+          query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
+        if(mud_config("DISPLAY_NEWS")) {
+            write(read + "\n");
+            write(" [Hit enter to continue] ");
+            input_to("enter_world");
+        } else {
+            enter_world(0);
+        }
         return;
     }
 
@@ -407,7 +425,8 @@ void enter_world(string str) {
 
     obs = users();
 
-    if(!objectp(body)) body = create_body(query_privs(user));
+    if(!objectp(body))
+        body = create_body(query_privs(user));
 
     exec(body, this_object());
     body->setup_body();
@@ -450,20 +469,21 @@ void catch_tell(string message) {
 
 void relogin() {
     object login = new(LOGIN_OB);
-    object user = this_player();
 
-    user->exit_world();
-    log_file(LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged out from " +
-      query_ip_number(user) + " on " + ctime(time()) + "\n");
-    exec(login, user);
-    user->save_user();
-    user->remove();
+    body = this_player();
+    user = body->query_user();
+    body->exit_world();
+    log_file(LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged (relogin) out from " +
+      query_ip_number(body) + " on " + ctime(time()) + "\n");
+    exec(login, body);
+    body->save_user();
+    body->remove();
     login->logon();
 }
 
 object create_body(string name) {
     string err;
-
+debug(call_trace(1)) ;
     if(origin() != "local") return 0;
 
     err = catch(body = new(user->query_body_path()));
@@ -481,6 +501,25 @@ object create_body(string name) {
     body->restore_user();
 
     return body;
+}
+
+object create_user() {
+    object user;
+    mixed err;
+debug(call_trace(1)) ;
+    if(origin() != "local") return 0;
+
+    err = catch(user = new(STD_USER));
+
+    if(err) {
+        write("Error [login]: Unable to create user object.\n");
+        write("It appears that the login object is dysfunctional. Try again later.\n");
+        write("Error: " + err + "\n");
+        remove() ;
+        return 0 ;
+    }
+
+    return user;
 }
 
 string name() {
