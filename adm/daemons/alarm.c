@@ -451,7 +451,7 @@ int validate_alarm(class Alarm alarm, int silent) {
 
     if(alarm.type == "O") {
         int time = calculate_alarm_time(alarm, 0) ;
-debugf("time: %O, %O", ctime(time), ctime()) ;
+
         if(time < time()) {
             log_file("system/alarm", "[%s] Time is in the past\n%O", ctime(), alarm);
             if(!silent)
