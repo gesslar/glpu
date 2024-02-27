@@ -48,7 +48,6 @@ void setup() {
 }
 
 void post_restore() {
-
     if(!sizeof(alarms))
         reload_alarms() ;
 }
