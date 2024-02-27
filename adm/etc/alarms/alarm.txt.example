@@ -14,7 +14,7 @@
 # See 'help time format' for how to use the patterns.
 #
 # Argument strings need to be enclosed in quotes, since processing this
-# file uses json_decode(), which will parse strings and other values into
+# file uses from_string(), which will parse strings and other values into
 # their appropriate types.
 #
 # Boot type alarms will schedule an alarm to be called in # seconds after the
