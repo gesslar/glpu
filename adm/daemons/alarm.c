@@ -10,6 +10,11 @@
 // W = Weekly - D@H:M
 // Y = Yearly - m-D@H:M
 //
+// When an alarm is called on a target file/object, the function is called with
+// the alarm as an argument. The function should be defined in the target file.
+// Also, ensure that you are inheriting CLASS_ALARM in the target file, so that
+// the function can access the alarm information, including the arguments.
+//
 // Created:     2024/02/25: Gesslar
 // Last Change: 2024/02/25: Gesslar
 //
