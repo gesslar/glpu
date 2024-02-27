@@ -468,6 +468,10 @@ int validate_alarm(class Alarm alarm, int silent) {
     return 1 ;
 }
 
+int time_to_next_poll() {
+    return find_call_out(cid) ;
+}
+
 // This function is used to test the alarm daemon
 varargs void test_alarm(class Alarm alarm) {
     if(!alarm)
