@@ -425,6 +425,9 @@ void event_boot(object prev) {
         if(nullp(seconds))
             continue ;
 
+        if(seconds < 0)
+            continue ;
+
         call_out_walltime("execute_alarm", seconds, boot_alarm) ;
     }
 }

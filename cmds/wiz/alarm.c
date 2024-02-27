@@ -31,6 +31,7 @@ mixed main(object tp, object room, string arg) {
     string *out ;
     mixed *info ;
     int sz ;
+    int next_poll ;
 
     if(arg == "reload") {
         ALARM_D->reload_alarms() ;
@@ -80,6 +81,11 @@ mixed main(object tp, object room, string arg) {
             )
         :)) ;
     }
+
+    next_poll = ALARM_D->time_to_next_poll() ;
+    out += ({ "", sprintf(sprintf("%|80s",
+                    sprintf("Next poll in %d seconds.", next_poll)
+    )) }) ;
 
     return out ;
 }
