@@ -25,9 +25,6 @@ mixed main(object tp, object room, string arg) {
         return "Alarms reloaded." ;
     }
 
-    if(!sizeof(alarms))
-        return "No alarms are currently set." ;
-
     sz = sizeof(alarms) ;
     info = allocate(sz) ;
     while(sz--) {
