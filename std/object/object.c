@@ -38,6 +38,8 @@ string set_cap_name(string str);
 int can_receive(object ob);
 int can_release(object ob);
 
+void on_remove(object env) {}
+
 // Private so only driver can call it.
 private void create() {
     init_ob() ;
@@ -53,6 +55,8 @@ int remove() {
         environment()->add_capacity(-query_mass());
         environment()->add_volume(-query_bulk());
     }
+
+    on_remove(environment()) ;
 
     destruct() ;
     return 1 ;

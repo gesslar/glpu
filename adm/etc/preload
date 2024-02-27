@@ -9,6 +9,9 @@
 # Config daemon - should be first
 /adm/daemons/config
 
+# XTERM256 color daemon
+/adm/daemons/xterm256_d
+
 # Channel Daemon
 /adm/daemons/chan_d
 
@@ -32,3 +35,6 @@
 
 # Mail Daemon
 /adm/daemons/mail_d
+
+# Alarm Daemon
+/adm/daemons/alarm

@@ -56,6 +56,7 @@ protected void epilog(int load_empty) {
     int i;
     float time ;
     string out = "" ;
+    object ob ;
 
     set_privs(this_object(), "[master]");
     lines = explode_file("/adm/etc/preload");
@@ -66,13 +67,13 @@ protected void epilog(int load_empty) {
         out = "" ;
         out += "Preloading : " + lines[i] + "..." ;
         time = time_ns() / 1_000_000.0;
-        err = catch(load_object(lines[i]));
+        err = catch(ob = load_object(lines[i]));
         if(err != 0) {
             out += "\nError " + err + " when loading " + lines[i];
         } else {
             out += sprintf(" Done (%.2fms)", time_ns() / 1_000_000.0 - time);
         }
-
+        event(ob, "boot") ;
         debug_message(out);
     }
 }

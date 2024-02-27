@@ -1,0 +1,24 @@
+# Format for an alarm
+# TYPE MASTER PATTERN /FILE FUNCTION [ARGUMENTS]
+#
+# Type: B O H D W Y // B: Boot, O: Once, H: Hourly, D: Daily, W: Weekly, Y: Yearly
+# Master: true, false
+# Pattern: Boot - s
+#          Once - y-m-d@H:M
+#          Hourly - M
+#          Daily - H:M
+#          Weekly - w@H:M
+#          Monthly - d@H:M
+#          Yearly - m-d@H:M
+#
+# See 'help time format' for how to use the patterns.
+#
+# Argument strings need to be enclosed in quotes, since processing this
+# file uses json_decode(), which will parse strings and other values into
+# their appropriate types.
+#
+# Boot type alarms will schedule an alarm to be called in # seconds after the
+# MUD has booted via call_out_walltime().
+
+# H 00 true /adm/daemons/alarm test_alarm "top of the hour" 1
+# H 30 true /adm/daemons/alarm test_alarm "middle of the hour" 2

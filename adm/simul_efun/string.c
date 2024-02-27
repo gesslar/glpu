@@ -137,3 +137,135 @@ varargs string substr(string str, string sub, int reverse) {
     else
         return str[0..pos-1] ;
 }
+
+// This simul_efun blatantly (but lovingly) ripped off from:
+// https://github.com/fluffos/dead-souls/blob/09a74caa87d8aadbfe303c294cc0bebb25fdb4db/lib/secure/sefun/strings.c#L104C1-L242C1
+varargs mixed from_string(string str, int flag) {
+    mixed *ret = ({ 0, "" });
+
+    if(!str || !sizeof(str) || str == "") return 0;
+
+    if( (str = trim(str)) == "" ) return 0;
+    if( str[0] == '(' ) {
+        switch(str[1]) {
+            case '{':
+                ret[0] = ({});
+                str = str[2..];
+                while(str[0] != '}') {
+                    mixed *tmp;
+
+                    tmp = from_string(str, 1);
+                    ret[0] += ({ tmp[0] });
+                    str = tmp[1];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    if( str[0] != ',' && str[0] != '}' )
+                    error("Improperly formatted array: " + str + "\n");
+                    else if( str[0] == ',') {
+                        str = str[1..];
+                        while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    }
+                }
+                if( str[1] != ')' ) {
+                    str = str[2..];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    if( str[0] != ')' ) error("Illegal array terminator.\n");
+                    else ret[1] = str[1..];
+                }
+                else ret[1] = str[2..];
+                if( !flag ) return ret[0];
+                while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
+                return ret;
+            case '[':
+                ret[0] = ([]);
+                str = str[2..];
+                while(str[0] != ']') {
+                    mixed *tmp;
+                    mixed cle;
+
+                    tmp = from_string(str, 1);
+                    str = tmp[1];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    if( str[0] != ':' )
+                        error("Illegally formatting mapping: " + str + "\n");
+                    cle = tmp[0];
+                    tmp = from_string(str[1..], 1);
+                    ret[0][cle] = tmp[0];
+                    str = tmp[1];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    if( str[0] != ',' && str[0] != ']' )
+                        error("Illegally formatted mapping: " + str + "n");
+                    else if( str[0] != ']' ) {
+                        str = str[1..];
+                        while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    }
+                }
+                if( str[1] != ')' ) {
+                    str = str[2..];
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    if( str[0] != ')' ) error("Illegal array terminator.\n");
+                    else ret[1] = str[1..];
+                }
+                else ret[1] = str[2..];
+                if( !flag ) return ret[0];
+                while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
+                return ret;
+        }
+    } else if( str[0] == '"' ) {
+        string tmp;
+
+        tmp = "";
+        while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
+            if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
+            else tmp += str[1..1];
+            str = str[1..];
+        }
+        if( !flag ) return tmp;
+        if( strlen(str) > 2 ) str = trim(str[2..]);
+        return ({ tmp, str });
+    } else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' ) {
+        string tmp;
+        int y;
+
+        if( strlen(str) > 1 && str[0] == '-' ) {
+            tmp = str[0..0];
+            str = str[1..];
+        } else {
+            tmp = "";
+        }
+        if( strlen(str) > 1 && str[0..1] == "0x" ) {
+            tmp = "0x";
+            str = str[2..];
+            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+                tmp += str[0..0];
+                if( strlen(str) > 1 ) str = str[1..];
+                else str = "";
+            }
+            sscanf(tmp, "%x", y);
+        } else {
+            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+                tmp += str[0..0];
+                if( strlen(str) > 1 ) str = str[1..];
+                else str = "";
+            }
+            sscanf(tmp, "%d", y);
+        }
+        if( !flag ) return y;
+        if( str != "" ) str = trim(str);
+        return ({ y, str });
+    } else {
+        string tmp;
+
+        tmp = "";
+        while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
+                    (str[0] >= 'A' && str[0] <= 'Z') ||
+                    (str[0] >= '0' && str[0] <= '9') ||
+                    (str[0] == '_'))) {
+            tmp += str[0..0];
+            if( strlen(str) > 1 ) str = str[1..];
+            else str = "";
+        }
+        if( !flag ) return get_objects(tmp);
+        else return ({ get_objects(tmp), str });
+    }
+    error("Gobbledygook in string.\n");
+}

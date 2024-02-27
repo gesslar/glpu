@@ -3,6 +3,8 @@
 
 // File: arrays
 mixed *distinct_array(mixed *arr) ;
+varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
+varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
 
 // File: description
 string get_short(object ob) ;
@@ -97,6 +99,7 @@ varargs string chop(string str, string sub, int dir) ;
 varargs string extract(string str, int from, int to) ;
 varargs string simple_list(mixed *arr, string conj) ;
 varargs string substr(string str, string sub, int reverse) ;
+varargs mixed from_string(string str, int flag) ;
 
 // File: system
 int port() ;
@@ -123,6 +126,9 @@ string user_mob_data(string name) ;
 string user_data_directory(string priv) ;
 string user_core_data_directory(string priv) ;
 string user_path(string name) ;
+
+// File: util
+string generate_uuid() ;
 
 // File: valids
 int valid_function(mixed f) ;

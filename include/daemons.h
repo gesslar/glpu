@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define ALARM_D         DIR_DAEMONS "alarm"
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COMBAT_D        DIR_DAEMONS "combat"
 #define CONFIG_D        DIR_DAEMONS "config"

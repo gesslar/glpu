@@ -11,6 +11,8 @@ void base_setup() {}
 void custom_setup() {}
 void setup() {}
 void post_setup() {}
+void post_restore() {} ;
+protected void reset() {} ;
 
 void setup_chain() {
     mudlib_setup() ;
@@ -18,4 +20,7 @@ void setup_chain() {
     custom_setup() ;
     setup() ;
     post_setup() ;
+    if(function_exists("restore_data", this_object()))
+        call_other(this_object(), "restore_data");
+    post_restore() ;
 }

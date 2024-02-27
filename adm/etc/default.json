@@ -41,5 +41,7 @@
     "TIMEOUT_DEVS" : "off",
     "TIMEOUT_DEVS_TIME" : 86400,
     "TIMEOUT_ADMINS" : "off",
-    "TIMEOUT_ADMINS_TIME" : 604800
+    "TIMEOUT_ADMINS_TIME" : 604800,
+    "ALARMS" : "on",
+    "ALARMS_PATH" : "/adm/etc/alarms/"
 }

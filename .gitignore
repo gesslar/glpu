@@ -1,5 +1,3 @@
-# Keep all .keep files
-
 # Log files
 log
 !/doc/driver/efun/floats/log
@@ -12,6 +10,7 @@ log
 /home/*
 !/home/*/.keep
 
+# Keep all .keep files
 !.keep
 # Data files
 *.o
@@ -24,3 +23,6 @@ journal.*
 
 # Customised configuration files
 /adm/etc/config.json
+
+# Alarm files
+adm/etc/alarms/*.txt
