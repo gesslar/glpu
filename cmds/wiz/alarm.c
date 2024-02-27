@@ -1,19 +1,6 @@
 // /cmds/wiz/alarms.c
 // Interface to see alarms
 //
-// Compositon of array
-// alarms_display += ({ ({
-//      alarm_id,
-//      alarm_type,
-//      alarm_pattern,
-//      alarm_file,
-//      alarm_func,
-//      args,
-//      root,
-//      next_time,
-//      next_time_string
-// }) }) ;
-//
 // Created:     2024/02/25: Gesslar
 // Last Change: 2024/02/25: Gesslar
 //
