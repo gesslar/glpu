@@ -1,4 +1,5 @@
 #include "/adm/obj/simul_efun.h"
+#include <type.h>
 
 //:FUNCTION append
 //Append a string to another string if it is not already there.
@@ -268,4 +269,63 @@ varargs mixed from_string(string str, int flag) {
         else return ({ get_objects(tmp), str });
     }
     error("Gobbledygook in string.\n");
+}
+
+// private nosave string decimal = mud_config("DECIMAL") ;
+// private nosave string thousands = mud_config("THOUSANDS") ;
+private nosave string decimal = "." ;
+private nosave string thousands = "," ;
+
+//:FUNCTION add_commas
+//Return a string with commas added to the number.
+//
+// arg1 - number - the number to add commas to
+string add_commas(mixed number) {
+    string num_str ;
+    string result = "";
+    int len ;
+    int dot_index ;
+    int insert_position;
+
+    if(typeof(number) == T_INT) {
+        num_str = sprintf("%d", number);
+    } else if(typeof(number) == T_FLOAT) {
+        num_str = sprintf("%f", number);
+    } else if(typeof (number) == T_STRING) {
+        if((dot_index = strsrch(number, decimal)) > -1) {
+            string int_part = number[0..dot_index-1] ;
+            return sprintf("%s.%s", add_commas(to_int(int_part)), number[dot_index+1..]) ;
+        }
+        else
+            number = to_int(number);
+        if(nullp(number))
+            error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
+        return add_commas(number);
+    } else {
+        error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
+    }
+
+    len = strlen(num_str);
+    dot_index = strsrch(num_str, decimal, -1); // Search for decimal point from the end
+
+    // If there's a decimal point, handle the fractional part separately
+    if (dot_index != -1) {
+        result = add_commas(to_int(num_str[0..dot_index-1])); // Recurse on the integer part
+        result = sprintf("%s%s%s", result, decimal, num_str[dot_index+1..]);
+        return result;
+    }
+
+    // Calculate where to start inserting commas
+    insert_position = (len % 3) || 3;
+
+    for (int i = 0; i < len; i++) {
+        if (i == insert_position && i != 0) {
+            result = result + thousands + num_str[i..i]; // Insert comma then the character
+            insert_position += 3;
+        } else {
+            result += num_str[i..i]; // Just add the character
+        }
+    }
+
+    return result;
 }

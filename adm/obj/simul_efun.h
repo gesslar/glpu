@@ -5,6 +5,7 @@
 mixed *distinct_array(mixed *arr) ;
 varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
 varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
+mixed *reverse_array(mixed *arr) ;
 
 // File: description
 string get_short(object ob) ;
@@ -66,8 +67,10 @@ varargs void tell(object ob, string str, int msg_type, mixed exclude) ;
 // File: numbers
 float percent_of(float a, float b) ;
 float percent(float a, float b) ;
+float range(float min, float max, float val) ;
+varargs float remainder(mixed a, mixed b) ;
 
-// File: object
+    // File: object
 int getoid(object ob) ;
 varargs mixed get_objects( string str, object player, int no_arr ) ;
 varargs object find_ob(mixed ob, mixed cont) ;
@@ -100,6 +103,7 @@ varargs string extract(string str, int from, int to) ;
 varargs string simple_list(mixed *arr, string conj) ;
 varargs string substr(string str, string sub, int reverse) ;
 varargs mixed from_string(string str, int flag) ;
+string add_commas(mixed number) ;
 
 // File: system
 int port() ;

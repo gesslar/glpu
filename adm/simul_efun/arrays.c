@@ -64,3 +64,14 @@ varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd)
     // Combining the parts with the new items
     return before + itemsToAdd + after;
 }
+
+mixed *reverse_array(mixed *arr) {
+    int i, j, sz ;
+    mixed *ret ;
+
+    for(i=0, j=sizeof(arr)-1, sz=sizeof(arr), ret = allocate(sz); i<sz; i++, j--) {
+        ret[i] = arr[j] ;
+    }
+
+    return ret ;
+}
