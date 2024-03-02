@@ -490,3 +490,8 @@ int is_member(string user, string group) {
 
     else return 0;
 }
+
+mixed valid_database( object caller, string fun, mixed *info ) {
+    // We are using SQLITE3, so just return 1.
+    return 1 ;
+}
