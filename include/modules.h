@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define M_BANK          DIR_STD_MODULES "bank"
 #define M_CHECKS        DIR_STD_MODULES "checks"
 #define M_CLEAN         DIR_STD_MODULES "clean"
 #define M_GMCP          DIR_STD_MODULES "gmcp"

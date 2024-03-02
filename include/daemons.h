@@ -4,9 +4,12 @@
 #include <dirs.h>
 
 #define ALARM_D         DIR_DAEMONS "alarm"
+#define BANK_D          DIR_DAEMONS "bank"
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COMBAT_D        DIR_DAEMONS "combat"
 #define CONFIG_D        DIR_DAEMONS "config"
+#define CURRENCY_D      DIR_DAEMONS "currency"
+#define DB_D            DIR_DAEMONS "db"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
 #define GMCP_D          DIR_DAEMONS "gmcp"

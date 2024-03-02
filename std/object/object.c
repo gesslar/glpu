@@ -17,6 +17,7 @@ inherit __DIR__ "description" ;
 inherit __DIR__ "stats" ;
 inherit __DIR__ "contents" ;
 inherit __DIR__ "weight" ;
+inherit __DIR__ "init" ;
 
 inherit M_CLEAN ;
 inherit M_SETUP ;

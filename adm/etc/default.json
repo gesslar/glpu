@@ -43,5 +43,10 @@
     "TIMEOUT_ADMINS" : "off",
     "TIMEOUT_ADMINS_TIME" : 604800,
     "ALARMS" : "on",
-    "ALARMS_PATH" : "/adm/etc/alarms/"
+    "ALARMS_PATH" : "/adm/etc/alarms/",
+    "DB_PATH" : "/data/db/",
+    "DB_SUFFIX" : ".sqlite3",
+    "DB_TABLE_SUFFIX" : ".tbl",
+    "DECIMAL" : ".",
+    "THOUSANDS" : ","
 }

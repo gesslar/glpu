@@ -9,6 +9,9 @@
 # Config daemon - should be first
 /adm/daemons/config
 
+# Database Daemon
+/adm/daemons/db
+
 # XTERM256 color daemon
 /adm/daemons/xterm256_d
 

@@ -84,16 +84,16 @@ mixed render_room(object caller, object room) {
 
     switch(sizeof(exits)) {
         case 0 :
-            data = "There are no obvious exits here.\n";
+            data = "There are no obvious exits here.";
             break;
         case 1 :
-            data = "You may go " + exits[0] + ".\n";
+            data = "You may go " + exits[0] + ".";
             break;
         case 2 :
-            data = "You may go " + implode(exits, " or ") + ".\n";
+            data = "You may go " + implode(exits, " or ") + ".";
             break;
         default :
-            data = "You may go " + implode(exits[0..<2], ", ") + ", or " + exits[<1] + ".\n";
+            data = "You may go " + implode(exits[0..<2], ", ") + ", or " + exits[<1] + ".";
             break;
     }
     if(data) result += "\n" + data + "\n";
