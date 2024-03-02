@@ -44,7 +44,7 @@ string parse_tokens(string text);
 object user;
 object body;
 
-string read = "\n" + parse_tokens(read_file(mud_config("LOGIN_NEWS"))) ;
+string motd = "\n" + parse_tokens(read_file(mud_config("LOGIN_NEWS"))) ;
 string login_message = parse_tokens(read_file(mud_config("LOGIN_MSG")));
 string email;
 
@@ -141,7 +141,7 @@ void get_name(string str) {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
-            tell(this_object(),read + "\n");
+            tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
@@ -217,7 +217,7 @@ void get_password(string str, int i) {
             write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
-                tell(this_object(),read + "\n");
+                tell(this_object(), motd + "\n");
                 tell(this_object()," [Hit enter to continue] ");
                 input_to("enter_world");
             } else {
@@ -371,7 +371,7 @@ void setup_new() {
     user->save_user();
     if(objectp(body)) body->save_user();
     if(mud_config("DISPLAY_NEWS")) {
-        tell(this_object(),read + "\n");
+        tell(this_object(), motd + "\n");
         tell(this_object(),"\n");
         tell(this_object()," [Hit enter to continue] ");
         input_to("enter_world");
@@ -391,7 +391,7 @@ void reconnect(string str) {
         old_body->reconnect();
         body = old_body;
         if(mud_config("DISPLAY_NEWS")) {
-            tell(this_object(),read + "\n");
+            tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
@@ -402,7 +402,7 @@ void reconnect(string str) {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
-            tell(this_object(),read + "\n");
+            tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
             input_to("enter_world");
         } else {
