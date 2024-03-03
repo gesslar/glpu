@@ -31,46 +31,47 @@ void create() {
      set_exits(([
           "east" : __DIR__ + "backr",
      ]) );
+
+     add_command("lock", "lock_door");
+     add_command("unlock", "unlock_door");
 }
 
-void init() {
-     add_action("lock_door", "lock");
-     add_action("unlock_door", "unlock");
-}
+// void init() {
+//      add_action("lock_door", "lock");
+//      add_action("unlock_door", "unlock");
+// }
 
-string query_door() {
+string query_door(string id) {
     if(lock_flag == 0) return "The big oak door is unlocked.\n";
     else return "The big oak door is currently locked.\n";
 }
 
-int lock_door(string args) {
-     object caller = this_player() ;
-
+int lock_door(object tp, string args) {
      if(args != "door") return 0;
 
      lock_flag = 1;
-     caller->tell("You lock the door.\n");
-     tell(capitalize(this_player()->name()) + " locks the bathroom door.\n", caller);
-     catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
+     tell(tp, "You lock the door.\n");
+     tell_all(this_object(),
+          tp->query_cap_name() + " locks the bathroom door.\n", 0, tp);
+     catch(load_object(query_exit("east"))->tell("You hear a click coming from the bathroom door.\n"));
      call_out("auto_unlock", 120);
      return 1;
 }
 
-int unlock_door(string args) {
-     object caller = this_player() ;
-
+int unlock_door(object tp, string args) {
+debugf("unlock_door(%O, %O)", tp, args);
      if(args != "door") return 0;
      lock_flag = 0;
-     caller->tell("You unlock the door.\n");
-     tell(capitalize(this_player()->name()) + " unlocks the bathroom door.\n");
-     catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
+     tell(tp, "You unlock the door.\n");
+     tell_all(this_object(), tp->query_cap_name() + " unlocks the bathroom door.\n", 0, tp);
+     catch(load_object(query_exit("east"))->tell("You hear a click coming from the bathroom door.\n"));
      return 1;
 }
 
 void auto_unlock() {
      lock_flag = 0;
-     tell("The bathroom door automatically unlocks.");
-     catch(find_object(query_exit("west"))->tell("You hear a click coming from the bathroom door.\n"));
+     tell_all(this_object(), "The bathroom door automatically unlocks.");
+     catch(load_object(query_exit("east"))->tell("You hear a click coming from the bathroom door.\n"));
 }
 
 int can_receive(object ob) {

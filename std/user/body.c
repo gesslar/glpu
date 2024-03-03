@@ -62,6 +62,7 @@ void catch_tell(string message);
 void receive_message(string type, string msg);
 string process_input(string arg);
 int command_hook(string arg);
+private nomask int evaluate_result(mixed result) ;
 mixed* query_commands();
 int force_me(string cmd);
 
@@ -83,6 +84,14 @@ void init_capacity() ;
 void create() {
     if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/std/"});
+}
+
+private nosave string *body_slots = ({
+    "head", "neck", "torso", "back", "arms", "hands", "legs", "feet"
+});
+
+void query_body_slots() {
+    return copy(body_slots);
 }
 
 /* Connection functions */
@@ -335,6 +344,8 @@ int command_hook(string arg) {
     string custom, tmp;
     object caller, command;
     int i;
+    mixed result ;
+    object *obs, ob ;
 
     caller = this_player() ;
 
@@ -352,6 +363,22 @@ int command_hook(string arg) {
         verb = alias_parse(verb, arg);
     if(arg == "") arg = 0;
     verb = lower_case(verb);
+    // First let's check in our immediate inventory
+    obs = all_inventory() ;
+    foreach(ob in obs) {
+        result = ob->evaluate_command(this_object(), verb, arg) ;
+        result = evaluate_result(result) ;
+        if(result == 1) return 1 ;
+    }
+    // Now let's check in our environment
+    if(environment()) {
+        obs = ({ environment() }) + all_inventory(environment()) - ({ this_object() }) ;
+        foreach(ob in obs) {
+            result = ob->evaluate_command(this_object(), verb, arg) ;
+            result = evaluate_result(result) ;
+            if(result == 1) return 1 ;
+        }
+    }
 
     if(arg) command_history += ({ verb + " " + arg });
     else command_history += ({ verb });
@@ -426,32 +453,36 @@ int command_hook(string arg) {
 
             return_value = command->main(caller, environment(), arg);
             i++;
-
-            if(return_value) {
-                if(stringp(return_value)) {
-                    if(!strlen(return_value)) {
-                        return_value = 0 ;
-                    } else {
-                        if(return_value[<1] != '\n') return_value += "\n" ;
-                        message("info", return_value, this_object()) ;
-                        return 1 ;
-                    }
-                } else if(pointerp(return_value)) {
-                    if(!sizeof(return_value)) {
-                        return_value = 0 ;
-                    } else {
-                        object pager = new(OBJ_PAGER) ;
-                        pager->page(implode(return_value, "\n")) ;
-                        return 1 ;
-                    }
-                }
-            }
+            result = evaluate_result(return_value) ;
+            if(result == 1) return 1 ;
         }
 
         return return_value;
     }
 
     return 0;
+}
+
+private nomask int evaluate_result(mixed result) {
+    if(stringp(result)) {
+        if(!strlen(result)) {
+            return 0 ;
+        } else {
+            result = append(result, "\n") ;
+            message("info", result, this_object()) ;
+            return 1 ;
+        }
+    } else if(pointerp(result)) {
+        if(!sizeof(result)) {
+            return 0 ;
+        } else {
+            object pager = new(OBJ_PAGER) ;
+            pager->page(implode(result, "\n")) ;
+            return 1 ;
+        }
+    }
+
+    return result ;
 }
 
 varargs int move_living(mixed dest, string dir, string depart_message, string arrive_message) {
@@ -489,7 +520,9 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
         tell(this_object(), "You went nowhere.") ;
     }
 
-    defer((: force_me, "look" :)) ;
+    force_me("look") ;
+
+    event(environment(), "init") ;
 
     return result ;
 }
@@ -514,7 +547,9 @@ void write_prompt() {
 
 void init_capacity() {
     set_max_capacity(1000) ;
+    set_max_volume(500) ;
     rehash_capacity() ;
+    rehash_volume() ;
 }
 
 varargs void add_module(string module, mixed args...) {

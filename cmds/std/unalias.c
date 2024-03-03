@@ -12,7 +12,7 @@ mixed main(object caller, object room, string args) {
      if(!args) return "Syntax: unalias <verb>\n";
 
      if(caller->remove_alias(args))
-          return "Success [aliases]: Verb '" + args + "' is now longer aliased.\n";
+          return "Success [aliases]: Verb '" + args + "' is no longer aliased.\n";
 
      return "Error [aliases]: That verb is not aliased locally.\n";
 }

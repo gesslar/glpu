@@ -95,3 +95,16 @@ void rehash_capacity() {
 
     capacity = max_capacity - total ;
 }
+
+void rehash_volume() {
+    object ob, *obs = all_inventory() ;
+    int total ;
+
+    total = 0 ;
+    foreach(ob in obs) {
+        ob->rehash_volume() ;
+        total += ob->query_volume() ;
+    }
+
+    volume = max_volume - total ;
+}

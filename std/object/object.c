@@ -18,6 +18,7 @@ inherit __DIR__ "stats" ;
 inherit __DIR__ "contents" ;
 inherit __DIR__ "weight" ;
 inherit __DIR__ "init" ;
+inherit __DIR__ "persist" ;
 
 inherit M_CLEAN ;
 inherit M_SETUP ;
@@ -72,12 +73,12 @@ int move(mixed dest) {
 
     prev = environment() ;
     if(prev) {
-        prev->add_capacity(-query_mass());
-        prev->add_volume(-query_bulk());
+        prev->add_capacity(query_mass());
+        prev->add_volume(query_bulk());
     }
 
-    dest->add_capacity(query_mass());
-    dest->add_volume(query_bulk());
+    dest->add_capacity(-query_mass());
+    dest->add_volume(-query_bulk());
 
     move_object(dest);
     event(this_object(), "moved", prev) ;

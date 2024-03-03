@@ -19,9 +19,10 @@
 
 #define STD_ACT             DIR_STD "cmd/act"
 #define STD_BODY            DIR_STD "user/body"
+#define STD_CLOTHING        DIR_STD "equip/clothing"
 #define STD_CMD             DIR_STD "cmd/cmd"
 #define STD_DAEMON          DIR_STD "daemon/daemon"
-#define STD_USER            DIR_STD "user/user"
+#define STD_EQUIP           DIR_STD "equip/equip"
 #define STD_MONSTER         DIR_STD "area/mobiles/npc"
 #define STD_NPC             DIR_STD "area/mobiles/npc"
 #define STD_OB_E            DIR_STD "object/ob_prop"
@@ -29,6 +30,7 @@
 #define STD_ROOM            DIR_STD "area/room/room"
 #define STD_SKILL           DIR_STD "cmd/skill"
 #define STD_SPELL           DIR_STD "cmd/spell"
+#define STD_USER            DIR_STD "user/user"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
 #define STD_ZONE            DIR_STD "area/zones/zone"
 

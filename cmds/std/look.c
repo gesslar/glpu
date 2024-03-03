@@ -125,7 +125,9 @@ mixed render_object(object caller, object room, string target) {
     name = caller->query_name();
 
     if(stringp(room->query_item(target))) {
-        tell(caller, highlight_view(caller, room->query_item(target), keys(room->query_items())) + "\n");
+        string result = highlight_view(caller, room->query_item(target), keys(room->query_items())) ;
+        result = append(result, "\n");
+        tell(caller, result);
         tell_down(room, name + " looks at " + target + ".", null, ({ caller }) );
         return 1;
     }

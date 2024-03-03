@@ -6,24 +6,12 @@
 //
 // 2024/02/29: Gesslar - Created
 
-private nosave mapping commands = ([]);
-private nosave mixed *inits = ({});
+inherit __DIR__ "command" ;
 
-void add_command(string cmd, string fun) {
-    commands[cmd] = fun;
-}
+private nosave mixed *inits = ({}) ;
 
-void add_init(mixed fun) {
-    inits += ({ fun });
-}
-
-void init() {
+void event_init(object tp) {
     int sz ;
-    object tp ;
-
-    foreach (mixed cmd, string fun in commands) {
-        add_action(fun, cmd);
-    }
 
     sz = sizeof(inits);
     for (int i = 0; i < sz; i++) {
@@ -33,4 +21,24 @@ void init() {
             catch( call_other(this_object(), inits[i], tp) );
         }
     }
+}
+
+void add_init(mixed fun) {
+    if (valid_function(fun) || stringp(fun)) {
+        inits += ({ fun }) ;
+    }
+}
+
+void remove_init(mixed fun) {
+    if (valid_function(fun) || stringp(fun)) {
+        inits -= ({ fun }) ;
+    }
+}
+
+void clear_inits() {
+    inits = ({}) ;
+}
+
+mapping query_inits() {
+    return copy(inits) ;
 }
