@@ -197,7 +197,7 @@ void reconnect() {
     /* reconnection logged in login object */
 }
 
-/* User Object Functions */
+/* Body Object Functions */
 void heart_beat() {
     if(userp()) {
         if(!interactive(this_object())) {
