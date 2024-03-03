@@ -13,6 +13,7 @@ mixed main(object caller, object room, string args) {
     string *shorts ;
     int i;
     int cap, max_cap ;
+    int vol, max_vol ;
 
     inventory = all_inventory(caller);
     if(sizeof(inventory) < 1)
@@ -30,7 +31,11 @@ mixed main(object caller, object room, string args) {
     cap = caller->query_capacity() ;
     max_cap = caller->query_max_capacity() ;
 
+    vol = caller->query_volume() ;
+    max_vol = caller->query_max_volume() ;
+
     shorts += ({ sprintf("Capacity: %d/%d", cap, max_cap) }) ;
+    shorts += ({ sprintf("  Volume: %d/%d", vol, max_vol) }) ;
 
     return shorts ;
 }
