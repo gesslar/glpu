@@ -40,7 +40,7 @@ mixed main(object tp, object room, string str) {
     else
         hold += "\n";
 
-    // Try to located all copies of the object
+    // Try to locate all copies of the object
     clones = children( file_name(target) );
 
     // Its either the Master object or has no other copies around
@@ -78,11 +78,11 @@ mixed main(object tp, object room, string str) {
             else
                 hold += "   ";
 
-            hold += clones[loop] ;
+            hold += file_name(clones[loop]) ;
 
             //    If the object has an environment, display it...
             if(environment( clones[loop] ))
-                hold += "\tin " + environment(clones[loop]) + "\n";
+                hold += "\tin " + file_name(environment(clones[loop])) + "\n";
             else
                 hold += "\n";
         }
@@ -126,19 +126,15 @@ mixed main(object tp, object room, string str) {
     return explode(hold, "\n");
 }
 
-int help() {
-
-   write( SYNTAX + "\n" +
-      "This command allows the user to locate the requested object\n" +
-      "and any active clones with their respective locations. The\n" +
-      "parameter 'd' can be used to remove and destruct every copy.\n" +
-      "When the 'd' parameter is envoked, the clones and locations\n" +
-      "will not be displayed. This can be overridden with the 'v'\n" +
-      "parameter. The 'm' parameter can be used to have the output\n" +
-      "given in a more format.\n\n" +
-      "The parameters can be given together and in any combination.\n" +
-      "For example:  trace -dm /obj/dagger  will destruct every copy\n" +
-      "of /obj/dagger and display their respective ids and locations\n" +
-      "in a more format.\n");
-
-return 1; }
+string help(object tp) {
+   return SYNTAX + "\n" +
+"This command allows the user to locate the requested object and any active "
+"clones with their respective locations. The parameter 'd' can be used to "
+"remove and destruct every copy. When the 'd' parameter is envoked, the clones "
+"and locations will not be displayed. This can be overridden with the 'v' "
+"parameter. The 'm' parameter can be used to have the output given in a more "
+"format.\n\n" +
+"The parameters can be given together and in any combination.\n\n"
+"For example: trace -dm /obj/dagger  will destruct every copy of /obj/dagger "
+"and display their respective ids and locations in a more format.\n" ;
+}

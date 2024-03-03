@@ -32,14 +32,45 @@ mixed main(object caller, object room, string str) {
     short = get_short(ob);
     file = file_name(ob);
     dest = caller ;
-    if(!(result = ob->move(dest)) & MOVE_OK) {
-        printf("Result: %d\n", result);
-        dest = environment(caller);
-        if(!(result = ob->move(dest) & MOVE_OK)) {
-            printf("Result: %d\n", result);
-            ob->remove() ;
-            return "Error [clone]: Unable to move object to your location.";
+/*
+#define MOVE_OK             ( 1 << 0)
+#define MOVE_TOO_HEAVY      ( 1 << 1)
+#define MOVE_NO_ROOM        ( 1 << 2)
+#define MOVE_NO_DEST        ( 1 << 3)
+#define MOVE_NOT_ALLOWED    ( 1 << 4)
+#define MOVE_DESTRUCTED     ( 1 << 5)
+*/
+
+    result = ob->move(dest) ;
+    if(result & MOVE_OK) {
+        if(caller->query_env("custom_clone") && wizardp(caller))
+            custom = caller->query_env("custom_clone");
+        if(custom) {
+            tmp = custom;
+            tmp = replace_string(tmp, "$O", short);
+            tmp = replace_string(tmp, "$N", caller->query_cap_name());
+            tell_room(environment(caller), capitalize(tmp) + "\n", caller);
+            write("Success [clone]: New object '" + file + "' cloned to " +
+                get_short(dest) + " (" +file_name(dest)+ ").\n") ;
+        } else {
+            write("Success [clone]: New object '" + file + "' cloned to " +
+                get_short(dest) + " (" +file_name(dest)+ ").\n") ;
+            tell_room(environment(caller),
+                capitalize(caller->name()) + " creates " + short + ".\n", caller);
         }
+        caller->set("cwf", str);
+        return 1;
+    } else {
+        if(result & MOVE_TOO_HEAVY)
+            return "Error [clone]: The object is too heavy to carry.";
+        if(result & MOVE_NO_ROOM)
+            return "Error [clone]: There is not enough room to carry the object.";
+        if(result & MOVE_NO_DEST)
+            return "Error [clone]: The object has no destination.";
+        if(result & MOVE_NOT_ALLOWED)
+            return "Error [clone]: You are not allowed to carry the object.";
+        if(result & MOVE_DESTRUCTED)
+            return "Error [clone]: The object has been destructed.";
     }
 
     if(caller->query_env("custom_clone") && wizardp(caller))
