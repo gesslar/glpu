@@ -39,17 +39,20 @@ protected varargs void do_save(int flag, int num1, int num2);
 protected void save_mailbox();
 protected mixed save_message(string path, mapping message);
 void done_reading();
+void client(object tp) ;
 
-void create() {
+void setup() {
     inbox = ([ ]);
     outbox = ([ ]);
     s_editor = new("/adm/obj/security_editor.c");
+    add_init( (: client :)) ;
 }//END create
 
-void init() {
+
+void client(object tp) {
     int i;
 
-    owner = environment()->name();
+    owner = tp->name();
 
     if(!userp(find_player(owner))) {
         remove() ;
