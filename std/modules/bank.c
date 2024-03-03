@@ -16,8 +16,7 @@ void init_bank() {
     add_command("balance", "cmd_balance");
 }
 
-int cmd_balance(string arg) {
-    object tp = this_player() ;
+int cmd_balance(object tp, string arg) {
     mixed result ;
 
     result = BANK_D->query_balance(tp->query_name()) ;
@@ -30,8 +29,7 @@ int cmd_balance(string arg) {
     return 1 ;
 }
 
-int cmd_register(string arg) {
-    object tp = this_player() ;
+int cmd_register(object tp, string arg) {
     mixed result ;
 
     result = BANK_D->new_account(tp->query_name()) ;
@@ -49,8 +47,7 @@ int cmd_register(string arg) {
     return 1 ;
 }
 
-int cmd_deposit(string str) {
-    object tp = this_player() ;
+int cmd_deposit(object tp, string str) {
     mixed *config = mud_config("CURRENCY") ;
     int num, have ;
     string type ;
@@ -105,8 +102,7 @@ int cmd_deposit(string str) {
     return 1 ;
 }
 
-int cmd_withdraw(string str) {
-    object tp = this_player() ;
+int cmd_withdraw(object tp, string str) {
     mixed *config = mud_config("CURRENCY") ;
     int num, base, have, rate ;
     string type ;

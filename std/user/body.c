@@ -520,7 +520,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
         tell(this_object(), "You went nowhere.") ;
     }
 
-    force_me("look") ;
+    defer((: force_me, "look" :)) ;
 
     event(environment(), "init") ;
 
