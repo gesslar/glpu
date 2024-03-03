@@ -11,6 +11,8 @@
 inherit STD_CMD ;
 
 void do_update(string file) ;
+string *collect_inherits(object obj, int depth) ;
+string *deep_collect_inherits(object obj, mapping seen, int depth) ;
 
 mixed main(object caller, object room, string arg) {
     object obj;
@@ -73,9 +75,7 @@ mixed main(object caller, object room, string arg) {
     caller->set("cwf", start);
 
     obj = load_object(file);
-    files = ({ file_name(obj) }) ;
-    if(depth == 1) files += inherit_list(obj) ;
-    else if(depth == 2) files += deep_inherit_list(obj) ;
+    files = collect_inherits(obj, depth, ([]));
     files = map(files, (: append($1, ".c") :)) ;
     filter(files, (: do_update :)) ;
 
@@ -116,6 +116,49 @@ void do_update(string file, string vfile) {
 
     if(pointerp(users)) users->move(obj, 1);
     write("Successful [update]: " + file + " was updated.\n") ;
+}
+
+// Function to collect immediate and deep inherits.
+string *collect_inherits(object obj, int depth) {
+    string fname = file_name(obj); // The file name of the requested object
+    mapping seen = ([ fname: 1 ]); // Initialize seen with the object itself to avoid adding it twice
+    string *files = ({});
+
+    if (depth == 0) {
+        // Directly return the file name of the object for depth 0
+        return ({ fname });
+    } else if (depth >= 1) {
+        // Collect inherits according to depth
+        files = deep_collect_inherits(obj, seen, depth);
+        // Ensure the object itself is included last for depths 1 and 2
+        if (!sizeof(files) || files[<1] != fname) {
+            files += ({ fname });
+        }
+    }
+
+    // No need to reverse for correct order as we want the base classes loaded first
+    return files;
+}
+
+string *deep_collect_inherits(object obj, mapping seen, int depth) {
+    string *files = ({});
+
+    if (depth > 0) {
+        foreach (string file in inherit_list(obj)) {
+            if (!seen[file]) {
+                object inherit_obj = find_object(file) || load_object(file);
+                seen[file] = 1; // Mark as seen to avoid duplicates
+
+                // For depth 2, recursively collect inherits; add directly for depth 1
+                if (depth == 2 && inherit_obj) {
+                    files += deep_collect_inherits(inherit_obj, seen, depth);
+                }
+                files += ({ file });
+            }
+        }
+    }
+
+    return files;
 }
 
 string help(object caller) {
