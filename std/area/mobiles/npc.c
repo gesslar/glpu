@@ -31,7 +31,6 @@ void setup_body() {
 
 void restore_user() {}
 void save_user() {}
-void heart_beat() {}
 
 int force_me(string cmd) {
     command(cmd);

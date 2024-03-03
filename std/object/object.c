@@ -19,6 +19,7 @@ inherit __DIR__ "contents" ;
 inherit __DIR__ "weight" ;
 inherit __DIR__ "init" ;
 inherit __DIR__ "persist" ;
+inherit __DIR__ "heartbeat" ;
 
 inherit M_CLEAN ;
 inherit M_SETUP ;

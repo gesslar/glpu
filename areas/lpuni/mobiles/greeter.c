@@ -28,40 +28,36 @@ void setup() {
     count = 0;
     cmd_queue = ({});
     messages = ([]);
+    add_hb("chatter") ;
 }
 
-void heart_beat()
-{
-    if(count % (60 * 5) == 0)
-    {
+void chatter() {
+    if(count % (60 * 5) == 0) {
         command("say Welcome to the LPUniversity Cafe.");
         command("say Please feel free to make your way inside.");
     }
 
-    if(sizeof(cmd_queue) > 0)
-    {
-            foreach(string cmd in explode(cmd_queue[0], "\n"))
-                command(cmd);
-            cmd_queue = cmd_queue[1..];
+    if(sizeof(cmd_queue) > 0) {
+        foreach(string cmd in explode(cmd_queue[0], "\n"))
+            command(cmd);
+        cmd_queue = cmd_queue[1..];
+    }
+
+    foreach(string key, string *arr in messages) {
+        object user = find_player(key);
+
+        if(sizeof(arr) <= 0) {
+            map_delete(messages, key);
+            continue;
         }
 
-        foreach(string key, string *arr in messages)
-        {
-            object user = find_player(key);
+        if(!objectp(user) || !interactive(user)) continue;
 
-            if(sizeof(arr) <= 0)
-            {
-                map_delete(messages, key);
-                continue;
-            }
+        command("tell " + user->name() + " " + arr[0]);
+        messages[key] = messages[key][1..];
+    }
 
-            if(!objectp(user)|| !interactive(user)) continue;
-
-            command("tell " + user->name() + " " + arr[0]);
-            messages[key] = messages[key][1..];
-        }
-
-    count ++;
+    count++;
 }
 
 void catch_tell(string msg) {

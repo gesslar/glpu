@@ -199,20 +199,24 @@ void reconnect() {
 
 /* User Object Functions */
 void heart_beat() {
-    if(!interactive(this_object())) {
-        if((time() - query("last_login")) > 3600) {
-            if(environment())
-                tell_room(environment(), capitalize(name()) + " fades out of existance.\n");
-            log_file(LOG_LOGIN, capitalize(name()) + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
-            destruct(this_object());
-        }
-    } else {
-        /* Prevent link-dead from idle */
-        if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
-                && query_env("keepalive") && query_env("keepalive") != "off") {
-            telnet_nop() ;
+    if(userp()) {
+        if(!interactive(this_object())) {
+            if((time() - query("last_login")) > 3600) {
+                if(environment())
+                    tell_room(environment(), capitalize(name()) + " fades out of existance.\n");
+                log_file(LOG_LOGIN, capitalize(name()) + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                destruct(this_object());
+            }
+        } else {
+            /* Prevent link-dead from idle */
+            if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
+                    && query_env("keepalive") && query_env("keepalive") != "off") {
+                telnet_nop() ;
+            }
         }
     }
+
+    evaluate_heart_beat() ;
 }
 
 void restore_user() {
