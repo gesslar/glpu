@@ -13,58 +13,47 @@ inherit STD_CMD ;
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);
 
-mixed main(object caller, object room, string str)
-{
+mixed main(object caller, object room, string str) {
     string who, message;
     object user, c;
 
-
-    if(!sscanf(str, "%s %s", who, message) != 2)
+    if(sscanf(str, "%s %s", who, message) != 2)
         return "Usage: tell <player> <message>\n" ;
 
     if(!message)
         return "Incorrect syntax, please check the help.\n" ;
 
-    user = find_player(lower_case(who));
+    user = find_living(lower_case(who));
 
-    if(!objectp(user)) return notify_fail("Error [tell]: User " + who
-        + " is not found.\n");
+    if(!objectp(user))
+        return notify_fail("Error [tell]: User " + who + " is not found.\n");
 
-    if(user->query_env("away"))
-    {
+    if(user->query_env("away")) {
         write("That user is currently away" + (user->query_env("away") != "" ?
             ": (" + user->query_env("away") + ")\n" : ".\n"));
 
         return 1;
     }
 
-    if(user == caller)
-    {
-
+    if(user == caller) {
         if(message[0] == ':')
-            write("You emote to yourself: " + user->query_cap_name()
-                + " " + message[1..<1] + "\n");
+            write("You emote to yourself: " + user->query_cap_name() + " " + message[1..<1] + "\n");
         else
             write("You tell yourself: " + message + "\n");
 
         tell_room(environment(caller),
-            capitalize(caller->name())
-            + " starts talking to themselves.\n", caller);
+            capitalize(caller->name()) + " starts talking to themself.\n", caller);
         caller->set("retell", query_privs(user));
 
         return 1;
     }
 
-    if(message[0] == ':')
-    {
+    if(message[0] == ':') {
         tell_object(user, caller->query_cap_name() + " " +
             message[1..<1] + "\n");
         write("You emote to " + capitalize(who) + ": " +
             caller->query_cap_name() + " " + message[1..<1] + "\n");
-    }
-
-    else
-    {
+    } else {
         tell_object(user, capitalize((string)caller->name())
             + " tells you: " + message + "\n");
         write("You tell " + capitalize(who) + ": " + message + "\n");
@@ -76,8 +65,7 @@ mixed main(object caller, object room, string str)
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return(" SYNTAX: tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"
       "are online. For example, if you type 'tell tacitus hey' then\n"

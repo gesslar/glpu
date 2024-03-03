@@ -9,89 +9,84 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
-{
+mixed main(object tp, object room, string arg) {
     string custom, tmp;
-    object ob;
+    object ob, target, env, my_env;
     string file;
 
     if(!arg) return(notify_fail("Error [goto]: Where would you like to go?\n"));
 
-    if(find_player(arg))
-    {
-        if(environment(find_player(arg)) == environment(this_player())) return(notify_fail("Error [goto]: You are already with '" + capitalize(find_player(arg)->name()) + "'.\n"));
+    my_env = environment(tp);
 
-        if(this_player()->query_env("teleport_out") && wizardp(this_player()))
-        {
-            custom = this_player()->query_env("teleport_out");
+    if(target = find_player(arg)) {
+        if((env = environment(target)) == my_env)
+            return "Error [goto]: You are already with " + target->cap_name() + "." ;
+
+        if(tp->query_env("teleport_out") && wizardp(tp)) {
+            custom = tp->query_env("teleport_out");
 
             tmp = custom;
-            tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
-            tmp = replace_string(tmp, "$D", find_player(arg)->query_cap_name());
+            tmp = replace_string(tmp, "$N", tp->query_cap_name());
+            tmp = replace_string(tmp, "$D", target->query_cap_name());
 
-            tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            tell_down(my_env, capitalize(tmp), 0, tp);
+        } else {
+            tell_down(my_env, tp->cap_name() + " teleports to another location.", 0, ({ tp }) );
         }
-        else
-            tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports to another location.\n", ({ this_player() }) );
 
-        this_player()->move(environment(find_player(arg)));
+        tp->move_living(env);
 
-        if(this_player()->query_env("teleport_in") && wizardp(this_player()))
-        {
-            custom = this_player()->query_env("teleport_in");
+        if(tp->query_env("teleport_in") && wizardp(tp)) {
+            custom = tp->query_env("teleport_in");
 
             tmp = custom;
-            tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+            tmp = replace_string(tmp, "$N", tp->cap_name());
             tmp = replace_string(tmp, "$D", "here");
 
-            tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            tell_down(env, capitalize(tmp), 0, tp);
+        } else {
+            tell_down(env, tp->cap_name() + " has teleported to this room.", 0, tp);
         }
-        else
-            tell_room(environment(this_player()), capitalize(this_player()->name()) + " has teleported to this room.\n", this_player());
 
-        write("You have teleported to " + capitalize(find_player(arg)->name()) + " in " + environment(find_player(arg))->query_short() + "\n");
+        tell(tp, "You have teleported to " + target->cap_name() + " in " + env->query_short() + "\n");
 
         return 1;
-    }
-    else
-    {
-        file = resolve_path(this_player()->query("cwd"), arg);
+    } else {
+        file = resolve_path(tp->query("cwd"), arg);
 
-        if(file[<2..<1] != ".c") file += ".c";
-        if(!file_exists(file)) return(notify_fail("Error [goto]: " + file + " does not exist.\n"));
+        file = append( file, ".c") ;
+        if(!file_exists(file)) return "Error [goto]: " + file + " does not exist.";
         if(!ob = find_object(file)) ob = load_object(file);
-        if(!ob) return(notify_fail("Error [goto]: Unable to move to " + file + ".\n"));
-        if(environment(this_player()) == ob) return(notify_fail("Error [goto]: You are already there.\n"));
+        if(!ob) return "Error [goto]: Unable to move to " + file + ".\n";
+        if(my_env == ob) return "Error [goto]: You are already there.\n";
 
-        if(this_player()->query_env("teleport_out") && wizardp(this_player()))
-        {
-            custom = this_player()->query_env("teleport_out");
+        if(tp->query_env("teleport_out") && wizardp(tp)) {
+            custom = tp->query_env("teleport_out");
 
             tmp = custom;
             tmp = replace_string(tmp, "$D", get_short(ob));
-            tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+            tmp = replace_string(tmp, "$N", tp->cap_name());
 
-            tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            tell_down(my_env, capitalize(tmp), 0, tp);
+        } else {
+            tell_down(my_env, tp->cap_name() + " teleports to another location.", 0, ({ tp }) );
         }
-        else
-            tell_room(environment(this_player()), capitalize(this_player()->name()) + " teleports to another location.\n", ({ this_player() }) );
 
-        this_player()->move(ob);
+        tp->move_living(ob);
 
-        if(this_player()->query_env("teleport_in") && wizardp(this_player()))
-        {
-            custom = this_player()->query_env("teleport_in");
+        if(tp->query_env("teleport_in") && wizardp()) {
+            custom = tp->query_env("teleport_in");
 
             tmp = custom;
             tmp = replace_string(tmp, "$D", "here");
-            tmp = replace_string(tmp, "$N", this_player()->query_cap_name());
+            tmp = replace_string(tmp, "$N", tp->cap_name());
 
-            tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            tell_down(ob, capitalize(tmp), 0, tp);
+        } else {
+            tell_down(ob, tp->cap_name() + " has teleported to this room.", 0, tp);
         }
-        else
-            tell_room(environment(this_player()), capitalize(this_player()->name()) + " has teleported to this room.\n", ({ this_player() }) );
 
-        write("You have teleported to " + capitalize(get_short(ob)) + "\n");
+        tell(tp, "You have teleported to " + capitalize(get_short(ob)) + "\n");
 
         return 1;
     }
@@ -99,7 +94,7 @@ int main(object caller, object room, string arg)
     return 0;
 }
 
-string help(object caller) {
+string help(object tp) {
     return (" SYNTAX: goto <room/user>" + "\n\n" +
       "The goto command allows you to transport to another room by\n"
       "filename or transport to another use. If ther user or room\n"

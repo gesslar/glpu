@@ -15,8 +15,8 @@ void create() {
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "enabled"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
-    setup();
     enable_commands();
+    setup();
     add_action("command_hook", "", 1);
 }
 

@@ -325,7 +325,7 @@ void rem_path(string str) {
 
 /* Communication & Interaction functions */
 void catch_tell(string message) {
-    receive_message("unknown", message);
+    receive_message("tell", message);
 }
 
 void receive_message(string type, string msg) {

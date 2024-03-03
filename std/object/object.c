@@ -131,6 +131,8 @@ void set_proper_name(string str) {
     if(interactive(this_object()) && !is_member(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
     proper_name = str;
+    if(living())
+        set_living_name(lower_case(str));
 }
 
 string query_proper_name() {

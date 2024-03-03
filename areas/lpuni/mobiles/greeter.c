@@ -21,9 +21,8 @@ void setup() {
       "forth as he goes about seating guests.\n");
     set_id( ({"butler", "johnathon", "Johnathon", "john", "John" }) );
 
-    if(clonep(this_object())) {
+    if(clonep())
         set_heart_beat(1);
-    }
 
     count = 0;
     cmd_queue = ({});
@@ -60,14 +59,16 @@ void chatter() {
     count++;
 }
 
-void catch_tell(string msg) {
+void event_message(object prev, string msg, int msg_class, object tp) {
     string target, arg, from, chan;
-debug(msg) ;
+
+    if(tp == this_object())
+        return;
+
     msg = XTERM256->substitute_colour(msg, "plain") ;
-debug(msg) ;
+
     if(sscanf(msg, "%s bows%*sto you", target))
         cmd_queue += ({ "bow " + lower_case(target) });
-
 
     if(sscanf(msg, "%*s slaps you%*s"))
         cmd_queue += ({ "frown\nsay Please do not slap me." });
