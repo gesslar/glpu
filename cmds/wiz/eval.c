@@ -16,11 +16,11 @@ mixed main(object caller, object room, string arg) {
     string err ;
     mixed result ;
 
-    if(!directory_exists(user_path(caller->name())))
+    if(!directory_exists(user_path(caller->query_proper_name())))
         return "Error [eval]: You must have a home directory to use eval.\n" ;
 
     tell(caller, "Evaluating: " + arg + "\n\n");
-    file = user_path(caller->name()) + "tmp_eval_file.c" ;
+    file = user_path(caller->query_proper_name()) + "tmp_eval_file.c" ;
     if(file_size(file) != -1)
         rm(file) ;
 

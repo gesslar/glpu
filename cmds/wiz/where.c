@@ -15,15 +15,15 @@ inherit STD_CMD ;
 int main(object caller, object room, string str) {
     object ob;
 
-    if(!str) str = this_player()->name();
+    if(!str) str = this_player()->query_proper_name();
 
     if(find_player(str)) {
         ob = find_player(str);
         if(environment(ob))
-            write(capitalize(ob->name()) + " is in " +
+            write(capitalize(ob->query_proper_name()) + " is in " +
                 file_name(environment(ob)) + " (" + environment(ob)->query_short() + ").\n");
         else
-            write(capitalize(ob->name()) + " does not currently have an environment.\n");
+            write(capitalize(ob->query_proper_name()) + " does not currently have an environment.\n");
         return 1;
     }
 

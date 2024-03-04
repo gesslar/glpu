@@ -221,7 +221,7 @@ void heart_beat() {
 
 void restore_user() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->name()) restore_object(user_mob_data(name()));
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->query_proper_name()) restore_object(user_mob_data(name()));
 }
 
 void save_user() {

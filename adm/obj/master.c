@@ -85,7 +85,7 @@ void tune_into_error() {
 protected void log_error(string file, string message) {
     string username;
 
-    if(this_player()) username = this_player()->name();
+    if(this_player()) username = this_player()->query_proper_name();
     if(stringp(username)) {
         string path = user_path(username);
         if(directory_exists(path)) {
@@ -194,7 +194,7 @@ protected void crash(string crash_message, object command_giver, object current_
         ", error: " + crash_message + "\n");
 
     if(command_giver) {
-        log_file("crashes", "this_player: " + file_name(command_giver) + " :: " + command_giver->name() + "\n");
+        log_file("crashes", "this_player: " + file_name(command_giver) + " :: " + command_giver->query_proper_name() + "\n");
     }
 
     if(current_object) {
@@ -205,7 +205,7 @@ protected void crash(string crash_message, object command_giver, object current_
 
 string get_save_file_name(string file, object who)
 {
-    return "/tmp/ed_SAVE_" + who->name() + "#" + file + random(1000);
+    return "/tmp/ed_SAVE_" + who->query_proper_name() + "#" + file + random(1000);
 }
 
 string privs_file(string filename) {
@@ -227,7 +227,7 @@ string privs_file(string filename) {
 }
 
 string object_name(object ob) {
-    if(ob->name()) return ob->name();
+    if(ob->query_proper_name()) return ob->query_proper_name();
     return file_name(ob);
 }
 

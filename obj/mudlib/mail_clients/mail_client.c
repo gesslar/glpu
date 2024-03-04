@@ -52,7 +52,7 @@ void setup() {
 void client(object tp) {
     int i;
 
-    owner = tp->name();
+    owner = tp->query_proper_name();
 
     if(!userp(find_player(owner))) {
         remove() ;
@@ -802,9 +802,9 @@ protected varargs void get_cc(string arg, int flag, int forward) {
         write("____________________________________________________________\n");
     }
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
         while(file_exists(current_file))
-            current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+            current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
 
         gflag = flag;
         gforward = forward;

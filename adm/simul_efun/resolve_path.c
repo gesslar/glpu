@@ -22,7 +22,7 @@ string resolve_path(string Current, string Next)
    if(Next[0]=='~')
    {
       if((Next[1]=='/')||(sizeof(Next)==1))
-         Next=user_path(this_player()->name())+Next[1..<1];
+         Next=user_path(this_player()->query_proper_name())+Next[1..<1];
       else
       {
          index=strsrch(Next, "/");

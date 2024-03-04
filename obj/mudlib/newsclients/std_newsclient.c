@@ -245,7 +245,7 @@ int group_input(string args)
             {
             posts = NEWS_D->get_posts(groups[current_group]);
 
-            if(lower_case(posts[numerical_arg - 1]["author"]) != this_player()->name()
+            if(lower_case(posts[numerical_arg - 1]["author"]) != this_player()->query_proper_name()
                 && !adminp(this_player()))
             {
                 write("\nYou cannot edit a post that you did not write.\n");
@@ -441,9 +441,9 @@ int edit_msg(int num)
     write("Editing post: " + posts[num]["subject"] + "\n");
     write("=--------------------------------------=\n\n");
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "."
-        + this_player()->name();
+        + this_player()->query_proper_name();
 
     write_file(current_file, implode(explode(posts[num]["content"], "\n"), "\n"), 1);
 
@@ -458,14 +458,14 @@ int create_msg(string subject)
     if(!subject) subject = "(No Subject)";
     current_subject = subject;
     write("\nGroup: " + groups[current_group] + "\n");
-    write("Author: " + capitalize(this_player()->name()) + "\n");
+    write("Author: " + capitalize(this_player()->query_proper_name()) + "\n");
     write("Date: " + ctime(time()) + "\n");
     write("Subject: " + subject + "\n");
     write("=--------------------------------------=\n\n");
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "."
-        + this_player()->name();
+        + this_player()->query_proper_name();
 
     write_file(current_file, "");
     if(!devp(this_player())) ed(current_file, "callback_write", "callback_exit", 1);
@@ -514,7 +514,7 @@ void callback_exit()
         return;
     }
 
-    NEWS_D->client_action_post(groups[current_group], capitalize(this_player()->name()),
+    NEWS_D->client_action_post(groups[current_group], capitalize(this_player()->query_proper_name()),
         current_subject, contents);
 
     rm(current_file);

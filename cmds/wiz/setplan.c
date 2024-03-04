@@ -18,7 +18,7 @@ int delete_plan();
 
 int main(object caller, object room, string arg) {
     string tmp = "";
-    string user = this_player()->name();
+    string user = this_player()->query_proper_name();
 
     if(arg && (arg == "-d" || sscanf(arg, "-d %*s"))) return delete_plan();
 
@@ -50,7 +50,7 @@ int get_text(string arg) {
         return 1;
     }
 
-    in_edits[this_player()->name()][0] += arg + "\n";
+    in_edits[this_player()->query_proper_name()][0] += arg + "\n";
     write(":");
 
     input_to("get_text");
@@ -58,9 +58,9 @@ int get_text(string arg) {
 }
 
 int delete_plan() {
-    string file = "/home/" + this_player()->name()[0..0] + "/" + this_player()->name() + "/.plan";
+    string file = "/home/" + this_player()->query_proper_name()[0..0] + "/" + this_player()->query_proper_name() + "/.plan";
 
-    map_delete(in_edits, this_player()->name());
+    map_delete(in_edits, this_player()->query_proper_name());
 
     if(!rm(file))
         return notify_fail("\nError [setplan]: could not delete plan file\n");
@@ -71,28 +71,28 @@ int delete_plan() {
 }
 
 void write_plan() {
-    string file = "/home/" + this_player()->name()[0..0] + "/" + this_player()->name() + "/.plan";
+    string file = "/home/" + this_player()->query_proper_name()[0..0] + "/" + this_player()->query_proper_name() + "/.plan";
 
-    if(!in_edits[this_player()->name()][0] || in_edits[this_player()->name()][0] == "") get_text("~q");
+    if(!in_edits[this_player()->query_proper_name()][0] || in_edits[this_player()->query_proper_name()][0] == "") get_text("~q");
 
-    if(in_edits[this_player()->name()][1] == 1) {
-        if(!write_file(file, in_edits[this_player()->name()][0], 1)) {
+    if(in_edits[this_player()->query_proper_name()][1] == 1) {
+        if(!write_file(file, in_edits[this_player()->query_proper_name()][0], 1)) {
             write("\nError [setplan]: New plan could not be created\n\n");
-            map_delete(in_edits, this_player()->name());
+            map_delete(in_edits, this_player()->query_proper_name());
             return;
         } else {
             write("\nSuccess [setplan]: New plan created\n\n");
-            map_delete(in_edits, this_player()->name());
+            map_delete(in_edits, this_player()->query_proper_name());
             return;
         }
     } else {
-        if(!write_file(file, in_edits[this_player()->name()][0])) {
+        if(!write_file(file, in_edits[this_player()->query_proper_name()][0])) {
             write("\nError [setplan]: Plan could not be appended to\n\n");
-            map_delete(in_edits, this_player()->name());
+            map_delete(in_edits, this_player()->query_proper_name());
             return;
         } else {
             write("\nSuccess [setplan]: Plan successfully edited\n\n");
-            map_delete(in_edits, this_player()->name());
+            map_delete(in_edits, this_player()->query_proper_name());
             return;
         }
     }

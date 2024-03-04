@@ -15,7 +15,7 @@ inherit STD_CMD ;
 
 #define TP this_player()
 #define TPC this_player()->query("cwd")
-#define TPN this_player()->name()
+#define TPN this_player()->query_proper_name()
 #define JPATH "/doc/journals/"
 
 int main()

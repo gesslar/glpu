@@ -17,64 +17,65 @@ mixed main(object caller, object room, string arg) {
 
     if(arg == "all") {
         object *inv = all_inventory(caller);
+
+        if(!sizeof(inv))
+            return "You don't have anything in your inventory.\n";
+
         foreach(object item in inv) {
             int result ;
 
-            if(!(result = item->move(environment(caller)) & MOVE_OK)) {
-                write("Error [drop]: " + get_short(item) +" can not be dropped here.\n");
-                write("Result: " + result + "\n") ;
-            } else {
-                write("Success [drop]: You drop a '" + get_short(item) + "'.\n");
-                say(caller->query_cap_name() + " drops "+ get_short(item) + "'.\n");
+            if(item->prevent_drop()) {
+                tell(caller, "You cannot drop " + get_short(item) + ".\n") ;
+                continue ;
             }
+
+            if(!(result = item->move(room) & MOVE_OK)) {
+                tell(caller, "You could not drop " + get_short(item) + ".\n");
+                continue ;
+            }
+
+            tell(caller, "You drop " + get_short(item) + ".\n");
+            tell_down(room, caller->cap_name() + " drops " + get_short(item) + ".\n", 0, caller);
         }
+    } else if(sscanf(arg, "all %s", arg)) {
+        object item, *inv ;
 
-        return 1;
-    }
+        inv = filter(all_inventory(caller), (: $1->id($(arg)) :));
+        if(!sizeof(inv))
+            return "You don't have any '" + arg + "' in your inventory.\n";
 
-    if(sscanf(arg, "all %s", arg)) {
-        object item, *failed_objects = ({});
-
-        item = present(arg, caller);
-
-        while(objectp(item) && member_array(item, failed_objects) == -1) {
+        foreach(item in inv) {
             int result ;
-            if(!(result = item->move(environment(caller)) != MOVE_OK)) {
-                write("Error [drop]: " + get_short(item) + " can not be dropped here.\n");
-                printf("Result: %d\n", result) ;
-                failed_objects += ({ item });
+            if(!(result = item->move(room) != MOVE_OK)) {
+                if(item->id(arg)) {
+                    tell(caller, "You drop " + get_short(item) + ".\n");
+                    tell_down(room, caller->cap_name() + " drops " + get_short(item) + ".\n", 0, caller);
+                }
             } else {
-                write("Success [drop]: You drop " + get_short(item) + ".\n");
-                say(capitalize(caller->name()) + " drops "+ get_short(item) + ".\n");
+                tell(caller, "You could not drop " + get_short(item) + ".\n");
             }
-
-            item = present(arg, caller);
         }
-
-        return 1;
-    }
-
-    else {
+    } else {
         object ob;
 
         ob = present(arg, caller);
 
         if(!ob) {
-            return "Error [drop]: You don't have a '" + arg + "' in your inventory.\n";
-        } else if(ob->query("prevent_drop") || ob->prevent_drop()) {
-            return "Error [drop]: That object can not be dropped.\n";
+            return "You don't have a '" + arg + "' in your inventory.\n";
+        } else if(ob->prevent_drop()) {
+            return "You cannot drop " + get_short(ob) + ".\n";
         } else {
             int result ;
-            if((result = ob->move(environment(caller)) != MOVE_OK)) {
-                write("Error [drop]: " + get_short(ob) + " can not be dropped here.\n");
-                printf("Result: %d\n", result) ;
+            if((result = ob->move(room) != MOVE_OK)) {
+                return "You could not drop " + get_short(ob) + ".\n";
             } else {
-                write("Success [drop]: You drop a '" + ob->query("short") + "'.\n");
-                say(capitalize(caller->name()) + " drops a '" + ob->query("short") + "'.\n");
+                tell(caller, "You drop " + get_short(ob) + ".\n");
+                tell_down(room, caller->cap_name() + " drops " + get_short(ob) + ".\n", 0, caller);
             }
-        return 1;
         }
     }
+
+    return 1;
 }
 
 string help(object caller)

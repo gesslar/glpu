@@ -7,7 +7,7 @@
 
 inherit STD_CMD ;
 
-#define TPN (this_player()->name())
+#define TPN (this_player()->query_proper_name())
 
 mixed main(object caller, object room, string name) {
     int morelines ;

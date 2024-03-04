@@ -14,9 +14,9 @@ int main(object caller, object room, string str)
 
      if(!stringp(str))
      {
-          if(directory_exists(user_path(caller->name())))
+          if(directory_exists(user_path(caller->query_proper_name())))
           {
-               str = user_path(caller->name());
+               str = user_path(caller->query_proper_name());
           }
           else
           {

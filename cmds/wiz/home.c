@@ -18,7 +18,7 @@ mixed main(object tp, object room, string str) {
     string custom, tmp;
 
     if(!str) {
-        if(file_exists(user_path(tp->name()) + "workroom.c")) {
+        if(file_exists(user_path(tp->query_proper_name()) + "workroom.c")) {
             if(tp->query_env("teleport_out") && wizardp(tp)) {
                 custom = tp->query_env("teleport_out");
 
@@ -28,10 +28,10 @@ mixed main(object tp, object room, string str) {
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
             } else {
-                tell_room(environment(tp), tp->name() + " teleports home.\n", ({tp}));
+                tell_room(environment(tp), tp->query_proper_name() + " teleports home.\n", ({tp}));
             }
 
-            tp->move_living(user_path(tp->name()) + "workroom.c");
+            tp->move_living(user_path(tp->query_proper_name()) + "workroom.c");
 
             room = environment(tp);
             if(tp->query_env("teleport_in") && wizardp(tp)) {

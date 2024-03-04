@@ -70,7 +70,7 @@ mixed render_room(object caller, object room) {
     if(!objectp(room))
         return "You see nothing because you have no environment!\n" ;
 
-    if(devp(caller) && caller->query_env("room_filename") == "on") {
+    if(devp(caller) && caller->query_env("look_filename") == "on") {
         result += "\e<0032>"+prepend(file_name(room), "/") + "\e<res>\n" ;
     }
 
@@ -148,6 +148,13 @@ mixed render_object(object caller, object room, string target) {
     temp = get_long(ob);
     if(stringp(temp)) desc += "\n" + temp + "\n" ;
 
+
+    if(strlen(desc)) {
+        if(devp(caller) && caller->query_env("look_filename") == "on") {
+            desc = "\e<0032>"+prepend(file_name(ob), "/") + "\e<res>\n" + desc ;
+        }
+    }
+
     tell(ob, name + " looks at you.") ;
     tell_down(room, name + " looks at " + ob->query_short() + ".", null, ({ caller, ob }) );
 
@@ -172,6 +179,12 @@ mixed render_living(object caller, object room, object target, object user) {
         string vname = target->query_cap_name() ;
         tell(target, name + " looks at you.\n") ;
         tell_down(room, name + " looks at " + vname + ".\n", null, ({ caller, target }) );
+    }
+
+    if(strlen(result)) {
+        if(devp(caller) && caller->query_env("look_filename") == "on") {
+            result = "\e<0032>"+prepend(file_name(target), "/") + "\e<res>\n" + result ;
+        }
     }
 
     tell(caller, result) ;

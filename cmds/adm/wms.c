@@ -149,7 +149,7 @@ void add_user2(string str) {
           return;
      }
 
-     data += (["history" : ({"User created -- User Management - " + capitalize(this_player()->name()) + " - " + (string)ctime(time()) }) ]);
+     data += (["history" : ({"User created -- User Management - " + capitalize(this_player()->query_proper_name()) + " - " + (string)ctime(time()) }) ]);
      data += (["notes" : ({}) ]);
      data += (["flags" : ({}) ]);
      data += (["profile" : ""]);
@@ -160,13 +160,13 @@ void add_user2(string str) {
      write("Data structure created for user " + capitalize(str) + ".\n");
      write("Now entering editor... Please enter profile/user history.\n");
 
-     current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
-     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+     current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
 
      write_file(current_file, "");
      ed(current_file, "callback_write", "add_user3", 0);
 
-     log_file(WMS_LOG, capitalize(str) + " was added to the WMS database manually by " + capitalize(this_player()->name()) + " on " + ctime(time()) + "\n");
+     log_file(WMS_LOG, capitalize(str) + " was added to the WMS database manually by " + capitalize(this_player()->query_proper_name()) + " on " + ctime(time()) + "\n");
      return;
 }
 
@@ -209,7 +209,7 @@ int auto_add(string str)
      if(users[str]) return 1;
 
      data = ([]);
-     data += (["history" : ({"User created -- User Management - " + capitalize(this_player()->name()) + " - " + (string)ctime(time()) }) ]);
+     data += (["history" : ({"User created -- User Management - " + capitalize(this_player()->query_proper_name()) + " - " + (string)ctime(time()) }) ]);
      data += (["notes" : ({}) ]);
      data += (["flags" : ({}) ]);
      data += (["profile" : ""]);
@@ -223,8 +223,8 @@ int auto_add(string str)
 
 
 
-     current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
-     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+     current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
 
      write_file(current_file, "");
      ed(current_file, "callback_write", "add_user3", 0);
@@ -279,13 +279,13 @@ void edit_user2(string name)
 
      write("\nPlease update the user's profile using ed:\n\n");
 
-     current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
-     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+     current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
 
      write_file(current_file, "");
      ed(current_file, "callback_write", "edit_user3", 0);
 
-     log_file(WMS_LOG, capitalize(this_player()->name()) + " edited " + capitalize(name) + "'s profile on " + ctime(time()) + ".\n");
+     log_file(WMS_LOG, capitalize(this_player()->query_proper_name()) + " edited " + capitalize(name) + "'s profile on " + ctime(time()) + ".\n");
      return;
 }
 
@@ -297,7 +297,7 @@ void edit_user3()
 
      file = read_file(current_file);
 
-     users[current]["history"] += ({ "Profile edited -- User management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+     users[current]["history"] += ({ "Profile edited -- User management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
      users[current]["profile"] = file;
 
      current = "";
@@ -443,7 +443,7 @@ void note_user4(string str, int i)
 
      else
      {
-          str = this_player()->name() ;
+          str = this_player()->query_proper_name() ;
      }
 
      data = users[current];
@@ -467,18 +467,18 @@ void note_user4(string str, int i)
           default : type = "Type Unknown"; break;
      }
 
-     new_note += (["perm" : str, "type" : type, "admin" : this_player()->name(), "date" : time(), "for" : current]);
+     new_note += (["perm" : str, "type" : type, "admin" : this_player()->query_proper_name(), "date" : time(), "for" : current]);
      note += ([idn : new_note]);
      write("\nNow entering editor... Please enter note contents.\n");
 
 
-     current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
-     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->name();
+     current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
 
      write_file(current_file, "");
      ed(current_file, "callback_write", "note_user5", 0);
 
-     log_file(WMS_LOG, capitalize(this_player()->name()) + " made a " + type + " note for " + capitalize(current) + " on " + ctime(time()) + ".\n");
+     log_file(WMS_LOG, capitalize(this_player()->query_proper_name()) + " made a " + type + " note for " + capitalize(current) + " on " + ctime(time()) + ".\n");
      return;
 }
 
@@ -494,7 +494,7 @@ void note_user5()
      user = ([]);
      user = users[current];
      arr = user["history"];
-     arr += ({ "Note added -- Note Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+     arr += ({ "Note added -- Note Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
      user["history"] = arr;
      users[current] = user;
      current = "";
@@ -618,14 +618,14 @@ void flag_user3(string str)
                if(member_array("excellent performance", flags) != -1)
                {
                     flags -= ({ "excellent performance" });
-                    hist += ({"Untoggled E -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Untoggled E -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
 
                else
                {
                     flags += ({ "excellent performance" });
-                    hist += ({"Toggled E -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Toggled E -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
           }
@@ -635,14 +635,14 @@ void flag_user3(string str)
                if(member_array("inactive", flags) != -1)
                {
                     flags -= ({ "inactive" });
-                    hist += ({"Untoggled I -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Untoggled I -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
 
                else
                {
                     flags += ({ "inactive" });
-                    hist += ({"Toggled I -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Toggled I -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
           }
@@ -652,14 +652,14 @@ void flag_user3(string str)
                if(member_array("suspended", flags) != -1)
                {
                     flags -= ({ "suspended" });
-                    hist += ({"Untoggled S -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Untoggled S -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
 
                else
                {
                     flags += ({"suspended" });
-                    hist += ({"Toggled I -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Toggled I -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
           }
@@ -669,14 +669,14 @@ void flag_user3(string str)
                if(member_array("discipline problem", flags) != -1)
                {
                     flags -= ({"discipline problem"});
-                    hist += ({"Untoggled D -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Untoggled D -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
 
                else
                {
                     flags += ({"discipline problem"});
-                    hist += ({"Toggled D -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Toggled D -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
           }
@@ -686,14 +686,14 @@ void flag_user3(string str)
                if(member_array("recruiter", flags) != -1)
                {
                     flags -= ({"recruiter"});
-                    hist += ({"Untoggled R -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Untoggled R -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
 
                else
                {
                     flags += ({"recruiter"});
-                    hist += ({"Toggled R -- Flag Management - " + capitalize(this_player()->name()) + " - " + ctime(time()) });
+                    hist += ({"Toggled R -- Flag Management - " + capitalize(this_player()->query_proper_name()) + " - " + ctime(time()) });
                     break;
                }
           }
@@ -718,7 +718,7 @@ void flag_user3(string str)
      users[current] = data;
      count = 0;
      write("Flags updated for " + capitalize(current) + "\n");
-     log_file(WMS_LOG, capitalize(this_player()->name()) + " modified " + capitalize(current) + "'s flags on " + ctime(time()) + "\n");
+     log_file(WMS_LOG, capitalize(this_player()->query_proper_name()) + " modified " + capitalize(current) + "'s flags on " + ctime(time()) + "\n");
      current = "";
      save_object(datafile());
      return;
@@ -913,7 +913,7 @@ void remove_user2(string str)
      }
 
      map_delete(users, str);
-     log_file(WMS_LOG, capitalize(str) + " was deleted manually from the WMS database by " + capitalize(this_player()->name()) + " on " + ctime(time()) + ".\n");
+     log_file(WMS_LOG, capitalize(str) + " was deleted manually from the WMS database by " + capitalize(this_player()->query_proper_name()) + " on " + ctime(time()) + ".\n");
      write("User " + capitalize(str) + " has been deleted from the database.\n");
      return;
 }
@@ -974,7 +974,7 @@ void read_note2(string str)
         return;
      }
 
-     if(data["perm"] != "public" && data["perm"] != this_player()->name())
+     if(data["perm"] != "public" && data["perm"] != this_player()->query_proper_name())
      {
           write("Error: Note not found in database... Now exiting WMS.\n");
           return;
@@ -1050,7 +1050,7 @@ void disp_user(string str)
      for(i = 0; i < sizeof(note_ids); i++)
      {
           note = notes[note_ids[i]];
-          if(note["perm"] != "public" && note["perm"] != this_player()->name()) continue;
+          if(note["perm"] != "public" && note["perm"] != this_player()->query_proper_name()) continue;
           write(" #" + note_ids[i] + " - " + note["type"] + " - " + capitalize(note["admin"]) + "\n");
      }
 

@@ -16,21 +16,57 @@ mixed main(object caller, object room, string arg) {
     object ob;
 
     if(!arg)
-        return "SYNTAX: get <object>\n";
+        return "SYNTAX: get <object|all|all <id>>\n";
 
-    ob = present(arg, environment(caller));
+    if(arg == "all") {
+        object *obs;
+        int i, sz ;
 
-    if(!ob)
-        return "Error [get]: The object '" + arg + "' can not be found.\n";
+        obs = all_inventory(room);
+        obs = filter(obs, (: !living($1) :) );
+        obs = filter(obs, (: !($1->prevent_get()) :) );
 
-    if(ob->query("prevent_get") || ob->prevent_get())
-        return "Error [get]: The object '" + arg + "' can not be picked up.\n";
+        if(!sz = sizeof(obs))
+            return "There is nothing to get.\n";
 
-    if(!(ob->move(caller) & MOVE_OK))
-        return "Error [get]: Unable to get '" + arg + "'.\n";
+        for(i = 0; i < sz; i++) {
+            if(obs[i]->move(caller) & MOVE_OK) {
+                tell(caller, "You get "+get_short(obs[i])+".\n");
+                tell_down(room, caller->cap_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+            }
+        }
+    } else if(sscanf(arg, "all %s", arg)) {
+        object *obs;
+        int i, sz;
 
-    write("Success [get]: You get a '" + get_short(ob) + "'\n");
-    say(capitalize(caller->name()) + " gets a '" + ob->query("short") + "'.\n");
+        obs = filter(all_inventory(room), (: $1->id($2) :) , arg);
+        obs = filter(obs, (: !living($1) :) );
+        obs = filter(obs, (: !($1->prevent_get()) :) );
+
+        if(!sz = sizeof(obs))
+            return "There is nothing to get.\n";
+
+        for(i = 0; i < sz; i++) {
+            if(obs[i]->move(caller) & MOVE_OK) {
+                tell(caller, "You get "+get_short(obs[i])+".\n");
+                tell_down(room, caller->cap_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+            }
+        }
+    } else {
+        ob = present(arg, room);
+
+        if(!ob)
+            return "You see no '" + arg + "' here.\n";
+
+        if(ob->prevent_get())
+            return get_short(ob) + " cannot be picked up.\n";
+
+        if(!(ob->move(caller) & MOVE_OK))
+            return "You were unable to pick up "+get_short(ob)+".\n";
+
+        tell(caller, "You get "+get_short(ob)+".\n");
+        tell_down(room, caller->cap_name() + " gets "+get_short(ob)+".\n", 0, caller);
+    }
 
     return 1;
 }
