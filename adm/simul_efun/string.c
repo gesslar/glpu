@@ -272,6 +272,8 @@ varargs mixed from_string(string str, int flag) {
 }
 
 string stringify(mixed val) {
+    if(nullp(val))
+        return "0" ;
     if(intp(val))
         return sprintf("%d", val) ;
     if(floatp(val))
