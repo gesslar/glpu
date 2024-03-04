@@ -19,7 +19,7 @@ int remove_channel(string channel_name);
 int tune(string channel, string user, int flag);
 int valid_ch(string channel_name);
 int valid_module(string module_name);
-int snd_msg(string channel, string user, string msg);
+int chat(string channel, string user, string msg);
 int filter_listing(string element);
 string *get_channels(string module_name);
 string *get_modules();
@@ -168,7 +168,7 @@ int valid_module(string module_name) {
     return 0;
 }
 
-int snd_msg(string channel, string user, string msg) {
+int chat(string channel, string user, string msg) {
     object mod_obj;
     string *keys;
 

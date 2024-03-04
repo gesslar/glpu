@@ -432,7 +432,7 @@ int command_hook(string arg) {
 
         err = catch(load_object(CHAN_D));
         if(!err) {
-            if(CHAN_D->snd_msg(verb, query_name(), arg)) return 1;
+            if(CHAN_D->chat(verb, query_privs(), arg)) return 1;
         }
     };
 

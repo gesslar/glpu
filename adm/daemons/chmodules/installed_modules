@@ -3,7 +3,7 @@
 # The following channel daemon modules will be
 # loaded when the channel daemon is loaded.
 #
-# Note: File extension '.c' not required and no whitespaces allowed
+# Note: File extension '.c' not required and no whitespace allowed
 #
 # Local channel network -- localNet
 /adm/daemons/chmodules/local

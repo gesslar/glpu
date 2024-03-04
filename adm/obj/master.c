@@ -170,7 +170,7 @@ void error_handler(mapping mp, int caught) {
     // Strip trailing \n, and indent nicely
     what = replace_string(what[0.. < 2], "\n", "\n         *");
 
-    CHAN_D->snd_msg(
+    CHAN_D->chat(
         "error",
         query_privs(this_object()),
         sprintf("(%s) Error logged %s\n%s\n",

@@ -13,8 +13,10 @@ private nosave string *channels = ({ "error" });
 string *history = ({});
 
 void setup() {
+     mixed result ;
+
      CHAN_D->register_module(module_name, file_name());
-     filter(channels, (: CHAN_D->register_channel($(module_name), $1) :));
+     result = filter(channels, (: CHAN_D->register_channel($(module_name), $1) :));
 }
 
 int rec_msg(string chan, string usr, string msg) {
