@@ -24,3 +24,13 @@ varargs float remainder(mixed a, mixed b) {
 
     return result - floor(result) ;
 }
+
+int sum(mixed *arr) {
+    int i, total = 0;
+
+    for(i = 0; i < sizeof(arr); i++) {
+        total += arr[i];
+    }
+
+    return total;
+}

@@ -23,3 +23,25 @@ string pretty_map(mapping map) {
 
     return implode(elements, "") ;
 }
+
+mixed element_of_weighted(mapping m) {
+    mixed *keys ;
+    int *values ;
+    int i ;
+    int total ;
+    int roll ;
+
+    keys = keys(m) ;
+    values = values(m) ;
+    total = sum(values) ;
+
+    roll = random(total) ;
+    i = sizeof(values) ;
+    while(i--) {
+        if(roll < values[i])
+            return keys[i] ;
+        roll -= values[i] ;
+    }
+
+    return keys[0] ;
+}

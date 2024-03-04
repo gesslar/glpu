@@ -56,6 +56,7 @@ mapping json_encode(mixed arg) ;
 
 // File: mappings
 string pretty_map(mapping map);
+mixed element_of_weighted(mapping m) ;
 
 // File: messaging
 varargs void tell_up(object ob, string str, int msg_type, mixed exclude) ;
@@ -69,6 +70,7 @@ float percent_of(float a, float b) ;
 float percent(float a, float b) ;
 float range(float min, float max, float val) ;
 varargs float remainder(mixed a, mixed b) ;
+int sum(mixed *arr) ;
 
     // File: object
 int getoid(object ob) ;
