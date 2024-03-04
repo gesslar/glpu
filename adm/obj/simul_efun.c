@@ -11,6 +11,7 @@
 //    #include "/adm/obj/simul_efun.h"
 
 #include "/adm/simul_efun/arrays.c"
+#include "/adm/simul_efun/data.c"
 #include "/adm/simul_efun/description.c"
 #include "/adm/simul_efun/directory.c"
 #include "/adm/simul_efun/english.c"

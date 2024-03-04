@@ -271,6 +271,23 @@ varargs mixed from_string(string str, int flag) {
     error("Gobbledygook in string.\n");
 }
 
+string stringify(mixed val) {
+    if(intp(val))
+        return sprintf("%d", val) ;
+    if(floatp(val))
+        return sprintf("%f", val) ;
+    if(stringp(val))
+        return val ;
+    if(objectp(val))
+        return file_name(val) ;
+    if(mapp(val))
+        return save_variable(val) ;
+    if(pointerp(val))
+        return save_variable(val) ;
+    return "" ;
+
+}
+
 // private nosave string decimal = mud_config("DECIMAL") ;
 // private nosave string thousands = mud_config("THOUSANDS") ;
 private nosave string decimal = "." ;

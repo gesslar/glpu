@@ -7,6 +7,11 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
 varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
 mixed *reverse_array(mixed *arr) ;
 
+// File: data
+varargs mixed data_value(string file, string key, mixed def) ;
+varargs void data_write(string file, string key, mixed *data) ;
+varargs int data_inc(string file, string key, int inc) ;
+
 // File: description
 string get_short(object ob) ;
 string get_long(object ob) ;
@@ -105,6 +110,7 @@ varargs string extract(string str, int from, int to) ;
 varargs string simple_list(mixed *arr, string conj) ;
 varargs string substr(string str, string sub, int reverse) ;
 varargs mixed from_string(string str, int flag) ;
+string stringify(mixed val) ;
 string add_commas(mixed number) ;
 
 // File: system
