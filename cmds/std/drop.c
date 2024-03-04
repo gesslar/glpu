@@ -35,7 +35,7 @@ mixed main(object caller, object room, string arg) {
             }
 
             tell(caller, "You drop " + get_short(item) + ".\n");
-            tell_down(room, caller->cap_name() + " drops " + get_short(item) + ".\n", 0, caller);
+            tell_down(room, caller->query_name() + " drops " + get_short(item) + ".\n", 0, caller);
         }
     } else if(sscanf(arg, "all %s", arg)) {
         object item, *inv ;
@@ -49,7 +49,7 @@ mixed main(object caller, object room, string arg) {
             if(!(result = item->move(room) != MOVE_OK)) {
                 if(item->id(arg)) {
                     tell(caller, "You drop " + get_short(item) + ".\n");
-                    tell_down(room, caller->cap_name() + " drops " + get_short(item) + ".\n", 0, caller);
+                    tell_down(room, caller->query_name() + " drops " + get_short(item) + ".\n", 0, caller);
                 }
             } else {
                 tell(caller, "You could not drop " + get_short(item) + ".\n");
@@ -70,7 +70,7 @@ mixed main(object caller, object room, string arg) {
                 return "You could not drop " + get_short(ob) + ".\n";
             } else {
                 tell(caller, "You drop " + get_short(ob) + ".\n");
-                tell_down(room, caller->cap_name() + " drops " + get_short(ob) + ".\n", 0, caller);
+                tell_down(room, caller->query_name() + " drops " + get_short(ob) + ".\n", 0, caller);
             }
         }
     }

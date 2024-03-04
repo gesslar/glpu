@@ -36,5 +36,5 @@ mixed main(object tp, object room, string arg) {
     obs->stop_combat() ;
 
     return "You halt combat for "+
-        simple_list(sort_array(who->query_cap_name(), 1))+"." ;
+        simple_list(sort_array(who->query_name(), 1))+"." ;
 }

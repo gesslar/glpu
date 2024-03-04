@@ -48,7 +48,6 @@ void setup() {
     add_init( (: client :)) ;
 }//END create
 
-
 void client(object tp) {
     int i;
 

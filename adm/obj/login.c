@@ -431,6 +431,8 @@ void enter_world(string str) {
     body->setup_body();
     body->set_user(user);
     user->set_body(body);
+    user->set_gmcp_client(login_gmcp_data["client"]);
+    user->set_gmcp_supports(login_gmcp_data["supports"]);
     if(body->gmcp_enabled()) {
         GMCP_D->init_gmcp(body) ;
     }
@@ -489,11 +491,9 @@ object create_body(string name) {
 
     if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
-          "\tBody: " + user->query_body_path() + "\n");
+          "\tBody: " + user->query_body_path() + "\n" + err);
     }
 
-    // set_name() will set the body's name , cap_name (which are not saved)
-    // and the proper_name, which is saved.
     body->set_name(query_privs(user));
     user->set_body(body);
     set_privs(body, body->query_proper_name());
@@ -529,8 +529,8 @@ string parse_tokens(string text) {
     catch {
         text = replace_string(text, "%mud_name", mud_name());
         text = replace_string(text, "%users", implode(
-            filter(users()->query_cap_name(), (: $1 != "login" :))[0..<2], ", ") +
-            ", and " + filter(users()->query_cap_name(),
+            filter(users()->query_name(), (: $1 != "login" :))[0..<2], ", ") +
+            ", and " + filter(users()->query_name(),
             (: $1 != "login" :) )[<1]);
         text = replace_string(text, "%user_count", "" + sizeof(users()));
         text = replace_string(text, "%date", ctime(time()));
@@ -551,19 +551,19 @@ void receive_message(string type, string msg) {
 }
 
 void set_gmcp_client(mapping client) {
-    user->set_gmcp_client(client);
+    login_gmcp_data["client"] = client ;
 }
 
 mapping query_gmcp_client() {
-    return user->query_gmcp_client();
+    return login_gmcp_data["client"] ;
 }
 
 void set_gmcp_supports(mapping supports) {
-    user->set_gmcp_supports(supports);
+    login_gmcp_data["supports"] = supports ;
 }
 
 mapping query_gmcp_supports() {
-    return user->query_gmcp_supports();
+    return login_gmcp_data["supports"] ;
 }
 
 object query_user() {

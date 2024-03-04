@@ -20,14 +20,14 @@ void create() {
     add_action("command_hook", "", 1);
 }
 
-void setup_body() {
-    set_name("Generic NPC");
-    set_living_name(lower_case(name()));
-    set_ids(({name(), "npc", "generic npc", "NPC" }));
-    if(clonep(this_object())) set_heart_beat(1);
-    set_long(capitalize(name()) + " is a generic NPC.");
-    set_short(name());
-}
+// void setup_body() {
+//     set_name("Generic NPC");
+//     set_living_name(lower_case(name()));
+//     set_ids(({name(), "npc", "generic npc", "NPC" }));
+//     if(clonep()) set_heart_beat(1);
+//     set_long(capitalize(name()) + " is a generic NPC.");
+//     set_short(name());
+// }
 
 void restore_user() {}
 void save_user() {}

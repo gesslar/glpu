@@ -156,8 +156,8 @@ void error_handler(mapping mp, int caught) {
     if(what[0..23] == "*Error in loading object")
         return ;
 
-    if(this_user()) {
-        userid = query_privs(this_user());
+    if(this_player()) {
+        userid = query_privs(this_player());
         if(!userid || userid == "")
             userid = "(none)";
         printf("%sTrace written to %s\n", what, logfile);

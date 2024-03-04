@@ -26,12 +26,12 @@ mixed main(object tp, object room, string arg) {
             custom = tp->query_env("teleport_out");
 
             tmp = custom;
-            tmp = replace_string(tmp, "$N", tp->query_cap_name());
-            tmp = replace_string(tmp, "$D", target->query_cap_name());
+            tmp = replace_string(tmp, "$N", tp->query_name());
+            tmp = replace_string(tmp, "$D", target->query_name());
 
             tell_down(my_env, capitalize(tmp), 0, tp);
         } else {
-            tell_down(my_env, tp->cap_name() + " teleports to another location.", 0, ({ tp }) );
+            tell_down(my_env, tp->query_name() + " teleports to another location.", 0, ({ tp }) );
         }
 
         tp->move_living(env);
@@ -40,12 +40,12 @@ mixed main(object tp, object room, string arg) {
             custom = tp->query_env("teleport_in");
 
             tmp = custom;
-            tmp = replace_string(tmp, "$N", tp->cap_name());
+            tmp = replace_string(tmp, "$N", tp->query_name());
             tmp = replace_string(tmp, "$D", "here");
 
             tell_down(env, capitalize(tmp), 0, tp);
         } else {
-            tell_down(env, tp->cap_name() + " has teleported to this room.", 0, tp);
+            tell_down(env, tp->query_name() + " has teleported to this room.", 0, tp);
         }
 
         tell(tp, "You have teleported to " + target->cap_name() + " in " + env->query_short() + "\n");
@@ -65,11 +65,11 @@ mixed main(object tp, object room, string arg) {
 
             tmp = custom;
             tmp = replace_string(tmp, "$D", get_short(ob));
-            tmp = replace_string(tmp, "$N", tp->cap_name());
+            tmp = replace_string(tmp, "$N", tp->query_name());
 
             tell_down(my_env, capitalize(tmp), 0, tp);
         } else {
-            tell_down(my_env, tp->cap_name() + " teleports to another location.", 0, ({ tp }) );
+            tell_down(my_env, tp->query_name() + " teleports to another location.", 0, ({ tp }) );
         }
 
         tp->move_living(ob);
@@ -79,11 +79,11 @@ mixed main(object tp, object room, string arg) {
 
             tmp = custom;
             tmp = replace_string(tmp, "$D", "here");
-            tmp = replace_string(tmp, "$N", tp->cap_name());
+            tmp = replace_string(tmp, "$N", tp->query_name());
 
             tell_down(ob, capitalize(tmp), 0, tp);
         } else {
-            tell_down(ob, tp->cap_name() + " has teleported to this room.", 0, tp);
+            tell_down(ob, tp->query_name() + " has teleported to this room.", 0, tp);
         }
 
         tell(tp, "You have teleported to " + capitalize(get_short(ob)) + "\n");

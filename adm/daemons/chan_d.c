@@ -247,14 +247,16 @@ void rec_msg(string channel, string msg) {
     }
 
     listeners = channels[channel]["listeners"];
+    listeners -= ({ 0 }) ;
+    if(listeners) {
+        for(i = 0; i < sizeof(listeners); i ++) {
+            ob = find_living(listeners[i]);
 
-    for(i = 0; i < sizeof(listeners); i ++) {
-        ob = find_living(listeners[i]);
-
-        if(!objectp(ob)) {
-            channels[channel]["listeners"] -= ({ listeners[i] });
-            continue;
+            if(!objectp(ob)) {
+                channels[channel]["listeners"] -= ({ listeners[i] });
+                continue;
+            }
+            tell_object(ob, msg);
         }
-        tell_object(ob, msg);
     }
 }

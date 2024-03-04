@@ -28,7 +28,7 @@ varargs string cap_significant_words(string str, int title) {
 }
 
 string possessive_noun(mixed ob) {
-    if(objectp(ob)) ob = ob->query_cap_name() ;
+    if(objectp(ob)) ob = ob->query_name() ;
     if(!stringp(ob)) return "its" ;
 
     if(ob[<1] == 's') return ob + "'" ;

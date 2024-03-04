@@ -30,19 +30,19 @@ int main(object caller, object room, string message)
         if(message[0] == ':') message = message[1..];
 
         write("You reply to yourself: " + message + "\n");
-        tell_room(environment(caller), caller->query_cap_name() + " starts talking to themselves.\n", caller);
+        tell_room(environment(caller), caller->query_name() + " starts talking to themselves.\n", caller);
 
         return 1;
     }
 
     if(message[0] == ':')
     {
-        tell_object(user, caller->query_cap_name() + " " + message[1..] + "\n");
-        write("You reply to " + capitalize(who) + ": " + caller->query_cap_name() + " " + message[1..] + "\n");
+        tell_object(user, caller->query_name() + " " + message[1..] + "\n");
+        write("You reply to " + capitalize(who) + ": " + caller->query_name() + " " + message[1..] + "\n");
     }
     else
     {
-        tell_object(user, caller->query_cap_name() + " tells you: " + message + "\n");
+        tell_object(user, caller->query_name() + " tells you: " + message + "\n");
         write("You reply to " + capitalize(who) + ": " + message + "\n");
     }
 

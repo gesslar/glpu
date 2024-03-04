@@ -10,7 +10,11 @@ inherit __DIR__ "command" ;
 
 private nosave mixed *inits = ({}) ;
 
-void event_init(object tp) {
+void init() {
+    event(this_object(), "init", this_body()) ;
+}
+
+void event_init(object prev, object tp) {
     int sz ;
 
     sz = sizeof(inits);

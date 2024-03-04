@@ -40,7 +40,7 @@ int main(object caller, object room, string args)
 
      write("Success [revdev]: User '" + capitalize(user->query_proper_name()) + "' is no longer a developer.\n");
      log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " revoked "
-        + user->query_cap_name() + "'s developer status on " + ctime(time())
+        + user->query_proper_name() + "'s developer status on " + ctime(time())
         + "\n");
      return 1;
 }

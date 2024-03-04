@@ -27,7 +27,7 @@ int main(object caller, object room, string args)
      if(devp(query_privs(user)))
      {
          write("Error [makedev]: That user is already a developer.\n");
-         write("Setting up command path for '" + user->query_cap_name() + "'.\n");
+         write("Setting up command path for '" + user->query_name() + "'.\n");
          user->add_path("/cmds/wiz/");
          user->add_path("/cmds/object/");
             user->add_path("/cmds/file/");
@@ -59,7 +59,7 @@ int main(object caller, object room, string args)
 
      write("Success [makedev]: User '" + capitalize(user->query_proper_name()) + "' now has developer status.\n");
      log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " promotes "
-        + user->query_cap_name() + " to developer status on " + ctime(time())
+        + user->query_name() + " to developer status on " + ctime(time())
         + "\n");
      return 1;
 }

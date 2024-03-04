@@ -52,7 +52,7 @@ int lock_door(object tp, string args) {
      lock_flag = 1;
      tell(tp, "You lock the door.\n");
      tell_all(this_object(),
-          tp->query_cap_name() + " locks the bathroom door.\n", 0, tp);
+          tp->query_name() + " locks the bathroom door.\n", 0, tp);
      catch(load_object(query_exit("east"))->tell("You hear a click coming from the bathroom door.\n"));
      call_out("auto_unlock", 120);
      return 1;
@@ -63,7 +63,7 @@ debugf("unlock_door(%O, %O)", tp, args);
      if(args != "door") return 0;
      lock_flag = 0;
      tell(tp, "You unlock the door.\n");
-     tell_all(this_object(), tp->query_cap_name() + " unlocks the bathroom door.\n", 0, tp);
+     tell_all(this_object(), tp->query_name() + " unlocks the bathroom door.\n", 0, tp);
      catch(load_object(query_exit("east"))->tell("You hear a click coming from the bathroom door.\n"));
      return 1;
 }

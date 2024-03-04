@@ -94,3 +94,11 @@ string ctime(int x) {
     fmt = "%Y-%m-%d %H:%M:%S" ;
     return strftime(fmt, x) ;
 }
+
+object this_body() {
+    return this_player();
+}
+
+object this_user() {
+    return this_player()->query_user();
+}

@@ -22,8 +22,8 @@ mixed main(object tp, object room, string arg) {
     if(!victim = find_local_target(tp, arg))
         return 1 ;
 
-    name = tp->query_cap_name() ;
-    vname = victim->query_cap_name() ;
+    name = tp->query_name() ;
+    vname = victim->query_name() ;
 
     tell(tp, "You engage " + vname + " in combat.") ;
     tell(victim, name + " engages you in combat.") ;

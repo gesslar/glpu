@@ -31,7 +31,7 @@ void Status(object who) {
     mapping data ;
 
     data = ([
-        GMCP_LBL_CHAR_STATUS_NAME        : who->query_cap_name(),
+        GMCP_LBL_CHAR_STATUS_NAME        : who->query_name(),
         GMCP_LBL_CHAR_STATUS_CAPACITY    : who->query_capacity(),
         GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: who->query_max_capacity(),
     ]) ;

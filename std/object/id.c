@@ -21,7 +21,7 @@ void set_adjs(mixed arg) ;
 void rehash_ids() ;
 
 // From other objects
-string name();
+string query_name();
 
 private string *ids = ({});
 private string *_ids = ({});
@@ -66,8 +66,8 @@ void set_ids(mixed arg) {
     if(!sizeof(arg)) _ids = ({});
     else _ids = arg;
 
-    if(member_array(name(), _ids) == -1 && name()) {
-        _ids += ({ name() });
+    if(query_name() && member_array(query_name(), _ids) == -1) {
+        _ids += ({ query_name() });
     }
     rehash_ids();
 }
@@ -99,7 +99,7 @@ int id(string arg) {
     if(!arg || !stringp(arg))
         return 0;
 
-    if(sizeof(ids) < 1) ids = ({name()});
+    if(sizeof(ids) < 1) ids = ({query_name()});
     if(member_array(arg, ids) != -1) return 1;
     return 0;
 }
@@ -108,7 +108,7 @@ void rehash_ids() {
     string *tmp = ({});
     string name ;
 
-    name = name() ;
+    name = query_name() ;
 
     tmp = ({ name });
     _plural_ids = map(_ids, (: pluralize :));

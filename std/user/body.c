@@ -100,14 +100,14 @@ void setup_body() {
         return;
 
     add_action("command_hook", "", 1);
-    set_living_name(name());
-    set_ids(({name()}));
-    set_proper_name(name());
+    set_living_name(query_proper_name());
+    set_ids(({query_proper_name()}));
+    // set_proper_name(name());
     set_heart_beat(1);
     enable_commands();
     set("prevent_get", 1);
     if(!query("cwd")) set("cwd", "/doc");
-    if(!query_short()) set_short(query_cap_name());
+    if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "enabled"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
@@ -125,7 +125,7 @@ void enter_world() {
     if(!is_member(query_privs(previous_object()), "admin"))
         return;
 
-    ANNOUNCE_CHDMOD->announce_login(name());
+    ANNOUNCE_CHDMOD->announce_login(query_name());
 
     catch {
         news_client = new(query_env("news_client"));
@@ -145,16 +145,16 @@ void enter_world() {
                force_me("channel tune in " + channel);
     };
 
-    if(file_size(user_path(name()) + ".login") > 0) {
+    if(file_size(user_path(query_proper_name()) + ".login") > 0) {
         write("\n");
-        cmds = explode(read_file(user_path(name()) + ".login"), "\n");
+        cmds = explode(read_file(user_path(query_proper_name()) + ".login"), "\n");
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
 
     set("last_login", time());
     write("\n");
-    say(capitalize(name()) + " has entered.\n");
+    say(capitalize(query_name()) + " has entered.\n");
 }
 
 void exit_world() {
@@ -163,8 +163,8 @@ void exit_world() {
 
     if(this_player() != this_object()) return;
 
-    if(file_size(user_path(name()) + ".quit") > 0) {
-        cmds = explode(read_file(user_path(name()) + ".quit"), "\n");
+    if(file_size(user_path(query_proper_name()) + ".quit") > 0) {
+        cmds = explode(read_file(user_path(query_proper_name()) + ".quit"), "\n");
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
@@ -172,9 +172,9 @@ void exit_world() {
     set("last_login", time());
 
     if(environment())
-        say((string)capitalize(name())+ " leaves " + mud_name() + ".\n");
+        say(query_name()+ " leaves " + mud_name() + ".\n");
 
-    ANNOUNCE_CHDMOD->announce_logoff(name());
+    ANNOUNCE_CHDMOD->announce_logoff(query_name());
 
     save_user();
 }
@@ -183,17 +183,17 @@ void net_dead() {
     if(origin() != ORIGIN_DRIVER) return;
     set("last_login", time());
     save_user();
-    if(environment()) tell_room(environment(), capitalize(name()) + " has gone link-dead.\n");
-    set_short(capitalize(name()) + " [link dead]");
-    log_file(LOG_LOGIN, capitalize(name()) + " went link-dead on " + ctime(time()) + "\n");
+    if(environment()) tell_room(environment(), query_name()+ " has gone link-dead.\n");
+    set_short(query_name() + " [link dead]");
+    log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
 }
 
 void reconnect() {
     restore_user();
     set("last_login", time());
     tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), capitalize(name()) + " has reconnected.\n", this_player());
-    set_short(capitalize(name()));
+    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_player());
+    set_short(query_name());
     /* reconnection logged in login object */
 }
 
@@ -203,8 +203,8 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
                 if(environment())
-                    tell_room(environment(), capitalize(name()) + " fades out of existance.\n");
-                log_file(LOG_LOGIN, capitalize(name()) + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                    tell_room(environment(), query_name() + " fades out of existance.\n");
+                log_file(LOG_LOGIN, query_proper_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 destruct(this_object());
             }
         } else {
@@ -221,12 +221,12 @@ void heart_beat() {
 
 void restore_user() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->query_proper_name()) restore_object(user_mob_data(name()));
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
 }
 
 void save_user() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    catch(save_object(user_mob_data(name())));
+    catch(save_object(user_mob_data(query_proper_name())));
 }
 
 varargs int move(mixed ob, int flag) {
@@ -408,7 +408,7 @@ int command_hook(string arg) {
             //         if(this_player()->query_env("move_out") && wizardp(this_player())) {
             //             custom = this_player()->query_env("move_out");
             //             tmp = custom;
-            //             tmp = replace_string(tmp, "$N", query_cap_name());
+            //             tmp = replace_string(tmp, "$N", query_ssssssssssssssssssssse());
             //             tmp = replace_string(tmp, "$D", verb);
             //             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
             //         } else {
@@ -432,7 +432,7 @@ int command_hook(string arg) {
 
         err = catch(load_object(CHAN_D));
         if(!err) {
-            if(CHAN_D->snd_msg(verb, name(), arg)) return 1;
+            if(CHAN_D->snd_msg(verb, query_name(), arg)) return 1;
         }
     };
 
@@ -504,7 +504,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
                 if(!depart_message) depart_message = "$N leaves $D.";
                 if(!dir) dir = "somewhere" ;
 
-                tmp = replace_string(depart_message, "$N", query_cap_name());
+                tmp = replace_string(depart_message, "$N", query_name()) ;
                 tmp = replace_string(tmp, "$D", dir);
 
                 tell_down(curr, tmp) ;
@@ -516,7 +516,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 
             if(!arrive_message) arrive_message = query_env("move_in");
             if(!arrive_message) arrive_message = "$N arrives.";
-            tmp = replace_string(arrive_message, "$N", query_cap_name());
+            tmp = replace_string(arrive_message, "$N", query_name());
 
             tell_down(curr, tmp, null, ({ this_object() })) ;
         }
@@ -525,8 +525,6 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     }
 
     defer((: force_me, "look" :)) ;
-
-    event(environment(), "init") ;
 
     return result ;
 }

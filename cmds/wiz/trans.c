@@ -26,7 +26,7 @@ int main(object caller, object room, string arg)
     return notify_fail("Error [trans]: You are already in the same room.\n");
 
     if(adminp(player) || devp(player) && !adminp(this_player())) {
-        catch(tell_object(player, this_player()->query_cap_name()
+        catch(tell_object(player, this_player()->query_name()
             + " requests your presence in " +
             environment(this_player())->query_short() + ".\n"));
 
@@ -37,10 +37,10 @@ int main(object caller, object room, string arg)
     return notify_fail("Error [trans]: You have no environment to transport a player to!\n");
 
     if(!player->move(environment(this_player())))
-    return notify_fail("Error [trans]: Could not move " + player->query_cap_name() + " to you.\n");
+    return notify_fail("Error [trans]: Could not move " + player->query_name() + " to you.\n");
 
-    tell_object(player, "You have been transported to " + this_player()->query_cap_name() + ".\n");
-    tell_object(this_player(), "You have transport " + player->query_cap_name() + " to you.\n");
+    tell_object(player, "You have been transported to " + this_player()->query_name() + ".\n");
+    tell_object(this_player(), "You have transport " + player->query_name() + " to you.\n");
 
     return 1;
 }

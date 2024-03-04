@@ -19,9 +19,9 @@ int main(object tp, object room, string arg) {
         if(!living(user)) continue;
 
         if(sizeof(command_history) <= 0)
-            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), "<none>"));
+            tell(tp, sprintf("  %-15s %s\n", user->query_name(), "<none>"));
         else
-            tell(tp, sprintf("  %-15s %s\n", user->query_cap_name(), command_history[sizeof(command_history)-1]));
+            tell(tp, sprintf("  %-15s %s\n", user->query_name(), command_history[sizeof(command_history)-1]));
     }
 
     tell(tp, "=----------------------------------------------=\n");

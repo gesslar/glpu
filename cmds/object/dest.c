@@ -26,13 +26,13 @@ mixed main(object caller, object room, string str) {
         if(custom) {
             tmp = custom;
             tmp = replace_string(tmp, "$O", (get_short(ob)[0] == 'a' ? get_short(ob) : "a " + get_short(ob)));
-            tmp = replace_string(tmp, "$N", caller->query_cap_name());
+            tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
         catch(ob->remove());
         if(ob) destruct(ob);
@@ -44,13 +44,13 @@ mixed main(object caller, object room, string str) {
         if(custom) {
             tmp = custom;
             tmp = replace_string(tmp, "$O", (get_short(ob)[0] == 'a' ? get_short(ob) : "a " + get_short(ob)));
-            tmp = replace_string(tmp, "$N", caller->query_cap_name());
+            tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
         ob->remove();
         if(ob) destruct(ob);
@@ -62,13 +62,13 @@ mixed main(object caller, object room, string str) {
         if(custom) {
             tmp = custom;
             tmp = replace_string(tmp, "$O", (get_short(ob)[0] == 'a' ? get_short(ob) : "a " + get_short(ob)));
-            tmp = replace_string(tmp, "$N", caller->query_cap_name());
+            tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
         } else {
             write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
-            catch(tell_room(environment(caller), capitalize(caller->name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
+            catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
         tell_object(ob, "Notice [dest]: You have been nullified and hence disconnected from the mud.\n");
         if(ob) destruct(ob);

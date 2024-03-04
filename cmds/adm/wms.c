@@ -30,7 +30,7 @@ inherit STD_CMD ;
 #define WRITEDIR "/open/"
 #define WMS_LOG "adm/wms.log"
 
-object restore_data(string name);
+object restore_user(string name);
 int auto_add(string str);
 int auto_add2();
 void add_user();
@@ -133,7 +133,7 @@ void add_user2(string str) {
           return;
      }
 
-     user = restore_data(str);
+     user = restore_user(str);
 
      if(!user)
      {
@@ -204,7 +204,7 @@ int auto_add(string str)
 
      if(!adminp(this_player())) return 0;
 
-     user = restore_data(str);
+     user = restore_user(str);
      if(!user) return 1;
      if(users[str]) return 1;
 
@@ -1106,7 +1106,7 @@ string query_flags(string str)
      return ret;
 }
 
-object restore_data(string name) {
+object restore_user(string name) {
     object link;
 
     if(!adminp(this_player())) return 0;

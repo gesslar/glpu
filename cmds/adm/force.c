@@ -27,14 +27,12 @@ int main(object caller, object room, string args) {
         foreach(object ob in users()) {
             if(adminp(ob)) continue;
 
-            write("Success [force]: You force '" + capitalize(ob->name())
-                + "' to "    + cmd + "\n");
-            tell_object(ob, capitalize(caller->name())
-                + " forces you to " + cmd + "\n");
+            write("Success [force]: You force '" + ob->query_name() + "' to "    + cmd + "\n");
+            tell_object(ob, caller->query_name() + " forces you to " + cmd + "\n");
 
             ob->force_me(cmd);
             log_file(LOG_FORCE, capitalize(query_privs(caller)) +
-                " forces " + ob->query_cap_name() + " to '" + cmd + "' on " +
+                " forces " + ob->query_name() + " to '" + cmd + "' on " +
                 ctime(time()) + "\n");
         }
 
@@ -51,12 +49,11 @@ int main(object caller, object room, string args) {
 
         write("Success [force]: You force '" + capitalize(target ) + "' to "
             + cmd + "\n");
-        tell_object(ob, capitalize(caller->name())
-            + " forces you to " + cmd + "\n");
+        tell_object(ob, caller->query_name() + " forces you to " + cmd + "\n");
 
         ob->force_me(cmd);
         log_file(LOG_FORCE, capitalize(query_privs(caller)) +
-                " forces " + ob->query_cap_name() + " to '" + cmd + "' on "
+                " forces " + ob->query_name() + " to '" + cmd + "' on "
                 + ctime(time()) + "\n");
         return 1;
     }

@@ -37,24 +37,24 @@ mixed main(object caller, object room, string str) {
 
     if(user == caller) {
         if(message[0] == ':')
-            write("You emote to yourself: " + user->query_cap_name() + " " + message[1..<1] + "\n");
+            write("You emote to yourself: " + user->query_s() + " " + message[1..<1] + "\n");
         else
             write("You tell yourself: " + message + "\n");
 
         tell_room(environment(caller),
-            capitalize(caller->name()) + " starts talking to themself.\n", caller);
+            capitalize(caller->query_name()) + " starts talking to themself.\n", caller);
         caller->set("retell", query_privs(user));
 
         return 1;
     }
 
     if(message[0] == ':') {
-        tell_object(user, caller->query_cap_name() + " " +
+        tell_object(user, caller->query_name() + " " +
             message[1..<1] + "\n");
         write("You emote to " + capitalize(who) + ": " +
-            caller->query_cap_name() + " " + message[1..<1] + "\n");
+            caller->query_name() + " " + message[1..<1] + "\n");
     } else {
-        tell_object(user, capitalize((string)caller->name())
+        tell_object(user, capitalize((string)caller->query_name())
             + " tells you: " + message + "\n");
         write("You tell " + capitalize(who) + ": " + message + "\n");
     }
@@ -69,7 +69,7 @@ string help(object caller) {
     return(" SYNTAX: tell <player>[@<mud>: | . | :]<message>\n\n"
       "This command will send a message to the specified player if they\n"
       "are online. For example, if you type 'tell tacitus hey' then\n"
-      "he'll see '" + capitalize(caller->name()) +
+      "he'll see '" + capitalize(caller->query_name()) +
       " tells you: hey'. If you use 'tell . <message>\n" +
       "it will send the message to the last person that you used tell to talk to.\n" +
       "You may also talk to a user on another mud in the I3 network using the\n" +

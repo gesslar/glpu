@@ -38,9 +38,9 @@ int main(object caller, object room, string arg)
 
      ob->move(target);
 
-     write("You give " + get_short(ob) + " to " + capitalize(target->name()) + ".\n");
-     tell_object(target, capitalize(caller->name()) + " gives you a '" + ob->query("short") + "'.\n");
-     say(capitalize(caller->name()) + " gives a '" + ob->query("short") + "' to " + capitalize(target->name()) + ".\n", ({caller, target}));
+     write("You give " + get_short(ob) + " to " + capitalize(target->query_name()) + ".\n");
+     tell_object(target, capitalize(caller->query_name()) + " gives you a '" + ob->query("short") + "'.\n");
+     say(capitalize(caller->query_name()) + " gives a '" + ob->query("short") + "' to " + capitalize(target->query_name()) + ".\n", ({caller, target}));
 
      return 1;
 }

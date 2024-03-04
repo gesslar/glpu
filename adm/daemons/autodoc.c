@@ -107,7 +107,7 @@ void parse_file(string *file_info) {
 
         curr++ ;
         line = lines[num] ;
-        if(pcre_match(line, "^//:") == true) {
+        if(pcre_match(line, "^//:") == true)
             line = line[3..] ;
     }
 }

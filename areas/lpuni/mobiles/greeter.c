@@ -52,7 +52,7 @@ void chatter() {
 
         if(!objectp(user) || !interactive(user)) continue;
 
-        command("tell " + user->name() + " " + arr[0]);
+        command("tell " + user->query_name() + " " + arr[0]);
         messages[key] = messages[key][1..];
     }
 

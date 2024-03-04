@@ -35,7 +35,7 @@ mixed main(object tp, object room, string arg) {
     i = query_heart_beat(ob) ;
     hb_ms = get_config(__RC_HEARTBEAT_INTERVAL_MSEC__) ;
 
-    arg = capitalize(ob->name()) ;
+    arg = ob->query_name() ;
 
     if(i)
         return "Heartbeat is on for " + arg + " (" + i + "x" + hb_ms + "ms = " + (i * hb_ms) + "ms)" ;
@@ -56,7 +56,7 @@ mixed all_heartbeats(object tp) {
     for(i = 0; i < sizeof(obs); i++) {
         int interval = query_heart_beat(obs[i]) ;
         if(query_heart_beat(obs[i]))
-            ret += ({ capitalize(obs[i]->name()) + " (" + interval + "x" + hb_ms + "ms = " + (interval * hb_ms) + "ms)" }) ;
+            ret += ({ obs[i]->query_name() + " (" + interval + "x" + hb_ms + "ms = " + (interval * hb_ms) + "ms)" }) ;
     }
 
     if(sizeof(ret))

@@ -48,7 +48,7 @@ mixed main(object caller, object room, string str) {
         if(custom) {
             tmp = custom;
             tmp = replace_string(tmp, "$O", short);
-            tmp = replace_string(tmp, "$N", caller->query_cap_name());
+            tmp = replace_string(tmp, "$N", caller->query_name());
             tell_room(environment(caller), capitalize(tmp) + "\n", caller);
             write("Success [clone]: New object '" + file + "' cloned to " +
                 get_short(dest) + " (" +file_name(dest)+ ").\n") ;
@@ -56,7 +56,7 @@ mixed main(object caller, object room, string str) {
             write("Success [clone]: New object '" + file + "' cloned to " +
                 get_short(dest) + " (" +file_name(dest)+ ").\n") ;
             tell_room(environment(caller),
-                capitalize(caller->name()) + " creates " + short + ".\n", caller);
+                capitalize(caller->query_name()) + " creates " + short + ".\n", caller);
         }
         caller->set("cwf", str);
         return 1;
@@ -79,7 +79,7 @@ mixed main(object caller, object room, string str) {
     if(custom) {
         tmp = custom;
         tmp = replace_string(tmp, "$O", short);
-        tmp = replace_string(tmp, "$N", caller->query_cap_name());
+        tmp = replace_string(tmp, "$N", caller->query_name());
         tell_room(environment(caller), capitalize(tmp) + "\n", caller);
         write("Success [clone]: New object '" + file + "' cloned to " +
             get_short(dest) + " (" +file_name(dest)+ ").\n") ;
@@ -87,7 +87,7 @@ mixed main(object caller, object room, string str) {
         write("Success [clone]: New object '" + file + "' cloned to " +
             get_short(dest) + " (" +file_name(dest)+ ").\n") ;
         tell_room(environment(caller),
-            capitalize(caller->name()) + " creates " + short + ".\n", caller);
+            caller->query_name() + " creates " + short + ".\n", caller);
     }
 
     caller->set("cwf", str);

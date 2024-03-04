@@ -112,7 +112,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
             msg = replace_string(msg, "$PI", "your");
             msg = replace_string(msg, "$I", "You");
         }
-        else msg = replace_string(msg, "$I", capitalize(this_player()->name()));
+        else msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
 
         if(to_player == 0) msg = replace_string(msg, "$T", "him/herself");
         else if(to_player == 1) msg = replace_string(msg, "$T", "yourself");
@@ -120,7 +120,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
 
     if(target) {
         if(to_player == 1) msg = replace_string(msg, "$I", "You");
-        else msg = replace_string(msg, "$I", capitalize(this_player()->name()));
+        else msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
 
         if(to_player == 1) msg = replace_string(msg, "$PI", "your");
         else msg = replace_string(msg, "$PI", "his/her");
@@ -129,7 +129,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
         msg = replace_string(msg, "$OI", "him/her");
 
         if(to_player == 2) msg = replace_string(msg, "$T", "you");
-        else msg = replace_string(msg, "$T", capitalize(target->name()) );
+        else msg = replace_string(msg, "$T", capitalize(target->query_name()) );
 
         if(to_player == 2) msg = replace_string(msg, "$PT", "your");
         else msg = replace_string(msg, "$PT", "his/her");
@@ -142,7 +142,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
             else msg = replace_string(msg, "$V", emote);
     } else {
         if(to_player == 1) msg = replace_string(msg, "$I", "You");
-        else if(to_player == 0) msg = replace_string(msg, "$I", capitalize(this_player()->name()));
+        else if(to_player == 0) msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
 
         msg = replace_string(msg, "$PI", "his/her");
             msg = replace_string(msg, "$SI", "he/she");

@@ -32,7 +32,7 @@ mixed main(object caller, object room, string arg) {
         for(i = 0; i < sz; i++) {
             if(obs[i]->move(caller) & MOVE_OK) {
                 tell(caller, "You get "+get_short(obs[i])+".\n");
-                tell_down(room, caller->cap_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+                tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
             }
         }
     } else if(sscanf(arg, "all %s", arg)) {
@@ -49,7 +49,7 @@ mixed main(object caller, object room, string arg) {
         for(i = 0; i < sz; i++) {
             if(obs[i]->move(caller) & MOVE_OK) {
                 tell(caller, "You get "+get_short(obs[i])+".\n");
-                tell_down(room, caller->cap_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+                tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
             }
         }
     } else {
@@ -65,7 +65,7 @@ mixed main(object caller, object room, string arg) {
             return "You were unable to pick up "+get_short(ob)+".\n";
 
         tell(caller, "You get "+get_short(ob)+".\n");
-        tell_down(room, caller->cap_name() + " gets "+get_short(ob)+".\n", 0, caller);
+        tell_down(room, caller->query_name() + " gets "+get_short(ob)+".\n", 0, caller);
     }
 
     return 1;

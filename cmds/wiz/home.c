@@ -23,7 +23,7 @@ mixed main(object tp, object room, string str) {
                 custom = tp->query_env("teleport_out");
 
                 tmp = custom;
-                tmp = replace_string(tmp, "$N", tp->cap_name());
+                tmp = replace_string(tmp, "$N", tp->query_name());
                 tmp = replace_string(tmp, "$D", "home");
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
@@ -38,12 +38,12 @@ mixed main(object tp, object room, string str) {
                 custom = tp->query_env("teleport_in");
 
                 tmp = custom;
-                tmp = replace_string(tmp, "$N", tp->cap_name());
+                tmp = replace_string(tmp, "$N", tp->query_name());
                 tmp = replace_string(tmp, "$D", "here");
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
             } else {
-                tell_down(room, tp->cap_name() + " teleports here.\n", 0, tp);
+                tell_down(room, tp->query_name() + " teleports here.\n", 0, tp);
             }
 
             tell(tp, "You teleport to your workroom.\n");
@@ -58,14 +58,14 @@ mixed main(object tp, object room, string str) {
                 custom = tp->query_env("teleport_out");
 
                 tmp = custom;
-                tmp = replace_string(tmp, "$N", tp->cap_name());
+                tmp = replace_string(tmp, "$N", tp->query_name());
                 tmp = replace_string(tmp, "$D", capitalize(str) + "'s workroom.");
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
 
                 return 1;
             } else {
-                tell_down(room, tp->cap_name() + " teleports to someone's workroom.\n", 0, tp);
+                tell_down(room, tp->query_name() + " teleports to someone's workroom.\n", 0, tp);
             }
 
             tp->move_living(user_path(str) + "workroom.c");
@@ -75,12 +75,12 @@ mixed main(object tp, object room, string str) {
                 custom = tp->query_env("teleport_in");
 
                 tmp = custom;
-                tmp = replace_string(tmp, "$N", tp->cap_name());
+                tmp = replace_string(tmp, "$N", tp->query_name());
                 tmp = replace_string(tmp, "$D", "here");
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
             } else {
-                tell_down(room, tp->cap_name() + " teleports here.\n", 0, tp);
+                tell_down(room, tp->query_name() + " teleports here.\n", 0, tp);
             }
 
             tell(tp, "You teleported to " + capitalize(str) + "'s workroom.\n");

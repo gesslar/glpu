@@ -171,12 +171,12 @@ mixed render_living(object caller, object room, object target, object user) {
     if(stringp(temp = get_short(target))) result += temp + "\n" ;
     if(stringp(temp = get_long(target))) result += "\n" + temp + "\n" ;
 
-    name = caller->query_cap_name() ;
+    name = caller->query_name() ;
     if(target == caller) {
         string refl = reflexive(caller) ;
         tell_down(room, name + " looks at "+refl+".\n", null, ({ caller }) );
     } else {
-        string vname = target->query_cap_name() ;
+        string vname = target->query_name() ;
         tell(target, name + " looks at you.\n") ;
         tell_down(room, name + " looks at " + vname + ".\n", null, ({ caller, target }) );
     }
