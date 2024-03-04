@@ -38,7 +38,7 @@ nomask void net_dead() {
 
 nomask void restore_user() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_player())) restore_object(user_data_file(query_privs(this_object())));
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_player())) restore_object(user_data_file(query_privs()));
 }
 
 nomask void save_user() {
@@ -49,7 +49,7 @@ nomask void save_user() {
        origin() != ORIGIN_LOCAL) {
         return 0;
     } else {
-        result = save_object(user_data_file(query_privs(this_object())));
+        result = save_object(user_data_file(query_privs()));
     }
 
 }
@@ -61,7 +61,7 @@ nomask int set_password(string str) {
         return 0;
     }
 
-    if(ofile_exists(user_data_file(query_privs(this_object()))))
+    if(ofile_exists(user_data_file(query_privs())))
         save_user() ;
 
     return 1;

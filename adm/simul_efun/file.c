@@ -151,7 +151,7 @@ string *explode_file(string file) {
     string data, *lines ;
     string old_privs ;
 
-    old_privs = query_privs(this_object()) ;
+    old_privs = query_privs() ;
     set_privs(this_object(), query_privs(previous_object())) ;
 
     if(!file) return ({}) ;

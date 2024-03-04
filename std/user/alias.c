@@ -52,7 +52,7 @@ int remove_alias(string verb)
 mapping get_aliases(int all)
 {
      if(!all) return alias + xverb + ([]);
-     else return GA_SERVER->get_alias(query_privs(this_object())) + GA_SERVER->get_xverb(query_privs(this_object())) + alias + xverb + ([]);
+     else return GA_SERVER->get_alias(query_privs()) + GA_SERVER->get_xverb(query_privs()) + alias + xverb + ([]);
 }
 
 string compute_alias(string al, string args)
@@ -68,8 +68,8 @@ string compute_alias(string al, string args)
      while(n != 0)
      {
           /* Scan */
-          
-          
+
+
           sscanf(al, "%*s $%d %*s", n);
           sscanf(al, "%*s$%d%*s", n);
 
@@ -120,7 +120,7 @@ string compute_alias(string al, string args)
           if(!stringp(imp) || imp == "") al = replace_string(al, " $*", "");
           else al = replace_string(al, "$*", imp);
      }
-     
+
      else al = replace_string(al, " $*", "");
 
      return al;
@@ -136,8 +136,8 @@ string alias_parse(string verb, string args)
      if(!mapp(alias)) alias = ([]);
      if(!mapp(xverb)) xverb = ([]);
 
-     tmp_alias = GA_SERVER->get_alias(query_privs(this_object())) + alias;
-     tmp_xverb = GA_SERVER->get_xverb(query_privs(this_object())) + xverb;
+     tmp_alias = GA_SERVER->get_alias(query_privs()) + alias;
+     tmp_xverb = GA_SERVER->get_xverb(query_privs()) + xverb;
 
      if(sizeof(tmp_alias))
      {

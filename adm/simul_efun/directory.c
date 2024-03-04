@@ -11,7 +11,7 @@ int assure_dir(string path) {
 
     if(file_size(path) == -2) return 1 ;
 
-    old_privs = query_privs(this_object()) ;
+    old_privs = query_privs() ;
     set_privs(this_object(), query_privs(previous_object())) ;
 
     parts = explode(path, "/");

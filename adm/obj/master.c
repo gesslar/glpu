@@ -79,7 +79,7 @@ protected void epilog(int load_empty) {
 }
 
 void tune_into_error() {
-    CHAN_D->tune("error", query_privs(this_object()), 1);
+    CHAN_D->tune("error", query_privs(), 1);
 }
 
 protected void log_error(string file, string message) {
