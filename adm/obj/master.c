@@ -172,7 +172,7 @@ void error_handler(mapping mp, int caught) {
 
     CHAN_D->chat(
         "error",
-        query_privs(this_object()),
+        query_privs(),
         sprintf("(%s) Error logged %s\n%s\n",
             logfile,
             what,
