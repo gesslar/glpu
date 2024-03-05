@@ -18,6 +18,6 @@
 #define LOG_NUKE     "adm/nuke"
 #define LOG_HELP     "help.log"
 
-#define ARCHIVE_STAMP "%Y%M%d-%H%M"
+#define ARCHIVE_STAMP "%Y%m%d-%H%M"
 
 #endif
