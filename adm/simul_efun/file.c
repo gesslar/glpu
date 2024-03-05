@@ -148,24 +148,52 @@ varargs int log_file(string file, string str, mixed arg...) {
 }
 
 string *explode_file(string file) {
-    string data, *lines ;
     string old_privs ;
+
+    if(!file) return ({}) ;
 
     old_privs = query_privs() ;
     set_privs(this_object(), query_privs(previous_object())) ;
 
-    if(!file) return ({}) ;
-    if(!file_exists(file)) return ({}) ;
+    if(!file_exists(file)) {
+        set_privs(this_object(), old_privs) ;
+        return ({}) ;
+    }
 
-    data = read_file(file) ;
-    if(!data) return ({}) ;
+    catch {
+        string data = read_file(file) ;
+        string *lines ;
 
-    lines = explode(read_file(file), "\n") ;
-    lines = filter(lines, (: $1[0] != '#' :)) ;
-    lines = filter(lines, (: strlen(trim($1)) > 0 :)) ;
+        if(!data) {
+            set_privs(this_object(), old_privs) ;
+            return ({}) ;
+        }
+        lines = explode(data, "\n") ;
+        lines = filter(lines, (: $1[0] != '#' :)) ;
+        lines = filter(lines, (: strlen(trim($1)) > 0 :)) ;
+    } ;
 
     set_privs(this_object(), old_privs) ;
+
     return lines ;
+}
+
+varargs void implode_file(string file, string *lines, int overwrite) {
+    string old_privs ;
+
+    if(!file) return ;
+    if(!lines) return ;
+    if(!sizeof(lines)) return ;
+
+    overwrite = !!overwrite ;
+    old_privs = query_privs() ;
+    set_privs(this_object(), query_privs(previous_object())) ;
+
+    catch {
+        write_file(file, implode(lines, "\n") + "\n", overwrite) ;
+    } ;
+
+    set_privs(this_object(), old_privs) ;
 }
 
 string query_file_name(object ob) {

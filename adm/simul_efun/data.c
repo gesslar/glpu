@@ -56,11 +56,11 @@ varargs void data_write(string file, string key, mixed data...) {
     i = data_index(lines, key) ;
     if(i > -1) {
         lines[i] = out ;
-        write_file(file, implode(lines, "\n") + "\n", 1) ;
+        implode_file(file, lines, 1);
         return ;
     }
 
-    write_file(file, out + "\n", 1) ;
+    implode_file(file, lines, 1);
 }
 
 int data_del(string file, string key) {
@@ -79,7 +79,7 @@ int data_del(string file, string key) {
     if(sizeof(lines) == 0)
         rm(file) ;
     else
-        write_file(file, implode(lines, "\n") + "\n", 1) ;
+        implode_file(file, lines, 1);
 
     return 1 ;
 }
@@ -103,5 +103,5 @@ varargs int data_inc(string file, string key, int inc) {
     sscanf(line, key + "%d", val) ;
     val += inc ;
     lines[i] = key + val ;
-    write_file(file, implode(lines, "\n") + "\n", 1) ;
+    implode_file(file, lines, 1);
 }

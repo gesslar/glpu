@@ -42,10 +42,12 @@ int user_exists(string user) ;
 int file_lines(string file) ;
 int log_file(string file, string str) ;
 string *explode_file(string file) ;
+varargs void implode_file(string file, string *lines, int overwrite) ;
 string file_owner(string file) ;
 string query_file_name(object ob) ;
 varargs string tail(string path, int line_count) ;
 void assure_file(string file) ;
+
 // File: function
 varargs string call_trace(int colour) ;
 
