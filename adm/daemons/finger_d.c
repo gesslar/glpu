@@ -16,6 +16,7 @@
  */
 
 #include <socket.h>
+#include <origin.h>
 
 inherit STD_DAEMON ;
 
@@ -118,7 +119,7 @@ mixed get_user(string username) {
     object user;
     string error;
 
-    if(origin() != "local" && !adminp(query_privs(previous_object()))) return 0;
+    if(origin() != ORIGIN_LOCAL && !adminp(query_privs(previous_object()))) return 0;
 
     error = catch(user = new(STD_USER));
     if(error) return -1;
@@ -135,7 +136,7 @@ mixed get_body(object user) {
     object body;
     string error;
 
-    if(origin() != "local" && !adminp(query_privs(previous_object()))) return 0;
+    if(origin() != ORIGIN_LOCAL && !adminp(query_privs(previous_object()))) return 0;
 
     error = catch(body = new(user->query_body_path()));
     if(error) return -1;
