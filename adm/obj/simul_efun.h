@@ -9,8 +9,9 @@ mixed *reverse_array(mixed *arr) ;
 
 // File: data
 varargs mixed data_value(string file, string key, mixed def) ;
-varargs void data_write(string file, string key, mixed *data) ;
+varargs void data_write(string file, string key, mixed data...) ;
 varargs int data_inc(string file, string key, int inc) ;
+int data_del(string file, string key) ;
 
 // File: description
 string get_short(object ob) ;

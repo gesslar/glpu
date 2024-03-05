@@ -1,5 +1,17 @@
 #include "/adm/obj/simul_efun.h"
 
+private int data_index(string *lines, string key) {
+    string *parts ;
+    int i, sz ;
+
+    for(i = 0, sz = sizeof(lines); i < sz; i++) {
+        if(strsrch(lines[i], key) == 0)
+            return i ;
+    }
+
+    return -1 ;
+}
+
 varargs mixed data_value(string file, string key, mixed def) {
     string *lines, line ;
     mixed *parts ;
@@ -13,16 +25,11 @@ varargs mixed data_value(string file, string key, mixed def) {
 
     key = append(key, "|") ;
     lines = explode_file(file);
-    for(i = 0, sz = sizeof(lines); i < sz; i++) {
-        if(strsrch(lines[i], key) == 0) {
-            line = lines[i];
-            break ;
-        }
-    }
+    i = data_index(lines, key) ;
+    if(i == -1)
+        return def ;
 
-    if(!line)
-        return def;
-
+    line = lines[i] ;
     parts = explode(line, "|");
     parts = parts[1..];
     parts = map(parts, (: from_string :)) ;
@@ -32,7 +39,7 @@ varargs mixed data_value(string file, string key, mixed def) {
     return parts ;
 }
 
-varargs void data_write(string file, string key, mixed *data) {
+varargs void data_write(string file, string key, mixed data...) {
     string *lines, out ;
     mixed *parts ;
     int i, sz ;
@@ -46,29 +53,55 @@ varargs void data_write(string file, string key, mixed *data) {
     out = key + out ;
 
     lines = explode_file(file);
-    for(i = 0, sz = sizeof(lines); i < sz; i++) {
-        if(strsrch(lines[i], key) == 0) {
-            lines[i] = out ;
-            write_file(file, implode(lines, "\n") + "\n", 1) ;
-            return ;
-        }
+    i = data_index(lines, key) ;
+    if(i > -1) {
+        lines[i] = out ;
+        write_file(file, implode(lines, "\n") + "\n", 1) ;
+        return ;
     }
 
     write_file(file, out + "\n", 1) ;
 }
 
+int data_del(string file, string key) {
+    string *lines ;
+    int i, sz ;
+
+    if(nullp(file) || nullp(key))
+        return 0 ;
+
+    lines = explode_file(file);
+    i = data_index(lines, key) ;
+    if(i == -1)
+        return 0 ;
+
+    lines = lines[0..i-1] + lines[i+1..] ;
+    if(sizeof(lines) == 0)
+        rm(file) ;
+    else
+        write_file(file, implode(lines, "\n") + "\n", 1) ;
+
+    return 1 ;
+}
+
 varargs int data_inc(string file, string key, int inc) {
-    mixed data ;
+    string *lines, line ;
+    int i, val ;
 
     if(nullp(file) || nullp(key))
         return null ;
 
-    if(nullp(inc))
-        inc = 1 ;
+    lines = explode_file(file);
+    i = data_index(lines, key) ;
+    if(i == -1) {
+        data_write(file, key, inc) ;
+        return inc ;
+    }
 
-    data = data_value(file, key, 0) ;
-    data += inc ;
-    data_write(file, key, data) ;
-
-    return data ;
+    key = append(key, "|") ;
+    line = lines[i] ;
+    sscanf(line, key + "%d", val) ;
+    val += inc ;
+    lines[i] = key + val ;
+    write_file(file, implode(lines, "\n") + "\n", 1) ;
 }
