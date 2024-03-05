@@ -13,7 +13,7 @@
 /* Last edited by Tacitus on October 4th, 2006 */
 
 #include <config.h>
-#include <driver/origin.h>
+#include <origin.h>
 #include <logs.h>
 
 inherit STD_OBJECT;
