@@ -19,7 +19,8 @@ inherit STD_DAEMON ;
 private nosave mapping mud_stats = ([]) ;
 
 void setup() {
-    mud_stats = json_decode(read_file("/adm/etc/mssp.json")) ;
+    if(file_exists("/adm/etc/mssp.json"))
+        mud_stats = json_decode(read_file("/adm/etc/mssp.json")) ;
 }
 
 mapping get_mud_stats() {
