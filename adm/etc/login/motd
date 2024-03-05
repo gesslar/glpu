@@ -1,13 +1,7 @@
 
- *************************************
-     WELCOME TO THE %cap_mud_name
- *************************************
+ WELCOME TO %cap_mud_name
 
  We are currently at version:
-       %lib_version
 
- Next release expected for:
-     October 9th, 2006
-
- For more information, visit us at:
-      http://lpuni.org
+    %lib_version of %lib_name on
+    %driver_version

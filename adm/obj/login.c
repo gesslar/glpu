@@ -536,9 +536,11 @@ string parse_tokens(string text) {
         text = replace_string(text, "%email", ADMIN_EMAIL);
         text = replace_string(text, "%lib_name", lib_name());
         text = replace_string(text, "%lib_version", lib_version());
+        text = replace_string(text, "%baselib_version", baselib_version());
         text = replace_string(text, "%cap_mud_name",
             implode(explode(mud_name(), ""), (: capitalize($1)
             + capitalize($2) :)));
+        text = replace_string(text, "%driver_version", driver_version());
     };
 
     return text;

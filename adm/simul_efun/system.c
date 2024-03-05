@@ -43,7 +43,14 @@ int port() {
 }
 
 string driver_version() {
-    return __VERSION__;
+    string version = __VERSION__ ;
+    string name, rest ;
+
+    sscanf(version, "%s %s", name, rest) ;
+    if(strsrch(rest, "uncommited") != -1)
+        sscanf(rest, "%s-uncommited", rest) ;
+
+    return sprintf("%s %s", name, rest) ;
 }
 
 string arch() {

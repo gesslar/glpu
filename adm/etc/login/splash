@@ -1,20 +1,10 @@
 
-     Hello And Welcome to...
+Hello, and welcome to %mud_name.
 
-       _       _____   _    _         _
-      | |     |  __ \ | |  | |       (_)
-      | |     | |__) || |  | | _ __   ^_
-      | |     |  ___/ | |  | || '_ \ | |              /\
-      | |____ | |     | |__| || | | || |     STAGE:  /__\ lpha
-      |______||_|      \____/ |_| |_||_|            /    \
+This is an effort to create an opinionated fork of the LPU codebase. The goal
+is to provide a more modern and feature-rich codebase for the LPMud community.
 
+This is a work in progress. Issues may be reported at the following URL:
+https://github.com/gesslar/glpu/issues
 
-     -> LPUniversity is an LpCommunity initiative <-
-
-
-                     Powered by:
-                                          _    ___  __
-                        /\/\   _   _   __| |  /___\/ _\
-                       /    \ | | | | / _` | //  //\ \
-                      / /\/\ \| |_| || (_| |/ \_// _\ \
-                      \/    \/ \__,_| \__,_|\___/  \__/
+Pull requests are welcome, but are subject to the approval of the project.
