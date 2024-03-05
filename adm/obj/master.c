@@ -95,7 +95,11 @@ protected void log_error(string file, string message) {
         }
     }
 
-    log_file("compile", message);
+    log_file("compile",
+        "---\n" +
+        ctime() + "\n" +
+        message + "\n" +
+        call_trace()) ;
 }
 
 // Blatanly stolen from Lima
@@ -148,7 +152,7 @@ void error_handler(mapping mp, int caught) {
     string what = mp["error"];
     string userid;
 
-    ret = "---\n" + standard_trace(mp);
+    ret = "---\n" + standard_trace(mp, 1);
     write_file(logfile, ret);
 
     // If an object didn't load, they get compile errors. Don't spam
@@ -242,12 +246,13 @@ string make_path_absolute(string file) {
 
 varargs void log_file(string file, string msg, mixed arg...) {
     int size;
+    int max_size = percent_of(80, get_config(__MAX_READ_FILE_SIZE__)) ;
 
     if(query_privs(previous_object()) == "[open]") return;
 
     size = file_size(log_dir() + file);
     if(size == -2) return;
-    if(size > 50000) {
+    if(size > max_size) {
         string t1;
         string backup;
         int ret = sscanf(file, "%s.log", t1);
