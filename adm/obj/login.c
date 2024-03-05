@@ -13,6 +13,7 @@
 #include <config.h>
 #include <logs.h>
 #include <daemons.h>
+#include <origin.h>
 
 inherit STD_OBJECT ;
 
@@ -399,6 +400,8 @@ void reconnect(string str) {
         }
         return;
     } else {
+        body->remove() ;
+        tell(this_object(), "You have chosen not to reconnect to your old body.\n");
         write_file(log_dir() + LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
@@ -410,7 +413,6 @@ void reconnect(string str) {
         }
         return;
     }
-
 }
 
 void auto_destruct() {
@@ -464,17 +466,13 @@ void enter_world(string str) {
     remove() ;
 }
 
-void catch_tell(string message) {
-    receive(XTERM256->substitute_colour(message));
-}
-
 void relogin() {
     object login = new(LOGIN_OB);
 
     body = this_player();
     user = body->query_user();
     body->exit_world();
-    log_file(LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged (relogin) out from " +
+    log_file(LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged out (relogin) from " +
       query_ip_number(body) + " on " + ctime(time()) + "\n");
     exec(login, body);
     body->save_user();
@@ -485,7 +483,7 @@ void relogin() {
 object create_body(string name) {
     string err;
 
-    if(origin() != "local") return 0;
+    if(origin() != ORIGIN_LOCAL) return 0;
 
     err = catch(body = new(user->query_body_path()));
 
@@ -506,7 +504,7 @@ object create_user() {
     object user;
     mixed err;
 
-    if(origin() != "local") return 0;
+    if(origin() != ORIGIN_LOCAL) return 0;
 
     err = catch(user = new(STD_USER));
 
@@ -521,7 +519,7 @@ object create_user() {
     return user;
 }
 
-string name() {
+string query_proper_name() {
     return "login";
 }
 
@@ -544,10 +542,6 @@ string parse_tokens(string text) {
     };
 
     return text;
-}
-
-void receive_message(string type, string msg) {
-    receive(XTERM256->substitute_colour(msg, "plain")) ;
 }
 
 void set_gmcp_client(mapping client) {
