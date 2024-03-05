@@ -8,7 +8,7 @@
 
 /* Preproccessor Statements */
 
-#include "/adm/include/driver/origin.h";
+#include <origin.h>
 
 #define CONFIG_FILE "/adm/etc/aliases"
 

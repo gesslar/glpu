@@ -1,5 +1,5 @@
 ###############################################################################
-#                LPUniversity Mudlib Runtime Configuation File                #
+#                   gLPU Mudlib Runtime Configuation File                    #
 ###############################################################################
 # NOTE: All paths specified here are relative to the mudlib directory except  #
 #       for mudlib directory, and binary directory.                           #
@@ -7,7 +7,7 @@
 ###############################################################################
 
 # name of this mud
-name : LPUni
+name : gLPU
 
 # port number to accept users on
 port number : 1337
@@ -23,7 +23,7 @@ log directory : /path/to/mudlib/log
 
 # the directories which are searched by #include <...>
 # for multiple dirs, separate each path with a ':'
-include directories : /adm/include:/include
+include directories : /include:/include/driver
 
 # the file which defines the master object
 master file : /adm/obj/master

@@ -1,7 +1,7 @@
 #ifndef __SOCKET_H__
 #define __SOCKET_H__
 
-#include <driver/socket_err.h>
+#include <socket_err.h>
 
 #define MUD 0
 #define STREAM 1
