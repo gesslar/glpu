@@ -31,6 +31,8 @@ void create() {
     call_out_walltime( (: set_privs, this_object(), "[master]" :), 0.01);
     // Tune into error channel
     call_out_walltime("tune_into_error", 0.02) ;
+    // BOOT_D call
+    call_out_walltime( (: BOOT_D->boot() :), 0.03);
 }
 
 void flag(string str) {
@@ -190,6 +192,8 @@ protected void crash(string crash_message, object command_giver, object current_
         tell_object(ob, "Master object shouts: Damn!\nMaster object tells you: The game is crashing.\n");
         catch(ob->save_user());
     }
+
+    PERSIST_D->persist_objects() ;
 
     log_file("shutdown", MUD_NAME + " crashed on: " + ctime(time()) +
         ", error: " + crash_message + "\n");

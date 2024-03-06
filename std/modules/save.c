@@ -17,6 +17,11 @@ int set_persistent(int x: (: 1 :)) {
 
     if(!save_file) set_save_file();
 
+    if(x == 1)
+        PERSIST_D->register_peristent(this_object()) ;
+    else
+        PERSIST_D->unregister_persistent(this_object()) ;
+
     return persistent = x;
 }
 

@@ -10,12 +10,17 @@
 //Last edited on December 21st, 2005 by Tacitus
 
 int exec( object to, object from ) {
-    if(is_member(query_privs(previous_object()), "admin")) return efun::exec(to, from);
-    else return 0;
+    if(is_member(query_privs(previous_object()), "admin"))
+        return efun::exec(to, from);
+    else
+        return 0;
 }
 
 void shutdown( int how ) {
-    if(file_name(previous_object()) == "/adm/daemons/shutdown_d") efun::shutdown(how);
+    if(file_name(previous_object()) == "/adm/daemons/shutdown_d") {
+        PERSIST_D->persist_objects() ;
+        efun::shutdown(how);
+    }
 }
 
 void set_privs(object ob, string privs) {

@@ -5,6 +5,7 @@
 
 #define ALARM_D         DIR_DAEMONS "alarm"
 #define BANK_D          DIR_DAEMONS "bank"
+#define BOOT_D          DIR_DAEMONS "boot"
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COMBAT_D        DIR_DAEMONS "combat"
 #define CONFIG_D        DIR_DAEMONS "config"
@@ -18,6 +19,7 @@
 #define MOVE_D          DIR_DAEMONS "movement"
 #define MSSP_D          DIR_DAEMONS "mssp"
 #define NEWS_D          DIR_DAEMONS "news_d"
+#define PERSIST_D       DIR_DAEMONS "persist"
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown_d"
 #define SOUL_D          DIR_DAEMONS "soul_d"
 #define SWAP_D          DIR_DAEMONS "swap"
