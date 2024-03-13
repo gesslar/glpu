@@ -1,5 +1,4 @@
 #include "/adm/obj/simul_efun.h"
-#include <function.h>
 
 varargs string call_trace(int colour) {
     string res;
