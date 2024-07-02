@@ -23,7 +23,9 @@
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown_d"
 #define SOUL_D          DIR_DAEMONS "soul_d"
 #define SWAP_D          DIR_DAEMONS "swap"
+#define WEBSOCKET_D     DIR_DAEMONS "websocket_client"
 #define VIRTUAL_D       DIR_DAEMONS "virtual"
 #define XTERM256        DIR_DAEMONS "xterm256_d"
+
 
 #endif // __DAEMONS_H__

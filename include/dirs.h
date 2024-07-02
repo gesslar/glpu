@@ -3,6 +3,7 @@
 
 #define DIR_CLASSES         "/std/classes/"
 #define DIR_DAEMONS         "/adm/daemons/"
+#define DIR_DAEMON_MODULES  DIR_DAEMONS "modules/"
 #define DIR_OBJ             "/obj/"
 #define DIR_STD             "/std/"
 #define DIR_STD_MODULES     DIR_STD "modules/"

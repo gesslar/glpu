@@ -65,13 +65,15 @@ string log_dir() {
     return mud_config("LOG_DIR") ;
 }
 
-void debug(string str) {
+varargs void debug(string str, mixed args...) {
+    if(sizeof(args))
+        str = sprintf(str, args...) ;
+
     str = XTERM256->substitute_colour(str, "xterm") ;
 
     debug_message(str) ;
 }
 
 varargs void debugf(string str, mixed args...) {
-    str = sprintf(str, args...) ;
-    debug(str) ;
+    return debug(str, args...) ;
 }
