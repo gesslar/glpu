@@ -59,6 +59,7 @@ varargs string identify( mixed a, string indent ) {
         a = replace_string( a, "\\", "\\\\" );
         a = replace_string( a, "\\\"", "\"" );
         a = replace_string( a, "\n", "\\n" );
+        a = replace_string( a, "\r", "\\r" );
         a = replace_string( a, "\t", "\\t" );
         return ind + a;
     }
