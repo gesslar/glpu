@@ -329,15 +329,3 @@ protected nomask void send_http_response(int fd, mapping client) {
         socket_shutdown(fd) ;
     }
 }
-
-void destructing(mixed args...) {
-    int x, y ;
-
-    printf("%O\n", x / y) ;
-
-    _log(0, call_trace(1)) ;
-    _log("previous_object(-1) %O", previous_object(-1)) ;
-    _log(0, "args: %O", args) ;
-    _log(0, "Destructing") ;
-    close_all_client_connections() ;
-}
