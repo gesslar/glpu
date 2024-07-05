@@ -1,18 +1,18 @@
 protected nosave nomask int _log_level = 1 ;
+protected nosave nomask string _log_prefix = "" ;
 
-void set_log_level(int lvl) {
-    _log_level = lvl ;
-}
+void set_log_level(int lvl) { _log_level = lvl ; }
+int log_level() { return _log_level ; }
 
-int log_level() {
-    return _log_level ;
-}
+void set_log_prefix(string prefix) { _log_prefix = prefix ; }
+string log_prefix() { return _log_prefix ; }
 
 varargs void _log(mixed args...) {
     int lvl = -1 ;
     string message ;
     mixed *rest ;
     string out ;
+    string prefix ;
 
     if(!sizeof(args))
         return ;
@@ -59,8 +59,13 @@ varargs void _log(mixed args...) {
         message = func + " - " + message ;
     }
 
-    if(sizeof(rest))
-        debug("# " + message, rest...) ;
+    if(strlen(_log_prefix))
+        prefix = _log_prefix + " " ;
     else
-        debug("# " + message) ;
+        prefix = "" ;
+
+    if(sizeof(rest))
+        debug(prefix + message, rest...) ;
+    else
+        debug(prefix + message) ;
 }
