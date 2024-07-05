@@ -53,6 +53,9 @@ varargs string identify( mixed a, string indent ) {
             ret = "";
         return ind + "OBJ(" + ret + file_name( a ) + ")";
     }
+    if(bufferp(a)) {
+        return ind + sprintf("%O", a);
+    }
     if( stringp( a ) ) {
         a = replace_string( a, "\"", "\\\"" );
         a = "\"" + a + "\"";
