@@ -205,8 +205,9 @@ void shutdown_socket(int fd) {
 
     cache_file = server["cache"] ;
     if(file_size(cache_file) > 0) {
-_log(2, "Total received: %d", server["received_total"]) ;
-_log(2, "Body received: %d", server["received_body"]) ;
+        _log(2, "Total received: %d", server["received_total"]) ;
+        _log(2, "Body received: %d", server["received_body"]) ;
+
         catch(process_response(fd, server)) ;
         // rm(cache_file) ;
     }
