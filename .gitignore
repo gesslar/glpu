@@ -30,5 +30,6 @@ journal.*
 # Alarm files
 adm/etc/alarms/*.txt
 
-// Config files
+# Config files
 lpc-config.json
+.vscode/
