@@ -19,6 +19,20 @@
 #define HTTP_STATUS_BAD_GATEWAY "502 Bad Gateway"
 #define HTTP_STATUS_SERVICE_UNAVAILABLE "503 Service Unavailable"
 
+// HTTP States
+#define HTTP_STATE_RESOLVING 1
+#define HTTP_STATE_CONNECTING 2
+#define HTTP_STATE_CONNECTED 3
+#define HTTP_STATE_READY 4
+#define HTTP_STATE_SENDING 5
+#define HTTP_STATE_RECEIVING 6
+#define HTTP_STATE_COMPLETE 7
+#define HTTP_STATE_ERROR 100
+
+#define HTTP_REDIRECT_CODES ({ \
+    301, 302, 303, 307, 308, \
+})
+
 // Common Content-Types
 #define CONTENT_TYPE_TEXT_PLAIN "text/plain"
 #define CONTENT_TYPE_TEXT_HTML "text/html"
