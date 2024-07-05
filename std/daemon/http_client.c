@@ -54,7 +54,7 @@ void post_setup() {
     set_option("tls", 0) ;
 }
 
-varargs void http_request(string url, string method, mapping headers, string body) {
+varargs nomask void http_request(string url, string method, mapping headers, string body) {
     mapping parsed_url ;
 
     if(!stringp(url) || !stringp(method))
@@ -75,7 +75,7 @@ varargs void http_request(string url, string method, mapping headers, string bod
     http_connect(parsed_url) ;
 }
 
-varargs void http_connect(mapping request) {
+varargs nomask void http_connect(mapping request) {
     int fd, status, key, port ;
     string host ;
     mapping server ;
@@ -108,7 +108,7 @@ varargs void http_connect(mapping request) {
     resolve_keys[key] = fd ;
 }
 
-void socket_resolve(string host, string addr, int key) {
+nomask void socket_resolve(string host, string addr, int key) {
     int fd, port, result ;
     mapping server ;
 
@@ -175,7 +175,7 @@ void socket_resolve(string host, string addr, int key) {
     }
 }
 
-void socket_closed(int fd) {
+nomask void socket_closed(int fd) {
     mapping server = servers[fd] ;
     float duration ;
     float speed ;
@@ -191,7 +191,7 @@ void socket_closed(int fd) {
     shutdown_socket(fd) ;
 }
 
-void shutdown_socket(int fd) {
+nomask void shutdown_socket(int fd) {
     mapping server = servers[fd] ;
     int result ;
     string cache_file ;
@@ -239,7 +239,7 @@ void shutdown_socket(int fd) {
     map_delete(servers, fd) ;
 }
 
-void socket_read(int fd, buffer incoming) {
+nomask void socket_read(int fd, buffer incoming) {
     mapping server = servers[fd];
     int status_code ;
     buffer buf ;
@@ -247,9 +247,11 @@ void socket_read(int fd, buffer incoming) {
 
     if (!server)
         return;
-_log(4, "First 10 bytes: %O", incoming[0..10]) ;
-// _log(1, "Incoming\n%O", incoming) ;
+
+    _log(4, "First 10 bytes: %O", incoming[0..10]) ;
+
     server["transactions"] ++ ;
+
     _log(3, "================= STARTING TRANSACTION #%d =================", server["transactions"]) ;
 
     if(server["buffer"]) {
@@ -350,7 +352,7 @@ _log(4, "First 10 bytes: %O", incoming[0..10]) ;
     return ;
 }
 
-void socket_ready(int fd) {
+nomask void socket_ready(int fd) {
     mapping server = servers[fd] ;
     mixed result ;
 
@@ -456,7 +458,7 @@ private nomask void process_response(int fd, mapping server) {
     rm(file) ;
 }
 
-void process_redirect(int fd, mapping server) {
+nomask void process_redirect(int fd, mapping server) {
     mapping processed_url ;
     string location ;
     mapping headers ;
@@ -495,7 +497,7 @@ void process_redirect(int fd, mapping server) {
     );
 }
 
-mixed send_http_request(int fd, mapping server) {
+nomask mixed send_http_request(int fd, mapping server) {
     string request, body ;
     mapping headers = server["request"]["headers"] ;
     string method = server["request"]["method"] ;
@@ -577,11 +579,11 @@ mixed send_http_request(int fd, mapping server) {
     return result ;
 }
 
-int set_max_redirects(int max) {
+nomask int set_max_redirects(int max) {
     max_redirects = max ;
     return max_redirects ;
 }
 
-int query_max_redirects() {
+nomask int query_max_redirects() {
     return max_redirects ;
 }
