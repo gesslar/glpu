@@ -13,7 +13,7 @@
 #include <daemons.h>
 
 inherit STD_DAEMON ;
-inherit DM_HTTP ;
+inherit M_HTTP ;
 
 // Prototypes
 varargs void http_connect(mapping request) ;

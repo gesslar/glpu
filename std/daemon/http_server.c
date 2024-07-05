@@ -15,7 +15,7 @@
 #include <type.h>
 
 inherit STD_DAEMON ;
-inherit DM_HTTP ;
+inherit M_HTTP ;
 
 // Prototypes
 protected nomask void send_http_response(int fd, mapping client) ;
