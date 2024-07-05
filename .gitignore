@@ -29,3 +29,6 @@ journal.*
 
 # Alarm files
 adm/etc/alarms/*.txt
+
+// Config files
+lpc-config.json
