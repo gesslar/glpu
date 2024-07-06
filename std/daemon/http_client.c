@@ -1,3 +1,17 @@
+/**
+ * @file /std/daemon/http_client.c
+ * @description This is a base HTTP client daemon that is intended to be
+ *              inherited by other objects to create a custom HTTP client. It
+ *              provides the ability to send HTTP requests to a server and
+ *              receive responses.
+ *
+ * @created 2024/07/05 - Gesslar
+ * @last_modified 2024/07/05 - Gesslar
+ *
+ * @history
+ * 2024/07/05 - Gesslar - Created
+ */
+
 // This is a base HTTP client daemon that is intended to be inherited by other
 // objects to create a custom HTTP client. It provides the ability to send HTTP
 // requests to a server and receive responses.
@@ -112,6 +126,10 @@ nomask void socket_resolve(string host, string addr, int key) {
     int fd, port, result ;
     mapping server ;
 
+    if(!resolve_keys[key]) {
+        return ;
+    }
+
     fd = resolve_keys[key] ;
     map_delete(resolve_keys, key) ;
 
@@ -209,7 +227,6 @@ nomask void shutdown_socket(int fd) {
         _log(2, "Body received: %d", server["received_body"]) ;
 
         catch(process_response(fd, server)) ;
-        // rm(cache_file) ;
     }
 
     now = to_float(time_ns()) ;
@@ -278,6 +295,7 @@ nomask void socket_read(int fd, buffer incoming) {
             servers[fd] = server ;
             return ;
         }
+
         status_string = matches[0] ;
         _log(3, "Status string: %s", status_string) ;
         status = parse_response_status(status_string) ;

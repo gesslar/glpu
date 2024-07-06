@@ -1,3 +1,16 @@
+/**
+ * @file /std/daemon/http_server.c
+ * @description This is an HTTP server that may be inherited by other objects
+ *              to create a custom HTTP server. It listens on a specified port
+ *              and accepts incoming connections.
+ *
+ * @created 2024/07/05 - Gesslar
+ * @last_modified 2024/07/05 - Gesslar
+ *
+ * @history
+ * 2024/07/05 - Gesslar - Created
+ */
+
 // /adm/daemons/http_server.c
 // This is an HTTP server that may be inherited by other objects to create a
 // custom HTTP server. It listens on a specified port and accepts incoming
@@ -156,18 +169,17 @@ protected nomask void socket_read(int fd, buffer incoming) {
     if(!bufferp(incoming))
         return ;
 
-    buf = to_string(incoming) ;
-
     client = clients[fd] ;
     if(!client) {
         _log(0, "Unknown client: %d", fd) ;
         return ;
     }
 
+    buf = to_string(incoming) ;
     _log(3, "Received: %O", buf) ;
 
-    err = catch(result = parse_http(buf)) ;
-    _log(3, "Result: %O", result) ;
+    err = catch(result = parse_http_request(incoming)) ;
+    // _log(3, "Result: %O", result) ;
     if(err || !mapp(result)) {
         _log(2, "Error parsing: %O", err) ;
 
@@ -179,7 +191,7 @@ protected nomask void socket_read(int fd, buffer incoming) {
         return ;
     }
 
-    _log(3, "Parsed: %O", result) ;
+    // _log(3, "Parsed: %O", result) ;
 
     if(result == 0) {
         client["response"] = ([

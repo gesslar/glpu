@@ -1,9 +1,13 @@
-// /adm/daemons/modules/http.c
-// Modules for HTTP servers/clients
-// Created:     2024/07/01: Gesslar
-// Last Change: 2024/07/01: Gesslar
-//
-// 2024/07/01: Gesslar - Created
+/**
+ * @file /std/modules/http.c
+ * @description HTTP module with shared functions for use in HTTP operations
+ *
+ * @created 2024/07/05 - Gesslar
+ * @last_modified 2024/07/05 - Gesslar
+ *
+ * @history
+ * 2024/07/05 - Gesslar - Created
+ */
 
 inherit M_LOG ;
 
@@ -12,60 +16,100 @@ inherit M_LOG ;
 #include <type.h>
 #include <http.h>
 
-string url_encode(string str) ;
-string url_decode(string str) ;
+protected nomask string url_encode(string str) ;
+protected nomask string url_decode(string str) ;
 
-buffer to_binary(string str) ;
-string to_string(buffer buf) ;
+protected nomask buffer to_binary(string str) ;
+protected nomask string to_string(buffer buf) ;
 
-varargs int find_marker(mixed buf, string marker) ;
-varargs int bufsrch(buffer buf, mixed str) ;
-void cache_response(string file, mixed response) ;
-mixed read_cache(string file) ;
+protected nomask varargs int find_marker(mixed buf, mixed marker) ;
+protected nomask varargs int bufsrch(buffer buf, mixed str) ;
+protected nomask void cache_response(string file, mixed response) ;
+protected nomask mixed read_cache(string file) ;
 protected nomask void set_option(string key, mixed value) ;
 protected nomask mixed get_option(string key) ;
 
-mapping parse_http(string str) ;
-mapping parse_http_response(string str) ;
-mapping parse_http_request(string str) ;
-mapping parse_headers(string str) ;
-mapping parse_body(string str, string content_type) ;
-mapping parse_route(string str) ;
-mapping parse_query(string str) ;
-mapping parse_url(string str) ;
+nomask mapping parse_http_request(buffer buf) ;
+nomask mapping parse_http_response(string str) ;
+nomask mapping parse_http_request_line(string str) ;
+nomask mapping parse_headers(string str) ;
+nomask mapping parse_body(string str, string content_type) ;
+nomask mapping parse_route(string str) ;
+nomask mapping parse_query(string str) ;
+nomask mapping parse_url(string str) ;
 
 private nomask nosave mapping options = ([]) ;
 
-mapping parse_http(string str) {
-    string request, header, body ;
-    mapping result = ([]) ;
-    int start_cursor, end_cursor ;
-    string content_type ;
+protected nomask mapping parse_http_request(buffer buf) {
+    string str = to_string(buf) ;
+    mapping result = ([ ]) ;
+    string *matches, content_type ;
 
-    end_cursor = find_marker(str, "\r\n\r\n") ;
+    // We need the first line that contains the request method, path, and
+    // version. And capture the headers string and the body.
 
-    if(end_cursor == -1)
-        return 0 ;
+    // First, we'll get the first line that contains the request method, path,
+    matches = pcre_extract(str,
+        "^((?:GET|POST|PUT|DELETE|OPTIONS|HEAD|PATCH|TRACE|CONNECT)\\s+" // Method
+        "\\S+\\s+" // Path
+        "HTTP/\\d\\.\\d)\\r\\n" // Version
+        "([\\s\\S]*)$" // Rest of the request
+    );
 
-    header = str[0..end_cursor-1] ;
-    start_cursor = find_marker(header, "\r\n") ;
-    request = header[0..start_cursor-1] ;
-    body = str[end_cursor+4..] ;
+    // We didn't find the request line
+    if(!sizeof(matches)) {
+        result["buffer"] = buf ;
+        return result ;
+    }
 
-    result["request"] = parse_http_request(request) ;
+    _log(3, "Request line string: %s", matches[0]) ;
+
+    result["request"] = parse_http_request_line(matches[0]) ;
+    _log(3, "Request line: %O", result["request"]) ;
     if(!result["request"]) return 0 ;
+
     result["route"] = parse_route(result["request"]["path"]) ;
+    _log(3, "Request route: %O", result["route"]) ;
     if(!result["route"]) return 0 ;
-    result["headers"] = parse_headers(header) ;
+
+    // Next, we'll get the headers string
+
+    // We didn't find the headers string
+    if(sizeof(matches) < 2) {
+        result["buffer"] = to_binary(str) ;
+        return result ;
+    }
+
+    str = matches[1] ;
+
+    matches = pcre_extract(str, "^([\\s\\S]*)\\r\\n\\r\\n([\\s\\S]*)$");
+    // We didn't find the headers
+    if(!sizeof(matches)) {
+        result["buffer"] = to_binary(str) ;
+        return result ;
+    }
+
+    // We found the headers
+    result["headers"] = parse_headers(matches[0]) ;
+    _log(3, "Request headers: %O", result["headers"]) ;
     if(!result["headers"]) return 0 ;
 
+    // Now we'll get the body
+    if(sizeof(matches) != 2) {
+        result["buffer"] = to_binary(str) ;
+        return result ;
+    }
+
+    str = matches[1] ;
+
     content_type = result["headers"]["content-type"];
-    result["body"] = parse_body(body, content_type);
+    result["body"] = parse_body(str, content_type) ;
+    _log(3, "Request body: %O", result["body"]) ;
 
     return result ;
 }
 
-mapping parse_http_response(string str) {
+protected nomask mapping parse_http_response(string str) {
     string header, body ;
     mapping result = ([]) ;
     int start_cursor, end_cursor ;
@@ -92,7 +136,7 @@ mapping parse_http_response(string str) {
     return result ;
 }
 
-mapping parse_http_request(string request_line) {
+protected nomask mapping parse_http_request_line(string request_line) {
     string *parts;
     mapping result = ([]);
 
@@ -114,7 +158,7 @@ mapping parse_http_request(string request_line) {
     return result;
 }
 
-mapping parse_route(string route) {
+protected nomask mapping parse_route(string route) {
     mapping result = ([]) ;
     string *parts;
 
@@ -140,7 +184,7 @@ mapping parse_route(string route) {
     return result;
 }
 
-mapping parse_response_status(string str) {
+protected nomask mapping parse_response_status(string str) {
     string *parts;
     mapping result = ([]);
 
@@ -162,7 +206,7 @@ mapping parse_response_status(string str) {
 
 }
 
-mapping parse_headers(string str) {
+protected nomask mapping parse_headers(string str) {
     mapping headers = ([]);
     string* header_lines;
     string header_line;
@@ -184,10 +228,10 @@ mapping parse_headers(string str) {
             // per HTTP 1.1 spec, header names are case-insensitive
             header_name = lower_case(header_name);
 
-            if(sscanf(header_value, "%d", t)) {
-                headers[header_name] = t ;
-            } else if(sscanf(header_value, "%f", t)) {
-                headers[header_name] = t ;
+            if(pcre_match(header_value, "^\\d+$")) {
+                headers[header_name] = to_int(header_value) ;
+            } else if(pcre_match(header_value, "^\\d+\\.\\d+$")) {
+                headers[header_name] = to_float(header_value) ;
             } else {
                 // Do known array-based headers
                 switch(header_name) {
@@ -206,7 +250,7 @@ mapping parse_headers(string str) {
     return headers;
 }
 
-mapping parse_query(string str) {
+protected nomask mapping parse_query(string str) {
     mapping payload = ([]) ;
     string *args ;
 
@@ -226,7 +270,7 @@ mapping parse_query(string str) {
     return payload ;
 }
 
-mixed parse_body(string body, string content_type) {
+protected nomask mixed parse_body(string body, string content_type) {
     mixed payload = ([]);
 
     if (!body || body == "")
@@ -256,13 +300,16 @@ mixed parse_body(string body, string content_type) {
             }
             break;
         }
-        case "auto" :
-            // Attempt to decode JSON payload
-            if(body[0] == '{' && body[<1] == '}')
-                return parse_body(body, "application/json") ;
-            else
-                return parse_body(body, CONTENT_TYPE_TEXT_PLAIN) ;
-            break ;
+        case "auto" : {
+            string *matches ;
+
+            if(sizeof(matches = pcre_extract(body, "^\\s*(\\{[\\s\\S]*\\})\\s*$"))) {
+                body = matches[0] ;
+                catch(payload = json_decode(body) ) ;
+            } else {
+                payload = body ;
+            }
+        }
         default:
             // Just send it back
             payload = body;
@@ -272,7 +319,7 @@ mixed parse_body(string body, string content_type) {
     return payload;
 }
 
-string url_encode(string str) {
+protected nomask string url_encode(string str) {
     string allowed = "-_.~";
     string result = "";
     int sz, i;
@@ -289,7 +336,7 @@ string url_encode(string str) {
     return result;
 }
 
-string url_decode(string str) {
+protected nomask string url_decode(string str) {
     mixed *arrs;
     string *parts;
     int *matches;
@@ -313,7 +360,7 @@ string url_decode(string str) {
     return implode(parts, "");
 }
 
-mapping parse_url(string str) {
+protected nomask mapping parse_url(string str) {
     string location, protocol, host, path, secure_part;
     int port, secure ;
     string *matches, port_string ;
@@ -348,25 +395,22 @@ mapping parse_url(string str) {
     return result ;
 }
 
-varargs int find_marker(mixed buf, mixed marker) {
+protected nomask varargs int find_marker(mixed buf, string marker) {
     int i, sz, marker_sz, direction, start;
     string type = typeof(buf);
     mixed marker_test;
 
     sz = sizeof(buf);
+    if(stringp(buf))
+        buf = to_binary(buf);
+
     if(bufferp(buf))
         return bufsrch(buf, marker) ;
 
-    if(!stringp(buf))
-        return -1 ;
-
-    if(!stringp(marker))
-        return -1 ;
-
-    return strsrch(buf, marker) ;
+    error("Invalid buffer type: " + type) ;
 }
 
-varargs int bufsrch(buffer buf, mixed str) {
+protected nomask varargs int bufsrch(buffer buf, mixed str) {
     int buf_sz ;
     int sub_buf_sz ;
     mixed sub_buf ;
@@ -397,7 +441,7 @@ varargs int bufsrch(buffer buf, mixed str) {
     return -1;
 }
 
-string binary_to_hex(buffer buf) {
+protected nomask string binary_to_hex(buffer buf) {
     string hex = "";
     int len = sizeof(buf);
 
@@ -413,7 +457,7 @@ string binary_to_hex(buffer buf) {
     return hex;
 }
 
-buffer hex_to_binary(string hex) {
+protected nomask buffer hex_to_binary(string hex) {
     buffer binary = allocate_buffer(strlen(hex) / 2);
     int byte;
     for (int i = 0; i < strlen(hex); i += 2) {
@@ -423,7 +467,7 @@ buffer hex_to_binary(string hex) {
     return binary;
 }
 
-void cache_response(string file, mixed response) {
+protected nomask void cache_response(string file, mixed response) {
     int fs = file_size(file) ;
     int sz = sizeof(response) ;
     int max = get_config(__MAX_BYTE_TRANSFER__) ;
@@ -452,7 +496,7 @@ void cache_response(string file, mixed response) {
     _log(3, "Wrote %d bytes to file: %s, new file size: %d", sz, file, file_size(file)) ;
 }
 
-mixed read_cache(string file) {
+protected nomask mixed read_cache(string file) {
     mixed response = "" ;
     int chunk_size = get_config(__MAX_BYTE_TRANSFER__) ;
     int max = get_config(__MAX_STRING_LENGTH__) ;
@@ -534,5 +578,5 @@ protected nomask mixed get_option(string key) {
     return options[key] ;
 }
 
-buffer to_binary(string str) { return string_encode(str, "UTF-8"); }
-string to_string(buffer buf) { return string_decode(buf, "UTF-8"); }
+protected nomask buffer to_binary(string str) { return string_encode(str, "UTF-8"); }
+protected nomask string to_string(buffer buf) { return string_decode(buf, "UTF-8"); }
