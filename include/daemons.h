@@ -28,5 +28,4 @@
 #define VIRTUAL_D       DIR_DAEMONS "virtual"
 #define XTERM256        DIR_DAEMONS "xterm256_d"
 
-
 #endif // __DAEMONS_H__
