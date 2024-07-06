@@ -413,6 +413,16 @@ string binary_to_hex(buffer buf) {
     return hex;
 }
 
+buffer hex_to_binary(string hex) {
+    buffer binary = allocate_buffer(strlen(hex) / 2);
+    int byte;
+    for (int i = 0; i < strlen(hex); i += 2) {
+        sscanf(hex[i..i+1], "%x", byte);
+        binary[i / 2] = byte;
+    }
+    return binary;
+}
+
 void cache_response(string file, mixed response) {
     int fs = file_size(file) ;
     int sz = sizeof(response) ;
