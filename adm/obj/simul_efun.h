@@ -7,6 +7,10 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
 varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
 mixed *reverse_array(mixed *arr) ;
 
+// File: base64
+string base64_encode(mixed source_str) ;
+string base64_decode(string source) ;
+
 // File: data
 varargs mixed data_value(string file, string key, mixed def) ;
 varargs void data_write(string file, string key, mixed data...) ;
