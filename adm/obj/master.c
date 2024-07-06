@@ -251,32 +251,43 @@ string make_path_absolute(string file) {
 varargs void log_file(string file, string msg, mixed arg...) {
     int size;
     int max_size = percent_of(80, get_config(__MAX_READ_FILE_SIZE__)) ;
+    string *matches ;
+    string source ;
 
     if(query_privs(previous_object()) == "[open]") return;
 
-    size = file_size(log_dir() + file);
+    source = log_dir() + file;
+    size = file_size(source) ;
     if(size == -2) return;
-    if(size > max_size) {
-        string t1;
-        string backup;
-        int ret = sscanf(file, "%s.log", t1);
 
-        if(ret == 0)
-            backup  =
-                sprintf("archive/%s-%s",
-                    file,
-                    strftime(ARCHIVE_STAMP, time())) ;
-        else
-            backup  =
-                sprintf("archive/%s-%s.log",
-                    t1,
-                    strftime(ARCHIVE_STAMP, time())) ;
-            rename(log_dir() + file, log_dir() + backup);
+    // Grab the full path and file name from the file
+    matches = pcre_extract(source, "^(.*/)([^/]+)$");
+    if(sizeof(matches) == 2) {
+        assure_dir(matches[1]);
+    }
+
+    if(size > max_size) {
+        string reg ;
+
+        reg = "^("+log_dir()+")(.*)?/(.*)(\\.log)?$";
+        matches = pcre_extract(source, reg);
+        if(sizeof(matches) >= 2) {
+            string archive ;
+            archive = matches[0] + "archive/" + matches[1] + "/";
+            assure_dir(archive);
+            if(sizeof(matches) == 3) {
+                archive += matches[2] + "-" + strftime(ARCHIVE_STAMP, time()) + ".log";
+            } else {
+                archive += matches[2] + "-" + strftime(ARCHIVE_STAMP, time());
+            }
+
+            rename(source, archive) ;
+        }
     }
 
     msg = sprintf(msg, arg...);
     msg = append(msg, "\n");
-    write_file(log_dir() + file, msg);
+    write_file(source, msg);
 }
 
 int save_ed_setup(object user, mixed config) {
