@@ -47,10 +47,10 @@ void setup() {
  *                       variable.
  * @param def The default value to return if the environment variable is not set.
  * @param int cache Whether or not to cache the result.
- * @return string The value of the environment variable.
+ * @return void
  */
 
-varargs string fetch(string var, mixed callback, string def, int cache) {
+varargs void fetch(string var, mixed callback, string def, int cache) {
     string result ;
     int fd ;
     mixed err ;
@@ -73,14 +73,6 @@ varargs string fetch(string var, mixed callback, string def, int cache) {
         (: close_callback :)
     )) ;
 
-    if(err) {
-        _log(0, "Error fetching environment variable: %s", var) ;
-        _log(0, "Error: " + err) ;
-        return ;
-    }
-
-    _log(1, "Fetching environment variable: %s", var) ;
-
     calls[fd] = ([
         "var" : var,
         "callback" : callback,
@@ -88,14 +80,6 @@ varargs string fetch(string var, mixed callback, string def, int cache) {
         "cache" : cache,
         "caller" : previous_object(),
     ]) ;
-
-    return "" ;
-
-    if (cache) {
-        env_cache[var] = result ;
-    }
-
-    return result ;
 }
 
 void read_callback(int fd, string str) {
@@ -123,14 +107,12 @@ void read_callback(int fd, string str) {
         }
     }
 
-    _log(1, "Value: %s", value) ;
-
     if(call["cache"]) {
         env_cache[var] = value ;
     }
 
-    if(valid_function(call["callback"])) {
-        evaluate(call["callback"], value) ;
+    if(valid_function(callback)) {
+        (*callback)(value) ;
     } else if(stringp(call["callback"])) {
         if(!objectp(call["caller"]))
             return ;
