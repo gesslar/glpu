@@ -11,6 +11,7 @@
 #define CONFIG_D        DIR_DAEMONS "config"
 #define CURRENCY_D      DIR_DAEMONS "currency"
 #define DB_D            DIR_DAEMONS "db"
+#define ENV_D           DIR_DAEMONS "env"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
 #define GMCP_D          DIR_DAEMONS "gmcp"
