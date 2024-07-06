@@ -48,5 +48,6 @@
     "DB_SUFFIX" : ".sqlite3",
     "DB_TABLE_SUFFIX" : ".tbl",
     "DECIMAL" : ".",
-    "THOUSANDS" : ","
+    "THOUSANDS" : ",",
+    "ENV_PATH": "/home/gesslar/glpu_environment"
 }
