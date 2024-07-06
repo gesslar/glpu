@@ -8,13 +8,13 @@
 
 inherit STD_CMD ;
 
-int main(){
+mixed main(object tp, object room, string str){
       write(dump_socket_status());
       return 1;
 }
 
 string help(object caller) {
-     return(" SYNTAX: sockinfo\n\n"
+     return("SYNTAX: sockinfo\n\n"
      "The sockinfo command will tell you what sockets are loaded\n"
      "and what they are currently being used for.\n");
 }
