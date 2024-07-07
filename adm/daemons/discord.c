@@ -235,6 +235,11 @@ void handle_hello(int fd, mapping payload) {
 }
 
 void initial_heartbeat(int fd) {
+    if(!handles[fd]) {
+        _log(2, "No handle for fd") ;
+        return;
+    }
+
     _log(2, "Sending initial heartbeat") ;
     send_heartbeat(fd) ;
     handles[fd]["heartbeat"] = null ;
@@ -403,5 +408,5 @@ void event_on_remove(object prev) {
 }
 
 void crash() {
-    event_on_remove(0) ;
+    event_on_remove(null) ;
 }

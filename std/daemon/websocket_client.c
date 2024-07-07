@@ -206,7 +206,7 @@ protected nomask void shutdown_socket(int fd) {
     float now, started ;
     float received_total ;
 
-    _log(3, "Shutting down socket: %s %d", server["host"], server["port"]) ;
+    _log(3, "Shutting down socket for %d", fd) ;
 
     if(!server)
         return ;
@@ -366,8 +366,6 @@ _log(3, "Buffer size: %d", sizeof(buf));
                     return ;
                 }
                 buf = frame_info["buffer"];
-                sz = sizeof(buf) ;
-                buf = buf[sz..];
             } else {
                 break;
             }
@@ -606,6 +604,7 @@ void process_websocket_message(int fd, mapping frame_info) {
         _log(2, "Received text frame: %s", to_string(payload));
         process_text_frame(fd, frame_info);
     } else if (opcode == WS_CLOSE_FRAME) {
+        _log(0, "\e<0124>Received close frame:\e<res> %O", binary_to_hex(payload));
         _log(2, "Received close frame: %O", binary_to_hex(payload));
         process_close_frame(fd, frame_info);
     } else if (opcode == WS_PING_FRAME) {
