@@ -20,7 +20,8 @@ int main(object caller, object room, string arguments) {
      err += catch(destruct(find_object(SIMUL_OB)));
      err += catch(load_object(SIMUL_OB));
      err += catch(CONFIG_D->rehash_config()) ;
-     if(err && err != "0000000") {
+     err += catch(reload_object(load_object(ENV_D))) ;
+     if(err && err != "00000000") {
           write("Error [system_update]: Error when reloading system objects: " + err + "\n");
           return 1;
      } else {

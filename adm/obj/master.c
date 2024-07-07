@@ -159,8 +159,8 @@ void error_handler(mapping mp, int caught) {
 
     // If an object didn't load, they get compile errors. Don't spam
     // or confuse them
-    if(what[0..23] == "*Error in loading object")
-        return ;
+    // if(what[0..23] == "*Error in loading object")
+    //     return ;
 
     if(this_player()) {
         userid = query_privs(this_player());

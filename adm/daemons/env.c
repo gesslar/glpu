@@ -62,7 +62,15 @@ varargs void fetch(string var, mixed callback, string def, int cache) {
         error("Invalid argument 2 to fetch()") ;
 
     if (cache && env_cache[var]) {
-        return env_cache[var] ;
+        if(valid_function(callback)) {
+            (*callback)(env_cache[var]) ;
+        } else if(stringp(callback)) {
+            if(!objectp(previous_object()))
+                return ;
+
+            call_other(previous_object(), callback, env_cache[var]) ;
+        }
+        return ;
     }
 
     err = catch(fd = external_start(
