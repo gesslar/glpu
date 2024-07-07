@@ -84,21 +84,6 @@ https://api.github.com/app/installations/YOUR_INSTALLATION_ID/access_tokens
 7. You will receive back a `token` that you can use to authenticate with the
    GitHub API. Record this token.
 
-```json
-{
-  "token": "TOKEN",
-  "expires_at": "2024-07-07T17:42:33Z",
-  "permissions": {
-    "issues": "write",
-    "metadata": "read"
-  },
-  "repository_selection": "all"
-}
-```
-   You will need to record the `token` field and the `expires_at` field.
-   The token will expire after the `expires_at` time and you will need to
-   generate a new token after that time.
-
 8. Finally, to create an issue, use the installation access token with the
    following curl command. Replace `YOUR_INSTALLATION_ACCESS_TOKEN` with the
    oken received in the previous step, and adjust the payload (title, body,
@@ -117,4 +102,5 @@ curl -X POST \
 https://api.github.com/repos/YOUR_ACCOUNT/YOUR_REPO/issues
 ```
 
-In-game, you can create a custom HTTP Client to manage the GitHub API Issues requests.
+In-game, you can create a custom HTTP Client to manage the GitHub API Issues
+requests.
