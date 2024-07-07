@@ -234,11 +234,15 @@ varargs string temp_file(mixed arg) {
         error("Bad argument 1 to temp_file().\n") ;
     }
 
-    if(sizeof(matches = pcre_extract(file, "^\\[([a-zA-Z0-9_-]+)\\]$|^[a-zA-Z0-9_-]+$")) != 1) {
+    matches = pcre_extract(file, "^\\[([a-zA-Z0-9_-]+)\\]$|^([a-zA-Z0-9_-]+)$") ;
+    if(sizeof(matches) < 1) {
         error("Bad argument 1 to temp_file().\n") ;
     }
 
-    file = sprintf("%s%s.%d", tmp_dir(), matches[0], time_ns()) ;
+    if(sizeof(matches) == 1)
+        file = sprintf("%s.%d", matches[0], time_ns()) ;
+    else
+        file = sprintf("%s.%d", matches[1], time_ns()) ;
 
     return file ;
 }
