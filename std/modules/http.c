@@ -272,11 +272,24 @@ protected nomask mapping parse_query(string str) {
 
 protected nomask mixed parse_body(string body, string content_type) {
     mixed payload = ([]);
+    string type, encoding ;
+    string *encoding_matches ;
 
     if (!body || body == "")
         return 0;
 
-    switch (content_type) {
+    if(!content_type)
+        content_type = "auto" ;
+
+    if(!sizeof(encoding_matches = pcre_extract(content_type, "([^;]+)(?:;\\s*charset=(.*))?"))) {
+        return body ;
+    }
+
+    type = encoding_matches[0] ;
+    if(sizeof(encoding_matches) > 1)
+        encoding = encoding_matches[1] ;
+
+    switch (type) {
         case CONTENT_TYPE_APPLICATION_JSON:
             // Attempt to decode JSON payload
             // Use regex to check if the body is a JSON object
