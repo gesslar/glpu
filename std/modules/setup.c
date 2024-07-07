@@ -11,8 +11,8 @@ void base_setup() {}
 void custom_setup() {}
 void setup() {}
 void post_setup() {}
-void post_restore() {} ;
-protected void reset() {} ;
+void post_restore() {}
+protected void reset() {}
 
 void setup_chain() {
     mudlib_setup() ;
