@@ -26,9 +26,8 @@ protected void send_outgoing_message(int fd,  string message) ;
 protected void close_down_session(int fd) ;
 
 void setup() {
-    set_log_level(1) ;
+    set_log_level(4) ;
     set_log_prefix("\e<re1>\e<0202>(WSS)\e<res>") ;
-    set_option("tls", 1) ;
 }
 
 // Start the Connection

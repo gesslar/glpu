@@ -160,3 +160,11 @@ int can_receive(object ob) {
 int can_release(object ob) {
     return 1;
 }
+
+void register_crash() {
+    CRASH_D->register_crash_object(this_object()) ;
+}
+
+void unregister_crash() {
+    CRASH_D->unregister_crash_object(this_object()) ;
+}

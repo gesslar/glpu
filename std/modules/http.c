@@ -279,7 +279,8 @@ protected nomask mixed parse_body(string body, string content_type) {
     switch (content_type) {
         case CONTENT_TYPE_APPLICATION_JSON:
             // Attempt to decode JSON payload
-            if (body[0] == '{' && body[<1] == '}') {
+            // Use regex to check if the body is a JSON object
+            if(pcre_match(body, "^\\s*\\{[\\s\\S]*\\}\\s*$") == 1) {
                 catch(payload = json_decode(body));
             }
             break;
@@ -475,7 +476,7 @@ protected nomask void cache_response(string file, mixed response) {
     int result ;
     int x, y;
 
-    _log(3, "Writing cache to file: "+file) ;
+    _log(3, "Writing to cache file: "+file) ;
     _log(4, "Writing response: %O", binary_to_hex(response)) ;
     _log(3, "Filename " + file + " exists (size: %d): " + (file_exists(file) ? "true" : "false"), fs) ;
 

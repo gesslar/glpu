@@ -49,5 +49,5 @@
     "DB_TABLE_SUFFIX" : ".tbl",
     "DECIMAL" : ".",
     "THOUSANDS" : ",",
-    "ENV_PATH": "/home/gesslar/glpu_environment"
+    "ENV_PATH": "/path/to/glpu/environments/file"
 }

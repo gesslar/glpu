@@ -25,7 +25,7 @@ inherit M_HTTP ;
 private nomask string random_string() ;
 private nomask void ws_connect(mapping request) ;
 protected nomask void shutdown_socket(int fd) ;
-void handle_handshake(int fd, mapping curr, buffer buf) ;
+void process_handshake(int fd, mapping curr, buffer buf) ;
 private nomask int is_message_complete(buffer buf) ;
 private nomask mapping parse_websocket_frame(buffer buf) ;
 void process_websocket_message(int fd, mapping frame_info) ;
@@ -40,7 +40,7 @@ private nosave string *subprotocols, *charset ;
 
 void mudlib_setup() {
     set_no_clean(1) ;
-set_log_level(5) ;
+    set_log_level(0) ;
     servers = ([ ]) ;
     resolve_keys = ([ ]) ;
     subprotocols = ({ }) ;
@@ -77,21 +77,27 @@ nomask void ws_request(string url) {
     ws_connect(parsed_url) ;
 }
 
+void ws_socket_resolve(string host, string addr, int key) ;
+
 private void ws_connect(mapping request) {
     int fd, key ;
     string host ;
     mapping server ;
+    int secure ;
 
     host = request["host"] ;
+    secure = request["secure"] ;
 
-    fd = socket_create(get_option("tls") ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed");
+    fd = socket_create(secure ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed");
+
+    _log(4, "Socket created: %d", fd) ;
 
     if (fd < 0) {
         _log(0, "Unable to create socket: %s", socket_error(fd));
         return;
     }
 
-    if(get_option("tls")) {
+    if(secure) {
         socket_set_option(fd, SO_TLS_VERIFY_PEER, 1);
         socket_set_option(fd, SO_TLS_SNI_HOSTNAME, host);
     }
@@ -105,26 +111,27 @@ private void ws_connect(mapping request) {
 
     servers[fd] = server ;
 
-    key = resolve(host, "socket_resolve") ;
+    key = resolve(host, (: ws_socket_resolve :)) ;
     resolve_keys[key] = fd ;
 }
 
-void socket_resolve(string host, string addr, int key) {
+void ws_socket_resolve(string host, string addr, int key) {
     int fd, port, result ;
     mapping server ;
 
-    if(!resolve_keys[key]) {
+    if(nullp(resolve_keys[key])) {
+        _log(0, "Failed to resolve key: %d", key) ;
         return ;
     }
 
     fd = resolve_keys[key] ;
     map_delete(resolve_keys, key) ;
 
+    _log(4, "Socket resolved: %d", fd) ;
+
     server = servers[fd] ;
     if(!server)
         return ;
-
-    // _log(2, "Server: %O", server) ;
 
     port = server["request"]["port"] ;
 
@@ -143,11 +150,10 @@ void socket_resolve(string host, string addr, int key) {
         result = socket_connect(fd, addr + " " + port, "socket_read", "socket_ready");
         if(result != EESUCCESS) {
             _log(0, "Failed to connect to %s", host) ;
-
             server["state"] = WS_STATE_ERROR ;
             server["error"] = socket_error(result) ;
             servers[fd] = server ;
-
+            _log(1, "Error connecting to %s: %s", host, socket_error(result)) ;
             if(function_exists("handle_connection_error", this_object()))
                 call_other(this_object(), "handle_connection_error", fd, server) ;
 
@@ -180,6 +186,8 @@ nomask void socket_closed(int fd) {
     float duration ;
     float speed ;
 
+    _log(3, "Socket closed for fd %d", fd) ;
+
     if(!server)
         return ;
 
@@ -197,6 +205,8 @@ protected nomask void shutdown_socket(int fd) {
     float duration ;
     float now, started ;
     float received_total ;
+
+    _log(3, "Shutting down socket: %s %d", server["host"], server["port"]) ;
 
     if(!server)
         return ;
@@ -260,7 +270,7 @@ _log(3, "Incoming size: %d", sizeof(incoming));
 _log(3, "Buffer size: %d", sizeof(buf));
 
     // Process headers if not done yet
-    http = server["http"] || ([]);
+    http = server["response"] || ([]);
     if (sizeof(buf) && !http["status"]) {
         string status_string ;
         mapping status ;
@@ -289,7 +299,7 @@ _log(3, "Buffer size: %d", sizeof(buf));
 
         buf = to_binary(matches[1]) ;
         http["status"] = status ;
-        server["http"] = http ;
+        server["response"] = http ;
     }
 
     if(sizeof(buf) && !http["headers"]) {
@@ -325,7 +335,7 @@ _log(3, "Buffer size: %d", sizeof(buf));
         }
         buf = to_binary(str) ;
 
-        server["http"]["headers"] = headers ;
+        server["response"]["headers"] = headers ;
         servers[fd] = server ;
 
         _log(2, "Headers processed. Remaining buffer size: %d", sizeof(buf));
@@ -337,7 +347,7 @@ _log(3, "Buffer size: %d", sizeof(buf));
 
     if(server["state"] == WS_STATE_HANDSHAKE) {
         if (server["state"] == WS_STATE_HANDSHAKE) {
-            handle_handshake(fd, server, buf) ;
+            process_handshake(fd, server, buf) ;
             return ;
         }
     }
@@ -373,19 +383,20 @@ _log(3, "Buffer size: %d", sizeof(buf));
     }
 }
 
-void handle_handshake(int fd, mapping server, buffer buf) {
+void process_handshake(int fd, mapping server, buffer buf) {
     string raw_key = server["request"]["handshake_key"];
     string sec_websocket_key, concat, hash_result_hex, expected, accept;
     buffer hash_result_binary;
     mapping frame_info;
+    mapping response = server["response"] ;
 
     _log(2, "Validating handshake");
     _log(4, "Server: %O", server);
     // _log(4, "Buffer: %O", buf);
 
-    _log(2, "HTTP Status Code: %d", server["http"]["status"]["code"]);
-    _log(2, "Header 'upgrade': %s", server["http"]["headers"]["upgrade"]);
-    _log(2, "Header 'connection': %O", server["http"]["headers"]["connection"]);
+    _log(2, "HTTP Status Code: %d", server["response"]["status"]["code"]);
+    _log(2, "Header 'upgrade': %s", server["response"]["headers"]["upgrade"]);
+    _log(2, "Header 'connection': %O", server["response"]["headers"]["connection"]);
 
     // Encode the raw key
     sec_websocket_key = base64_encode(to_binary(raw_key));
@@ -405,7 +416,7 @@ void handle_handshake(int fd, mapping server, buffer buf) {
     _log(3, "Base64 Encoded SHA-1 Hash (Expected): %s", expected);
 
     // Accept value from server
-    accept = server["http"]["headers"]["sec-websocket-accept"];
+    accept = server["response"]["headers"]["sec-websocket-accept"];
     _log(3, "Header 'sec-websocket-accept': %s", accept);
 
     // Compare expected and accept values
@@ -417,9 +428,14 @@ void handle_handshake(int fd, mapping server, buffer buf) {
         return;
     }
 
-    if (server["http"]["status"]["code"] != 101 ||
-        server["http"]["headers"]["upgrade"] != "websocket" ||
-        member_array("Upgrade", server["http"]["headers"]["connection"]) == -1 ||
+    _log(1, "Status[code]: %O", response["status"]["code"]);
+    _log(1, "Headers[upgrade]: %O", response["headers"]["upgrade"]);
+    _log(1, "Headers[connection]: %O", response["headers"]["connection"]);
+
+    if (response["status"]["code"] != 101 ||
+        response["headers"]["upgrade"] != "websocket" ||
+        (member_array("Upgrade", response["headers"]["connection"]) == -1 &&
+         member_array("upgrade", response["headers"]["connection"]) == -1) ||
         accept != expected) {
         _log(1, "Handshake invalid. Disconnecting.");
         server["state"] = WS_STATE_HANDSHAKE_FAILED;
@@ -438,31 +454,6 @@ void handle_handshake(int fd, mapping server, buffer buf) {
 
     _log(1, "Connected to %s", server["host"]);
 }
-
-#if 0
-void ws_continue_data(int fd) {
-    mapping curr = ws[fd]["result"];
-    buffer buf = curr["buffer"];
-    mapping frame_info;
-
-    _log(3, "Continuing data processing from transaction %d", ws[fd]["transactions"]);
-
-    // Handle WebSocket data frames
-    while (is_message_complete(buf)) {
-        frame_info = parse_websocket_frame(buf);
-        if (frame_info) {
-            curr["buffer"] = frame_info["buffer"]; // Update the buffer with remaining data
-            process_websocket_message(fd, frame_info);
-            buf = curr["buffer"];
-        } else {
-            break;
-        }
-    }
-
-    curr["buffer"] = buf; // Save the updated buffer
-    ws[fd]["result"] = curr;
-}
-#endif
 
 // Function to check if the buffer contains a complete WebSocket frame
 private nomask int is_message_complete(buffer buf) {
@@ -946,11 +937,15 @@ void ws_close(int fd, int code, string reason) {
 
 void ws_close_socket(int fd) {
     mixed *sstatus ;
+    int err ;
 
     sstatus = socket_status(fd);
     if(sstatus[1] != WS_STATE_CLOSED) {
-        _log(0, "Closing socket");
-        socket_close(fd);
+        _log(3, "Closing server socket.") ;
+        err = socket_close(fd);
+        if(err != EESUCCESS) {
+            _log(3, "Error closing socket: %s", socket_error(err));
+        }
     }
 
     if(servers[fd]) {
@@ -964,4 +959,10 @@ protected nomask string random_string(int length) {
     while(length--)
         result += element_of(charset);
     return result;
+}
+
+void event_on_remove(object prev) {
+    foreach(int fd, mapping server in servers) {
+        shutdown_socket(fd);
+    }
 }

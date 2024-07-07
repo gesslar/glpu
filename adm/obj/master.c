@@ -193,7 +193,8 @@ protected void crash(string crash_message, object command_giver, object current_
         catch(ob->save_user());
     }
 
-    PERSIST_D->persist_objects() ;
+    catch(PERSIST_D->persist_objects()) ;
+    catch(CRASH_D->crashing()) ;
 
     log_file("shutdown", MUD_NAME + " crashed on: " + ctime(time()) +
         ", error: " + crash_message + "\n");

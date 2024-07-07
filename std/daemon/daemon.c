@@ -22,6 +22,8 @@ int remove() {
     if(query_persistent())
         save_data() ;
 
+    event(this_object(), "on_remove") ;
+
     return ::remove() ;
 }
 

@@ -143,6 +143,8 @@ protected nomask void socket_shutdown(int fd) {
     mapping client = clients[fd] ;
     int result ;
 
+    _log(1, "Shutting down connection: %s %d", client["host"], client["port"]) ;
+
     if(!client)
         return ;
 
