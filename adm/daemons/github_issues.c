@@ -71,7 +71,7 @@ varargs int create_issue(string type, string title, string body, mixed callback)
         if(!stringp(callback))
             error("Callback must be a string or a function") ;
         else
-            if(!function_exists(callback, this_object()))
+            if(!function_exists(callback, previous_object()))
                 error("Callback function does not exist") ;
 
     if(!owner || !repo || !token) {
