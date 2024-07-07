@@ -17,6 +17,8 @@ log
 /tmp/*
 
 # Data files
+/open/
+/data/
 *.o
 journal.*
 *.sqlite3
