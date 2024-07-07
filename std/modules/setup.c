@@ -1,10 +1,13 @@
-// /std/modules/setup.c
-// This is the setup chain for objects.
-//
-// Created:     2024/01/29: Gesslar
-// Last Change: 2024/01/29: Gesslar
-//
-// 2024/01/29: Gesslar - Created
+/**
+ * @file /std/modules/setup.c
+ * @description This is the setup chain for objects.
+ *
+ * @created 2024/01/29 - Gesslar
+ * @last_modified 2024/01/29 - Gesslar
+ *
+ * @history
+ * 2024/01/29 - Gesslar - Created
+ */
 
 void mudlib_setup() {}
 void base_setup() {}
