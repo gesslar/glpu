@@ -212,3 +212,33 @@ string query_file_name(object ob) {
 
     return file;
 }
+
+/**
+ * @description Returns a string that is a temporary filename to be used
+ *
+ * @param {unknown} arg The file or object to create a temporary file for
+ * @return {string} The path to the temporary file
+ */
+varargs string temp_file(mixed arg) {
+    string file ;
+    string *matches ;
+
+    if(nullp(arg))
+        arg = previous_object() ;
+
+    if(stringp(arg)) {
+        file = arg ;
+    } else if(objectp(arg)) {
+        file = query_privs(arg) ;
+    } else {
+        error("Bad argument 1 to temp_file().\n") ;
+    }
+
+    if(sizeof(matches = pcre_extract(file, "^\\[([a-zA-Z0-9_-]+)\\]$|^[a-zA-Z0-9_-]+$")) != 1) {
+        error("Bad argument 1 to temp_file().\n") ;
+    }
+
+    file = sprintf("%s%s.%d", tmp_dir(), matches[0], time_ns()) ;
+
+    return file ;
+}

@@ -51,6 +51,7 @@ string file_owner(string file) ;
 string query_file_name(object ob) ;
 varargs string tail(string path, int line_count) ;
 void assure_file(string file) ;
+varargs string temp_file(mixed arg) ;
 
 // File: function
 varargs string call_trace(int colour) ;
@@ -134,6 +135,8 @@ string mud_name() ;
 string open_status() ;
 varargs void debugf(string str, mixed args...) ;
 void debug(string str) ;
+string log_dir() ;
+string tmp_dir() ;
 
 // File: time
 varargs string ldate(int x, int brief) ;

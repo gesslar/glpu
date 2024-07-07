@@ -65,6 +65,10 @@ string log_dir() {
     return mud_config("LOG_DIR") ;
 }
 
+string tmp_dir() {
+    return mud_config("TMP_DIR") ;
+}
+
 varargs void debug(string str, mixed args...) {
     if(sizeof(args))
         str = sprintf(str, args...) ;
