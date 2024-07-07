@@ -67,14 +67,12 @@ varargs int create_issue(string type, string title, string body, mixed callback)
     if(!stringp(body))
         error("Body must be a string") ;
 
-#if 0
     if(!valid_function(callback))
         if(!stringp(callback))
             error("Callback must be a string or a function") ;
         else
             if(!function_exists(callback, this_object()))
                 error("Callback function does not exist") ;
-#endif
 
     if(!owner || !repo || !token) {
         _log(2, "GitHub Issues API not setup in adm/etc/config.json") ;
