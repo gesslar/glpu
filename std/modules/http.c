@@ -362,6 +362,7 @@ protected nomask mixed parse_body(mixed body, string content_type) {
         }
         default:
             // Just send it back
+            _log(3, "Unknown content type: %s", type) ;
             payload = body;
             break;
     }
