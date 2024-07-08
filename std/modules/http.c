@@ -184,67 +184,80 @@ protected nomask mapping parse_route(string route) {
     return result;
 }
 
-protected nomask mapping parse_response_status(string str) {
+protected nomask mapping parse_response_status(mixed str, int keep_remainder: (: 0 :)) {
     string *parts;
     mapping result = ([]);
 
     // Define the regex pattern for matching the HTTP status code and message
-    string pattern = "^HTTP/\\d\\.\\d\\s+(\\d{3})\\s+(.*)$";
+    string pattern = "^HTTP/\\d(?:\\.\\d)?\\s+(\\d{3})\\s+([\\w ]+)\r\n([\\s\\S]*)";
 
-    // Extract the status code and message using regex
+    if(bufferp(str))
+        str = to_string(str) ;
+
+    _log(3, "Testing string: %s", str) ;
+
+    // Extract the status code, message, and remainder using regex
     parts = pcre_extract(str, pattern);
 
+    _log(3, "parts: %O", parts) ;
+
     // Ensure parts were extracted correctly
-    if (sizeof(parts) == 2) {
+    if (sizeof(parts) >= 2) {
         result["code"] = to_int(parts[0]);
         result["message"] = parts[1];
+
+        if(keep_remainder && sizeof(parts) == 3) {
+            result["buffer"] = to_binary(parts[2]);
+        }
     } else {
         return 0;
     }
 
     return result;
-
 }
 
-protected nomask mapping parse_headers(string str) {
+protected nomask mapping parse_headers(mixed str, int keep_remainder) {
     mapping headers = ([]);
-    string* header_lines;
-    string header_line;
-    string header_name;
-    string header_value;
-    int i;
+    string remainder;
+    string search_pat = "^.*?:\\s+.*\r\n";
+    string extract_pat = "^(.*?):\\s+(.*)\r\n";
+    string replace_pat = "^(.*?:\\s+.*\r\n)";
+    string *match;
 
-    header_lines = explode(str, "\r\n");
-    for (i = 0; i < sizeof(header_lines); i++) {
-        header_line = header_lines[i];
+    if(bufferp(str))
+        str = to_string(str) ;
 
-        if (header_line == "") {
-            break;
-        }
+    while (pcre_match(str, search_pat)) {
+        match = pcre_extract(str, extract_pat);
 
-        if(sscanf(header_line, "%s: %s", header_name, header_value) == 2) {
-            mixed t ;
+        if (sizeof(match) >= 2) {
+            string header_name = lower_case(match[0]);
+            string header_value = match[1];
 
-            // per HTTP 1.1 spec, header names are case-insensitive
-            header_name = lower_case(header_name);
-
-            if(pcre_match(header_value, "^\\d+$")) {
-                headers[header_name] = to_int(header_value) ;
-            } else if(pcre_match(header_value, "^\\d+\\.\\d+$")) {
-                headers[header_name] = to_float(header_value) ;
+            if (pcre_match(header_value, "^\\d+$")) {
+                headers[header_name] = to_int(header_value);
+            } else if (pcre_match(header_value, "^\\d+\\.\\d+$")) {
+                headers[header_name] = to_float(header_value);
             } else {
-                // Do known array-based headers
-                switch(header_name) {
+                switch (header_name) {
                     case "connection":
                     case "accept-encoding":
-                        headers[header_name] = explode(header_value, ",") ;
-                        headers[header_name] = map(headers[header_name], (: trim :)) ;
-                        break ;
+                        headers[header_name] = explode(header_value, ",");
+                        headers[header_name] = map(headers[header_name], (: trim :));
+                        break;
                     default:
-                        headers[header_name] = header_value ;
+                        headers[header_name] = header_value;
                 }
             }
+
+            str = pcre_replace(str, replace_pat, ({ "" }));
+        } else {
+            break;
         }
+    }
+
+    if (keep_remainder) {
+        headers["buffer"] = to_binary(str);
     }
 
     return headers;
@@ -270,18 +283,27 @@ protected nomask mapping parse_query(string str) {
     return payload ;
 }
 
-protected nomask mixed parse_body(string body, string content_type) {
+protected nomask mixed parse_body(mixed body, string content_type) {
     mixed payload = ([]);
     string type, encoding ;
     string *encoding_matches ;
+    mixed err ;
+
+    _log(2, "Beginning parse_body") ;
 
     if (!body || body == "")
         return 0;
 
+    if(bufferp(body))
+        body = to_string(body) ;
+
     if(!content_type)
         content_type = "auto" ;
 
+    _log(2, "Content-Type: %s", content_type) ;
+
     if(!sizeof(encoding_matches = pcre_extract(content_type, "([^;]+)(?:;\\s*charset=(.*))?"))) {
+        _log(2, "Failed to extract encoding from content-type: %s", content_type) ;
         return body ;
     }
 
@@ -289,15 +311,21 @@ protected nomask mixed parse_body(string body, string content_type) {
     if(sizeof(encoding_matches) > 1)
         encoding = encoding_matches[1] ;
 
+    _log(2, "Parsing body of type %s", type) ;
     switch (type) {
         case CONTENT_TYPE_APPLICATION_JSON:
             // Attempt to decode JSON payload
             // Use regex to check if the body is a JSON object
             if(pcre_match(body, "^\\s*\\{[\\s\\S]*\\}\\s*$") == 1) {
-                catch(payload = json_decode(body));
+                err = catch(payload = json_decode(body));
+                if(err) {
+                    _log(2, "Failed to decode JSON payload: %O", err),
+                    payload = body ;
+                } else {
+                    _log(3, "Decoded JSON payload: %O", payload) ;
+                }
             }
             break;
-
         case CONTENT_TYPE_APPLICATION_FORM_URLENCODED: {
             // Decode URL-encoded form data
             string *args;
@@ -311,6 +339,7 @@ protected nomask mixed parse_body(string body, string content_type) {
                         payload[url_decode(parts[0])] = url_decode(parts[1]);
                     }
                 }
+                _log(3, "Decoded form data: %O", payload);
             }
             break;
         }
@@ -319,9 +348,16 @@ protected nomask mixed parse_body(string body, string content_type) {
 
             if(sizeof(matches = pcre_extract(body, "^\\s*(\\{[\\s\\S]*\\})\\s*$"))) {
                 body = matches[0] ;
-                catch(payload = json_decode(body) ) ;
+                err = catch(payload = json_decode(body) ) ;
+                if(err) {
+                    _log(2, "Failed to decode JSON payload: %O", err) ;
+                    payload = body ;
+                } else {
+                    _log(3, "Decoded JSON payload: %O", payload) ;
+                }
             } else {
                 payload = body ;
+                _log(3, "Parsed text body: %s", payload) ;
             }
         }
         default:
@@ -329,6 +365,8 @@ protected nomask mixed parse_body(string body, string content_type) {
             payload = body;
             break;
     }
+
+    _log(2, "Sizeof payload: %d", sizeof(payload)) ;
 
     return payload;
 }

@@ -25,14 +25,16 @@ inherit M_HTTP ;
 private nomask string random_string() ;
 private nomask void ws_connect(mapping request) ;
 protected nomask void shutdown_socket(int fd) ;
-void process_handshake(int fd, mapping curr, buffer buf) ;
+private nomask void process_handshake(int fd, mapping curr, buffer buf) ;
 private nomask int is_message_complete(buffer buf) ;
 private nomask mapping parse_websocket_frame(buffer buf) ;
-void process_websocket_message(int fd, mapping frame_info) ;
+private nomask void process_websocket_message(int fd, mapping frame_info) ;
 private nomask buffer apply_mask(buffer data, buffer mask) ;
 protected nomask void ws_close_socket(int fd) ;
 
+protected nomask varargs int send_message(int fd, int frame_opcode, mixed args...) ;
 protected nomask void send_pong(int fd, string payload) ;
+protected nomask void send_ping(int fd);
 
 // Variables
 private nosave mapping servers, resolve_keys ;
@@ -63,7 +65,7 @@ nomask void ws_request(string url) {
 
     parsed_url = parse_url(url) ;
     if(!parsed_url) {
-        _log(0, "Failed to parse URL: %s", url) ;
+        _log(2, "Failed to parse URL: %s", url) ;
         return ;
     }
 
@@ -239,131 +241,90 @@ protected nomask void shutdown_socket(int fd) {
 }
 
 void socket_read(int fd, buffer incoming) {
-    mapping server = servers[fd] ;
+    mapping server = servers[fd];
     buffer buf;
     mapping frame_info;
-    mapping http ;
+    mapping http;
 
-    if(!server)
+    if (!server)
         return;
 
-
-    server["transactions"] ++ ;
+    server["transactions"]++;
 
     _log(3, "===========  STARTING WS TRANSACTION %d  ===========", server["transactions"]);
 
-    if(server["buffer"]) {
+    if (server["buffer"]) {
         buf = server["buffer"] + incoming;
         map_delete(server, "buffer");
     } else {
         buf = incoming;
     }
 
-    if (!bufferp(buf))
-        buf = incoming;
-    else
-        buf += incoming;
+    server["received_total"] += sizeof(buf);
 
-    server["received_total"] += sizeof(buf) ;
-
-_log(3, "Incoming size: %d", sizeof(incoming));
-_log(3, "Buffer size: %d", sizeof(buf));
+    _log(3, "Incoming size: %d", sizeof(incoming));
+    _log(3, "Buffer size: %d", sizeof(buf));
 
     // Process headers if not done yet
-    http = server["response"] || ([]);
-    if (sizeof(buf) && !http["status"]) {
-        string status_string ;
+    server["response"] = server["response"] || ([]);
+
+    if (sizeof(buf) && !server["response"]["status"]) {
         mapping status ;
-        string *matches ;
-        string str = to_string(buf) ;
 
-        _log(4, "identify(str): %s", identify(str)) ;
-        matches = pcre_extract(str, "^([[:print:][:space:]]+?)\r\n([[:print:][:space:]]+)") ;
-
-        if(sizeof(matches) < 1) {
-            server["buffer"] = buf ;
-            servers[fd] = server ;
-            return ;
-        }
-
-        status_string = matches[0] ;
-        _log(3, "Status string: %s", status_string) ;
-        status = parse_response_status(status_string) ;
+        status = parse_response_status(buf, 1) ;
         if(!status) {
-            _log(4, "Failed to parse HTTP response status") ;
-            server["state"] = WS_STATE_ERROR ;
-            servers[fd] = server ;
-            shutdown_socket(fd) ;
-            return ;
+            server["buffer"] = buf;
+            servers[fd] = server;
+            return;
         }
 
-        buf = to_binary(matches[1]) ;
-        http["status"] = status ;
-        server["response"] = http ;
+        if(status["buffer"]) {
+            buf = status["buffer"] ;
+            map_delete(status, "buffer") ;
+        }
+
+        server["response"]["status"] = status ;
+
+        _log(3, "Status found: %O", status) ;
     }
 
-    if(sizeof(buf) && !http["headers"]) {
-        string header_string ;
-        mapping headers ;
-        string str = to_string(buf) ;
-        string *matches ;
+    if (sizeof(buf) && !server["response"]["headers"]) {
+        mapping headers;
 
-        matches = pcre_extract(str, "^([[:print:][:space:]]+?)\r\n\r\n([[:print:][:space:]]+)") ;
-        _log(4, "matches 2: %O\n", matches) ;
+        headers = parse_headers(buf, 1);
 
-        if(sizeof(matches) < 1) {
-            server["buffer"] = buf ;
-            servers[fd] = server ;
-            return ;
+        if (!headers) {
+            server["buffer"] = buf;
+            servers[fd] = server;
+            return;
         }
 
-        header_string = matches[0] ;
-
-        headers = parse_headers(header_string) ;
-        if(!headers) {
-            _log(0, "Failed to parse HTTP response headers") ;
-            server["state"] = WS_STATE_ERROR ;
-            servers[fd] = server ;
-            shutdown_socket(fd) ;
-            return ;
+        if(headers["buffer"]) {
+            buf = headers["buffer"];
+            map_delete(headers, "buffer");
         }
 
-        _log(3, "Received headers: %O", headers) ;
+        server["response"]["headers"] = headers;
 
-        if(sizeof(matches) == 2) {
-            str = matches[1] ;
-        }
-        buf = to_binary(str) ;
-
-        server["response"]["headers"] = headers ;
-        servers[fd] = server ;
-
-        _log(2, "Headers processed. Remaining buffer size: %d", sizeof(buf));
+        _log(3, "Headers found: %O", headers);
     }
 
-    // unsure if still necessary
-    // headers["connection"] = lower_case(headers["connection"]);
-    // headers["upgrade"] = lower_case(headers["upgrade"]);
-
-    if(server["state"] == WS_STATE_HANDSHAKE) {
-        if (server["state"] == WS_STATE_HANDSHAKE) {
-            process_handshake(fd, server, buf) ;
-            return ;
-        }
+    if (server["state"] == WS_STATE_HANDSHAKE) {
+        process_handshake(fd, server, buf);
+        return;
     }
 
-    if(server["state"] == WS_STATE_CONNECTED) {
-        _log(2, "Processing WebSocket data") ;
+    if (server["state"] == WS_STATE_CONNECTED) {
+        _log(2, "Processing WebSocket data");
 
         // Handle WebSocket data frames
         while (is_message_complete(buf)) {
             frame_info = parse_websocket_frame(buf);
             if (frame_info) {
-                int sz ;
                 process_websocket_message(fd, frame_info);
-                if(!servers[fd]) {
+                if (!servers[fd]) {
                     shutdown_socket(fd);
-                    return ;
+                    return;
                 }
                 buf = frame_info["buffer"];
             } else {
@@ -376,12 +337,15 @@ _log(3, "Buffer size: %d", sizeof(buf));
         servers[fd] = server;
 
         // Continue processing if there's still data left
-        // if(sizeof(buf))
-        //     ws_continue_data(fd) ;
+        if (sizeof(buf))
+            _log(2, "Data left in buffer for next transaction.");
     }
+
+    _log(3, "Final buffer size: %d", sizeof(buf));
+    _log(3, "===========  ENDING WS TRANSACTION %d  ===========", server["transactions"]);
 }
 
-void process_handshake(int fd, mapping server, buffer buf) {
+private nomask void process_handshake(int fd, mapping server, buffer buf) {
     string raw_key = server["request"]["handshake_key"];
     string sec_websocket_key, concat, hash_result_hex, expected, accept;
     buffer hash_result_binary;
@@ -501,7 +465,7 @@ private nomask int is_message_complete(buffer buf) {
 }
 
 private nomask mapping parse_websocket_frame(buffer buf) {
-    mapping result = ([ ]);
+    mapping result = ([]);
     int fin, opcode, masked, payload_length, offset;
     buffer payload;
 
@@ -533,7 +497,7 @@ private nomask mapping parse_websocket_frame(buffer buf) {
         payload_length = ((buf[2] & 0xFF) << 56) | ((buf[3] & 0xFF) << 48) |
                          ((buf[4] & 0xFF) << 40) | ((buf[5] & 0xFF) << 32) |
                          ((buf[6] & 0xFF) << 24) | ((buf[7] & 0xFF) << 16) |
-                         ((buf[8] & 0xFF) << 8)  |  (buf[9] & 0xFF);
+                         ((buf[8] & 0xFF) << 8) | (buf[9] & 0xFF);
         offset = 10;
     }
 
@@ -584,8 +548,8 @@ private nomask void process_continuation_frame(int fd, mapping frame_info) ;
 private nomask void process_binary_frame(int fd, mapping frame_info) ;
 private nomask void process_unknown_frame(int fd, mapping frame_info) ;
 
-void process_websocket_message(int fd, mapping frame_info) {
-    mapping server ;
+private nomask void process_websocket_message(int fd, mapping frame_info) {
+    mapping server;
     buffer payload;
     int opcode;
 
@@ -604,7 +568,7 @@ void process_websocket_message(int fd, mapping frame_info) {
         _log(2, "Received text frame: %s", to_string(payload));
         process_text_frame(fd, frame_info);
     } else if (opcode == WS_CLOSE_FRAME) {
-        _log(0, "\e<0124>Received close frame:\e<res> %O", binary_to_hex(payload));
+        _log(0, "\e[38;5;124mReceived close frame:\e[0m %O", binary_to_hex(payload));
         _log(2, "Received close frame: %O", binary_to_hex(payload));
         process_close_frame(fd, frame_info);
     } else if (opcode == WS_PING_FRAME) {
@@ -613,17 +577,17 @@ void process_websocket_message(int fd, mapping frame_info) {
     } else if (opcode == WS_PONG_FRAME) {
         _log(2, "Received pong frame");
         process_pong_frame(fd, frame_info);
-    } else if(opcode == WS_CONTINUATION_FRAME) {
+    } else if (opcode == WS_CONTINUATION_FRAME) {
         _log(2, "Received continuation frame");
         process_continuation_frame(fd, frame_info);
-    }else if(opcode == WS_BINARY_FRAME) {
+    } else if (opcode == WS_BINARY_FRAME) {
         _log(2, "Received binary frame");
         process_binary_frame(fd, frame_info);
     } else {
         _log(2, "Received unknown frame with opcode %d", opcode);
     }
 
-    if(!servers[fd])
+    if (!servers[fd])
         return;
 
     // Save any remaining buffer data for next processing
@@ -782,7 +746,7 @@ private nomask buffer apply_mask(buffer data, buffer mask) {
     return masked_data;
 }
 
-varargs int send_message(int fd, int frame_opcode, mixed args...) {
+protected nomask varargs int send_message(int fd, int frame_opcode, mixed args...) {
     buffer frame ;
     int result ;
     int written ;
@@ -822,7 +786,7 @@ varargs int send_message(int fd, int frame_opcode, mixed args...) {
 }
 
 // Send a ping frame
-void send_ping(int fd) {
+protected nomask void send_ping(int fd) {
     mapping server = servers[fd];
 
     _log(2, "Sending ping frame") ;

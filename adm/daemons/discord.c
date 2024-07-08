@@ -18,6 +18,7 @@ inherit STD_WS_CLIENT ;
 
 // This needs to receive the bot token.
 void bot_token_retrieved(string token) ;
+void startup() ;
 void http_callback(int fd, mapping response) ;
 
 private nomask void startup() ;
@@ -28,41 +29,28 @@ void handle_heartbeat_ack(int fd, mapping message) ;
 void initiate_discord(mapping response) ;
 
 private nosave mapping handles = ([ ]) ;
+private nosave string BOT_TOKEN_LABEL = "DISCORD_BOT_TOKEN" ;
 private nosave string BOT_TOKEN ;
 
-private nosave object http_client ;
-
 void setup() {
+    set_no_clean(1) ;
     register_crash() ;
 
-    set_no_clean(1) ;
-    set_log_level(3) ;
+    BOT_TOKEN = mud_config(BOT_TOKEN_LABEL) ;
+    if(!BOT_TOKEN) {
+        _log(1, "No bot token found") ;
+        return ;
+    }
+
+    set_log_level(4) ;
     set_log_prefix("\e<re1>\e<0070>(Discord)\e<res>") ;
 
     handles = ([ ]);
 
-    _log(1, "Setting up Discord Daemon") ;
-    _log(1, "Fetching bot token") ;
-    ENV_D->fetch("DISCORD_BOT_TOKEN", (: bot_token_retrieved :), "NONE", 1) ;
+    call_out_walltime((:startup:), 0.5) ;
 }
 
-// Start connecting to Discord
-varargs void startup() {
-    string discord_api_host = "discord.com" ;
-    string path = "api/gateway" ;
-    mixed err;
-    int fd ;
-    mixed result ;
-
-    if(!nullp(BOT_TOKEN)) {
-        _log(1, "Bot token retrieved") ;
-    } else {
-        _log(1, "Bot token not retrieved") ;
-        return ;
-    }
-
-    debug_message(repeat_string("\n", 20)) ;
-
+void startup() {
     _log(1, "Connecting to Discord Gateway API") ;
 
     HTTPC_D->fetch(
@@ -84,6 +72,7 @@ void initiate_discord(mapping response) {
     string url ;
     string host, path ;
     string *matches ;
+    mixed err ;
 
     if(!response) {
         _log(1, "No response from Discord Gateway API") ;
@@ -93,7 +82,12 @@ void initiate_discord(mapping response) {
     _log(3, "body: %O", response["body"]) ;
     _log(3, "headers: %O", response["headers"]) ;
 
-    payload = parse_body(response["body"], response["headers"]["content-type"]) ;
+    err = catch(payload = parse_body(response["body"], response["headers"]["content-type"])) ;
+    if(err) {
+        _log(1, "Failed to parse response body: %O", err) ;
+        shutdown_socket(fd) ;
+        return ;
+    }
 
     if(stringp(payload)) {
         _log(3, "Response body was not JSON") ;
@@ -101,6 +95,7 @@ void initiate_discord(mapping response) {
     }
 
     _log(3, "Payload: %O", payload) ;
+    _log(2, "Sizeof payload: %d", sizeof(payload)) ;
 
     url = payload["url"] ;
 
@@ -400,10 +395,6 @@ void event_on_remove(object prev) {
 
     foreach(int fd in fds) {
         ws_close(fd, WS_CLOSE_GOING_AWAY, "Daemon removed") ;
-    }
-
-    if(http_client) {
-        http_client->remove() ;
     }
 }
 

@@ -278,7 +278,6 @@ nomask void socket_read(int fd, buffer incoming) {
     mapping server = servers[fd];
     int status_code ;
     buffer buf ;
-    mapping http ;
 
     if (!server)
         return;
@@ -291,84 +290,74 @@ nomask void socket_read(int fd, buffer incoming) {
 
     if(server["buffer"]) {
         buf = server["buffer"] + incoming ;
-
         map_delete(server, "buffer");
     } else {
         buf = incoming ;
     }
 
     server["received_total"] += sizeof(buf) ;
-    http = server["response"] || ([]) ;
-    if(sizeof(buf) && !http["status"]) {
-        string status_string ;
+    // Process headers if not done yet
+    server["response"] = server["response"] || ([]);
+    _log(4, "Server[response]: %O", server["response"]);
+
+    _log(3, "Starting to process status") ;
+    if (sizeof(buf) && !server["response"]["status"]) {
         mapping status ;
-        string *matches ;
-        string str = to_string(buf) ;
 
-        _log(4, "identify(str): %s", identify(str)) ;
-        matches = pcre_extract(str, "^([[:print:][:space:]]+?)\r\n([[:print:][:space:]]+)") ;
-
-        if(sizeof(matches) < 1) {
-            server["buffer"] = buf ;
-            servers[fd] = server ;
-            return ;
-        }
-
-        status_string = matches[0] ;
-        _log(3, "Status string: %s", status_string) ;
-        status = parse_response_status(status_string) ;
+        status = parse_response_status(buf, 1) ;
         if(!status) {
-            _log(3, "Failed to parse HTTP response status") ;
-            server["state"] = HTTP_STATE_ERROR ;
-            servers[fd] = server ;
-            shutdown_socket(fd) ;
-            return ;
+            server["buffer"] = buf;
+            servers[fd] = server;
+            return;
         }
 
-        buf = to_binary(matches[1]) ;
-        http["status"] = status ;
-        server["response"] = http ;
+        if(status["buffer"]) {
+            buf = status["buffer"] ;
+            map_delete(status, "buffer") ;
+        }
+
+        server["response"]["status"] = status ;
+
+        _log(3, "Status found: %O", status) ;
+        _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
     }
 
-    if(sizeof(buf) && !http["headers"]) {
-        string header_string ;
-        mapping headers ;
-        string str = to_string(buf) ;
-        string *matches ;
+    _log(3, "Starting to process headers") ;
+    if (sizeof(buf) && !server["response"]["headers"]) {
+        mapping headers;
 
-        matches = pcre_extract(str, "^([[:print:][:space:]]+?)\r\n\r\n([[:print:][:space:]]+)") ;
-        _log(4, "matches 2: %O\n", matches) ;
+        headers = parse_headers(buf, 1);
 
-        if(sizeof(matches) < 1) {
-            server["buffer"] = buf ;
-            servers[fd] = server ;
-            return ;
+        if (!headers) {
+            server["buffer"] = buf;
+            servers[fd] = server;
+            return;
         }
 
-        header_string = matches[0] ;
-
-        headers = parse_headers(header_string) ;
-        if(!headers) {
-            _log(0, "Failed to parse HTTP response headers") ;
-            server["state"] = HTTP_STATE_ERROR ;
-            servers[fd] = server ;
-            shutdown_socket(fd) ;
-            return ;
+        if(headers["buffer"]) {
+            buf = headers["buffer"];
+            map_delete(headers, "buffer");
         }
 
-        _log(3, "Received headers: %O", headers) ;
+        server["response"]["headers"] = headers;
 
-        if(sizeof(matches) == 2) {
-            str = matches[1] ;
-        }
-        buf = to_binary(str) ;
+        _log(3, "Headers found: %O", headers);
+        _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
+    }
 
-        server["response"]["headers"] = headers ;
+    if(!sizeof(server["response"]["status"]) || !sizeof(server["response"]["headers"])) {
+        _log(3, "Both status and headers not found") ;
+        server["buffer"] = buf ;
         servers[fd] = server ;
+        return ;
+    }
+
+    if(sizeof(server["response"]["status"]) && sizeof(server["response"]["headers"])) {
+        _log(3, "Status and headers found") ;
     }
 
     // Check for redirect status codes (301, 302, etc.)
-    status_code = http["status"]["code"] ;
+    status_code = server["response"]["status"]["code"] ;
 
     if(member_array(status_code, HTTP_REDIRECT_CODES) != -1) {
         _log(1, "Redirecting") ;

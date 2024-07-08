@@ -16,7 +16,7 @@ private nosave mapping serials = ([]) ;
 
 void setup() {
     set_log_prefix("\e<re1>\e<0035>(HTTPC)\e<res>") ;
-    set_log_level(1) ;
+    set_log_level(4) ;
 }
 
 void fetch(mixed callback, string url, mapping headers) {
