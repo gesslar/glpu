@@ -49,7 +49,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
 
     gmcp.payload = arg ;
 
-    gmcp_module = __DIR__ "gmcp_modules/" + gmcp.package + ".c" ;
+    gmcp_module = __DIR__ "modules/gmcp/" + gmcp.package + ".c" ;
 
     if(!file_exists(gmcp_module)) {
         log_file("system/gmcp", "[%s] Module %s not found [%O]",
@@ -68,7 +68,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(!function_exists(gmcp.module, ob)) {
         log_file("system/gmcp", "[%s] [%s] Function %s not found in %s [%O]",
             ctime(),
-            __DIR__ "gmcp_modules/",
+            __DIR__ "modules/gmcp",
             gmcp.module,
             gmcp.package,
             previous_object()

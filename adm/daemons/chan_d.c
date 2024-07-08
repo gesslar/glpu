@@ -40,7 +40,7 @@ void setup() {
     channels = ([]);
     modules = ([]);
 
-    arr = explode_file("/adm/daemons/chmodules/installed_modules");
+    arr = explode_file("/adm/daemons/modules/channel/installed_modules");
 
     if(!sizeof(arr))
         return ;

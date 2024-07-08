@@ -6,8 +6,8 @@
 # Note: File extension '.c' not required and no whitespace allowed
 #
 # Local channel network -- localNet
-/adm/daemons/chmodules/local
+/adm/daemons/modules/channel/local
 # Announce Net -- announceNet
-/adm/daemons/chmodules/announce
+/adm/daemons/modules/channel/announce
 # Error channel
-/adm/daemons/chmodules/error
+/adm/daemons/modules/channel/error

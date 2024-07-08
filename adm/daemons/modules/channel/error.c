@@ -1,10 +1,13 @@
-// /adm/daemons/chmodules/error.c
-// Channel module for errors
-//
-// Created:     2024/02/03: Gesslar
-// Last Change: 2024/02/03: Gesslar
-//
-// 2024/02/03: Gesslar - Created
+/**
+ * @file /adm/daemons/modules/channel/error.c
+ * @description Channel module for errors
+ *
+ * @created 2024/02/03 - Gesslar
+ * @last_modified 2024/02/03 - Gesslar
+ *
+ * @history
+ * 2024/02/03 - Gesslar - Created
+ */
 
 inherit STD_DAEMON ;
 

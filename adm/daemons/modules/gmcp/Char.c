@@ -1,9 +1,13 @@
-// /adm/daemons/gmcp_modules/Char.c
-//
-// Created:     2024/02/23: Gesslar
-// Last Change: 2024/02/23: Gesslar
-//
-// 2024/02/23: Gesslar - Created
+/**
+ * @file /adm/daemons/modules/gmcp/Char.c
+ * @description Module to handle Char.* GMCP packages
+ *
+ * @created 2024/02/23 - Gesslar
+ * @last_modified 2024/02/23 - Gesslar
+ *
+ * @history
+ * 2024/02/23 - Gesslar - Created
+ */
 
 #include <gmcp.h>
 
