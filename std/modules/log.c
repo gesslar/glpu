@@ -55,8 +55,35 @@ varargs void _log(mixed args...) {
 
     if(_log_level >= 2) {
         string *funcs = call_stack(2), func ;
+        string prep ;
+
         func = funcs[1] ;
-        message = func + " - " + message ;
+        prep = func ;
+
+        if(_log_level >= 3) {
+            string *lines = call_stack(4), line ;
+            string *matches ;
+            string ob ;
+
+            line = lines[1] ;
+            matches = pcre_extract(line, "^(/.*/(.*).c):(\\d+)$") ;
+            ob = matches[1] ;
+            line = matches[2] ;
+
+            if(sizeof(matches) != 3)
+                error("Failed to match line: " + line) ;
+            line = matches[2] ;
+
+            if(_log_level > 3) {
+                ob = matches[0] ;
+            }  else {
+                ob = matches[1] ;
+            }
+
+            prep = sprintf("%s:%s:%s", ob, func, line) ;
+        }
+
+        message = "[" + prep + "] " + message ;
     }
 
     if(strlen(_log_prefix))
