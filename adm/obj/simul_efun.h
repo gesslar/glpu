@@ -54,6 +54,9 @@ void assure_file(string file) ;
 varargs string temp_file(mixed arg) ;
 
 // File: function
+int valid_function(mixed f) ;
+mixed *assemble_call_back(mixed arg...) ;
+mixed call_back(mixed *cb, mixed arg...) ;
 varargs string call_trace(int colour) ;
 
 // File: grammar
@@ -151,8 +154,5 @@ string user_path(string name) ;
 
 // File: util
 string generate_uuid() ;
-
-// File: valids
-int valid_function(mixed f) ;
 
 #endif // __SIMUL_EFUN_H__

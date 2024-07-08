@@ -36,4 +36,3 @@
 #include "/adm/simul_efun/time.c"
 #include "/adm/simul_efun/user.c"
 #include "/adm/simul_efun/util.c"
-#include "/adm/simul_efun/valids.c"
