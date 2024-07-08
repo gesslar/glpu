@@ -22,10 +22,7 @@ nomask void process_backlog() ;
 private nomask void process_next(string *files) ;
 private nomask void execute_callback(mapping request, mapping response) ;
 
-private nomask nosave string GH_OWNER_LABEL = "GITHUB_REPORTER_OWNER" ;
-private nomask nosave string GH_REPO_LABEL = "GITHUB_REPORTER_REPO" ;
-private nomask nosave string GH_PAT_LABEL = "GITHUB_REPORTER_PAT" ;
-private nomask nosave string GH_TYPES_LABEL = "GITHUB_REPORTER_TYPES" ;
+private nomask nosave mapping CONFIG = mud_config("GITHUB_REPORTER") ;
 
 private nomask nosave mapping api_calls = ([ ]) ;
 
@@ -48,18 +45,14 @@ void setup() {
 */
 
 varargs int create_issue(string type, string title, string body, mixed callback) {
-    string owner = mud_config(GH_OWNER_LABEL) ;
-    string repo = mud_config(GH_REPO_LABEL) ;
-    string token = mud_config(GH_PAT_LABEL) ;
-    string *types = mud_config(GH_TYPES_LABEL) ;
     string url ;
     mapping request ;
 
     if(!stringp(type))
         error("Type must be a string") ;
 
-    if(member_array(type, types) == -1)
-        error("Invalid type. Available types: " + implode(types, ", ")) ;
+    if(member_array(type, CONFIG["types"]) == -1)
+        error("Invalid type. Available types: " + implode(CONFIG["types"], ", ")) ;
 
     if(!stringp(title))
         error("Title must be a string") ;
@@ -74,18 +67,19 @@ varargs int create_issue(string type, string title, string body, mixed callback)
             if(!function_exists(callback, previous_object()))
                 error("Callback function does not exist") ;
 
-    if(!owner || !repo || !token) {
+    if(!CONFIG["owner"] || !CONFIG["repo"] || !CONFIG["token"]) {
         _log(2, "GitHub Issues API not setup in adm/etc/config.json") ;
         return 0 ;
     }
 
-    url = sprintf("https://api.github.com/repos/%s/%s/issues", owner, repo) ;
+    url = sprintf("https://api.github.com/repos/%s/%s/issues",
+        CONFIG["owner"], CONFIG["repo"]) ;
 
     request = http_request(
         url,
         "POST",
         ([
-            "Authorization": sprintf("token %s", token),
+            "Authorization": sprintf("token %s", CONFIG["token"]),
             "Accept": "application/vnd.github.v3+json",
             "Content-Type": "application/json"
         ]),
