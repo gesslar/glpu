@@ -926,6 +926,6 @@ protected nomask string random_string(int length) {
 
 void event_on_remove(object prev) {
     foreach(int fd, mapping server in servers) {
-        shutdown_socket(fd);
+        catch(shutdown_socket(fd)) ;
     }
 }
