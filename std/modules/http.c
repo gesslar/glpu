@@ -194,12 +194,12 @@ protected nomask mapping parse_response_status(mixed str, int keep_remainder: (:
     if(bufferp(str))
         str = to_string(str) ;
 
-    _log(3, "Testing string: %s", str) ;
+    _log(4, "Testing string: %s", str) ;
 
     // Extract the status code, message, and remainder using regex
     parts = pcre_extract(str, pattern);
 
-    _log(3, "parts: %O", parts) ;
+    _log(4, "parts: %O", parts) ;
 
     // Ensure parts were extracted correctly
     if (sizeof(parts) >= 2) {

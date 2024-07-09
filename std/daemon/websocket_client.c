@@ -23,7 +23,8 @@ inherit M_HTTP ;
 
 // Functions
 private nomask string random_string() ;
-private nomask void ws_connect(mapping request) ;
+protected nomask int ws_request(string url) ;
+private nomask int ws_connect(mapping request) ;
 protected nomask void shutdown_socket(int fd) ;
 private nomask void process_handshake(int fd, mapping curr, buffer buf) ;
 private nomask int is_message_complete(buffer buf) ;
@@ -31,10 +32,14 @@ private nomask mapping parse_websocket_frame(buffer buf) ;
 private nomask void process_websocket_message(int fd, mapping frame_info) ;
 private nomask buffer apply_mask(buffer data, buffer mask) ;
 protected nomask void ws_close_socket(int fd) ;
+varargs protected nomask void ws_close(int fd, int code, string reason) ;
 
 protected nomask varargs int send_message(int fd, int frame_opcode, mixed args...) ;
 protected nomask void send_pong(int fd, string payload) ;
 protected nomask void send_ping(int fd);
+
+void shutdown() ;
+void shutdown_force() ;
 
 // Variables
 private nosave mapping servers, resolve_keys ;
@@ -54,19 +59,19 @@ void mudlib_setup() {
 }
 
 // Start connecting to Websocket
-nomask void ws_request(string url) {
+protected nomask int ws_request(string url) {
     string handshake_key ;
     mapping parsed_url ;
 
     if(!stringp(url)) {
         error("No url specified") ;
-        return ;
+        return null ;
     }
 
     parsed_url = parse_url(url) ;
     if(!parsed_url) {
         _log(2, "Failed to parse URL: %s", url) ;
-        return ;
+        return null ;
     }
 
     handshake_key = random_string(16); // Raw random string
@@ -76,12 +81,11 @@ nomask void ws_request(string url) {
     parsed_url["subprotocols"] = subprotocols ;
     parsed_url["handshake_key"] = handshake_key ;
 
-    ws_connect(parsed_url) ;
+    // Will return fd of the request
+    return ws_connect(parsed_url) ;
 }
 
-void ws_socket_resolve(string host, string addr, int key) ;
-
-private void ws_connect(mapping request) {
+private int ws_connect(mapping request) {
     int fd, key ;
     string host ;
     mapping server ;
@@ -113,8 +117,10 @@ private void ws_connect(mapping request) {
 
     servers[fd] = server ;
 
-    key = resolve(host, (: ws_socket_resolve :)) ;
+    key = resolve(host, "ws_socket_resolve") ;
     resolve_keys[key] = fd ;
+
+    return fd ;
 }
 
 void ws_socket_resolve(string host, string addr, int key) {
@@ -226,8 +232,12 @@ protected nomask void shutdown_socket(int fd) {
     _log(3, "Total data received: %d bytes", server["received_total"]) ;
     _log(3, "Uptime: %.2f seconds", duration) ;
 
-    if(function_exists("handle_shutdown", this_object()))
+    if(function_exists("handle_shutdown", this_object())) {
+        _log(3, "Handling shutdown for %d", fd) ;
         catch(call_other(this_object(), "handle_shutdown", fd, server)) ;
+    } else {
+        _log(3, "No shutdown handler for %d", fd) ;
+    }
 
     result = socket_close(fd) ;
     if(result != EESUCCESS) {
@@ -306,7 +316,7 @@ void socket_read(int fd, buffer incoming) {
 
         server["response"]["headers"] = headers;
 
-        _log(3, "Headers found: %O", headers);
+        _log(4, "Headers found: %O", headers);
     }
 
     if (server["state"] == WS_STATE_HANDSHAKE) {
@@ -358,7 +368,7 @@ private nomask void process_handshake(int fd, mapping server, buffer buf) {
 
     _log(2, "HTTP Status Code: %d", server["response"]["status"]["code"]);
     _log(2, "Header 'upgrade': %s", server["response"]["headers"]["upgrade"]);
-    _log(2, "Header 'connection': %O", server["response"]["headers"]["connection"]);
+    _log(2, "Header 'connection': %O", identify(server["response"]["headers"]["connection"]));
 
     // Encode the raw key
     sec_websocket_key = base64_encode(to_binary(raw_key));
@@ -390,9 +400,9 @@ private nomask void process_handshake(int fd, mapping server, buffer buf) {
         return;
     }
 
-    _log(1, "Status[code]: %O", response["status"]["code"]);
-    _log(1, "Headers[upgrade]: %O", response["headers"]["upgrade"]);
-    _log(1, "Headers[connection]: %O", response["headers"]["connection"]);
+    _log(3, "Status[code]: %O", response["status"]["code"]);
+    _log(3, "Headers[upgrade]: %O", response["headers"]["upgrade"]);
+    _log(3, "Headers[connection]: %O", response["headers"]["connection"]);
 
     if (response["status"]["code"] != 101 ||
         response["headers"]["upgrade"] != "websocket" ||
@@ -411,10 +421,10 @@ private nomask void process_handshake(int fd, mapping server, buffer buf) {
     server["state"] = WS_STATE_CONNECTED;
     servers[fd] = server;
 
+    _log(1, "Connected to %s", server["host"]);
+
     if(function_exists("handle_connected", this_object()))
         catch(call_other(this_object(), "handle_connected", fd, server));
-
-    _log(1, "Connected to %s", server["host"]);
 }
 
 // Function to check if the buffer contains a complete WebSocket frame
@@ -565,11 +575,12 @@ private nomask void process_websocket_message(int fd, mapping frame_info) {
 
     // Process the frame based on the opcode
     if (opcode == WS_TEXT_FRAME) {
-        _log(2, "Received text frame: %s", to_string(payload));
+        _log(2, "Received text frame");
+        _log(3, "Payload: %s", to_string(payload));
         process_text_frame(fd, frame_info);
     } else if (opcode == WS_CLOSE_FRAME) {
-        _log(0, "\e[38;5;124mReceived close frame:\e[0m %O", binary_to_hex(payload));
-        _log(2, "Received close frame: %O", binary_to_hex(payload));
+        _log(2, "Received close frame");
+        _log(3, "Payload: %O", binary_to_hex(payload));
         process_close_frame(fd, frame_info);
     } else if (opcode == WS_PING_FRAME) {
         _log(2, "Received ping frame");
@@ -615,7 +626,7 @@ private nomask void process_close_frame(int fd, mapping frame_info) {
     _log(0, "Connection closed by server. Code: %d, Reason: %s", close_code, close_reason);
 
     if (function_exists("handle_close_frame", this_object())) {
-        catch(call_other(this_object(), "handle_close_frame", fd, frame_info));
+        catch(call_other(this_object(), "handle_close_frame", fd, frame_info["payload"]));
     }
 }
 
@@ -893,9 +904,55 @@ void socket_ready(int fd) {
     servers[fd] = server ;
 }
 
-void ws_close(int fd, int code, string reason) {
+varargs protected nomask void ws_close(int fd, int code, string reason) {
+    if(nullp(fd) || nullp(code)) {
+        _log(0, "Invalid close request: %d, %d", fd, code) ;
+        return ;
+    }
+
+    switch(code) {
+        case WS_CLOSE_NORMAL:
+            reason = reason || "Disconnecting" ;
+            break ;
+        case WS_CLOSE_GOING_AWAY:
+            reason = reason || "Going away" ;
+            break ;
+        case WS_CLOSE_PROTOCOL_ERROR:
+            reason = reason || "Protocol error" ;
+            break ;
+        case WS_CLOSE_UNSUPPORTED_DATA:
+            reason = reason || "Unsupported data" ;
+            break ;
+        case WS_CLOSE_NO_STATUS_RECEIVED:
+            reason = reason || "No status received" ;
+            break ;
+        case WS_CLOSE_ABNORMAL:
+            reason = reason || "Abnormal closure" ;
+            break ;
+        case WS_CLOSE_INVALID_FRAME_PAYLOAD_DATA:
+            reason = reason || "Invalid frame payload data" ;
+            break ;
+        case WS_CLOSE_POLICY_VIOLATION:
+            reason = reason || "Policy violation" ;
+            break ;
+        case WS_CLOSE_MESSAGE_TOO_BIG:
+            reason = reason || "Message too big" ;
+            break ;
+        case WS_CLOSE_MANDATORY_EXTENSION:
+            reason = reason || "Mandatory extension" ;
+            break ;
+        case WS_CLOSE_INTERNAL_SERVER_ERROR:
+            reason = reason || "Internal server error" ;
+            break ;
+        case WS_CLOSE_TLS_HANDSHAKE:
+            reason = reason || "TLS handshake" ;
+            break ;
+        default:
+            _log(2, "Unknown close code: %d", code) ;
+            return ;
+    }
+
     send_message(fd, WS_CLOSE_FRAME, code, reason) ;
-    shutdown_socket(fd) ;
 }
 
 void ws_close_socket(int fd) {
@@ -925,7 +982,18 @@ protected nomask string random_string(int length) {
 }
 
 void event_on_remove(object prev) {
+    shutdown(WS_CLOSE_GOING_AWAY) ;
+}
+
+void shutdown_force() {
+    shutdown() ;
     foreach(int fd, mapping server in servers) {
-        catch(shutdown_socket(fd)) ;
+        shutdown_socket(fd) ;
+    }
+}
+
+varargs void shutdown(int code: (: WS_CLOSE_NORMAL :), string reason: (: null :)) {
+    foreach(int fd, mapping server in servers) {
+        catch(ws_close(fd, code, reason)) ;
     }
 }

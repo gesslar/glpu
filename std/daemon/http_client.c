@@ -45,7 +45,7 @@ private nosave mapping default_headers ;
 
 void mudlib_setup() {
     set_log_level(0) ;
-    set_log_prefix("\e<re1>\e<0025>(CLIENT)\e<res>") ;
+    set_log_prefix("(HTTP CLIENT)") ;
     default_headers = ([
         "User-Agent" : "FluffOS",
         "Connection" : "close",
@@ -103,7 +103,7 @@ varargs private nomask void http_connect(mapping request) {
     secure = get_option("tls") || request["secure"] ;
 
     _log(2, "Connecting to %s", host) ;
-    _log(3, "Request before creating socket: %O", request) ;
+    _log(4, "Request before creating socket: %O", request) ;
 
     fd = socket_create(secure ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed");
 
@@ -123,7 +123,7 @@ varargs private nomask void http_connect(mapping request) {
         "redirects" : 0,
     ]) ;
 
-    _log(3, "Server after creating socket and options: %O", server) ;
+    _log(4, "Server after creating socket and options: %O", server) ;
 
     servers[fd] = server ;
 
@@ -147,7 +147,7 @@ nomask void socket_resolve(string host, string addr, int key) {
     map_delete(resolve_keys, key) ;
 
     server = servers[fd] ;
-    _log(3, "Server: %O", server) ;
+    _log(4, "Server: %O", server) ;
 
     if(!server)
         return ;
@@ -341,7 +341,7 @@ nomask void socket_read(int fd, buffer incoming) {
 
         server["response"]["headers"] = headers;
 
-        _log(3, "Headers found: %O", headers);
+        _log(4, "Headers found: %O", headers);
         _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
     }
 

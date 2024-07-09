@@ -12,7 +12,7 @@ inherit STD_HTTP_SERVER;
 
 void setup() {
     set_log_level(4) ;
-    set_log_prefix("\e<re1>\e<0225>(SERVER)\e<res>") ;
+    set_log_prefix("(TEST SERVER)") ;
 
     if(!set_listen_port(8081))
         return;

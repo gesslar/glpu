@@ -15,11 +15,11 @@ inherit STD_HTTP_CLIENT ;
 private nosave mapping serials = ([]) ;
 
 void setup() {
-    set_log_prefix("\e<re1>\e<0035>(HTTPC)\e<res>") ;
-    set_log_level(4) ;
+    set_log_prefix("(HTTPC)") ;
+    set_log_level(1) ;
 }
 
-void fetch(mixed callback, string url, mapping headers) {
+int fetch(mixed callback, string url, mapping headers) {
     int serial ;
     mapping request ;
 
@@ -44,6 +44,8 @@ void fetch(mixed callback, string url, mapping headers) {
     serials[serial] = ({ callback, previous_object() }) ;
 
     _log(3, "Recording serial %d for callback: %O %O", serial, callback, previous_object()) ;
+
+    return serial ;
 }
 
 nomask void handle_shutdown(mapping server) {

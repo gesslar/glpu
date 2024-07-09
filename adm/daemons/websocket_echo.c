@@ -27,7 +27,7 @@ protected void close_down_session(int fd) ;
 
 void setup() {
     set_log_level(4) ;
-    set_log_prefix("\e<re1>\e<0202>(WSS)\e<res>") ;
+    set_log_prefix("(WSS ECHO)") ;
 }
 
 // Start the Connection

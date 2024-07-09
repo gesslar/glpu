@@ -49,7 +49,7 @@ void mudlib_setup() {
         "Content-Length": (: http_content_length :),
     ]) ;
 
-    set_log_prefix("#") ;
+    set_log_prefix("(HTTP SERVER)") ;
 }
 
 protected nomask int set_listen_port(int port) {
