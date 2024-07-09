@@ -53,7 +53,7 @@ varargs string call_trace(int colour) {
     return res;
 }
 
-mixed *assemble_call_back(mixed arg) {
+mixed *assemble_call_back(mixed arg...) {
     int sz ;
 
     if(!pointerp(arg))
