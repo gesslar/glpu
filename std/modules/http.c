@@ -359,6 +359,7 @@ protected nomask mixed parse_body(mixed body, string content_type) {
                 payload = body ;
                 _log(3, "Parsed text body: %s", payload) ;
             }
+            break ;
         }
         default:
             // Just send it back

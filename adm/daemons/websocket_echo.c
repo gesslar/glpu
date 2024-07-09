@@ -16,51 +16,48 @@
 
 inherit STD_WS_CLIENT ;
 
-private nosave mapping handles = ([ ]) ;
 private nosave string host = "localhost" ;
 private nosave string path = null ;
 private nosave string server_name = "WebSocket Echo Server" ;
 
-protected void periodic_message(int fd) ;
-protected void send_outgoing_message(int fd,  string message) ;
-protected void close_down_session(int fd) ;
+protected void periodic_message() ;
+protected void send_outgoing_message(string message) ;
+protected void close_down_session() ;
+
+private nosave mapping state = ([ ]) ;
 
 void setup() {
     set_log_level(4) ;
     set_log_prefix("(WSS ECHO)") ;
+    call_out("startup", 1) ;
 }
 
 // Start the Connection
 varargs void startup() {
-    ws_request("wss://echo.websocket.org") ;
+    websocket_connect("wss://echo.websocket.org") ;
 }
 
-void handle_connected(int fd, mapping server) {
-    mapping curr = ([ ]) ;
+void handle_connected() {
     int closing_time = 20+random(20) ;
 
-    curr["host"] = server["host"] ;
-    curr["port"] = server["port"] ;
+    state = ([]) ;
 
     _log(1, "Scheduling periodic messaging") ;
-    curr["messaging"] = call_out_walltime((: periodic_message, fd :), 5) ;
+    state["messaging"] = call_out_walltime((: periodic_message :), 5) ;
 
     _log(1, "Scheduling close down in %d seconds", closing_time) ;
-    curr["closing"] = call_out_walltime((: close_down_session, fd :), closing_time) ;
-
-    handles[fd] = curr ;
+    state["closing"] = call_out_walltime((: close_down_session :), closing_time) ;
 }
 
-void handle_shutdown(int fd, mapping server) {
-    mapping curr ;
+void handle_shutdown() {
     int messaging, closing ;
 
-    if(!handles[fd]) {
-        _log(2, "No handle for fd %d", fd) ;
+    if(!server) {
+        _log(2, "Not connected to any server") ;
         return ;
     }
 
-    messaging = handles[fd]["messaging"] ;
+    messaging = state["messaging"] ;
     if(!nullp(messaging)) {
         if(find_call_out(messaging) != -1) {
             _log(1, "Stopping automatic messaging") ;
@@ -68,7 +65,7 @@ void handle_shutdown(int fd, mapping server) {
         }
     }
 
-    closing = handles[fd]["closing"] ;
+    closing = state["closing"] ;
     if(!nullp(closing)) {
         if(find_call_out(closing) != -1) {
             _log(1, "Stopping automatic close down") ;
@@ -76,13 +73,11 @@ void handle_shutdown(int fd, mapping server) {
         }
     }
 
-    curr = handles[fd] ;
-
-    map_delete(handles, fd);
+    state = null ;
 }
 
 // Function to parse text frames
-void handle_text_frame(int fd, mapping frame_info) {
+void handle_text_frame(mapping frame_info) {
     string payload ;
     mixed message ;
 
@@ -91,10 +86,13 @@ void handle_text_frame(int fd, mapping frame_info) {
         return ;
     }
 
-    if(!handles[fd]["messaging"])
+    if(!state)
         return ;
 
-    if(!handles[fd]["last_message"])
+    if(!state["messaging"])
+        return ;
+
+    if(!state["last_message"])
         return ;
 
     payload = to_string(frame_info["payload"]);
@@ -107,22 +105,21 @@ void handle_text_frame(int fd, mapping frame_info) {
 
     _log(1, "Received message: %O", message) ;
 
-    if(message == handles[fd]["last_message"]) {
+    if(message == state["last_message"]) {
         _log(1, "==> Messages match! 🍻") ;
     } else {
         _log(1, "==> Messages do not match! 😭") ;
     }
 }
 
-void periodic_message(int fd) {
-    int messaging = handles[fd]["messaging"] ;
+void periodic_message() {
+    int messaging ;
     string message ;
 
-    if(!handles[fd]) {
-        _log(2, "No handle for fd %d", fd) ;
+    if(!server || !state)
         return ;
-    }
 
+    messaging = state["messaging"] ;
     if(find_call_out(messaging) != -1) {
         _log(1, "Canceling existing messaging schedule") ;
         remove_call_out(messaging) ;
@@ -131,24 +128,24 @@ void periodic_message(int fd) {
     message = "Hello, world - " + base64_encode(""+time()) ;
 
     _log(2, "Sending periodic message") ;
-    send_outgoing_message(fd, message) ;
+    send_outgoing_message(message) ;
 
-    handles[fd]["last_message"] = message ;
+    state["last_message"] = message ;
 
     _log(2, "Scheduling next message") ;
-    handles[fd]["messaging"] = call_out_walltime((: periodic_message, fd :), 10+random(20)) ;
+    state["messaging"] = call_out_walltime((: periodic_message :), 10+random(20)) ;
 }
 
-void send_outgoing_message(int fd, string message) {
+void send_outgoing_message(string message) {
     _log(1, "Sending message: %O", message) ;
 
-    if(!send_message(fd, WS_TEXT_FRAME, message))
+    if(!websocket_message(WS_TEXT_FRAME, message))
         _log(1, "Failed to send message") ;
 }
 
-void close_down_session(int fd) {
+void close_down_session() {
     _log(1, "Automatically closing down session") ;
 
-    if(!send_message(fd, WS_CLOSE_FRAME, WS_CLOSE_NORMAL, "Self-initiated close down"))
+    if(!websocket_close(WS_CLOSE_NORMAL, "Self-initiated close down"))
         _log(1, "Failed to send close frame") ;
 }
