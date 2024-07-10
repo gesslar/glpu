@@ -141,9 +141,13 @@ string tmp_dir() {
  * @param {string} str - The debug message.
  * @param {mixed} [args] - Optional arguments to format the message.
  */
-varargs void debug(string str, mixed args...) {
-    if(sizeof(args))
-        str = sprintf(str, args...) ;
+varargs void debug(mixed str, mixed args...) {
+    if(stringp(str)) {
+        if(sizeof(args))
+            str = sprintf(str, args...) ;
+    } else {
+        str = sprintf("%O", str) ;
+    }
 
     str = XTERM256->substitute_colour(str, "xterm") ;
 
