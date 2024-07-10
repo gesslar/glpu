@@ -35,13 +35,13 @@ string user_mob_data(string name) {
  * @simul_efun user_data_directory
  * @description Returns the directory path for the user's data directory based on
  *              their name.
- * @param {string} priv - The user's name.
+ * @param {string} name - The user's name.
  * @returns {string} The directory path for the user's data directory, or 0 if the
  *                   input is invalid.
  */
 string user_data_directory(string name) {
     if(!name ||!stringp(name)) return 0;
-    name = lower_case((name)priv);
+    name = lower_case(name);
     return("/data/users/" + name[0..0] + "/" + name + "/");
 }
 
@@ -49,14 +49,14 @@ string user_data_directory(string name) {
  * @simul_efun user_core_data_directory
  * @description Returns the directory path for the user's core data directory based
  *              on their name.
- * @param {string} priv - The user's name.
+ * @param {string} name - The user's name.
  * @returns {string} The directory path for the user's core data directory, or 0 if
  *                   the input is invalid.
  */
 string user_core_data_directory(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case((string)priv);
-    return("/data/users/" + name[0..0] + "/" + name + "/");
+    if(!name || !stringp(name)) return 0;
+    name = lower_case(name);
+    return "/data/users/" + name[0..0] + "/" + name + "/" ;
 }
 
 /**
@@ -66,5 +66,5 @@ string user_core_data_directory(string name) {
  * @returns {string} The home directory path for the user.
  */
 string user_path(string name) {
-    return ("/home/" + name[0..0] + "/" + name + "/");
+    return "/home/" + name[0..0] + "/" + name + "/" ;
 }
