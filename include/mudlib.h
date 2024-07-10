@@ -40,6 +40,6 @@
 
 /* Mudlib Objects */
 
-#define ANNOUNCE_CHDMOD    "/adm/daemons/chmodules/announce"
+#define ANNOUNCE_CHDMOD    "/adm/daemons/modules/channel/announce"
 
 #endif // __MUDLIB_H__
