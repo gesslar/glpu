@@ -3,6 +3,7 @@
 #ifndef INTENTS_H
 #define INTENTS_H
 
+// VERSION 10
 #define GATEWAY_INTENT_BITS ([ \
     "DEFAULT"                       : (1 << 0 | 1 << 9), /* GUILDS | GUILD_MESSAGES */ \
     "GUILDS"                        : (1 << 0),    \
