@@ -262,9 +262,9 @@ varargs void log_file(string file, string msg, mixed arg...) {
     if(size == -2) return;
 
     // Grab the full path and file name from the file
-    matches = pcre_extract(source, "^(.*/)([^/]+)$");
+    matches = dir_file(source) ;
     if(sizeof(matches) == 2) {
-        assure_dir(matches[1]);
+        assure_dir(matches[0]);
     }
 
     if(size > max_size) {

@@ -52,6 +52,7 @@ string query_file_name(object ob) ;
 varargs string tail(string path, int line_count) ;
 void assure_file(string file) ;
 varargs string temp_file(mixed arg) ;
+string *dir_file(string path) ;
 
 // File: function
 int valid_function(mixed f) ;

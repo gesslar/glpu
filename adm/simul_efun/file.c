@@ -277,3 +277,25 @@ varargs string temp_file(mixed arg) {
 
     return file ;
 }
+
+/**
+ * @simul_efun dir_file
+ * @description Given a path, returns an array containing the directory and file
+ *              name components.
+ * @param {string} path - The path to extract the components from.
+ * @returns {string[]} An array containing the directory and file name components.
+ */
+string *dir_file(string path) {
+    string *matches, dir, file ;
+
+    path = prepend(path, "/") ;
+    matches = pcre_extract(path, "^(.*/)([^/]+)$") ;
+    if(sizeof(matches) < 2) {
+        return ({}) ;
+    }
+
+    dir = matches[0] ;
+    file = matches[1] ;
+
+    return ({ dir, file }) ;
+}
