@@ -69,7 +69,7 @@ void post_setup() {
 
 varargs nomask mapping http_request(string url, string method, mapping headers, string body) {
     mapping parsed_url ;
-    int now = time_ns() ;
+    float now = time_frac() ;
 
     _log(2, "Url: %s, Method: %s, Headers: %O, Body: %s", url, method, headers, body) ;
 
@@ -248,11 +248,10 @@ nomask void shutdown_socket(int fd) {
         catch(process_response(fd, server)) ;
     }
 
-    now = to_float(time_ns()) ;
-    started = to_float(server["request"]["start_time"]) ;
+    now = time_frac() ;
+    started = server["request"]["start_time"] ;
 
     duration = (now - started ) ;
-    duration /= 1_000_000_000.0 ;
 
     received_total = to_float(server["received_total"]) ;
     speed = received_total / duration ;

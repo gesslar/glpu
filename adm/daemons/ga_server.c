@@ -41,8 +41,9 @@ void parse_config() {
      string out = "" ;
      float time ;
 
-     time = time_ns() / 1_000_000.0 ;
+     time = time_frac() ;
      conf = parse(read_file(CONFIG_FILE));
+
      for(i = 0; i < sizeof(conf); i++) {
           string groups, verb, alias;
 
@@ -73,8 +74,8 @@ void parse_config() {
      }
 
      out += "\nGlobal Alias Server: " + total_parsed + " global aliases parsed. " + total_errors + " errors encountered. " +
-          sprintf("(%.2fms)\n", time_ns() / 1_000_000.0 - time) ;
-     debug_message(out) ;
+          sprintf("(%.2fms)\n", time_frac() - time) ;
+     debug(out) ;
 }
 
 string *parse(string str) {

@@ -68,12 +68,12 @@ protected void epilog(int load_empty) {
     for (i = 0; i < sizeof(lines); i++) {
         out = "" ;
         out += "Preloading : " + lines[i] + "..." ;
-        time = time_ns() / 1_000_000.0;
+        time = time_frac() ;
         err = catch(ob = load_object(lines[i]));
         if(err != 0) {
             out += "\nError " + err + " when loading " + lines[i];
         } else {
-            out += sprintf(" Done (%.2fms)", time_ns() / 1_000_000.0 - time);
+            out += sprintf(" Done (%.2fms)", time_frac() - time);
         }
         event(ob, "boot") ;
         debug_message(out);

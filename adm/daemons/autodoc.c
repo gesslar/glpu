@@ -11,7 +11,7 @@ inherit STD_DAEMON ;
 private nosave float dir_delay = 0.02 ;
 private nosave float file_delay = 0.01 ;
 
-private nosave int start_time_ms = 0 ;
+private nosave float start_time = 0 ;
 
 private nosave mixed *dirs_to_check = ({}) ;
 private nosave mixed *files_to_check = ({}) ;
@@ -29,7 +29,7 @@ void autodoc_scan() {
     if(check_running() == true)
         return ;
 
-    start_time_ms = time_ns() / 1_000_000 ;
+    start_time = time_frac() ;
     dirs_to_check = mud_config("AUTODOC_DIRS") ;
 
     dir_call_out = call_out_walltime("check_dir", dir_delay) ;
@@ -113,7 +113,7 @@ void parse_file(string *file_info) {
 }
 
 void finish_scan() {
-    debug("Autodoc scan finished in " + (time_ns() / 1_000_000 - start_time_ms) + "ms.") ;
+    debug("Autodoc scan finished in " + (time_frac() - start_time) + "ms.") ;
 }
 
 int check_running() {

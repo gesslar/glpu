@@ -90,7 +90,7 @@ protected nomask void websocket_connect(string url) {
     handshake_key = random_string(16); // Raw random string
 
     server = ([
-        "start_time" : time_ns(),
+        "start_time" : time_frac(),
         "handshake_key" : handshake_key,
         "request" : parsed_url + ([
             "subprotocols" : subprotocols,
@@ -306,11 +306,10 @@ protected nomask void shutdown_websocket() {
 
     _log(3, "Shutting down socket for %d", fd) ;
 
-    now = to_float(time_ns()) ;
+    now = time_frac() ;
     started = to_float(server["start_time"]) ;
 
     duration = (now - started ) ;
-    duration /= 1_000_000_000 ;
 
     received_total = to_float(server["received_total"]) ;
 

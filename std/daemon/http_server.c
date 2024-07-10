@@ -108,7 +108,7 @@ protected nomask void socket_listen(int fd) {
     client = ([
         "host": client_host,
         "port": client_port,
-        "time": time_ns(),
+        "time": time_frac(),
         "http" : ([
             "request": ([ ]),
             "response": ([ ]),

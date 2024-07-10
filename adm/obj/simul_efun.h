@@ -138,13 +138,15 @@ string lib_version() ;
 string mud_name() ;
 string open_status() ;
 varargs void debug(string str, mixed args...) ;
-void debug(string str) ;
+void debug(mixed str) ;
 string log_dir() ;
 string tmp_dir() ;
 
 // File: time
 varargs string ldate(int x, int brief) ;
 varargs string ltime(int x, int brief) ;
+int time_ms() ;
+float time_frac(int nanoseconds) ;
 
 // File: user
 string user_data_file(string name) ;

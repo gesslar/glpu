@@ -47,3 +47,40 @@ varargs string ltime(int x, int brief) {
 
     return strftime(fmt, x) ;
 }
+
+/**
+ * @simul_efun time_ms
+ * @description Converts a time value from nanoseconds to milliseconds.
+ *              This function takes a time value in nanoseconds and converts it
+ *              to milliseconds by dividing the input by 1,000,000.
+ * @param {int} nanoseconds - The time value in nanoseconds. Defaults to the
+ *                            current time in nanoseconds if not provided.
+ * @returns {int} The time value converted to milliseconds.
+ *
+ * @example
+ * // Convert the current time in nanoseconds to milliseconds
+ * int milliseconds = time_ms(time_ns());
+ */
+varargs int time_ms(int nanoseconds) {
+    nanoseconds = nanoseconds || time_ns() ;
+    return nanoseconds / 1_000_000 ;
+}
+
+/**
+ * @simul_efun time_frac
+ * @description Converts a time value from nanoseconds to a fractional value in seconds.
+ *              This function takes a time value in nanoseconds and converts it to
+ *              a fractional value representing seconds by dividing the input by 1,000,000,000.
+ * @param {int} nanoseconds - The time value in nanoseconds. Defaults to the current
+ *                            time in nanoseconds if not provided.
+ * @returns {float} The time value converted to a fractional value in seconds.
+ *
+ * @example
+ * // Convert the current time in nanoseconds to a fractional value in seconds
+ * float seconds = time_frac(time_ns());
+ */
+varargs float time_frac(int nanoseconds) {
+    nanoseconds = nanoseconds || time_ns() ;
+    // debug("Nano: %d", nanoseconds) ;
+    return nanoseconds / 1_000_000_000.0 ;
+}

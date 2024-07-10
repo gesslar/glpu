@@ -51,7 +51,7 @@ void setup() {
             ob->remove() ;
 
         out += "> Loading channel module: " + arr[i] + "...";
-        time = time_ns() / 1_000_000.0 ;
+        time = time_frac() ;
         err = catch(load_object(arr[i]));
 
         if(err != 0) {
@@ -59,7 +59,7 @@ void setup() {
         }
 
         else {
-            out += sprintf(" Done (%.2fms)", time_ns() / 1_000_000.0 - time) ;
+            out += sprintf(" Done (%.2fms)", time_frac() - time) ;
         }
 
         debug_message(out) ;
