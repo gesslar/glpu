@@ -464,7 +464,7 @@ private nomask void process_response(int fd, mapping server) {
         server["response"]["body"] = response ;
         servers[fd] = server ;
         if(end_found) {
-            _log(1, "Chunked transfer encoding complete") ;
+            _log(2, "Chunked transfer encoding complete") ;
             if(function_exists("handle_response", this_object()))
                 catch(call_other(this_object(), "handle_response", server)) ;
         }

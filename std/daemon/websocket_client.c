@@ -69,7 +69,7 @@ protected nomask void websocket_connect(string url) {
     int fd, resolve_key ;
     mapping parsed_url ;
 
-    _log(0, "Connecting to WebSocket: %s", url) ;
+    _log(2, "Connecting to WebSocket: %s", url) ;
 
     _log(3, "Server: %O", server) ;
 
@@ -871,10 +871,6 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
         mask[i] = random(256);
     }
 
-    _log(1, "Payload length: %d", len);
-    _log(1, "Masking key: %O", binary_to_hex(mask));
-    _log(1, "Payload before masking: %O", binary_to_hex(payload));
-
     if(len <= 125) {
         frame = allocate_buffer(2 + len + 4); // 2 bytes header + 4 bytes mask key + payload
         frame[1] = 0x80 | len; // Mask bit set + payload length
@@ -905,11 +901,11 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
     frame[(frame_offset + 4)..] = masked_payload;
 
     // Detailed logging
-    _log(1, "Payload length: %d", len);
-    _log(1, "Masking key: %O", binary_to_hex(mask));
-    _log(1, "Payload before masking: %O", binary_to_hex(payload));
-    _log(1, "Masked payload: %O", binary_to_hex(masked_payload));
-    _log(1, "Final frame: %O", binary_to_hex(frame));
+    _log(2, "Payload length: %d", len);
+    _log(3, "Masking key: %O", binary_to_hex(mask));
+    _log(3, "Payload before masking: %O", binary_to_hex(payload));
+    _log(3, "Masked payload: %O", binary_to_hex(masked_payload));
+    _log(3, "Final frame: %O", binary_to_hex(frame));
 
     return frame;
 }

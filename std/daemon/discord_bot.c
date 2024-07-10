@@ -25,6 +25,7 @@ void gateway_api_callback(mapping incoming) ;
 public nomask void start_bot(object bot) ;
 protected nomask void set_bot_name(string name) ;
 public nomask string query_bot_name() ;
+public varargs nomask void restrict_channels(mixed channels...) ;
 private nomask string query_token() ;
 protected nomask void set_intents(int intents) ;
 public nomask int query_intents() ;
@@ -41,6 +42,7 @@ private nomask void discord_handle_heartbeat_ack(mapping message) ;
 
 private nomask nosave gateway_request_id = null ;
 private nomask nosave mapping bot_data = null ;
+private nomask nosave string *restricted_channels = ({ }) ;
 
 void mudlib_setup() {
     string file, token ;
@@ -48,7 +50,7 @@ void mudlib_setup() {
     ::mudlib_setup() ;
 
     register_crash() ;
-    set_log_level(4) ;
+    set_log_level(0) ;
 
     file = query_file_name() ;
     if(stringp(token = mud_config("DISCORD_BOT_TOKENS")[file])) {
@@ -316,11 +318,17 @@ void discord_handle_event(mapping payload) {
             return ;
     }
 
-
     // Never call the bot's handler if the source is the bot
     if(server["discord"]["bot_info"] && data["author"]) {
         if(server["discord"]["bot_info"]["id"] == data["author"]["id"])
             return ;
+    }
+
+    if(restricted_channels && sizeof(restricted_channels)) {
+        if(data["channel_id"] && member_array(data["channel_id"], restricted_channels) == -1) {
+            _log(2, "Ignoring event in restricted channel %O", data["channel_id"]) ;
+            return ;
+        }
     }
 
     bot_event_name = sprintf("handle_%s", lower_case(event_name)) ;
@@ -343,7 +351,7 @@ void discord_handle_hello(mapping payload) {
 
     discord_send_identify();
 
-    server["discord"]["heartbeat"] = call_out_walltime("discord_initial_heartbeat", random(100000) / 100000.0, 1);
+    server["discord"]["heartbeat"] = call_out_walltime("discord_initial_heartbeat", random(100000) / 100000.0);
 }
 
 void discord_send_identify() {
@@ -532,14 +540,16 @@ nomask void discord_send_text(string event_name, mapping info) {
         return ;
     }
 
-    _log("Sending message: callback %O, method %O, url %O, headers %O, body %O", callback, method, url, headers, body) ;
+    _log(2, "Sending message request: body %O", body) ;
 
     request = HTTPC_D->fetch(callback, method, url, headers, body) ;
-    _log("Request: %O", request) ;
+
+    _log(2, "Request sent: %O", request) ;
 }
 
 void rest_api_callback(mapping response) {
-    _log(2, "REST API callback: %O", response) ;
+    _log(2, "Received REST API callback: %d %s", response["status"]["code"], response["status"]["message"]) ;
+    _log(3, "REST API callback: %O", response) ;
 }
 
 /**
@@ -585,6 +595,25 @@ protected nomask void set_intents(int intents) {
 
 public nomask int query_intents() {
     return bot_data["intents"] ;
+}
+
+public varargs nomask void restrict_channels(mixed channels...) {
+    if(!pointerp(channels)) {
+        _log(2, "Invalid argument 1 to restrict_channels()") ;
+        return ;
+    }
+
+    channels = filter(channels, (: stringp :)) ;
+    if(!sizeof(channels)) {
+        _log(2, "No valid channels to restrict") ;
+        return ;
+    }
+
+    restricted_channels = channels ;
+}
+
+public string *query_restricted_channels() {
+    return restricted_channels ;
 }
 
 public nomask int is_setup() {
