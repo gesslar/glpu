@@ -155,8 +155,8 @@ protected nomask void socket_shutdown(int fd) {
         _log(3, "Removing socket: %s %d", client["host"], client["port"]);
     }
 
-    if(function_exists("handle_shutdown", this_object())) {
-        catch(call_other(this_object(), "handle_shutdown", client)) ;
+    if(function_exists("http_handle_shutdown")) {
+        catch(call_other(this_object(), "http_handle_shutdown", client)) ;
     }
 
     map_delete(clients, fd) ;
@@ -206,8 +206,8 @@ protected nomask void socket_read(int fd, buffer incoming) {
 
     clients[fd]["http"]["request"] = result ;
 
-    if(function_exists("handle_request", this_object())) {
-        catch(call_other(this_object(), "handle_request", fd, client)) ;
+    if(function_exists("http_handle_request")) {
+        catch(call_other(this_object(), "http_handle_request", fd, client)) ;
     } else {
         client["response"] = ([
             "status": HTTP_STATUS_NOT_IMPLEMENTED,

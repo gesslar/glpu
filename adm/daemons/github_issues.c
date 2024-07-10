@@ -108,7 +108,7 @@ varargs int create_issue(string type, string title, string body, mixed callback)
  * @param {mapping} response - The response from the GitHub API
  * @return {void}
 */
-void handle_shutdown(mapping response) {
+void http_handle_shutdown(mapping response) {
     mapping request ;
     mixed body, type ;
     int request_id ;

@@ -16,7 +16,7 @@ private nosave mapping serials = ([]) ;
 
 void setup() {
     set_log_prefix("(HTTPC)") ;
-    set_log_level(1) ;
+    set_log_level(0) ;
 }
 
 varargs int fetch(mixed *callback, string method, string url, mapping headers, string body) {
@@ -25,14 +25,20 @@ varargs int fetch(mixed *callback, string method, string url, mapping headers, s
 
     _log(2, "Fetching " + url) ;
 
-    if(!mapp(request = http_request(url, method, headers, body)))
-        error("Error creating request") ;
-
     if(nullp(callback))
         error("No callback specified") ;
 
+    if(!stringp(method))
+        error("Invalid method") ;
+
     if(!stringp(url))
         error("Invalid URL") ;
+
+    if(!nullp(headers) && !mapp(headers))
+        error("Invalid headers") ;
+
+    if(!mapp(request = http_request(url, method, headers, body)))
+        error("Error creating request") ;
 
     serial = request["start_time"] ;
     serials[serial] = callback ;
@@ -42,7 +48,7 @@ varargs int fetch(mixed *callback, string method, string url, mapping headers, s
     return serial ;
 }
 
-nomask void handle_shutdown(mapping server) {
+nomask void http_handle_shutdown(mapping server) {
     int serial ;
     mixed *callback ;
     mixed func ;
@@ -58,6 +64,9 @@ nomask void handle_shutdown(mapping server) {
     }
 
     callback = serials[serial] ;
+
+    _log(3, "Callback found for serial %d: %O", serial, callback) ;
+    map_delete(serials, serial) ;
 
     err = catch(call_back(callback, server["response"])) ;
     if(err)

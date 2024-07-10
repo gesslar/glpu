@@ -22,11 +22,11 @@ void setup() {
                     /* #bots                  #general             */
     restrict_channels("1260442252929404989") ;
 
-    set_log_level(0) ;
+    set_log_level(1) ;
     start_bot() ;
 }
 
-void handle_message_create(mixed data) {
+void bot_handle_message_create(mixed data) {
     mapping payload ;
 
     payload = ([

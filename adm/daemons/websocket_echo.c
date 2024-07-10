@@ -37,7 +37,7 @@ varargs void startup() {
     websocket_connect("wss://echo.websocket.org") ;
 }
 
-void handle_connected() {
+void websocket_handle_connected() {
     int closing_time = 20+random(20) ;
 
     state = ([]) ;
@@ -49,7 +49,7 @@ void handle_connected() {
     state["closing"] = call_out_walltime((: close_down_session :), closing_time) ;
 }
 
-void handle_shutdown() {
+void websocket_handle_shutdown() {
     int messaging, closing ;
 
     if(!server) {
@@ -77,7 +77,7 @@ void handle_shutdown() {
 }
 
 // Function to parse text frames
-void handle_text_frame(mapping frame_info) {
+void websocket_handle_text_frame(mapping frame_info) {
     string payload ;
     mixed message ;
 

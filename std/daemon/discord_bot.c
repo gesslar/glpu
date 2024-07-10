@@ -179,7 +179,7 @@ void initiate_discord(mapping response) {
     websocket_connect(payload["url"]) ;
 }
 
-void handle_connected() {
+void websocket_handle_connected() {
     mapping discord ;
 
     if(!gateway_request_id) {
@@ -204,13 +204,13 @@ void handle_connected() {
 
     server["discord"] = discord ;
 
-    if(function_exists("handle_bot_connected")) {
+    if(function_exists("bot_handle_connected")) {
         _log(2, "Handing connected event to bot %s", query_bot_name()) ;
-        call_other(this_object(), "handle_bot_connected") ;
+        call_other(this_object(), "bot_handle_connected") ;
     }
 }
 
-void handle_shutdown() {
+void websocket_handle_shutdown() {
     int hb ;
     mixed *callouts ;
 
@@ -235,9 +235,9 @@ void handle_shutdown() {
         }
     }
 
-    if(function_exists("handle_bot_shutdown")) {
+    if(function_exists("bot_handle_shutdown")) {
         _log(2, "Handing shutdown event to bot %s", query_bot_name()) ;
-        call_other(this_object(), "handle_bot_shutdown") ;
+        call_other(this_object(), "bot_handle_shutdown") ;
     }
 
     callouts = call_out_info() ;
@@ -248,7 +248,7 @@ void handle_shutdown() {
     }
 }
 
-void handle_close_frame(mixed payload) {
+void websocket_handle_close_frame(mixed payload) {
     mapping handle ;
 
     _log(2, "Received close frame") ;
@@ -261,7 +261,7 @@ void handle_close_frame(mixed payload) {
 }
 
 // Function to parse text frames
-void handle_text_frame(mapping payload) {
+void websocket_handle_text_frame(mapping payload) {
     // mapping payload ;
 
     if(!payload) {
@@ -311,9 +311,9 @@ void discord_handle_event(mapping payload) {
             // because we need to record the session_id and resume_gateway_url
             // The bot can have it after we're done.
             discord_handle_ready(data) ;
-            if(function_exists("handle_bot_ready")) {
+            if(function_exists("bot_handle_ready")) {
                 _log(2, "Handing %s event to bot %s", event_name, query_bot_name()) ;
-                call_other(this_object(), "handle_bot_ready", data) ;
+                call_other(this_object(), "bot_handle_ready", data) ;
             }
             return ;
     }
@@ -331,7 +331,7 @@ void discord_handle_event(mapping payload) {
         }
     }
 
-    bot_event_name = sprintf("handle_%s", lower_case(event_name)) ;
+    bot_event_name = sprintf("bot_handle_%s", lower_case(event_name)) ;
 
     if(function_exists(bot_event_name)) {
         _log(2, "Handing event %s to bot %s", event_name, query_bot_name()) ;
@@ -436,7 +436,7 @@ void discord_initial_heartbeat() {
     server["discord"]["initial_heartbeat"] = null ;
 }
 
-void handle_heartbeat_ack(mapping payload) {
+void discord_handle_heartbeat_ack(mapping payload) {
     int seq ;
 
     _log(2, "Received Heartbeat ACK");

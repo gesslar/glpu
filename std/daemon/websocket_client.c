@@ -160,8 +160,8 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
         server["ip"] = addr ;
         server["state"] = WS_STATE_CONNECTING ;
 
-        if(function_exists("handle_connecting", this_object()))
-            catch(call_other(this_object(), "handle_connecting")) ;
+        if(function_exists("websocket_handle_connecting"))
+            catch(call_other(this_object(), "websocket_handle_connecting")) ;
 
         result = socket_connect(fd, addr + " " + port, "websocket_read", "websocket_ready");
         if(result != EESUCCESS) {
@@ -170,8 +170,8 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
             server["state"] = WS_STATE_ERROR ;
             server["error"] = socket_error(result) ;
 
-            if(function_exists("handle_connection_error", this_object()))
-                call_other(this_object(), "handle_connection_error") ;
+            if(function_exists("websocket_handle_connection_error"))
+                call_other(this_object(), "websocket_handle_connection_error") ;
 
             shutdown_websocket() ;
             return ;
@@ -188,8 +188,8 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
         server["state"] = WS_STATE_ERROR ;
         server["error"] = "Failed to resolve hostname " + host ;
 
-        if(function_exists("handle_resolve_error", this_object()))
-            call_other(this_object(), "handle_resolve_error") ;
+        if(function_exists("websocket_handle_resolve_error"))
+            call_other(this_object(), "websocket_handle_resolve_error") ;
 
         shutdown_websocket() ;
         return ;
@@ -283,8 +283,8 @@ protected nomask void websocket_closed(int fd) {
 
     _log(3, "Socket closed: %s %d", server["request"]["host"], server["request"]["port"]) ;
 
-    if(function_exists("handle_closed", this_object()))
-        catch(call_other(this_object(), "handle_closed")) ;
+    if(function_exists("websocket_handle_closed"))
+        catch(call_other(this_object(), "websocket_handle_closed")) ;
 
     shutdown_websocket(fd) ;
 }
@@ -319,9 +319,9 @@ protected nomask void shutdown_websocket() {
     _log(3, "Total data received: %d bytes", server["received_total"]) ;
     _log(3, "Uptime: %.2f seconds", duration) ;
 
-    if(function_exists("handle_shutdown", this_object())) {
+    if(function_exists("websocket_handle_shutdown")) {
         _log(3, "Handling shutdown for %d", fd) ;
-        catch(call_other(this_object(), "handle_shutdown")) ;
+        catch(call_other(this_object(), "websocket_handle_shutdown")) ;
     } else {
         _log(3, "No shutdown handler for %d", fd) ;
     }
@@ -491,10 +491,6 @@ private nomask void process_handshake(buffer buf) {
         return;
     }
 
-    _log(3, "Status[code]: %O", response["status"]["code"]);
-    _log(3, "Headers[upgrade]: %O", response["headers"]["upgrade"]);
-    _log(3, "Headers[connection]: %O", response["headers"]["connection"]);
-
     if(response["status"]["code"] != 101 ||
         response["headers"]["upgrade"] != "websocket" ||
         (member_array("Upgrade", response["headers"]["connection"]) == -1 &&
@@ -514,8 +510,8 @@ private nomask void process_handshake(buffer buf) {
 
     map_delete(server, "handshake_key");
 
-    if(function_exists("handle_connected", this_object()))
-        catch(call_other(this_object(), "handle_connected"));
+    if(function_exists("websocket_handle_connected"))
+        catch(call_other(this_object(), "websocket_handle_connected"));
 }
 
 /**
@@ -728,8 +724,8 @@ private nomask void process_text_frame(mapping frame_info) {
 
     _log(3, "Payload: %O", payload);
 
-    if(function_exists("handle_text_frame", this_object()))
-        catch(call_other(this_object(), "handle_text_frame", payload));
+    if(function_exists("websocket_handle_text_frame"))
+        catch(call_other(this_object(), "websocket_handle_text_frame", payload));
 }
 
 /**
@@ -743,15 +739,13 @@ private nomask void process_close_frame(mapping frame_info) {
     string close_reason = "<no reason given>";
     if(sizeof(frame_info["payload"]) >= 2) {
         close_code = (frame_info["payload"][0] << 8) | frame_info["payload"][1];
-        if(sizeof(frame_info["payload"]) > 2) {
+        if(sizeof(frame_info["payload"]) > 2)
             close_reason = to_string(frame_info["payload"][2..]);
-        }
     }
     _log(0, "Connection closed by server. Code: %d, Reason: %s", close_code, close_reason);
 
-    if(function_exists("handle_close_frame", this_object())) {
-        catch(call_other(this_object(), "handle_close_frame", frame_info["payload"]));
-    }
+    if(function_exists("websocket_handle_close_frame"))
+        catch(call_other(this_object(), "websocket_handle_close_frame", frame_info["payload"]));
 }
 
 /**
@@ -763,8 +757,8 @@ private nomask void process_ping_frame(mapping frame_info) {
     _log(2, "Received ping frame");
     send_pong(to_string(frame_info["payload"]));
 
-    if(function_exists("handle_ping_frame", this_object()))
-        catch(call_other(this_object(), "handle_ping_frame", frame_info));
+    if(function_exists("websocket_handle_ping_frame"))
+        catch(call_other(this_object(), "websocket_handle_ping_frame", frame_info));
 }
 
 /**
@@ -775,8 +769,8 @@ private nomask void process_ping_frame(mapping frame_info) {
 private nomask void process_pong_frame(mapping frame_info) {
     _log(2, "Received pong frame");
 
-    if(function_exists("handle_pong_frame", this_object()))
-        catch(call_other(this_object(), "handle_pong_frame", frame_info));
+    if(function_exists("websocket_handle_pong_frame"))
+        catch(call_other(this_object(), "websocket_handle_pong_frame", frame_info));
 }
 
 /**
@@ -787,8 +781,8 @@ private nomask void process_pong_frame(mapping frame_info) {
 private nomask void process_continuation_frame(mapping frame_info) {
     _log(2, "Received continuation frame");
 
-    if(function_exists("handle_continuation_frame", this_object()))
-        catch(call_other(this_object(), "handle_continuation_frame", frame_info));
+    if(function_exists("websocket_handle_continuation_frame"))
+        catch(call_other(this_object(), "websocket_handle_continuation_frame", frame_info));
 }
 
 /**
@@ -799,8 +793,8 @@ private nomask void process_continuation_frame(mapping frame_info) {
 private nomask void process_binary_frame(mapping frame_info) {
     _log(2, "Received binary frame");
 
-    if(function_exists("handle_binary_frame", this_object()))
-        catch(call_other(this_object(), "handle_binary_frame",frame_info));
+    if(function_exists("websocket_handle_binary_frame"))
+        catch(call_other(this_object(), "websocket_handle_binary_frame",frame_info));
 }
 
 /**
@@ -811,8 +805,8 @@ private nomask void process_binary_frame(mapping frame_info) {
 private nomask void process_unknown_frame(mapping frame_info) {
     _log(2, "Received unknown frame");
 
-    if(function_exists("handle_unknown_frame", this_object()))
-        catch(call_other(this_object(), "handle_unknown_frame", frame_info));
+    if(function_exists("websocket_handle_unknown_frame"))
+        catch(call_other(this_object(), "websocket_handle_unknown_frame", frame_info));
 }
 
 /**

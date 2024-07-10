@@ -25,7 +25,7 @@ void setup() {
     start_server();
 }
 
-void handle_request(int fd, mapping client) {
+void http_handle_request(int fd, mapping client) {
     string body ;
 
     body = @text
