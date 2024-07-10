@@ -81,6 +81,5 @@ varargs int time_ms(int nanoseconds) {
  */
 varargs float time_frac(int nanoseconds) {
     nanoseconds = nanoseconds || time_ns() ;
-    // debug("Nano: %d", nanoseconds) ;
     return nanoseconds / 1_000_000_000.0 ;
 }
