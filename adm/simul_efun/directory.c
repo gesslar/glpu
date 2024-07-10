@@ -3,6 +3,15 @@
 // mudlib: basis
 // date:   1992/09/05
 // author: Truilkan
+
+/**
+ * @simul_efun assure_dir
+ * @description Ensures that a directory exists by creating it and its parent
+ *              directories if necessary.
+ * @param {string} path - The path of the directory to ensure.
+ * @returns {int} 1 if the directory exists or was created successfully,
+ *                otherwise 0.
+ */
 int assure_dir(string path) {
     string *parts, dir;
     int j;
@@ -27,6 +36,13 @@ int assure_dir(string path) {
     return file_size(path) == -2;
 }
 
+/**
+ * @simul_efun query_directory
+ * @description Returns the directory of the given object. If no object is
+ *              provided, it defaults to the previous object.
+ * @param {object} ob - The object to query the directory of.
+ * @returns {string} The directory path of the object.
+ */
 string query_directory(object ob) {
     string file, *parts;
     string dir ;

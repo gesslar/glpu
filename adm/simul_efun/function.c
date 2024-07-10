@@ -1,6 +1,13 @@
 #include "/adm/obj/simul_efun.h"
 #include <function.h>
 
+/**
+ * @simul_efun valid_function
+ * @description Checks if a given function is valid and not owned by a destructed
+ *              object.
+ * @param {mixed} f - The function to check.
+ * @returns {int} 1 if the function is valid, otherwise 0.
+ */
 int valid_function(mixed f) {
     int fp ;
 
@@ -13,6 +20,13 @@ int valid_function(mixed f) {
     return false ;
 }
 
+/**
+ * @simul_efun call_trace
+ * @description Returns a formatted string of the current call stack trace.
+ * @param {int} [colour=0] - Whether to include ANSI color codes. Defaults to 0
+ *                           (no color).
+ * @returns {string} The formatted call stack trace.
+ */
 varargs string call_trace(int colour) {
     string res;
     int i, n;
@@ -53,6 +67,12 @@ varargs string call_trace(int colour) {
     return res;
 }
 
+/**
+ * @simul_efun assemble_call_back
+ * @description Assembles a callback function from the provided arguments.
+ * @param {mixed} arg - The arguments to assemble into a callback.
+ * @returns {mixed[]} The assembled callback.
+ */
 mixed *assemble_call_back(mixed arg...) {
     int sz ;
 
@@ -91,6 +111,13 @@ mixed *assemble_call_back(mixed arg...) {
     error("ERROR: Invalid function passed to assemble_call_back().") ;
 }
 
+/**
+ * @simul_efun call_back
+ * @description Executes a callback with the given arguments.
+ * @param {mixed} cb - The callback to execute.
+ * @param {mixed} new_arg - The arguments to pass to the callback.
+ * @returns {mixed} The result of the callback execution.
+ */
 mixed call_back(mixed cb, mixed new_arg...) {
     int sz ;
     mixed fun ;

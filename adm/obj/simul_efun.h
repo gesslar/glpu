@@ -136,7 +136,7 @@ string lib_name() ;
 string lib_version() ;
 string mud_name() ;
 string open_status() ;
-varargs void debugf(string str, mixed args...) ;
+varargs void debug(string str, mixed args...) ;
 void debug(string str) ;
 string log_dir() ;
 string tmp_dir() ;

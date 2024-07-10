@@ -7,6 +7,12 @@
 
 private nosave string b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
 
+/**
+ * @simul_efun base64_encode
+ * @description Encodes a given string or buffer into Base64 format.
+ * @param {mixed} source_str - The string or buffer to be encoded.
+ * @returns {string} The Base64 encoded string.
+ */
 string base64_encode(mixed source_str) {
     string *b;
     string r = "";
@@ -61,6 +67,12 @@ string base64_encode(mixed source_str) {
     return r;
 }
 
+/**
+ * @simul_efun base64_decode
+ * @description Decodes a given Base64 encoded string.
+ * @param {string} source - The Base64 encoded string to be decoded.
+ * @returns {string} The decoded string.
+ */
 string base64_decode(string source)
 {
     string *b ;

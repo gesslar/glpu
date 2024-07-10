@@ -1,77 +1,82 @@
 #include "/adm/obj/simul_efun.h"
 
-//:FUNCTION distinct_array
-//Synopsis: mixed *distinct_array(mixed *arr)
-//
-// Arg: mixed *arr - an array of mixed types
-//
-//Returns a new array containing the distinct elements of the input array.
-//The order of the elements in the new array is not guaranteed to be the same
-//as the order of the elements in the input array.
+/**
+ * @simul_efun distinct_array
+ * @description Returns a new array containing the distinct elements of the input
+ *              array.
+ * @param {mixed[]} arr - An array of mixed types.
+ * @returns {mixed[]} A new array with distinct elements from the input array.
+ */
 mixed *distinct_array(mixed *arr) {
-    mapping m ;
+    mapping m;
 
-    m = allocate_mapping(arr, 0) ;
+    m = allocate_mapping(arr, 0);
 
-    return keys(m) ;
+    return keys(m);
 }
 
-//:FUNCTION remove_array_element
-// Synopsis: mixed *remove_array_element(mixed *arr, int start, int end)
-//
-// Returns a new array containing the elements of the input array from index
-// 0 to start-1, and from end+1 to the end of the input array.  If start is
-// greater than end, the new array will contain all the elements of the input
-// array.
-//
-// If end is not specified, it defaults to start.
+/**
+ * @simul_efun remove_array_element
+ * @description Returns a new array containing the elements of the input array
+ *              from index 0 to start-1, and from end+1 to the end of the input
+ *              array. If start is greater than end, the new array will contain
+ *              all the elements of the input array.
+ * @param {mixed[]} arr - The input array.
+ * @param {int} start - The starting index of elements to be removed.
+ * @param {int} [end] - The ending index of elements to be removed. Defaults to
+ *                      start if not specified.
+ * @returns {mixed[]} A new array with specified elements removed.
+ */
 varargs mixed *remove_array_element(mixed *arr, int start, int end) {
-    if( !end ) end = start ;
-    if( start > end ) return arr ;
-    return arr[0..start-1] + arr[end+1..] ;
+    if (!end) end = start;
+    if (start > end) return arr;
+    return arr[0..start-1] + arr[end+1..];
 }
 
-//:FUNCTION splice
-//Synopsis: varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd)
-//
-// Args:
-//   mixed *arr - The array from which elements will be removed and to which new elements may be added.
-//   int start - The zero-based index at which to start changing the array.
-//     If negative, it will begin that many elements from the end.
-//   int deleteCount - The number of elements to remove from the array, starting from the index specified by start.
-//     If deleteCount is 0, no elements are removed. In this case, you should specify at least one new element.
-//   mixed *itemsToAdd - (Optional) An array of elements to add to the array at the start index.
-//     If no elements are to be added, this parameter can be omitted or passed as null.
-// Returns:
-//   A new array reflecting the desired modifications: elements specified by deleteCount are removed starting from
-//   the start index, and the elements in itemsToAdd are inserted at the start index. The function does not modify
-//   the original array but returns a new array with the modifications.
-//
-// Description:
-//   The splice function modifies the content of an array by removing existing elements and/or adding new elements.
-//   The original array is not altered; instead, a new array that represents the state of the array after the
-//   modifications have been applied is returned. This function is useful for manipulating arrays when you need to
-//   dynamically adjust their contents without directly altering the original array.
-varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) {
-    mixed *before, *after ;
-    if (!pointerp(itemsToAdd)) { // Check if itemsToAdd is not an array
-        itemsToAdd = ({}); // Set to an empty array if null or not provided
+/**
+ * @simul_efun splice
+ * @description Modifies the content of an array by removing existing elements
+ *              and/or adding new elements. Returns a new array with the
+ *              modifications.
+ * @param {mixed[]} arr - The array from which elements will be removed and to
+ *                        which new elements may be added.
+ * @param {int} start - The zero-based index at which to start changing the
+ *                      array. If negative, it will begin that many elements
+ *                      from the end.
+ * @param {int} delete_count - The number of elements to remove from the array,
+ *                             starting from the index specified by start. If
+ *                             delete_count is 0, no elements are removed.
+ * @param {mixed[]} [items_to_add] - An array of elements to add to the array at
+ *                                   the start index. Can be omitted or passed as
+ *                                   null if no elements are to be added.
+ * @returns {mixed[]} A new array reflecting the desired modifications.
+ */
+varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add) {
+    mixed *before, *after;
+    if (!pointerp(items_to_add)) {
+        items_to_add = ({});
     }
 
-    before = arr[0..start - 1]; // Elements before the starting index
-    after = arr[start + deleteCount..]; // Elements after the removed elements
+    before = arr[0..start - 1];
+    after = arr[start + delete_count..];
 
-    // Combining the parts with the new items
-    return before + itemsToAdd + after;
+    return before + items_to_add + after;
 }
 
+/**
+ * @simul_efun reverse_array
+ * @description Returns a new array with the elements of the input array in
+ *              reverse order.
+ * @param {mixed[]} arr - The input array.
+ * @returns {mixed[]} A new array with elements in reverse order.
+ */
 mixed *reverse_array(mixed *arr) {
-    int i, j, sz ;
-    mixed *ret ;
+    int i, j, sz;
+    mixed *ret;
 
-    for(i=0, j=sizeof(arr)-1, sz=sizeof(arr), ret = allocate(sz); i<sz; i++, j--) {
-        ret[i] = arr[j] ;
+    for(i = 0, j = sizeof(arr) - 1, sz = sizeof(arr), ret = allocate(sz); i < sz; i++, j--) {
+        ret[i] = arr[j];
     }
 
-    return ret ;
+    return ret;
 }

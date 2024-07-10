@@ -23,6 +23,15 @@ private nosave mapping found;
 private nosave string *position;
 private nosave int recursion;
 
+/**
+ * @simul_efun identify
+ * @description Converts a variable to its string representation for debugging
+ *              purposes, handling various data types and preventing deep
+ *              recursion.
+ * @param {mixed} a - The variable to identify.
+ * @param {string} [indent] - The indentation string to use for formatting.
+ * @returns {string} The string representation of the variable.
+ */
 varargs string identify( mixed a, string indent ) {
     int i, s;
     string ind, rec, ret;

@@ -5,6 +5,12 @@
 //Tacitus @ LPUniversity
 //Grouped on October 22nd, 2005
 
+/**
+ * @simul_efun getoid
+ * @description Retrieves the unique object ID of the given object.
+ * @param {object} ob - The object to get the ID of.
+ * @returns {int} The unique object ID.
+ */
 int getoid(object ob) {
     int id;
     sscanf(file_name(ob || previous_object()), "%*s#%d", id);
@@ -31,6 +37,15 @@ int getoid(object ob) {
 //   check wizard's home directories.
 */
 
+/**
+ * @simul_efun get_object
+ * @description Attempts to locate an object by the given name and returns the
+ *              object pointer if found.
+ * @param {string} str - The name of the object to locate.
+ * @param {object} [player] - The player object to use as a reference for
+ *                            searching.
+ * @returns {object} The located object, or 0 if not found.
+ */
 varargs object get_object( string str, object player ) {
     object what;
     mixed tmp;
@@ -92,6 +107,18 @@ varargs object get_object( string str, object player ) {
 //   "/std/ghost:c" - all the children of /std/ghost
 //   "users:s" - all the shadows of users
 //   "users:>query_user" - all the connection objects in the game
+/**
+ * @simul_efun get_objects
+ * @description Locates objects based on the specified search string, which can
+ *              include various search criteria and options.
+ * @param {string} str - The search string specifying the objects to locate.
+ * @param {object} [player] - The player object to use as a reference for
+ *                            searching.
+ * @param {int} [no_arr] - If specified, only a single object or 0 will be
+ *                         returned, otherwise an array of objects may be
+ *                         returned.
+ * @returns {mixed} The located object(s), or 0 if not found.
+ */
 varargs mixed get_objects( string str, object player, int no_arr ) {
     mixed base, tmp, ret;
     object what;
@@ -177,7 +204,16 @@ varargs mixed get_objects( string str, object player, int no_arr ) {
   use the more complicated search routines and keeping get_objects() as
   a seperate simul_efun makes it easier to disable.
 */
-
+/**
+ * @simul_efun find_ob
+ * @description Searches for an object within a container or environment
+ *              using the specified criteria.
+ * @param {mixed} ob - The object or name of the object to find.
+ * @param {mixed} [cont] - The container or environment to search within.
+ *                         Defaults to the previous object.
+ * @param {function} [f] - An optional function to further filter the search.
+ * @returns {object} The found object, or 0 if not found.
+ */
 varargs object find_ob(mixed ob, mixed cont, function f) {
     // First let's deal with dest.
     if(nullp(cont))
@@ -210,6 +246,13 @@ varargs object find_ob(mixed ob, mixed cont, function f) {
     return 0;
 }
 
+/**
+ * @simul_efun top_environment
+ * @description Retrieves the top-level environment of the specified object,
+ *              traversing up through nested environments.
+ * @param {object} ob - The object to get the top-level environment of.
+ * @returns {object} The top-level environment of the object.
+ */
 object top_environment(object ob) {
     object test, env ;
 

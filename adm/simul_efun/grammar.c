@@ -1,6 +1,13 @@
 #include "/adm/obj/simul_efun.h"
 
 // https://github.com/michaelprograms/nightmare-residuum/blob/main/lib/secure/sefun/grammar.c#L18
+
+/**
+ * @simul_efun ordinal
+ * @description Converts an integer to its ordinal string representation.
+ * @param {int} n - The integer to convert.
+ * @returns {string} The ordinal string representation of the integer.
+ */
 string ordinal (int n) {
     int x;
     if (undefinedp(n) || !intp(n)) error("Bad argument 1 to english->ordinal");
@@ -31,6 +38,12 @@ string ordinal (int n) {
 // it into the mudlib, on 93-08-22.
 //
 // Convert a numerical number to a worded number.
+/**
+ * @simul_efun int_string
+ * @description Converts a numerical number to its worded number representation.
+ * @param {int} num - The numerical number to convert.
+ * @returns {string} The worded number representation of the integer.
+ */
 string int_string (int num) {
     string str;
     int temp;
@@ -116,7 +129,14 @@ string int_string (int num) {
     return str;
 }
 
-
+/**
+ * @simul_efun consolidate
+ * @description Returns a consolidated string for a given quantity and item
+ *              description, handling pluralization and special cases.
+ * @param {int} x - The quantity of items.
+ * @param {string} str - The description of the item(s).
+ * @returns {string} The consolidated string.
+ */
 string consolidate(int x, string str) {
     string* words;
     string tmp;
@@ -135,7 +155,8 @@ string consolidate(int x, string str) {
         else return consolidate(x, implode(words[0..<2], " ")) +
             " [" + tmp + "]";
     }
-#if 0 TODO: Accommodate for new colour style
+#if 0
+    // TODO: Accommodate for new colour style
     /*
     if( words[0][0..1] == "%^" ) {
         string* parts;

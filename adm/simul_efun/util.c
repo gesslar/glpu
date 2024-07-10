@@ -2,6 +2,12 @@
 
 // gently stolen from atari2600tim
 // https://github.com/atari2600tim/LPCsnippets/blob/master/uuid.c
+/**
+ * @simul_efun generate_uuid
+ * @description Generates a random "version 4" UUID. Version 4 UUIDs are based
+ *              on random numbers.
+ * @returns {string} A randomly generated version 4 UUID.
+ */
 string generate_uuid() {
     //This is a "version 4" uuid.  This is based on random numbers, the others use time.
     // https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)

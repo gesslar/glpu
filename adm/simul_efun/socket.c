@@ -8,6 +8,11 @@
 
 */
 
+/**
+ * @simul_efun dump_socket_status
+ * @description Returns a formatted string displaying the status of all sockets.
+ * @returns {string} The formatted socket status information.
+ */
 string dump_socket_status() {
     string ret =
 "Fd    State      Mode       Local Address          Remote Address            PROGRAM\n"

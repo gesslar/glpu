@@ -1,13 +1,15 @@
 #include "/adm/obj/simul_efun.h"
 #include <type.h>
 
-//:FUNCTION append
-//Append a string to another string if it is not already there.
-//If the string is already there, the original string is returned.
-//Otherwise, the original string with the new string appended is returned.
-//
-// arg1 - source - the string to append to
-// arg2 - to_append - the string to append
+/**
+ * @simul_efun append
+ * @description Appends a string to another string if it is not already there.
+ *              If the string is already present, the original string is returned.
+ * @param {string} source - The string to append to.
+ * @param {string} to_append - The string to append.
+ * @returns {string} The original string with the appended string if it was not
+ *                   already present.
+ */
 string append(string source, string to_append) {
     int source_len, to_append_len;
 
@@ -21,13 +23,15 @@ string append(string source, string to_append) {
     return source;
 }
 
-//:FUNCTION prepend
-//Prepend a string to another string if it is not already there.
-//If the string is already there, the original string is returned.
-//Otherwise, the original string with the new string prepended is returned.
-//
-// arg1 - source - the string to prepend to
-// arg2 - to_prepend - the string to prepend
+/**
+ * @simul_efun prepend
+ * @description Prepends a string to another string if it is not already there.
+ *              If the string is already present, the original string is returned.
+ * @param {string} source - The string to prepend to.
+ * @param {string} to_prepend - The string to prepend.
+ * @returns {string} The original string with the prepended string if it was not
+ *                   already present.
+ */
 string prepend(string source, string to_prepend) {
     int source_len, to_prepend_len;
 
@@ -41,14 +45,16 @@ string prepend(string source, string to_prepend) {
     return source;
 }
 
-//:FUNCTION chop
-//Chop a string off the end of another string if it is there.
-//If the string is not there, the original string is returned.
-//Otherwise, the original string with the new string chopped off is returned.
-//
-// arg1 - str - the string to chop
-// arg2 - sub - the string to chop off
-// arg3 - dir - the direction to chop, 1 for left (optional), -1 for right
+/**
+ * @simul_efun chop
+ * @description Chops a substring off the end or beginning of another string if
+ *              it is present. If the substring is not present, the original
+ *              string is returned.
+ * @param {string} str - The string to chop from.
+ * @param {string} sub - The substring to chop.
+ * @param {int} [dir=-1] - The direction to chop: 1 for left, -1 for right.
+ * @returns {string} The string with the substring chopped off if it was present.
+ */
 varargs string chop(string str, string sub, int dir) {
     int sub_len;
 
@@ -72,32 +78,38 @@ varargs string chop(string str, string sub, int dir) {
     return str;
 }
 
-//:FUNCTION extract
-//Extract a substring from a string.
-//
-// arg1 - str - the string to extract from
-// arg2 - from - the starting position to extract from
-// arg3 - to - the ending position to extract to (optional)
+/**
+ * @simul_efun extract
+ * @description Extracts a substring from a string.
+ * @param {string} str - The string to extract from.
+ * @param {int} from - The starting position to extract from.
+ * @param {int} [to] - The ending position to extract to.
+ * @returns {string} The extracted substring.
+ */
 varargs string extract(string str, int from, int to) {
     if(nullp(to)) return str[from ..];
     else return str[from .. to];
 }
 
-//:FUNCTION no_ansi
-//Return a string with all ANSI colour codes removed.
-//
-// arg1 - str - the string to remove ANSI codes from
+/**
+ * @simul_efun no_ansi
+ * @description Returns a string with all ANSI color codes removed.
+ * @param {string} str - The string to remove ANSI codes from.
+ * @returns {string} The string without ANSI codes.
+ */
 string no_ansi(string str) {
     return XTERM256->substitute_colour(str, "plain") ;
 }
 
-//:FUNCTION simple_list
-//Return a string that is a simple list of the elements of the array.
-//The conjunction is the word used to join the last two elements of the list.
-//If the array is empty, an error is raised.
-//
-// arg1 - arr - the array to make a list from
-// arg2 - conjunction - the word to join the last two elements of the list
+/**
+ * @simul_efun simple_list
+ * @description Returns a string that is a simple list of the elements of an array,
+ *              joined by a conjunction.
+ * @param {string[]} arr - The array to make a list from.
+ * @param {string} [conjunction="and"] - The word to join the last two elements
+ *                                       of the list.
+ * @returns {string} The simple list string.
+ */
 varargs string simple_list(string *arr, string conjunction) {
     if(!arr) error("simple_list: Missing argument 1 for simpple_list");
     if(!conjunction) conjunction = "and";
@@ -108,18 +120,17 @@ varargs string simple_list(string *arr, string conjunction) {
     else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
 }
 
-//:FUNCTION substr
-//Return a substring of a string, starting from 0 and ending at the first
-//occurrence of another string within it.
-//
-//If the reverse flag is set, the substring will start at the last occurrence
-//of the substring within the string, skipping over the whole substring, and
-//ending at the end of the string.
-//
-// arg1 - str - the string to extract from
-// arg2 - sub - the substring to extract to
-// arg3 - reverse - if set, the substring will start at the last occurrence
-//        (optoinal)
+/**
+ * @simul_efun substr
+ * @description Returns a substring of a string, starting from 0 and ending at the
+ *              first occurrence of another string within it. If the reverse flag
+ *              is set, the substring will start at the last occurrence of the
+ *              substring within the string.
+ * @param {string} str - The string to extract from.
+ * @param {string} sub - The substring to extract to.
+ * @param {int} [reverse=0] - If set, the substring will start at the last occurrence.
+ * @returns {string} The extracted substring.
+ */
 varargs string substr(string str, string sub, int reverse) {
     int sub_len;
     int pos ;
@@ -141,6 +152,14 @@ varargs string substr(string str, string sub, int reverse) {
 
 // This simul_efun blatantly (but lovingly) ripped off from:
 // https://github.com/fluffos/dead-souls/blob/09a74caa87d8aadbfe303c294cc0bebb25fdb4db/lib/secure/sefun/strings.c#L104C1-L242C1
+/**
+ * @simul_efun from_string
+ * @description Converts a string representation of an LPC value to the corresponding
+ *              LPC value.
+ * @param {string} str - The string to convert.
+ * @param {int} [flag=0] - If set, returns an array with the value and the remaining string.
+ * @returns {mixed} The LPC value represented by the string.
+ */
 varargs mixed from_string(string str, int flag) {
     mixed *ret = ({ 0, "" });
 
@@ -271,6 +290,12 @@ varargs mixed from_string(string str, int flag) {
     error("Gobbledygook in string.\n");
 }
 
+/**
+ * @simul_efun stringify
+ * @description Converts an LPC value to its string representation.
+ * @param {mixed} val - The value to convert.
+ * @returns {string} The string representation of the value.
+ */
 string stringify(mixed val) {
     if(nullp(val))
         return "0" ;
@@ -290,15 +315,18 @@ string stringify(mixed val) {
 
 }
 
+// TODO: maybe use a define?
 // private nosave string decimal = mud_config("DECIMAL") ;
 // private nosave string thousands = mud_config("THOUSANDS") ;
 private nosave string decimal = "." ;
 private nosave string thousands = "," ;
 
-//:FUNCTION add_commas
-//Return a string with commas added to the number.
-//
-// arg1 - number - the number to add commas to
+/**
+ * @simul_efun add_commas
+ * @description Returns a string with commas added to the number.
+ * @param {mixed} number - The number to add commas to.
+ * @returns {string} The number with commas added as a string.
+ */
 string add_commas(mixed number) {
     string num_str ;
     string result = "";

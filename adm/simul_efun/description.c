@@ -1,5 +1,15 @@
 #include "/adm/obj/simul_efun.h"
 
+/**
+ * @simul_efun get_short
+ * @description Returns the short description of an object, optionally
+ *              including extra short descriptions in parentheses.
+ * @param {object} ob - The object to get the short description of.
+ * @param {int} [extras=1] - Whether to include extra short descriptions.
+ *                           Defaults to 1 (include extras).
+ * @returns {string} The short description of the object, including any
+ *                   extra short descriptions.
+ */
 string get_short(object ob, int extras: (: 1 :)) {
     string result ;
     string *extra_shorts ;
@@ -22,6 +32,16 @@ string get_short(object ob, int extras: (: 1 :)) {
     return result ;
 }
 
+/**
+ * @simul_efun get_long
+ * @description Returns the long description of an object, optionally
+ *              including extra long descriptions.
+ * @param {object} ob - The object to get the long description of.
+ * @param {int} [extras=1] - Whether to include extra long descriptions.
+ *                           Defaults to 1 (include extras).
+ * @returns {string} The long description of the object, including any
+ *                   extra long descriptions.
+ */
 string get_long(object ob, int extras: (: 1 :)) {
     string result ;
     string *extra_longs, *parts ; ;

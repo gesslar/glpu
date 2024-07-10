@@ -2,6 +2,12 @@
 
 #include <config.h>
 
+/**
+ * @simul_efun assure_file
+ * @description Given a file, ensures that the directory structure leading to
+ *              the file exists, creating directories as needed.
+ * @param {string} file - The path of the file to ensure.
+ */
 void assure_file(string file) {
     string *path;
     string dir;
@@ -26,6 +32,12 @@ void assure_file(string file) {
 
 //Last edited on July 1st, 2005 by Tacitus
 
+/**
+ * @simul_efun file_owner
+ * @description Determines the owner of a file based on its path.
+ * @param {string} file - The path of the file to check.
+ * @returns {string} The owner of the file, or 0 if not found.
+ */
 string file_owner(string file) {
     string temp;
 
@@ -41,26 +53,15 @@ string file_owner(string file) {
     return 0;
 }
 
-//file_lines(string file);
-
-//Gwegster @ LPUniversity
-//30-JUNE-05
-// A simul_efun that takes the specified file and checks for
-//      the amount of "\n"s in the file, thereby getting the
-//      total amount of lines in the file.
-
-int file_lines(string file) {
-    string str;
-    string *lines;
-
-    if(file_size(file) < 1)
-    return 0;
-
-    str = read_file(file);
-    lines = explode(str + "", "\n");
-    return sizeof(lines);
-}
-
+/**
+ * @simul_efun tail
+ * @description Returns the last few lines of a file, similar to the Unix
+ *              `tail` command.
+ * @param {string} path - The path of the file to read.
+ * @param {int} [line_count=25] - The number of lines to read from the end of
+ *                                the file. Defaults to 25.
+ * @returns {string} The last few lines of the file.
+ */
 varargs string tail(string path, int line_count) {
     int chunk_size = 80 * 5; // Chunk size for each read operation
     string result = ""; // Accumulator for the result
@@ -141,12 +142,27 @@ varargs string tail(string path, int line_count) {
 //15-APR-05
 //Simul-efuns
 
+/**
+ * @simul_efun log_file
+ * @description Writes a log message to a specified log file.
+ * @param {string} file - The name of the log file.
+ * @param {string} str - The log message to write.
+ * @param {mixed} [arg] - Additional arguments to include in the log message.
+ * @returns {int} 1 if the log message was written successfully, otherwise 0.
+ */
 varargs int log_file(string file, string str, mixed arg...) {
     if(!file || !str) return 0;
     master()->log_file(file, str, arg...);
     return 1;
 }
 
+/**
+ * @simul_efun explode_file
+ * @description Reads a file and returns its content as an array of lines,
+ *              excluding comment lines and empty lines.
+ * @param {string} file - The path of the file to read.
+ * @returns {string[]} An array of lines from the file.
+ */
 string *explode_file(string file) {
     string old_privs ;
 
@@ -178,6 +194,15 @@ string *explode_file(string file) {
     return lines ;
 }
 
+/**
+ * @simul_efun implode_file
+ * @description Writes an array of lines to a specified file, optionally
+ *              overwriting the existing content.
+ * @param {string} file - The path of the file to write to.
+ * @param {string[]} lines - The array of lines to write.
+ * @param {int} [overwrite=0] - Whether to overwrite the existing content.
+ *                              Defaults to 0 (append).
+ */
 varargs void implode_file(string file, string *lines, int overwrite) {
     string old_privs ;
 
@@ -196,6 +221,12 @@ varargs void implode_file(string file, string *lines, int overwrite) {
     set_privs(this_object(), old_privs) ;
 }
 
+/**
+ * @simul_efun query_file_name
+ * @description Returns the name of the file corresponding to a given object.
+ * @param {object} ob - The object to query the file name of.
+ * @returns {string} The name of the file corresponding to the object.
+ */
 string query_file_name(object ob) {
     string file, *parts;
     string dir ;
@@ -214,10 +245,10 @@ string query_file_name(object ob) {
 }
 
 /**
- * @description Returns a string that is a temporary filename to be used
- *
- * @param {unknown} arg The file or object to create a temporary file for
- * @return {string} The path to the temporary file
+ * @simul_efun temp_file
+ * @description Generates a temporary file name based on the provided argument.
+ * @param {mixed} arg - The file or object to create a temporary file for.
+ * @returns {string} The path to the temporary file.
  */
 varargs string temp_file(mixed arg) {
     string file ;
