@@ -1,15 +1,14 @@
 inherit STD_CMD ;
 
 mixed main(object tp, object room, string str) {
+    tp->force_me("rm /log/runtime") ;
+    tp->force_me("rm /log/catch") ;
+
     // set_debug_level("sockets") ;
     clear_debug_level("sockets") ;
 
-    tp->force_me("rm /log/runtime") ;
-    tp->force_me("rm /log/catch") ;
-    tp->force_me("update -r /std/modules/http") ;
-    tp->force_me("update -r /std/daemon/http_client") ;
-    tp->force_me("update -r /std/daemon/websocket_client") ;
-    tp->force_me("update -r /adm/daemons/discord") ;
+    debug(repeat_string("\n", 20)) ;
+    tp->force_me("update -R /adm/daemons/discord/chatter") ;
 
     // clear_debug_level("sockets") ;
 

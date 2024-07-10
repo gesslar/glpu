@@ -28,17 +28,16 @@ protected nomask int websocket_connect(string url) ;
 private nomask void process_handshake(buffer buf) ;
 private nomask int is_message_complete(buffer buf) ;
 private nomask mapping parse_websocket_frame(buffer buf) ;
-private nomask void process_websocket_message(int fd, mapping frame_info) ;
+private nomask void process_websocket_message(mapping frame_info) ;
 private nomask buffer apply_mask(buffer data, buffer mask) ;
 varargs protected nomask int websocket_close(int code, string reason) ;
-protected nomask void shutdown_socket() ;
 protected nomask void shutdown_websocket() ;
 
 
 private string unformat_frame(buffer message) ;
 private nomask varargs buffer format_frame(int opcode, mixed args...) ;
 
-protected nomask varargs int websocket_message(int fd, int frame_opcode, mixed args...) ;
+protected nomask varargs int websocket_message(int frame_opcode, mixed args...) ;
 protected nomask void send_pong(string payload) ;
 protected nomask void send_ping();
 
@@ -106,6 +105,12 @@ protected nomask void websocket_connect(string url) {
         "websocket_closed"
     );
 
+    if(fd < 0) {
+        _log(0, "Unable to create socket: %s", socket_error(fd));
+        server = null ;
+        return;
+    }
+
     _log(4, "Socket created: %d", fd) ;
 
     if(fd < 0) {
@@ -168,7 +173,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
             if(function_exists("handle_connection_error", this_object()))
                 call_other(this_object(), "handle_connection_error") ;
 
-            shutdown_socket() ;
+            shutdown_websocket() ;
             return ;
         }
 
@@ -186,7 +191,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
         if(function_exists("handle_resolve_error", this_object()))
             call_other(this_object(), "handle_resolve_error") ;
 
-        shutdown_socket(fd) ;
+        shutdown_websocket() ;
         return ;
     }
 }
@@ -215,13 +220,13 @@ protected nomask void websocket_ready(int fd) {
 
     if(!stringp(raw_key = server["handshake_key"])) {
         _log(0, "No handshake key for fd %d", fd);
-        shutdown_socket(fd);
+        shutdown_websocket();
         return;
     }
 
     if(!server["request"]["host"]) {
         _log(0, "No host specified for fd %d", fd);
-        shutdown_socket(fd);
+        shutdown_websocket();
         return;
     }
 
@@ -256,7 +261,7 @@ protected nomask void websocket_ready(int fd) {
     result = socket_write(fd, out);
     if(result != EESUCCESS) {
         _log(2, "Failed to send handshake request: %d", result);
-        shutdown_socket(fd);
+        shutdown_websocket();
     } else {
         _log(2, "Handshake request sent");
     }
@@ -416,7 +421,7 @@ protected nomask void websocket_read(int fd, buffer incoming) {
         while(is_message_complete(buf)) {
             frame_info = parse_websocket_frame(buf);
             if(frame_info) {
-                process_websocket_message(fd, frame_info);
+                process_websocket_message(frame_info);
                 if(!server)
                     return;
                 buf = frame_info["buffer"];
@@ -482,7 +487,7 @@ private nomask void process_handshake(buffer buf) {
     if(accept != expected) {
         _log(1, "Accept and Expected do not match.");
         server["state"] = WS_STATE_HANDSHAKE_FAILED;
-        shutdown_socket();
+        shutdown_websocket();
         return;
     }
 
@@ -497,7 +502,7 @@ private nomask void process_handshake(buffer buf) {
         accept != expected) {
         _log(1, "Handshake invalid. Disconnecting.");
         server["state"] = WS_STATE_HANDSHAKE_FAILED;
-        shutdown_socket();
+        shutdown_websocket();
         return;
     }
 
@@ -679,7 +684,7 @@ private nomask void process_websocket_message(mapping frame_info) {
     // Process the frame based on the opcode
     if(opcode == WS_TEXT_FRAME) {
         _log(2, "Received text frame");
-        _log(3, "Payload: %O", frame_info["payload"]);
+        _log(4, "Payload: %O", frame_info["payload"]);
         err = catch(process_text_frame(frame_info));
     } else if(opcode == WS_CLOSE_FRAME) {
         _log(2, "Received close frame");
@@ -1150,14 +1155,6 @@ protected nomask string random_string(int length) {
  */
 void event_on_remove(object prev) {
     // shutdown(WS_CLOSE_GOING_AWAY) ;
-}
-
-/**
- * Forcefully shuts down the WebSocket connection.
- */
-void shutdown_force() {
-    websocket_close() ;
-    shutdown_socket() ;
 }
 
 /**

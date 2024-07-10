@@ -136,7 +136,7 @@ mixed call_back(mixed cb, mixed new_arg...) {
         fun = cb_fun ;
         final_arg = ({ new_arg... }) + curr ;
     } else
-        error("ERROR: Invalid function passed to call_back().") ;
+        error("ERROR: Invalid function passed to call_back(): "+identify(cb)) ;
 
     return catch((*fun)(final_arg...)) ;
 }

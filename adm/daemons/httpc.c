@@ -19,13 +19,13 @@ void setup() {
     set_log_level(1) ;
 }
 
-int fetch(mixed callback, string url, mapping headers) {
+varargs int fetch(mixed *callback, string method, string url, mapping headers, string body) {
     int serial ;
     mapping request ;
 
     _log(2, "Fetching " + url) ;
 
-    if(!mapp(request = http_request(url, "GET", headers)))
+    if(!mapp(request = http_request(url, method, headers, body)))
         error("Error creating request") ;
 
     if(nullp(callback))
@@ -34,14 +34,8 @@ int fetch(mixed callback, string url, mapping headers) {
     if(!stringp(url))
         error("Invalid URL") ;
 
-    if(!valid_function(callback)) {
-        object ob = previous_object() ;
-        if(!function_exists(callback, ob))
-            error("Invalid callback") ;
-    }
-
     serial = request["start_time"] ;
-    serials[serial] = ({ callback, previous_object() }) ;
+    serials[serial] = callback ;
 
     _log(3, "Recording serial %d for callback: %O %O", serial, callback, previous_object()) ;
 
@@ -50,7 +44,7 @@ int fetch(mixed callback, string url, mapping headers) {
 
 nomask void handle_shutdown(mapping server) {
     int serial ;
-    mixed *callback_info ;
+    mixed *callback ;
     mixed func ;
     object ob ;
     mixed err ;
@@ -63,28 +57,11 @@ nomask void handle_shutdown(mapping server) {
         return ;
     }
 
-    callback_info = serials[serial] ;
-    func = callback_info[0] ;
-    ob = callback_info[1] ;
+    callback = serials[serial] ;
 
-    if(!objectp(ob)) {
-        _log(2, "Invalid object for callback") ;
-        return ;
-    }
-
-    if(!valid_function(func)) {
-        if(!function_exists(func, ob)) {
-            _log(2, "Invalid function for callback") ;
-            return ;
-        }
-    }
-
-    _log(3, "Callback found. Executing %O on %O", func, ob) ;
-    err = catch {
-        if(valid_function(func))
-            (*func)(copy(server)) ;
-        else
-            call_other(ob, func, copy(server)) ;
-    } ;
-    _log(3, "Callback executed") ;
+    err = catch(call_back(callback, server["response"])) ;
+    if(err)
+        _log(2, "Error executing callback: %O", err) ;
+    else
+        _log(3, "Callback executed") ;
 }
