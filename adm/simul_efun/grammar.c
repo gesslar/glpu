@@ -135,6 +135,7 @@ string consolidate(int x, string str) {
         else return consolidate(x, implode(words[0..<2], " ")) +
             " [" + tmp + "]";
     }
+#if 0 TODO: Accommodate for new colour style
     /*
     if( words[0][0..1] == "%^" ) {
         string* parts;
@@ -159,6 +160,7 @@ string consolidate(int x, string str) {
 
     }
     */
+#endif
     if( member_array(lower_case(no_ansi(words[0])), ({"a", "an", "the", "one"}) ) > -1 ) words = words[1..];
     return (query_num(x) + " " + pluralize(implode(words, " ")));
 }
