@@ -14,15 +14,6 @@
 inherit STD_DISCORD_BOT ;
 
 void setup() {
-    set_bot_name("Chatter") ;
-    set_intents(
-        GATEWAY_INTENT_BITS_DEFAULT |
-        GATEWAY_INTENT_BITS_MESSAGE_CONTENT
-    ) ;
-                    /* #bots                  #general             */
-    restrict_channels("1260442252929404989") ;
-
-    set_log_level(1) ;
     start_bot() ;
 }
 

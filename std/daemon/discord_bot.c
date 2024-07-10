@@ -9,12 +9,7 @@
  * 2024/07/06 - Gesslar - Created
  */
 
-#include <daemons.h>
-#include <discord.h>
 #include <discord_bot.h>
-#include <socket.h>
-#include <socket_err.h>
-#include <origin.h>
 
 inherit STD_WS_CLIENT ;
 
@@ -23,11 +18,12 @@ public nomask int is_setup() ;
 void gateway_api_callback(mapping incoming) ;
 
 public nomask void start_bot(object bot) ;
-protected nomask void set_bot_name(string name) ;
+private nomask void set_bot_name(string name) ;
 public nomask string query_bot_name() ;
-public varargs nomask void restrict_channels(mixed channels...) ;
+public varargs nomask void set_restricted_channels(mixed channels...) ;
 private nomask string query_token() ;
-protected nomask void set_intents(int intents) ;
+private varargs nomask void set_intents(mixed intents...) ;
+private nomask void set_token(string token) ;
 public nomask int query_intents() ;
 void rest_api_callback(mapping response) ;
 
@@ -45,7 +41,7 @@ private nomask nosave mapping bot_data = null ;
 private nomask nosave string *restricted_channels = ({ }) ;
 
 void mudlib_setup() {
-    string file, token ;
+    string file ;
 
     ::mudlib_setup() ;
 
@@ -53,18 +49,28 @@ void mudlib_setup() {
     set_log_level(0) ;
 
     file = query_file_name() ;
-    if(stringp(token = mud_config("DISCORD_BOT_TOKENS")[file])) {
-        bot_data = ([
-            "token": token,
-            "name": file,
-            "intents": 0,
-        ]) ;
+
+    bot_data = ([]) ;
+
+    if(append(base_name(), ".c") != __FILE__) {
+        mapping discord_bot_config ;
+
+        bot_data = ([]) ;
+        discord_bot_config = mud_config("DISCORD_BOTS")[file] ;
+
+        set_bot_name(discord_bot_config["name"]) ;
+        set_intents(discord_bot_config["intents"]...) ;
+        set_token(discord_bot_config["token"]) ;
+        set_restricted_channels(discord_bot_config["restricted_channels"]...) ;
     }
 }
 
 void start_bot() {
     int id ;
     mixed err ;
+
+    if(!is_setup())
+        error("Bot not setup") ;
 
     if(gateway_request_id) {
         _log(1, "Already connecting to Discord Gateway API") ;
@@ -556,7 +562,7 @@ void rest_api_callback(mapping response) {
  *  The following functions are support functions for the bot
  */
 
-protected nomask void set_bot_name(string name) {
+private nomask void set_bot_name(string name) {
     if(!stringp(name)) error("Invalid argument 1 to set_bot_name()");
 
     set_log_prefix("("+name+")") ;
@@ -583,21 +589,42 @@ private nomask string query_token() {
     return bot_data["token"] ;
 }
 
-protected nomask void set_intents(int intents) {
+private nomask void set_token(string token) {
+    if(!stringp(token)) error("Invalid argument 1 to set_token()");
+
+    _log(3, "Setting token to %O", token) ;
+
+    bot_data["token"] = token ;
+}
+
+varargs private nomask void set_intents(mixed intents...) {
+    string intent_string ;
+    int intent_value ;
+
     if(!stringp(bot_data["name"])) error("Bot name must be set before intents") ;
 
     _log(3, "Setting intents to %O", intents) ;
 
-    if(nullp(intents)) error("Invalid argument 1 to set_intents()");
+    intents = filter(intents, (: stringp :)) ;
+    intents = filter(intents, (: !nullp(GATEWAY_INTENT_BITS[$1]) :) ) ;
 
-    bot_data["intents"] = intents ;
+    if(!sizeof(intents)) {
+        _log(2, "No valid intents to set") ;
+        return ;
+    }
+
+    foreach(intent_string in intents) {
+        intent_value |= GATEWAY_INTENT_BITS[intent_string] ;
+    }
+
+    bot_data["intents"] = intent_value ;
 }
 
 public nomask int query_intents() {
     return bot_data["intents"] ;
 }
 
-public varargs nomask void restrict_channels(mixed channels...) {
+public varargs nomask void set_restricted_channels(mixed channels...) {
     if(!pointerp(channels)) {
         _log(2, "Invalid argument 1 to restrict_channels()") ;
         return ;
