@@ -50,8 +50,8 @@ varargs void _log(mixed args...) {
     if(lvl > _log_level)
         return ;
 
-    while(message[<1] == '\n')
-        message = message[0..<2] ;
+    // while(message[<1] == '\n')
+    //     message = message[0..<2] ;
 
     if(_log_level >= 2) {
         string *funcs = call_stack(2), func ;

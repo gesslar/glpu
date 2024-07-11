@@ -23,7 +23,7 @@ string generate_uuid() {
  * @description Checks if a value is present in an array, mapping, or string.
  * @param {mixed} needle - The value to search for.
  * @param {mixed} haystack  - The array, mapping, or string to search in.
- * @return {int} 1 if the value is found, 0 otherwise.
+ * @returns {int} 1 if the value is found, 0 otherwise.
  */
 int of(mixed needle, mixed haystack) {
     switch(typeof(haystack)) {

@@ -7,6 +7,7 @@
 // 2024/02/18: Gesslar - Created
 
 inherit STD_DAEMON;
+inherit M_LOG ;
 
 private nosave float dir_delay = 0.02;
 private nosave float file_delay = 0.01;
@@ -63,8 +64,7 @@ void autodoc_scan() {
     files_to_check = ({});
 
     dir_call_out = call_out_walltime("check_dir", dir_delay);
-
-    write(repeat_string("\n", 20)) ;
+    debug(repeat_string("\n", 20)) ;
 }
 
 void check_dir() {
@@ -111,9 +111,10 @@ void parse_file(string file) {
     string *lines;
     int num, max;
     int in_jsdoc = 0;
-    string doc_type, function_tag, function_name, tag, info, line, out, output_file;
+    string doc_type, function_tag, function_def, tag, info, line ;
     int j;
-    string *result;
+
+    _log("Parsing file: %s", file) ;
 
     if(!file_exists(file))
         return;
@@ -122,12 +123,31 @@ void parse_file(string file) {
 
     max = sizeof(lines);
     num = 0;
-    out = "" ;
 
     for(; num < max; num++) {
         int jsdoc_function_found;
         string current_tag;
-        mapping curr = null ;
+        mapping curr ;
+        string *matches ;
+        string *tag_data ;
+        int new_tag_found ;
+
+        // If we encountered a new tag while iterating, we need to now save
+        // the currently gathered information into curr([]) ;
+        // And then keep on trucking!
+        if(new_tag_found == 1) {
+            curr = curr || ([]);
+            if(nullp(tag_data))
+                tag_data = ({}); // Ensure we have an array to append to
+            if(!of(current_tag, curr))
+                curr[current_tag] = ({ tag_data }) ;
+            else
+                // Append the new tag data to the existing tag data (if any
+                curr[current_tag] += ({ tag_data }) ;
+
+            new_tag_found = 0;
+            current_tag = null;
+        }
 
         line = lines[num];
 
@@ -136,6 +156,7 @@ void parse_file(string file) {
             in_jsdoc = 1;
             jsdoc_function_found = 0;
             current_tag = null;
+            tag_data = null ;
             curr = ([]); // Reset output buffer for new comment block
         }
 
@@ -154,54 +175,66 @@ void parse_file(string file) {
                 /* ********************************************************* */
                 for(j = num + 1; j < max; j++) {
                     line = lines[j];
-                    result = pcre_extract(line, function_detect_regex);
-                    if(sizeof(result) == 1) {
-                        function_name = result[0];
-                        if(function_name == function_tag) {
+                    matches = pcre_extract(line, function_detect_regex);
+                    if(sizeof(matches) == 1) {
+                        function_def = matches[0];
+                        if(function_def == function_tag) {
                             // Ensure the line ends with '{' and remove it
-                            line = chop(trim(line), "{", -1);
-                            out += "Function Definition: " + line + "\n";
-                            num = j; // Move the outer loop index to the function definition line
+                            line = trim(chop((line), "{", -1));
+                            curr["function_def"] = line ;
+                            // Move the outer loop index to the function
+                            //  definition line
+                            num = j;
                             break;
                         }
                     }
                 }
 
-                // If a matching function is not found, skip to the next doc/function check
-                if(out == "") {
+                // If a matching function is not found, skip to the next doc/
+                // function check
+                if(!sizeof(curr)) {
                     continue;
                 }
 
+                /* ********************************************************* */
+                /* NOW THAT WE HAVE THE FUNCTION DEFINITION, WE CAN ADD THE  */
+                /* DOCUMENTATION TO THE APPROPRIATE LOCATION IN THE docs([]) */
+                /* ********************************************************* */
                 // Write the extracted information to the appropriate directory
                 // TODO: Change the below to ultimately add to a mapping as docs[function_type][function_name]
                 // output_file = "/doc/autodoc/" + "dest_dir" + "/" + function_name + ".txt";
                 // assure_dir("/doc/autodoc/" + dest_dir);
                 // write_file(output_file, out, 1);
 
-                // Print the extracted information for debugging purposes
+                if(!of(doc_type, docs))
+                    docs[doc_type] = ([]);
+
+                docs[doc_type][function_tag] = curr ;
+                printf("Docs for %s: %O\n", function_tag, docs[doc_type][function_tag]) ;
             } else {
-                string *matches ;
                 /* ********************************************************* */
                 /* THIS IS THE BEGINNING OF THE JSDOC COMMENT BLOCK          */
-                /* Format: @function_type function_name                      */
+                /* Format: @function_type function_tag                       */
                 /* ********************************************************* */
                 // Check for the first tag to determine the document type and
-                matches = pcre_extract(line, jsdoc_function_regex) ;
-                if(sizeof(matches) > 0) {
-                    /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER docs([])  */
-                    doc_type = matches[0];
-                    /* UNLESS IT'S IN THE IGNORE LIST, THEN, NEVERMIND       */
-                    if(of(doc_type, jsdoc_function_ignore_tags) > -1) {
-                        in_jsdoc = 0;
+                if(!pcre_match(line, tag_regex) && pcre_match(line, jsdoc_function_regex)) {
+                    matches = pcre_extract(line, jsdoc_function_regex) ;
+                    if(sizeof(matches) > 0) {
+                        /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER docs([])  */
+                        /* UNLESS IT'S IN THE IGNORE LIST, THEN, NEVERMIND       */
+                        if(of(matches[0], jsdoc_function_ignore_tags)) {
+                            in_jsdoc = 0;
+                            continue;
+                        }
+
+                        doc_type = matches[0];
+                        function_tag = matches[1];
+                        _log("\e<0112>Found function name: \e<ul1>%s\e<res>", function_tag) ;
+                        // we can continue now and parse the rest in the next
+                        // iteration
                         continue;
                     }
-
-                    function_tag = matches[1];
-                    // we can continue now and parse the rest in the next
-                    // iteration
-                    continue;
                 }
-
                 /* ********************************************************* */
                 /* THIS IS THE MIDDLE OF THE JSDOC COMMENT BLOCK             */
                 /* WE ARE NOW LOOKING FOR A TAG                              */
@@ -214,11 +247,9 @@ void parse_file(string file) {
                         if(pcre_match(line, tag_regex)) {
                             matches = pcre_extract(line, tag_regex) ;
                             if(sizeof(matches) > 0) {
-                                out += sprintf("%s: %s\n",
-                                    capitalize(matches[0]),
-                                    matches[1]
-                                );
                                 current_tag = matches[0];
+                                tag_data = ({ matches[1] });
+                                _log("\e<0202>=>\e<res> Found tag: \e<0202>\e<ul1>%s\e<res>", current_tag) ;
                             }
                         }
                     /* ***************************************************** */
@@ -230,7 +261,9 @@ void parse_file(string file) {
                         // If so, we need to reset so we can get the new tag's
                         // information.
                         if(pcre_match(line, "^\\s*\\*\\s+@") == true) {
-                            current_tag = null;
+                            // Reset the current tag and tag data
+                            _log(1, "\e<0032>=>\e<res> Found new tag, resetting tag to nothing") ;
+                            new_tag_found = 1 ;
                             num--;
                             continue;
                         }
@@ -239,7 +272,9 @@ void parse_file(string file) {
                         // tag, we may have unexpectedly reached the end of the
                         // JSDoc comment block.
                         if(pcre_match(line, "^\\s*$") == true) {
+                            _log(1, "\e<0160>=>\e<res> Found blank line, resetting tag to nothing") ;
                             current_tag = null;
+                            tag_data = null;
                             continue;
                         }
 
@@ -251,7 +286,8 @@ void parse_file(string file) {
                         if(pcre_match(line, continue_regex)) {
                             matches = pcre_extract(line, continue_regex) ;
                             if(sizeof(matches) > 0) {
-                                out += matches[0] + "\n";
+                                _log("\e<0220>=>\e<res> Found more info for tag: \e<0220>\e<ul1>%s\e<res>", current_tag) ;
+                                tag_data += ({ matches[0] });
                             }
                         }
                     }
