@@ -157,5 +157,6 @@ string user_path(string name) ;
 
 // File: util
 string generate_uuid() ;
+int of(mixed needle, mixed haystack) ;
 
 #endif // __SIMUL_EFUN_H__
