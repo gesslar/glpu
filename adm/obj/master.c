@@ -87,13 +87,17 @@ void tune_into_error() {
 protected void log_error(string file, string message) {
     string username;
 
-    if(this_player()) username = this_player()->query_proper_name();
+    if(this_player()) username = query_privs(this_player());
+    else username = "(none)";
+
     if(stringp(username)) {
         string path = user_path(username);
         if(directory_exists(path)) {
             write_file(path + "log", "\n" + message);
+        }
+        if(devp(this_player())) {
             if(this_player()->query_env("error_output") != "disabled")
-                tell_object(this_player(), message);
+            tell_object(this_player(), message);
         }
     }
 
@@ -176,6 +180,10 @@ void error_handler(mapping mp, int caught) {
     // Strip trailing \n, and indent nicely
     what = replace_string(what[0.. < 2], "\n", "\n         *");
 
+    // TODO: This isn't working for some reason, so we'll return to this
+    // temporarily notifying all admins of errors in real time, regardless
+    // of the kind.
+#if 0
     CHAN_D->chat(
         "error",
         query_privs(),
@@ -185,6 +193,14 @@ void error_handler(mapping mp, int caught) {
             trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
         )
     );
+#endif
+    // TODO: Temporary notifications, undo when above fixed
+    message("error", sprintf("(%s) Error logged %s\n%s\n",
+        logfile,
+        what,
+        trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
+    ), filter(users(), (: devp :))) ;
+
 }
 
 protected void crash(string crash_message, object command_giver, object current_object) {
