@@ -6,29 +6,30 @@
 //
 // 2024/02/18: Gesslar - Created
 
-inherit STD_DAEMON;
+inherit STD_DAEMON ;
 inherit M_LOG ;
 
-private nosave float dir_delay = 0.02;
-private nosave float file_delay = 0.01;
-
-private nosave float start_time = 0;
-
-private nosave string *dirs_to_check = ({});
-private nosave string *files_to_check = ({});
-
-private nosave int dir_call_out = 0;
-private nosave int file_call_out = 0;
-
+// Function prototypes
 private nomask int check_running();
 private nomask void finish_scan();
 private nomask void parse_file(string file);
 
+// Variables
+private nosave nomask float dir_delay = 0.02 ;
+private nosave nomask float file_delay = 0.01 ;
+
+private nosave nomask float start_time = 0.0 ;
+
+private nosave nomask string *dirs_to_check = ({});
+private nosave nomask string *files_to_check = ({});
+
+private nosave nomask int scanning = null ;
+
 private nosave nomask string jsdoc_function_regex,
-       *jsdoc_function_ignore_tags,
-       *tags, tag_regex,
-       continue_regex,
-       function_detect_regex ;
+                            *jsdoc_function_ignore_tags,
+                            *tags, tag_regex,
+                             continue_regex,
+                             function_detect_regex ;
 
 private nosave nomask mapping docs = ([]);
 
@@ -51,82 +52,82 @@ void setup() {
     ;
 }
 
-void autodoc_scan() {
-    mixed *config;
+public nomask void autodoc_scan() {
+    mixed *config ;
 
     if(check_running() == true)
-        return;
+        return ;
+
+    _log(1, "Starting autodoc scan") ;
 
     start_time = time_frac();
     dirs_to_check = mud_config("AUTODOC_DIRS");
+    scanning = sizeof(dirs_to_check) ;
 
     docs = ([]);
     files_to_check = ({});
 
-    dir_call_out = call_out_walltime("check_dir", dir_delay);
-    debug(repeat_string("\n", 20)) ;
+    call_out_walltime("check_dir", dir_delay);
 }
 
-void check_dir() {
-    string *files;
+private nomask void check_dir() {
+    string *files ;
     string source_dir ;
     mapping docs = ([]);
 
-    if(check_running() == false)
-        return finish_scan();
+    scanning -= 1 ;
 
-    source_dir = dirs_to_check[0];
+    source_dir = dirs_to_check[0] ;
     source_dir = append(source_dir, "/");
     files = get_dir(append(source_dir, "*.c"));
     files = map(files, (: $2 + $1 :), source_dir);
-    files_to_check += files;
+    files_to_check += files ;
+    scanning += sizeof(files) ;
 
-    file_call_out = call_out_walltime("check_file", file_delay);
+    call_out_walltime("check_file", file_delay);
 
-    dirs_to_check = dirs_to_check[1..];
-    if(sizeof(dirs_to_check) == 0)
-        dir_call_out = 0;
-    else
-        dir_call_out = call_out_walltime("check_dir", dir_delay);
+    dirs_to_check = dirs_to_check[1..] ;
+
+    if(!sizeof(dirs_to_check))
+        return finish_scan() ;
+
+    call_out_walltime("check_dir", dir_delay);
 }
 
-void check_file() {
-    string file;
+private nomask void check_file() {
+    string file ;
+    int result ;
 
-    if(check_running() == false)
-        return finish_scan();
-
-    file = files_to_check[0];
-    files_to_check = files_to_check[1..];
-
-    if(sizeof(files_to_check) == 0)
-        file_call_out = 0;
-    else
-        file_call_out = call_out_walltime("check_file", file_delay);
+    scanning -= 1 ;
+    file = files_to_check[0] ;
+    files_to_check = files_to_check[1..] ;
 
     parse_file(file);
+
+    if(!sizeof(files_to_check))
+        return finish_scan() ;
+
+    call_out_walltime("check_file", file_delay);
 }
 
-void parse_file(string file) {
-    string *lines;
-    int num, max;
-    int in_jsdoc = 0;
+private nomask void parse_file(string file) {
+    string *lines ;
+    int num, max ;
+    int in_jsdoc = 0 ;
     string doc_type, function_tag, function_def, tag, info, line ;
-    int j;
-
-    _log("Parsing file: %s", file) ;
+    int j ;
 
     if(!file_exists(file))
-        return;
+        return ;
 
     lines = explode(read_file(file), "\n");
 
     max = sizeof(lines);
-    num = 0;
+    num = 0 ;
 
-    for(; num < max; num++) {
-        int jsdoc_function_found;
-        string current_tag;
+    for(; num < max ; num++) {
+        int jsdoc_function_found ;
+        string current_tag ;
         mapping curr ;
         string *matches ;
         string *tag_data ;
@@ -145,17 +146,17 @@ void parse_file(string file) {
                 // Append the new tag data to the existing tag data (if any
                 curr[current_tag] += ({ tag_data }) ;
 
-            new_tag_found = 0;
-            current_tag = null;
+            new_tag_found = 0 ;
+            current_tag = null ;
         }
 
-        line = lines[num];
+        line = lines[num] ;
 
         // Check for the start of a JSDoc-style comment
         if(pcre_match(line, "^/\\*\\*") == true) {
-            in_jsdoc = 1;
-            jsdoc_function_found = 0;
-            current_tag = null;
+            in_jsdoc = 1 ;
+            jsdoc_function_found = 0 ;
+            current_tag = null ;
             tag_data = null ;
             curr = ([]); // Reset output buffer for new comment block
         }
@@ -166,7 +167,7 @@ void parse_file(string file) {
             /* THIS IS THE END OF THE JSDOC COMMENT BLOCK                    */
             /* ************************************************************* */
             if(pcre_match(line, "^\\s*\\*/") == true) {
-                in_jsdoc = 0;
+                in_jsdoc = 0 ;
 
                 /* ********************************************************* */
                 /* NOW THAT WE HAVE FOUND THE END OF THE JSDOC COMMENT       */
@@ -174,18 +175,18 @@ void parse_file(string file) {
                 /* EXTRACT IT FOR OUR DOCUMENTATION.                         */
                 /* ********************************************************* */
                 for(j = num + 1; j < max; j++) {
-                    line = lines[j];
+                    line = lines[j] ;
                     matches = pcre_extract(line, function_detect_regex);
                     if(sizeof(matches) == 1) {
-                        function_def = matches[0];
+                        function_def = matches[0] ;
                         if(function_def == function_tag) {
                             // Ensure the line ends with '{' and remove it
                             line = trim(chop((line), "{", -1));
                             curr["function_def"] = line ;
                             // Move the outer loop index to the function
                             //  definition line
-                            num = j;
-                            break;
+                            num = j ;
+                            break ;
                         }
                     }
                 }
@@ -193,24 +194,18 @@ void parse_file(string file) {
                 // If a matching function is not found, skip to the next doc/
                 // function check
                 if(!sizeof(curr)) {
-                    continue;
+                    continue ;
                 }
 
                 /* ********************************************************* */
                 /* NOW THAT WE HAVE THE FUNCTION DEFINITION, WE CAN ADD THE  */
                 /* DOCUMENTATION TO THE APPROPRIATE LOCATION IN THE docs([]) */
                 /* ********************************************************* */
-                // Write the extracted information to the appropriate directory
-                // TODO: Change the below to ultimately add to a mapping as docs[function_type][function_name]
-                // output_file = "/doc/autodoc/" + "dest_dir" + "/" + function_name + ".txt";
-                // assure_dir("/doc/autodoc/" + dest_dir);
-                // write_file(output_file, out, 1);
-
                 if(!of(doc_type, docs))
                     docs[doc_type] = ([]);
 
                 docs[doc_type][function_tag] = curr ;
-                printf("Docs for %s: %O\n", function_tag, docs[doc_type][function_tag]) ;
+                // printf("Docs for %s: %O\n", function_tag, docs[doc_type][function_tag]) ;
             } else {
                 /* ********************************************************* */
                 /* THIS IS THE BEGINNING OF THE JSDOC COMMENT BLOCK          */
@@ -223,16 +218,15 @@ void parse_file(string file) {
                         /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER docs([])  */
                         /* UNLESS IT'S IN THE IGNORE LIST, THEN, NEVERMIND       */
                         if(of(matches[0], jsdoc_function_ignore_tags)) {
-                            in_jsdoc = 0;
-                            continue;
+                            in_jsdoc = 0 ;
+                            continue ;
                         }
 
-                        doc_type = matches[0];
-                        function_tag = matches[1];
-                        _log("\e<0112>Found function name: \e<ul1>%s\e<res>", function_tag) ;
+                        doc_type = matches[0] ;
+                        function_tag = matches[1] ;
                         // we can continue now and parse the rest in the next
                         // iteration
-                        continue;
+                        continue ;
                     }
                 }
                 /* ********************************************************* */
@@ -247,9 +241,8 @@ void parse_file(string file) {
                         if(pcre_match(line, tag_regex)) {
                             matches = pcre_extract(line, tag_regex) ;
                             if(sizeof(matches) > 0) {
-                                current_tag = matches[0];
+                                current_tag = matches[0] ;
                                 tag_data = ({ matches[1] });
-                                _log("\e<0202>=>\e<res> Found tag: \e<0202>\e<ul1>%s\e<res>", current_tag) ;
                             }
                         }
                     /* ***************************************************** */
@@ -262,20 +255,18 @@ void parse_file(string file) {
                         // information.
                         if(pcre_match(line, "^\\s*\\*\\s+@") == true) {
                             // Reset the current tag and tag data
-                            _log(1, "\e<0032>=>\e<res> Found new tag, resetting tag to nothing") ;
                             new_tag_found = 1 ;
                             num--;
-                            continue;
+                            continue ;
                         }
 
                         // If we have a blank line, we can reset the current
                         // tag, we may have unexpectedly reached the end of the
                         // JSDoc comment block.
                         if(pcre_match(line, "^\\s*$") == true) {
-                            _log(1, "\e<0160>=>\e<res> Found blank line, resetting tag to nothing") ;
-                            current_tag = null;
-                            tag_data = null;
-                            continue;
+                            current_tag = null ;
+                            tag_data = null ;
+                            continue ;
                         }
 
                         // If we haven't reached a new tag and we haven't
@@ -286,7 +277,6 @@ void parse_file(string file) {
                         if(pcre_match(line, continue_regex)) {
                             matches = pcre_extract(line, continue_regex) ;
                             if(sizeof(matches) > 0) {
-                                _log("\e<0220>=>\e<res> Found more info for tag: \e<0220>\e<ul1>%s\e<res>", current_tag) ;
                                 tag_data += ({ matches[0] });
                             }
                         }
@@ -297,10 +287,13 @@ void parse_file(string file) {
     }
 }
 
-void finish_scan() {
-    debug("Autodoc scan finished in " + (time_frac() - start_time) + "ms.");
+private nomask void finish_scan() {
+    if(check_running() == true)
+        return false ;
+
+    _log("Autodoc scan finished in %.2fs", time_frac() - start_time) ;
 }
 
-int check_running() {
-    return sizeof(dirs_to_check) > 0 || sizeof(files_to_check) > 0;
+public nomask int check_running() {
+    return !nullp(scanning) && scanning > 0 ;
 }
