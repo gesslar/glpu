@@ -13,15 +13,15 @@ private nosave float file_delay = 0.01;
 
 private nosave float start_time = 0;
 
-private nosave mixed *dirs_to_check = ({});
-private nosave mixed *files_to_check = ({});
+private nosave string *dirs_to_check = ({});
+private nosave string *files_to_check = ({});
 
 private nosave int dir_call_out = 0;
 private nosave int file_call_out = 0;
 
 private nomask int check_running();
 private nomask void finish_scan();
-private nomask void parse_file(string *file);
+private nomask void parse_file(string file);
 
 string jsdoc_function_regex,
        *jsdoc_function_ignore_tags,
@@ -58,33 +58,29 @@ void autodoc_scan() {
     start_time = time_frac();
     dirs_to_check = mud_config("AUTODOC_DIRS");
 
+    files_to_check = ({});
+
     dir_call_out = call_out_walltime("check_dir", dir_delay);
 
     write(repeat_string("\n", 20)) ;
 }
 
 void check_dir() {
-    mixed *current;
     string *files;
-    string source_dir, dest_dir;
+    string source_dir ;
     mapping docs = ([]);
 
     if (check_running() == false)
         return finish_scan();
 
-    current = dirs_to_check[0];
-    source_dir = current[0];
-    dest_dir = current[1];
-
-    assure_dir(dest_dir);
-
+    source_dir = dirs_to_check[0];
     source_dir = append(source_dir, "/");
     files = get_dir(append(source_dir, "*.c"));
     files = map(files, (: $2 + $1 :), source_dir);
-    foreach (string file in files)
-        files_to_check += ({ ({ file, dest_dir }) });
+    files_to_check += files;
 
     file_call_out = call_out_walltime("check_file", file_delay);
+
     dirs_to_check = dirs_to_check[1..];
     if (sizeof(dirs_to_check) == 0)
         dir_call_out = 0;
@@ -93,7 +89,7 @@ void check_dir() {
 }
 
 void check_file() {
-    string *file;
+    string file;
 
     if (check_running() == false)
         return finish_scan();
@@ -109,17 +105,13 @@ void check_file() {
     parse_file(file);
 }
 
-void parse_file(string *file_info) {
+void parse_file(string file) {
     string *lines;
-    string file, dest_dir;
     int num, max;
     int in_jsdoc = 0;
     string doc_type, function_name, tag, info, line, out, output_file;
     int j;
     string *result;
-
-    file = file_info[0];
-    dest_dir = file_info[1];
 
     if (!file_exists(file))
         return;
@@ -172,9 +164,10 @@ void parse_file(string *file_info) {
                 }
 
                 // Write the extracted information to the appropriate directory
-                output_file = "/doc/autodoc/" + dest_dir + "/" + function_name + ".txt";
-                assure_dir("/doc/autodoc/" + dest_dir);
-                write_file(output_file, out, 1);
+                // TODO: Change the below to ultimately add to a mapping as docs[function_type][function_name]
+                // output_file = "/doc/autodoc/" + "dest_dir" + "/" + function_name + ".txt";
+                // assure_dir("/doc/autodoc/" + dest_dir);
+                // write_file(output_file, out, 1);
 
                 // Print the extracted information for debugging purposes
             } else {
@@ -182,6 +175,8 @@ void parse_file(string *file_info) {
                 // Check for the first tag to determine the document type and directory
                 reg = jsdoc_function_regex;
                 if (sizeof(matches = pcre_extract(line, reg)) > 0) {
+                    // Doctype will be the docs[doctype] to which we add
+                    // function_name with info as its value
                     doc_type = matches[0];
                     // If this is not the sort of function we are interested
                     // in, skip ahead to the next JSDoc block
@@ -190,7 +185,6 @@ void parse_file(string *file_info) {
                         continue;
                     }
 
-                    dest_dir = doc_type;
                     tag = matches[1];
                     out += "Function: " + tag + "\n";
                     jsdoc_function_found = 1;
