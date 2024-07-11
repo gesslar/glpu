@@ -1,10 +1,16 @@
-// /adm/daemons/autodoc.c
-// This is Gesslar's attempt at an autodocumentation system.
-//
-// Created:     2024/02/18: Gesslar
-// Last Change: 2024/02/18: Gesslar
-//
-// 2024/02/18: Gesslar - Created
+/**
+ * @file /adm/daemons/autodoc.c
+ * @description Autodocumentation system that parses JSDoc-style comments in
+ *              LPC source files and generates documentation in a structured
+ *              format.
+ *
+ * @created 2024/02/18 - Gesslar
+ * @last_modified 2024/07/11 - Gesslar
+ *
+ * @history
+ * 2024/02/18 - Gesslar - Created
+ * 2024/07/11 - Gesslar - Entirely rewritten from Lima-style parsing to JSDoc
+ */
 
 inherit STD_DAEMON ;
 inherit M_LOG ;
@@ -34,6 +40,8 @@ private nosave nomask string jsdoc_function_regex,
 private nosave nomask mapping docs = ([]);
 
 void setup() {
+    set_log_level(1) ;
+
     jsdoc_function_regex = "^\\s\\*\\s+@(\\w+)\\s+(\\w+)\\s*$" ;
 
     jsdoc_function_ignore_tags = ({ "function" }) ;
@@ -205,18 +213,21 @@ private nomask void parse_file(string file) {
                     docs[doc_type] = ([]);
 
                 docs[doc_type][function_tag] = curr ;
-                // printf("Docs for %s: %O\n", function_tag, docs[doc_type][function_tag]) ;
             } else {
                 /* ********************************************************* */
                 /* THIS IS THE BEGINNING OF THE JSDOC COMMENT BLOCK          */
                 /* Format: @function_type function_tag                       */
                 /* ********************************************************* */
                 // Check for the first tag to determine the document type and
-                if(!pcre_match(line, tag_regex) && pcre_match(line, jsdoc_function_regex)) {
+                if(!pcre_match(line, tag_regex) &&
+                    pcre_match(line, jsdoc_function_regex)) {
                     matches = pcre_extract(line, jsdoc_function_regex) ;
                     if(sizeof(matches) > 0) {
-                        /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER docs([])  */
-                        /* UNLESS IT'S IN THE IGNORE LIST, THEN, NEVERMIND       */
+                        /* ************************************************* */
+                        /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER       */
+                        /* docs([]) UNLESS IT'S IN THE IGNORE LIST, THEN,    */
+                        /* NEVERMIND.                                        */
+                        /* ************************************************* */
                         if(of(matches[0], jsdoc_function_ignore_tags)) {
                             in_jsdoc = 0 ;
                             continue ;
