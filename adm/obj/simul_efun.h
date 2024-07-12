@@ -124,6 +124,7 @@ varargs string substr(string str, string sub, int reverse) ;
 varargs mixed from_string(string str, int flag) ;
 string stringify(mixed val) ;
 string add_commas(mixed number) ;
+string reverse_string(string str) ;
 
 // File: system
 int port() ;

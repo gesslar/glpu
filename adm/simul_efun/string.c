@@ -376,3 +376,13 @@ string add_commas(mixed number) {
 
     return result;
 }
+
+/**
+ * @simul_efun reverse_string
+ * @description Reverses a string.
+ * @param {string} str - The string to reverse.
+ * @returns {string} The reversed string.
+ */
+string reverse_string(string str) {
+    return implode(reverse_array(explode(str, "")), "");
+}
