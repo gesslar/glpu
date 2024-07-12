@@ -437,7 +437,6 @@ void enter_world(string str) {
     user->set_body(body);
     user->set_gmcp_client(login_gmcp_data["client"]);
     user->set_gmcp_supports(login_gmcp_data["supports"]);
-    debug("environ data = %O", environ_data) ;
     user->set_environ(environ_data) ;
     if(body->gmcp_enabled()) {
         GMCP_D->init_gmcp(body) ;
