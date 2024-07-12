@@ -394,8 +394,8 @@ string reverse_string(string str) {
  * @param {string} str - The string to search in.
  * @param {string} sub - The substring to search for.
  * @param {int} [start=-1] - The starting position to search from.
+ * @returns {int} The position of the substring in the string, or -1 if not found.
  */
-// @simul_efun
 varargs int reverse_strsrch(string str, string sub, int start) {
     int sub_len, str_len;
     int i;
