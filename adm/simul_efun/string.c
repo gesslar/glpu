@@ -386,3 +386,39 @@ string add_commas(mixed number) {
 string reverse_string(string str) {
     return implode(reverse_array(explode(str, "")), "");
 }
+
+/**
+ * @simul_efun reverse_strsrch
+ * @description Searches for a substring in a string starting from a given position
+ *              and moving backwards.
+ * @param {string} str - The string to search in.
+ * @param {string} sub - The substring to search for.
+ * @param {int} [start=-1] - The starting position to search from.
+ */
+// @simul_efun
+varargs int reverse_strsrch(string str, string sub, int start) {
+    int sub_len, str_len;
+    int i;
+
+    if (!str) error("reverse_strsrch: Missing argument 1 for reverse_strsrch");
+    if (!sub) error("reverse_strsrch: Missing argument 2 for reverse_strsrch");
+    if (!start) start = 0;
+
+    str_len = strlen(str);
+    sub_len = strlen(sub);
+
+    if (str_len < 1) return -1;
+    if (sub_len < 1) return -1;
+    if (sub_len > str_len) return -1;
+    if (start < 0) return -1;
+    // Ensure start does not exceed string length
+    if (start >= str_len) start = str_len - 1;
+
+    for (i = str_len - start - 1; i >= 0; i--) {
+        if (i + sub_len > str_len) continue;
+        if (str[i..i+sub_len-1] == sub)
+            return i;
+    }
+
+    return -1;
+}
