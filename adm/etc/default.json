@@ -28,9 +28,10 @@
     },
     "USE_MASS" : true,
     "USE_BULK" : true,
-    "AUTODOC_DIRS" : [
+    "AUTODOC_SOURCE_DIRS" : [
         "/adm/simul_efun/"
     ],
+    "AUTODOC_ROOT" : "/doc/autodoc/",
     "CURRENCY" : [
         [ "copper", 1 ],
         [ "silver", 10 ],
