@@ -72,6 +72,7 @@ void remove_module(string module);
 object get_module(string module);
 
 private nosave mapping modules = ([]);
+private nosave mapping environ_data = ([]) ;
 private nosave int finished_setup = 0 ;
 
 /* Misc functions */
@@ -602,6 +603,28 @@ object get_module(string module) {
         return 0 ;
 
     return modules[module] ;
+}
+
+void set_environ(mapping data) {
+    if(base_name(previous_object()) != LOGIN_OB)
+        return;
+
+    if(!mapp(data))
+        return ;
+
+    environ_data = data ;
+}
+
+mixed query_environ(string key) {
+    return environ_data[key] ;
+}
+
+mapping query_all_environ() {
+    return copy(environ_data) ;
+}
+
+void receive_environ(string var, mixed value) {
+    environ_data[var] = value ;
 }
 
 int is_pc() { return 1 ; }
