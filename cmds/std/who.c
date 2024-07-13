@@ -28,15 +28,7 @@ mixed main(object caller, string arg)
 
     /* Fixed your error. Tricky */
 
-    ret +=
-    "\t _       _____   _    _         _ \n"
-    "\t| |     |  __ \\ | |  | |       (_)\n"
-    "\t| |     | |__) || |  | | _ __   _ \n"
-    "\t| |     |  ___/ | |  | || '_ \\ | |\n"
-    "\t| |____ | |     | |__| || | | || |\n"
-    "\t|______||_|      \\____/ |_| |_||_|\n\n\n";
-
-
+    ret += read_file("/adm/etc/logo") + "\n\n";
 
     ret += sprintf("%10s  %10s\n\n", "Username [* editing, + in input]", "Idle");
 
