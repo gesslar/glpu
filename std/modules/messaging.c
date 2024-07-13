@@ -158,3 +158,7 @@ void do_receive(string message, int message_type) {
         telnet_ga();
     }
 }
+
+void send_ga() {
+    telnet_ga();
+}

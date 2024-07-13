@@ -27,7 +27,10 @@ void edit(object tp, string source_file, mixed *callback) {
     if(nullp(callback))
         error("ERROR: No valid callback to edit_file()." );
 
-    text = "" ;
+    text =
+"
+    Enter text. When finished, enter '.' on a blank line, or '#' to abort.
+  ---------------------------------------------------------------------------" ;
 
     if(stringp(source_file)) {
         if(!file_exists(source_file)) {
@@ -36,16 +39,17 @@ void edit(object tp, string source_file, mixed *callback) {
 
         if(file_size(source_file) > get_config(__MAX_READ_FILE_SIZE__))
             error("ERROR: File is too large to read: " + source_file);
-        text = read_file(source_file);
+        text += read_file(source_file);
     }
+
+    lines = map(explode(text, "\n"), (: "] " + $1 :)) ;
 
     if(sizeof(text))
         text = append(text, "\n");
 
     temp = temp_file(tp) ;
 
-    tell(tp, text) ;
-    tell(tp, "] ") ;
+    tell(tp, text + "] ") ;
 
     input_to("parse_input", 0, tp, text, temp, callback) ;
 }
@@ -55,8 +59,8 @@ void parse_input(string input, object tp, string text, string file, mixed *callb
     string temp ;
     int i;
 
-    if(!input) {
-        this_player()->tell("Aborted.\n") ;
+    if(!input || input == "#") {
+        tell(tp, "Aborted.\n") ;
         remove() ;
         return ;
     }
@@ -67,7 +71,8 @@ void parse_input(string input, object tp, string text, string file, mixed *callb
         return ;
     }
 
-    text += input + "\n" ;
     tell(tp, "] ") ;
+
+    text += input + "\n" ;
     input_to("parse_input", 0, tp, text, file, callback) ;
 }
