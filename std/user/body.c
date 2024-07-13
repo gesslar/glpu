@@ -535,7 +535,7 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!is_member(query_privs(previous_object()), "admin"))
+    if(!is_member(query_privs(previous_object()), "admin") && this_player() != this_object())
         return 0;
     else
         return command(cmd);
