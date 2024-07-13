@@ -517,7 +517,7 @@ private nomask void process_handshake(buffer buf) {
  * Checks if the buffer contains a complete WebSocket frame.
  *
  * @param {buffer} buf - The buffer to check.
- * @returns {int} 1 if the message is complete, 0 otherwise.
+ * @returns {int} - 1 if the message is complete, 0 otherwise.
  */
 private nomask int is_message_complete(buffer buf) {
     int payload_length;
@@ -569,7 +569,7 @@ private nomask int is_message_complete(buffer buf) {
  * Parses a WebSocket frame from the buffer.
  *
  * @param {buffer} buf - The buffer containing the WebSocket frame.
- * @returns {mapping} A mapping with the frame information.
+ * @returns {mapping} - A mapping with the frame information.
  */
 private nomask mapping parse_websocket_frame(buffer buf) {
     mapping result = ([]);
@@ -813,7 +813,7 @@ private nomask void process_unknown_frame(mapping frame_info) {
  *
  * @param {int} opcode - The opcode for the frame.
  * @param {...mixed} args - The arguments for the frame.
- * @returns {buffer} The formatted frame.
+ * @returns {buffer} - The formatted frame.
  */
 private nomask varargs buffer format_frame(int opcode, mixed args...) {
     int len, i, frame_offset;
@@ -908,7 +908,7 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
  *
  * @param {buffer} data - The data buffer to be masked.
  * @param {buffer} mask - The masking key.
- * @returns {buffer} The masked data buffer.
+ * @returns {buffer} - The masked data buffer.
  */
 private nomask buffer apply_mask(buffer data, buffer mask) {
     int length = sizeof(data);
@@ -925,7 +925,7 @@ private nomask buffer apply_mask(buffer data, buffer mask) {
  * Unformats a WebSocket frame from the given message buffer.
  *
  * @param {buffer} message - The message buffer containing the WebSocket frame.
- * @returns {string} The unformatted frame as a string.
+ * @returns {string} - The unformatted frame as a string.
  */
 private string unformat_frame(buffer message) {
     int len, i, frame_offset;
@@ -979,7 +979,7 @@ private string unformat_frame(buffer message) {
  *
  * @param {int} frame_opcode - The opcode for the frame.
  * @param {...mixed} args - The arguments for the frame.
- * @returns {int} 1 if the message was sent successfully, 0 otherwise.
+ * @returns {int} - 1 if the message was sent successfully, 0 otherwise.
  */
 protected nomask varargs int websocket_message(int frame_opcode, mixed args...) {
     buffer frame;
@@ -1076,7 +1076,7 @@ protected nomask void send_pong(string payload) {
  *
  * @param {int} code - The close code.
  * @param {string} reason - The reason for closing the connection.
- * @returns {int} 1 if the connection was closed successfully, 0 otherwise.
+ * @returns {int} - 1 if the connection was closed successfully, 0 otherwise.
  */
 varargs protected nomask int websocket_close(int code: (: WS_CLOSE_NORMAL :), string reason: (: null :)) {
     switch(code) {
@@ -1128,7 +1128,7 @@ varargs protected nomask int websocket_close(int code: (: WS_CLOSE_NORMAL :), st
  * Generates a random string of the specified length.
  *
  * @param {int} length - The length of the string to generate.
- * @returns {string} A random string of the specified length.
+ * @returns {string} - A random string of the specified length.
  */
 protected nomask string random_string(int length) {
     string result = "";

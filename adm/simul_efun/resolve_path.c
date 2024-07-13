@@ -16,7 +16,7 @@
  *              special cases such as user directories and relative paths.
  * @param {string} Current - The current path.
  * @param {string} Next - The next path to resolve.
- * @returns {string} The resolved absolute path.
+ * @returns {string} - The resolved absolute path.
  */
 string resolve_path(string Current, string Next)
 {

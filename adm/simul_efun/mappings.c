@@ -7,7 +7,7 @@ private string regex = "( \\/\\* sizeof\\(\\) == \\d+ \\*/)" ;
  * @description Returns a formatted string representation of a mapping, removing
  *              any size annotations.
  * @param {mapping} map - The mapping to format.
- * @returns {string} The formatted string representation of the mapping.
+ * @returns {string} - The formatted string representation of the mapping.
  */
 string pretty_map(mapping map) {
     string str = sprintf("%O\n", map) ;
@@ -36,7 +36,7 @@ string pretty_map(mapping map) {
  * @description Selects an element from a weighted mapping based on their weights.
  * @param {mapping} m - The weighted mapping to select from, where keys are the
  *                      elements and values are their weights.
- * @returns {mixed} The selected element.
+ * @returns {mixed} - The selected element.
  */
 mixed element_of_weighted(mapping m) {
     mixed *keys ;

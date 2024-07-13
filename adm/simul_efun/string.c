@@ -7,8 +7,8 @@
  *              If the string is already present, the original string is returned.
  * @param {string} source - The string to append to.
  * @param {string} to_append - The string to append.
- * @returns {string} The original string with the appended string if it was not
- *                   already present.
+ * @returns {string} - The original string with the appended string if it was not
+ *                     already present.
  */
 string append(string source, string to_append) {
     int source_len, to_append_len;
@@ -29,8 +29,8 @@ string append(string source, string to_append) {
  *              If the string is already present, the original string is returned.
  * @param {string} source - The string to prepend to.
  * @param {string} to_prepend - The string to prepend.
- * @returns {string} The original string with the prepended string if it was not
- *                   already present.
+ * @returns {string} - The original string with the prepended string if it was not
+ *                     already present.
  */
 string prepend(string source, string to_prepend) {
     int source_len, to_prepend_len;
@@ -53,7 +53,7 @@ string prepend(string source, string to_prepend) {
  * @param {string} str - The string to chop from.
  * @param {string} sub - The substring to chop.
  * @param {int} [dir=-1] - The direction to chop: 1 for left, -1 for right.
- * @returns {string} The string with the substring chopped off if it was present.
+ * @returns {string} - The string with the substring chopped off if it was present.
  */
 varargs string chop(string str, string sub, int dir) {
     int sub_len;
@@ -84,7 +84,7 @@ varargs string chop(string str, string sub, int dir) {
  * @param {string} str - The string to extract from.
  * @param {int} from - The starting position to extract from.
  * @param {int} [to] - The ending position to extract to.
- * @returns {string} The extracted substring.
+ * @returns {string} - The extracted substring.
  */
 varargs string extract(string str, int from, int to) {
     if(nullp(to)) return str[from ..];
@@ -95,7 +95,7 @@ varargs string extract(string str, int from, int to) {
  * @simul_efun no_ansi
  * @description Returns a string with all ANSI colour codes removed.
  * @param {string} str - The string to remove ANSI codes from.
- * @returns {string} The string without ANSI codes.
+ * @returns {string} - The string without ANSI codes.
  */
 string no_ansi(string str) {
     return XTERM256->substitute_colour(str, "plain") ;
@@ -108,7 +108,7 @@ string no_ansi(string str) {
  * @param {string[]} arr - The array to make a list from.
  * @param {string} [conjunction="and"] - The word to join the last two elements
  *                                       of the list.
- * @returns {string} The simple list string.
+ * @returns {string} - The simple list string.
  */
 varargs string simple_list(string *arr, string conjunction) {
     if(!arr) error("simple_list: Missing argument 1 for simpple_list");
@@ -129,7 +129,7 @@ varargs string simple_list(string *arr, string conjunction) {
  * @param {string} str - The string to extract from.
  * @param {string} sub - The substring to extract to.
  * @param {int} [reverse=0] - If set, the substring will start at the last occurrence.
- * @returns {string} The extracted substring.
+ * @returns {string} - The extracted substring.
  */
 varargs string substr(string str, string sub, int reverse) {
     int sub_len;
@@ -158,7 +158,7 @@ varargs string substr(string str, string sub, int reverse) {
  *              LPC value.
  * @param {string} str - The string to convert.
  * @param {int} [flag=0] - If set, returns an array with the value and the remaining string.
- * @returns {mixed} The LPC value represented by the string.
+ * @returns {mixed} - The LPC value represented by the string.
  */
 varargs mixed from_string(string str, int flag) {
     mixed *ret = ({ 0, "" });
@@ -294,7 +294,7 @@ varargs mixed from_string(string str, int flag) {
  * @simul_efun stringify
  * @description Converts an LPC value to its string representation.
  * @param {mixed} val - The value to convert.
- * @returns {string} The string representation of the value.
+ * @returns {string} - The string representation of the value.
  */
 string stringify(mixed val) {
     if(nullp(val))
@@ -325,7 +325,7 @@ private nosave string thousands = "," ;
  * @simul_efun add_commas
  * @description Returns a string with commas added to the number.
  * @param {mixed} number - The number to add commas to.
- * @returns {string} The number with commas added as a string.
+ * @returns {string} - The number with commas added as a string.
  */
 string add_commas(mixed number) {
     string num_str ;
@@ -381,7 +381,7 @@ string add_commas(mixed number) {
  * @simul_efun reverse_string
  * @description Reverses a string.
  * @param {string} str - The string to reverse.
- * @returns {string} The reversed string.
+ * @returns {string} - The reversed string.
  */
 string reverse_string(string str) {
     return implode(reverse_array(explode(str, "")), "");
@@ -394,7 +394,7 @@ string reverse_string(string str) {
  * @param {string} str - The string to search in.
  * @param {string} sub - The substring to search for.
  * @param {int} [start=-1] - The starting position to search from.
- * @returns {int} The position of the substring in the string, or -1 if not found.
+ * @returns {int} - The position of the substring in the string, or -1 if not found.
  */
 varargs int reverse_strsrch(string str, string sub, int start) {
     int sub_len, str_len;

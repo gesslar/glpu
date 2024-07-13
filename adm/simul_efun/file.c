@@ -36,7 +36,7 @@ void assure_file(string file) {
  * @simul_efun file_owner
  * @description Determines the owner of a file based on its path.
  * @param {string} file - The path of the file to check.
- * @returns {string} The owner of the file, or 0 if not found.
+ * @returns {string} - The owner of the file, or 0 if not found.
  */
 string file_owner(string file) {
     string temp;
@@ -60,7 +60,7 @@ string file_owner(string file) {
  * @param {string} path - The path of the file to read.
  * @param {int} [line_count=25] - The number of lines to read from the end of
  *                                the file. Defaults to 25.
- * @returns {string} The last few lines of the file.
+ * @returns {string} - The last few lines of the file.
  */
 varargs string tail(string path, int line_count) {
     int chunk_size = 80 * 5; // Chunk size for each read operation
@@ -148,7 +148,7 @@ varargs string tail(string path, int line_count) {
  * @param {string} file - The name of the log file.
  * @param {string} str - The log message to write.
  * @param {mixed} [arg] - Additional arguments to include in the log message.
- * @returns {int} 1 if the log message was written successfully, otherwise 0.
+ * @returns {int} - 1 if the log message was written successfully, otherwise 0.
  */
 varargs int log_file(string file, string str, mixed arg...) {
     if(!file || !str) return 0;
@@ -161,7 +161,7 @@ varargs int log_file(string file, string str, mixed arg...) {
  * @description Reads a file and returns its content as an array of lines,
  *              excluding comment lines and empty lines.
  * @param {string} file - The path of the file to read.
- * @returns {string[]} An array of lines from the file.
+ * @returns {string[]} - An array of lines from the file.
  */
 string *explode_file(string file) {
     string old_privs ;
@@ -225,7 +225,7 @@ varargs void implode_file(string file, string *lines, int overwrite) {
  * @simul_efun query_file_name
  * @description Returns the name of the file corresponding to a given object.
  * @param {object} ob - The object to query the file name of.
- * @returns {string} The name of the file corresponding to the object.
+ * @returns {string} - The name of the file corresponding to the object.
  */
 string query_file_name(object ob) {
     string file, *parts;
@@ -248,7 +248,7 @@ string query_file_name(object ob) {
  * @simul_efun temp_file
  * @description Generates a temporary file name based on the provided argument.
  * @param {mixed} arg - The file or object to create a temporary file for.
- * @returns {string} The path to the temporary file.
+ * @returns {string} - The path to the temporary file.
  */
 varargs string temp_file(mixed arg) {
     string file ;
@@ -283,7 +283,7 @@ varargs string temp_file(mixed arg) {
  * @description Given a path, returns an array containing the directory and file
  *              name components.
  * @param {string} path - The path to extract the components from.
- * @returns {string[]} An array containing the directory and file name components.
+ * @returns {string[]} - An array containing the directory and file name components.
  */
 string *dir_file(string path) {
     string *matches, dir, file ;

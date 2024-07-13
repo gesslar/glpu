@@ -9,7 +9,7 @@
  * @simul_efun getoid
  * @description Retrieves the unique object ID of the given object.
  * @param {object} ob - The object to get the ID of.
- * @returns {int} The unique object ID.
+ * @returns {int} - The unique object ID.
  */
 int getoid(object ob) {
     int id;
@@ -44,7 +44,7 @@ int getoid(object ob) {
  * @param {string} str - The name of the object to locate.
  * @param {object} [player] - The player object to use as a reference for
  *                            searching.
- * @returns {object} The located object, or 0 if not found.
+ * @returns {object} - The located object, or 0 if not found.
  */
 varargs object get_object( string str, object player ) {
     object what;
@@ -117,7 +117,7 @@ varargs object get_object( string str, object player ) {
  * @param {int} [no_arr] - If specified, only a single object or 0 will be
  *                         returned, otherwise an array of objects may be
  *                         returned.
- * @returns {mixed} The located object(s), or 0 if not found.
+ * @returns {mixed} - The located object(s), or 0 if not found.
  */
 varargs mixed get_objects( string str, object player, int no_arr ) {
     mixed base, tmp, ret;
@@ -212,7 +212,7 @@ varargs mixed get_objects( string str, object player, int no_arr ) {
  * @param {mixed} [cont] - The container or environment to search within.
  *                         Defaults to the previous object.
  * @param {function} [f] - An optional function to further filter the search.
- * @returns {object} The found object, or 0 if not found.
+ * @returns {object} - The found object, or 0 if not found.
  */
 varargs object find_ob(mixed ob, mixed cont, function f) {
     // First let's deal with dest.
@@ -251,7 +251,7 @@ varargs object find_ob(mixed ob, mixed cont, function f) {
  * @description Retrieves the top-level environment of the specified object,
  *              traversing up through nested environments.
  * @param {object} ob - The object to get the top-level environment of.
- * @returns {object} The top-level environment of the object.
+ * @returns {object} - The top-level environment of the object.
  */
 object top_environment(object ob) {
     object test, env ;

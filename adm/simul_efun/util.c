@@ -7,7 +7,7 @@
  * @simul_efun generate_uuid
  * @description Generates a random "version 4" UUID. Version 4 UUIDs are based
  *              on random numbers.
- * @returns {string} A randomly generated version 4 UUID.
+ * @returns {string} - A randomly generated version 4 UUID.
  */
 string generate_uuid() {
     //This is a "version 4" uuid.  This is based on random numbers, the others use time.
@@ -23,7 +23,7 @@ string generate_uuid() {
  * @description Checks if a value is present in an array, mapping, or string.
  * @param {mixed} needle - The value to search for.
  * @param {mixed} haystack  - The array, mapping, or string to search in.
- * @returns {int} 1 if the value is found, 0 otherwise.
+ * @returns {int} - 1 if the value is found, 0 otherwise.
  */
 int of(mixed needle, mixed haystack) {
     switch(typeof(haystack)) {

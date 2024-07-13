@@ -5,7 +5,7 @@
  * @description Returns a new array containing the distinct elements of the input
  *              array.
  * @param {mixed[]} arr - An array of mixed types.
- * @returns {mixed[]} A new array with distinct elements from the input array.
+ * @returns {mixed[]} - A new array with distinct elements from the input array.
  */
 mixed *distinct_array(mixed *arr) {
     mapping m;
@@ -25,7 +25,7 @@ mixed *distinct_array(mixed *arr) {
  * @param {int} start - The starting index of elements to be removed.
  * @param {int} [end] - The ending index of elements to be removed. Defaults to
  *                      start if not specified.
- * @returns {mixed[]} A new array with specified elements removed.
+ * @returns {mixed[]} - A new array with specified elements removed.
  */
 varargs mixed *remove_array_element(mixed *arr, int start, int end) {
     if (!end) end = start;
@@ -49,7 +49,7 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) {
  * @param {mixed[]} [items_to_add] - An array of elements to add to the array at
  *                                   the start index. Can be omitted or passed as
  *                                   null if no elements are to be added.
- * @returns {mixed[]} A new array reflecting the desired modifications.
+ * @returns {mixed[]} - A new array reflecting the desired modifications.
  */
 varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add) {
     mixed *before, *after;
@@ -68,7 +68,7 @@ varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_a
  * @description Returns a new array with the elements of the input array in
  *              reverse order.
  * @param {mixed[]} arr - The input array.
- * @returns {mixed[]} A new array with elements in reverse order.
+ * @returns {mixed[]} - A new array with elements in reverse order.
  */
 mixed *reverse_array(mixed *arr) {
     int i, j, sz;

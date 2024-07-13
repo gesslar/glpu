@@ -6,7 +6,7 @@
  * @simul_efun ordinal
  * @description Converts an integer to its ordinal string representation.
  * @param {int} n - The integer to convert.
- * @returns {string} The ordinal string representation of the integer.
+ * @returns {string} - The ordinal string representation of the integer.
  */
 string ordinal (int n) {
     int x;
@@ -42,7 +42,7 @@ string ordinal (int n) {
  * @simul_efun int_string
  * @description Converts a numerical number to its worded number representation.
  * @param {int} num - The numerical number to convert.
- * @returns {string} The worded number representation of the integer.
+ * @returns {string} - The worded number representation of the integer.
  */
 string int_string (int num) {
     string str;
@@ -135,7 +135,7 @@ string int_string (int num) {
  *              description, handling pluralization and special cases.
  * @param {int} x - The quantity of items.
  * @param {string} str - The description of the item(s).
- * @returns {string} The consolidated string.
+ * @returns {string} - The consolidated string.
  */
 string consolidate(int x, string str) {
     string* words;

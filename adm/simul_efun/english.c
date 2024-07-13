@@ -4,7 +4,7 @@
  * @simul_efun cap_words
  * @description Capitalizes the first letter of each word in a string.
  * @param {string} str - The string to capitalize.
- * @returns {string} The capitalized string.
+ * @returns {string} - The capitalized string.
  */
 string cap_words(string str) {
     string *words ;
@@ -27,7 +27,7 @@ private nosave string *insignificant_words = ({
  *              as a title.
  * @param {string} str - The string to capitalize.
  * @param {int} [title=0] - Whether to capitalize the first word as a title.
- * @returns {string} The string with significant words capitalized.
+ * @returns {string} - The string with significant words capitalized.
  */
 varargs string cap_significant_words(string str, int title) {
     string *words ;
@@ -47,7 +47,7 @@ varargs string cap_significant_words(string str, int title) {
  * @description Returns the possessive form of a noun. If the noun ends with 's',
  *              it adds an apostrophe; otherwise, it adds 's.
  * @param {mixed} ob - The object or string to convert to possessive form.
- * @returns {string} The possessive form of the noun.
+ * @returns {string} - The possessive form of the noun.
  */
 string possessive_noun(mixed ob) {
     if(objectp(ob)) ob = ob->query_name() ;
@@ -62,7 +62,7 @@ string possessive_noun(mixed ob) {
  * @description Returns the possessive pronoun corresponding to the object's
  *              gender. Defaults to "its" for non-string or unknown gender.
  * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} The possessive pronoun.
+ * @returns {string} - The possessive pronoun.
  */
 string possessive_pronoun(mixed ob) {
     if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
@@ -79,7 +79,7 @@ string possessive_pronoun(mixed ob) {
  * @description Returns the possessive adjective corresponding to the object's
  *              gender. Defaults to "its" for non-string or unknown gender.
  * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} The possessive adjective.
+ * @returns {string} - The possessive adjective.
  */}
 
 string possessive(mixed ob) {
@@ -98,7 +98,7 @@ string possessive(mixed ob) {
  * @description Returns the reflexive pronoun corresponding to the object's
  *              gender. Defaults to "itself" for non-string or unknown gender.
  * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} The reflexive pronoun.
+ * @returns {string} - The reflexive pronoun.
  */
 string reflexive(mixed ob) {
     if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
@@ -116,7 +116,7 @@ string reflexive(mixed ob) {
  * @description Returns the objective pronoun corresponding to the object's
  *              gender. Defaults to "it" for non-string or unknown gender.
  * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} The objective pronoun.
+ * @returns {string} - The objective pronoun.
  */
 string objective(mixed ob) {
     if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
@@ -134,7 +134,7 @@ string objective(mixed ob) {
  * @description Returns the subjective pronoun corresponding to the object's
  *              gender. Defaults to "it" for non-string or unknown gender.
  * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} The subjective pronoun.
+ * @returns {string} - The subjective pronoun.
  */
 string subjective(mixed ob) {
     if(objectp(ob)) ob = ob->query_gender() || "neuter" ;

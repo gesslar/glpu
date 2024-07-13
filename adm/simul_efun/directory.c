@@ -9,8 +9,8 @@
  * @description Ensures that a directory exists by creating it and its parent
  *              directories if necessary.
  * @param {string} path - The path of the directory to ensure.
- * @returns {int} 1 if the directory exists or was created successfully,
- *                otherwise 0.
+ * @returns {int} - 1 if the directory exists or was created successfully,
+ *                  otherwise 0.
  */
 int assure_dir(string path) {
     string *parts, dir;
@@ -41,7 +41,7 @@ int assure_dir(string path) {
  * @description Returns the directory of the given object. If no object is
  *              provided, it defaults to the previous object.
  * @param {object} ob - The object to query the directory of.
- * @returns {string} The directory path of the object.
+ * @returns {string} - The directory path of the object.
  */
 string query_directory(object ob) {
     string file, *parts;

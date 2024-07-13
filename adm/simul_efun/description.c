@@ -7,8 +7,8 @@
  * @param {object} ob - The object to get the short description of.
  * @param {int} [extras=1] - Whether to include extra short descriptions.
  *                           Defaults to 1 (include extras).
- * @returns {string} The short description of the object, including any
- *                   extra short descriptions.
+ * @returns {string} - The short description of the object, including any
+ *                     extra short descriptions.
  */
 string get_short(object ob, int extras: (: 1 :)) {
     string result ;
@@ -39,8 +39,8 @@ string get_short(object ob, int extras: (: 1 :)) {
  * @param {object} ob - The object to get the long description of.
  * @param {int} [extras=1] - Whether to include extra long descriptions.
  *                           Defaults to 1 (include extras).
- * @returns {string} The long description of the object, including any
- *                   extra long descriptions.
+ * @returns {string} - The long description of the object, including any
+ *                     extra long descriptions.
  */
 string get_long(object ob, int extras: (: 1 :)) {
     string result ;

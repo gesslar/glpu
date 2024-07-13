@@ -5,7 +5,7 @@
  * @description Calculates what percentage `a` is of `b`.
  * @param {float} a - The part value.
  * @param {float} b - The whole value.
- * @returns {float} The percentage of `a` in `b`.
+ * @returns {float} - The percentage of `a` in `b`.
  */
 float percent_of(float a, float b) {
     return (to_float(a) / to_float(b)) * 100.0;
@@ -16,7 +16,7 @@ float percent_of(float a, float b) {
  * @description Calculates the percentage of `a` out of `b`.
  * @param {float} a - The part value.
  * @param {float} b - The whole value.
- * @returns {float} The percentage of `a` out of `b`.
+ * @returns {float} - The percentage of `a` out of `b`.
  */
 float percent(float a, float b) {
     return to_float(a) * 100.0 / to_float(b);
@@ -28,7 +28,7 @@ float percent(float a, float b) {
  * @param {float} min - The minimum value.
  * @param {float} max - The maximum value.
  * @param {float} val - The value to check.
- * @returns {float} The value, constrained within the range of `min` to `max`.
+ * @returns {float} - The value, constrained within the range of `min` to `max`.
  */
 float range(float min, float max, float val) {
     if(val < min) return min;
@@ -41,7 +41,7 @@ float range(float min, float max, float val) {
  * @description Calculates the remainder of `a` divided by `b`.
  * @param {mixed} a - The dividend.
  * @param {mixed} b - The divisor.
- * @returns {float} The remainder of `a` divided by `b`.
+ * @returns {float} - The remainder of `a` divided by `b`.
  */
 varargs float remainder(mixed a, mixed b) {
     int result ;
@@ -58,7 +58,7 @@ varargs float remainder(mixed a, mixed b) {
  * @simul_efun sum
  * @description Calculates the sum of all elements in an array.
  * @param {mixed[]} arr - The array of numbers to sum.
- * @returns {int} The sum of all elements in the array.
+ * @returns {int} - The sum of all elements in the array.
  */
 int sum(mixed *arr) {
     int i, total = 0;

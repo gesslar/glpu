@@ -30,7 +30,7 @@ private nosave int recursion;
  *              recursion.
  * @param {mixed} a - The variable to identify.
  * @param {string} [indent] - The indentation string to use for formatting.
- * @returns {string} The string representation of the variable.
+ * @returns {string} - The string representation of the variable.
  */
 varargs string identify( mixed a, string indent ) {
     int i, s;
