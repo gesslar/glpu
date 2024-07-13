@@ -13,6 +13,7 @@ varargs void _log(mixed args...) {
     mixed *rest ;
     string out ;
     string prefix ;
+    int no_time ;
 
     if(!sizeof(args))
         return ;
@@ -50,8 +51,8 @@ varargs void _log(mixed args...) {
     if(lvl > _log_level)
         return ;
 
-    // while(message[<1] == '\n')
-    //     message = message[0..<2] ;
+    no_time = lvl < 0 ;
+    lvl = abs(lvl) ;
 
     if(_log_level >= 2) {
         string *funcs = call_stack(2), func ;
@@ -90,6 +91,9 @@ varargs void _log(mixed args...) {
         prefix = _log_prefix + " " ;
     else
         prefix = "" ;
+
+    if(no_time == false)
+        prefix = sprintf("[%s] %s", ldatetime(), prefix) ;
 
     if(sizeof(rest))
         debug(prefix + message, rest...) ;
