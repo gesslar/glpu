@@ -43,7 +43,7 @@ private nosave nomask string jsdoc_function_regex,
 private nosave nomask mapping docs = ([]);
 
 void setup() {
-    set_log_level(4) ;
+    set_log_level(1) ;
 
     jsdoc_function_regex = "^\\s\\*\\s+@(\\w+)\\s+(\\w+)\\s*$" ;
 
@@ -69,7 +69,11 @@ public nomask void autodoc_scan() {
     if(check_running() == true)
         return ;
 
+    debug(repeat_string("\n", 20)) ;
+
     _log(1, "Starting autodoc scan") ;
+    if(this_player() && devp(this_player()))
+        tell(this_player(), "Starting autodoc scan\n") ;
 
     writing = false ;
     doc_root = mud_config("AUTODOC_ROOT") ;
@@ -79,8 +83,6 @@ public nomask void autodoc_scan() {
 
     docs = ([]);
     files_to_check = ({});
-
-    debug(repeat_string("\n", 20)) ;
 
     call_out_walltime("check_dir", dir_delay);
 }
@@ -150,12 +152,6 @@ private nomask void parse_file(string file) {
 
         line = lines[num] ;
 
-        // track the current tag and its data
-        if(function_tag == "reverse_strsrch") {
-            _log(2, "Current tag: %O", current_tag) ;
-            _log(2, "Tag data: %O", tag_data) ;
-        }
-
         // Check for the start of a JSDoc-style comment
         if(!in_jsdoc) {
             // Clear stuff since we've definitely exited the JSDoc comment block
@@ -175,9 +171,6 @@ private nomask void parse_file(string file) {
             } else {
                 continue ;
             }
-        } else {
-            if(function_tag == "reverse_strsrch")
-                _log(2, "We're still parsing the JSDoc comment block for function %s", function_tag) ;
         }
 
         // Process lines within the JSDoc comment block
@@ -204,10 +197,6 @@ private nomask void parse_file(string file) {
             /* ************************************************************* */
             if(pcre_match(line, "^\\s*\\*/") == true) {
                 in_jsdoc = 0 ;
-
-                if(function_tag == "reverse_strsrch") {
-                    _log(2, "We found the end of the JSDoc comment block for %s", function_tag) ;
-                }
 
                 // Record the last tag data
                 if(current_tag != null) {
@@ -259,9 +248,6 @@ private nomask void parse_file(string file) {
 
                 docs[doc_type][function_tag] = curr ;
                 in_jsdoc = 0 ;
-                if(function_tag == "reverse_strsrch") {
-                    _log(2, "We made it to the end of the JSDoc comment block for %s", function_tag) ;
-                }
                 continue ;
             } else {
                 /* ********************************************************* */
@@ -354,130 +340,103 @@ private nomask void write_markdown() {
     mapping function_type ;
     mapping funcs ;
     mapping function_info ;
-    function find_tag ;
+    function dash_wrap ;
 
-    writing = true ;
+    dash_wrap = function (string str, int width) {
+        int dash_pos, space_pos ;
+        string rest ;
 
-    _log(2, "Function types: %O", keys(docs)) ;
-
-    find_tag = function(string tag, string *tags) {
-        int sz ;
-
-        sz = sizeof(tags) ;
-        while(sz--) {
-            if(tags[sz] == tag)
-                return tags[sz] ;
+        if(strlen(str) > width) {
+            dash_pos = strsrch(str, "-") + 2 ;
+            space_pos = reverse_strsrch(str[0..width], " ") ;
+            str = str[0..space_pos] + "\n" +
+            repeat_string(" ", dash_pos) + str[space_pos + 1..] ;
         }
 
-        return null ;
+        return str ;
     } ;
+
+    writing = true ;
 
     foreach(function_type, funcs in docs) {
         string tag, line, element ;
         string func_name ;
         mapping func ;
         string output_dir ;
+        string *elements ;
 
-        // _log(2, "Function type: %O", function_type) ;
-        // _log(2, "Function names: %O", keys(function_data)) ;
-
-        output_dir = sprintf("%s/%s", doc_root, function_type) ;
+        output_dir = sprintf("%s%s", doc_root, function_type) ;
 
         foreach(func_name, func in funcs) {
             string output_file ;
             string out = "" ;
+            mixed err ;
 
-            _log(2, "Function: %s", func_name) ;
+            err = catch {
+                // We need a description and a function definition to continue,
+                // otherwise we can skip this function.
+                if(!of("description", func) || !of("function_def", func))
+                    return ;
 
-            // We need a description and a function definition to continue,
-            // otherwise we can skip this function.
-            if(!of("description", func) || !of("function_def", func))
-                continue ;
+                output_file = sprintf("%s/%s.md", output_dir, func_name) ;
 
-            output_file = sprintf("%s/%s.md", output_dir, func_name) ;
-            _log(2, "Output file: %s", output_file) ;
+                assure_dir(output_dir) ;
 
-            assure_dir(output_dir) ;
+                // Start with the function name
+                out = "# " + func_name + "\n" ;
 
-            /*
-            // NAME section
-            _log("Description: %O", func["description"]) ;
-            // First the name of the function
-            line = sprintf("    %s() - %s\n", func_name, func["description"][0]) ;
-            if(strlen(line) > 76) {
-                int dash_pos, space_pos ;
-                string rest ;
+                // Now we want the synopsis, which is the function definition
+                out += "\n## SYNOPSIS\n\n" ;
+                out += sprintf("    %s\n", func["function_def"]) ;
 
-                dash_pos = strsrch(line, "-") + 2 ;
-                space_pos = reverse_strsrch(line[0..76], " ") ;
-                line = line[0..space_pos] + "\n" +
-                repeat_string(" ", dash_pos) + line[space_pos + 1..] ;
-            }
-            line = chop(line, "\n", -1) ;
-            out += line + "\n\n" ;
+                // Next we need to parse the parameters
 
-            // If we have more than one line in the description, we will use
-            // the remainder as the description.
-            func["description"] = func["description"][1..] ;
-            */
-            // Now we want the synopsis, which is the function definition
-            out += "### SYNOPSIS\n\n" ;
-            out += sprintf("    %s\n", func["function_def"]) ;
+                if(of("param", func)) {
+                    mixed *params ;
+                    string *param ;
 
-            // Next we need to parse the parameters
+                    out += "\n### PARAMETERS\n\n" ;
 
-            if(of("param", func)) {
-                string *param ;
-                out += "\n### PARAMETERS\n\n" ;
-                foreach(param in func["param"]) {
-                    string *matches, *arr_matches ;
+                    params = func["param"] ;
+                    foreach(param in params) {
+                        string *matches, *arr_matches ;
 
-                    line = implode(param, "\n") ;
-                    while(strsrch(line, "  ") > -1) {
-                        line = replace_string(line, "  ", " ") ;
+                        line = implode(map(param, (: trim :)), " ") ;
+                        matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
+                        line = (*dash_wrap)(line, 76) ;
+                        out += sprintf("    %s %s\n", matches[0], matches[1]) ;
                     }
-
-                    matches = pcre_extract(line, "^\\{(.+?)\\}\\s+(\\w+)\\s+-\\s+(.*)$") ;
-                    arr_matches = pcre_extract(matches[0], "^(.+?)\\[\\]$") ;
-                    if(sizeof(arr_matches) > 0) {
-                        matches[0] = sprintf("%s*", arr_matches[0]) ;
-                    }
-
-                    out += sprintf("    %s %s - %s\n", matches[0], matches[1], matches[2]) ;
-                }
-            }
-
-            printf("Output\n%s", out) ;
-            continue ;
-            // Next we need to parse the parameters
-            if(of("param", function_info)) {
-                string *lines ;
-                string *matches, *arr_matches ;
-                out += "### PARAMETERS\n\n" ;
-
-                // Extract type, name, and description
-                lines = function_info["param"][element] ;
-                line = implode(lines, "\n") ;
-                while(strsrch(line, "  ") > -1) {
-                    line = replace_string(line, "  ", " ") ;
-                }
-                line = trim(line) ;
-                printf("Line: %O\n", line) ;
-                matches = pcre_extract(line, "^\\{(.+?)\\}\\s+(\\w+)\\s+-\\s+(.*)$") ;
-                printf("Matches: %O\n", matches) ;
-
-                // For variables that might be arrays, let's alter the output
-                // to reflect that.
-                arr_matches = pcre_extract(matches[0], "^(.+?)\\[\\]$") ;
-                if(sizeof(arr_matches) > 0) {
-                    matches[0] = sprintf("%s*", arr_matches[0]) ;
                 }
 
-                out += sprintf("    %s %s - %s\n", matches[0], matches[1], matches[2]) ;
-            }
+                if(of("returns", func)) {
+                    string *rets ;
+                    string *matches ;
 
-            // Write the file
-            write_file(output_file, out) ;
+                    out += "\n### RETURNS\n\n" ;
+
+                    line = implode(func["returns"][0], " ") ;
+                    matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
+                    line = (*dash_wrap)(line, 76) ;
+                    out += sprintf("    %s - %s\n", matches[0], matches[1]) ;
+                }
+
+                if(of("description", func)) {
+                    string *desc ;
+
+                    out += "\n## DESCRIPTION\n\n" ;
+
+                    desc = func["description"][0] ;
+                    out += implode(desc, "\n") ;
+
+                    out += "\n" ;
+                }
+
+                // Write the file
+                write_file(output_file, out, 1) ;
+            } ;
+
+            if(err)
+                log_file("system/autodoc", sprintf("Error writing %s: %O\n", output_file, err)) ;
         }
     }
 
@@ -485,15 +444,24 @@ private nomask void write_markdown() {
 }
 
 private nomask void finish_scan() {
+    float end_time ;
+
     if(check_running() == true)
         return ;
 
-    _log("Autodoc scan finished in %.2fs", time_frac() - start_time) ;
-
-    printf("%O\n", docs["simul_efun"]["reverse_strsrch"]) ;
+    end_time = time_frac() ;
+    _log(1, "Autodoc scan finished in %.2fs", end_time - start_time) ;
+    if(this_player() && devp(this_player()))
+        tell(this_player(), sprintf("Autodoc scan finished in %.2fs\n", end_time - start_time)) ;
 
     // Save the documentation to a file
-    // write_markdown() ;
+    write_markdown() ;
+
+    end_time = time_frac() ;
+
+    _log(1, "Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
+    if(this_player() && devp(this_player()))
+        tell(this_player(), sprintf("Autodoc has finished scanning and writing in %.2fs\n", end_time - start_time)) ;
 }
 
 public nomask int check_running() {
