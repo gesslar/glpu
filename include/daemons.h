@@ -15,6 +15,7 @@
 #define ENV_D           DIR_DAEMONS "env"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
+#define GH_ISSUES_D     DIR_DAEMONS "github_issues"
 #define GMCP_D          DIR_DAEMONS "gmcp"
 #define HTTPC_D         DIR_DAEMONS "httpc"
 #define LOCKDOWN_D      DIR_DAEMONS "lockdown_d"

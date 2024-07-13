@@ -47,6 +47,7 @@ void setup() {
 varargs int create_issue(string type, string title, string body, mixed callback) {
     string url ;
     mapping request ;
+    mixed cb ;
 
     if(!stringp(type))
         error("Type must be a string") ;
@@ -60,12 +61,19 @@ varargs int create_issue(string type, string title, string body, mixed callback)
     if(!stringp(body))
         error("Body must be a string") ;
 
-    if(!valid_function(callback))
-        if(!stringp(callback))
-            error("Callback must be a string or a function") ;
-        else
-            if(!function_exists(callback, previous_object()))
-                error("Callback function does not exist") ;
+    if(!nullp(callback)) {
+        mixed arg1 = callback[0] ;
+        mixed err ;
+        debug("callback: %O", callback) ;
+
+        if(valid_function(arg1)) {
+            err = catch(cb = assemble_call_back(callback)) ;
+        } else {
+            err = catch(cb = assemble_call_back(previous_object(), callback...)) ;
+        }
+        if(err)
+            return ;
+    }
 
     if(!CONFIG["owner"] || !CONFIG["repo"] || !CONFIG["token"]) {
         _log(2, "GitHub Issues API not setup in adm/etc/config.json") ;
@@ -95,7 +103,7 @@ varargs int create_issue(string type, string title, string body, mixed callback)
         "label" : type,
         "title" : title,
         "body" : body,
-        "callback" : callback,
+        "callback" : cb,
         "caller" : previous_object(),
         "request" : request
     ]) ;
@@ -140,18 +148,9 @@ void http_handle_shutdown(mapping response) {
 
     body = parse_body(body, response["response"]["headers"]["content-type"]) ;
 
-    _log(2, "Body:\n%O", body) ;
+    // _log(2, "Body:\n%O", body) ;
 
-    err = catch {
-        if(request["callback"]) {
-            if(stringp(request["callback"]) && request["callback"] != "RESUBMIT")
-                if(function_exists(request["callback"], request["caller"]))
-                    call_other(request["caller"], request["callback"], body) ;
-            else if(valid_function(request["callback"]))
-                (*request["callback"])(body) ;
-        }
-    } ;
-
+    err = catch ( call_back(request["callback"], body) ) ;
     if(err)
         _log(2, "Error calling callback: %O", err) ;
 }
