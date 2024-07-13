@@ -52,9 +52,9 @@ mixed main(object tp, string str) {
 
 mixed start_report(object tp) {
     if(!strlen(report_type))
-        return "Report type not set." ;
+        return "Report type not set.\n" ;
 
-    tell(tp, "Enter a subject for your "+report_type+" report.", MSG_PROMPT) ;
+    tell(tp, "Enter a subject for your "+report_type+" report.\nSubject: ") ;
     input_to("get_subject", tp) ;
 
     return 1 ;
@@ -78,7 +78,7 @@ public nomask void finish_report(string text, object tp, string subject) {
     if(!text || text == "")
         return tell(tp, "Aborted.\n") ;
 
-    tell(tp, "Thank you for your "+report_type+" report.") ;
+    tell(tp, "Thank you for your "+report_type+" report.\n") ;
 
     assure_dir(log_dir()) ;
     log_file = log_dir() + "/" + upper_case(report_type) ;
