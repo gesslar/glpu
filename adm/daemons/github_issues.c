@@ -44,6 +44,11 @@ void setup() {
  * @return int - Returns 1 if the request was successful, 0 otherwise
 */
 
+varargs int create_issue(string type, string title, string body, mixed callback...) {
+    string owner = mud_config(GH_OWNER_LABEL) ;
+    string repo = mud_config(GH_REPO_LABEL) ;
+    string token = mud_config(GH_PAT_LABEL) ;
+    string *types = mud_config(GH_TYPES_LABEL) ;
 varargs int create_issue(string type, string title, string body, mixed callback) {
     string url ;
     mapping request ;

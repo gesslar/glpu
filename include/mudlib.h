@@ -22,6 +22,7 @@
 #define STD_CLOTHING        DIR_STD "equip/clothing"
 #define STD_CMD             DIR_STD "cmd/cmd"
 #define STD_DAEMON          DIR_STD "daemon/daemon"
+#define STD_EDITOR          DIR_STD "object/editor"
 #define STD_DISCORD_BOT     DIR_STD "daemon/discord_bot"
 #define STD_EDITOR          DIR_STD "object/editor"
 #define STD_EQUIP           DIR_STD "equip/equip"
