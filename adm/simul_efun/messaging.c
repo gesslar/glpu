@@ -47,10 +47,9 @@ varargs void tell_all(object ob, string str, int msg_type, mixed exclude) {
  * @param {object} ob - The object to send the message to.
  * @param {string} str - The message string to send.
  * @param {int} [msg_type] - The message type, combined with DIRECT_MSG.
- * @param {mixed} [exclude] - The objects to exclude from receiving the message.
  */
-varargs void tell_direct(object ob, string str, int msg_type, mixed exclude) {
-    ob->receive_direct(str, exclude, msg_type | DIRECT_MSG);
+varargs void tell_direct(object ob, string str, int msg_type) {
+    ob->receive_direct(str, msg_type | DIRECT_MSG);
 }
 
 /**
@@ -60,8 +59,7 @@ varargs void tell_direct(object ob, string str, int msg_type, mixed exclude) {
  * @param {object} ob - The object to send the message to.
  * @param {string} str - The message string to send.
  * @param {int} [msg_type] - The message type.
- * @param {mixed} [exclude] - The objects to exclude from receiving the message.
  */
-varargs void tell(object ob, string str, int msg_type, mixed exclude) {
-    tell_direct(ob, str, msg_type, exclude);
+varargs void tell(object ob, string str, int msg_type) {
+    tell_direct(ob, str, msg_type);
 }

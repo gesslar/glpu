@@ -115,7 +115,7 @@ varargs void receive_all(string msg, object *exclude, int msg_type) {
     contents->receive_all(msg, exclude, msg_type);
 }
 
-varargs receive_direct(string msg, int message_type, mixed other) {
+varargs receive_direct(string msg, int message_type) {
     do_receive(msg, message_type);
 }
 
@@ -148,12 +148,14 @@ void do_receive(string message, int message_type) {
     if(!(message_type & MSG_PROMPT)) {
         message = append(message, "\n") ;
     }
-
+    debug("Message: %O", message) ;
     receive(message) ;
 
     if(this_player() && this_player() != this_object())
         event( ({ this_object() }), "message", message, message_type, this_player()) ;
 
     // Handle telnet go-ahead if it's a prompt.
-    if(message_type & MSG_PROMPT) telnet_ga();
+    if(message_type & MSG_PROMPT) {
+        telnet_ga();
+    }
 }

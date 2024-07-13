@@ -545,7 +545,7 @@ int force_me(string cmd) {
 void write_prompt() {
     string prompt = query_env("prompt");
 
-    write(prompt + " ");
+    tell(this_object(), prompt + " ", MSG_PROMPT) ;
 }
 
 void init_capacity() {
