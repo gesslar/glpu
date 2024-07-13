@@ -23,8 +23,8 @@ int valid_function(mixed f) {
 /**
  * @simul_efun call_trace
  * @description Returns a formatted string of the current call stack trace.
- * @param {int} [colour=0] - Whether to include ANSI color codes. Defaults to 0
- *                           (no color).
+ * @param {int} [colour=0] - Whether to include ANSI colour codes. Defaults to 0
+ *                           (no colour).
  * @returns {string} The formatted call stack trace.
  */
 varargs string call_trace(int colour) {

@@ -93,7 +93,7 @@ varargs string extract(string str, int from, int to) {
 
 /**
  * @simul_efun no_ansi
- * @description Returns a string with all ANSI color codes removed.
+ * @description Returns a string with all ANSI colour codes removed.
  * @param {string} str - The string to remove ANSI codes from.
  * @returns {string} The string without ANSI codes.
  */
