@@ -11,7 +11,9 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string str) {
+mixed main(object caller, string str) {
+    object room = environment(caller);
+
     if(!str)
         return "Syntax: echo <argument>";
 

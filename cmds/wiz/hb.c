@@ -10,7 +10,7 @@ inherit STD_CMD ;
 
 mixed all_heartbeats(object tp) ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     object ob ;
     int i ;
     int hb_ms ;

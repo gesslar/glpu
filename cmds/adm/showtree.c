@@ -28,7 +28,7 @@ void setup() {
 ;
 }
 
-mixed main(object tp, object room, string str) {
+mixed main(object tp, string str) {
     string func, file, result;
     object ob ;
 

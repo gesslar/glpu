@@ -11,7 +11,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string args) {
+mixed main(object tp, string args) {
     string *out ;
     mapping config ;
     string temp ;

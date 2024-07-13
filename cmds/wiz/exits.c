@@ -8,11 +8,12 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string args) {
+mixed main(object tp, string args) {
     string *exits;
     string str;
     int i;
     mapping x ;
+    object room = environment(tp);
 
     exits = keys(room->query_exits());
     if (!sizeof(exits))

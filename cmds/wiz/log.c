@@ -11,7 +11,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
      string logfile;
      int morelines ;
      string *out ;

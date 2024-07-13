@@ -15,7 +15,7 @@ Last edited on October 29th, 2005 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
      int i;
      object target;
      object *inventory;

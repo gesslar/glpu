@@ -16,7 +16,7 @@ mapping in_edits = ([]);
 void write_plan();
 int delete_plan();
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     string tmp = "";
     string user = this_player()->query_proper_name();
 

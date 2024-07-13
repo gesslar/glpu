@@ -12,7 +12,7 @@ Last edited on October 31st, 2005 by Tacitus
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str) {
+mixed main(object caller, string str) {
     object ob;
 
     if(!str) str = this_player()->query_proper_name();

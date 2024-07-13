@@ -12,7 +12,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args) {
+mixed main(object caller, string args) {
     string target, cmd;
 
     if(!adminp(previous_object()))

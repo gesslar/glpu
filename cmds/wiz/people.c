@@ -10,7 +10,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     object *OAdminArr, *ODevArr,*OUserArr;
     object *OUser;
 

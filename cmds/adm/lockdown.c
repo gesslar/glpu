@@ -12,7 +12,7 @@ inherit STD_CMD ;
 
 #define LOCKDOWN_TOOL "/obj/mudlib/lockdown_admin/lockdown_client.c"
 
-int main(object caller, object room, string arg)
+mixed main(object caller, string arg)
 {
     object lockdown_client;
 

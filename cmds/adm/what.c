@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     if(!adminp(tp)) return 0;
     tell(tp, "=----------------------------------------------=\n");
     tell(tp, sprintf(" %-15s %-s \n", "Username", "Last Command")) ;

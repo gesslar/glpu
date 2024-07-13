@@ -9,7 +9,7 @@ inherit STD_CMD ;
 
 #define TPN (this_player()->query_proper_name())
 
-mixed main(object caller, object room, string name) {
+mixed main(object caller, string name) {
     int morelines ;
     string *out ;
     string path;

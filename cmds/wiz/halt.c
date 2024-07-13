@@ -10,8 +10,9 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     object *who, ob, *obs ;
+    object room = environment(tp) ;
 
     if(!arg) {
         who = ({ tp }) ;

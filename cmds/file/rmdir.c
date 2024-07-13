@@ -6,7 +6,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str)
+mixed main(object caller, string str)
 {
     if(!str) return notify_fail("Syntax: rmdir <directory name>\n");
     str = resolve_path(caller->query("cwd"), str);

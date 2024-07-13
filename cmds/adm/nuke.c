@@ -12,7 +12,7 @@ Standard nuke command V2
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string user) {
+mixed main(object caller, string user) {
     if(!adminp(previous_object()))
         return "Error [nuke]: Access denied.\n" ;
 

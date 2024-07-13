@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arguments) {
+mixed main(object caller, string arguments) {
      string err = "";
 
      if(!adminp(previous_object())) return notify_fail("Error [master]: Access denied.\n");

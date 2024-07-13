@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string str){
+mixed main(object tp, string str){
       write(dump_socket_status());
       return 1;
 }

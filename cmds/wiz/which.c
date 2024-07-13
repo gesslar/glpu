@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args)
+mixed main(object caller, string args)
 {
     string *command_path = this_player()->query_path();
     mixed *actions = previous_object()->query_commands();

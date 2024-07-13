@@ -9,7 +9,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     string custom, tmp;
     object ob, target, env, my_env;
     string file;

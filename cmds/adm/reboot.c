@@ -11,7 +11,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
      string status;
      int time;
      status = SHUTDOWN_D->get_status();

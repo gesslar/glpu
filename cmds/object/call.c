@@ -30,7 +30,7 @@ inherit M_REF ;
 
 private mixed do_call( object ob, string func, mixed args );
 
-mixed main(object tp, object room, string a) {
+mixed main(object tp, string a) {
     string str, *exp_a;
     mixed objs, funcs, args, tmp, ret, rets;
     object ob;

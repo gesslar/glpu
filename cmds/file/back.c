@@ -9,7 +9,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
+mixed main(object caller, string arg)
 {
     if(!arg || arg == "")
     return notify_fail("Error [back]: Syntax: back <file name>.\n");

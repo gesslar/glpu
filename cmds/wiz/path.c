@@ -6,7 +6,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str) {
+mixed main(object caller, string str) {
      string action, arg, *path, ret;
      int i;
 

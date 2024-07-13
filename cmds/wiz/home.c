@@ -14,8 +14,9 @@ developer to attempt to move into their workroom.
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string str) {
+mixed main(object tp, string str) {
     string custom, tmp;
+    object room = environment(tp);
 
     if(!str) {
         if(file_exists(user_path(tp->query_proper_name()) + "workroom.c")) {

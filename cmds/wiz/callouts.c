@@ -10,7 +10,7 @@ inherit STD_CMD ;
 
 #define BORDER "o------------------------------------------------------------------------------o"
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
      int i;
      mixed *data = call_out_info();
 

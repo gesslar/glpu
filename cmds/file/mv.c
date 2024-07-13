@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str)
+mixed main(object caller, string str)
 {
      string source, dest;
      if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: mv <source> <dest>\n");

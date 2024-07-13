@@ -302,7 +302,7 @@ private string grep_file (mapping opt, string pat, string file) {
   return "";
 }
 
-int main(object caller, object room, string str) {
+mixed main(object caller, string str) {
   int i;
   mixed *opt;
   string out, *files;

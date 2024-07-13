@@ -15,7 +15,7 @@ void setup() {
 "as ls, ed, or update)." ;
 }
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     write("Current working directory: " + caller->query("cwd") + "\n");
     write("Current working file: " + caller->query("cwf") + "\n");
     return 1;

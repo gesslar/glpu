@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string file) {
+mixed main(object caller, string file) {
     int morelines ;
     string *out ;
 

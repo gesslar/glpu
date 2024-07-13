@@ -12,7 +12,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
+mixed main(object caller, string arg)
 {
     object player;
 

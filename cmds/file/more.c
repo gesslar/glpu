@@ -12,7 +12,7 @@ inherit STD_CMD ;
 
 object pager;
 
-int main(object caller, object room, string file)
+mixed main(object caller, string file)
 {
     string text;
     pager = new("/obj/mudlib/pager/pager.c");

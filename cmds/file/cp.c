@@ -6,7 +6,7 @@
 
 //Last edited on January 25th, 2006 by Tacitus
 
-int main(object caller, object room, string str)
+mixed main(object caller, string str)
 {
      string source, dest;
 

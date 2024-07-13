@@ -10,7 +10,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string file)
+mixed main(object caller, string file)
 {
     if(!file)
     {

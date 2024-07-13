@@ -12,7 +12,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string str) {
+mixed main(object caller, string str) {
     string custom, tmp;
     object ob;
 

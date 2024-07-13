@@ -16,9 +16,10 @@ void setup() {
 ;
 }
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     object ob ;
     string path ;
+    object room = environment(tp) ;
 
     if(!arg)
         ob = room ;

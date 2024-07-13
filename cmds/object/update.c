@@ -14,7 +14,7 @@ void do_update(string file) ;
 string *collect_inherits(object obj, int depth) ;
 string *deep_collect_inherits(object obj, mapping seen, int depth) ;
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     object obj;
     string error, *users;
     string *files, file, *parts, start ;

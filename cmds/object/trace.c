@@ -11,7 +11,7 @@ inherit STD_CMD ;
 #define SYNTAX "Syntax: trace -[d/v] [object/filename]\n"
 #define PROTECT ({ STD_USER, STD_BODY })
 
-mixed main(object tp, object room, string str) {
+mixed main(object tp, string str) {
     object target;
     mixed *clones;
     string para, hold, tmp1, tmp2;

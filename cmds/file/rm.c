@@ -14,7 +14,7 @@ string dir;
 void start_delete();
 void handle_delete(string contents);
 
-int main(object caller, object room, string str)
+mixed main(object caller, string str)
 {
     dir_tree = ({});
 

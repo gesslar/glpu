@@ -42,7 +42,7 @@ void setup() {
      parse_files();
 }
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
      if(!adminp(this_interactive())) return notify_fail("Error [access]: Access denied.\n");
      write("\n\t--'Security System Interface'--\n"
            "\t\tVersion: 1.3RCDev\n\n");

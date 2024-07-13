@@ -10,7 +10,7 @@
 // Last Change: 2024/02/04: Gesslar
 // - general formatting
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     object ob, pager;
     string *funcs, ret;
 

@@ -10,7 +10,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string str) {
+mixed main(object caller, string str) {
     object ob, dest ;
     string err, custom, tmp, short, file ;
     int result ;
