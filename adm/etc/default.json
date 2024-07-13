@@ -50,6 +50,5 @@
     "DB_SUFFIX" : ".sqlite3",
     "DB_TABLE_SUFFIX" : ".tbl",
     "DECIMAL" : ".",
-    "THOUSANDS" : ",",
-    "ENV_PATH": "/path/to/glpu/environments/file"
+    "THOUSANDS" : ","
 }

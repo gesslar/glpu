@@ -12,7 +12,6 @@
 #define CURRENCY_D      DIR_DAEMONS "currency"
 #define CRASH_D         DIR_DAEMONS "crash"
 #define DB_D            DIR_DAEMONS "db"
-#define ENV_D           DIR_DAEMONS "env"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
 #define GH_ISSUES_D     DIR_DAEMONS "github_issues"
