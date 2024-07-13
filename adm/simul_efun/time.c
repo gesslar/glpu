@@ -49,6 +49,19 @@ varargs string ltime(int x, int brief) {
 }
 
 /**
+ * @simul_efun ldatetime
+ * @description Returns a formatted date and time string.
+ * @param {int} [x=time()] - The timestamp to format. Defaults to the current
+ *                           time.
+ * @param {int} [brief=0] - If set to 1, returns a brief date and time format
+ *                          (MM-DD HH:MM). Otherwise, returns a full date and
+ *                          time format (YYYY-MM-DD HH:MM:SS).
+ */
+varargs ldatetime(int x, int brief) {
+    return ldate(x, brief) + " " + ltime(x, brief) ;
+}
+
+/**
  * @simul_efun time_ms
  * @description Converts a time value from nanoseconds to milliseconds.
  *              This function takes a time value in nanoseconds and converts it
@@ -56,10 +69,6 @@ varargs string ltime(int x, int brief) {
  * @param {int} nanoseconds - The time value in nanoseconds. Defaults to the
  *                            current time in nanoseconds if not provided.
  * @returns {int} The time value converted to milliseconds.
- *
- * @example
- * // Convert the current time in nanoseconds to milliseconds
- * int milliseconds = time_ms(time_ns());
  */
 varargs int time_ms(int nanoseconds) {
     nanoseconds = nanoseconds || time_ns() ;
@@ -74,10 +83,6 @@ varargs int time_ms(int nanoseconds) {
  * @param {int} nanoseconds - The time value in nanoseconds. Defaults to the current
  *                            time in nanoseconds if not provided.
  * @returns {float} The time value converted to a fractional value in seconds.
- *
- * @example
- * // Convert the current time in nanoseconds to a fractional value in seconds
- * float seconds = time_frac(time_ns());
  */
 varargs float time_frac(int nanoseconds) {
     nanoseconds = nanoseconds || time_ns() ;
