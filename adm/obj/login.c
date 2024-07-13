@@ -59,7 +59,7 @@ void create() {
 
 void logon() {
     tell(this_object(), login_message) ;
-    tell(this_object(), "\nPlease select a name: ", MSG_PROMPT) ;
+    tell(this_object(), "\nPlease select a name: ") ;
     input_to("get_name");
 }
 
@@ -75,7 +75,7 @@ void get_name(string str) {
     }
 
     if(!str || strlen(str) < 2) {
-        tell(this_object(),"You must select a name: ", MSG_PROMPT);
+        tell(this_object(),"You must select a name: ");
         input_to("get_name");
         return;
     }
@@ -98,7 +98,7 @@ void get_name(string str) {
     for (i = 0; i < strlen(str); i++) {
         if(str[i] < 'a' || str[i] > 'z') {
             tell(this_object(),"Sorry, your name can only have letters. (a-z)\n"
-                "Please enter a new name: ", MSG_PROMPT);
+                "Please enter a new name: ");
             input_to("get_name");
             return;
         }
@@ -160,7 +160,7 @@ void get_name(string str) {
             return;
         }
 
-        tell(this_object(),"The user " + str + " does not exist. Would you like to create it? ", MSG_PROMPT);
+        tell(this_object(),"The user " + str + " does not exist. Would you like to create it? ");
         input_to("new_user", str);
         return;
     }
@@ -187,12 +187,12 @@ void get_name(string str) {
 
     if(!user->query_password() || user->query_password() == "") {
         tell(this_object(),"Your account has no password. All accounts must have a password.\n");
-        tell(this_object(),"Please enter a new password: ", MSG_PROMPT);
+        tell(this_object(),"Please enter a new password: ");
         input_to("get_password", 1, 2);
         return;
     }
 
-    tell(this_object(),"Please enter your password: ", MSG_PROMPT);
+    tell(this_object(),"Please enter your password: ");
     input_to("get_password", 1, 0);
 }
 
@@ -205,13 +205,13 @@ void get_password(string str, int i) {
         pass = crypt(str, curr);
         if(pass != curr) {
             tell(this_object(),"That password is incorrect.\n");
-            tell(this_object(),"Please enter your password: ", MSG_PROMPT);
+            tell(this_object(),"Please enter your password: ");
             input_to("get_password", 1, 0);
             return;
         } else {
             is_connected = 1;
             if(find_player(user->query_proper_name())) {
-                tell(this_object(),"\nReconnect to currently logged in body? ", MSG_PROMPT);
+                tell(this_object(),"\nReconnect to currently logged in body? ");
                 input_to("reconnect");
                 return;
             }
@@ -231,13 +231,13 @@ void get_password(string str, int i) {
     } else {
         if(!str) {
             tell(this_object(),"Your user must have a password.\n");
-            tell(this_object(),"Please enter a password: ", MSG_PROMPT);
+            tell(this_object(),"Please enter a password: ");
             input_to("get_password", 1, 0);
             return;
         }
 
         user->set_password(str);
-        tell(this_object(),"\nPlease enter your password again to verify: ", MSG_PROMPT);
+        tell(this_object(),"\nPlease enter your password again to verify: ");
         input_to("verify_password", 1, i);
         return;
     }
@@ -250,16 +250,16 @@ void verify_password(string str, int i) {
     str = crypt(str, curr) ;
     if(str != user->query_password()) {
         tell(this_object(),"Your passwords do not match.\n");
-        tell(this_object(),"Please enter a password: ", MSG_PROMPT);
+        tell(this_object(),"Please enter a password: ");
         input_to("get_password", 1, 1);
         return;
     } else if(i != 2) {
-        tell(this_object(),"\nPlease input your public e-mail address: ", MSG_PROMPT);
+        tell(this_object(),"\nPlease input your public e-mail address: ");
         input_to("get_email");
         return;
     } else {
         tell(this_object(),"\nYou may now login with the password you just set.\n");
-        tell(this_object(),"Please enter your password: ", MSG_PROMPT);
+        tell(this_object(),"Please enter your password: ");
         input_to("get_password", 1, 0);
         return;
     }
@@ -270,21 +270,21 @@ void get_email(string input) {
 
     if(!input) {
         tell(this_object(),"Error [login]: You must provide an e-mail address.\n");
-        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
+        tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
     if(!sscanf(input, "%*s@%s", host)) {
         tell(this_object(),"Error [login]: You must provide a valid e-mail address.\n");
-        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
+        tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
     if(host == "localhost") {
         tell(this_object(),"Error [login]: Please provide a different e-mail address.\n");
-        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
+        tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
@@ -348,7 +348,7 @@ void email_verified(string address, string resolved, int key)
 #ifdef EMAIL_MUST_RESOLVE
     if(!resolved) {
         tell(this_object()," Error [login]: Unable to verify e-mail.\n");
-        tell(this_object(),"Please input your e-mail address: ", MSG_PROMPT);
+        tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
@@ -359,12 +359,12 @@ void email_verified(string address, string resolved, int key)
 void new_user(string str, string name) {
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         user->set_name(name);
-        tell(this_object(),"Please enter a password for your account: ", MSG_PROMPT);
+        tell(this_object(),"Please enter a password for your account: ");
         input_to("get_password", 1, 1);
         return;
     }
 
-    tell(this_object(),"Please select another name then: ", MSG_PROMPT);
+    tell(this_object(),"Please select another name then: ");
     input_to("get_name");
 }
 

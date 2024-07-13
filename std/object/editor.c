@@ -45,7 +45,7 @@ void edit(object tp, string source_file, mixed *callback) {
     temp = temp_file(tp) ;
 
     tell(tp, text) ;
-    tell(tp, "] ", MSG_PROMPT) ;
+    tell(tp, "] ") ;
 
     input_to("parse_input", 0, tp, text, temp, callback) ;
 }
@@ -68,6 +68,6 @@ void parse_input(string input, object tp, string text, string file, mixed *callb
     }
 
     text += input + "\n" ;
-    tell(tp, "] ", MSG_PROMPT) ;
+    tell(tp, "] ") ;
     input_to("parse_input", 0, tp, text, file, callback) ;
 }

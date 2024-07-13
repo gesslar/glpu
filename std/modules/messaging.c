@@ -145,9 +145,9 @@ void do_receive(string message, int message_type) {
         message = XTERM256->substitute_colour(message, term);
     }
 
-    if(!(message_type & MSG_PROMPT)) {
-        message = append(message, "\n") ;
-    }
+    // if(!(message_type & MSG_PROMPT)) {
+    //     message = append(message, "\n") ;
+    // }
     receive(message) ;
 
     if(this_player() && this_player() != this_object())
