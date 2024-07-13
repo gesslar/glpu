@@ -12,7 +12,7 @@ inherit STD_CMD ;
 
 object *add_array( object *oldlist, object *newlist);
 
-int main(object caller, object room, string arg)
+mixed main(object caller, string arg)
 {
     string ret, mudname;
     mixed *packet;

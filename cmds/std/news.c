@@ -10,7 +10,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args) {
+mixed main(object caller, string args) {
     object client;
 
     if(adminp(caller) && args == "admin") {

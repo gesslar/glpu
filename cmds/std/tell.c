@@ -13,7 +13,7 @@ inherit STD_CMD ;
 void send_tell(object o_user, mixed d_user, string d_mud, string msg);
 void send_emoteto(object o_user, mixed d_user, string d_mud, string msg);
 
-mixed main(object caller, object room, string str) {
+mixed main(object caller, string str) {
     string who, message;
     object user, c;
 

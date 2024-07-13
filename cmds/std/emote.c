@@ -25,8 +25,7 @@ void print_emotes_to_targets(string arg, object *targets_to_print_to);
 object *get_targets_to_print_to();
 
 
-int main(object caller, object room, string arg)
-{
+mixed main(object caller, string arg) {
     object *targets_to_print_to;
 
     if(!arg)

@@ -7,7 +7,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     string *currencies = CURRENCY_D->currency_list() ;
     string *out = ({ }) ;
 

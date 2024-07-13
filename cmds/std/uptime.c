@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
      write(capitalize(mud_name()) + " has been running since " + ctime(time() - uptime()) + "\n");
      return 1;
 }

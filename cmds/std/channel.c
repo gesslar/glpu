@@ -11,7 +11,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string args) {
+mixed main(object tp, string args) {
     string cmd, arg, arg_channel;
     string *arr, multiple_tune;
     int i;

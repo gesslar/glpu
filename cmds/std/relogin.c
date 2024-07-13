@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string args) {
+mixed main(object tp, string args) {
     LOGIN_OB->relogin();
     return 1;
 }

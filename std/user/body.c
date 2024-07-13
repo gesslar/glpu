@@ -456,7 +456,7 @@ int command_hook(string arg) {
                 continue;
             }
 
-            return_value = command->main(caller, environment(), arg);
+            return_value = command->main(caller, arg);
             i++;
             result = evaluate_result(return_value) ;
             if(result == 1) return 1 ;

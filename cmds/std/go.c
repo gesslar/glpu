@@ -8,9 +8,10 @@
 
 inherit STD_CMD ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     mixed dest ;
     mixed result ;
+    object room = environment(tp) ;
 
     result = MOVE_D->allow_walk_direction(tp, room, arg) ;
     if(result != 1) {

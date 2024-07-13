@@ -10,7 +10,7 @@ inherit STD_CMD ;
 
 mixed gmcp_status(object tp) ;
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     if(!get_config(__RC_ENABLE_GMCP__))
         return "GMCP is not enabled on the server." ;
 

@@ -13,7 +13,7 @@ int confirm_NewPassword(string str, string pass);
 inherit STD_CMD ;
 
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     tell(caller, "Please enter your current password: ", MSG_PROMPT) ;
     input_to("confirm_CurrentPassword", 1, caller,);
     return 1;

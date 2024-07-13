@@ -5,7 +5,7 @@
  Std Command
 */
 
-int main(object caller, object room, string user)
+mixed main(object caller, string user)
 {
     string who, where;
 

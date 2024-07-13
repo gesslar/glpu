@@ -10,7 +10,7 @@ inherit STD_CMD ;
 
 string query_wealth(object tp) ;
 
-mixed main(object caller, object room, string args) {
+mixed main(object caller, string args) {
     object *inventory;
     string *shorts ;
     string wealth ;

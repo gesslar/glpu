@@ -6,7 +6,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     if(!arg) {
         write("You mumble to your self.\n");
         say(capitalize((string)previous_object()->query_name()) + " mumbles to themself.\n");

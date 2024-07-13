@@ -18,7 +18,7 @@ inherit STD_CMD ;
 
 #include <logs.h>
 
-int main(object caller, object room, string str) {
+mixed main(object caller, string str) {
     string file, *path, err, output = "";
     object cmd, pager;
     int i;

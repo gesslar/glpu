@@ -12,7 +12,7 @@ Last edited on May 5th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg)
+mixed main(object caller, string arg)
 {
      string targetname;
      string obname;

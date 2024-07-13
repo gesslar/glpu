@@ -8,7 +8,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str) {
+mixed main(object caller, string str) {
      string var_name, var_value, *keys;
      mapping data;
      int i;

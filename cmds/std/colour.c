@@ -4,8 +4,7 @@
 //24-OCT-05
 //Standard command
 
-int main(object caller, object room, string str)
-{
+mixed main(object caller, string str) {
     switch(str)
     {
     case "enable" :

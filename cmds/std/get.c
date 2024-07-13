@@ -12,8 +12,9 @@ Last edited on March 24th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
     object ob;
+    object room = environment(caller);
 
     if(!arg)
         return "SYNTAX: get <object|all|all <id>>\n";

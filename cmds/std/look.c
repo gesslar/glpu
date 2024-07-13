@@ -17,10 +17,9 @@ string highlight_view(string str, string *keys);
 private nosave string default_highlight_colour = mud_config("LOOK_HIGHLIGHT_COLOUR");
 private nosave string look_hightlight_enabled = mud_config("LOOK_HIGHLIGHT");
 
-mixed main(object caller, object room, string arguments) {
+mixed main(object caller, string arguments) {
     string target;
-
-    room = environment(caller);
+    object room = environment(caller);
 
     if(!stringp(arguments)) return render_room(caller, room) ;
     if(sscanf(arguments, "at %s", target)) return render_object(caller, room, lower_case(target)) ;

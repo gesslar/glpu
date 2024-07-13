@@ -12,7 +12,9 @@ Last edited on June 27th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
+    object room = environment(caller);
+
     if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
 
     if(arg == "all") {

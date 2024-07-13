@@ -19,8 +19,9 @@ void mudlib_setup() {
     skill_type = "skill";
 }
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     int check_result ;
+    object room = environment(tp) ;
 
     // Do pre checks
     check_result = skill_check(tp, room, arg) ;

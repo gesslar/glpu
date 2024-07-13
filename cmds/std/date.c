@@ -8,14 +8,12 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string str)
-{
+mixed main(object caller, string str) {
      printf(" The current date is %s.\n", ctime(time()));
      return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
      return("SYNTAX: date\n\n"
      "This command will return the current date. It is important\n"
      "to note though that the date is in mud time, not in your\n"

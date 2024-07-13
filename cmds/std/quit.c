@@ -11,7 +11,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string arg) {
+mixed main(object caller, string arg) {
      previous_object()->exit_world();
      write("Thank you for visiting " + mud_name() + "\n");
      previous_object()->save_user();

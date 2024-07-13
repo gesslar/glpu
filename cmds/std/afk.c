@@ -10,8 +10,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string args)
-{
+mixed main(object caller, string args) {
     if(!args) args = "";
 
     caller->set_env("away", args);

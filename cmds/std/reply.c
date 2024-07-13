@@ -12,7 +12,7 @@
 
 inherit STD_CMD ;
 
-int main(object caller, object room, string message)
+mixed main(object caller, string message)
 {
     object user;
     string d_user, d_mud;

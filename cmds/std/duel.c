@@ -12,9 +12,10 @@ void setup() {
     target(TARGET_LOCAL) ;
 }
 
-mixed main(object tp, object room, string arg) {
+mixed main(object tp, string arg) {
     object victim ;
     string name, vname ;
+    object room = environment(tp) ;
 
     if (!arg)
         return "Duel whom?" ;
