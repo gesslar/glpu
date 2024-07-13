@@ -32,6 +32,7 @@
 #define STD_NPC             DIR_STD "area/mobiles/npc"
 #define STD_OB_E            DIR_STD "object/ob_prop"
 #define STD_OBJECT          DIR_STD "object/object"
+#define STD_REPORTER        DIR_STD "cmd/reporter"
 #define STD_ROOM            DIR_STD "area/room/room"
 #define STD_SKILL           DIR_STD "cmd/skill"
 #define STD_SPELL           DIR_STD "cmd/spell"

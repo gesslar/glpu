@@ -27,7 +27,8 @@ private nomask nosave mapping CONFIG = mud_config("GITHUB_REPORTER") ;
 private nomask nosave mapping api_calls = ([ ]) ;
 
 void setup() {
-    set_log_level(2) ;
+    set_log_level(0) ;
+    set_log_prefix("(GITHUB_ISSUES)") ;
 
     assure_dir("/data/github/issues/pending") ;
 
@@ -41,49 +42,28 @@ void setup() {
  * @param {string} body - The body of the issue
  * @param {mixed} callback - The callback function to call when the request is
  *                           complete
- * @return int - Returns 1 if the request was successful, 0 otherwise
+ * @return mixed - Returns 1 if the request was successful, a string if there
+ *                 was an error.
 */
 
-varargs int create_issue(string type, string title, string body, mixed callback...) {
-    string owner = mud_config(GH_OWNER_LABEL) ;
-    string repo = mud_config(GH_REPO_LABEL) ;
-    string token = mud_config(GH_PAT_LABEL) ;
-    string *types = mud_config(GH_TYPES_LABEL) ;
-varargs int create_issue(string type, string title, string body, mixed callback) {
+varargs mixed create_issue(string type, string title, string body, mixed *callback) {
     string url ;
     mapping request ;
-    mixed cb ;
 
-    if(!stringp(type))
-        error("Type must be a string") ;
+    if(!stringp(type) || !strlen(type))
+        return "Type must be a valid string" ;
 
     if(member_array(type, CONFIG["types"]) == -1)
-        error("Invalid type. Available types: " + implode(CONFIG["types"], ", ")) ;
+        return "Invalid type. Available types: " + implode(CONFIG["types"], ", ") ;
 
     if(!stringp(title))
-        error("Title must be a string") ;
+        return "Title must be a string" ;
 
     if(!stringp(body))
-        error("Body must be a string") ;
+        return "Body must be a string" ;
 
-    if(!nullp(callback)) {
-        mixed arg1 = callback[0] ;
-        mixed err ;
-        debug("callback: %O", callback) ;
-
-        if(valid_function(arg1)) {
-            err = catch(cb = assemble_call_back(callback)) ;
-        } else {
-            err = catch(cb = assemble_call_back(previous_object(), callback...)) ;
-        }
-        if(err)
-            return ;
-    }
-
-    if(!CONFIG["owner"] || !CONFIG["repo"] || !CONFIG["token"]) {
-        _log(2, "GitHub Issues API not setup in adm/etc/config.json") ;
-        return 0 ;
-    }
+    if(!CONFIG["owner"] || !CONFIG["repo"] || !CONFIG["token"])
+        return "GitHub Issues API not setup in adm/etc/config.json" ;
 
     url = sprintf("https://api.github.com/repos/%s/%s/issues",
         CONFIG["owner"], CONFIG["repo"]) ;
@@ -108,7 +88,7 @@ varargs int create_issue(string type, string title, string body, mixed callback)
         "label" : type,
         "title" : title,
         "body" : body,
-        "callback" : cb,
+        "callback" : callback,
         "caller" : previous_object(),
         "request" : request
     ]) ;
@@ -155,7 +135,7 @@ void http_handle_shutdown(mapping response) {
 
     // _log(2, "Body:\n%O", body) ;
 
-    err = catch ( call_back(request["callback"], body) ) ;
+    err = catch ( call_back(request["callback"], response["response"]["status"]) ) ;
     if(err)
         _log(2, "Error calling callback: %O", err) ;
 }

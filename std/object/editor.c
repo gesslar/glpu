@@ -12,7 +12,10 @@
 
 private nomask begin_edit(object tp, string text, string file) ;
 
-void edit(object tp, string source_file, mixed callback) {
+// Functions from other objects
+int remove() ;
+
+void edit(object tp, string source_file, mixed *callback) {
     string *lines;
     string text;
     string temp ;
@@ -41,11 +44,30 @@ void edit(object tp, string source_file, mixed callback) {
 
     temp = temp_file(tp) ;
 
-    tp->tell(text, MSG_PROMPT) ;
+    tell(tp, text) ;
+    tell(tp, "] ", MSG_PROMPT) ;
 
-    input_to("parse_input", 0, tp, text, callback) ;
+    input_to("parse_input", 0, tp, text, temp, callback) ;
 }
 
-void parse_input(string input) {
+void parse_input(string input, object tp, string text, string file, mixed *callback) {
+    string *lines;
+    string temp ;
+    int i;
 
+    if(!input) {
+        this_player()->tell("Aborted.\n") ;
+        remove() ;
+        return ;
+    }
+
+    if(input == ".") {
+        call_back(callback, text) ;
+        remove() ;
+        return ;
+    }
+
+    text += input + "\n" ;
+    tell(tp, "] ", MSG_PROMPT) ;
+    input_to("parse_input", 0, tp, text, file, callback) ;
 }
