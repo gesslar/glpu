@@ -148,7 +148,6 @@ void do_receive(string message, int message_type) {
     if(!(message_type & MSG_PROMPT)) {
         message = append(message, "\n") ;
     }
-    debug("Message: %O", message) ;
     receive(message) ;
 
     if(this_player() && this_player() != this_object())
