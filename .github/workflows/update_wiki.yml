@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
     branches:
-      - main  # Adjust if you use a different default branch
+      - master  # Adjust if you use a different default branch
 
 jobs:
   update-wiki:
