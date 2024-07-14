@@ -53,7 +53,7 @@ int page_more() {
 
     if(!ansi) msg_type = msg_type | NO_ANSI ;
     for(;current_line < total_lines && current_line < lines_per_cycle; current_line++) {
-        tell(this_player(), exploded[current_line], msg_type);
+        tell(this_player(), append(exploded[current_line], "\n"), msg_type);
     }
 
     end = current_line;

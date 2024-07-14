@@ -13,34 +13,40 @@
 inherit STD_CMD ;
 
 #define HELP_PATH ({ "/doc/general/", "/doc/game/" })
-#define DEV_PATH ({ "/doc/wiz/", "/doc/driver/efun//", "/doc/driver/apply/" })
-#define BORDER "[=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=]\n"
+#define DEV_PATH ({ "/doc/wiz/", "/doc/driver/efun/", "/doc/driver/apply/" })
 
 #include <logs.h>
 
-mixed main(object caller, string str) {
+mixed main(object tp, string str) {
     string file, *path, err, output = "";
     object cmd, pager;
     int i;
+    string border ;
+    int width = 80 ;
+
+    if(tp->query_environ("WORD_WRAP"))
+        width = tp->query_environ("WORD_WRAP") ;
+
+    border = "╞" + repeat_string("═", width - 2) + "╡\n" ;
 
     pager = new(OBJ_PAGER);
     if(!str) str = "help";
-    path = this_player()->query_path();
+    path = tp->query_path();
 
      for(i = 0; i < sizeof(path); i++) {
         if(file_exists(path[i] + str + ".c")) {
             err = catch(cmd = load_object(path[i] + str));
-            if(!err) file = cmd->query_help(caller);
+            if(!err) file = cmd->query_help(tp);
 
-            if(err) return notify_fail("Error [help]: This is a problem with "+ str + "\nPlease inform an admin.\n\n");
+            if(err) return _error("Error [help]: This is a problem with "+ str + "\nPlease inform an admin.\n\n");
 
             if(!file) return notify_fail("Error [help]: The command " + str +
                 " exists but there is no help file for it.\n"
                 " Please inform an admin.\n\n");
 
-            output += BORDER;
-            output += ("\t\t  Help file for command '"+  capitalize(str) + "'\n");
-            output += BORDER + "\n";
+            output += border;
+            output += sprintf("%|*s\n", width, str) ;
+            output += border + "\n";
             output += (file + "\n");
 
             pager->page(output);
@@ -49,15 +55,15 @@ mixed main(object caller, string str) {
     }
 
     path = HELP_PATH;
-    if(devp(this_player())) path += DEV_PATH;
-    if(adminp(this_player())) path += ({"/doc/admin/"});
+    if(devp(tp)) path += DEV_PATH;
+    if(adminp(tp)) path += ({"/doc/admin/"});
 
     for(i = 0; i < sizeof(path); i++) {
         if(file_exists(path[i] + str)) {
             file = read_file(path[i] + str);
-            output += BORDER;
+            output += border;
             output += ("\t\t  Help file for topic '"+  capitalize(str) + "'\n");
-            output += BORDER + "\n";
+            output += border + "\n";
             output += (file + "\n");
 
             pager->page(output);
