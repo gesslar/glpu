@@ -1,9 +1,13 @@
-// /adm/daemons/virtual.c
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /adm/daemons/virtual.c
+ * @description Daemon for virtual objects
+ *
+ * @created 2024/02/04 - Gesslar
+ * @last_modified 2024/02/04 - Gesslar
+ *
+ * @history
+ * 2024/02/04 - Gesslar - Created
+ */
 
 inherit STD_DAEMON ;
 
