@@ -7,7 +7,10 @@
 // 2024/02/03: Gesslar - Created
 
 // Functions
-void do_receive(string message, int message_type);
+void do_receive(string message, int message_type) ;
+
+// Functions from other objects
+mixed query_environ(string key) ;
 
 // Variables
 private nosave int _contents_can_hear = 1, _environment_can_hear = 1;
@@ -143,6 +146,20 @@ void do_receive(string message, int message_type) {
         message = XTERM256->substitute_colour(message, "plain");
     } else {
         message = XTERM256->substitute_colour(message, term);
+    }
+
+    if(function_exists("query_environ")) {
+        string encoding ;
+
+        if(query_environ("SCREEN_READER")) {
+            encoding = "screenreader" ;
+        } else if(query_environ("UTF-8")) {
+            encoding = "UTF-8" ;
+        } else {
+            encoding = "US-ASCII" ;
+        }
+
+        message = LINES_D->substitute_lines(message, encoding) ;
     }
 
     // if(!(message_type & MSG_PROMPT)) {
