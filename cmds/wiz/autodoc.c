@@ -29,7 +29,7 @@ mixed main(object tp, string str) {
             if(stringp(result))
                 return _error(result);
             else
-                return _info("Autodoc scan started.");
+                return _ok("Autodoc scan started.");
         default:
             return _error("Invalid command to autodoc.");
     }

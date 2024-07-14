@@ -181,13 +181,13 @@ private string _format_message(string color, string str, mixed args...) {
 }
 
 /**
- * @simul_efun _info
+ * @simul_efun _ok
  * @description Provides an informational message, optionally formatted with arguments.
  * @param {string} str - The informational message.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
-int _info(mixed str, mixed args...) {
+int _ok(mixed str, mixed args...) {
     object tp ;
     string mess ;
 

@@ -142,7 +142,7 @@ string open_status() ;
 varargs void _debug(string str, mixed args...) ;
 string log_dir() ;
 string tmp_dir() ;
-int _info(string str, mixed args...) ;
+int _ok(string str, mixed args...) ;
 int _error(string str, mixed args...) ;
 int _warn(string str, mixed args...) ;
 

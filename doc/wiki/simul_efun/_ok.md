@@ -1,8 +1,8 @@
-# _info
+# _ok
 
 ## SYNOPSIS
 
-    int _info(mixed str, mixed args...)
+    int _ok(mixed str, mixed args...)
 
 ### PARAMETERS
 
