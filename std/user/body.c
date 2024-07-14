@@ -605,6 +605,22 @@ object get_module(string module) {
     return modules[module] ;
 }
 
+mixed query_environ(string key) {
+    return environ_data[key] ;
+}
+
+mapping query_all_environ() {
+    return copy(environ_data) ;
+}
+
+void set_environ_option(string key, mixed value) {
+    environ_data[key] = from_string(value) ;
+}
+
+void receive_environ(string var, mixed value) {
+    set_environ_option(var, value) ;
+}
+
 void set_environ(mapping data) {
     if(base_name(previous_object()) != LOGIN_OB)
         return;
@@ -614,22 +630,10 @@ void set_environ(mapping data) {
 
     foreach(string key, mixed value in data) {
         if(stringp(value))
-            environ_data[key] = from_string(value) ;
+            set_environ_option(key, value) ;
         else
             environ_data[key] = value ;
     }
-}
-
-mixed query_environ(string key) {
-    return environ_data[key] ;
-}
-
-mapping query_all_environ() {
-    return copy(environ_data) ;
-}
-
-void receive_environ(string var, mixed value) {
-    environ_data[var] = from_string(value) ;
 }
 
 int has_screenreader() {

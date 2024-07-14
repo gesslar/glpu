@@ -30,7 +30,7 @@ void edit(object tp, string source_file, mixed *callback) {
     tell(tp,
 "
     Enter text. When finished, enter '.' on a blank line, or '#' to abort.
-  ---------------------------------------------------------------------------\n") ;
+  ═══════════════════════════════════════════════════════════════════════════\n") ;
 
     text = "" ;
     if(stringp(source_file)) {
