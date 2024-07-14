@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   push:
     branches:
-      - master  # Adjust if you use a different default branch
+      - master  # Adjust to your default branch if different
 
 jobs:
   update-wiki:
@@ -13,29 +13,33 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Generate Markdown Files
+    - name: Check for Changes in doc/wiki
+      id: check_changes
       run: |
-        # Add your command to generate markdown files
-        # For example:
-        # ./generate_markdown.sh
-
-    - name: Check for Changes
-      run: |
-        if git diff --exit-code; then
-          echo "No changes to commit"
-          exit 0
+        if git diff --quiet HEAD^ HEAD -- doc/wiki; then
+          echo "No changes in doc/wiki"
+          echo "no_changes=true" >> $GITHUB_ENV
         else
-          echo "Changes detected"
+          echo "Changes detected in doc/wiki"
+          echo "no_changes=false" >> $GITHUB_ENV
         fi
 
+    - name: Exit if No Changes
+      if: env.no_changes == 'true'
+      run: |
+        echo "No changes to commit. Exiting."
+        exit 0
+
     - name: Commit Changes
+      if: env.no_changes == 'false'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add .
+        git add doc/wiki
         git commit -m "Update wiki"
 
     - name: Push to Wiki
+      if: env.no_changes == 'false'
       run: |
         git remote add wiki "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git"
-        git push wiki main
+        git push wiki master
