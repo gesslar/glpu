@@ -609,6 +609,10 @@ mixed query_environ(string key) {
     return environ_data[key] ;
 }
 
+void clear_environ() {
+    environ_data = ([ ]) ;
+}
+
 mapping query_all_environ() {
     return copy(environ_data) ;
 }
