@@ -612,7 +612,12 @@ void set_environ(mapping data) {
     if(!mapp(data))
         return ;
 
-    environ_data = data ;
+    foreach(string key, mixed value in data) {
+        if(stringp(value))
+            environ_data[key] = from_string(value) ;
+        else
+            environ_data[key] = value ;
+    }
 }
 
 mixed query_environ(string key) {
@@ -624,7 +629,11 @@ mapping query_all_environ() {
 }
 
 void receive_environ(string var, mixed value) {
-    environ_data[var] = value ;
+    environ_data[var] = from_string(value) ;
+}
+
+int has_screenreader() {
+    return query_env("screenreader") ;
 }
 
 int is_pc() { return 1 ; }
