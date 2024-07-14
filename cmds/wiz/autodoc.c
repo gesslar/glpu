@@ -29,7 +29,7 @@ mixed main(object tp, string str) {
             if(stringp(result))
                 return _error(result);
             else
-                return _ok("Autodoc scan started.");
+                return 1 ;
         default:
             return _error("Invalid command to autodoc.");
     }
@@ -37,8 +37,8 @@ mixed main(object tp, string str) {
 
 string query_help(object tp) {
     return
-"Syntax: autodoc <command> [args]\n\n"
-"Commands:\n"
-"    scan - Starts the autodoc scan process.\n"
+"Syntax: autodoc scan\n\n"
+"Scans the mudlib for all objects in the \ebl1\eAUTODOC_SOURCE_DIRS\ebl0\e mud_config "
+"and generates documentation for them.\n"
 ;
 }

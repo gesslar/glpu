@@ -73,7 +73,7 @@ public nomask mixed autodoc_scan() {
 
     _log(1, "Starting autodoc scan") ;
     if(this_player() && devp(this_player()))
-        tell(this_player(), "Starting autodoc scan\n") ;
+        _ok("Starting autodoc scan") ;
 
     writing = false ;
     doc_root = mud_config("AUTODOC_ROOT") ;
@@ -454,7 +454,7 @@ private nomask void finish_scan() {
     end_time = time_frac() ;
     _log(1, "Autodoc scan finished in %.2fs", end_time - start_time) ;
     if(this_player() && devp(this_player()))
-        tell(this_player(), sprintf("Autodoc scan finished in %.2fs\n", end_time - start_time)) ;
+        _ok(sprintf("Autodoc scan finished in %.2fs", end_time - start_time)) ;
 
     // Save the documentation to a file
     write_markdown() ;
@@ -463,7 +463,7 @@ private nomask void finish_scan() {
 
     _log(1, "Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
     if(this_player() && devp(this_player()))
-        tell(this_player(), sprintf("Autodoc has finished scanning and writing in %.2fs\n", end_time - start_time)) ;
+        _ok("Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
 }
 
 public nomask int check_running() {
