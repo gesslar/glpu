@@ -1,0 +1,18 @@
+# ldate
+
+## SYNOPSIS
+
+    varargs string ldate(int x, int brief)
+
+### PARAMETERS
+
+    int [x=time()] - The timestamp to format. Defaults to the current time.
+    int [brief=0] - If set to 1, returns a brief date format (MM-DD). Otherwise, returns a full date format (YYYY-MM-DD).
+
+### RETURNS
+
+    string - - The formatted date string.
+
+## DESCRIPTION
+
+Returns a formatted date string.
