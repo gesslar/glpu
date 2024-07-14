@@ -17,6 +17,7 @@ inherit M_LOG ;
 protected nomask mixed start_report(object tp) ;
 public nomask void finish_report(string text, object tp) ;
 public nomask void finish_github(mapping response, object tp) ;
+public nomask void get_subject(string subject, object tp) ;
 
 private nomask nosave string report_type = "" ;
 private nomask nosave string git_hub_label = "" ;
@@ -47,15 +48,20 @@ protected nomask void set_git_hub_label(string label) {
 }
 
 mixed main(object tp, string str) {
-    return start_report(tp) ;
+    return start_report(tp, str) ;
 }
 
-mixed start_report(object tp) {
+mixed start_report(object tp, string subject) {
     if(!strlen(report_type))
         return "Report type not set.\n" ;
 
-    tell(tp, "Enter a subject for your "+report_type+" report.\nSubject: ") ;
-    input_to("get_subject", tp) ;
+    if(!stringp(subject) && !strlen(subject)) {
+        tell(tp, "Enter a subject for your "+report_type+" report.\nSubject: ") ;
+        input_to("get_subject", tp) ;
+    } else {
+        tell(tp, "Subject: "+subject+"\n") ;
+        get_subject(subject, tp) ;
+    }
 
     return 1 ;
 }
@@ -68,8 +74,6 @@ public nomask void get_subject(string subject, object tp) {
 
     editor = new(OBJ_EDITOR) ;
     editor->edit(tp, null, assemble_call_back((:finish_report:), tp, subject)) ;
-
-    return ;
 }
 
 public nomask void finish_report(string text, object tp, string subject) {
