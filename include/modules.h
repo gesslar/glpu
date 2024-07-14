@@ -15,4 +15,6 @@
 #define M_SETUP         DIR_STD_MODULES "setup"
 #define M_TARGETING     DIR_STD_MODULES "targeting"
 
+#define DM_CSS          DIR_DAEMON_MODULES "xterm256/css"
+
 #endif  // __MODULES_H__

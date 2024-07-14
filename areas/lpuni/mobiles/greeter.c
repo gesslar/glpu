@@ -65,7 +65,7 @@ void event_message(object prev, string msg, int msg_class, object tp) {
     if(tp == this_object())
         return;
 
-    msg = XTERM256->substitute_colour(msg, "plain") ;
+    msg = COLOUR_D->substitute_colour(msg, "plain") ;
 
     if(sscanf(msg, "%s bows%*sto you", target))
         cmd_queue += ({ "bow " + lower_case(target) });

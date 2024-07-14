@@ -6,5 +6,6 @@
 #define DIR_OBJ             "/obj/"
 #define DIR_STD             "/std/"
 #define DIR_STD_MODULES     DIR_STD "modules/"
+#define DIR_DAEMON_MODULES  DIR_DAEMONS "modules/"
 
 #endif // __DIRS_H__

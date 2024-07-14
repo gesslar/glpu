@@ -47,7 +47,7 @@ string arrange_string(string str, int width) {
     if(!width)
         return "";
 
-    len=strlen(stripped_colours=XTERM256->substitute_colour(str, "plain")) ;
+    len=strlen(stripped_colours=COLOUR_D->substitute_colour(str, "plain")) ;
 
    if(len<width)
         return str+repeat_string(" ",width-len);

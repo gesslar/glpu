@@ -29,6 +29,6 @@
 #define SWAP_D          DIR_DAEMONS "swap"
 #define WEBSOCKET_D     DIR_DAEMONS "websocket_client"
 #define VIRTUAL_D       DIR_DAEMONS "virtual"
-#define XTERM256        DIR_DAEMONS "xterm256_d"
+#define COLOUR_D         DIR_DAEMONS "xterm256_d"
 
 #endif // __DAEMONS_H__

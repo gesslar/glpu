@@ -27,7 +27,7 @@ mixed main(object caller, string str) {
         return 1;
     }
     case "list" :
-        tell(caller, "Colour List:\n\n" + XTERM256->get_colour_list() + "\n");
+        tell(caller, "Colour List:\n\n" + COLOUR_D->get_colour_list() + "\n");
         return 1 ;
     default : {
         if(caller->query_env("colour") == "enabled") {

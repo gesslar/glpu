@@ -12,7 +12,7 @@
 # Database Daemon
 /adm/daemons/db
 
-# XTERM256 color daemon
+# COLOUR_D color daemon
 /adm/daemons/xterm256_d
 
 # Channel Daemon

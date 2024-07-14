@@ -143,9 +143,9 @@ void do_receive(string message, int message_type) {
     // If NO_ANSI flag is set, substitute colours with "plain" (i.e., no
     // colour).
     if(message_type & NO_ANSI) {
-        message = XTERM256->substitute_colour(message, "plain");
+        message = COLOUR_D->substitute_colour(message, "plain");
     } else {
-        message = XTERM256->substitute_colour(message, term);
+        message = COLOUR_D->substitute_colour(message, term);
     }
 
     if(function_exists("query_environ")) {
