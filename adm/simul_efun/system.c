@@ -172,7 +172,7 @@ private string _format_message(string color, string str, mixed args...) {
     name = query_file_name(po) ;
     name = upper_case(name) ;
     name = replace_string(name, "_", " ") ;
-    name = "["+color+name+"\e<res>] " ;
+    name = "["+color+name+"\eres\e] " ;
 
     str = name + str ;
     str = sprintf(str, args...) ;
@@ -191,7 +191,7 @@ int _ok(mixed str, mixed args...) {
     object tp ;
     string mess ;
 
-    mess = _format_message("\e<0036>", str, args...) ;
+    mess = _format_message("\e0036\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -214,7 +214,7 @@ int _error(mixed str, mixed args...) {
     object tp ;
     string mess ;
 
-    mess = _format_message("\e<0124>", str, args...) ;
+    mess = _format_message("\e0124\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -237,7 +237,7 @@ int _warn(mixed str, mixed args...) {
     object tp ;
     string mess ;
 
-    mess = _format_message("\e<0214>", str, args...) ;
+    mess = _format_message("\e0214\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 

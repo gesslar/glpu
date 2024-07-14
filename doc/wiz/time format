@@ -1,54 +1,54 @@
-\e<re1>Miscellaneous\e<res>
-    %%          The % character \e<bl1>[%]\e<res>
+\ere1\eMiscellaneous\eres\e
+    %%          The % character \ebl1\e[%]\eres\e
     %c          The preferred date and time representation (similar to ctime())
-                \e<bl1>[Sun Sep  1 01:03:52 1973]\e<res>
-    %n          A newline character \e<bl1>[\n]\e<res>
-    %t          A tab character \e<bl1>[\t]\e<res>
+                \ebl1\e[Sun Sep  1 01:03:52 1973]\eres\e
+    %n          A newline character \ebl1\e[\n]\eres\e
+    %t          A tab character \ebl1\e[\t]\eres\e
 
-\e<re1>Date\e<res>
-    %D          The date as %m/%d/%y \e<bl1>[01/01/00,12/31/99]\e<res>
-    %F          The date as %Y-%m-%d \e<bl1>[2000-01-01,1999-12-31]\e<res>
-    %x          The preferred date representation (no time) \e<bl1>[01/01/00,12/31/99]\e<res>
+\ere1\eDate\eres\e
+    %D          The date as %m/%d/%y \ebl1\e[01/01/00,12/31/99]\eres\e
+    %F          The date as %Y-%m-%d \ebl1\e[2000-01-01,1999-12-31]\eres\e
+    %x          The preferred date representation (no time) \ebl1\e[01/01/00,12/31/99]\eres\e
 
-\e<re1>Weekday\e<res>
-    %a          The abbreviated weekday name \e<bl1>[Sun, Sat]\e<res>
-    %A          The full weekday name \e<bl1>[Sunday, Saturday]\e<res>
-    %w          Weekday as a decimal number \e<bl1>[0(Sunday),6]\e<res>
+\ere1\eWeekday\eres\e
+    %a          The abbreviated weekday name \ebl1\e[Sun, Sat]\eres\e
+    %A          The full weekday name \ebl1\e[Sunday, Saturday]\eres\e
+    %w          Weekday as a decimal number \ebl1\e[0(Sunday),6]\eres\e
 
-\e<re1>Century\e<res>
-    %C          The century number \e<bl1>[00,99]\e<res>
+\ere1\eCentury\eres\e
+    %C          The century number \ebl1\e[00,99]\eres\e
 
-\e<re1>Year\e<res>
-    %y          Year without century as a decimal number \e<bl1>[00,99]\e<res>
-    %Y          Year with century as a decimal number \e<bl1>[0000,9999]\e<res>
+\ere1\eYear\eres\e
+    %y          Year without century as a decimal number \ebl1\e[00,99]\eres\e
+    %Y          Year with century as a decimal number \ebl1\e[0000,9999]\eres\e
 
-\e<re1>Month\e<res>
-    %b, %h      The abbreviated month name \e<bl1>[Jan,Dec]\e<res>
-    %B          The full month name \e<bl1>[January, December]\e<res>
-    %m          Month as a decimal number \e<bl1>[01,12]\e<res>
+\ere1\eMonth\eres\e
+    %b, %h      The abbreviated month name \ebl1\e[Jan,Dec]\eres\e
+    %B          The full month name \ebl1\e[January, December]\eres\e
+    %m          Month as a decimal number \ebl1\e[01,12]\eres\e
 
-\e<re1>Day\e<res>
-    %d          Day of the month as a decimal number \e<bl1>[01,31]\e<res>
-    %e          Day of the month as a decimal number \e<bl1>[ 1,31]\e<res>
-    %j          Day of the year as a decimal number \e<bl1>[001,366]\e<res>
+\ere1\eDay\eres\e
+    %d          Day of the month as a decimal number \ebl1\e[01,31]\eres\e
+    %e          Day of the month as a decimal number \ebl1\e[ 1,31]\eres\e
+    %j          Day of the year as a decimal number \ebl1\e[001,366]\eres\e
 
-\e<re1>Week\e<res>
+\ere1\eWeek\eres\e
     %U          Week number of the year (Sunday as the first day of the week)
-                as a decimal number \e<bl1>[00,53]\e<res>
+                as a decimal number \ebl1\e[00,53]\eres\e
 
-\e<re1>Time\e<res>
-    %R          The time as %H:%M \e<bl1>[00:00,23:59]\e<res>
-    %r          The time as %I:%M:%S %p \e<bl1>[12:00:00 AM, 11:59:59 PM]\e<res>
-    %T          The time as %H:%M:%S \e<bl1>[00:00:00,23:59:59]\e<res>
-    %X          The preferred time representation (no date) \e<bl1>[00:00:00,23:59:59]\e<res>
-    %p          The locale's equivalent of AM or PM \e<bl1>[AM, PM]\e<res>
+\ere1\eTime\eres\e
+    %R          The time as %H:%M \ebl1\e[00:00,23:59]\eres\e
+    %r          The time as %I:%M:%S %p \ebl1\e[12:00:00 AM, 11:59:59 PM]\eres\e
+    %T          The time as %H:%M:%S \ebl1\e[00:00:00,23:59:59]\eres\e
+    %X          The preferred time representation (no date) \ebl1\e[00:00:00,23:59:59]\eres\e
+    %p          The locale's equivalent of AM or PM \ebl1\e[AM, PM]\eres\e
 
-\e<re1>Hour\e<res>
-    %H          Hour (24-hour clock) as a decimal number \e<bl1>[00,23]\e<res>
-    %I          Hour (12-hour clock) as a decimal number \e<bl1>[01,12]\e<res>
+\ere1\eHour\eres\e
+    %H          Hour (24-hour clock) as a decimal number \ebl1\e[00,23]\eres\e
+    %I          Hour (12-hour clock) as a decimal number \ebl1\e[01,12]\eres\e
 
-\e<re1>Minute\e<res>
-    %M          Minute as a decimal number \e<bl1>[00,59]\e<res>
+\ere1\eMinute\eres\e
+    %M          Minute as a decimal number \ebl1\e[00,59]\eres\e
 
-\e<re1>Second\e<res>
-    %S          Second as a decimal number \e<bl1>[00,61]\e<res>
+\ere1\eSecond\eres\e
+    %S          Second as a decimal number \ebl1\e[00,61]\eres\e

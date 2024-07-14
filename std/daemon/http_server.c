@@ -126,7 +126,7 @@ protected nomask void socket_listen(int fd) {
 }
 
 void socket_ready(int fd) {
-    _log(3, "\e<0057>=> Socket ready: %d\e<res>", fd) ;
+    _log(3, "\e0057\e=> Socket ready: %d\eres\e", fd) ;
 }
 
 nomask void close_all_client_connections() {

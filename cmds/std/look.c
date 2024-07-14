@@ -43,19 +43,19 @@ string highlight_view(object tp, string str, string *keys) {
     if(!pcre_match(colour, "^0(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
         colour = "";
     else
-        colour = "\e<" + colour + ">";
+        colour = "\e" + colour + "\e";
 
     colour = COLOUR_D->substitute_too_dark(colour);
 
     for(i = 0; i < sizeof(keys); i++) {
-        str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");
-        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + colour+capitalize(keys[i]) + "\e<res> ");
-        str = replace_string(str , " " + keys[i] + ",", " " + colour+keys[i] + "\e<res>,");
-        str = replace_string(str , " " + keys[i] + ".", " " + colour+keys[i] + "\e<res>.");
-        str = replace_string(str , " " + keys[i] + "!", " " + colour+keys[i] + "\e<res>!");
-        str = replace_string(str , " " + keys[i] + ";", " " + colour+keys[i] + "\e<res>;");
-        str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "\e<res>'");
-        str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "\e<res>:");
+        str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\eres\e ");
+        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + colour+capitalize(keys[i]) + "\eres\e ");
+        str = replace_string(str , " " + keys[i] + ",", " " + colour+keys[i] + "\eres\e,");
+        str = replace_string(str , " " + keys[i] + ".", " " + colour+keys[i] + "\eres\e.");
+        str = replace_string(str , " " + keys[i] + "!", " " + colour+keys[i] + "\eres\e!");
+        str = replace_string(str , " " + keys[i] + ";", " " + colour+keys[i] + "\eres\e;");
+        str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "\eres\e'");
+        str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "\eres\e:");
     }
 
     return str;
@@ -70,7 +70,7 @@ mixed render_room(object caller, object room) {
         return "You see nothing because you have no environment!\n" ;
 
     if(devp(caller) && caller->query_env("look_filename") == "on") {
-        result += "\e<0032>"+prepend(file_name(room), "/") + "\e<res>\n" ;
+        result += "\e0032\e"+prepend(file_name(room), "/") + "\eres\e\n" ;
     }
 
     data = get_short(room);
@@ -150,7 +150,7 @@ mixed render_object(object caller, object room, string target) {
 
     if(strlen(desc)) {
         if(devp(caller) && caller->query_env("look_filename") == "on") {
-            desc = "\e<0032>"+prepend(file_name(ob), "/") + "\e<res>\n" + desc ;
+            desc = "\e0032\e"+prepend(file_name(ob), "/") + "\eres\e\n" + desc ;
         }
     }
 
@@ -182,7 +182,7 @@ mixed render_living(object caller, object room, object target, object user) {
 
     if(strlen(result)) {
         if(devp(caller) && caller->query_env("look_filename") == "on") {
-            result = "\e<0032>"+prepend(file_name(target), "/") + "\e<res>\n" + result ;
+            result = "\e0032\e"+prepend(file_name(target), "/") + "\eres\e\n" + result ;
         }
     }
 
