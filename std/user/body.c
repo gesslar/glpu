@@ -633,7 +633,7 @@ void receive_environ(string var, mixed value) {
 }
 
 int has_screenreader() {
-    return query_env("screenreader") ;
+    return query_environ("SCREEN_READER") || false ;
 }
 
 int is_pc() { return 1 ; }
