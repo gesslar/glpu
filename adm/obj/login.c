@@ -424,10 +424,6 @@ void auto_destruct() {
 }
 
 void enter_world(string str) {
-    object *obs;
-
-    obs = users();
-
     if(!objectp(body))
         body = create_body(query_privs(user));
 
@@ -437,7 +433,7 @@ void enter_world(string str) {
     user->set_body(body);
     user->set_gmcp_client(login_gmcp_data["client"]);
     user->set_gmcp_supports(login_gmcp_data["supports"]);
-    user->set_environ(environ_data) ;
+    body->set_environ(environ_data) ;
     if(body->gmcp_enabled()) {
         GMCP_D->init_gmcp(body) ;
     }
