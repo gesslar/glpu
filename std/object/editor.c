@@ -27,11 +27,12 @@ void edit(object tp, string source_file, mixed *callback) {
     if(nullp(callback))
         error("ERROR: No valid callback to edit_file()." );
 
-    text =
+    tell(tp,
 "
     Enter text. When finished, enter '.' on a blank line, or '#' to abort.
-  ---------------------------------------------------------------------------" ;
+  ---------------------------------------------------------------------------\n") ;
 
+    text = "" ;
     if(stringp(source_file)) {
         if(!file_exists(source_file)) {
             error("ERROR: File does not exist: " + source_file);
