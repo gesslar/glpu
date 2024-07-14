@@ -26,9 +26,7 @@ jobs:
 
     - name: Exit if No Changes
       if: env.no_changes == 'true'
-      run: |
-        echo "No changes to commit. Exiting."
-        exit 0
+      run: echo "No changes to commit. Exiting."
 
     - name: Commit Changes
       if: env.no_changes == 'false'
