@@ -274,6 +274,8 @@ varargs mixed from_string(string str, int flag) {
         return ({ y, str });
     } else {
         string tmp;
+        mixed result;
+        string original_str = str; // Save the original input string
 
         tmp = "";
         while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
@@ -284,8 +286,10 @@ varargs mixed from_string(string str, int flag) {
             if( strlen(str) > 1 ) str = str[1..];
             else str = "";
         }
-        if( !flag ) return get_objects(tmp);
-        else return ({ get_objects(tmp), str });
+        result = get_objects(tmp);
+        if( result == 0 ) return original_str; // Return the original input string if get_objects() fails
+        if( !flag ) return result;
+        else return ({ result, str });
     }
     error("Gobbledygook in string.\n");
 }
