@@ -149,7 +149,7 @@ varargs void debug(mixed str, mixed args...) {
         str = sprintf("%O", str) ;
     }
 
-    str = XTERM256->substitute_colour(str, "xterm") ;
+    str = COLOUR_D->substitute_colour(str, "xterm") ;
 
     debug_message(str) ;
 }

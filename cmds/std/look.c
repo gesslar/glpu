@@ -45,7 +45,7 @@ string highlight_view(object tp, string str, string *keys) {
     else
         colour = "\e<" + colour + ">";
 
-    colour = XTERM256->substitute_too_dark(colour);
+    colour = COLOUR_D->substitute_too_dark(colour);
 
     for(i = 0; i < sizeof(keys); i++) {
         str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\e<res> ");

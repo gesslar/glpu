@@ -9,6 +9,7 @@
 #include <xterm256.h>
 
 inherit STD_DAEMON ;
+inherit DM_CSS ;
 
 private nosave int too_dark_check ;
 private nosave mapping too_dark_map ;
