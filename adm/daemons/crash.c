@@ -57,7 +57,7 @@ object *query_crash_objects() {
 void crashing() {
     crash_objects -= ({ 0 }) ;
     foreach(object obj in crash_objects) {
-        debug("Crashing: %O", obj) ;
+        _debug("Crashing: %O", obj) ;
         catch(obj->crash()) ;
     }
 }

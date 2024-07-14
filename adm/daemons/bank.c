@@ -36,9 +36,9 @@ mixed new_account(string name) {
     // Check if the account already exists
     name = capitalize(lower_case(name)) ;
     result = query_balance(name) ;
-// debug("new_account: result: %O", result) ;
-// debug("new_account: typeof result: %O", typeof(result)) ;
-// debug("new_account: nullp(result): %O", nullp(result)) ;
+// _debug("new_account: result: %O", result) ;
+// _debug("new_account: typeof result: %O", typeof(result)) ;
+// _debug("new_account: nullp(result): %O", nullp(result)) ;
     if(stringp(result))
         return result ;
 
@@ -64,19 +64,19 @@ mixed query_balance(string name) {
     query = sprintf(balance_statements["select"], name) ;
 
     result = DB_D->query(db, query) ;
-// debug("query_balance: result: %O", result) ;
-// debug("query_balance: typeof result: %O", typeof(result)) ;
-// debug("nullp(result): %O", nullp(result)) ;
+// _debug("query_balance: result: %O", result) ;
+// _debug("query_balance: typeof result: %O", typeof(result)) ;
+// _debug("nullp(result): %O", nullp(result)) ;
     if(stringp(result)) {
-        // debug("query_balance: stringp(result): %O", result) ;
+        // _debug("query_balance: stringp(result): %O", result) ;
         return result ;
     }
 
     if(sizeof(result) == 0) {
-// debug("query_balance: sizeof(result) == 0") ;
+// _debug("query_balance: sizeof(result) == 0") ;
         return null ;
     }
-// debug("query_balance: result[0]: %O", result[0]) ;
+// _debug("query_balance: result[0]: %O", result[0]) ;
     return result[0]["amount"] ;
 }
 

@@ -139,10 +139,12 @@ string lib_name() ;
 string lib_version() ;
 string mud_name() ;
 string open_status() ;
-varargs void debug(string str, mixed args...) ;
-void debug(mixed str) ;
+varargs void _debug(string str, mixed args...) ;
 string log_dir() ;
 string tmp_dir() ;
+int _info(string str, mixed args...) ;
+int _error(string str, mixed args...) ;
+int _warn(string str, mixed args...) ;
 
 // File: time
 varargs string ldate(int x, int brief) ;

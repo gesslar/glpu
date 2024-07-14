@@ -59,7 +59,7 @@ int lock_door(object tp, string args) {
 }
 
 int unlock_door(object tp, string args) {
-debug("unlock_door(%O, %O)", tp, args);
+_debug("unlock_door(%O, %O)", tp, args);
      if(args != "door") return 0;
      lock_flag = 0;
      tell(tp, "You unlock the door.\n");

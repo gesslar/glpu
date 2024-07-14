@@ -135,7 +135,7 @@ class ClassGMCP convert_message(string message) {
             gmcp.payload = json_decode(message_info) ;
         } ;
         if(err) {
-            debug("Error decoding JSON: %O", chop(err, "\n", -1)) ;
+            _debug("Error decoding JSON: %O", chop(err, "\n", -1)) ;
         }
     }
 

@@ -41,7 +41,7 @@ object compile_object(string file) {
             }
         }
 
-        debug("No functional server found at " + server_path + " ("+previous_object()+")\n") ;
+        _debug("No functional server found at " + server_path + " ("+previous_object()+")\n") ;
     }
 
     return 0;

@@ -19,7 +19,7 @@ void setup() {
 void event_boot(object prev) {
     if(previous_object() != master())
         return ;
-    debug("Boot #%d loaded.", ++boot_number) ;
+    _debug("Boot #%d loaded.", ++boot_number) ;
     save_data() ;
 }
 

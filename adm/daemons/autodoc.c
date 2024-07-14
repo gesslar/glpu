@@ -63,13 +63,13 @@ void setup() {
     ;
 }
 
-public nomask void autodoc_scan() {
+public nomask mixed autodoc_scan() {
     mixed *config ;
 
     if(check_running() == true)
-        return ;
+        return "Autodoc is already running." ;
 
-    debug(repeat_string("\n", 20)) ;
+    _debug(repeat_string("\n", 20)) ;
 
     _log(1, "Starting autodoc scan") ;
     if(this_player() && devp(this_player()))
@@ -85,6 +85,8 @@ public nomask void autodoc_scan() {
     files_to_check = ({});
 
     call_out_walltime("check_dir", dir_delay);
+
+    return 1 ;
 }
 
 private nomask void check_dir() {

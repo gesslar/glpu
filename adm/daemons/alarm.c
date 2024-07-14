@@ -479,6 +479,6 @@ varargs void test_alarm(class Alarm alarm) {
     if(!alarm)
         return ;
 
-    debug("Alarm %O: %O called at %s", alarm.args..., ctime()) ;
+    _debug("Alarm %O: %O called at %s", alarm.args..., ctime()) ;
     log_file("alarms", sprintf("Alarm %O: %O called at %s", alarm.args..., ctime())) ;
 }
