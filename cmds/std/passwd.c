@@ -1,66 +1,69 @@
-//passwd.c
+/**
+ * @file /cmds/std/passwd.c
+ * @description Command to manage your own password or the password of another
+ *              user.
+ *
+ * @created 2024/07/14 - Gesslar
+ * @last_modified 2024/07/14 - Gesslar
+ *
+ * @history
+ * 2024/07/14 - Gesslar - Created
+ */
 
-//Tacitus @ LPUniversity
-//17-OCT-05
-//Standard command
-
-/* Last edited on July 17th, 2006 by Tacitus */
-
-int confirm_CurrentPassword(string str);
-int i_NewPassword(string str);
-int confirm_NewPassword(string str, string pass);
 
 inherit STD_CMD ;
 
+void current_password(string str);
+void new_password(string str);
+void confirm_password(string str, string pass);
 
 mixed main(object caller, string arg) {
-    tell(caller, "Please enter your current password: ", MSG_PROMPT) ;
-    input_to("confirm_CurrentPassword", 1, caller,);
+    tell(caller, "Please enter your current password: ") ;
+    input_to((:current_password:), 1, caller,);
     return 1;
 }
 
-int confirm_CurrentPassword(string str, object caller) {
+int current_password(string str, object caller) {
     string curr = caller->query_user()->query_password();
+
     if(crypt(str, curr) != curr) {
-        tell(caller, "\nError: The password you provided does not match your current password.\n");
-        return 1;
+        _error("The password you provided does not match your current password.");
+        return ;
     } else {
-        tell(caller, "\nPlease enter your new password: ", MSG_PROMPT);
-        input_to("i_NewPassword", 1, caller);
-        return 1;
+        _ok("Password confirmed.\n\nPlease enter your new password: ");
+        input_to((:new_password:), 1, caller);
+        return ;
     }
 }
 
-int i_NewPassword(string str, object caller) {
-    if(!stringp(str) || str == "") {
-        tell(caller, "\n\nError [passwd]: Invalid password.\n");
-        return 1;
+void new_password(string input, object caller) {
+    if(!stringp(input) || input == "") {
+        _warn("Aborting password change.");
+        return ;
     }
 
-    tell(caller, "\nPlease enter your new password again: ", MSG_PROMPT);
-    input_to("confirm_NewPassword", 1, caller, str);
-    return 1;
+    _ok("Please enter your new password again: ");
+    input_to("confirm_password", 1, caller, input);
 }
 
-int confirm_NewPassword(string str, object caller, string pass) {
-    if(str != pass) {
-        tell(caller, "\nError: Passwords do not match. Please try again.\n");
-        return 1;
+void confirm_password(string input, object caller, string pass) {
+    if(input != pass) {
+        _error("The passwords you provided do not match.");
+        return ;
     } else {
-        if(caller->query_user()->set_password(str))
-            tell(caller, "\nSuccess: Password changed successfully.\n");
+        if(caller->query_user()->set_password(input))
+            _ok("Password changed successfully.");
         else
-            tell(caller, "\nError: Unable to change password.\n");
+            _error("Unable to change password.");
     }
-    return 1;
 }
 
-string help(object caller) {
-    return(
-" SYNTAX: passwd\n\n"
+string query_help(object caller) {
+    return
+"SYNTAX: passwd\n\n"
 "This command allows you to change your current passwd. You will be asked to "
 "enter your current passwd for security purposes and then it will request you "
 "to input your new passwd and then will ask again to confirm. After you have "
 "provided the requested information, the command will inform you if the change "
-"was succesful.");
+"was succesful.";
 }
