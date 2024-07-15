@@ -419,7 +419,7 @@ private nomask void write_markdown() {
                     line = implode(func["returns"][0], " ") ;
                     matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
                     line = (*dash_wrap)(line, 76) ;
-                    out += sprintf("    %s - %s\n", matches[0], matches[1]) ;
+                    out += sprintf("    %s %s\n", matches[0], matches[1]) ;
                 }
 
                 if(of("description", func)) {
