@@ -33,7 +33,7 @@ private nomask void discord_handle_hello(mapping message) ;
 private nomask void discord_handle_ready(mapping message) ;
 private nomask void discord_send_identify() ;
 private nomask varargs void discord_send_heartbeat(int immediate) ;
-private nomask varargs void discord_initial_heartbeat() ;
+private nomask void discord_initial_heartbeat() ;
 private nomask void discord_handle_heartbeat_ack(mapping message) ;
 
 private nomask nosave gateway_request_id = null ;
@@ -227,13 +227,6 @@ void websocket_handle_shutdown() {
         return ;
     }
 
-    if(!nullp(hb = server["discord"]["initial_heartbeat"])) {
-        if(find_call_out(hb) != -1) {
-            _log(2, "Stopping initial heartbeat") ;
-            remove_call_out(hb) ;
-        }
-    }
-
     if(!nullp(hb = server["discord"]["heartbeat"])) {
         if(find_call_out(hb) != -1) {
             _log(2, "Stopping heartbeat") ;
@@ -403,18 +396,17 @@ void discord_send_identify() {
     }
 }
 
-varargs void send_heartbeat(int immediate) {
+varargs void discord_send_heartbeat(int immediate) {
     string payload;
-    buffer frame;
-    int result;
     int seq ;
+    int result ;
 
     _log(2, "Sending heartbeat") ;
 
     seq = server["discord"]["seq"] || 0 ;
 
     payload = json_encode(([
-        "op": 1,
+        "op": DISCORD_HEARTBEAT,
         "d": seq,
     ]));
 
@@ -428,18 +420,17 @@ varargs void send_heartbeat(int immediate) {
     if(!immediate) {
         // Reschedule the next heartbeat
         server["discord"]["heartbeat"] = call_out_walltime(
-            "send_heartbeat",
+            "discord_send_heartbeat",
             server["discord"]["heartbeat_interval"]
         );
     }
 }
 
-void discord_initial_heartbeat() {
+private nomask void discord_initial_heartbeat() {
     _log(2, "Sending initial heartbeat") ;
 
-    send_heartbeat() ;
+    discord_send_heartbeat() ;
     server["discord"]["heartbeat"] = null ;
-    server["discord"]["initial_heartbeat"] = null ;
 }
 
 void discord_handle_heartbeat_ack(mapping payload) {
@@ -453,7 +444,7 @@ void discord_handle_heartbeat_ack(mapping payload) {
     if(!server["discord"]["heartbeat"]) {
         _log(2, "Starting heartbeat");
         server["discord"]["heartbeat"] = call_out_walltime(
-            "send_heartbeat",
+            "discord_send_heartbeat",
             server["discord"]["heartbeat_interval"]
         );
     }

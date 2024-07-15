@@ -670,12 +670,6 @@ private nomask void process_websocket_message(mapping frame_info) {
 
     opcode = frame_info["opcode"];
 
-    // Ensure we have data to process
-    if(!sizeof(frame_info["payload"])) {
-        _log("No data to process");
-        return;
-    }
-
     // Process the frame based on the opcode
     if(opcode == WS_TEXT_FRAME) {
         _log(2, "Received text frame");
@@ -1024,6 +1018,12 @@ protected nomask varargs int websocket_message(int frame_opcode, mixed args...) 
         return 0;
     } else {
         _log(2, "Sent message to %s", server["request"]["host"]);
+
+        if(function_exists("websocket_handle_message_sent"))
+            catch(call_other(this_object(), "websocket_handle_message_sent", frame_opcode, args));
+        else
+            _log(3, "No message sent handler for opcode: %d", frame_opcode);
+
         return 1;
     }
 }
