@@ -60,7 +60,7 @@ void setup() {
         }
 
         else {
-            out += sprintf(" Done (%.2fms)", time_frac() - time) ;
+            out += sprintf(" Done (%.2fs)", time_frac() - time) ;
         }
 
         debug_message(out) ;
@@ -164,8 +164,6 @@ int valid_module(string module_name) {
     string *keys;
 
     keys = keys(modules);
-    _debug("module_name %s", module_name) ;
-    _debug("keys %O", keys) ;
     if(member_array(module_name, keys) != -1) return 1;
 
     return 0;

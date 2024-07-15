@@ -73,7 +73,7 @@ protected void epilog(int load_empty) {
         if(err != 0) {
             out += "\nError " + err + " when loading " + lines[i];
         } else {
-            out += sprintf(" Done (%.2fms)", time_frac() - time);
+            out += sprintf(" Done (%.2fs)", time_frac() - time);
         }
         event(ob, "boot") ;
         debug_message(out);
