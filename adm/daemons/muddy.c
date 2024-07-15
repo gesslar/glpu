@@ -152,6 +152,8 @@ private nomask void muddy_handle_dispatch(mapping payload) {
     event_handler = replace_string(event_handler, " ", "_") ;
     event_handler = lower_case(event_handler) ;
 
+    _log(2, "Handling event %s in %s", event_name, event_handler) ;
+
     if(function_exists(event_handler)) {
         catch(call_other(this_object(), event_handler, data)) ;
     } else {
@@ -171,12 +173,17 @@ private nomask void muddy_handle_heartbeat_ack(mapping payload) {
     }
 }
 
-private nomask void muddy_handle_event_message_create(mapping data) {
+nomask void muddy_handle_event_message_create(mapping data) {
     _log(1, "Received message: %O", data) ;
+
+    CHAN_D->muddy_chat(data) ;
 }
 
-private nomask void muddy_handle_event_echo(mapping data) {
+nomask void muddy_handle_event_echo(mapping data) {
     _log(1, "Received echo: %O", data) ;
+
+    CHAN_D->muddy_chat(data) ;
+
 }
 
 public void muddy_send_message(string channel, string talker, string message) {

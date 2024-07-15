@@ -1,16 +1,17 @@
-//chdmod_local_net.c
-
-//Tacitus @ LPUniversity
-//30-SEPT-05
-//Channel Daemon Module - Local Net
-
-//Version 2.10
-
-//Last edited by Parthenon on August 6th, 2006
+/**
+ * @file /adm/daemons/modules/channel/muddy.c
+ * @description Muddy chat channels module
+ *
+ * @created 2024/07/15 - Gesslar
+ * @last_modified 2024/07/15 - Gesslar
+ *
+ * @history
+ * 2024/07/15 - Gesslar - Created
+ */
 
 inherit STD_DAEMON ;
 
-string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});
+string *ch_list = ({"general", "lpc"});
 mapping history = ([]);
 private nosave string module_name = query_file_name(this_object()) ;
 
@@ -81,45 +82,30 @@ int rec_msg(string chan, string usr, string msg) {
     } else
         real_message = sprintf(": %s", msg);
 
-    switch(chan) {
-        case "admin" : {
-                CHAN_D->rec_msg(chan,  "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-                break;
-            }
+    CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
+    history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
+    MUDDY_D->muddy_send_message(chan, usr, msg);
 
-        case "wiz" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-                break;
-            }
+    save_data() ;
+    return 1;
+}
 
-        case "gossip" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-                break;
-            }
+int rec_muddy_msg(string chan, string usr, string msg) {
+    string real_message;
 
-        case "chat" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-                break;
-            }
+    if(msg[0..0] == ":") {
+        msg = msg[1..<1];
+        real_message = sprintf(" %s", msg);
+    } else
+        real_message = sprintf(": %s", msg);
 
-        case "dev" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
-                history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-                break;
-            }
-    }
+    CHAN_D->rec_msg(chan, "{" + capitalize(chan) + "} " + capitalize(usr) + real_message + "\n");
+    history[chan] += ({ ldate(time(),1) +" "+ltime() + " {" + capitalize(chan) + "} " + capitalize(usr) + real_message + "\n" });
 
     save_data() ;
     return 1;
 }
 
 int is_allowed(string channel, string usr, int flag: (: 0 :)) {
-    if(channel == "admin" && !adminp(usr)) return 0;
-    if(channel == "wiz" && !devp(usr)) return 0;
-    if(channel == "dev" && !devp(usr)) return 0;
-    return 1;
+    return 1 ;
 }

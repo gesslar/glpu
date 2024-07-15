@@ -20,6 +20,7 @@ int tune(string channel, string user, int flag);
 int valid_ch(string channel_name);
 int valid_module(string module_name);
 int chat(string channel, string user, string msg);
+void muddy_chat(mapping payload);
 int filter_listing(string element);
 string *get_channels(string module_name);
 string *get_modules();
@@ -163,6 +164,8 @@ int valid_module(string module_name) {
     string *keys;
 
     keys = keys(modules);
+    _debug("module_name %s", module_name) ;
+    _debug("keys %O", keys) ;
     if(member_array(module_name, keys) != -1) return 1;
 
     return 0;
@@ -185,6 +188,37 @@ int chat(string channel, string user, string msg) {
     if(!mod_obj->is_allowed(channels[channel]["real_name"], user)) return 0;
     if(!msg) return(notify_fail("Syntax: <channel> <msg>\n"));
     if(mod_obj->rec_msg(channels[channel]["real_name"], user, msg)) return 1;
+    else return 0;
+}
+
+int muddy_chat(mapping payload) {
+    object mod_obj;
+    string *keys;
+    string channel, user, msg, source ;
+    int echoed ;
+
+    channel = payload["channel"];
+    user = payload["talker"];
+    source = payload["identifier"];
+    msg = payload["message"];
+    echoed = payload["echoed"];
+
+    keys = keys(channels);
+    if(member_array(channel, keys) == -1) return 0;
+    _debug("We actually here?");
+
+    if(!valid_module(channels[channel]["module"])) {
+        map_delete(channels, channel);
+        return 0;
+    }
+
+    mod_obj = find_object(modules[channels[channel]["module"]]);
+_debug("mod_obj: " + mod_obj);
+_debug("channels[channel][\"real_name\"]: " + channels[channel]["real_name"]);
+_debug("function_exists(\"rec_muddy_msg\", mod_obj): " + function_exists("rec_muddy_msg", mod_obj));
+    if(function_exists("rec_muddy_msg", mod_obj) == 0) return 0;
+
+    if(mod_obj->rec_muddy_msg(channels[channel]["real_name"], user, msg, source, echoed)) return 1;
     else return 0;
 }
 

@@ -11,3 +11,5 @@
 /adm/daemons/modules/channel/announce
 # Error channel
 /adm/daemons/modules/channel/error
+# muddy channels
+/adm/daemons/modules/channel/muddy
