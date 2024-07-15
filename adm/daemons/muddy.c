@@ -20,6 +20,7 @@ private nomask void muddy_handle_dispatch(mapping payload) ;
 private nomask varargs void muddy_send_heartbeat(int immediate) ;
 private nomask void muddy_handle_heartbeat_ack(mapping payload) ;
 private nomask varargs void muddy_send_identify() ;
+private nomask void muddy_send_message(string channel, string message) ;
 
 void setup() {
     set_log_level(4) ;
@@ -142,11 +143,20 @@ private nomask void muddy_send_identify() {
 }
 
 private nomask void muddy_handle_dispatch(mapping payload) {
-    string message ;
+    string event_name = payload["t"] ;
+    mixed data = payload["d"] ;
+    string event_handler ;
 
-    message = payload["d"]["message"] ;
 
-    _log(1, "Received message: %O", message) ;
+    event_handler = sprintf("muddy_handle_event_%s", event_name) ;
+    event_handler = replace_string(event_handler, " ", "_") ;
+    event_handler = lower_case(event_handler) ;
+
+    if(function_exists(event_handler)) {
+        catch(call_other(this_object(), event_handler, data)) ;
+    } else {
+        _log(2, "No handler for event %s", event_name) ;
+    }
 }
 
 private nomask void muddy_handle_heartbeat_ack(mapping payload) {
@@ -159,4 +169,29 @@ private nomask void muddy_handle_heartbeat_ack(mapping payload) {
             server["muddy"]["heartbeat_interval"]
         );
     }
+}
+
+private nomask void muddy_handle_event_message_create(mapping data) {
+    _log(1, "Received message: %O", data) ;
+}
+
+private nomask void muddy_handle_event_echo(mapping data) {
+    _log(1, "Received echo: %O", data) ;
+}
+
+public void muddy_send_message(string channel, string talker, string message) {
+    string payload ;
+
+    payload = json_encode(([
+        "op": MUDDY_DISPATCH,
+        "t": EVENT_MESSAGE_CREATE,
+        "d": ([
+            "channel": channel,
+            "message": message,
+            "talker": talker,
+            "echo" : muddy["echo"],
+        ]),
+    ])) ;
+
+    websocket_message(WS_TEXT_FRAME, payload) ;
 }

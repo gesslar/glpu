@@ -10,4 +10,8 @@
 #define MUDDY_HELLO 0x0A
 #define MUDDY_HEARTBEAT_ACK 0x0B
 
+// muddy events
+#define EVENT_MESSAGE_CREATE "MESSAGE_CREATE"
+#define EVENT_ECHO "ECHO"
+
 #endif // __MUDDY_H

@@ -33,7 +33,7 @@ private nomask void discord_handle_hello(mapping message) ;
 private nomask void discord_handle_ready(mapping message) ;
 private nomask void discord_send_identify() ;
 private nomask varargs void discord_send_heartbeat(int immediate) ;
-private nomask void discord_initial_heartbeat() ;
+protected nomask void discord_initial_heartbeat() ;
 private nomask void discord_handle_heartbeat_ack(mapping message) ;
 
 private nomask nosave gateway_request_id = null ;
@@ -46,7 +46,7 @@ void mudlib_setup() {
     ::mudlib_setup() ;
 
     register_crash() ;
-    set_log_level(0) ;
+    set_log_level(4) ;
 
     file = query_file_name() ;
 
@@ -426,7 +426,7 @@ varargs void discord_send_heartbeat(int immediate) {
     }
 }
 
-private nomask void discord_initial_heartbeat() {
+protected nomask void discord_initial_heartbeat() {
     _log(2, "Sending initial heartbeat") ;
 
     discord_send_heartbeat() ;
