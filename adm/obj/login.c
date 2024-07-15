@@ -59,7 +59,7 @@ void create() {
 
 void logon() {
     tell(this_object(), login_message) ;
-    tell(this_object(), "\nPlease select a name: ") ;
+    tell(this_object(), "\nPlease select a name: ", MSG_PROMPT) ;
     input_to("get_name");
 }
 
@@ -358,6 +358,7 @@ void email_verified(string address, string resolved, int key)
 
 void new_user(string str, string name) {
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
+        user = create_user() ;
         user->set_name(name);
         tell(this_object(),"Please enter a password for your account: ");
         input_to("get_password", 1, 1);
