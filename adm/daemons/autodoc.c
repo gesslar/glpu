@@ -373,26 +373,27 @@ private nomask string generate_function_markdown(mapping func) {
 
             params = func["param"] ;
             foreach(param in params) {
-                string *matches ;
+                string *matches, *matches2 ;
+                string type, var, desc ;
 
                 line = implode(map(param, (: trim :)), " ") ;
-                matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
-                line = dash_wrap(line, 76) ;
-                out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+
+                if(sscanf(line, "%s - %s", line, desc) == 2) {
+                    if(sscanf(line, "{%s} %s", type, var) == 2) {
+                        out += sprintf("* `%s %s` - %s\n", type, var, desc) ;
+                    }
+                }
             }
         }
 
         if(of("returns", func)) {
             string *matches ;
-
-            out += "\n### RETURNS\n\n" ;
+            string  type, var, desc ;
 
             line = implode(func["returns"][0], " ") ;
-
-            matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
-            if(sizeof(matches) > 0) {
-                line = dash_wrap(line, 76) ;
-                out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+            if(sscanf(line, "{%s} %s - %s", type, var, desc) == 3) {
+                out += "\n### RETURNS\n\n" ;
+                out += sprintf("`%s %s` - %s\n", type, var, desc) ;
             }
         }
 

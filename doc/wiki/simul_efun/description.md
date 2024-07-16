@@ -6,12 +6,8 @@
 
 ### PARAMETERS
 
-    object ob - The object to get the long description of.
-    int [extras=1] - Whether to include extra long descriptions. Defaults to 1 (include extras).
-
-### RETURNS
-
-    string - The long description of the object, including any extra long descriptions.
+* `object ob` - The object to get the long description of.
+* `int [extras=1]` - Whether to include extra long descriptions. Defaults to 1 (include extras).
 
 ## DESCRIPTION
 
@@ -26,12 +22,8 @@ including extra long descriptions.
 
 ### PARAMETERS
 
-    object ob - The object to get the short description of.
-    int [extras=1] - Whether to include extra short descriptions. Defaults to 1 (include extras).
-
-### RETURNS
-
-    string - The short description of the object, including any extra short descriptions.
+* `object ob` - The object to get the short description of.
+* `int [extras=1]` - Whether to include extra short descriptions. Defaults to 1 (include extras).
 
 ## DESCRIPTION
 

@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    object ob - The object to get the save directory for.
-
-### RETURNS
-
-    string - The save directory path for the object.
+* `object ob` - The object to get the save directory for.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Returns the save directory path for the specified object.
 
 ### PARAMETERS
 
-    object ob - The object to ensure the save directory for.
-
-### RETURNS
-
-    string - The save directory path for the object, or 0 if creation failed.
+* `object ob` - The object to ensure the save directory for.
 
 ## DESCRIPTION
 
@@ -43,11 +35,7 @@ creating it if necessary.
 
 ### PARAMETERS
 
-    object ob - The object to get the save file for.
-
-### RETURNS
-
-    string - The save file path for the object.
+* `object ob` - The object to get the save file for.
 
 ## DESCRIPTION
 

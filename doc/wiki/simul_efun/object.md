@@ -6,13 +6,9 @@
 
 ### PARAMETERS
 
-    string str - The search string specifying the objects to locate.
-    object [player] - The player object to use as a reference for searching.
-    int [no_arr] - If specified, only a single object or 0 will be returned, otherwise an array of objects may be returned.
-
-### RETURNS
-
-    mixed - The located object(s), or 0 if not found.
+* `string str` - The search string specifying the objects to locate.
+* `object [player]` - The player object to use as a reference for searching.
+* `int [no_arr]` - If specified, only a single object or 0 will be returned, otherwise an array of objects may be returned.
 
 ## DESCRIPTION
 
@@ -27,11 +23,7 @@ include various search criteria and options.
 
 ### PARAMETERS
 
-    object ob - The object to get the top-level environment of.
-
-### RETURNS
-
-    object - The top-level environment of the object.
+* `object ob` - The object to get the top-level environment of.
 
 ## DESCRIPTION
 
@@ -46,13 +38,9 @@ traversing up through nested environments.
 
 ### PARAMETERS
 
-    mixed ob - The object or name of the object to find.
-    mixed [cont] - The container or environment to search within. Defaults to the previous object.
-    function [f] - An optional function to further filter the search.
-
-### RETURNS
-
-    object - The found object, or 0 if not found.
+* `mixed ob` - The object or name of the object to find.
+* `mixed [cont]` - The container or environment to search within. Defaults to the previous object.
+* `function [f]` - An optional function to further filter the search.
 
 ## DESCRIPTION
 
@@ -67,11 +55,7 @@ using the specified criteria.
 
 ### PARAMETERS
 
-    object ob - The object to get the ID of.
-
-### RETURNS
-
-    int - The unique object ID.
+* `object ob` - The object to get the ID of.
 
 ## DESCRIPTION
 
@@ -85,12 +69,8 @@ Retrieves the unique object ID of the given object.
 
 ### PARAMETERS
 
-    string str - The name of the object to locate.
-    object [player] - The player object to use as a reference for searching.
-
-### RETURNS
-
-    object - The located object, or 0 if not found.
+* `string str` - The name of the object to locate.
+* `object [player]` - The player object to use as a reference for searching.
 
 ## DESCRIPTION
 

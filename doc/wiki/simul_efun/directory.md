@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    object ob - The object to query the directory of.
-
-### RETURNS
-
-    string - The directory path of the object.
+* `object ob` - The object to query the directory of.
 
 ## DESCRIPTION
 
@@ -25,11 +21,7 @@ provided, it defaults to the previous object.
 
 ### PARAMETERS
 
-    string path - The path of the directory to ensure.
-
-### RETURNS
-
-    int - 1 if the directory exists or was created successfully, otherwise 0.
+* `string path` - The path of the directory to ensure.
 
 ## DESCRIPTION
 

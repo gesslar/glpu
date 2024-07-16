@@ -6,10 +6,10 @@
 
 ### PARAMETERS
 
-    object ob - The object to send the message from.
-    string str - The message string to send.
-    int [msg_type] - The message type, combined with ALL_MSG.
-    mixed [exclude] - The objects to exclude from receiving the message.
+* `object ob` - The object to send the message from.
+* `string str` - The message string to send.
+* `int [msg_type]` - The message type, combined with ALL_MSG.
+* `mixed [exclude]` - The objects to exclude from receiving the message.
 
 ## DESCRIPTION
 
@@ -24,9 +24,9 @@ of their position in the containment hierarchy.
 
 ### PARAMETERS
 
-    object ob - The object to send the message to.
-    string str - The message string to send.
-    int [msg_type] - The message type.
+* `object ob` - The object to send the message to.
+* `string str` - The message string to send.
+* `int [msg_type]` - The message type.
 
 ## DESCRIPTION
 
@@ -41,10 +41,10 @@ containment hierarchy.
 
 ### PARAMETERS
 
-    object ob - The object to send the message from.
-    string str - The message string to send.
-    int [msg_type] - The message type, combined with DOWN_MSG.
-    mixed [exclude] - The objects to exclude from receiving the message.
+* `object ob` - The object to send the message from.
+* `string str` - The message string to send.
+* `int [msg_type]` - The message type, combined with DOWN_MSG.
+* `mixed [exclude]` - The objects to exclude from receiving the message.
 
 ## DESCRIPTION
 
@@ -59,10 +59,10 @@ as from a container to all objects it contains.
 
 ### PARAMETERS
 
-    object ob - The object to send the message from.
-    string str - The message string to send.
-    int [msg_type] - The message type, combined with UP_MSG.
-    mixed [exclude] - The objects to exclude from receiving the message.
+* `object ob` - The object to send the message from.
+* `string str` - The message string to send.
+* `int [msg_type]` - The message type, combined with UP_MSG.
+* `mixed [exclude]` - The objects to exclude from receiving the message.
 
 ## DESCRIPTION
 
@@ -78,9 +78,9 @@ environment.
 
 ### PARAMETERS
 
-    object ob - The object to send the message to.
-    string str - The message string to send.
-    int [msg_type] - The message type, combined with DIRECT_MSG.
+* `object ob` - The object to send the message to.
+* `string str` - The message string to send.
+* `int [msg_type]` - The message type, combined with DIRECT_MSG.
 
 ## DESCRIPTION
 

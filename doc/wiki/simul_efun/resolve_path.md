@@ -6,12 +6,8 @@
 
 ### PARAMETERS
 
-    string Current - The current path.
-    string Next - The next path to resolve.
-
-### RETURNS
-
-    string - The resolved absolute path.
+* `string Current` - The current path.
+* `string Next` - The next path to resolve.
 
 ## DESCRIPTION
 

@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string str - The string to capitalize.
-
-### RETURNS
-
-    string - The capitalized string.
+* `string str` - The string to capitalize.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Capitalizes the first letter of each word in a string.
 
 ### PARAMETERS
 
-    mixed ob - The object or gender string to convert.
-
-### RETURNS
-
-    string - The subjective pronoun.
+* `mixed ob` - The object or gender string to convert.
 
 ## DESCRIPTION
 
@@ -43,11 +35,7 @@ gender. Defaults to "it" for non-string or unknown gender.
 
 ### PARAMETERS
 
-    mixed ob - The object or string to convert to possessive form.
-
-### RETURNS
-
-    string - The possessive form of the noun.
+* `mixed ob` - The object or string to convert to possessive form.
 
 ## DESCRIPTION
 
@@ -62,12 +50,8 @@ it adds an apostrophe; otherwise, it adds 's.
 
 ### PARAMETERS
 
-    string str - The string to capitalize.
-    int [title=0] - Whether to capitalize the first word as a title.
-
-### RETURNS
-
-    string - The string with significant words capitalized.
+* `string str` - The string to capitalize.
+* `int [title=0]` - Whether to capitalize the first word as a title.
 
 ## DESCRIPTION
 
@@ -83,11 +67,7 @@ as a title.
 
 ### PARAMETERS
 
-    mixed ob - The object or gender string to convert.
-
-### RETURNS
-
-    string - The possessive adjective.
+* `mixed ob` - The object or gender string to convert.
 
 ## DESCRIPTION
 
@@ -102,11 +82,7 @@ gender. Defaults to "its" for non-string or unknown gender.
 
 ### PARAMETERS
 
-    mixed ob - The object or gender string to convert.
-
-### RETURNS
-
-    string - The possessive pronoun.
+* `mixed ob` - The object or gender string to convert.
 
 ## DESCRIPTION
 
@@ -121,11 +97,7 @@ gender. Defaults to "its" for non-string or unknown gender.
 
 ### PARAMETERS
 
-    mixed ob - The object or gender string to convert.
-
-### RETURNS
-
-    string - The objective pronoun.
+* `mixed ob` - The object or gender string to convert.
 
 ## DESCRIPTION
 
@@ -140,11 +112,7 @@ gender. Defaults to "it" for non-string or unknown gender.
 
 ### PARAMETERS
 
-    mixed ob - The object or gender string to convert.
-
-### RETURNS
-
-    string - The reflexive pronoun.
+* `mixed ob` - The object or gender string to convert.
 
 ## DESCRIPTION
 

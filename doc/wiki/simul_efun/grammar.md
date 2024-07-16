@@ -6,12 +6,8 @@
 
 ### PARAMETERS
 
-    int x - The quantity of items.
-    string str - The description of the item(s).
-
-### RETURNS
-
-    string - The consolidated string.
+* `int x` - The quantity of items.
+* `string str` - The description of the item(s).
 
 ## DESCRIPTION
 
@@ -26,11 +22,7 @@ description, handling pluralization and special cases.
 
 ### PARAMETERS
 
-    int n - The integer to convert.
-
-### RETURNS
-
-    string - The ordinal string representation of the integer.
+* `int n` - The integer to convert.
 
 ## DESCRIPTION
 
@@ -44,11 +36,7 @@ Converts an integer to its ordinal string representation.
 
 ### PARAMETERS
 
-    int num - The numerical number to convert.
-
-### RETURNS
-
-    string - The worded number representation of the integer.
+* `int num` - The numerical number to convert.
 
 ## DESCRIPTION
 

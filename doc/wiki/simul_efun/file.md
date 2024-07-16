@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string file - The path of the file to check.
-
-### RETURNS
-
-    string - The owner of the file, or 0 if not found.
+* `string file` - The path of the file to check.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Determines the owner of a file based on its path.
 
 ### PARAMETERS
 
-    string path - The path to extract the components from.
-
-### RETURNS
-
-    string[] - An array containing the directory and file name components.
+* `string path` - The path to extract the components from.
 
 ## DESCRIPTION
 
@@ -43,11 +35,7 @@ name components.
 
 ### PARAMETERS
 
-    mixed arg - The file or object to create a temporary file for.
-
-### RETURNS
-
-    string - The path to the temporary file.
+* `mixed arg` - The file or object to create a temporary file for.
 
 ## DESCRIPTION
 
@@ -61,7 +49,7 @@ Generates a temporary file name based on the provided argument.
 
 ### PARAMETERS
 
-    string file - The path of the file to ensure.
+* `string file` - The path of the file to ensure.
 
 ## DESCRIPTION
 
@@ -76,12 +64,8 @@ the file exists, creating directories as needed.
 
 ### PARAMETERS
 
-    string path - The path of the file to read.
-    int [line_count=25] - The number of lines to read from the end of the file. Defaults to 25.
-
-### RETURNS
-
-    string - The last few lines of the file.
+* `string path` - The path of the file to read.
+* `int [line_count=25]` - The number of lines to read from the end of the file. Defaults to 25.
 
 ## DESCRIPTION
 
@@ -96,9 +80,9 @@ Returns the last few lines of a file, similar to the Unix
 
 ### PARAMETERS
 
-    string file - The path of the file to write to.
-    string[] lines - The array of lines to write.
-    int [overwrite=0] - Whether to overwrite the existing content. Defaults to 0 (append).
+* `string file` - The path of the file to write to.
+* `string[] lines` - The array of lines to write.
+* `int [overwrite=0]` - Whether to overwrite the existing content. Defaults to 0 (append).
 
 ## DESCRIPTION
 
@@ -113,13 +97,9 @@ overwriting the existing content.
 
 ### PARAMETERS
 
-    string file - The name of the log file.
-    string str - The log message to write.
-    mixed [arg] - Additional arguments to include in the log message.
-
-### RETURNS
-
-    int - 1 if the log message was written successfully, otherwise 0.
+* `string file` - The name of the log file.
+* `string str` - The log message to write.
+* `mixed [arg]` - Additional arguments to include in the log message.
 
 ## DESCRIPTION
 
@@ -133,11 +113,7 @@ Writes a log message to a specified log file.
 
 ### PARAMETERS
 
-    string file - The path of the file to read.
-
-### RETURNS
-
-    string[] - An array of lines from the file.
+* `string file` - The path of the file to read.
 
 ## DESCRIPTION
 
@@ -152,11 +128,7 @@ excluding comment lines and empty lines.
 
 ### PARAMETERS
 
-    object ob - The object to query the file name of.
-
-### RETURNS
-
-    string - The name of the file corresponding to the object.
+* `object ob` - The object to query the file name of.
 
 ## DESCRIPTION
 

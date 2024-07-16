@@ -6,12 +6,8 @@
 
 ### PARAMETERS
 
-    float a - The part value.
-    float b - The whole value.
-
-### RETURNS
-
-    float - The percentage of `a` in `b`.
+* `float a` - The part value.
+* `float b` - The whole value.
 
 ## DESCRIPTION
 
@@ -25,12 +21,8 @@ Calculates what percentage `a` is of `b`.
 
 ### PARAMETERS
 
-    mixed a - The dividend.
-    mixed b - The divisor.
-
-### RETURNS
-
-    float - The remainder of `a` divided by `b`.
+* `mixed a` - The dividend.
+* `mixed b` - The divisor.
 
 ## DESCRIPTION
 
@@ -44,12 +36,8 @@ Calculates the remainder of `a` divided by `b`.
 
 ### PARAMETERS
 
-    float a - The part value.
-    float b - The whole value.
-
-### RETURNS
-
-    float - The percentage of `a` out of `b`.
+* `float a` - The part value.
+* `float b` - The whole value.
 
 ## DESCRIPTION
 
@@ -63,13 +51,9 @@ Calculates the percentage of `a` out of `b`.
 
 ### PARAMETERS
 
-    float min - The minimum value.
-    float max - The maximum value.
-    float val - The value to check.
-
-### RETURNS
-
-    float - The value, constrained within the range of `min` to `max`.
+* `float min` - The minimum value.
+* `float max` - The maximum value.
+* `float val` - The value to check.
 
 ## DESCRIPTION
 
@@ -83,11 +67,7 @@ Ensures a value is within a specified range.
 
 ### PARAMETERS
 
-    mixed[] arr - The array of numbers to sum.
-
-### RETURNS
-
-    int - The sum of all elements in the array.
+* `mixed[] arr` - The array of numbers to sum.
 
 ## DESCRIPTION
 

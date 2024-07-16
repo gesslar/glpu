@@ -6,13 +6,9 @@
 
 ### PARAMETERS
 
-    string file - The file to modify.
-    string key - The key to increment the value for.
-    int inc - The amount to increment by.
-
-### RETURNS
-
-    int - The new value after incrementing.
+* `string file` - The file to modify.
+* `string key` - The key to increment the value for.
+* `int inc` - The amount to increment by.
 
 ## DESCRIPTION
 
@@ -28,12 +24,8 @@ created with the increment value.
 
 ### PARAMETERS
 
-    string file - The file to modify.
-    string key - The key to delete.
-
-### RETURNS
-
-    int - 1 if the key was found and deleted, 0 otherwise.
+* `string file` - The file to modify.
+* `string key` - The key to delete.
 
 ## DESCRIPTION
 
@@ -47,13 +39,9 @@ Deletes the key-value pair from the file.
 
 ### PARAMETERS
 
-    string file - The file to read from.
-    string key - The key to search for.
-    mixed [def] - The default value to return if the key is not found.
-
-### RETURNS
-
-    mixed - The value associated with the key, or the default value if the key is not found.
+* `string file` - The file to read from.
+* `string key` - The key to search for.
+* `mixed [def]` - The default value to return if the key is not found.
 
 ## DESCRIPTION
 
@@ -67,9 +55,9 @@ Retrieves the value associated with a given key from a file.
 
 ### PARAMETERS
 
-    string file - The file to write to.
-    string key - The key to write.
-    mixed data - The value(s) to write.
+* `string file` - The file to write to.
+* `string key` - The key to write.
+* `mixed data` - The value(s) to write.
 
 ## DESCRIPTION
 

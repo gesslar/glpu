@@ -6,13 +6,9 @@
 
 ### PARAMETERS
 
-    string str - The string to extract from.
-    string sub - The substring to extract to.
-    int [reverse=0] - If set, the substring will start at the last occurrence.
-
-### RETURNS
-
-    string - The extracted substring.
+* `string str` - The string to extract from.
+* `string sub` - The substring to extract to.
+* `int [reverse=0]` - If set, the substring will start at the last occurrence.
 
 ## DESCRIPTION
 
@@ -29,13 +25,9 @@ substring within the string.
 
 ### PARAMETERS
 
-    string str - The string to extract from.
-    int from - The starting position to extract from.
-    int [to] - The ending position to extract to.
-
-### RETURNS
-
-    string - The extracted substring.
+* `string str` - The string to extract from.
+* `int from` - The starting position to extract from.
+* `int [to]` - The ending position to extract to.
 
 ## DESCRIPTION
 
@@ -49,13 +41,9 @@ Extracts a substring from a string.
 
 ### PARAMETERS
 
-    string str - The string to search in.
-    string sub - The substring to search for.
-    int [start=-1] - The starting position to search from.
-
-### RETURNS
-
-    int - The position of the substring in the string, or -1 if not found.
+* `string str` - The string to search in.
+* `string sub` - The substring to search for.
+* `int [start=-1]` - The starting position to search from.
 
 ## DESCRIPTION
 
@@ -70,12 +58,8 @@ and moving backwards.
 
 ### PARAMETERS
 
-    string source - The string to append to.
-    string to_append - The string to append.
-
-### RETURNS
-
-    string - The original string with the appended string if it was not already present.
+* `string source` - The string to append to.
+* `string to_append` - The string to append.
 
 ## DESCRIPTION
 
@@ -90,11 +74,7 @@ If the string is already present, the original string is returned.
 
 ### PARAMETERS
 
-    string str - The string to remove ANSI codes from.
-
-### RETURNS
-
-    string - The string without ANSI codes.
+* `string str` - The string to remove ANSI codes from.
 
 ## DESCRIPTION
 
@@ -108,13 +88,9 @@ Returns a string with all ANSI colour codes removed.
 
 ### PARAMETERS
 
-    string str - The string to chop from.
-    string sub - The substring to chop.
-    int [dir=-1] - The direction to chop: 1 for left, -1 for right.
-
-### RETURNS
-
-    string - The string with the substring chopped off if it was present.
+* `string str` - The string to chop from.
+* `string sub` - The substring to chop.
+* `int [dir=-1]` - The direction to chop: 1 for left, -1 for right.
 
 ## DESCRIPTION
 
@@ -130,12 +106,8 @@ string is returned.
 
 ### PARAMETERS
 
-    string str - The string to convert.
-    int [flag=0] - If set, returns an array with the value and the remaining string.
-
-### RETURNS
-
-    mixed - The LPC value represented by the string.
+* `string str` - The string to convert.
+* `int [flag=0]` - If set, returns an array with the value and the remaining string.
 
 ## DESCRIPTION
 
@@ -150,11 +122,7 @@ LPC value.
 
 ### PARAMETERS
 
-    string str - The string to reverse.
-
-### RETURNS
-
-    string - The reversed string.
+* `string str` - The string to reverse.
 
 ## DESCRIPTION
 
@@ -168,12 +136,8 @@ Reverses a string.
 
 ### PARAMETERS
 
-    string[] arr - The array to make a list from.
-    string [conjunction="and"] - The word to join the last two elements of the list.
-
-### RETURNS
-
-    string - The simple list string.
+* `string[] arr` - The array to make a list from.
+* `string [conjunction="and"]` - The word to join the last two elements of the list.
 
 ## DESCRIPTION
 
@@ -188,11 +152,7 @@ joined by a conjunction.
 
 ### PARAMETERS
 
-    mixed number - The number to add commas to.
-
-### RETURNS
-
-    string - The number with commas added as a string.
+* `mixed number` - The number to add commas to.
 
 ## DESCRIPTION
 
@@ -206,11 +166,7 @@ Returns a string with commas added to the number.
 
 ### PARAMETERS
 
-    mixed val - The value to convert.
-
-### RETURNS
-
-    string - The string representation of the value.
+* `mixed val` - The value to convert.
 
 ## DESCRIPTION
 
@@ -224,12 +180,8 @@ Converts an LPC value to its string representation.
 
 ### PARAMETERS
 
-    string source - The string to prepend to.
-    string to_prepend - The string to prepend.
-
-### RETURNS
-
-    string - The original string with the prepended string if it was not already present.
+* `string source` - The string to prepend to.
+* `string to_prepend` - The string to prepend.
 
 ## DESCRIPTION
 

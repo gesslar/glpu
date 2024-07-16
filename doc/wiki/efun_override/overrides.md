@@ -6,11 +6,8 @@
 
 ### PARAMETERS
 
-    string msg - The message to write.
-    mixed exclude - The object or array of objects to exclude from the message.
-
-### RETURNS
-
+* `string msg` - The message to write.
+* `mixed exclude` - The object or array of objects to exclude from the message.
 
 ## DESCRIPTION
 
@@ -25,10 +22,7 @@ write a message to all users using the message() efun.
 
 ### PARAMETERS
 
-    object ob - The object to destruct.
-
-### RETURNS
-
+* `object ob` - The object to destruct.
 
 ## DESCRIPTION
 
@@ -45,11 +39,7 @@ return 0.
 
 ### PARAMETERS
 
-    int x - The time to convert to a string.
-
-### RETURNS
-
-    string - The time in string form.
+* `int x` - The time to convert to a string.
 
 ## DESCRIPTION
 
@@ -65,12 +55,9 @@ It also will use time() if no argument is provided.
 
 ### PARAMETERS
 
-    object ob - The object to write the message to.
-    string msg - The message to write.
-    string type - The message class of message to write.
-
-### RETURNS
-
+* `object ob` - The object to write the message to.
+* `string msg` - The message to write.
+* `string type` - The message class of message to write.
 
 ## DESCRIPTION
 
@@ -85,10 +72,7 @@ write a message to the object using the message() efun.
 
 ### PARAMETERS
 
-    string msg - The message to write.
-
-### RETURNS
-
+* `string msg` - The message to write.
 
 ## DESCRIPTION
 
@@ -103,10 +87,6 @@ efun.
 
     object this_body()
 
-### RETURNS
-
-    object - The this_player().
-
 ## DESCRIPTION
 
 This is an override of the efun this_body(). It will return
@@ -120,12 +100,8 @@ the this_player().
 
 ### PARAMETERS
 
-    int x - The number to convert to a string.
-    int many - If true, the number will be returned in plural form.
-
-### RETURNS
-
-    string - The number in string form.
+* `int x` - The number to convert to a string.
+* `int many` - If true, the number will be returned in plural form.
 
 ## DESCRIPTION
 
@@ -140,11 +116,8 @@ the number in string form.
 
 ### PARAMETERS
 
-    string msg - The message to write.
-    mixed exclude - The object or array of objects to exclude from the message.
-
-### RETURNS
-
+* `string msg` - The message to write.
+* `mixed exclude` - The object or array of objects to exclude from the message.
 
 ## DESCRIPTION
 
@@ -159,10 +132,7 @@ write a message to the room using the message() efun.
 
 ### PARAMETERS
 
-    int how - The type of shutdown to perform.
-
-### RETURNS
-
+* `int how` - The type of shutdown to perform.
 
 ## DESCRIPTION
 
@@ -179,12 +149,9 @@ return 0.
 
 ### PARAMETERS
 
-    mixed room - The room to write the message to.
-    string msg - The message to write.
-    mixed exclude - The object or array of objects to exclude from the message.
-
-### RETURNS
-
+* `mixed room` - The room to write the message to.
+* `string msg` - The message to write.
+* `mixed exclude` - The object or array of objects to exclude from the message.
 
 ## DESCRIPTION
 
@@ -199,12 +166,8 @@ write a message to the room using the message() efun.
 
 ### PARAMETERS
 
-    object to - The object to exec to.
-    object from - The object to exec from.
-
-### RETURNS
-
-    int - 1 if the exec was successful, 0 if it was not.
+* `object to` - The object to exec to.
+* `object from` - The object to exec from.
 
 ## DESCRIPTION
 
@@ -221,11 +184,7 @@ execute the function as normal. If it does not, it will return 0.
 
 ### PARAMETERS
 
-    object ob - The object to check.
-
-### RETURNS
-
-    int - 1 if the object is a user, otherwise 0.
+* `object ob` - The object to check.
 
 ## DESCRIPTION
 
@@ -238,10 +197,6 @@ if the previous object is a user if no argument is provided.
 ## SYNOPSIS
 
     object this_user()
-
-### RETURNS
-
-    object - The this_player()->query_user().
 
 ## DESCRIPTION
 

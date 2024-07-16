@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    mixed[] arr - The input array.
-
-### RETURNS
-
-    mixed[] - A new array with elements in reverse order.
+* `mixed[] arr` - The input array.
 
 ## DESCRIPTION
 
@@ -25,13 +21,9 @@ reverse order.
 
 ### PARAMETERS
 
-    mixed[] arr - The input array.
-    int start - The starting index of elements to be removed.
-    int [end] - The ending index of elements to be removed. Defaults to start if not specified.
-
-### RETURNS
-
-    mixed[] - A new array with specified elements removed.
+* `mixed[] arr` - The input array.
+* `int start` - The starting index of elements to be removed.
+* `int [end]` - The ending index of elements to be removed. Defaults to start if not specified.
 
 ## DESCRIPTION
 
@@ -48,11 +40,7 @@ all the elements of the input array.
 
 ### PARAMETERS
 
-    mixed[] arr - An array of mixed types.
-
-### RETURNS
-
-    mixed[] - A new array with distinct elements from the input array.
+* `mixed[] arr` - An array of mixed types.
 
 ## DESCRIPTION
 
@@ -67,14 +55,10 @@ array.
 
 ### PARAMETERS
 
-    mixed[] arr - The array from which elements will be removed and to which new elements may be added.
-    int start - The zero-based index at which to start changing the array. If negative, it will begin that many elements from the end.
-    int delete_count - The number of elements to remove from the array, starting from the index specified by start. If delete_count is 0, no elements are removed.
-    mixed[] [items_to_add] - An array of elements to add to the array at the start index. Can be omitted or passed as null if no elements are to be added.
-
-### RETURNS
-
-    mixed[] - A new array reflecting the desired modifications.
+* `mixed[] arr` - The array from which elements will be removed and to which new elements may be added.
+* `int start` - The zero-based index at which to start changing the array. If negative, it will begin that many elements from the end.
+* `int delete_count` - The number of elements to remove from the array, starting from the index specified by start. If delete_count is 0, no elements are removed.
+* `mixed[] [items_to_add]` - An array of elements to add to the array at the start index. Can be omitted or passed as null if no elements are to be added.
 
 ## DESCRIPTION
 

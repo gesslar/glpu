@@ -6,12 +6,8 @@
 
 ### PARAMETERS
 
-    mixed a - The variable to identify.
-    string [indent] - The indentation string to use for formatting.
-
-### RETURNS
-
-    string - The string representation of the variable.
+* `mixed a` - The variable to identify.
+* `string [indent]` - The indentation string to use for formatting.
 
 ## DESCRIPTION
 

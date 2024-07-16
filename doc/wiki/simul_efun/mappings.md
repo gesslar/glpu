@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    mapping m - The weighted mapping to select from, where keys are the elements and values are their weights.
-
-### RETURNS
-
-    mixed - The selected element.
+* `mapping m` - The weighted mapping to select from, where keys are the elements and values are their weights.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Selects an element from a weighted mapping based on their weights.
 
 ### PARAMETERS
 
-    mapping map - The mapping to format.
-
-### RETURNS
-
-    string - The formatted string representation of the mapping.
+* `mapping map` - The mapping to format.
 
 ## DESCRIPTION
 

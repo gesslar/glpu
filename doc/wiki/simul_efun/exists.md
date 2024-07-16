@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string file - The name of the file to check.
-
-### RETURNS
-
-    int - 1 if the file exists, otherwise 0.
+* `string file` - The name of the file to check.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Checks if a file exists.
 
 ### PARAMETERS
 
-    string user - The username to check.
-
-### RETURNS
-
-    int - 1 if the user data file exists, otherwise 0.
+* `string user` - The username to check.
 
 ## DESCRIPTION
 
@@ -42,11 +34,7 @@ Checks if a user data file exists.
 
 ### PARAMETERS
 
-    string file - The base name of the file to check.
-
-### RETURNS
-
-    int - 1 if the compiled file exists, otherwise 0.
+* `string file` - The base name of the file to check.
 
 ## DESCRIPTION
 
@@ -60,11 +48,7 @@ Checks if a compiled file (.c) exists.
 
 ### PARAMETERS
 
-    string file - The base name of the file to check.
-
-### RETURNS
-
-    int - 1 if the save file exists, otherwise 0.
+* `string file` - The base name of the file to check.
 
 ## DESCRIPTION
 
@@ -78,11 +62,7 @@ Checks if a save file exists.
 
 ### PARAMETERS
 
-    string dirname - The name of the directory to check.
-
-### RETURNS
-
-    int - 1 if the directory exists, otherwise 0.
+* `string dirname` - The name of the directory to check.
 
 ## DESCRIPTION
 

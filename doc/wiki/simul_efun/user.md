@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string name - The user's name.
-
-### RETURNS
-
-    string - The file path for the user's mob data file, or 0 if the input is invalid.
+* `string name` - The user's name.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Returns the file path for the user's mob data file.
 
 ### PARAMETERS
 
-    string name - The user's name.
-
-### RETURNS
-
-    string - The directory path for the user's core data directory, or 0 if the input is invalid.
+* `string name` - The user's name.
 
 ## DESCRIPTION
 
@@ -43,11 +35,7 @@ on their name.
 
 ### PARAMETERS
 
-    string name - The user's name.
-
-### RETURNS
-
-    string - The home directory path for the user.
+* `string name` - The user's name.
 
 ## DESCRIPTION
 
@@ -61,11 +49,7 @@ Returns the home directory path for the user.
 
 ### PARAMETERS
 
-    string name - The user's name.
-
-### RETURNS
-
-    string - The directory path for the user's data directory, or 0 if the input is invalid.
+* `string name` - The user's name.
 
 ## DESCRIPTION
 
@@ -80,11 +64,7 @@ their name.
 
 ### PARAMETERS
 
-    string name - The user's name.
-
-### RETURNS
-
-    string - The file path for the user's data file, or 0 if the input is invalid.
+* `string name` - The user's name.
 
 ## DESCRIPTION
 

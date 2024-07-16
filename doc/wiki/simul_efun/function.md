@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    int [colour=0] - Whether to include ANSI colour codes. Defaults to 0 (no colour).
-
-### RETURNS
-
-    string - The formatted call stack trace.
+* `int [colour=0]` - Whether to include ANSI colour codes. Defaults to 0 (no colour).
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Returns a formatted string of the current call stack trace.
 
 ### PARAMETERS
 
-    mixed arg - The arguments to assemble into a callback.
-
-### RETURNS
-
-    mixed[] - The assembled callback.
+* `mixed arg` - The arguments to assemble into a callback.
 
 ## DESCRIPTION
 
@@ -58,12 +50,8 @@ function and any additional arguments.
 
 ### PARAMETERS
 
-    mixed cb - The callback to execute.
-    mixed new_arg - The arguments to pass to the callback.
-
-### RETURNS
-
-    mixed - The result of the callback execution.
+* `mixed cb` - The callback to execute.
+* `mixed new_arg` - The arguments to pass to the callback.
 
 ## DESCRIPTION
 
@@ -77,11 +65,7 @@ Executes a callback with the given arguments.
 
 ### PARAMETERS
 
-    mixed f - The function to check.
-
-### RETURNS
-
-    int - 1 if the function is valid, otherwise 0.
+* `mixed f` - The function to check.
 
 ## DESCRIPTION
 

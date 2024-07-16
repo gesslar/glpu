@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    mixed user - The user to check, either as a username string or an object. Defaults to the previous object.
-
-### RETURNS
-
-    int - 1 if the user has developer privileges, otherwise 0.
+* `mixed user` - The user to check, either as a username string or an object. Defaults to the previous object.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Checks if a user has developer privileges.
 
 ### PARAMETERS
 
-    mixed user - The user to check, either as a username string or an object. Defaults to the previous object.
-
-### RETURNS
-
-    int - 1 if the user has admin privileges, otherwise 0.
+* `mixed user` - The user to check, either as a username string or an object. Defaults to the previous object.
 
 ## DESCRIPTION
 
@@ -42,11 +34,7 @@ Checks if a user has admin privileges.
 
 ### PARAMETERS
 
-    mixed user - The user to check, either as a username string or an object.
-
-### RETURNS
-
-    int - 1 if the user has developer privileges, otherwise 0.
+* `mixed user` - The user to check, either as a username string or an object.
 
 ## DESCRIPTION
 
@@ -60,12 +48,8 @@ Checks if a user has developer privileges (alias for devp).
 
 ### PARAMETERS
 
-    string user - The username to check.
-    string group - The group to check membership in.
-
-### RETURNS
-
-    int - 1 if the user is a member of the group, otherwise 0.
+* `string user` - The username to check.
+* `string group` - The group to check membership in.
 
 ## DESCRIPTION
 

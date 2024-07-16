@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string text - The JSON string to deserialize.
-
-### RETURNS
-
-    mixed - The deserialized LPC value.
+* `string text` - The JSON string to deserialize.
 
 ## DESCRIPTION
 
@@ -24,12 +20,8 @@ Deserializes a JSON string into an LPC value.
 
 ### PARAMETERS
 
-    mixed value - The LPC value to serialize.
-    mixed[] [pointers] - An optional array of pointers to handle circular references.
-
-### RETURNS
-
-    string - The JSON string representation of the LPC value.
+* `mixed value` - The LPC value to serialize.
+* `mixed[] [pointers]` - An optional array of pointers to handle circular references.
 
 ## DESCRIPTION
 

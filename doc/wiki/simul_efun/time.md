@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    int nanoseconds - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
-
-### RETURNS
-
-    float - The time value converted to a fractional value in seconds.
+* `int nanoseconds` - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
 
 ## DESCRIPTION
 
@@ -26,11 +22,7 @@ a fractional value representing seconds by dividing the input by 1,000,000,000.
 
 ### PARAMETERS
 
-    int nanoseconds - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
-
-### RETURNS
-
-    int - The time value converted to milliseconds.
+* `int nanoseconds` - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
 
 ## DESCRIPTION
 
@@ -46,12 +38,8 @@ to milliseconds by dividing the input by 1,000,000.
 
 ### PARAMETERS
 
-    int [x=time()] - The timestamp to format. Defaults to the current time.
-    int [brief=0] - If set to 1, returns a brief time format (HH:MM). Otherwise, returns a full time format (HH:MM:SS).
-
-### RETURNS
-
-    string - The formatted time string.
+* `int [x=time()]` - The timestamp to format. Defaults to the current time.
+* `int [brief=0]` - If set to 1, returns a brief time format (HH:MM). Otherwise, returns a full time format (HH:MM:SS).
 
 ## DESCRIPTION
 
@@ -65,12 +53,8 @@ Returns a formatted time string.
 
 ### PARAMETERS
 
-    int [x=time()] - The timestamp to format. Defaults to the current time.
-    int [brief=0] - If set to 1, returns a brief date format (MM-DD). Otherwise, returns a full date format (YYYY-MM-DD).
-
-### RETURNS
-
-    string - The formatted date string.
+* `int [x=time()]` - The timestamp to format. Defaults to the current time.
+* `int [brief=0]` - If set to 1, returns a brief date format (MM-DD). Otherwise, returns a full date format (YYYY-MM-DD).
 
 ## DESCRIPTION
 

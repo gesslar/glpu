@@ -6,11 +6,7 @@
 
 ### PARAMETERS
 
-    string source - The Base64 encoded string to be decoded.
-
-### RETURNS
-
-    string - The decoded string.
+* `string source` - The Base64 encoded string to be decoded.
 
 ## DESCRIPTION
 
@@ -24,11 +20,7 @@ Decodes a given Base64 encoded string.
 
 ### PARAMETERS
 
-    mixed source_str - The string or buffer to be encoded.
-
-### RETURNS
-
-    string - The Base64 encoded string.
+* `mixed source_str` - The string or buffer to be encoded.
 
 ## DESCRIPTION
 
