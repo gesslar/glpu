@@ -15,37 +15,30 @@ name : Testsuite
 mud ip : 0.0.0.0
 
 # the external ports we accept users on
-port number : 4000
-external_port_2: websocket 4001
-external_port_3: websocket 4002
-external_port_3_tls: cert=etc/cert.pem key=etc/key.pem
-external_port_4: telnet 4003
-external_port_4_tls: cert=etc/cert.pem key=etc/key.pem
-
-websocket http dir : ../src/www
+#port number : 4000
 
 # absolute pathname of mudlib
-mudlib directory : ./ # test #
+mudlib directory : {{GAME_DIR}}
 
 # debug.log and author/domain stats are stored here
-log directory : /log
+log directory : {{GAME_DIR}}/log
 
 # the directories which are searched by #include <...>
 # for multiple dirs, separate each path with a ':'
 # see also 'master::get_include_path'
-include directories : /include
+include directories : /include:/include/driver
 
 # the file which defines the master object
-master file : /single/master
+master file : /adm/obj/master
 
 # the file where all global simulated efuns are defined.
-simulated efun file : /single/simul_efun
+simulated efun file : /adm/obj/simul_efun
 
 # alternate debug.log file name (assumed to be in specified 'log directory')
 debug log file : debug.log
 
 # This is an include file which is automatically #include'd in all objects
-global include file : <globals.h>
+global include file : <global.h>
 
 # default no-matching-action message
 default fail message : What?

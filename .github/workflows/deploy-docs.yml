@@ -40,6 +40,14 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_DB_SQLITE=2 ..
         VERBOSE=1 make -j `nproc` install
 
+    - name: Capture game directory path
+      id: capture-game-dir
+      run: echo "GAME_DIR=$(pwd)/game" >> $GITHUB_ENV
+
+    - name: Replace placeholders in config.github
+      run: |
+        sed -i "s|{{GAME_DIR}}|${{ env.GAME_DIR }}|g" game/adm/etc/config.github
+
     - name: Build Docs
       run: |
         ./fluffos/build/bin/driver game/adm/etc/config.github -fbuilddocs
