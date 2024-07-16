@@ -1,33 +1,33 @@
 ## query_directory
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string query_directory(object ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `object ob` - The object to query the directory of.
 
-## DESCRIPTION
+## Description
 
 Returns the directory of the given object. If no object is
 provided, it defaults to the previous object.
 
 ## assure_dir
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed assure_dir(string path)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string path` - The path of the directory to ensure.
 
-## DESCRIPTION
+## Description
 
 Ensures that a directory exists by creating it and its parent
 directories if necessary.

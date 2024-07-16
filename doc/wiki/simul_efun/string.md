@@ -1,18 +1,18 @@
 ## substr
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string substr(string str, string sub, int reverse)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to extract from.
 * `string sub` - The substring to extract to.
 * `int [reverse=0]` - If set, the substring will start at the last occurrence.
 
-## DESCRIPTION
+## Description
 
 Returns a substring of a string, starting from 0 and ending at the
 first occurrence of another string within it. If the reverse flag
@@ -21,90 +21,90 @@ substring within the string.
 
 ## extract
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string extract(string str, int from, int to)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to extract from.
 * `int from` - The starting position to extract from.
 * `int [to]` - The ending position to extract to.
 
-## DESCRIPTION
+## Description
 
 Extracts a substring from a string.
 
 ## reverse_strsrch
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs int reverse_strsrch(string str, string sub, int start)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to search in.
 * `string sub` - The substring to search for.
 * `int [start=-1]` - The starting position to search from.
 
-## DESCRIPTION
+## Description
 
 Searches for a substring in a string starting from a given position
 and moving backwards.
 
 ## append
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string append(string source, string to_append)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string source` - The string to append to.
 * `string to_append` - The string to append.
 
-## DESCRIPTION
+## Description
 
 Appends a string to another string if it is not already there.
 If the string is already present, the original string is returned.
 
 ## no_ansi
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string no_ansi(string str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to remove ANSI codes from.
 
-## DESCRIPTION
+## Description
 
 Returns a string with all ANSI colour codes removed.
 
 ## chop
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string chop(string str, string sub, int dir)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to chop from.
 * `string sub` - The substring to chop.
 * `int [dir=-1]` - The direction to chop: 1 for left, -1 for right.
 
-## DESCRIPTION
+## Description
 
 Chops a substring off the end or beginning of another string if
 it is present. If the substring is not present, the original
@@ -112,102 +112,102 @@ string is returned.
 
 ## from_string
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs mixed from_string(string str, int flag)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to convert.
 * `int [flag=0]` - If set, returns an array with the value and the remaining string.
 
-## DESCRIPTION
+## Description
 
 Converts a string representation of an LPC value to the corresponding
 LPC value.
 
 ## reverse_string
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string reverse_string(string str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to reverse.
 
-## DESCRIPTION
+## Description
 
 Reverses a string.
 
 ## simple_list
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string simple_list(string *arr, string conjunction)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string[] arr` - The array to make a list from.
 * `string [conjunction="and"]` - The word to join the last two elements of the list.
 
-## DESCRIPTION
+## Description
 
 Returns a string that is a simple list of the elements of an array,
 joined by a conjunction.
 
 ## add_commas
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string add_commas(mixed number)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed number` - The number to add commas to.
 
-## DESCRIPTION
+## Description
 
 Returns a string with commas added to the number.
 
 ## stringify
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string stringify(mixed val)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed val` - The value to convert.
 
-## DESCRIPTION
+## Description
 
 Converts an LPC value to its string representation.
 
 ## prepend
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string prepend(string source, string to_prepend)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string source` - The string to prepend to.
 * `string to_prepend` - The string to prepend.
 
-## DESCRIPTION
+## Description
 
 Prepends a string to another string if it is not already there.
 If the string is already present, the original string is returned.

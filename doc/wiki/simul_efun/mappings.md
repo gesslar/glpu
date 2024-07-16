@@ -1,32 +1,32 @@
 ## element_of_weighted
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed element_of_weighted(mapping m)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mapping m` - The weighted mapping to select from, where keys are the elements and values are their weights.
 
-## DESCRIPTION
+## Description
 
 Selects an element from a weighted mapping based on their weights.
 
 ## pretty_map
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string pretty_map(mapping map)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mapping map` - The mapping to format.
 
-## DESCRIPTION
+## Description
 
 Returns a formatted string representation of a mapping, removing
 any size annotations.

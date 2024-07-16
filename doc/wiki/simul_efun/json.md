@@ -1,33 +1,33 @@
 ## json_decode
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed json_decode(string text)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string text` - The JSON string to deserialize.
 
-## DESCRIPTION
+## Description
 
 Deserializes a JSON string into an LPC value.
 
 ## json_encode
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string json_encode(mixed value, mixed* pointers)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed value` - The LPC value to serialize.
 * `mixed[] [pointers]` - An optional array of pointers to handle circular references.
 
-## DESCRIPTION
+## Description
 
 Serializes an LPC value into a JSON string.
 

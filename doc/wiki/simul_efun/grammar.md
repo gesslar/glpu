@@ -1,50 +1,50 @@
 ## consolidate
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string consolidate(int x, string str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `int x` - The quantity of items.
 * `string str` - The description of the item(s).
 
-## DESCRIPTION
+## Description
 
 Returns a consolidated string for a given quantity and item
 description, handling pluralization and special cases.
 
 ## ordinal
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string ordinal (int n)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `int n` - The integer to convert.
 
-## DESCRIPTION
+## Description
 
 Converts an integer to its ordinal string representation.
 
 ## int_string
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string int_string (int num)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `int num` - The numerical number to convert.
 
-## DESCRIPTION
+## Description
 
 Converts a numerical number to its worded number representation.
 

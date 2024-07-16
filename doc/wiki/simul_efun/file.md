@@ -1,154 +1,154 @@
 ## file_owner
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string file_owner(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The path of the file to check.
 
-## DESCRIPTION
+## Description
 
 Determines the owner of a file based on its path.
 
 ## dir_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string *dir_file(string path)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string path` - The path to extract the components from.
 
-## DESCRIPTION
+## Description
 
 Given a path, returns an array containing the directory and file
 name components.
 
 ## temp_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string temp_file(mixed arg)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed arg` - The file or object to create a temporary file for.
 
-## DESCRIPTION
+## Description
 
 Generates a temporary file name based on the provided argument.
 
 ## assure_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed assure_file(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The path of the file to ensure.
 
-## DESCRIPTION
+## Description
 
 Given a file, ensures that the directory structure leading to
 the file exists, creating directories as needed.
 
 ## tail
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string tail(string path, int line_count)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string path` - The path of the file to read.
 * `int [line_count=25]` - The number of lines to read from the end of the file. Defaults to 25.
 
-## DESCRIPTION
+## Description
 
 Returns the last few lines of a file, similar to the Unix
 `tail` command.
 
 ## implode_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs void implode_file(string file, string *lines, int overwrite)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The path of the file to write to.
 * `string[] lines` - The array of lines to write.
 * `int [overwrite=0]` - Whether to overwrite the existing content. Defaults to 0 (append).
 
-## DESCRIPTION
+## Description
 
 Writes an array of lines to a specified file, optionally
 overwriting the existing content.
 
 ## log_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs int log_file(string file, string str, mixed arg...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The name of the log file.
 * `string str` - The log message to write.
 * `mixed [arg]` - Additional arguments to include in the log message.
 
-## DESCRIPTION
+## Description
 
 Writes a log message to a specified log file.
 
 ## explode_file
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string *explode_file(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The path of the file to read.
 
-## DESCRIPTION
+## Description
 
 Reads a file and returns its content as an array of lines,
 excluding comment lines and empty lines.
 
 ## query_file_name
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string query_file_name(object ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `object ob` - The object to query the file name of.
 
-## DESCRIPTION
+## Description
 
 Returns the name of the file corresponding to a given object.
 

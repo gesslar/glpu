@@ -1,12 +1,12 @@
 ## dump_socket_status
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string dump_socket_status()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns a formatted string displaying the status of all sockets.
 

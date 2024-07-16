@@ -1,80 +1,80 @@
 ## file_exists
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int file_exists(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The name of the file to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a file exists.
 
 ## user_exists
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int user_exists(string user)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string user` - The username to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a user data file exists.
 
 ## cfile_exists
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int cfile_exists(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The base name of the file to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a compiled file (.c) exists.
 
 ## ofile_exists
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int ofile_exists(string file)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string file` - The base name of the file to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a save file exists.
 
 ## directory_exists
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int directory_exists(string dirname)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string dirname` - The name of the directory to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a directory exists.
 

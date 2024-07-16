@@ -1,211 +1,211 @@
 ## mud_config
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed mud_config(string str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The configuration key to retrieve.
 
-## DESCRIPTION
+## Description
 
 Retrieves a specific configuration value from the MUD config.
 
 ## mud_name
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string mud_name()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the name of the MUD.
 
 ## _ok
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int _ok(mixed str, mixed args...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The informational message.
 * `mixed [args]` - Optional arguments to format the message.
 
-## DESCRIPTION
+## Description
 
 Provides an informational message, optionally formatted with arguments.
 
 ## lib_name
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string lib_name()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the name of the library being used by the MUD.
 
 ## tmp_dir
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string tmp_dir()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the directory where temporary files are stored.
 
 ## admin_email
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string admin_email()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the admin email address for the MUD.
 
 ## arch
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string arch()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the architecture of the system the MUD is running on.
 
 ## port
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int port()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the port number the MUD is running on.
 
 ## baselib_name
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string baselib_name()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the name of the base library.
 
 ## driver_version
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string driver_version()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the version of the MUD driver.
 
 ## lib_version
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string lib_version()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the version of the library being used by the MUD.
 
 ## baselib_version
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string baselib_version()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the version of the base library.
 
 ## _warn
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int _warn(mixed str, mixed args...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The warning message.
 * `mixed [args]` - Optional arguments to format the message.
 
-## DESCRIPTION
+## Description
 
 Provides a warning message, optionally formatted with arguments.
 
 ## _error
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int _error(mixed str, mixed args...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The error message.
 * `mixed [args]` - Optional arguments to format the message.
 
-## DESCRIPTION
+## Description
 
 Provides an error message, optionally formatted with arguments.
 
 ## open_status
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string open_status()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the open status of the MUD.
 
 ## log_dir
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string log_dir()
 ```
 
-## DESCRIPTION
+## Description
 
 Returns the directory where log files are stored.
 

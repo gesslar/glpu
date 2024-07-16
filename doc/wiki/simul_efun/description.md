@@ -1,35 +1,35 @@
 ## get_long
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string get_long(object ob, int extras: (: 1 :))
 ```
 
-### PARAMETERS
+### Parameters
 
 * `object ob` - The object to get the long description of.
 * `int [extras=1]` - Whether to include extra long descriptions. Defaults to 1 (include extras).
 
-## DESCRIPTION
+## Description
 
 Returns the long description of an object, optionally
 including extra long descriptions.
 
 ## get_short
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string get_short(object ob, int extras: (: 1 :))
 ```
 
-### PARAMETERS
+### Parameters
 
 * `object ob` - The object to get the short description of.
 * `int [extras=1]` - Whether to include extra short descriptions. Defaults to 1 (include extras).
 
-## DESCRIPTION
+## Description
 
 Returns the short description of an object, optionally
 including extra short descriptions in parentheses.

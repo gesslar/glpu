@@ -1,32 +1,32 @@
 ## call_trace
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string call_trace(int colour)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `int [colour=0]` - Whether to include ANSI colour codes. Defaults to 0 (no colour).
 
-## DESCRIPTION
+## Description
 
 Returns a formatted string of the current call stack trace.
 
 ## assemble_call_back
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed *assemble_call_back(mixed arg...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed arg` - The arguments to assemble into a callback.
 
-## DESCRIPTION
+## Description
 
 Assembles a callback function from the provided arguments.
 This function is used to create a callable structure that can be
@@ -48,34 +48,34 @@ function and any additional arguments.
 
 ## call_back
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 mixed call_back(mixed cb, mixed new_arg...)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed cb` - The callback to execute.
 * `mixed new_arg` - The arguments to pass to the callback.
 
-## DESCRIPTION
+## Description
 
 Executes a callback with the given arguments.
 
 ## valid_function
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int valid_function(mixed f)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed f` - The function to check.
 
-## DESCRIPTION
+## Description
 
 Checks if a given function is valid and not owned by a destructed
 object.

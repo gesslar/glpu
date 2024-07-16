@@ -1,30 +1,30 @@
 ## generate_uuid
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string generate_uuid()
 ```
 
-## DESCRIPTION
+## Description
 
 Generates a random "version 4" UUID. Version 4 UUIDs are based
 on random numbers.
 
 ## of
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 int of(mixed needle, mixed haystack)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed needle` - The value to search for.
 * `mixed haystack ` - The array, mapping, or string to search in.
 
-## DESCRIPTION
+## Description
 
 Checks if a value is present in an array, mapping, or string.
 

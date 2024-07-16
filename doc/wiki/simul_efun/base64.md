@@ -1,32 +1,32 @@
 ## base64_decode
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string base64_decode(string source)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string source` - The Base64 encoded string to be decoded.
 
-## DESCRIPTION
+## Description
 
 Decodes a given Base64 encoded string.
 
 ## base64_encode
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string base64_encode(mixed source_str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed source_str` - The string or buffer to be encoded.
 
-## DESCRIPTION
+## Description
 
 Encodes a given string or buffer into Base64 format.
 

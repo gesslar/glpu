@@ -360,7 +360,7 @@ private nomask string generate_function_markdown(mapping func) {
             return null ;
 
         // Now we want the synopsis, which is the function definition
-        out += "## SYNOPSIS\n\n" ;
+        out += "## Synopsis\n\n" ;
         out += sprintf("```c\n%s\n```\n", func["function_def"]) ;
 
         // Next we need to parse the parameters
@@ -369,7 +369,7 @@ private nomask string generate_function_markdown(mapping func) {
             mixed *params ;
             string *param ;
 
-            out += "\n### PARAMETERS\n\n" ;
+            out += "\n### Parameters\n\n" ;
 
             params = func["param"] ;
             foreach(param in params) {
@@ -392,7 +392,7 @@ private nomask string generate_function_markdown(mapping func) {
 
             line = implode(func["returns"][0], " ") ;
             if(sscanf(line, "{%s} %s - %s", type, var, desc) == 3) {
-                out += "\n### RETURNS\n\n" ;
+                out += "\n### Returns\n\n" ;
                 out += sprintf("`%s %s` - %s\n", type, var, desc) ;
             }
         }
@@ -400,7 +400,7 @@ private nomask string generate_function_markdown(mapping func) {
         if(of("description", func)) {
             string *desc ;
 
-            out += "\n## DESCRIPTION\n\n" ;
+            out += "\n## Description\n\n" ;
 
             desc = func["description"][0] ;
             out += implode(desc, "\n") ;

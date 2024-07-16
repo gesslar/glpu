@@ -1,67 +1,67 @@
 ## cap_words
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string cap_words(string str)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to capitalize.
 
-## DESCRIPTION
+## Description
 
 Capitalizes the first letter of each word in a string.
 
 ## subjective
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string subjective(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or gender string to convert.
 
-## DESCRIPTION
+## Description
 
 Returns the subjective pronoun corresponding to the object's
 gender. Defaults to "it" for non-string or unknown gender.
 
 ## possessive_noun
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string possessive_noun(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or string to convert to possessive form.
 
-## DESCRIPTION
+## Description
 
 Returns the possessive form of a noun. If the noun ends with 's',
 it adds an apostrophe; otherwise, it adds 's.
 
 ## cap_significant_words
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 varargs string cap_significant_words(string str, int title)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `string str` - The string to capitalize.
 * `int [title=0]` - Whether to capitalize the first word as a title.
 
-## DESCRIPTION
+## Description
 
 Capitalizes significant words in a string, ignoring certain
 insignificant words. Optionally capitalizes the first word
@@ -69,68 +69,68 @@ as a title.
 
 ## possessive
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string possessive(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or gender string to convert.
 
-## DESCRIPTION
+## Description
 
 Returns the possessive adjective corresponding to the object's
 gender. Defaults to "its" for non-string or unknown gender.
 
 ## possessive_pronoun
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string possessive_pronoun(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or gender string to convert.
 
-## DESCRIPTION
+## Description
 
 Returns the possessive pronoun corresponding to the object's
 gender. Defaults to "its" for non-string or unknown gender.
 
 ## objective
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string objective(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or gender string to convert.
 
-## DESCRIPTION
+## Description
 
 Returns the objective pronoun corresponding to the object's
 gender. Defaults to "it" for non-string or unknown gender.
 
 ## reflexive
 
-## SYNOPSIS
+## Synopsis
 
 ```c
 string reflexive(mixed ob)
 ```
 
-### PARAMETERS
+### Parameters
 
 * `mixed ob` - The object or gender string to convert.
 
-## DESCRIPTION
+## Description
 
 Returns the reflexive pronoun corresponding to the object's
 gender. Defaults to "itself" for non-string or unknown gender.
