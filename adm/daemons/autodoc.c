@@ -460,7 +460,9 @@ private nomask void generate_wiki() {
         string *function_names, function_name ;
         string current_source_file ;
         string *wiki_table = ({}) ;
+        string dest_dir ;
 
+        dest_dir = append(doc_root, function_type + "/") ;
         home_content += sprintf("## %s\n\n", function_type) ;
 
         function_names = sort_array(keys(docs[function_type]),
@@ -478,27 +480,34 @@ private nomask void generate_wiki() {
         ) ;
 
         foreach(function_name in function_names) {
-            string *parts ;
-            string dest_file ;
             mixed md ;
 
             if(!current_source_file) {
                 current_source_file = docs[function_type][function_name]["source_file"] ;
-                parts = dir_file(current_source_file) ;
-                dest_file = append(chop(parts[1], ".c", -1), ".md") ;
                 doc_content = "" ;
             }
 
             // We're starting a new file name
             if(docs[function_type][function_name]["source_file"] != current_source_file) {
+                string dest_file ;
+                string *parts ;
+
+                parts = dir_file(current_source_file) ;
+                dest_file = append(dest_dir, chop(parts[1], ".c", -1) + ".md") ;
+                _debug("Dest file = %s", dest_file) ;
+                if(!assure_file(dest_file)) {
+                    _error("Failed to create directory for: " + dest_file) ;
+                    return ;
+                }
+
                 home_content += "### " + parts[1] + "\n\n" ;
                 home_content += (*generate_table)(function_type, parts[1], wiki_table) ;
                 home_content += "\n" ;
 
-                write_file(append(doc_root, dest_file), doc_content, 1) ;
+                write_file(dest_file, doc_content, 1) ;
 
                 current_source_file = docs[function_type][function_name]["source_file"] ;
-                parts = dir_file(current_source_file) ;
+
                 wiki_table = ({ }) ;
                 dest_file = append(chop(parts[1], ".c", -1), ".md") ;
             }
