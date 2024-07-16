@@ -35,6 +35,7 @@ jobs:
         CC: "gcc"
         CXX: "g++"
       run: |
+        cp game/adm/etc/local_options.github fluffos/local_options
         mkdir build
         cd build
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_UIDS=OFF -DPACKAGE_MUDLIB_STATS=OFF ..
