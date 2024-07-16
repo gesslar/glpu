@@ -32,15 +32,19 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_MUDLIB_STATS=OFF -DPACKAGE_UIDS=OFF ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_DB_SQLITE=2 ..
         VERBOSE=1 make -j `nproc` install
 
     - name: Checkout game repository
       uses: actions/checkout@v2
 
+    - name: Capture current directory
+      id: capture-dir
+      run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
+
     - name: Build Docs
       run: |
-        ./fluffos/build/bin/driver adm/etc/config.github -fbuilddocs
+        ${{ env.CURRENT_DIR }}/fluffos/build/bin/driver adm/etc/config.github -fbuilddocs
 
     - name: Set up Python
       uses: actions/setup-python@v2
