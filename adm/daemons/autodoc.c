@@ -20,7 +20,7 @@ private nomask int check_running();
 public nomask mixed autodoc_scan() ;
 private nomask void finish_scan();
 private nomask void parse_file(string file);
-private nomask string generate_markdown(mapping doc) ;
+private nomask string generate_function_markdown(mapping doc) ;
 
 // Variables
 private nosave nomask float dir_delay = 0.02 ;
@@ -45,7 +45,7 @@ private nosave nomask mapping docs = ([]);
 private nosave int ci = false ;
 
 void setup() {
-    set_log_level(1) ;
+    set_log_level(4) ;
 
     jsdoc_function_regex = "^\\s\\*\\s+@(\\w+)\\s+(\\w+)\\s*$" ;
 
@@ -348,7 +348,7 @@ private nomask void parse_file(string file) {
 
 private nomask string dash_wrap(string str, int width) ;
 
-private nomask string generate_markdown(mapping func) {
+private nomask string generate_function_markdown(mapping func) {
     string out = "" ;
     string line ;
     mixed err ;
@@ -416,6 +416,48 @@ private nomask string generate_markdown(mapping func) {
     return null ;
 }
 
+private nomask string generate_function_type_markdown(mapping funcs) {
+    string out = "" ;
+    string line ;
+    mixed err ;
+
+    err = catch {
+        string *function_names, function_name ;
+        string current_source_file ;
+        string dest_dir ;
+        mapping func ;
+
+        function_names = sort_array(keys(funcs), 1) ;
+
+        foreach(function_name in function_names) {
+            string *parts ;
+            string file ;
+
+            func = funcs[function_name] ;
+
+            parts = dir_file(func["source_file"]) ;
+            file = parts[1] ;
+
+            line = sprintf("    [%s](%s#%s)\n",
+                function_name,
+                chop(file, ".c", -1),
+                function_name
+            ) ;
+
+            out += sprintf(line) ;
+        }
+
+        _debug("Generated function type markdown: %s", out) ;
+
+        return out ;
+    } ;
+    if(err)
+        log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
+
+    return null ;
+
+}
+
 private nomask void generate_wiki() {
     string *function_types, function_type ;
     string home_content = "", doc_content = "" ;
@@ -423,112 +465,78 @@ private nomask void generate_wiki() {
 
     writing = true ;
 
-    // Generates a table in wiki format, with a maximum of 5 columns
-    // and the content is a list of function names from left to right.
-    generate_table = function(string function_type, string file_name, string *table) {
-        string table_content = "";
-        int max_columns = 3, column = 0;
-
-        // Create the first line of the table that is the border
-        table_content += "|"+repeat_string(" |", max_columns)+"\n";
-        table_content += "|"+repeat_string("---|", max_columns)+"\n";
-
-        // Create the table rows
-        foreach (string function_name in table) {
-            if (column == 0)
-                table_content += "|";
-
-            table_content += sprintf("[%s](%s.html#%s)|",
-                function_name,
-                chop(file_name, ".c", -1),
-                function_name
-            ) ;
-
-            column++;
-
-            if (column == max_columns) {
-                table_content += "\n";
-                column = 0;
-            }
-        }
-
-        // Add padding if the last row is not complete
-        if (column != 0) {
-            table_content += repeat_string(" |", max_columns - column) + "\n";
-        }
-
-        return table_content;
-    };
-
-    // Generate the wiki
     function_types = sort_array(keys(docs), 1) ;
 
     foreach(function_type in function_types) {
-        string *function_names, function_name ;
+        string *function_names ;
+        string func_type_file ;
         string current_source_file ;
-        string *wiki_table = ({}) ;
         string dest_dir ;
+        mapping funcs ;
+        string func_type_md ;
+        string *source_files, source_file ;
 
-        dest_dir = append(doc_root, function_type + "/") ;
+        _log(1, "Working on function type: %s", function_type) ;
+
         home_content += sprintf("## %s\n\n", function_type) ;
 
-        function_names = sort_array(keys(docs[function_type]),
-            function(string a, string b, string function_type) {
-                string source_a, source_b ;
+        funcs = docs[function_type] ;
+        func_type_md = generate_function_type_markdown(funcs) ;
+        home_content += func_type_md ;
+        func_type_file = append(doc_root, function_type + ".md") ;
+        assure_file(func_type_file) ;
+        write_file(func_type_file, func_type_md, 1) ;
 
-                source_a = docs[function_type][a]["source_file"] ;
-                source_b = docs[function_type][b]["source_file"] ;
+        function_names = sort_array(keys(funcs), 1) ;
 
-                if(source_a == source_b)
-                    return strcmp(a, b) ;
+        _log(2, " Found %d functions of type %s", sizeof(function_names), function_type) ;
 
-                return strcmp(source_a, source_b) ;
-            }, function_type
-        ) ;
+        dest_dir = append(doc_root, function_type + "/") ;
+        _log(1, " Generating wiki for %s in %s", function_type, dest_dir) ;
 
-        foreach(function_name in function_names) {
-            mixed md ;
+        source_files = map(values(funcs), (: $1["source_file"] :)) ;
+        source_files = distinct_array(source_files) ;
+        // source_files = map(source_files, (: dir_file($1)[1] :)) ;
+        // source_files = map(source_files, (: chop($1, ".c", -1) :)) ;
+        source_files = sort_array(source_files, 1) ;
 
-            if(!current_source_file) {
-                current_source_file = docs[function_type][function_name]["source_file"] ;
-                doc_content = "" ;
-            }
+        foreach(source_file in source_files) {
+            string *parts, source_file_name ;
+            mapping current_funcs ;
+            string *curr_function_names, curr_function_name ;
+            string dest_file ;
 
-            // We're starting a new file name
-            if(docs[function_type][function_name]["source_file"] != current_source_file) {
-                string dest_file ;
-                string *parts ;
+            parts = dir_file(source_file) ;
+            source_file_name = chop(parts[1], ".c", -1) ;
 
-                parts = dir_file(current_source_file) ;
-                dest_file = append(dest_dir, chop(parts[1], ".c", -1) + ".md") ;
-                _debug("Dest file = %s", dest_file) ;
-                if(!assure_file(dest_file)) {
-                    _error("Failed to create directory for: " + dest_file) ;
-                    return ;
+            dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
+            _log(2, "Dest file = %s", dest_file) ;
+_debug("Funcs %O\n", funcs) ;
+            current_funcs = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
+            curr_function_names = keys(current_funcs) ;
+
+            _debug("Source files: %O", source_files) ;
+
+            foreach(curr_function_name in curr_function_names) {
+                mapping func ;
+                string func_md ;
+
+                func = current_funcs[curr_function_name] ;
+                func_md = generate_function_markdown(func) ;
+
+                if(func_md) {
+                    doc_content += sprintf("## %s\n\n", curr_function_name) ;
+                    doc_content += func_md ;
+                    doc_content += "\n" ;
                 }
-
-                home_content += "### " + parts[1] + "\n\n" ;
-                home_content += (*generate_table)(function_type, parts[1], wiki_table) ;
-                home_content += "\n" ;
-
-                write_file(dest_file, doc_content, 1) ;
-
-                current_source_file = docs[function_type][function_name]["source_file"] ;
-
-                wiki_table = ({ }) ;
-                dest_file = append(chop(parts[1], ".c", -1), ".md") ;
             }
 
-            if((md = generate_markdown(docs[function_type][function_name])) != null) {
-                // Start with the function name
-                doc_content += "# " + function_name + "\n\n" + md ;
-                doc_content += "\n\n" ;
-            }
-
-            wiki_table += ({ function_name }) ;
+            write_file(dest_file, doc_content, 1) ;
         }
 
+        assure_dir(append(doc_root, function_type)) ;
         write_file(append(doc_root, function_type+".md"), home_content, 1) ;
+        home_content = "" ;
     }
 
     writing = false ;
