@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    int file_exists(string file)
+```c
+int file_exists(string file)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Checks if a file exists.
 
 ## SYNOPSIS
 
-    int user_exists(string user)
+```c
+int user_exists(string user)
+```
 
 ### PARAMETERS
 
@@ -30,7 +34,9 @@ Checks if a user data file exists.
 
 ## SYNOPSIS
 
-    int cfile_exists(string file)
+```c
+int cfile_exists(string file)
+```
 
 ### PARAMETERS
 
@@ -44,7 +50,9 @@ Checks if a compiled file (.c) exists.
 
 ## SYNOPSIS
 
-    int ofile_exists(string file)
+```c
+int ofile_exists(string file)
+```
 
 ### PARAMETERS
 
@@ -58,7 +66,9 @@ Checks if a save file exists.
 
 ## SYNOPSIS
 
-    int directory_exists(string dirname)
+```c
+int directory_exists(string dirname)
+```
 
 ### PARAMETERS
 

@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string file_owner(string file)
+```c
+string file_owner(string file)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Determines the owner of a file based on its path.
 
 ## SYNOPSIS
 
-    string *dir_file(string path)
+```c
+string *dir_file(string path)
+```
 
 ### PARAMETERS
 
@@ -31,7 +35,9 @@ name components.
 
 ## SYNOPSIS
 
-    varargs string temp_file(mixed arg)
+```c
+varargs string temp_file(mixed arg)
+```
 
 ### PARAMETERS
 
@@ -45,7 +51,9 @@ Generates a temporary file name based on the provided argument.
 
 ## SYNOPSIS
 
-    mixed assure_file(string file)
+```c
+mixed assure_file(string file)
+```
 
 ### PARAMETERS
 
@@ -60,7 +68,9 @@ the file exists, creating directories as needed.
 
 ## SYNOPSIS
 
-    varargs string tail(string path, int line_count)
+```c
+varargs string tail(string path, int line_count)
+```
 
 ### PARAMETERS
 
@@ -76,7 +86,9 @@ Returns the last few lines of a file, similar to the Unix
 
 ## SYNOPSIS
 
-    varargs void implode_file(string file, string *lines, int overwrite)
+```c
+varargs void implode_file(string file, string *lines, int overwrite)
+```
 
 ### PARAMETERS
 
@@ -93,7 +105,9 @@ overwriting the existing content.
 
 ## SYNOPSIS
 
-    varargs int log_file(string file, string str, mixed arg...)
+```c
+varargs int log_file(string file, string str, mixed arg...)
+```
 
 ### PARAMETERS
 
@@ -109,7 +123,9 @@ Writes a log message to a specified log file.
 
 ## SYNOPSIS
 
-    string *explode_file(string file)
+```c
+string *explode_file(string file)
+```
 
 ### PARAMETERS
 
@@ -124,7 +140,9 @@ excluding comment lines and empty lines.
 
 ## SYNOPSIS
 
-    string query_file_name(object ob)
+```c
+string query_file_name(object ob)
+```
 
 ### PARAMETERS
 

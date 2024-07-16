@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs int devp(mixed user)
+```c
+varargs int devp(mixed user)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Checks if a user has developer privileges.
 
 ## SYNOPSIS
 
-    int adminp(mixed user)
+```c
+int adminp(mixed user)
+```
 
 ### PARAMETERS
 
@@ -30,7 +34,9 @@ Checks if a user has admin privileges.
 
 ## SYNOPSIS
 
-    int wizardp(mixed user) { return devp(user); }
+```c
+int wizardp(mixed user) { return devp(user); }
+```
 
 ### PARAMETERS
 
@@ -44,7 +50,9 @@ Checks if a user has developer privileges (alias for devp).
 
 ## SYNOPSIS
 
-    int is_member(string user, string group)
+```c
+int is_member(string user, string group)
+```
 
 ### PARAMETERS
 

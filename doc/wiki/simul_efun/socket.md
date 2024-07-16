@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string dump_socket_status()
+```c
+string dump_socket_status()
+```
 
 ## DESCRIPTION
 

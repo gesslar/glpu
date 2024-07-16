@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string resolve_path(string Current, string Next)
+```c
+string resolve_path(string Current, string Next)
+```
 
 ### PARAMETERS
 

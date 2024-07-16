@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string generate_uuid()
+```c
+string generate_uuid()
+```
 
 ## DESCRIPTION
 
@@ -13,7 +15,9 @@ on random numbers.
 
 ## SYNOPSIS
 
-    int of(mixed needle, mixed haystack)
+```c
+int of(mixed needle, mixed haystack)
+```
 
 ### PARAMETERS
 

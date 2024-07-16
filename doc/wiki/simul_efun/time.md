@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs float time_frac(int nanoseconds)
+```c
+varargs float time_frac(int nanoseconds)
+```
 
 ### PARAMETERS
 
@@ -18,7 +20,9 @@ a fractional value representing seconds by dividing the input by 1,000,000,000.
 
 ## SYNOPSIS
 
-    varargs int time_ms(int nanoseconds)
+```c
+varargs int time_ms(int nanoseconds)
+```
 
 ### PARAMETERS
 
@@ -34,7 +38,9 @@ to milliseconds by dividing the input by 1,000,000.
 
 ## SYNOPSIS
 
-    varargs string ltime(int x, int brief)
+```c
+varargs string ltime(int x, int brief)
+```
 
 ### PARAMETERS
 
@@ -49,7 +55,9 @@ Returns a formatted time string.
 
 ## SYNOPSIS
 
-    varargs string ldate(int x, int brief)
+```c
+varargs string ldate(int x, int brief)
+```
 
 ### PARAMETERS
 

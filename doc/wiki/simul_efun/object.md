@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs mixed get_objects( string str, object player, int no_arr )
+```c
+varargs mixed get_objects( string str, object player, int no_arr )
+```
 
 ### PARAMETERS
 
@@ -19,7 +21,9 @@ include various search criteria and options.
 
 ## SYNOPSIS
 
-    object top_environment(object ob)
+```c
+object top_environment(object ob)
+```
 
 ### PARAMETERS
 
@@ -34,7 +38,9 @@ traversing up through nested environments.
 
 ## SYNOPSIS
 
-    varargs object find_ob(mixed ob, mixed cont, function f)
+```c
+varargs object find_ob(mixed ob, mixed cont, function f)
+```
 
 ### PARAMETERS
 
@@ -51,7 +57,9 @@ using the specified criteria.
 
 ## SYNOPSIS
 
-    int getoid(object ob)
+```c
+int getoid(object ob)
+```
 
 ### PARAMETERS
 
@@ -65,7 +73,9 @@ Retrieves the unique object ID of the given object.
 
 ## SYNOPSIS
 
-    varargs object get_object( string str, object player )
+```c
+varargs object get_object( string str, object player )
+```
 
 ### PARAMETERS
 

@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs int data_inc(string file, string key, int inc)
+```c
+varargs int data_inc(string file, string key, int inc)
+```
 
 ### PARAMETERS
 
@@ -20,7 +22,9 @@ created with the increment value.
 
 ## SYNOPSIS
 
-    int data_del(string file, string key)
+```c
+int data_del(string file, string key)
+```
 
 ### PARAMETERS
 
@@ -35,7 +39,9 @@ Deletes the key-value pair from the file.
 
 ## SYNOPSIS
 
-    varargs mixed data_value(string file, string key, mixed def)
+```c
+varargs mixed data_value(string file, string key, mixed def)
+```
 
 ### PARAMETERS
 
@@ -51,7 +57,9 @@ Retrieves the value associated with a given key from a file.
 
 ## SYNOPSIS
 
-    varargs void data_write(string file, string key, mixed data...)
+```c
+varargs void data_write(string file, string key, mixed data...)
+```
 
 ### PARAMETERS
 

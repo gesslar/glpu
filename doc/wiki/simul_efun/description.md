@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string get_long(object ob, int extras: (: 1 :))
+```c
+string get_long(object ob, int extras: (: 1 :))
+```
 
 ### PARAMETERS
 
@@ -18,7 +20,9 @@ including extra long descriptions.
 
 ## SYNOPSIS
 
-    string get_short(object ob, int extras: (: 1 :))
+```c
+string get_short(object ob, int extras: (: 1 :))
+```
 
 ### PARAMETERS
 

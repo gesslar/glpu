@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    float percent_of(float a, float b)
+```c
+float percent_of(float a, float b)
+```
 
 ### PARAMETERS
 
@@ -17,7 +19,9 @@ Calculates what percentage `a` is of `b`.
 
 ## SYNOPSIS
 
-    varargs float remainder(mixed a, mixed b)
+```c
+varargs float remainder(mixed a, mixed b)
+```
 
 ### PARAMETERS
 
@@ -32,7 +36,9 @@ Calculates the remainder of `a` divided by `b`.
 
 ## SYNOPSIS
 
-    float percent(float a, float b)
+```c
+float percent(float a, float b)
+```
 
 ### PARAMETERS
 
@@ -47,7 +53,9 @@ Calculates the percentage of `a` out of `b`.
 
 ## SYNOPSIS
 
-    float range(float min, float max, float val)
+```c
+float range(float min, float max, float val)
+```
 
 ### PARAMETERS
 
@@ -63,7 +71,9 @@ Ensures a value is within a specified range.
 
 ## SYNOPSIS
 
-    int sum(mixed *arr)
+```c
+int sum(mixed *arr)
+```
 
 ### PARAMETERS
 

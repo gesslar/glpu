@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs string substr(string str, string sub, int reverse)
+```c
+varargs string substr(string str, string sub, int reverse)
+```
 
 ### PARAMETERS
 
@@ -21,7 +23,9 @@ substring within the string.
 
 ## SYNOPSIS
 
-    varargs string extract(string str, int from, int to)
+```c
+varargs string extract(string str, int from, int to)
+```
 
 ### PARAMETERS
 
@@ -37,7 +41,9 @@ Extracts a substring from a string.
 
 ## SYNOPSIS
 
-    varargs int reverse_strsrch(string str, string sub, int start)
+```c
+varargs int reverse_strsrch(string str, string sub, int start)
+```
 
 ### PARAMETERS
 
@@ -54,7 +60,9 @@ and moving backwards.
 
 ## SYNOPSIS
 
-    string append(string source, string to_append)
+```c
+string append(string source, string to_append)
+```
 
 ### PARAMETERS
 
@@ -70,7 +78,9 @@ If the string is already present, the original string is returned.
 
 ## SYNOPSIS
 
-    string no_ansi(string str)
+```c
+string no_ansi(string str)
+```
 
 ### PARAMETERS
 
@@ -84,7 +94,9 @@ Returns a string with all ANSI colour codes removed.
 
 ## SYNOPSIS
 
-    varargs string chop(string str, string sub, int dir)
+```c
+varargs string chop(string str, string sub, int dir)
+```
 
 ### PARAMETERS
 
@@ -102,7 +114,9 @@ string is returned.
 
 ## SYNOPSIS
 
-    varargs mixed from_string(string str, int flag)
+```c
+varargs mixed from_string(string str, int flag)
+```
 
 ### PARAMETERS
 
@@ -118,7 +132,9 @@ LPC value.
 
 ## SYNOPSIS
 
-    string reverse_string(string str)
+```c
+string reverse_string(string str)
+```
 
 ### PARAMETERS
 
@@ -132,7 +148,9 @@ Reverses a string.
 
 ## SYNOPSIS
 
-    varargs string simple_list(string *arr, string conjunction)
+```c
+varargs string simple_list(string *arr, string conjunction)
+```
 
 ### PARAMETERS
 
@@ -148,7 +166,9 @@ joined by a conjunction.
 
 ## SYNOPSIS
 
-    string add_commas(mixed number)
+```c
+string add_commas(mixed number)
+```
 
 ### PARAMETERS
 
@@ -162,7 +182,9 @@ Returns a string with commas added to the number.
 
 ## SYNOPSIS
 
-    string stringify(mixed val)
+```c
+string stringify(mixed val)
+```
 
 ### PARAMETERS
 
@@ -176,7 +198,9 @@ Converts an LPC value to its string representation.
 
 ## SYNOPSIS
 
-    string prepend(string source, string to_prepend)
+```c
+string prepend(string source, string to_prepend)
+```
 
 ### PARAMETERS
 

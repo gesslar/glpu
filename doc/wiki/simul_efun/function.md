@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs string call_trace(int colour)
+```c
+varargs string call_trace(int colour)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Returns a formatted string of the current call stack trace.
 
 ## SYNOPSIS
 
-    mixed *assemble_call_back(mixed arg...)
+```c
+mixed *assemble_call_back(mixed arg...)
+```
 
 ### PARAMETERS
 
@@ -46,7 +50,9 @@ function and any additional arguments.
 
 ## SYNOPSIS
 
-    mixed call_back(mixed cb, mixed new_arg...)
+```c
+mixed call_back(mixed cb, mixed new_arg...)
+```
 
 ### PARAMETERS
 
@@ -61,7 +67,9 @@ Executes a callback with the given arguments.
 
 ## SYNOPSIS
 
-    int valid_function(mixed f)
+```c
+int valid_function(mixed f)
+```
 
 ### PARAMETERS
 

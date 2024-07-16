@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string object_save_directory(object ob)
+```c
+string object_save_directory(object ob)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Returns the save directory path for the specified object.
 
 ## SYNOPSIS
 
-    string assure_object_save_dir(object ob)
+```c
+string assure_object_save_dir(object ob)
+```
 
 ### PARAMETERS
 
@@ -31,7 +35,9 @@ creating it if necessary.
 
 ## SYNOPSIS
 
-    string object_save_file(object ob)
+```c
+string object_save_file(object ob)
+```
 
 ### PARAMETERS
 

@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string query_directory(object ob)
+```c
+string query_directory(object ob)
+```
 
 ### PARAMETERS
 
@@ -17,7 +19,9 @@ provided, it defaults to the previous object.
 
 ## SYNOPSIS
 
-    mixed assure_dir(string path)
+```c
+mixed assure_dir(string path)
+```
 
 ### PARAMETERS
 

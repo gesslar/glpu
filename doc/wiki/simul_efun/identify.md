@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs string identify( mixed a, string indent )
+```c
+varargs string identify( mixed a, string indent )
+```
 
 ### PARAMETERS
 

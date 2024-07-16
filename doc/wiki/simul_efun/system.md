@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    mixed mud_config(string str)
+```c
+mixed mud_config(string str)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Retrieves a specific configuration value from the MUD config.
 
 ## SYNOPSIS
 
-    string mud_name()
+```c
+string mud_name()
+```
 
 ## DESCRIPTION
 
@@ -26,7 +30,9 @@ Returns the name of the MUD.
 
 ## SYNOPSIS
 
-    int _ok(mixed str, mixed args...)
+```c
+int _ok(mixed str, mixed args...)
+```
 
 ### PARAMETERS
 
@@ -41,7 +47,9 @@ Provides an informational message, optionally formatted with arguments.
 
 ## SYNOPSIS
 
-    string lib_name()
+```c
+string lib_name()
+```
 
 ## DESCRIPTION
 
@@ -51,7 +59,9 @@ Returns the name of the library being used by the MUD.
 
 ## SYNOPSIS
 
-    string tmp_dir()
+```c
+string tmp_dir()
+```
 
 ## DESCRIPTION
 
@@ -61,7 +71,9 @@ Returns the directory where temporary files are stored.
 
 ## SYNOPSIS
 
-    string admin_email()
+```c
+string admin_email()
+```
 
 ## DESCRIPTION
 
@@ -71,7 +83,9 @@ Returns the admin email address for the MUD.
 
 ## SYNOPSIS
 
-    string arch()
+```c
+string arch()
+```
 
 ## DESCRIPTION
 
@@ -81,7 +95,9 @@ Returns the architecture of the system the MUD is running on.
 
 ## SYNOPSIS
 
-    int port()
+```c
+int port()
+```
 
 ## DESCRIPTION
 
@@ -91,7 +107,9 @@ Returns the port number the MUD is running on.
 
 ## SYNOPSIS
 
-    string baselib_name()
+```c
+string baselib_name()
+```
 
 ## DESCRIPTION
 
@@ -101,7 +119,9 @@ Returns the name of the base library.
 
 ## SYNOPSIS
 
-    string driver_version()
+```c
+string driver_version()
+```
 
 ## DESCRIPTION
 
@@ -111,7 +131,9 @@ Returns the version of the MUD driver.
 
 ## SYNOPSIS
 
-    string lib_version()
+```c
+string lib_version()
+```
 
 ## DESCRIPTION
 
@@ -121,7 +143,9 @@ Returns the version of the library being used by the MUD.
 
 ## SYNOPSIS
 
-    string baselib_version()
+```c
+string baselib_version()
+```
 
 ## DESCRIPTION
 
@@ -131,7 +155,9 @@ Returns the version of the base library.
 
 ## SYNOPSIS
 
-    int _warn(mixed str, mixed args...)
+```c
+int _warn(mixed str, mixed args...)
+```
 
 ### PARAMETERS
 
@@ -146,7 +172,9 @@ Provides a warning message, optionally formatted with arguments.
 
 ## SYNOPSIS
 
-    int _error(mixed str, mixed args...)
+```c
+int _error(mixed str, mixed args...)
+```
 
 ### PARAMETERS
 
@@ -161,7 +189,9 @@ Provides an error message, optionally formatted with arguments.
 
 ## SYNOPSIS
 
-    string open_status()
+```c
+string open_status()
+```
 
 ## DESCRIPTION
 
@@ -171,7 +201,9 @@ Returns the open status of the MUD.
 
 ## SYNOPSIS
 
-    string log_dir()
+```c
+string log_dir()
+```
 
 ## DESCRIPTION
 

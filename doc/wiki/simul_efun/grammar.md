@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string consolidate(int x, string str)
+```c
+string consolidate(int x, string str)
+```
 
 ### PARAMETERS
 
@@ -18,7 +20,9 @@ description, handling pluralization and special cases.
 
 ## SYNOPSIS
 
-    string ordinal (int n)
+```c
+string ordinal (int n)
+```
 
 ### PARAMETERS
 
@@ -32,7 +36,9 @@ Converts an integer to its ordinal string representation.
 
 ## SYNOPSIS
 
-    string int_string (int num)
+```c
+string int_string (int num)
+```
 
 ### PARAMETERS
 

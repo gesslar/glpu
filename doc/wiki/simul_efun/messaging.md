@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs void tell_all(object ob, string str, int msg_type, mixed exclude)
+```c
+varargs void tell_all(object ob, string str, int msg_type, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -20,7 +22,9 @@ of their position in the containment hierarchy.
 
 ## SYNOPSIS
 
-    varargs void tell(object ob, string str, int msg_type)
+```c
+varargs void tell(object ob, string str, int msg_type)
+```
 
 ### PARAMETERS
 
@@ -37,7 +41,9 @@ containment hierarchy.
 
 ## SYNOPSIS
 
-    varargs void tell_down(object ob, string str, int msg_type, mixed exclude)
+```c
+varargs void tell_down(object ob, string str, int msg_type, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -55,7 +61,9 @@ as from a container to all objects it contains.
 
 ## SYNOPSIS
 
-    varargs void tell_up(object ob, string str, int msg_type, mixed exclude)
+```c
+varargs void tell_up(object ob, string str, int msg_type, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -74,7 +82,9 @@ environment.
 
 ## SYNOPSIS
 
-    varargs void tell_direct(object ob, string str, int msg_type)
+```c
+varargs void tell_direct(object ob, string str, int msg_type)
+```
 
 ### PARAMETERS
 

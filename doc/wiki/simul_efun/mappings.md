@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    mixed element_of_weighted(mapping m)
+```c
+mixed element_of_weighted(mapping m)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Selects an element from a weighted mapping based on their weights.
 
 ## SYNOPSIS
 
-    string pretty_map(mapping map)
+```c
+string pretty_map(mapping map)
+```
 
 ### PARAMETERS
 

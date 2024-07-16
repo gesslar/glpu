@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    mixed *reverse_array(mixed *arr)
+```c
+mixed *reverse_array(mixed *arr)
+```
 
 ### PARAMETERS
 
@@ -17,7 +19,9 @@ reverse order.
 
 ## SYNOPSIS
 
-    varargs mixed *remove_array_element(mixed *arr, int start, int end)
+```c
+varargs mixed *remove_array_element(mixed *arr, int start, int end)
+```
 
 ### PARAMETERS
 
@@ -36,7 +40,9 @@ all the elements of the input array.
 
 ## SYNOPSIS
 
-    mixed *distinct_array(mixed *arr)
+```c
+mixed *distinct_array(mixed *arr)
+```
 
 ### PARAMETERS
 
@@ -51,7 +57,9 @@ array.
 
 ## SYNOPSIS
 
-    varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add)
+```c
+varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add)
+```
 
 ### PARAMETERS
 

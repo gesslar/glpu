@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string base64_decode(string source)
+```c
+string base64_decode(string source)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Decodes a given Base64 encoded string.
 
 ## SYNOPSIS
 
-    string base64_encode(mixed source_str)
+```c
+string base64_encode(mixed source_str)
+```
 
 ### PARAMETERS
 

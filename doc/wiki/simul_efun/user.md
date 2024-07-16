@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string user_mob_data(string name)
+```c
+string user_mob_data(string name)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Returns the file path for the user's mob data file.
 
 ## SYNOPSIS
 
-    string user_core_data_directory(string name)
+```c
+string user_core_data_directory(string name)
+```
 
 ### PARAMETERS
 
@@ -31,7 +35,9 @@ on their name.
 
 ## SYNOPSIS
 
-    string user_path(string name)
+```c
+string user_path(string name)
+```
 
 ### PARAMETERS
 
@@ -45,7 +51,9 @@ Returns the home directory path for the user.
 
 ## SYNOPSIS
 
-    string user_data_directory(string name)
+```c
+string user_data_directory(string name)
+```
 
 ### PARAMETERS
 
@@ -60,7 +68,9 @@ their name.
 
 ## SYNOPSIS
 
-    string user_data_file(string name)
+```c
+string user_data_file(string name)
+```
 
 ### PARAMETERS
 

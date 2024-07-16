@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    mixed json_decode(string text)
+```c
+mixed json_decode(string text)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Deserializes a JSON string into an LPC value.
 
 ## SYNOPSIS
 
-    varargs string json_encode(mixed value, mixed* pointers)
+```c
+varargs string json_encode(mixed value, mixed* pointers)
+```
 
 ### PARAMETERS
 

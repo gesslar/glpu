@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    string cap_words(string str)
+```c
+string cap_words(string str)
+```
 
 ### PARAMETERS
 
@@ -16,7 +18,9 @@ Capitalizes the first letter of each word in a string.
 
 ## SYNOPSIS
 
-    string subjective(mixed ob)
+```c
+string subjective(mixed ob)
+```
 
 ### PARAMETERS
 
@@ -31,7 +35,9 @@ gender. Defaults to "it" for non-string or unknown gender.
 
 ## SYNOPSIS
 
-    string possessive_noun(mixed ob)
+```c
+string possessive_noun(mixed ob)
+```
 
 ### PARAMETERS
 
@@ -46,7 +52,9 @@ it adds an apostrophe; otherwise, it adds 's.
 
 ## SYNOPSIS
 
-    varargs string cap_significant_words(string str, int title)
+```c
+varargs string cap_significant_words(string str, int title)
+```
 
 ### PARAMETERS
 
@@ -63,7 +71,9 @@ as a title.
 
 ## SYNOPSIS
 
-    string possessive(mixed ob)
+```c
+string possessive(mixed ob)
+```
 
 ### PARAMETERS
 
@@ -78,7 +88,9 @@ gender. Defaults to "its" for non-string or unknown gender.
 
 ## SYNOPSIS
 
-    string possessive_pronoun(mixed ob)
+```c
+string possessive_pronoun(mixed ob)
+```
 
 ### PARAMETERS
 
@@ -93,7 +105,9 @@ gender. Defaults to "its" for non-string or unknown gender.
 
 ## SYNOPSIS
 
-    string objective(mixed ob)
+```c
+string objective(mixed ob)
+```
 
 ### PARAMETERS
 
@@ -108,7 +122,9 @@ gender. Defaults to "it" for non-string or unknown gender.
 
 ## SYNOPSIS
 
-    string reflexive(mixed ob)
+```c
+string reflexive(mixed ob)
+```
 
 ### PARAMETERS
 

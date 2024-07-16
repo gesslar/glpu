@@ -2,7 +2,9 @@
 
 ## SYNOPSIS
 
-    varargs void shout(string msg, mixed exclude)
+```c
+varargs void shout(string msg, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -18,7 +20,9 @@ write a message to all users using the message() efun.
 
 ## SYNOPSIS
 
-    void set_privs(object ob, string privs)
+```c
+void set_privs(object ob, string privs)
+```
 
 ### PARAMETERS
 
@@ -35,7 +39,9 @@ return 0.
 
 ## SYNOPSIS
 
-    varargs string ctime(int x)
+```c
+varargs string ctime(int x)
+```
 
 ### PARAMETERS
 
@@ -51,7 +57,9 @@ It also will use time() if no argument is provided.
 
 ## SYNOPSIS
 
-    varargs void tell_object(mixed ob, mixed msg, mixed type)
+```c
+varargs void tell_object(mixed ob, mixed msg, mixed type)
+```
 
 ### PARAMETERS
 
@@ -68,7 +76,9 @@ write a message to the object using the message() efun.
 
 ## SYNOPSIS
 
-    void write(string msg)
+```c
+void write(string msg)
+```
 
 ### PARAMETERS
 
@@ -85,7 +95,9 @@ efun.
 
 ## SYNOPSIS
 
-    object this_body()
+```c
+object this_body()
+```
 
 ## DESCRIPTION
 
@@ -96,7 +108,9 @@ the this_player().
 
 ## SYNOPSIS
 
-    varargs string query_num(int x, int many)
+```c
+varargs string query_num(int x, int many)
+```
 
 ### PARAMETERS
 
@@ -112,7 +126,9 @@ the number in string form.
 
 ## SYNOPSIS
 
-    varargs void say(string msg, mixed exclude)
+```c
+varargs void say(string msg, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -128,7 +144,9 @@ write a message to the room using the message() efun.
 
 ## SYNOPSIS
 
-    void shutdown( int how )
+```c
+void shutdown( int how )
+```
 
 ### PARAMETERS
 
@@ -145,7 +163,9 @@ return 0.
 
 ## SYNOPSIS
 
-    varargs void tell_room(mixed room, string msg, mixed exclude)
+```c
+varargs void tell_room(mixed room, string msg, mixed exclude)
+```
 
 ### PARAMETERS
 
@@ -162,7 +182,9 @@ write a message to the room using the message() efun.
 
 ## SYNOPSIS
 
-    int exec( object to, object from )
+```c
+int exec( object to, object from )
+```
 
 ### PARAMETERS
 
@@ -180,7 +202,9 @@ execute the function as normal. If it does not, it will return 0.
 
 ## SYNOPSIS
 
-    varargs int userp(object ob)
+```c
+varargs int userp(object ob)
+```
 
 ### PARAMETERS
 
@@ -196,7 +220,9 @@ if the previous object is a user if no argument is provided.
 
 ## SYNOPSIS
 
-    object this_user()
+```c
+object this_user()
+```
 
 ## DESCRIPTION
 
