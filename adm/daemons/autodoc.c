@@ -440,7 +440,7 @@ private nomask void generate_wiki() {
             if (column == 0)
                 table_content += "|";
 
-            table_content += sprintf("[%s](%s#%s)|",
+            table_content += sprintf("[%s](%s.html#%s)|",
                 function_name,
                 chop(file_name, ".c", -1),
                 function_name
