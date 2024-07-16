@@ -19,7 +19,7 @@ inherit M_LOG ;
 private nomask int check_running();
 private nomask void finish_scan();
 private nomask void parse_file(string file);
-private nomask void write_markdown() ;
+private nomask string generate_markdown(mapping doc) ;
 
 // Variables
 private nosave nomask float dir_delay = 0.02 ;
@@ -248,6 +248,7 @@ private nomask void parse_file(string file) {
                 if(!of(doc_type, docs))
                     docs[doc_type] = ([]);
 
+                curr["source_file"] = file ;
                 docs[doc_type][function_tag] = curr ;
                 in_jsdoc = 0 ;
                 continue ;
@@ -338,111 +339,197 @@ private nomask void parse_file(string file) {
     }
 }
 
-private nomask void write_markdown() {
-    mapping function_type ;
-    mapping funcs ;
-    mapping function_info ;
-    function dash_wrap ;
+private nomask string dash_wrap(string str, int width) ;
 
-    dash_wrap = function (string str, int width) {
-        int dash_pos, space_pos ;
-        string rest ;
+private nomask string generate_markdown(mapping func) {
+    string out = "" ;
+    string line ;
+    mixed err ;
 
-        if(strlen(str) > width) {
-            dash_pos = strsrch(str, "-") + 2 ;
-            space_pos = reverse_strsrch(str[0..width], " ") ;
-            str = str[0..space_pos] + "\n" +
-            repeat_string(" ", dash_pos) + str[space_pos + 1..] ;
+    err = catch {
+        // We need a description and a function definition to continue,
+        // otherwise we can skip this function.
+        if(!of("description", func) || !of("function_def", func))
+            return ;
+
+        // Now we want the synopsis, which is the function definition
+        out += "## SYNOPSIS\n\n" ;
+        out += sprintf("    %s\n", func["function_def"]) ;
+
+        // Next we need to parse the parameters
+
+        if(of("param", func)) {
+            mixed *params ;
+            string *param ;
+
+            out += "\n### PARAMETERS\n\n" ;
+
+            params = func["param"] ;
+            foreach(param in params) {
+                string *matches, *arr_matches ;
+
+                line = implode(map(param, (: trim :)), " ") ;
+                matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
+                line = dash_wrap(line, 76) ;
+                out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+            }
         }
 
-        return str ;
+        if(of("returns", func)) {
+            string *rets ;
+            string *matches ;
+
+            out += "\n### RETURNS\n\n" ;
+
+            line = implode(func["returns"][0], " ") ;
+            matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
+            line = dash_wrap(line, 76) ;
+            out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+        }
+
+        if(of("description", func)) {
+            string *desc ;
+
+            out += "\n## DESCRIPTION\n\n" ;
+
+            desc = func["description"][0] ;
+            out += implode(desc, "\n") ;
+
+            out += "\n" ;
+        }
+
+        // Write the file
+        return out ;
     } ;
+    if(err)
+        log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
+
+    return null ;
+}
+
+private nomask void generate_wiki() {
+    string *function_types, function_type ;
+    string home_content = "", doc_content = "" ;
+    function generate_table ;
 
     writing = true ;
 
-    foreach(function_type, funcs in docs) {
-        string tag, line, element ;
-        string func_name ;
-        mapping func ;
-        string output_dir ;
-        string *elements ;
+    // Generates a table in wiki format, with a maximum of 5 columns
+    // and the content is a list of function names from left to right.
+    generate_table = function(string function_type, string file_name, string *table) {
+        string table_content = "";
+        int max_columns = 3, column = 0;
+        int column_width = 80 / max_columns;
+        int sz = sizeof(table);
 
-        output_dir = sprintf("%s%s", doc_root, function_type) ;
+        // Create the first line of the table that is the border
+        table_content += "|"+repeat_string(" |", max_columns)+"\n";
+        table_content += "|"+repeat_string("---|", max_columns)+"\n";
 
-        foreach(func_name, func in funcs) {
-            string output_file ;
-            string out = "" ;
-            mixed err ;
+        // Create the table rows
+        foreach (string function_name in table) {
+            if (column == 0)
+                table_content += "|";
 
-            err = catch {
-                // We need a description and a function definition to continue,
-                // otherwise we can skip this function.
-                if(!of("description", func) || !of("function_def", func))
-                    return ;
+            table_content += sprintf("[%s](%s#%s)|",
+                function_name,
+                chop(file_name, ".c", -1),
+                function_name
+            ) ;
 
-                output_file = sprintf("%s/%s.md", output_dir, func_name) ;
+            column++;
 
-                assure_dir(output_dir) ;
+            if (column == max_columns) {
+                table_content += "\n";
+                column = 0;
+            }
+        }
 
+        // Add padding if the last row is not complete
+        if (column != 0) {
+            table_content += repeat_string(" |", max_columns - column) + "\n";
+        }
+
+        return table_content;
+    };
+
+    // Generate the wiki
+    function_types = sort_array(keys(docs), 1) ;
+
+    foreach(function_type in function_types) {
+        string *function_names, function_name ;
+        string current_source_file ;
+        string *wiki_table = ({}) ;
+
+        home_content += sprintf("## %s\n\n", function_type) ;
+
+        function_names = sort_array(keys(docs[function_type]),
+            function(string a, string b, string function_type) {
+                string source_a, source_b ;
+
+                source_a = docs[function_type][a]["source_file"] ;
+                source_b = docs[function_type][b]["source_file"] ;
+
+                if(source_a == source_b)
+                    return strcmp(a, b) ;
+
+                return strcmp(source_a, source_b) ;
+            }, function_type
+        ) ;
+
+        foreach(function_name in function_names) {
+            string *parts ;
+            string dest_file ;
+            mixed md ;
+
+            if(!current_source_file) {
+                current_source_file = docs[function_type][function_name]["source_file"] ;
+                parts = dir_file(current_source_file) ;
+                dest_file = append(chop(parts[1], ".c", -1), ".md") ;
+                doc_content = "" ;
+            }
+
+            // We're starting a new file name
+            if(docs[function_type][function_name]["source_file"] != current_source_file) {
+                home_content += "### " + parts[1] + "\n\n" ;
+                home_content += (*generate_table)(function_type, parts[1], wiki_table) ;
+                home_content += "\n" ;
+
+                write_file(append(doc_root, dest_file), doc_content, 1) ;
+
+                current_source_file = docs[function_type][function_name]["source_file"] ;
+                parts = dir_file(current_source_file) ;
+                wiki_table = ({ }) ;
+                dest_file = append(chop(parts[1], ".c", -1), ".md") ;
+            }
+
+            if((md = generate_markdown(docs[function_type][function_name])) != null) {
                 // Start with the function name
-                out = "# " + func_name + "\n" ;
+                doc_content += "# " + function_name + "\n\n" + md ;
+                doc_content += "\n\n" ;
+            }
 
-                // Now we want the synopsis, which is the function definition
-                out += "\n## SYNOPSIS\n\n" ;
-                out += sprintf("    %s\n", func["function_def"]) ;
-
-                // Next we need to parse the parameters
-
-                if(of("param", func)) {
-                    mixed *params ;
-                    string *param ;
-
-                    out += "\n### PARAMETERS\n\n" ;
-
-                    params = func["param"] ;
-                    foreach(param in params) {
-                        string *matches, *arr_matches ;
-
-                        line = implode(map(param, (: trim :)), " ") ;
-                        matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
-                        line = (*dash_wrap)(line, 76) ;
-                        out += sprintf("    %s %s\n", matches[0], matches[1]) ;
-                    }
-                }
-
-                if(of("returns", func)) {
-                    string *rets ;
-                    string *matches ;
-
-                    out += "\n### RETURNS\n\n" ;
-
-                    line = implode(func["returns"][0], " ") ;
-                    matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
-                    line = (*dash_wrap)(line, 76) ;
-                    out += sprintf("    %s %s\n", matches[0], matches[1]) ;
-                }
-
-                if(of("description", func)) {
-                    string *desc ;
-
-                    out += "\n## DESCRIPTION\n\n" ;
-
-                    desc = func["description"][0] ;
-                    out += implode(desc, "\n") ;
-
-                    out += "\n" ;
-                }
-
-                // Write the file
-                write_file(output_file, out, 1) ;
-            } ;
-
-            if(err)
-                log_file("system/autodoc", sprintf("Error writing %s: %O\n", output_file, err)) ;
+            wiki_table += ({ function_name }) ;
         }
     }
 
+    write_file(append(doc_root, "Home.md"), home_content, 1) ;
+
     writing = false ;
+}
+
+private nomask string dash_wrap(string str, int width) {
+    int dash_pos, space_pos ;
+    string rest ;
+
+    if(strlen(str) > width) {
+        dash_pos = strsrch(str, "-") + 2 ;
+        space_pos = reverse_strsrch(str[0..width], " ") ;
+        str = str[0..space_pos] + "\n" +
+        repeat_string(" ", dash_pos) + str[space_pos + 1..] ;
+    }
+
+    return str ;
 }
 
 private nomask void finish_scan() {
@@ -457,7 +544,8 @@ private nomask void finish_scan() {
         _ok(sprintf("Autodoc scan finished in %.2fs", end_time - start_time)) ;
 
     // Save the documentation to a file
-    write_markdown() ;
+    // write_markdown() ;
+    generate_wiki() ;
 
     end_time = time_frac() ;
 
