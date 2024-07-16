@@ -39,7 +39,7 @@ void shutdown( int how ) {
     object po = previous_object() ;
     string f = base_name(po) ;
 
-    if(of(f, mud_config("ALLOW_SHUTDOWN"))) {
+    if(po == master() || of(f, mud_config("ALLOW_SHUTDOWN"))) {
         PERSIST_D->persist_objects() ;
         efun::shutdown(how);
     }

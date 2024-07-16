@@ -567,10 +567,6 @@ private nomask void finish_scan() {
     _log(1, "Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
     if(this_player() && devp(this_player()))
         _ok("Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
-
-    if(ci == true) {
-        shutdown(0) ;
-    }
 }
 
 public nomask int check_running() {
