@@ -416,7 +416,7 @@ private nomask string generate_function_markdown(mapping func) {
     return null ;
 }
 
-private nomask string generate_function_type_markdown(string source_file, mapping funcs) {
+private nomask string generate_function_type_markdown(string type, string source_file, mapping funcs) {
     string out = "" ;
     string line ;
     mixed err ;
@@ -439,8 +439,9 @@ private nomask string generate_function_type_markdown(string source_file, mappin
             parts = dir_file(func["source_file"]) ;
             file = parts[1] ;
 
-            line = sprintf("* [%s](%s#%s)\n",
+            line = sprintf("* [%s](%s/%s#%s)\n",
                 function_name,
+                type,
                 chop(file, ".c", -1),
                 function_name
             ) ;
@@ -509,7 +510,7 @@ private nomask void generate_wiki() {
             parts = dir_file(source_file) ;
             source_file_name = chop(parts[1], ".c", -1) ;
 
-            home_md = generate_function_type_markdown(source_file, funcs) ;
+            home_md = generate_function_type_markdown(function_type, source_file, funcs) ;
             home_content += sprintf("### %s\n\n", source_file_name) ;
             home_content += home_md + "\n" ;
 
