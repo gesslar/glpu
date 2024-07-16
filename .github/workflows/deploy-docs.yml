@@ -19,6 +19,10 @@ jobs:
       with:
         path: 'game'
 
+    - name: Capture game directory path
+      id: capture-game-dir
+      run: echo "GAME_DIR=$(pwd)/game" >> $GITHUB_ENV
+
     - name: Checkout FluffOS
       uses: actions/checkout@v4
       with:
@@ -36,15 +40,12 @@ jobs:
         CC: "gcc"
         CXX: "g++"
       run: |
-        cp game/adm/etc/local_options.github fluffos/local_options
+        cp ${{ env.GAME_DIR }}/adm/etc/local_options.github fluffos/local_options
         mkdir build
         cd build
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_UIDS=OFF -DPACKAGE_MUDLIB_STATS=OFF ..
         VERBOSE=1 make -j `nproc` install
 
-    - name: Capture game directory path
-      id: capture-game-dir
-      run: echo "GAME_DIR=$(pwd)/game" >> $GITHUB_ENV
 
     - name: Replace placeholders in config.github
       run: |
