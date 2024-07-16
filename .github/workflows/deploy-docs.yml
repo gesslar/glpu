@@ -32,7 +32,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPACKAGE_MUDLIB_STATS=OFF -DPACKAGE_UIDS=OFF ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_MUDLIB_STATS=OFF -DPACKAGE_UIDS=OFF ..
         VERBOSE=1 make -j `nproc` install
 
     - name: Checkout game repository
