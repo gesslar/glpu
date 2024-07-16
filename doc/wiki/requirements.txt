@@ -1,4 +1,0 @@
-# doc/requirements.txt
-sphinx
-myst-parser
-sphinx-book-theme

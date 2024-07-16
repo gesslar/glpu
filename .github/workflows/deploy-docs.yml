@@ -1,11 +1,11 @@
 name: CI and Deploy Documentation
 
 on:
-  push:
-    branches:
-      - main  # or your default branch
-    paths:
-      - 'doc/wiki/**'
+#  push:
+#    branches:
+#      - main  # or your default branch
+#    paths:
+#      - 'doc/wiki/**'
   workflow_dispatch:
 
 jobs:
