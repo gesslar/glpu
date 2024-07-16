@@ -12,7 +12,7 @@
  * @returns {int} - 1 if the directory exists or was created successfully,
  *                  otherwise 0.
  */
-int assure_dir(string path) {
+mixed assure_dir(string path) {
     string *parts, dir;
     int j;
 

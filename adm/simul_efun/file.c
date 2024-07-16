@@ -8,20 +8,25 @@
  *              the file exists, creating directories as needed.
  * @param {string} file - The path of the file to ensure.
  */
-void assure_file(string file) {
+mixed assure_file(string file) {
+    string *parts ;
     string *path;
     string dir;
     int i;
 
-    if(file_size(file) != -1) return;
+    if(nullp(file))
+        return "No file specified for assure_file().\n";
 
-    path = explode(file, "/");
-    dir = "";
+    if(file_size(file) != -1)
+        return 1 ;
 
-    for(i = 0; i < sizeof(path) - 1; i++) {
-        dir += "/" + path[i];
-        if(file_size(dir) == -1) mkdir(dir);
-    }
+    parts = dir_file(file) ;
+    dir = parts[0] ;
+
+    if(!assure_dir(dir))
+        return "Failed to create directory: " + dir + "\n" ;
+
+    return file_size(dir) == -2 ;
 }
 
 //file_owner(string file);
