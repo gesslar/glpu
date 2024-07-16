@@ -1,3 +1,14 @@
 title: My Documentation
 description: Documentation for my project
 baseurl: "/" # If your repository is a project site, otherwise leave it as ""
+
+lsi: false
+safe: true
+source: /doc/wiki
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
