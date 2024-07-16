@@ -1,4 +1,4 @@
-## call_trace
+# call_trace
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ varargs string call_trace(int colour)
 
 Returns a formatted string of the current call stack trace.
 
-## assemble_call_back
+# assemble_call_back
 
 ## Synopsis
 
@@ -46,7 +46,7 @@ the second argument is a valid method name on the object.
 function and any additional arguments.
 5. Returns the assembled callback as an array.
 
-## call_back
+# call_back
 
 ## Synopsis
 
@@ -63,7 +63,7 @@ mixed call_back(mixed cb, mixed new_arg...)
 
 Executes a callback with the given arguments.
 
-## valid_function
+# valid_function
 
 ## Synopsis
 

@@ -1,4 +1,4 @@
-## tell_all
+# tell_all
 
 ## Synopsis
 
@@ -18,7 +18,7 @@ varargs void tell_all(object ob, string str, int msg_type, mixed exclude)
 Sends a message to all objects in the same environment, regardless
 of their position in the containment hierarchy.
 
-## tell
+# tell
 
 ## Synopsis
 
@@ -37,7 +37,7 @@ varargs void tell(object ob, string str, int msg_type)
 Sends a direct message to the specified object without considering
 containment hierarchy.
 
-## tell_down
+# tell_down
 
 ## Synopsis
 
@@ -57,7 +57,7 @@ varargs void tell_down(object ob, string str, int msg_type, mixed exclude)
 Sends a message downward through the containment hierarchy, such
 as from a container to all objects it contains.
 
-## tell_up
+# tell_up
 
 ## Synopsis
 
@@ -78,7 +78,7 @@ Sends a message upward through the containment hierarchy, such as
 from an object to its container, and further up to the room or
 environment.
 
-## tell_direct
+# tell_direct
 
 ## Synopsis
 

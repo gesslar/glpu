@@ -1,4 +1,4 @@
-## user_mob_data
+# user_mob_data
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ string user_mob_data(string name)
 
 Returns the file path for the user's mob data file.
 
-## user_core_data_directory
+# user_core_data_directory
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ string user_core_data_directory(string name)
 Returns the directory path for the user's core data directory based
 on their name.
 
-## user_path
+# user_path
 
 ## Synopsis
 
@@ -47,7 +47,7 @@ string user_path(string name)
 
 Returns the home directory path for the user.
 
-## user_data_directory
+# user_data_directory
 
 ## Synopsis
 
@@ -64,7 +64,7 @@ string user_data_directory(string name)
 Returns the directory path for the user's data directory based on
 their name.
 
-## user_data_file
+# user_data_file
 
 ## Synopsis
 

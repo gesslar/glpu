@@ -1,4 +1,4 @@
-## file_owner
+# file_owner
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ string file_owner(string file)
 
 Determines the owner of a file based on its path.
 
-## dir_file
+# dir_file
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ string *dir_file(string path)
 Given a path, returns an array containing the directory and file
 name components.
 
-## temp_file
+# temp_file
 
 ## Synopsis
 
@@ -47,7 +47,7 @@ varargs string temp_file(mixed arg)
 
 Generates a temporary file name based on the provided argument.
 
-## assure_file
+# assure_file
 
 ## Synopsis
 
@@ -64,7 +64,7 @@ mixed assure_file(string file)
 Given a file, ensures that the directory structure leading to
 the file exists, creating directories as needed.
 
-## tail
+# tail
 
 ## Synopsis
 
@@ -82,7 +82,7 @@ varargs string tail(string path, int line_count)
 Returns the last few lines of a file, similar to the Unix
 `tail` command.
 
-## implode_file
+# implode_file
 
 ## Synopsis
 
@@ -101,7 +101,7 @@ varargs void implode_file(string file, string *lines, int overwrite)
 Writes an array of lines to a specified file, optionally
 overwriting the existing content.
 
-## log_file
+# log_file
 
 ## Synopsis
 
@@ -119,7 +119,7 @@ varargs int log_file(string file, string str, mixed arg...)
 
 Writes a log message to a specified log file.
 
-## explode_file
+# explode_file
 
 ## Synopsis
 
@@ -136,7 +136,7 @@ string *explode_file(string file)
 Reads a file and returns its content as an array of lines,
 excluding comment lines and empty lines.
 
-## query_file_name
+# query_file_name
 
 ## Synopsis
 

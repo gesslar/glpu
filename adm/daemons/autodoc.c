@@ -519,11 +519,9 @@ private nomask void generate_wiki() {
 
             dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
             _log(2, "Dest file = %s", dest_file) ;
-_debug("Funcs %O\n", funcs) ;
+
             current_funcs = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
             curr_function_names = keys(current_funcs) ;
-
-            _debug("Source files: %O", source_files) ;
 
             foreach(curr_function_name in curr_function_names) {
                 mapping func ;
@@ -533,7 +531,7 @@ _debug("Funcs %O\n", funcs) ;
                 func_md = generate_function_markdown(func) ;
 
                 if(func_md) {
-                    doc_content += sprintf("## %s\n\n", curr_function_name) ;
+                    doc_content += sprintf("# %s\n\n", curr_function_name) ;
                     doc_content += func_md ;
                     doc_content += "\n" ;
                 }

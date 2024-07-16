@@ -1,4 +1,4 @@
-## element_of_weighted
+# element_of_weighted
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ mixed element_of_weighted(mapping m)
 
 Selects an element from a weighted mapping based on their weights.
 
-## pretty_map
+# pretty_map
 
 ## Synopsis
 

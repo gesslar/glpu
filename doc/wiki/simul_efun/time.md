@@ -1,4 +1,4 @@
-## time_frac
+# time_frac
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ Converts a time value from nanoseconds to a fractional value in seconds.
 This function takes a time value in nanoseconds and converts it to
 a fractional value representing seconds by dividing the input by 1,000,000,000.
 
-## time_ms
+# time_ms
 
 ## Synopsis
 
@@ -34,7 +34,7 @@ Converts a time value from nanoseconds to milliseconds.
 This function takes a time value in nanoseconds and converts it
 to milliseconds by dividing the input by 1,000,000.
 
-## ltime
+# ltime
 
 ## Synopsis
 
@@ -51,7 +51,7 @@ varargs string ltime(int x, int brief)
 
 Returns a formatted time string.
 
-## ldate
+# ldate
 
 ## Synopsis
 

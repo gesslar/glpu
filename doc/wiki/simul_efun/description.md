@@ -1,4 +1,4 @@
-## get_long
+# get_long
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ string get_long(object ob, int extras: (: 1 :))
 Returns the long description of an object, optionally
 including extra long descriptions.
 
-## get_short
+# get_short
 
 ## Synopsis
 

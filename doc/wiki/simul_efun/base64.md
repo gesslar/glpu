@@ -1,4 +1,4 @@
-## base64_decode
+# base64_decode
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ string base64_decode(string source)
 
 Decodes a given Base64 encoded string.
 
-## base64_encode
+# base64_encode
 
 ## Synopsis
 

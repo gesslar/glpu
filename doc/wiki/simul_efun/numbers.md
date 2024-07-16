@@ -1,4 +1,4 @@
-## percent_of
+# percent_of
 
 ## Synopsis
 
@@ -15,7 +15,7 @@ float percent_of(float a, float b)
 
 Calculates what percentage `a` is of `b`.
 
-## remainder
+# remainder
 
 ## Synopsis
 
@@ -32,7 +32,7 @@ varargs float remainder(mixed a, mixed b)
 
 Calculates the remainder of `a` divided by `b`.
 
-## percent
+# percent
 
 ## Synopsis
 
@@ -49,7 +49,7 @@ float percent(float a, float b)
 
 Calculates the percentage of `a` out of `b`.
 
-## range
+# range
 
 ## Synopsis
 
@@ -67,7 +67,7 @@ float range(float min, float max, float val)
 
 Ensures a value is within a specified range.
 
-## sum
+# sum
 
 ## Synopsis
 

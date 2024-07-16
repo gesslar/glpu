@@ -1,4 +1,4 @@
-## file_exists
+# file_exists
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ int file_exists(string file)
 
 Checks if a file exists.
 
-## user_exists
+# user_exists
 
 ## Synopsis
 
@@ -30,7 +30,7 @@ int user_exists(string user)
 
 Checks if a user data file exists.
 
-## cfile_exists
+# cfile_exists
 
 ## Synopsis
 
@@ -46,7 +46,7 @@ int cfile_exists(string file)
 
 Checks if a compiled file (.c) exists.
 
-## ofile_exists
+# ofile_exists
 
 ## Synopsis
 
@@ -62,7 +62,7 @@ int ofile_exists(string file)
 
 Checks if a save file exists.
 
-## directory_exists
+# directory_exists
 
 ## Synopsis
 

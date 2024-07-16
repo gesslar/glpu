@@ -1,4 +1,4 @@
-## dump_socket_status
+# dump_socket_status
 
 ## Synopsis
 

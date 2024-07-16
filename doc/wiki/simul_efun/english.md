@@ -1,4 +1,4 @@
-## cap_words
+# cap_words
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ string cap_words(string str)
 
 Capitalizes the first letter of each word in a string.
 
-## subjective
+# subjective
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ string subjective(mixed ob)
 Returns the subjective pronoun corresponding to the object's
 gender. Defaults to "it" for non-string or unknown gender.
 
-## possessive_noun
+# possessive_noun
 
 ## Synopsis
 
@@ -48,7 +48,7 @@ string possessive_noun(mixed ob)
 Returns the possessive form of a noun. If the noun ends with 's',
 it adds an apostrophe; otherwise, it adds 's.
 
-## cap_significant_words
+# cap_significant_words
 
 ## Synopsis
 
@@ -67,7 +67,7 @@ Capitalizes significant words in a string, ignoring certain
 insignificant words. Optionally capitalizes the first word
 as a title.
 
-## possessive
+# possessive
 
 ## Synopsis
 
@@ -84,7 +84,7 @@ string possessive(mixed ob)
 Returns the possessive adjective corresponding to the object's
 gender. Defaults to "its" for non-string or unknown gender.
 
-## possessive_pronoun
+# possessive_pronoun
 
 ## Synopsis
 
@@ -101,7 +101,7 @@ string possessive_pronoun(mixed ob)
 Returns the possessive pronoun corresponding to the object's
 gender. Defaults to "its" for non-string or unknown gender.
 
-## objective
+# objective
 
 ## Synopsis
 
@@ -118,7 +118,7 @@ string objective(mixed ob)
 Returns the objective pronoun corresponding to the object's
 gender. Defaults to "it" for non-string or unknown gender.
 
-## reflexive
+# reflexive
 
 ## Synopsis
 

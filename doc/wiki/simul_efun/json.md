@@ -1,4 +1,4 @@
-## json_decode
+# json_decode
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ mixed json_decode(string text)
 
 Deserializes a JSON string into an LPC value.
 
-## json_encode
+# json_encode
 
 ## Synopsis
 

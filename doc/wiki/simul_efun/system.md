@@ -1,4 +1,4 @@
-## mud_config
+# mud_config
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ mixed mud_config(string str)
 
 Retrieves a specific configuration value from the MUD config.
 
-## mud_name
+# mud_name
 
 ## Synopsis
 
@@ -26,7 +26,7 @@ string mud_name()
 
 Returns the name of the MUD.
 
-## _ok
+# _ok
 
 ## Synopsis
 
@@ -43,7 +43,7 @@ int _ok(mixed str, mixed args...)
 
 Provides an informational message, optionally formatted with arguments.
 
-## lib_name
+# lib_name
 
 ## Synopsis
 
@@ -55,7 +55,7 @@ string lib_name()
 
 Returns the name of the library being used by the MUD.
 
-## tmp_dir
+# tmp_dir
 
 ## Synopsis
 
@@ -67,7 +67,7 @@ string tmp_dir()
 
 Returns the directory where temporary files are stored.
 
-## admin_email
+# admin_email
 
 ## Synopsis
 
@@ -79,7 +79,7 @@ string admin_email()
 
 Returns the admin email address for the MUD.
 
-## arch
+# arch
 
 ## Synopsis
 
@@ -91,7 +91,7 @@ string arch()
 
 Returns the architecture of the system the MUD is running on.
 
-## port
+# port
 
 ## Synopsis
 
@@ -103,7 +103,7 @@ int port()
 
 Returns the port number the MUD is running on.
 
-## baselib_name
+# baselib_name
 
 ## Synopsis
 
@@ -115,7 +115,7 @@ string baselib_name()
 
 Returns the name of the base library.
 
-## driver_version
+# driver_version
 
 ## Synopsis
 
@@ -127,7 +127,7 @@ string driver_version()
 
 Returns the version of the MUD driver.
 
-## lib_version
+# lib_version
 
 ## Synopsis
 
@@ -139,7 +139,7 @@ string lib_version()
 
 Returns the version of the library being used by the MUD.
 
-## baselib_version
+# baselib_version
 
 ## Synopsis
 
@@ -151,7 +151,7 @@ string baselib_version()
 
 Returns the version of the base library.
 
-## _warn
+# _warn
 
 ## Synopsis
 
@@ -168,7 +168,7 @@ int _warn(mixed str, mixed args...)
 
 Provides a warning message, optionally formatted with arguments.
 
-## _error
+# _error
 
 ## Synopsis
 
@@ -185,7 +185,7 @@ int _error(mixed str, mixed args...)
 
 Provides an error message, optionally formatted with arguments.
 
-## open_status
+# open_status
 
 ## Synopsis
 
@@ -197,7 +197,7 @@ string open_status()
 
 Returns the open status of the MUD.
 
-## log_dir
+# log_dir
 
 ## Synopsis
 

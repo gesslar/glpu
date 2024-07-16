@@ -1,4 +1,4 @@
-## generate_uuid
+# generate_uuid
 
 ## Synopsis
 
@@ -11,7 +11,7 @@ string generate_uuid()
 Generates a random "version 4" UUID. Version 4 UUIDs are based
 on random numbers.
 
-## of
+# of
 
 ## Synopsis
 

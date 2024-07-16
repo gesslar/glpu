@@ -1,4 +1,4 @@
-## substr
+# substr
 
 ## Synopsis
 
@@ -19,7 +19,7 @@ first occurrence of another string within it. If the reverse flag
 is set, the substring will start at the last occurrence of the
 substring within the string.
 
-## extract
+# extract
 
 ## Synopsis
 
@@ -37,7 +37,7 @@ varargs string extract(string str, int from, int to)
 
 Extracts a substring from a string.
 
-## reverse_strsrch
+# reverse_strsrch
 
 ## Synopsis
 
@@ -56,7 +56,7 @@ varargs int reverse_strsrch(string str, string sub, int start)
 Searches for a substring in a string starting from a given position
 and moving backwards.
 
-## append
+# append
 
 ## Synopsis
 
@@ -74,7 +74,7 @@ string append(string source, string to_append)
 Appends a string to another string if it is not already there.
 If the string is already present, the original string is returned.
 
-## no_ansi
+# no_ansi
 
 ## Synopsis
 
@@ -90,7 +90,7 @@ string no_ansi(string str)
 
 Returns a string with all ANSI colour codes removed.
 
-## chop
+# chop
 
 ## Synopsis
 
@@ -110,7 +110,7 @@ Chops a substring off the end or beginning of another string if
 it is present. If the substring is not present, the original
 string is returned.
 
-## from_string
+# from_string
 
 ## Synopsis
 
@@ -128,7 +128,7 @@ varargs mixed from_string(string str, int flag)
 Converts a string representation of an LPC value to the corresponding
 LPC value.
 
-## reverse_string
+# reverse_string
 
 ## Synopsis
 
@@ -144,7 +144,7 @@ string reverse_string(string str)
 
 Reverses a string.
 
-## simple_list
+# simple_list
 
 ## Synopsis
 
@@ -162,7 +162,7 @@ varargs string simple_list(string *arr, string conjunction)
 Returns a string that is a simple list of the elements of an array,
 joined by a conjunction.
 
-## add_commas
+# add_commas
 
 ## Synopsis
 
@@ -178,7 +178,7 @@ string add_commas(mixed number)
 
 Returns a string with commas added to the number.
 
-## stringify
+# stringify
 
 ## Synopsis
 
@@ -194,7 +194,7 @@ string stringify(mixed val)
 
 Converts an LPC value to its string representation.
 
-## prepend
+# prepend
 
 ## Synopsis
 

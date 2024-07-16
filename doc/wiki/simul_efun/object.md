@@ -1,4 +1,4 @@
-## get_objects
+# get_objects
 
 ## Synopsis
 
@@ -17,7 +17,7 @@ varargs mixed get_objects( string str, object player, int no_arr )
 Locates objects based on the specified search string, which can
 include various search criteria and options.
 
-## top_environment
+# top_environment
 
 ## Synopsis
 
@@ -34,7 +34,7 @@ object top_environment(object ob)
 Retrieves the top-level environment of the specified object,
 traversing up through nested environments.
 
-## find_ob
+# find_ob
 
 ## Synopsis
 
@@ -53,7 +53,7 @@ varargs object find_ob(mixed ob, mixed cont, function f)
 Searches for an object within a container or environment
 using the specified criteria.
 
-## getoid
+# getoid
 
 ## Synopsis
 
@@ -69,7 +69,7 @@ int getoid(object ob)
 
 Retrieves the unique object ID of the given object.
 
-## get_object
+# get_object
 
 ## Synopsis
 

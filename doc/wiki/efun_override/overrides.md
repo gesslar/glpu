@@ -1,4 +1,4 @@
-## shout
+# shout
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ varargs void shout(string msg, mixed exclude)
 This function is an override of the shout() efun. It will
 write a message to all users using the message() efun.
 
-## set_privs
+# set_privs
 
 ## Synopsis
 
@@ -35,7 +35,7 @@ if the object calling the function has admin privs. If it does,
 it will execute the function as normal. If it does not, it will
 return 0.
 
-## ctime
+# ctime
 
 ## Synopsis
 
@@ -53,7 +53,7 @@ This function is an override of the efun ctime(). It will
 return the current time in the format "YYYY-MM-DD HH:MM:SS".
 It also will use time() if no argument is provided.
 
-## tell_object
+# tell_object
 
 ## Synopsis
 
@@ -72,7 +72,7 @@ varargs void tell_object(mixed ob, mixed msg, mixed type)
 This function is an override of the tell_object() efun. It will
 write a message to the object using the message() efun.
 
-## write
+# write
 
 ## Synopsis
 
@@ -91,7 +91,7 @@ write a message to the player using the message() efun
 if this_player(), otherwise it will use the debug_message()
 efun.
 
-## this_body
+# this_body
 
 ## Synopsis
 
@@ -104,7 +104,7 @@ object this_body()
 This is an override of the efun this_body(). It will return
 the this_player().
 
-## query_num
+# query_num
 
 ## Synopsis
 
@@ -122,7 +122,7 @@ varargs string query_num(int x, int many)
 This function is an override of query_num(). It will return
 the number in string form.
 
-## say
+# say
 
 ## Synopsis
 
@@ -140,7 +140,7 @@ varargs void say(string msg, mixed exclude)
 This function is an override of the say() efun. It will
 write a message to the room using the message() efun.
 
-## shutdown
+# shutdown
 
 ## Synopsis
 
@@ -159,7 +159,7 @@ if the object calling the function has admin privs. If it does,
 it will execute the function as normal. If it does not, it will
 return 0.
 
-## tell_room
+# tell_room
 
 ## Synopsis
 
@@ -178,7 +178,7 @@ varargs void tell_room(mixed room, string msg, mixed exclude)
 This function is an override of the tell_room() efun. It will
 write a message to the room using the message() efun.
 
-## exec
+# exec
 
 ## Synopsis
 
@@ -198,7 +198,7 @@ if the object calling the function has admin privs. If it does,
 it will
 execute the function as normal. If it does not, it will return 0.
 
-## userp
+# userp
 
 ## Synopsis
 
@@ -216,7 +216,7 @@ This function is an override of the userp() efun. Unlike the
 efun, this function accepts a null argument and will check
 if the previous object is a user if no argument is provided.
 
-## this_user
+# this_user
 
 ## Synopsis
 

@@ -1,4 +1,4 @@
-## devp
+# devp
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ varargs int devp(mixed user)
 
 Checks if a user has developer privileges.
 
-## adminp
+# adminp
 
 ## Synopsis
 
@@ -30,7 +30,7 @@ int adminp(mixed user)
 
 Checks if a user has admin privileges.
 
-## wizardp
+# wizardp
 
 ## Synopsis
 
@@ -46,7 +46,7 @@ int wizardp(mixed user) { return devp(user); }
 
 Checks if a user has developer privileges (alias for devp).
 
-## is_member
+# is_member
 
 ## Synopsis
 

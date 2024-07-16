@@ -1,4 +1,4 @@
-## reverse_array
+# reverse_array
 
 ## Synopsis
 
@@ -15,7 +15,7 @@ mixed *reverse_array(mixed *arr)
 Returns a new array with the elements of the input array in
 reverse order.
 
-## remove_array_element
+# remove_array_element
 
 ## Synopsis
 
@@ -36,7 +36,7 @@ from index 0 to start-1, and from end+1 to the end of the input
 array. If start is greater than end, the new array will contain
 all the elements of the input array.
 
-## distinct_array
+# distinct_array
 
 ## Synopsis
 
@@ -53,7 +53,7 @@ mixed *distinct_array(mixed *arr)
 Returns a new array containing the distinct elements of the input
 array.
 
-## splice
+# splice
 
 ## Synopsis
 

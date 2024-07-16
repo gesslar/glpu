@@ -1,4 +1,4 @@
-## consolidate
+# consolidate
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ string consolidate(int x, string str)
 Returns a consolidated string for a given quantity and item
 description, handling pluralization and special cases.
 
-## ordinal
+# ordinal
 
 ## Synopsis
 
@@ -32,7 +32,7 @@ string ordinal (int n)
 
 Converts an integer to its ordinal string representation.
 
-## int_string
+# int_string
 
 ## Synopsis
 

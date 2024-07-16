@@ -1,4 +1,4 @@
-## query_directory
+# query_directory
 
 ## Synopsis
 
@@ -15,7 +15,7 @@ string query_directory(object ob)
 Returns the directory of the given object. If no object is
 provided, it defaults to the previous object.
 
-## assure_dir
+# assure_dir
 
 ## Synopsis
 

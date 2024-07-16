@@ -1,4 +1,4 @@
-## resolve_path
+# resolve_path
 
 ## Synopsis
 

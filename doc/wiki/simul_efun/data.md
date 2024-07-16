@@ -1,4 +1,4 @@
-## data_inc
+# data_inc
 
 ## Synopsis
 
@@ -18,7 +18,7 @@ Increments the value associated with the given key in the file
 by the specified amount. If the key does not exist, it is
 created with the increment value.
 
-## data_del
+# data_del
 
 ## Synopsis
 
@@ -35,7 +35,7 @@ int data_del(string file, string key)
 
 Deletes the key-value pair from the file.
 
-## data_value
+# data_value
 
 ## Synopsis
 
@@ -53,7 +53,7 @@ varargs mixed data_value(string file, string key, mixed def)
 
 Retrieves the value associated with a given key from a file.
 
-## data_write
+# data_write
 
 ## Synopsis
 

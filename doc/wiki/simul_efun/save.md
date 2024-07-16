@@ -1,4 +1,4 @@
-## object_save_directory
+# object_save_directory
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ string object_save_directory(object ob)
 
 Returns the save directory path for the specified object.
 
-## assure_object_save_dir
+# assure_object_save_dir
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ string assure_object_save_dir(object ob)
 Ensures the save directory for the specified object exists,
 creating it if necessary.
 
-## object_save_file
+# object_save_file
 
 ## Synopsis
 
