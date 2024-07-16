@@ -38,8 +38,9 @@ void create() {
 void flag(string str) {
     if(str == "builddocs") {
         call_out((: AUTODOC_D->ci_build() :), 2) ;
+    } else {
+        debug_message("Unknown flag: " + str);
     }
-    debug_message("Flags disabled.\n");
 }
 
 protected object connect(int port) {

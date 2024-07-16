@@ -101,7 +101,6 @@ public nomask mixed autodoc_scan() {
 private nomask void check_dir() {
     string *files ;
     string source_dir ;
-    mapping docs = ([]);
 
     scanning -= 1 ;
 
@@ -124,7 +123,6 @@ private nomask void check_dir() {
 
 private nomask void check_file() {
     string file ;
-    int result ;
 
     scanning -= 1 ;
     file = files_to_check[0] ;
@@ -142,7 +140,7 @@ private nomask void parse_file(string file) {
     string *lines ;
     int num, max ;
     int in_jsdoc = 0 ;
-    string doc_type, function_tag, function_def, tag, info, line ;
+    string doc_type, function_tag, function_def, line ;
     int j ;
 
     if(!file_exists(file))
@@ -359,7 +357,7 @@ private nomask string generate_markdown(mapping func) {
         // We need a description and a function definition to continue,
         // otherwise we can skip this function.
         if(!of("description", func) || !of("function_def", func))
-            return ;
+            return null ;
 
         // Now we want the synopsis, which is the function definition
         out += "## SYNOPSIS\n\n" ;
@@ -375,7 +373,7 @@ private nomask string generate_markdown(mapping func) {
 
             params = func["param"] ;
             foreach(param in params) {
-                string *matches, *arr_matches ;
+                string *matches ;
 
                 line = implode(map(param, (: trim :)), " ") ;
                 matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
@@ -385,15 +383,17 @@ private nomask string generate_markdown(mapping func) {
         }
 
         if(of("returns", func)) {
-            string *rets ;
             string *matches ;
 
             out += "\n### RETURNS\n\n" ;
 
             line = implode(func["returns"][0], " ") ;
+
             matches = pcre_extract(line, "^(?:\\{)(.+)(?:\\}) (.+)$") ;
-            line = dash_wrap(line, 76) ;
-            out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+            if(sizeof(matches) > 0) {
+                line = dash_wrap(line, 76) ;
+                out += sprintf("    %s %s\n", matches[0], matches[1]) ;
+            }
         }
 
         if(of("description", func)) {
@@ -428,8 +428,6 @@ private nomask void generate_wiki() {
     generate_table = function(string function_type, string file_name, string *table) {
         string table_content = "";
         int max_columns = 3, column = 0;
-        int column_width = 80 / max_columns;
-        int sz = sizeof(table);
 
         // Create the first line of the table that is the border
         table_content += "|"+repeat_string(" |", max_columns)+"\n";
@@ -538,7 +536,6 @@ private nomask void generate_wiki() {
 
 private nomask string dash_wrap(string str, int width) {
     int dash_pos, space_pos ;
-    string rest ;
 
     if(strlen(str) > width) {
         dash_pos = strsrch(str, "-") + 2 ;
