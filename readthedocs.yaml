@@ -1,0 +1,10 @@
+# readthedocs.yml
+
+version: 2
+
+sphinx:
+  configuration: doc/wiki/source/conf.py
+
+python:
+  install:
+    - requirements: doc/wiki/requirements.txt
