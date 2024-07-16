@@ -361,7 +361,7 @@ private nomask string generate_function_markdown(mapping func) {
 
         // Now we want the synopsis, which is the function definition
         out += "## SYNOPSIS\n\n" ;
-        out += sprintf("    %s\n", func["function_def"]) ;
+        out += sprintf("```c\n%s\n```\n", func["function_def"]) ;
 
         // Next we need to parse the parameters
 
