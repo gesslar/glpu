@@ -6,21 +6,11 @@ on:
       - main  # or your default branch
     paths:
       - 'doc/wiki/**'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy-docs:
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler:
-          - CC: "gcc"
-            CXX: "g++"
-          - CC: "clang"
-            CXX: "clang++"
-        build: ["Debug", "RelWithDebInfo"]
-        os: ["ubuntu-22.04"]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout FluffOS
@@ -36,11 +26,13 @@ jobs:
 
     - name: Compile FluffOS
       working-directory: fluffos
-      env: ${{ matrix.compiler }}
+      env:
+        CC: "gcc"
+        CXX: "g++"
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=${{ matrix.build }} -DPACKAGE_DB_SQLITE=2 ..
+        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPACKAGE_DB_SQLITE=2 ..
         VERBOSE=1 make -j `nproc` install
 
     - name: Checkout game repository
