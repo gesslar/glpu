@@ -17,7 +17,10 @@ int exec( object to, object from ) {
 }
 
 void shutdown( int how ) {
-    if(file_name(previous_object()) == "/adm/daemons/shutdown_d") {
+    object po = previous_object() ;
+    string f = base_name(po) ;
+
+    if(of(f, mud_config("ALLOW_SHUTDOWN"))) {
         PERSIST_D->persist_objects() ;
         efun::shutdown(how);
     }
