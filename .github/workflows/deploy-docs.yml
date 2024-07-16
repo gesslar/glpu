@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Checkout game repository
+      uses: actions/checkout@v2
+      with:
+        path: 'game'
+
     - name: Checkout FluffOS
       uses: actions/checkout@v4
       with:
@@ -35,9 +40,6 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_DB_SQLITE=2 ..
         VERBOSE=1 make -j `nproc` install
 
-    - name: Checkout game repository
-      uses: actions/checkout@v2
-
     - name: Capture current directory
       id: capture-dir
       run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
@@ -54,11 +56,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r doc/wiki/requirements.txt
+        pip install -r game/doc/wiki/requirements.txt
 
     - name: Build documentation
       run: |
-        cd doc/wiki
+        cd game/doc/wiki
         make html
 
     - name: Deploy to Read the Docs
