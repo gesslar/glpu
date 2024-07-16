@@ -416,24 +416,25 @@ private nomask string generate_function_markdown(mapping func) {
     return null ;
 }
 
-private nomask string generate_function_type_markdown(mapping funcs) {
+private nomask string generate_function_type_markdown(string source_file, mapping funcs) {
     string out = "" ;
     string line ;
     mixed err ;
 
     err = catch {
         string *function_names, function_name ;
-        string current_source_file ;
         string dest_dir ;
         mapping func ;
+        mapping interested  ;
 
-        function_names = sort_array(keys(funcs), 1) ;
+        interested = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
+        function_names = sort_array(keys(interested), 1) ;
 
         foreach(function_name in function_names) {
             string *parts ;
             string file ;
 
-            func = funcs[function_name] ;
+            func = interested[function_name] ;
 
             parts = dir_file(func["source_file"]) ;
             file = parts[1] ;
@@ -473,7 +474,6 @@ private nomask void generate_wiki() {
         string current_source_file ;
         string dest_dir ;
         mapping funcs ;
-        string func_type_md ;
         string *source_files, source_file ;
 
         _log(1, "Working on function type: %s", function_type) ;
@@ -481,11 +481,6 @@ private nomask void generate_wiki() {
         home_content += sprintf("## %s\n\n", function_type) ;
 
         funcs = docs[function_type] ;
-        func_type_md = generate_function_type_markdown(funcs) ;
-        home_content += func_type_md ;
-        func_type_file = append(doc_root, function_type + ".md") ;
-        assure_file(func_type_file) ;
-        write_file(func_type_file, func_type_md, 1) ;
 
         function_names = sort_array(keys(funcs), 1) ;
 
@@ -496,18 +491,29 @@ private nomask void generate_wiki() {
 
         source_files = map(values(funcs), (: $1["source_file"] :)) ;
         source_files = distinct_array(source_files) ;
-        // source_files = map(source_files, (: dir_file($1)[1] :)) ;
-        // source_files = map(source_files, (: chop($1, ".c", -1) :)) ;
         source_files = sort_array(source_files, 1) ;
+
+        func_type_file = append(doc_root, function_type + ".md") ;
+        if(file_exists(func_type_file))
+            rm(func_type_file) ;
+        else
+            assure_file(func_type_file) ;
 
         foreach(source_file in source_files) {
             string *parts, source_file_name ;
             mapping current_funcs ;
             string *curr_function_names, curr_function_name ;
             string dest_file ;
+            string home_md ;
 
             parts = dir_file(source_file) ;
             source_file_name = chop(parts[1], ".c", -1) ;
+
+            home_md = generate_function_type_markdown(source_file, funcs) ;
+            home_content += sprintf("### %s\n\n", source_file_name) ;
+            home_content += home_md + "\n" ;
+
+            write_file(func_type_file, home_content, 1) ;
 
             dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
             _log(2, "Dest file = %s", dest_file) ;
@@ -531,11 +537,13 @@ _debug("Funcs %O\n", funcs) ;
                 }
             }
 
+            assure_file(dest_file) ;
             write_file(dest_file, doc_content, 1) ;
+            doc_content = "" ;
         }
 
-        assure_dir(append(doc_root, function_type)) ;
-        write_file(append(doc_root, function_type+".md"), home_content, 1) ;
+        assure_file(append(doc_root, function_type+".md")) ;
+        // write_file(append(doc_root, ), home_content, 1) ;
         home_content = "" ;
     }
 
