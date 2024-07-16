@@ -1,5 +1,5 @@
-title: My Documentation
-description: Documentation for my project
+title: gLPU Documentation
+description: Documentation for the gLPU project
 baseurl: "/" # If your repository is a project site, otherwise leave it as ""
 
 lsi: false
@@ -12,3 +12,6 @@ gist:
 kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
+remote_theme: pages-themes/midnight@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
