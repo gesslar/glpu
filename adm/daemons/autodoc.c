@@ -511,9 +511,9 @@ private nomask void generate_wiki() {
 
             wiki_table += ({ function_name }) ;
         }
-    }
 
-    write_file(append(doc_root, "Home.md"), home_content, 1) ;
+        write_file(append(doc_root, function_type+".md"), home_content, 1) ;
+    }
 
     writing = false ;
 }
