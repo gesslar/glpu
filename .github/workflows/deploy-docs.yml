@@ -40,13 +40,9 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_DB_SQLITE=2 ..
         VERBOSE=1 make -j `nproc` install
 
-    - name: Capture current directory
-      id: capture-dir
-      run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
-
     - name: Build Docs
       run: |
-        ${{ env.CURRENT_DIR }}/fluffos/build/bin/driver adm/etc/config.github -fbuilddocs
+        ./fluffos/build/bin/driver game/adm/etc/config.github -fbuilddocs
 
     - name: Set up Python
       uses: actions/setup-python@v2
