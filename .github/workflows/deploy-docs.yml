@@ -37,7 +37,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_DB_SQLITE=2 ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_UIDS=OFF -DPACKAGE_MUDLIB_STATS=OFF
         VERBOSE=1 make -j `nproc` install
 
     - name: Capture game directory path
