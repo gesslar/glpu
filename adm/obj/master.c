@@ -36,6 +36,9 @@ void create() {
 }
 
 void flag(string str) {
+    if(str == "builddocs") {
+        call_out((: AUTODOC_D->ci_build() :), 2) ;
+    }
     debug_message("Flags disabled.\n");
 }
 

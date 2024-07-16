@@ -17,6 +17,7 @@ inherit M_LOG ;
 
 // Function prototypes
 private nomask int check_running();
+public nomask mixed autodoc_scan() ;
 private nomask void finish_scan();
 private nomask void parse_file(string file);
 private nomask string generate_markdown(mapping doc) ;
@@ -41,6 +42,7 @@ private nosave nomask string jsdoc_function_regex,
                              function_detect_regex ;
 
 private nosave nomask mapping docs = ([]);
+private nosave int ci = false ;
 
 void setup() {
     set_log_level(1) ;
@@ -61,6 +63,13 @@ void setup() {
     "(?:int|float|void|string|object|mixed|mapping|array|buffer|function)\\s*"
     "\\*?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
     ;
+}
+
+public nomask void ci_build() {
+    set_log_level(4) ;
+    _log(1, "Autodoc is running in CI mode") ;
+    ci = true ;
+    autodoc_scan() ;
 }
 
 public nomask mixed autodoc_scan() {
@@ -561,6 +570,10 @@ private nomask void finish_scan() {
     _log(1, "Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
     if(this_player() && devp(this_player()))
         _ok("Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
+
+    if(ci == true) {
+        shutdown(0) ;
+    }
 }
 
 public nomask int check_running() {
