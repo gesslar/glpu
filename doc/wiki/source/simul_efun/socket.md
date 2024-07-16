@@ -252,7 +252,7 @@ including extra short descriptions in parentheses.
 
 ## SYNOPSIS
 
-    int assure_dir(string path)
+    mixed assure_dir(string path)
 
 ### PARAMETERS
 
@@ -548,7 +548,7 @@ Checks if a user data file exists.
 
 ## SYNOPSIS
 
-    void assure_file(string file)
+    mixed assure_file(string file)
 
 ### PARAMETERS
 
@@ -929,5 +929,513 @@ Deserializes a JSON string into an LPC value.
 ## DESCRIPTION
 
 Serializes an LPC value into a JSON string.
+
+
+# element_of_weighted
+
+## SYNOPSIS
+
+    mixed element_of_weighted(mapping m)
+
+### PARAMETERS
+
+    mapping m - The weighted mapping to select from, where keys are the elements and values are their weights.
+
+### RETURNS
+
+    mixed - The selected element.
+
+## DESCRIPTION
+
+Selects an element from a weighted mapping based on their weights.
+
+
+# pretty_map
+
+## SYNOPSIS
+
+    string pretty_map(mapping map)
+
+### PARAMETERS
+
+    mapping map - The mapping to format.
+
+### RETURNS
+
+    string - The formatted string representation of the mapping.
+
+## DESCRIPTION
+
+Returns a formatted string representation of a mapping, removing
+any size annotations.
+
+
+# tell
+
+## SYNOPSIS
+
+    varargs void tell(object ob, string str, int msg_type)
+
+### PARAMETERS
+
+    object ob - The object to send the message to.
+    string str - The message string to send.
+    int [msg_type] - The message type.
+
+## DESCRIPTION
+
+Sends a direct message to the specified object without considering
+containment hierarchy.
+
+
+# tell_all
+
+## SYNOPSIS
+
+    varargs void tell_all(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with ALL_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message to all objects in the same environment, regardless
+of their position in the containment hierarchy.
+
+
+# tell_direct
+
+## SYNOPSIS
+
+    varargs void tell_direct(object ob, string str, int msg_type)
+
+### PARAMETERS
+
+    object ob - The object to send the message to.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with DIRECT_MSG.
+
+## DESCRIPTION
+
+Sends a direct message to the specified object without considering
+containment hierarchy.
+
+
+# tell_down
+
+## SYNOPSIS
+
+    varargs void tell_down(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with DOWN_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message downward through the containment hierarchy, such
+as from a container to all objects it contains.
+
+
+# tell_up
+
+## SYNOPSIS
+
+    varargs void tell_up(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with UP_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message upward through the containment hierarchy, such as
+from an object to its container, and further up to the room or
+environment.
+
+
+# percent
+
+## SYNOPSIS
+
+    float percent(float a, float b)
+
+### PARAMETERS
+
+    float a - The part value.
+    float b - The whole value.
+
+### RETURNS
+
+    float - The percentage of `a` out of `b`.
+
+## DESCRIPTION
+
+Calculates the percentage of `a` out of `b`.
+
+
+# percent_of
+
+## SYNOPSIS
+
+    float percent_of(float a, float b)
+
+### PARAMETERS
+
+    float a - The part value.
+    float b - The whole value.
+
+### RETURNS
+
+    float - The percentage of `a` in `b`.
+
+## DESCRIPTION
+
+Calculates what percentage `a` is of `b`.
+
+
+# range
+
+## SYNOPSIS
+
+    float range(float min, float max, float val)
+
+### PARAMETERS
+
+    float min - The minimum value.
+    float max - The maximum value.
+    float val - The value to check.
+
+### RETURNS
+
+    float - The value, constrained within the range of `min` to `max`.
+
+## DESCRIPTION
+
+Ensures a value is within a specified range.
+
+
+# remainder
+
+## SYNOPSIS
+
+    varargs float remainder(mixed a, mixed b)
+
+### PARAMETERS
+
+    mixed a - The dividend.
+    mixed b - The divisor.
+
+### RETURNS
+
+    float - The remainder of `a` divided by `b`.
+
+## DESCRIPTION
+
+Calculates the remainder of `a` divided by `b`.
+
+
+# sum
+
+## SYNOPSIS
+
+    int sum(mixed *arr)
+
+### PARAMETERS
+
+    mixed[] arr - The array of numbers to sum.
+
+### RETURNS
+
+    int - The sum of all elements in the array.
+
+## DESCRIPTION
+
+Calculates the sum of all elements in an array.
+
+
+# find_ob
+
+## SYNOPSIS
+
+    varargs object find_ob(mixed ob, mixed cont, function f)
+
+### PARAMETERS
+
+    mixed ob - The object or name of the object to find.
+    mixed [cont] - The container or environment to search within. Defaults to the previous object.
+    function [f] - An optional function to further filter the search.
+
+### RETURNS
+
+    object - The found object, or 0 if not found.
+
+## DESCRIPTION
+
+Searches for an object within a container or environment
+using the specified criteria.
+
+
+# get_object
+
+## SYNOPSIS
+
+    varargs object get_object( string str, object player )
+
+### PARAMETERS
+
+    string str - The name of the object to locate.
+    object [player] - The player object to use as a reference for searching.
+
+### RETURNS
+
+    object - The located object, or 0 if not found.
+
+## DESCRIPTION
+
+Attempts to locate an object by the given name and returns the
+object pointer if found.
+
+
+# get_objects
+
+## SYNOPSIS
+
+    varargs mixed get_objects( string str, object player, int no_arr )
+
+### PARAMETERS
+
+    string str - The search string specifying the objects to locate.
+    object [player] - The player object to use as a reference for searching.
+    int [no_arr] - If specified, only a single object or 0 will be returned, otherwise an array of objects may be returned.
+
+### RETURNS
+
+    mixed - The located object(s), or 0 if not found.
+
+## DESCRIPTION
+
+Locates objects based on the specified search string, which can
+include various search criteria and options.
+
+
+# getoid
+
+## SYNOPSIS
+
+    int getoid(object ob)
+
+### PARAMETERS
+
+    object ob - The object to get the ID of.
+
+### RETURNS
+
+    int - The unique object ID.
+
+## DESCRIPTION
+
+Retrieves the unique object ID of the given object.
+
+
+# top_environment
+
+## SYNOPSIS
+
+    object top_environment(object ob)
+
+### PARAMETERS
+
+    object ob - The object to get the top-level environment of.
+
+### RETURNS
+
+    object - The top-level environment of the object.
+
+## DESCRIPTION
+
+Retrieves the top-level environment of the specified object,
+traversing up through nested environments.
+
+
+# resolve_path
+
+## SYNOPSIS
+
+    string resolve_path(string Current, string Next)
+
+### PARAMETERS
+
+    string Current - The current path.
+    string Next - The next path to resolve.
+
+### RETURNS
+
+    string - The resolved absolute path.
+
+## DESCRIPTION
+
+Resolves a given path relative to the current path, handling
+special cases such as user directories and relative paths.
+
+
+# assure_object_save_dir
+
+## SYNOPSIS
+
+    string assure_object_save_dir(object ob)
+
+### PARAMETERS
+
+    object ob - The object to ensure the save directory for.
+
+### RETURNS
+
+    string - The save directory path for the object, or 0 if creation failed.
+
+## DESCRIPTION
+
+Ensures the save directory for the specified object exists,
+creating it if necessary.
+
+
+# object_save_directory
+
+## SYNOPSIS
+
+    string object_save_directory(object ob)
+
+### PARAMETERS
+
+    object ob - The object to get the save directory for.
+
+### RETURNS
+
+    string - The save directory path for the object.
+
+## DESCRIPTION
+
+Returns the save directory path for the specified object.
+
+
+# object_save_file
+
+## SYNOPSIS
+
+    string object_save_file(object ob)
+
+### PARAMETERS
+
+    object ob - The object to get the save file for.
+
+### RETURNS
+
+    string - The save file path for the object.
+
+## DESCRIPTION
+
+Returns the save file path for the specified object.
+
+
+# adminp
+
+## SYNOPSIS
+
+    int adminp(mixed user)
+
+### PARAMETERS
+
+    mixed user - The user to check, either as a username string or an object. Defaults to the previous object.
+
+### RETURNS
+
+    int - 1 if the user has admin privileges, otherwise 0.
+
+## DESCRIPTION
+
+Checks if a user has admin privileges.
+
+
+# devp
+
+## SYNOPSIS
+
+    varargs int devp(mixed user)
+
+### PARAMETERS
+
+    mixed user - The user to check, either as a username string or an object. Defaults to the previous object.
+
+### RETURNS
+
+    int - 1 if the user has developer privileges, otherwise 0.
+
+## DESCRIPTION
+
+Checks if a user has developer privileges.
+
+
+# is_member
+
+## SYNOPSIS
+
+    int is_member(string user, string group)
+
+### PARAMETERS
+
+    string user - The username to check.
+    string group - The group to check membership in.
+
+### RETURNS
+
+    int - 1 if the user is a member of the group, otherwise 0.
+
+## DESCRIPTION
+
+Checks if a user is a member of a specified group.
+
+
+# wizardp
+
+## SYNOPSIS
+
+    int wizardp(mixed user) { return devp(user); }
+
+### PARAMETERS
+
+    mixed user - The user to check, either as a username string or an object.
+
+### RETURNS
+
+    int - 1 if the user has developer privileges, otherwise 0.
+
+## DESCRIPTION
+
+Checks if a user has developer privileges (alias for devp).
+
+
+# dump_socket_status
+
+## SYNOPSIS
+
+    string dump_socket_status()
+
+### RETURNS
+
+    string - The formatted socket status information.
+
+## DESCRIPTION
+
+Returns a formatted string displaying the status of all sockets.
 
 

@@ -252,7 +252,7 @@ including extra short descriptions in parentheses.
 
 ## SYNOPSIS
 
-    int assure_dir(string path)
+    mixed assure_dir(string path)
 
 ### PARAMETERS
 
@@ -548,7 +548,7 @@ Checks if a user data file exists.
 
 ## SYNOPSIS
 
-    void assure_file(string file)
+    mixed assure_file(string file)
 
 ### PARAMETERS
 
@@ -1687,5 +1687,346 @@ Returns a substring of a string, starting from 0 and ending at the
 first occurrence of another string within it. If the reverse flag
 is set, the substring will start at the last occurrence of the
 substring within the string.
+
+
+# _error
+
+## SYNOPSIS
+
+    int _error(mixed str, mixed args...)
+
+### PARAMETERS
+
+    string str - The error message.
+    mixed [args] - Optional arguments to format the message.
+
+### RETURNS
+
+    int - Always returns 1, unless there is no previous object.
+
+## DESCRIPTION
+
+Provides an error message, optionally formatted with arguments.
+
+
+# _ok
+
+## SYNOPSIS
+
+    int _ok(mixed str, mixed args...)
+
+### PARAMETERS
+
+    string str - The informational message.
+    mixed [args] - Optional arguments to format the message.
+
+### RETURNS
+
+    int - Always returns 1, unless there is no previous object.
+
+## DESCRIPTION
+
+Provides an informational message, optionally formatted with arguments.
+
+
+# _warn
+
+## SYNOPSIS
+
+    int _warn(mixed str, mixed args...)
+
+### PARAMETERS
+
+    string str - The warning message.
+    mixed [args] - Optional arguments to format the message.
+
+### RETURNS
+
+    int - Always returns 1, unless there is no previous object.
+
+## DESCRIPTION
+
+Provides a warning message, optionally formatted with arguments.
+
+
+# admin_email
+
+## SYNOPSIS
+
+    string admin_email()
+
+### RETURNS
+
+    string - The admin email address.
+
+## DESCRIPTION
+
+Returns the admin email address for the MUD.
+
+
+# arch
+
+## SYNOPSIS
+
+    string arch()
+
+### RETURNS
+
+    string - The system architecture.
+
+## DESCRIPTION
+
+Returns the architecture of the system the MUD is running on.
+
+
+# baselib_name
+
+## SYNOPSIS
+
+    string baselib_name()
+
+### RETURNS
+
+    string - The base library name.
+
+## DESCRIPTION
+
+Returns the name of the base library.
+
+
+# baselib_version
+
+## SYNOPSIS
+
+    string baselib_version()
+
+### RETURNS
+
+    string - The base library version.
+
+## DESCRIPTION
+
+Returns the version of the base library.
+
+
+# driver_version
+
+## SYNOPSIS
+
+    string driver_version()
+
+### RETURNS
+
+    string - The driver version.
+
+## DESCRIPTION
+
+Returns the version of the MUD driver.
+
+
+# lib_name
+
+## SYNOPSIS
+
+    string lib_name()
+
+### RETURNS
+
+    string - The library name.
+
+## DESCRIPTION
+
+Returns the name of the library being used by the MUD.
+
+
+# lib_version
+
+## SYNOPSIS
+
+    string lib_version()
+
+### RETURNS
+
+    string - The library version.
+
+## DESCRIPTION
+
+Returns the version of the library being used by the MUD.
+
+
+# log_dir
+
+## SYNOPSIS
+
+    string log_dir()
+
+### RETURNS
+
+    string - The log directory.
+
+## DESCRIPTION
+
+Returns the directory where log files are stored.
+
+
+# mud_config
+
+## SYNOPSIS
+
+    mixed mud_config(string str)
+
+### PARAMETERS
+
+    string str - The configuration key to retrieve.
+
+### RETURNS
+
+    mixed - The configuration value.
+
+## DESCRIPTION
+
+Retrieves a specific configuration value from the MUD config.
+
+
+# mud_name
+
+## SYNOPSIS
+
+    string mud_name()
+
+### RETURNS
+
+    string - The name of the MUD.
+
+## DESCRIPTION
+
+Returns the name of the MUD.
+
+
+# open_status
+
+## SYNOPSIS
+
+    string open_status()
+
+### RETURNS
+
+    string - The open status of the MUD.
+
+## DESCRIPTION
+
+Returns the open status of the MUD.
+
+
+# port
+
+## SYNOPSIS
+
+    int port()
+
+### RETURNS
+
+    int - The port number.
+
+## DESCRIPTION
+
+Returns the port number the MUD is running on.
+
+
+# tmp_dir
+
+## SYNOPSIS
+
+    string tmp_dir()
+
+### RETURNS
+
+    string - The temporary directory.
+
+## DESCRIPTION
+
+Returns the directory where temporary files are stored.
+
+
+# ldate
+
+## SYNOPSIS
+
+    varargs string ldate(int x, int brief)
+
+### PARAMETERS
+
+    int [x=time()] - The timestamp to format. Defaults to the current time.
+    int [brief=0] - If set to 1, returns a brief date format (MM-DD). Otherwise, returns a full date format (YYYY-MM-DD).
+
+### RETURNS
+
+    string - The formatted date string.
+
+## DESCRIPTION
+
+Returns a formatted date string.
+
+
+# ltime
+
+## SYNOPSIS
+
+    varargs string ltime(int x, int brief)
+
+### PARAMETERS
+
+    int [x=time()] - The timestamp to format. Defaults to the current time.
+    int [brief=0] - If set to 1, returns a brief time format (HH:MM). Otherwise, returns a full time format (HH:MM:SS).
+
+### RETURNS
+
+    string - The formatted time string.
+
+## DESCRIPTION
+
+Returns a formatted time string.
+
+
+# time_frac
+
+## SYNOPSIS
+
+    varargs float time_frac(int nanoseconds)
+
+### PARAMETERS
+
+    int nanoseconds - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
+
+### RETURNS
+
+    float - The time value converted to a fractional value in seconds.
+
+## DESCRIPTION
+
+Converts a time value from nanoseconds to a fractional value in seconds.
+This function takes a time value in nanoseconds and converts it to
+a fractional value representing seconds by dividing the input by 1,000,000,000.
+
+
+# time_ms
+
+## SYNOPSIS
+
+    varargs int time_ms(int nanoseconds)
+
+### PARAMETERS
+
+    int nanoseconds - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
+
+### RETURNS
+
+    int - The time value converted to milliseconds.
+
+## DESCRIPTION
+
+Converts a time value from nanoseconds to milliseconds.
+This function takes a time value in nanoseconds and converts it
+to milliseconds by dividing the input by 1,000,000.
 
 

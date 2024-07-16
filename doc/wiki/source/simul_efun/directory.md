@@ -252,7 +252,7 @@ including extra short descriptions in parentheses.
 
 ## SYNOPSIS
 
-    int assure_dir(string path)
+    mixed assure_dir(string path)
 
 ### PARAMETERS
 

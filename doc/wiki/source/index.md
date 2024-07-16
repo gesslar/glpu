@@ -1,9 +1,9 @@
-# gLPU Docs documentation
+# gLPU MUD Documentation
 
 ## Contents
 
 ```{toctree}
 :maxdepth: 1
-:caption: Contents:
+:hidden
 
-simul_efuns
+simul_efun

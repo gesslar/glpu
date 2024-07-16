@@ -252,7 +252,7 @@ including extra short descriptions in parentheses.
 
 ## SYNOPSIS
 
-    int assure_dir(string path)
+    mixed assure_dir(string path)
 
 ### PARAMETERS
 
@@ -548,7 +548,7 @@ Checks if a user data file exists.
 
 ## SYNOPSIS
 
-    void assure_file(string file)
+    mixed assure_file(string file)
 
 ### PARAMETERS
 
@@ -715,5 +715,352 @@ Returns the last few lines of a file, similar to the Unix
 ## DESCRIPTION
 
 Generates a temporary file name based on the provided argument.
+
+
+# assemble_call_back
+
+## SYNOPSIS
+
+    mixed *assemble_call_back(mixed arg...)
+
+### PARAMETERS
+
+    mixed arg - The arguments to assemble into a callback.
+
+### RETURNS
+
+    mixed[] - The assembled callback.
+
+## DESCRIPTION
+
+Assembles a callback function from the provided arguments.
+This function is used to create a callable structure that can be
+invoked later. The callback can be either a method on an object or
+a function. The assembled callback is returned as an array.
+Usage:
+- When you need to create a callback for an object method:
+`assemble_call_back(object, "method", args...)`
+- When you need to create a callback for a function:
+`assemble_call_back(function, args...)`
+The function performs the following steps:
+1. Checks if the provided arguments form a valid array.
+2. Determines the size of the arguments array.
+3. Checks if the first argument is an object. If so, it verifies that
+the second argument is a valid method name on the object.
+4. If the first argument is a function, it creates a callback with the
+function and any additional arguments.
+5. Returns the assembled callback as an array.
+
+
+# call_back
+
+## SYNOPSIS
+
+    mixed call_back(mixed cb, mixed new_arg...)
+
+### PARAMETERS
+
+    mixed cb - The callback to execute.
+    mixed new_arg - The arguments to pass to the callback.
+
+### RETURNS
+
+    mixed - The result of the callback execution.
+
+## DESCRIPTION
+
+Executes a callback with the given arguments.
+
+
+# call_trace
+
+## SYNOPSIS
+
+    varargs string call_trace(int colour)
+
+### PARAMETERS
+
+    int [colour=0] - Whether to include ANSI colour codes. Defaults to 0 (no colour).
+
+### RETURNS
+
+    string - The formatted call stack trace.
+
+## DESCRIPTION
+
+Returns a formatted string of the current call stack trace.
+
+
+# valid_function
+
+## SYNOPSIS
+
+    int valid_function(mixed f)
+
+### PARAMETERS
+
+    mixed f - The function to check.
+
+### RETURNS
+
+    int - 1 if the function is valid, otherwise 0.
+
+## DESCRIPTION
+
+Checks if a given function is valid and not owned by a destructed
+object.
+
+
+# consolidate
+
+## SYNOPSIS
+
+    string consolidate(int x, string str)
+
+### PARAMETERS
+
+    int x - The quantity of items.
+    string str - The description of the item(s).
+
+### RETURNS
+
+    string - The consolidated string.
+
+## DESCRIPTION
+
+Returns a consolidated string for a given quantity and item
+description, handling pluralization and special cases.
+
+
+# int_string
+
+## SYNOPSIS
+
+    string int_string (int num)
+
+### PARAMETERS
+
+    int num - The numerical number to convert.
+
+### RETURNS
+
+    string - The worded number representation of the integer.
+
+## DESCRIPTION
+
+Converts a numerical number to its worded number representation.
+
+
+# ordinal
+
+## SYNOPSIS
+
+    string ordinal (int n)
+
+### PARAMETERS
+
+    int n - The integer to convert.
+
+### RETURNS
+
+    string - The ordinal string representation of the integer.
+
+## DESCRIPTION
+
+Converts an integer to its ordinal string representation.
+
+
+# identify
+
+## SYNOPSIS
+
+    varargs string identify( mixed a, string indent )
+
+### PARAMETERS
+
+    mixed a - The variable to identify.
+    string [indent] - The indentation string to use for formatting.
+
+### RETURNS
+
+    string - The string representation of the variable.
+
+## DESCRIPTION
+
+Converts a variable to its string representation for debugging
+purposes, handling various data types and preventing deep
+recursion.
+
+
+# json_decode
+
+## SYNOPSIS
+
+    mixed json_decode(string text)
+
+### PARAMETERS
+
+    string text - The JSON string to deserialize.
+
+### RETURNS
+
+    mixed - The deserialized LPC value.
+
+## DESCRIPTION
+
+Deserializes a JSON string into an LPC value.
+
+
+# json_encode
+
+## SYNOPSIS
+
+    varargs string json_encode(mixed value, mixed* pointers)
+
+### PARAMETERS
+
+    mixed value - The LPC value to serialize.
+    mixed[] [pointers] - An optional array of pointers to handle circular references.
+
+### RETURNS
+
+    string - The JSON string representation of the LPC value.
+
+## DESCRIPTION
+
+Serializes an LPC value into a JSON string.
+
+
+# element_of_weighted
+
+## SYNOPSIS
+
+    mixed element_of_weighted(mapping m)
+
+### PARAMETERS
+
+    mapping m - The weighted mapping to select from, where keys are the elements and values are their weights.
+
+### RETURNS
+
+    mixed - The selected element.
+
+## DESCRIPTION
+
+Selects an element from a weighted mapping based on their weights.
+
+
+# pretty_map
+
+## SYNOPSIS
+
+    string pretty_map(mapping map)
+
+### PARAMETERS
+
+    mapping map - The mapping to format.
+
+### RETURNS
+
+    string - The formatted string representation of the mapping.
+
+## DESCRIPTION
+
+Returns a formatted string representation of a mapping, removing
+any size annotations.
+
+
+# tell
+
+## SYNOPSIS
+
+    varargs void tell(object ob, string str, int msg_type)
+
+### PARAMETERS
+
+    object ob - The object to send the message to.
+    string str - The message string to send.
+    int [msg_type] - The message type.
+
+## DESCRIPTION
+
+Sends a direct message to the specified object without considering
+containment hierarchy.
+
+
+# tell_all
+
+## SYNOPSIS
+
+    varargs void tell_all(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with ALL_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message to all objects in the same environment, regardless
+of their position in the containment hierarchy.
+
+
+# tell_direct
+
+## SYNOPSIS
+
+    varargs void tell_direct(object ob, string str, int msg_type)
+
+### PARAMETERS
+
+    object ob - The object to send the message to.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with DIRECT_MSG.
+
+## DESCRIPTION
+
+Sends a direct message to the specified object without considering
+containment hierarchy.
+
+
+# tell_down
+
+## SYNOPSIS
+
+    varargs void tell_down(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with DOWN_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message downward through the containment hierarchy, such
+as from a container to all objects it contains.
+
+
+# tell_up
+
+## SYNOPSIS
+
+    varargs void tell_up(object ob, string str, int msg_type, mixed exclude)
+
+### PARAMETERS
+
+    object ob - The object to send the message from.
+    string str - The message string to send.
+    int [msg_type] - The message type, combined with UP_MSG.
+    mixed [exclude] - The objects to exclude from receiving the message.
+
+## DESCRIPTION
+
+Sends a message upward through the containment hierarchy, such as
+from an object to its container, and further up to the room or
+environment.
 
 

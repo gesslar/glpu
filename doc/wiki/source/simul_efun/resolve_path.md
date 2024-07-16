@@ -252,7 +252,7 @@ including extra short descriptions in parentheses.
 
 ## SYNOPSIS
 
-    int assure_dir(string path)
+    mixed assure_dir(string path)
 
 ### PARAMETERS
 
@@ -548,7 +548,7 @@ Checks if a user data file exists.
 
 ## SYNOPSIS
 
-    void assure_file(string file)
+    mixed assure_file(string file)
 
 ### PARAMETERS
 
@@ -1266,5 +1266,26 @@ Retrieves the unique object ID of the given object.
 
 Retrieves the top-level environment of the specified object,
 traversing up through nested environments.
+
+
+# resolve_path
+
+## SYNOPSIS
+
+    string resolve_path(string Current, string Next)
+
+### PARAMETERS
+
+    string Current - The current path.
+    string Next - The next path to resolve.
+
+### RETURNS
+
+    string - The resolved absolute path.
+
+## DESCRIPTION
+
+Resolves a given path relative to the current path, handling
+special cases such as user directories and relative paths.
 
 
