@@ -438,7 +438,7 @@ private nomask string generate_function_type_markdown(mapping funcs) {
             parts = dir_file(func["source_file"]) ;
             file = parts[1] ;
 
-            line = sprintf("    [%s](%s#%s)\n",
+            line = sprintf("* [%s](%s#%s)\n",
                 function_name,
                 chop(file, ".c", -1),
                 function_name
