@@ -60,7 +60,7 @@ jobs:
         ./fluffos/build/bin/driver game/adm/etc/config.github -fbuilddocs
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.8'
 
