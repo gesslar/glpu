@@ -29,6 +29,10 @@ jobs:
         repository: 'fluffos/fluffos'
         path: 'fluffos'
 
+    - name: Capture FluffOS directory path
+      id: capture-fluffos-dir
+      run: echo "FLUFFOS_DIR=$(pwd)/fluffos" >> $GITHUB_ENV
+
     - name: Install packages
       run: |
         sudo apt update
@@ -40,7 +44,7 @@ jobs:
         CC: "gcc"
         CXX: "g++"
       run: |
-        cp ${{ env.GAME_DIR }}/adm/etc/local_options.github fluffos/local_options
+        cp ${{ env.GAME_DIR }}/adm/etc/local_options.github ${{ env.FLUFFOS_DIR }}/local_options
         mkdir build
         cd build
         cmake -DCMAKE_BUILD_TYPE=Debug -DPACKAGE_UIDS=OFF -DPACKAGE_MUDLIB_STATS=OFF ..
