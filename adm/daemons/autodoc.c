@@ -43,9 +43,10 @@ private nosave nomask string jsdoc_function_regex,
 
 private nosave nomask mapping docs = ([]);
 private nosave int ci = false ;
+private nosave int total_dirs_scanned, total_files_scanned ;
 
 void setup() {
-    set_log_level(4) ;
+    set_log_level(1) ;
 
     jsdoc_function_regex = "^\\s\\*\\s+@(\\w+)\\s+(\\w+)\\s*$" ;
 
@@ -87,6 +88,8 @@ public nomask mixed autodoc_scan() {
     start_time = time_frac();
     dirs_to_check = mud_config("AUTODOC_SOURCE_DIRS");
     scanning = sizeof(dirs_to_check) ;
+    total_dirs_scanned = 0 ;
+    total_files_scanned = 0 ;
 
     docs = ([]);
     files_to_check = ({});
@@ -101,6 +104,7 @@ private nomask void check_dir() {
     string source_dir ;
 
     scanning -= 1 ;
+    total_dirs_scanned += 1 ;
 
     source_dir = dirs_to_check[0] ;
     source_dir = append(source_dir, "/");
@@ -109,24 +113,29 @@ private nomask void check_dir() {
     files_to_check += files ;
     scanning += sizeof(files) ;
 
-    call_out_walltime("check_file", file_delay);
-
     dirs_to_check = dirs_to_check[1..] ;
 
-    if(!sizeof(dirs_to_check))
-        return finish_scan() ;
-
-    call_out_walltime("check_dir", dir_delay);
+    if(sizeof(dirs_to_check))
+        // Keep checking dirs
+        call_out_walltime("check_dir", dir_delay);
+    else
+        // No more dirs, let's start checking files
+        call_out_walltime("check_file", file_delay);
 }
 
 private nomask void check_file() {
     string file ;
+    mixed err ;
 
     scanning -= 1 ;
     file = files_to_check[0] ;
     files_to_check = files_to_check[1..] ;
 
-    parse_file(file);
+    err = catch(parse_file(file)) ;
+    if(err)
+        log_file("system/autodoc", "Error parsing file: " + err + "\n") ;
+    else
+        total_files_scanned += 1 ;
 
     if(!sizeof(files_to_check))
         return finish_scan() ;
@@ -563,24 +572,33 @@ private nomask string dash_wrap(string str, int width) {
 
 private nomask void finish_scan() {
     float end_time ;
+    string time_log, file_log, dir_log ;
 
     if(check_running() == true)
         return ;
 
     end_time = time_frac() ;
-    _log(1, "Autodoc scan finished in %.2fs", end_time - start_time) ;
-    if(this_player() && devp(this_player()))
-        _ok(sprintf("Autodoc scan finished in %.2fs", end_time - start_time)) ;
 
-    // Save the documentation to a file
-    // write_markdown() ;
+    // Generate the wiki
     generate_wiki() ;
 
     end_time = time_frac() ;
 
-    _log(1, "Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
-    if(this_player() && devp(this_player()))
-        _ok("Autodoc has finished scanning and writing in %.2fs", end_time - start_time) ;
+    time_log = sprintf("Scan time: %.2fs", end_time - start_time) ;
+    dir_log = sprintf("Directories scanned: %s", add_commas(total_dirs_scanned)) ;
+    file_log = sprintf("Files scanned: %s", add_commas(total_files_scanned)) ;
+
+    _log(1, "Autodoc has completed.") ;
+    _log(1, time_log) ;
+    _log(1, dir_log) ;
+    _log(1, file_log) ;
+
+    if(this_player() && devp(this_player())) {
+        _ok("Autodoc has completed.") ;
+        _ok(time_log) ;
+        _ok(dir_log) ;
+        _ok(file_log) ;
+    }
 }
 
 public nomask int check_running() {
