@@ -360,7 +360,7 @@ private nomask string generate_function_markdown(mapping func) {
             return null ;
 
         // Now we want the synopsis, which is the function definition
-        out += "## Synopsis\n\n" ;
+        out += "### Synopsis\n\n" ;
         out += sprintf("```c\n%s\n```\n", func["function_def"]) ;
 
         // Next we need to parse the parameters
@@ -400,7 +400,7 @@ private nomask string generate_function_markdown(mapping func) {
         if(of("description", func)) {
             string *desc ;
 
-            out += "\n## Description\n\n" ;
+            out += "\n### Description\n\n" ;
 
             desc = func["description"][0] ;
             out += implode(desc, "\n") ;
@@ -417,7 +417,7 @@ private nomask string generate_function_markdown(mapping func) {
     return null ;
 }
 
-private nomask string generate_function_type_markdown(string type, string source_file, mapping funcs) {
+private nomask string generate_index_markdown(string type, string source_file, mapping funcs) {
     string out = "" ;
     string line ;
     mixed err ;
@@ -440,9 +440,8 @@ private nomask string generate_function_type_markdown(string type, string source
             parts = dir_file(func["source_file"]) ;
             file = parts[1] ;
 
-            line = sprintf("* [%s](%s/%s#%s)\n",
+            line = sprintf("* [%s](%s#%s)\n",
                 function_name,
-                type,
                 chop(file, ".c", -1),
                 function_name
             ) ;
@@ -463,16 +462,22 @@ private nomask string generate_function_type_markdown(string type, string source
 
 private nomask void generate_wiki() {
     string *function_types, function_type ;
-    string home_content = "", doc_content = "" ;
+    string index_content = "", doc_content = "" ;
     function generate_table ;
 
     writing = true ;
+
+    rm(doc_root + "index.md") ;
+    if(!cp("/README.md", doc_root + "index.md")) {
+        _log(1, "Failed to copy README.md to %s", doc_root) ;
+        return ;
+    }
 
     function_types = sort_array(keys(docs), 1) ;
 
     foreach(function_type in function_types) {
         string *function_names ;
-        string func_type_file ;
+        string index_file ;
         string current_source_file ;
         string dest_dir ;
         mapping funcs ;
@@ -480,7 +485,12 @@ private nomask void generate_wiki() {
 
         _log(1, "Working on function type: %s", function_type) ;
 
-        home_content += sprintf("## %s\n\n", function_type) ;
+        index_content =
+            "---\n"
+            "layout: default\n"
+            "title: " + function_type + "\n"
+            "---\n" ;
+        index_content += sprintf("# %s\n\n", function_type) ;
 
         funcs = docs[function_type] ;
 
@@ -495,33 +505,33 @@ private nomask void generate_wiki() {
         source_files = distinct_array(source_files) ;
         source_files = sort_array(source_files, 1) ;
 
-        func_type_file = append(doc_root, function_type + ".md") ;
-        if(file_exists(func_type_file))
-            rm(func_type_file) ;
+        index_file = append(doc_root, function_type + "/index.md") ;
+        if(file_exists(index_file))
+            rm(index_file) ;
         else
-            assure_file(func_type_file) ;
+            assure_file(index_file) ;
 
         foreach(source_file in source_files) {
             string *parts, source_file_name ;
             mapping current_funcs ;
             string *curr_function_names, curr_function_name ;
             string dest_file ;
-            string home_md ;
+            string index_md ;
 
             parts = dir_file(source_file) ;
             source_file_name = chop(parts[1], ".c", -1) ;
 
-            home_md = generate_function_type_markdown(function_type, source_file, funcs) ;
-            home_content += sprintf("### %s\n\n", source_file_name) ;
-            home_content += home_md + "\n" ;
-
-            write_file(func_type_file, home_content, 1) ;
+            index_md = generate_index_markdown(function_type, source_file, funcs) ;
+            index_content += sprintf("## %s\n\n", source_file_name) ;
+            index_content += index_md + "\n" ;
 
             dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
             _log(2, "Dest file = %s", dest_file) ;
 
             current_funcs = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
             curr_function_names = keys(current_funcs) ;
+
+            doc_content = "# " + source_file_name + ".c\n\n" ;
 
             foreach(curr_function_name in curr_function_names) {
                 mapping func ;
@@ -531,20 +541,26 @@ private nomask void generate_wiki() {
                 func_md = generate_function_markdown(func) ;
 
                 if(func_md) {
-                    doc_content += sprintf("# %s\n\n", curr_function_name) ;
+                    doc_content += sprintf("## %s\n\n", curr_function_name) ;
                     doc_content += func_md ;
                     doc_content += "\n" ;
                 }
             }
 
             assure_file(dest_file) ;
+            doc_content =
+            "---\n"
+            "layout: default\n"
+            "title: " + source_file_name + "\n"
+            "---\n" + doc_content ;
             write_file(dest_file, doc_content, 1) ;
             doc_content = "" ;
         }
 
         assure_file(append(doc_root, function_type+".md")) ;
-        // write_file(append(doc_root, ), home_content, 1) ;
-        home_content = "" ;
+        write_file(index_file, index_content, 1) ;
+        // write_file(append(doc_root, ), index_content, 1) ;
+        index_content = "" ;
     }
 
     writing = false ;
