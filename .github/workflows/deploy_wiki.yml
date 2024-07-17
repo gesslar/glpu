@@ -32,11 +32,11 @@ jobs:
         run: npm install
 
       - name: Build VitePress site
-        run: npm run docs:build
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         run: |
-          cd docs/.vitepress/dist
+          cd doc/wiki/docs/.vitepress/dist
           git init
           git add -A
           git commit -m 'deploy'
