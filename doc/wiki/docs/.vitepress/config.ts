@@ -17,6 +17,13 @@ export default defineConfig({
     sidebar: [
       {
         collapsed: false,
+        items: [
+          { text: "Home", link: "/" },
+          { text: "Contributing", link: "/contributing" },
+        ]
+      },
+      {
+        collapsed: false,
         text: "Systems",
         items: [{ text: "Daemons", link: "/systems/daemons" }],
       },
