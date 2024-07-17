@@ -37,20 +37,20 @@ mixed main(object caller, string arg) {
 
     if(!file) {
         if(!caller->query("cwf"))
-            return "Error [update]: You must provide an argument. Syntax: update [-rR] [<file>]\n" ;
+            return _error("You must provide an argument. Syntax: update [-rR] [<file>]") ;
         file = caller->query("cwf");
     }
 
     file = resolve_path(caller->query("cwd"), file);
     file = append(file, ".c") ;
     if(file == append(file_name(), ".c")) {
-        return "Error [update]: You cannot update the update command. Destruct it instead.\n";
+        return _error("You cannot update the update command. Destruct it instead.") ;
     }
 
     start = file ;
 
     if(file[0..<3] == VOID_OB) {
-        return "Error [update]: You cannot update the void object.\n";
+        return _error("You cannot update the void object.") ;
     }
 
     obj = find_object(file) ;
@@ -70,7 +70,7 @@ mixed main(object caller, string arg) {
     }
 
     if(!file_exists(file))
-        return "Error [update]: " + file  + " does not exist.\n";
+        return _error("%s does not exist.", file);
 
     caller->set("cwf", start);
 
@@ -86,10 +86,8 @@ mixed main(object caller, string arg) {
     error = catch(obj = load_object(file));
 
 
-    if(error){
-        write("Error [update]: Failed to load: "+file+"\nError: "+error+"\n");
-        return 1;
-    }
+    if(error)
+        return _error("Failed to load %s\n%s", file, error);
 
     return "Successful [update]: " +  file+" was updated.\n" ;
 }
@@ -105,17 +103,17 @@ void do_update(string file, string vfile) {
     }
 
     if(!file_exists(file))
-        write("Error [update]: " + file  + " does not exist.\n") ;
+        _error("%s does not exist.", file);
 
     error = catch(obj = load_object(file));
 
     if(error){
-        write("Error [update]: Failed to load: "+file+"\nError: "+error+"\n");
+        _error("Failed to load: %s\n%s", file, error);
         return ;
     }
 
     if(pointerp(users)) users->move(obj, 1);
-    write("Successful [update]: " + file + " was updated.\n") ;
+    _ok("%s was updated.", file) ;
 }
 
 // Function to collect immediate and deep inherits.
