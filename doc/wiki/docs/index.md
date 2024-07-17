@@ -66,7 +66,7 @@ Running this script does a number of things, and in order they are:
 7. Resets the `fluffos` directory to the original state.
 8. Updates `adm/dist/config.mud` with the absolute paths to `mudlib directory`
    and `log directory` as required.
-9 Prints pretry green success messages.
+9. Prints pretry green success messages.
 
 ## Configuration
 
