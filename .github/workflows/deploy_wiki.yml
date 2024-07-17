@@ -36,7 +36,7 @@ jobs:
       - name: Build VitePress site
         run: |
           cd doc/wiki
-          npm run build
+          npm run build docs
 
       - name: Configure Git
         run: |
