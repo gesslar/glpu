@@ -29,9 +29,10 @@ mixed main(object caller, string str) {
             tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
+
         } else {
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
             catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
         catch(ob->remove());
@@ -47,9 +48,9 @@ mixed main(object caller, string str) {
             tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
         } else {
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
             catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
         ob->remove();
@@ -65,12 +66,12 @@ mixed main(object caller, string str) {
             tmp = replace_string(tmp, "$N", caller->query_name());
 
             catch(tell_room(environment(caller), capitalize(tmp) + "\n", caller));
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
         } else {
-            write("Success [dest]: Destroyed object '" + get_short(ob) + "'.\n");
+            return _ok("Destroyed object '%s.", get_short(ob));
             catch(tell_room(environment(caller), capitalize(caller->query_name()) + " nullifies '" + get_short(ob) + ".\n", ({caller})));
         }
-        tell_object(ob, "Notice [dest]: You have been nullified and hence disconnected from the mud.\n");
+        tell_object(ob, "You have been nullified and hence disconnected from the mud.\n");
         if(ob) destruct(ob);
         return 1;
     }
@@ -78,14 +79,13 @@ mixed main(object caller, string str) {
     if(str[<2..<1] != ".c") str += ".c";
     str = resolve_path(caller->query("cwd"), str);
     if(ob = find_object(str)) {
-        write("Success [dest]: Destructing master object for '" + str + "'.\n");
         caller->set("cwf", str);
         ob->remove() ;
         if(ob) destruct(ob);
-        return 1;
+        return _ok("Destructing master object for '%s'.", str);
     }
 
-    return(notify_fail("Error [dest]: Object '" + str + "' not found.\n"));
+    return _error("Object '%s' not found.", str);
 }
 
 string help(object caller) {
