@@ -2,7 +2,7 @@
 #                   gLPU Mudlib Runtime Configuation File                    #
 ###############################################################################
 # NOTE: All paths specified here are relative to the mudlib directory except  #
-#       for mudlib directory, and binary directory.                           #
+#       for mudlib directory and the log directory.                           #
 # Lines beginning with a # or a newline are ignored.                          #
 ###############################################################################
 
@@ -10,16 +10,16 @@
 name : gLPU
 
 # port number to accept users on
-port number : 1337
+external_port_1: telnet 1336
+
+# Restrict IP binding, if omitted, bind to all addresses.
+#mud ip : 0.0.0.0
 
 # absolute pathname of mudlib
-mudlib directory : /path/to/mudlib
+mudlib directory : /home/gesslar/mud/lpu/lib
 
 # debug.log and author/domain stats are stored here
-# this path is relative to the operating system and you should
-# make it point your log directory if you would like your debug.log
-# file to be inside the lib
-log directory : /path/to/mudlib/log
+log directory : /home/gesslar/mud/lpu/lib/log
 
 # the directories which are searched by #include <...>
 # for multiple dirs, separate each path with a ':'
@@ -51,7 +51,7 @@ time to clean up : 120000
 time to swap : 10000
 
 # How many seconds until an object is reset again.
-time to reset : 1800
+time to reset : 600
 
 # Maximum number of bits in a bit field. They are stored in printable
 # strings, 6 bits per byte.
@@ -348,4 +348,4 @@ enable mxp : 0
 enable gmcp : 1
 enable zmp : 0
 enable mssp : 1
-enable msp : 1
+enable msp : 0

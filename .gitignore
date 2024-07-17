@@ -38,16 +38,6 @@ lpc-config.json
 # Alarm files
 adm/etc/alarms/*.txt
 
-# ReadTheDocs
-
-# Ignore everything in the build directory except _sources
-doc/wiki/build/*
-!doc/wiki/build/.gitignore
-!doc/wiki/build/_sources
-
-# Ignore any other build artifacts
-*.pyc
-__pycache__/
-
-# Node modules
-node_modules/
+# Drive stuff
+/adm/dist/bin/
+/include/driver/

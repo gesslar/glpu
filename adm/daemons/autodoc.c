@@ -463,12 +463,6 @@ private nomask void generate_wiki() {
 
     writing = true ;
 
-    rm(doc_root + "index.md") ;
-    if(!cp("/README.md", doc_root + "index.md")) {
-        _log(1, "Failed to copy README.md to %s", doc_root) ;
-        return ;
-    }
-
     function_types = sort_array(keys(docs), 1) ;
 
     foreach(function_type in function_types) {

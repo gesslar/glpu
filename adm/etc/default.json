@@ -13,7 +13,7 @@
     "FLOGIN_NEWS": "/adm/etc/login/first_login",
     "FIRST_USER": "/adm/etc/first_user",
     "ALLOW_SHUTDOWN" : [
-        "/adm/daemons/shutdown",
+        "/adm/daemons/shutdown_d",
         "/adm/daemons/autodoc"
     ],
     "LOOK_HIGHLIGHT" : "on",
