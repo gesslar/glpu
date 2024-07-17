@@ -68,9 +68,6 @@ log_path="${repo_root}/log"
 escaped_mudlib_path=$(echo $mudlib_path | sed 's/\//\\\//g')
 escaped_log_path=$(echo $log_path | sed 's/\//\\\//g')
 
-echo ${escaped_mudlib_path}
-echo ${escaped_log_path}
-
 # Update the config.mud file
 sed -i "s|^mudlib directory.*|mudlib directory : $escaped_mudlib_path|" $config_file
 sed -i "s|^log directory.*|log directory : $escaped_log_path|" $config_file
