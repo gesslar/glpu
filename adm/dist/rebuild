@@ -54,7 +54,7 @@ cp -vf bin/o2json ${repo_root}/adm/dist/bin/
 cp -vf bin/json2o ${repo_root}/adm/dist/bin/
 
 # Copy the driver headers to the target include directory
-cp -af bin/include/*.h ${repo_root}/include/driver/
+cp -avf bin/include/*.h ${repo_root}/include/driver/
 
 # Restore the original source back to the original state
 cd ..
