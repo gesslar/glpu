@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { SIDEBAR } from "./sidebar";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://vitepress.vuejs.org/config/app-configs
 export default defineConfig({
@@ -8,5 +9,17 @@ export default defineConfig({
   base: "/", // Base URL for your site
   themeConfig: {
     sidebar: SIDEBAR,
+  },
+  vite: {
+    plugins: [
+      viteStaticCopy({
+        targets: [
+          {
+            src: "CNAME",
+            dest: ".",
+          },
+        ],
+      }),
+    ],
   },
 });
