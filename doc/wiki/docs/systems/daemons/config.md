@@ -25,4 +25,4 @@ string autodoc_root = mud_config("AUTODOC_ROOT");
 
 ## Updating Configuration
 
-The [master](/admin_commmand/system#master) command is used to manually reload the configuration settings after you have made changes to `config.json` to rehash the configuration values without restarting the game.
+The `master` command is used to manually reload the configuration settings after you have made changes to `config.json` to rehash the configuration values without restarting the game.

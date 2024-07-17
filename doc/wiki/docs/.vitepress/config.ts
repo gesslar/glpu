@@ -5,6 +5,10 @@ export default defineConfig({
   title: "gLPU",
   description: "Documentation repository for the gLPU project",
   base: "/", // Base URL for your site
+  cleanUrls: true,
+  assetsDir: "assets",
+  head: [["link", { rel: "icon", href: "/glpu.png" }]],
+  ignoreDeadLinks: false,
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
@@ -14,9 +18,7 @@ export default defineConfig({
       {
         collapsed: false,
         text: "Systems",
-        items: [
-          { text: "Daemons", link: "/systems/daemons" },
-        ],
+        items: [{ text: "Daemons", link: "/systems/daemons" }],
       },
       {
         collapsed: false,
@@ -29,7 +31,7 @@ export default defineConfig({
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/gesslar/glpu" },
-      { icon: "discord", link: "https://discord.gg/wzUbBgs3AQ" }
+      { icon: "discord", link: "https://discord.gg/wzUbBgs3AQ" },
     ],
     externalLinkIcon: false,
   },
