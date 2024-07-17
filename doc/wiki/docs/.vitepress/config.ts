@@ -1,6 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { SIDEBAR } from "./sidebar";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://vitepress.vuejs.org/config/app-configs
 export default defineConfig({
@@ -8,6 +6,21 @@ export default defineConfig({
   description: "Documentation repository for the gLPU project",
   base: "/", // Base URL for your site
   themeConfig: {
-    sidebar: SIDEBAR,
+    nav: [
+      { text: "Home", link: "/" },
+      { text: "FluffOS", link: "https://fluffos.info" },
+    ],
+    sidebar: [
+      {
+        collapsed: false,
+        text: "Functions",
+        items: [
+          { text: "Simul Efuns", link: "/simul_efun/" },
+          { text: "Overridden Efuns", link: "/efun_override/" },
+        ],
+      },
+    ],
+    socialLinks: [{ icon: "github", link: "https://github.com/gesslar/glpu" }],
+    externalLinkIcon: false,
   },
 });

@@ -1,0 +1,3 @@
+[submodule "adm/dist/driver"]
+	path = adm/dist/fluffos
+	url = https://github.com/fluffos/fluffos.git
