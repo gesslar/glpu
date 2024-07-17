@@ -49,14 +49,14 @@ mixed main(object caller, string arg) {
 
     start = file ;
 
-    if(file[0..<3] == VOID_OB) {
+    if(file[0..<3] == VOID_ROOM) {
         return _error("You cannot update the void object.") ;
     }
 
     obj = find_object(file) ;
     if(obj) {
         users = filter_array(all_inventory(obj), (: interactive :));
-        users->move(load_object(VOID_OB), 1);
+        users->move(load_object(VOID_ROOM), 1);
     }
 
     if(objectp(obj)) {

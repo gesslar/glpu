@@ -15,6 +15,7 @@
 #include <config.h>
 #include <origin.h>
 #include <logs.h>
+#include <rooms.h>
 
 inherit STD_OBJECT;
 
@@ -642,6 +643,48 @@ void set_environ(mapping data) {
 
 int has_screenreader() {
     return query_environ("SCREEN_READER") || false ;
+}
+
+/**
+ * @description This function is called by the driver when the environment of
+ *              an object is destructed. It will attempt to move the object to
+ *              the void or hall if possible. If it cannot move the object, it
+ *              will attempt to save the object and then destruct it.
+ * @param {object} ob - The environment of the object that was destructed.
+ */
+void move_or_destruct(object ob) {
+    object env = environment() ;
+    object new_env ;
+
+    // If we didn't come from the driver, we don't need to do anything
+    if(origin() != ORIGIN_DRIVER)
+        return ;
+
+    // Were we in the VOID? If not, temporarily set the new destination
+    // to the VOID.
+    if(!ob && env != find_object(VOID_ROOM))
+        catch(ob = load_object(VOID_ROOM)) ;
+
+    // Were we in the starting room? If not, temporarily set the new
+    // destination to the starting room.
+    if(!ob && env != find_object(ROOM_START))
+        catch(ob = load_object(ROOM_START)) ;
+
+    // If we still don't have a destination, we need to clone a copy of a
+    // safe room that doesn't have anything in it, but will allow us to
+    // move the object to it. Which just happens to be the void. So, let's get
+    // a copy of the void.
+    if(!ob) {
+        /* This is bad.  Try to save them anyway. */
+        catch(ob = new(VOID_ROOM)) ;
+        if(!ob)
+            return ;
+
+        // We don't want this object persisting.
+        ob->set_no_clean(0) ;
+    }
+
+    move_object(ob) ;
 }
 
 int is_pc() { return 1 ; }
