@@ -7,12 +7,13 @@ of LPUniversity.
 
 gLPU runs on [FluffOS](https://github.com/fluffos/fluffos) and is a derivative
 of the original LPUniversity mudlib and features a number of improvements and
-systems. It is a work in progress and is not yet feature complete.
+systems. It is a work in progress and is not yet feature complete. And honestly,
+it isn't really intended to be.
 
 ## Installation
 
 You can
-* download download the latest release from the
+* download the latest release from the
   [releases page](https://github.com/gesslar/glpu/releases/latest), or
 * clone it from the [gLPU repository](https://github.com/gesslar/glpu).
 
@@ -95,7 +96,7 @@ run the script in one of two modes.
    `./run stop`. This is a third bullet point, but stopping isn't... a mode?
    I don't know. I'm not a doctor.
 
-You can also explore using other arguments with the `run`, but they won't work.
+You can also explore using other arguments with `run`, but they won't work.
 
 ## Logging in
 
@@ -108,10 +109,10 @@ do what you want.)
 
 ## Contributing
 
-If you would like to contribute to gLPU, please feel free to fork the repository
-and submit a pull request. But, keep in mind that gLPU is an opinionated fork
-of LPUniversity and as such, pull request are subject to review and may be
-rejected if they do not align with the goals of gLPU.
+If you would like to contribute to gLPU, please feel free to fork the
+repository and submit a pull request. But, keep in mind that gLPU is an
+opinionated fork of LPUniversity and as such, pull requests are subject to
+review and may be rejected if they do not align with the goals of gLPU.
 
 ## License
 
@@ -125,4 +126,4 @@ by @gesslar. I, being @gesslar, make that statement.
 
 Finally, if you love LPC and you want to talk about LPC, you are welcome to
 visit us and talk about LPC on our Discord at
-[https://discord.gg/wzUbBgs3AQ](https://discord.gg/wzUbBgs3AQ).
+[LPC Discord server](https://discord.gg/wzUbBgs3AQ).
