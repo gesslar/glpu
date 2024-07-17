@@ -153,6 +153,7 @@ title: simul_efun
 ## system
 
 * [_error](system#_error)
+* [_info](system#_info)
 * [_ok](system#_ok)
 * [_warn](system#_warn)
 * [admin_email](system#admin_email)
