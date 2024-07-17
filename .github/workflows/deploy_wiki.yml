@@ -29,10 +29,14 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd doc/wiki
+          npm install
 
       - name: Build VitePress site
-        run: npm run build
+        run: |
+          cd doc/wiki
+          npm run docs:build
 
       - name: Deploy to GitHub Pages
         run: |
