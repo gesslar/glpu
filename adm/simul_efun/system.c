@@ -248,3 +248,26 @@ int _warn(mixed str, mixed args...) {
 
     return 1 ;
 }
+
+/**
+ * @simul_efun _info
+ * @description Provides an informational message, optionally formatted with arguments.
+ * @param {string} str - The informational message.
+ * @param {mixed} [args] - Optional arguments to format the message.
+ * @returns {int} - Always returns 1, unless there is no previous object.
+ */
+int _info(mixed str, mixed args...) {
+    object tp ;
+    string mess ;
+
+    mess = _format_message("\e0228\e", str, args...) ;
+    if(nullp(mess))
+        return 0 ;
+
+    if(tp = this_player())
+        tell(tp, mess + "\n") ;
+    else
+        _debug(mess) ;
+
+    return 1 ;
+}

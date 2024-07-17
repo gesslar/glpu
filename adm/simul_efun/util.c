@@ -32,7 +32,7 @@ int of(mixed needle, mixed haystack) {
         case T_MAPPING:
             return !nullp(haystack[needle]) ;
         case T_STRING:
-            return strsrch(needle, haystack) > -1;
+            return strsrch(haystack, needle) > -1;
         default:
             return 0;
     }

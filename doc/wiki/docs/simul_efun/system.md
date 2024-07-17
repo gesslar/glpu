@@ -19,6 +19,23 @@ mixed mud_config(string str)
 
 Retrieves a specific configuration value from the MUD config.
 
+## _info
+
+### Synopsis
+
+```c
+int _info(mixed str, mixed args...)
+```
+
+### Parameters
+
+* `string str` - The informational message.
+* `mixed [args]` - Optional arguments to format the message.
+
+### Description
+
+Provides an informational message, optionally formatted with arguments.
+
 ## mud_name
 
 ### Synopsis
