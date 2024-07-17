@@ -1,4 +1,4 @@
-# Configuration Daemon (`config.c`)
+# Configuration Daemon
 
 The `CONFIG` daemon is vital for managing and loading the game's configuration
 settings, ensuring that your game runs with the right parameters.
@@ -6,8 +6,8 @@ settings, ensuring that your game runs with the right parameters.
 ## What is the Configuration Daemon?
 
 The Configuration Daemon, defined in `adm/daemons/config.c`, is responsible for reading and holding game configuration data. It loads settings from two JSON files:
-- **default.json**: This file contains default configuration values stored in the repository.
-- **config.json**: This file allows for custom configuration overrides and is not stored in the repository, ensuring that your custom settings are preserved across updates.
+- `adm/etc/default.json`: This file contains default configuration values stored in the repository.
+- `adm/etc/config.json`: This file allows for custom configuration overrides and is not stored in the repository, ensuring that your custom settings are preserved across updates.
 
 ## How it Works
 

@@ -13,6 +13,13 @@ export default defineConfig({
     sidebar: [
       {
         collapsed: false,
+        text: "Systems",
+        items: [
+          { text: "Daemons", link: "/systems/daemons" },
+        ],
+      },
+      {
+        collapsed: false,
         text: "Functions",
         items: [
           { text: "Simul Efuns", link: "/simul_efun/" },
