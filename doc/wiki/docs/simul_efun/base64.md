@@ -1,5 +1,4 @@
 ---
-layout: default
 title: base64
 ---
 # base64.c

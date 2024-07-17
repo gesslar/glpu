@@ -1,5 +1,4 @@
 ---
-layout: default
 title: simul_efun
 ---
 # simul_efun

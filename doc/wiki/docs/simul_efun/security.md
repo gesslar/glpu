@@ -1,5 +1,4 @@
 ---
-layout: default
 title: security
 ---
 # security.c

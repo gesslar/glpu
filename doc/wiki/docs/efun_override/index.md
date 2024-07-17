@@ -1,5 +1,4 @@
 ---
-layout: default
 title: efun_override
 ---
 # efun_override

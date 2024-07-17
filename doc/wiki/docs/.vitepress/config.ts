@@ -10,16 +10,4 @@ export default defineConfig({
   themeConfig: {
     sidebar: SIDEBAR,
   },
-  vite: {
-    plugins: [
-      viteStaticCopy({
-        targets: [
-          {
-            src: "CNAME",
-            dest: ".",
-          },
-        ],
-      }),
-    ],
-  },
 });

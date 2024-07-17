@@ -1,5 +1,4 @@
 ---
-layout: default
 title: file
 ---
 # file.c

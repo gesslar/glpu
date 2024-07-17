@@ -78,8 +78,6 @@ public nomask mixed autodoc_scan() {
     if(check_running() == true)
         return "Autodoc is already running." ;
 
-    _debug(repeat_string("\n", 20)) ;
-
     _log(1, "Starting autodoc scan") ;
     if(this_player() && devp(this_player()))
         _ok("Starting autodoc scan") ;
@@ -449,8 +447,6 @@ private nomask string generate_index_markdown(string type, string source_file, m
             out += sprintf(line) ;
         }
 
-        _debug("Generated function type markdown: %s", out) ;
-
         return out ;
     } ;
     if(err)
@@ -483,11 +479,8 @@ private nomask void generate_wiki() {
         mapping funcs ;
         string *source_files, source_file ;
 
-        _log(1, "Working on function type: %s", function_type) ;
-
         index_content =
             "---\n"
-            "layout: default\n"
             "title: " + function_type + "\n"
             "---\n" ;
         index_content += sprintf("# %s\n\n", function_type) ;
@@ -496,10 +489,7 @@ private nomask void generate_wiki() {
 
         function_names = sort_array(keys(funcs), 1) ;
 
-        _log(2, " Found %d functions of type %s", sizeof(function_names), function_type) ;
-
         dest_dir = append(doc_root, function_type + "/") ;
-        _log(1, " Generating wiki for %s in %s", function_type, dest_dir) ;
 
         source_files = map(values(funcs), (: $1["source_file"] :)) ;
         source_files = distinct_array(source_files) ;
@@ -526,7 +516,6 @@ private nomask void generate_wiki() {
             index_content += index_md + "\n" ;
 
             dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
-            _log(2, "Dest file = %s", dest_file) ;
 
             current_funcs = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
             curr_function_names = keys(current_funcs) ;
@@ -550,7 +539,6 @@ private nomask void generate_wiki() {
             assure_file(dest_file) ;
             doc_content =
             "---\n"
-            "layout: default\n"
             "title: " + source_file_name + "\n"
             "---\n" + doc_content ;
             write_file(dest_file, doc_content, 1) ;

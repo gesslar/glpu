@@ -1,5 +1,4 @@
 ---
-layout: default
 title: time
 ---
 # time.c

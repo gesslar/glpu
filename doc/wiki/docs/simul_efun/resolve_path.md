@@ -1,5 +1,4 @@
 ---
-layout: default
 title: resolve_path
 ---
 # resolve_path.c
