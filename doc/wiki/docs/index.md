@@ -125,5 +125,5 @@ by @gesslar. I, being @gesslar, make that statement.
 ## Come talk to us
 
 Finally, if you love LPC and you want to talk about LPC, you are welcome to
-visit us and talk about LPC on our Discord at
+visit us and talk about LPC on our Discord at the
 [LPC Discord server](https://discord.gg/wzUbBgs3AQ).
