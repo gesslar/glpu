@@ -38,23 +38,23 @@ cp -v ../local_options src/local_options
 rm -rf build
 mkdir build
 cd build
-# cmake .. \
-#     -DPACKAGE_MUDLIB_STATS=OFF \
-#     -DPACKAGE_DB_MYSQL=0 \
-#     -DPACKAGE_DB=1 \
-#     -DPACKAGE_DB_SQLITE=3 \
-#     -DPACKAGE_UIDS=OFF
+ cmake .. \
+     -DPACKAGE_MUDLIB_STATS=OFF \
+     -DPACKAGE_DB_MYSQL=0 \
+     -DPACKAGE_DB=1 \
+     -DPACKAGE_DB_SQLITE=3 \
+     -DPACKAGE_UIDS=OFF
 
-# make -j "$(nproc)" install
+make -j "$(nproc)" install
 
 # Copy the compiled binaries to the target directory
-# cp -vf bin/driver ${repo_root}/adm/dist/bin/
-# cp -vf bin/lpcc ${repo_root}/adm/dist/bin/
-# cp -vf bin/o2json ${repo_root}/adm/dist/bin/
-# cp -vf bin/json2o ${repo_root}/adm/dist/bin/
+cp -vf bin/driver ${repo_root}/adm/dist/bin/
+cp -vf bin/lpcc ${repo_root}/adm/dist/bin/
+cp -vf bin/o2json ${repo_root}/adm/dist/bin/
+cp -vf bin/json2o ${repo_root}/adm/dist/bin/
 
 # Copy the driver headers to the target include directory
-# cp -af bin/include/*.h ${repo_root}/include/driver/
+cp -af bin/include/*.h ${repo_root}/include/driver/
 
 # Restore the original source back to the original state
 cd ..
