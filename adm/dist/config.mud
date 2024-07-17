@@ -16,10 +16,10 @@ external_port_1: telnet 1336
 #mud ip : 0.0.0.0
 
 # absolute pathname of mudlib
-mudlib directory : /home/gesslar/mud/lpu/lib
+mudlib directory : /path/to/mudlib/lib
 
 # debug.log and author/domain stats are stored here
-log directory : /home/gesslar/mud/lpu/lib/log
+log directory : /path/to/mudlib/log
 
 # the directories which are searched by #include <...>
 # for multiple dirs, separate each path with a ':'
