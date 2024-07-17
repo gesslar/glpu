@@ -3,7 +3,7 @@ name: Deploy VitePress to GitHub Pages
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
+      - main
   workflow_dispatch:
 
 permissions:
@@ -16,15 +16,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '21'
 
@@ -38,19 +38,19 @@ jobs:
           cd doc/wiki
           npm run build
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "karahd@gmail.com"
-          git config --global user.name "gLPU Automation"
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: doc/wiki/docs/.vitepress/dist
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy to GitHub Pages
-        run: |
-          cd doc/wiki/docs/.vitepress/dist
-          git init
-          git add -A
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m 'deploy'
-          git push -f https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
+        uses: actions/deploy-pages@v2
