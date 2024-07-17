@@ -114,7 +114,7 @@ void http_handle_shutdown(mapping response) {
         return ;
     }
     map_delete(api_calls, request_id) ;
-_debug("Response[\"status\"]: %O", response["response"]["status"]) ;
+
     if(response["response"]["status"]["code"] != 201) {
         string file ;
         _log(2, "Request error: %d %s\nO",
