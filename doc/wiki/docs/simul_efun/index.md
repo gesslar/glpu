@@ -67,6 +67,7 @@ title: simul_efun
 
 * [assemble_call_back](function#assemble_call_back)
 * [call_back](function#call_back)
+* [call_if](function#call_if)
 * [call_trace](function#call_trace)
 * [valid_function](function#valid_function)
 
