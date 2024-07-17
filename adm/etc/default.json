@@ -33,7 +33,8 @@
     "USE_MASS" : true,
     "USE_BULK" : true,
     "AUTODOC_SOURCE_DIRS" : [
-        "/adm/simul_efun/"
+        "/adm/simul_efun/",
+        "/adm/daemons/"
     ],
     "AUTODOC_ROOT" : "/doc/autodoc/",
     "CURRENCY" : [

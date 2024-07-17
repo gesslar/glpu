@@ -412,9 +412,9 @@ private int next_minute_start() {
     return next_minute_time;
 }
 
-void event_boot(object prev) {
+void execute_boot_alarms(object prev) {
     class Alarm *boot_alarms, boot_alarm ;
-    if(prev != master())
+    if(prev != find_object(BOOT_D))
         return ;
 
     boot_alarms = filter(alarms, (: $1.type == "B" :)) ;
