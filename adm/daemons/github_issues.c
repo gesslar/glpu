@@ -22,8 +22,6 @@ nomask void process_backlog() ;
 private nomask void process_next(string *files) ;
 private nomask void execute_callback(mapping request, mapping response) ;
 
-private nomask nosave mapping CONFIG = mud_config("GITHUB_REPORTER") ;
-
 private nomask nosave mapping api_calls = ([ ]) ;
 
 void setup() {
@@ -49,12 +47,13 @@ void setup() {
 varargs mixed create_issue(string type, string title, string body, mixed *callback) {
     string url ;
     mapping request ;
+    mapping config = mud_config("GITHUB_REPORTER") ;
 
     if(!stringp(type) || !strlen(type))
         return "Type must be a valid string" ;
 
-    if(member_array(type, CONFIG["types"]) == -1)
-        return "Invalid type. Available types: " + implode(CONFIG["types"], ", ") ;
+    if(member_array(type, config["types"]) == -1)
+        return "Invalid type. Available types: " + implode(config["types"], ", ") ;
 
     if(!stringp(title))
         return "Title must be a string" ;
@@ -62,17 +61,17 @@ varargs mixed create_issue(string type, string title, string body, mixed *callba
     if(!stringp(body))
         return "Body must be a string" ;
 
-    if(!CONFIG["owner"] || !CONFIG["repo"] || !CONFIG["token"])
+    if(!config["owner"] || !config["repo"] || !config["token"])
         return "GitHub Issues API not setup in adm/etc/config.json" ;
 
     url = sprintf("https://api.github.com/repos/%s/%s/issues",
-        CONFIG["owner"], CONFIG["repo"]) ;
+        config["owner"], config["repo"]) ;
 
     request = http_request(
         url,
         "POST",
         ([
-            "Authorization": sprintf("token %s", CONFIG["token"]),
+            "Authorization": sprintf("token %s", config["token"]),
             "Accept": "application/vnd.github.v3+json",
             "Content-Type": "application/json"
         ]),
@@ -115,7 +114,7 @@ void http_handle_shutdown(mapping response) {
         return ;
     }
     map_delete(api_calls, request_id) ;
-
+_debug("Response[\"status\"]: %O", response["response"]["status"]) ;
     if(response["response"]["status"]["code"] != 201) {
         string file ;
         _log(2, "Request error: %d %s\nO",
@@ -124,7 +123,7 @@ void http_handle_shutdown(mapping response) {
             body
         ) ;
         file = time_ns() + ".txt" ;
-        write_file("/data/github/issues/pending/" + file, save_variable(request)) ;
+        write_file("/data/github/issues/pending/" + file, json_encode(request)) ;
         _log(2, "Request saved to /data/github/pending/%s", file) ;
         return ;
     }
