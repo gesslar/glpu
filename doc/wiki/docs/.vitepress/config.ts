@@ -20,7 +20,10 @@ export default defineConfig({
         ],
       },
     ],
-    socialLinks: [{ icon: "github", link: "https://github.com/gesslar/glpu" }],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/gesslar/glpu" },
+      { icon: "discord", link: "https://discord.gg/wzUbBgs3AQ" }
+    ],
     externalLinkIcon: false,
   },
 });

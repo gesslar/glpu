@@ -40,4 +40,5 @@ adm/etc/alarms/*.txt
 
 # Drive stuff
 /adm/dist/bin/
+/admin/dist/run.log
 /include/driver/

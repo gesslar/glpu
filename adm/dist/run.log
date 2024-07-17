@@ -194,3 +194,22 @@ Preloading : /adm/daemons/alarm... Done (0.00s)
 Accepting telnet connections on 0.0.0.0:1336.
 Initializations complete.
 
+Stack trace (most recent call last):
+#10   Object "[0xffffffffffffffff]", at 0xffffffffffffffff, in 
+#9    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d0b61c4, in _start
+#8    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7f60525c7e3f, in __libc_start_main
+#7    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7f60525c7d8f, in 
+#6    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d0b488c, in 
+#5    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d21d8ce, in 
+#4    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d20c86c, in 
+#3    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d1eb0b7, in 
+#2    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7f60526c3c37, in epoll_pwait2
+#1    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7f60525e051f, in 
+#0    Object "/home/gesslar/mud/lpu/lib/adm/dist/bin/driver", at 0x56065d0c1306, in 
+******** FATAL ERROR: SIGTERM: Process terminated
+FluffOS driver attempting to exit gracefully.
+crash() in master called successfully.  Aborting.
+./run: line 11: 1390123 Aborted                 $driver $config
+Driver finished running with exit status: 134
+Exit status: 134
+Driver exited with status 134. Stopping.
