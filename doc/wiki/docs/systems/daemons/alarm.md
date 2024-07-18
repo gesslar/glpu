@@ -1,4 +1,4 @@
-# Alarm Daemon (`alarm.c`)
+# Alarm Daemon (ALARM_D)
 
 The `ALARM` daemon is essential for scheduling and executing events at
 specified times. It reads alarm configurations from text files and manages the

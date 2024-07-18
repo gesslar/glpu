@@ -1,4 +1,4 @@
-# Configuration Daemon
+# Configuration Daemon (CONFIG_D)
 
 The `CONFIG` daemon is vital for managing and loading the game's configuration
 settings, ensuring that your game runs with the right parameters.
