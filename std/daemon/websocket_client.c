@@ -234,7 +234,7 @@ protected nomask void websocket_ready(int fd) {
     _log(2, "Sec-WebSocket-Key Sent to %s: %s", sec_websocket_key, server["request"]["host"]);
 
     out = sprintf(
-        "GET / HTTP/1.1\r\n"
+        "GET "+server["request"]["path"]+" HTTP/1.1\r\n"
         "Host: "+server["request"]["host"]+"\r\n"
         "Upgrade: websocket\r\n"
         "Connection: Upgrade\r\n"
