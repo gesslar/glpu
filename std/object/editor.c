@@ -43,14 +43,14 @@ void edit(object tp, string source_file, mixed *callback) {
         text += read_file(source_file);
     }
 
-    lines = map(explode(text, "\n"), (: "] " + $1 :)) ;
+    lines = map(explode(text, "\n"), (: "║ " + $1 :)) ;
 
     if(sizeof(text))
         text = append(text, "\n");
 
     temp = temp_file(tp) ;
 
-    tell(tp, text + "] ") ;
+    tell(tp, text + "║ ") ;
 
     input_to("parse_input", 0, tp, text, temp, callback) ;
 }
@@ -72,7 +72,7 @@ void parse_input(string input, object tp, string text, string file, mixed *callb
         return ;
     }
 
-    tell(tp, "] ") ;
+    tell(tp, "║ ") ;
 
     text += input + "\n" ;
     input_to("parse_input", 0, tp, text, file, callback) ;
