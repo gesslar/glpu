@@ -1,10 +1,12 @@
+# GitHub Issues - (GH_ISSUES_D)
+
 To integrate gLPU with GitHub issues, you need to setup a Personal Access Token
 (PAT) in your GitHub account. This token is used to authenticate the your game
 with GitHub.
 
-# Create a Personal Access Token
+## Create a Personal Access Token
 
-1. Go to your GitHub account settings (https://github.com/settings/tokens).
+1. Go to your [GitHub account token settings](https://github.com/settings/tokens).
 2. Click on *Generate new token*.
 3. You will need to use a fine-grained token with access to either All
    repositories, or select repositories (like your game repo).
@@ -12,23 +14,39 @@ with GitHub.
 5. Click on *Generate token*. You will see a token like
    `ghp_pat_1234567890abcdefghij1234567890abcdefghij`. Record this token.
 
-# Setting up the token in your game
+## Setting up the token in your game
 
-1. You can safely store your token in in `/adm/etc/config.json`. You should
-   define the following properties:
+1. You can safely store your token in in `adm/etc/config.json`. You should
+   define the following objects in the `config.json` file:
 
-    * `GITHUB_REPORTER_OWNER`: The owner of the repository
-    * `GITHUB_REPORTER_REPO`: The repository name
-    * `GITHUB_REPORTER_PAT`: The Personal Access Token
-    * `GITHUB_REPORTER_TYPES`: An array of valid issue labels
+```json
+    "GITHUB_REPORTER" : {
+        "token": "github_pat_XXXXX",
+        "owner": "gesslar",
+        "repo": "glpu",
+        "types": [
+            "bug",
+            "documentation",
+            "enhancement",
+            "todo"
+        ]
+    }
+```
+
+* `token`: The Personal Access Token you generated.
+* `owner`: The owner of the repository. This is the username of the owner of
+  the repository.
+* `repo`: The repository name.
+* `types`: The types of issues you want to report. This is an array of strings
+  that correspond to the labels you want to use in your repository.
 
 2. Once you've updated the `config.json`, execute the `master` command to
    update the configuration daemon.
 
-# Using the GitHub reporter
+## Using the GitHub reporter
 
-The GitHub daemon to report issues is `/adm/daemons/github_issues.c`. This
-daemon will report issues to your GitHub repository.
+The GitHub daemon to report issues is `GH_ISSUES_D`. This daemon will report
+issues to your GitHub repository.
 
 To use the daemon, you need to call the `create_issue` method with the
 following arguments:
@@ -67,8 +85,8 @@ method of the daemon, however, you can also call it manually by calling the
   generate a new token when the current one expires. Do make note of when
   the token expires and set a reminder to generate a new token before that
   time.
-* The `github_issues` daemon will report issues as the owner of the PAT.
-* The `github_issues` daemon will not report issues that are not in the
+* The `GH_ISSUES_D` daemon will report issues as the owner of the PAT.
+* The `GH_ISSUES_D` daemon will not report issues that are not in the
   `GITHUB_REPORTER_TYPES` array.
 * Backlog processing will not execute callbacks, as that information cannot be
   stored in the backlog.
