@@ -77,7 +77,7 @@ int remove() ;
     contents = all_inventory() ;
     filter(contents, (: $1->remove() :)) ;
     contents -= ({ 0 }) ;
-    contents->move(VOID_OB) ;
+    contents->move(VOID_ROOM) ;
 
     if(function_exists("remove", this_object()))
         remove() ;
