@@ -1,5 +1,7 @@
 #include "/adm/obj/simul_efun.h"
+
 #include <daemons.h>
+#include <type.h>
 
 //overrides.c
 
@@ -219,4 +221,49 @@ object this_body() {
  */
 object this_user() {
     return this_player()->query_user();
+}
+
+private nosave string _empty_buffer = "BUFFER ( 0 )" ;
+
+private nomask mixed _fix_buffer(mixed args...) {
+    int sz ;
+
+    if(!sz = sizeof(args))
+        return args ;
+
+    // Recursively fix buffer values if they are empty
+    while(sz--) {
+        switch(typeof(args[sz])) {
+            case T_BUFFER:
+                if(!sizeof(args[sz]))
+                    args[sz] = _empty_buffer ;
+                break ;
+            case T_ARRAY:
+                args[sz] = map(args[sz], (: _fix_buffer($1) :)) ;
+                break ;
+            case T_MAPPING: {
+                foreach(mixed key, mixed val in args[sz]) {
+                    if(bufferp(key) && !sizeof(key))
+                        error("Mapping key is an empty buffer") ;
+                    args[sz][key] = _fix_buffer(val) ;
+                }
+            }
+            default:
+                break ;
+        }
+    }
+
+    return args ;
+}
+
+string sprintf(string fmt, mixed args...) {
+    args = _fix_buffer(args...) ;
+
+    return efun::sprintf(fmt, args...);
+}
+
+void printf(string fmt, mixed args...) {
+    args = _fix_buffer(args...) ;
+
+    efun::printf(fmt, args...);
 }
