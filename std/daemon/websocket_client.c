@@ -354,6 +354,9 @@ protected nomask void websocket_read(int fd, buffer incoming) {
 
     _log(3, "===========  STARTING WS TRANSACTION %d  ===========", server["transactions"]);
 
+    _log(4, "Typeof incoming: %s", typeof(incoming)) ;
+    _log(4, "Typeof buffer: %s", typeof(server["buffer"])) ;
+
     if(server["buffer"]) {
         buf = server["buffer"] + incoming;
         map_delete(server, "buffer");
@@ -375,6 +378,7 @@ protected nomask void websocket_read(int fd, buffer incoming) {
         status = parse_response_status(buf, 1) ;
         if(!status) {
             server["buffer"] = buf;
+            _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
             return;
         }
 
@@ -395,6 +399,7 @@ protected nomask void websocket_read(int fd, buffer incoming) {
 
         if(!headers) {
             server["buffer"] = buf;
+            _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
             return;
         }
 
@@ -431,6 +436,7 @@ protected nomask void websocket_read(int fd, buffer incoming) {
 
         // Save any remaining buffer data for next processing
         server["buffer"] = buf;
+        _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
 
         // Continue processing if there's still data left
         if(sizeof(buf))
@@ -705,6 +711,7 @@ private nomask void process_websocket_message(mapping frame_info) {
 
     // Save any remaining buffer data for next processing
     server["buffer"] = frame_info["buffer"];
+    _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
 }
 
 /**
