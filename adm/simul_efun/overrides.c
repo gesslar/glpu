@@ -223,7 +223,7 @@ object this_user() {
     return this_player()->query_user();
 }
 
-private nosave string _empty_buffer = "BUFFER ( 0 )" ;
+private nosave string _empty_buffer = null ;
 
 private nomask mixed _fix_buffer(mixed args...) {
     int sz ;
@@ -245,7 +245,8 @@ private nomask mixed _fix_buffer(mixed args...) {
                 foreach(mixed key, mixed val in args[sz]) {
                     if(bufferp(key) && !sizeof(key))
                         error("Mapping key is an empty buffer") ;
-                    args[sz][key] = _fix_buffer(val) ;
+                    if(bufferp(val))
+                        args[sz][key] = _fix_buffer(val) ;
                 }
             }
             default:
