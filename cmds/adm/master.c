@@ -41,7 +41,12 @@ mixed main(object caller, string arguments) {
      }
 
      if(sizeof(err))
-          return _error("Error when reloading system objects:\n\n%s\nRefer to \ebl1\e\eul1\e%scatch\eres\e", err, log_dir()) ;
+          return _error("Error when reloading system objects:\n\n"
+               "%s\n"
+               "Refer to \ebl1\e\eul1\e%scatch\eres\e",
+               err,
+               log_dir()
+          ) ;
      else
           return _ok("System objects updated successfully.") ;
 }
