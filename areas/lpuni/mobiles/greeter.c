@@ -79,7 +79,7 @@ void event_message(object prev, string msg, int msg_class, object tp) {
 
     if(sscanf(msg, "%s has gone link-dead.", target)) {
         cmd_queue += ({ "emote sweeps " + target + " away." });
-        find_player(lower_case(target))->move(VOID_OB);
+        find_player(lower_case(target))->move(VOID_ROOM);
     }
 
     if(sscanf(msg, "%s pats you on the head.", target))

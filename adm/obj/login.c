@@ -14,6 +14,7 @@
 #include <logs.h>
 #include <daemons.h>
 #include <origin.h>
+#include <rooms.h>
 
 inherit STD_OBJECT ;
 
@@ -445,12 +446,12 @@ void enter_world(string str) {
         else if(body->query_env("start_location")) body->move_living(body->query_env("start_location"), 0, "SNEAK");
 
         else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move_living(user_path(query_privs(user)) + "workroom.c", 0, "SNEAK");
-        else body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK") ;
+        else body->move_living(ROOM_START, 0, "SNEAK") ;
     }
 
-    else body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK") ;
+    else body->move_living(ROOM_START, 0, "SNEAK") ;
 
-    if(!environment(body)) body->move_living("/areas/lpuni/entrance.c", 0, "SNEAK");
+    if(!environment(body)) body->move_living(ROOM_START, 0, "SNEAK");
 
     if(!environment(body)) {
         tell(this_object(),"Error [login]: Unable to find a suitable location for your body.\n");

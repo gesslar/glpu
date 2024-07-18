@@ -59,6 +59,8 @@ int valid_function(mixed f) ;
 mixed *assemble_call_back(mixed arg...) ;
 mixed call_back(mixed *cb, mixed arg...) ;
 varargs string call_trace(int colour) ;
+mixed call_if(mixed ob, string func, mixed arg) ;
+
 
 // File: grammar
 string int_string (int num) ;
