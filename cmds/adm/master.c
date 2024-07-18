@@ -1,36 +1,52 @@
-//master.c
-
-//Tacitus @ LPUniversity
-//07-OCT-05
-//Admin command
-
-#include <config.h>
+/**
+ * @file /cmds/adm/master.c
+ * @description Command to reload core system files.
+ *
+ * @created 2024/07/17 - Gesslar
+ * @last_modified 2024/07/17 - Gesslar
+ *
+ * @history
+ * 2024/07/17 - Gesslar - Created
+ */
 
 inherit STD_CMD ;
 
-mixed main(object caller, string arguments) {
-     string err = "";
+private nosave nomask function *actions ;
 
-     if(!adminp(previous_object())) return notify_fail("Error [master]: Access denied.\n");
-
-     err += catch(destruct(master()));
-     err += catch(destruct(find_object("/adm/obj/master/valid")));
-     err += catch(load_object("/adm/obj/master/valid"));
-     err += catch(load_object("/adm/obj/master"));
-     err += catch(destruct(find_object(SIMUL_OB)));
-     err += catch(load_object(SIMUL_OB));
-     err += catch(CONFIG_D->rehash_config()) ;
-     if(err && err != "0000000") {
-          write("Error [system_update]: Error when reloading system objects: " + err + "\n");
-          return 1;
-     } else {
-          write("Success [system_update]: System objects updated successfully\n");
-          return 1;
-     }
-
+void setup() {
+     actions = ({
+          (: destruct(master()) :),
+          (: destruct(find_object("/adm/obj/master/valid")) :),
+          (: load_object("/adm/obj/master/valid") :),
+          (: load_object("/adm/obj/master") :),
+          (: destruct(find_object(SIMUL_OB)) :),
+          (: load_object(SIMUL_OB) :),
+          (: CONFIG_D->rehash_config() :),
+     }) ;
 }
 
-string help(object caller) {
+mixed main(object caller, string arguments) {
+     function action  ;
+     string err = "" ;
+
+     if(!adminp(previous_object()))
+          return _error("Access denied.\n");
+
+     foreach(action in actions) {
+          mixed result ;
+
+          result = catch( (*action)() ) ;
+          if(result)
+               err += result ;
+     }
+
+     if(sizeof(err))
+          return _error("Error when reloading system objects:\n\n%s\nRefer to \ebl1\e\eul1\e%scatch\eres\e", err, log_dir()) ;
+     else
+          return _ok("System objects updated successfully.") ;
+}
+
+string query_help(object caller) {
      return (
 " SYNTAX: master\n\n"
 "This command reloads core system files. No argument is taken.\n");
