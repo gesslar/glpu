@@ -16,13 +16,16 @@
 #include <origin.h>
 #include <logs.h>
 #include <rooms.h>
+#include <classes.h>
 
 inherit STD_OBJECT;
 
 inherit __DIR__ "alias" ;
 inherit __DIR__ "wealth" ;
 
+inherit CLASS_GMCP ;
 inherit M_GMCP ;
+inherit M_LOG ;
 
 /* Global Variables */
 string *path;
@@ -73,8 +76,9 @@ void remove_module(string module);
 object get_module(string module);
 
 private nosave mapping modules = ([]);
-private nosave mapping environ_data = ([]) ;
 private nosave int finished_setup = 0 ;
+private nosave mapping gmcp_data = ([ ]);
+private nosave mapping environ_data = ([]) ;
 
 /* Misc functions */
 
@@ -86,6 +90,7 @@ void init_capacity() ;
 void create() {
     if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/std/"});
+    set_log_level(0) ;
 }
 
 private nosave string *body_slots = ({
@@ -117,6 +122,8 @@ void setup_body() {
     if(!query_env("prompt")) set_env("prompt", ">");
     init_capacity() ;
     init_wealth() ;
+
+    set_log_prefix(sprintf("(%O)", this_object())) ;
 }
 
 void enter_world() {
@@ -606,45 +613,6 @@ object get_module(string module) {
     return modules[module] ;
 }
 
-mixed query_environ(string key) {
-    return environ_data[key] ;
-}
-
-void clear_environ() {
-    environ_data = ([ ]) ;
-}
-
-mapping query_all_environ() {
-    return copy(environ_data) ;
-}
-
-void set_environ_option(string key, mixed value) {
-    environ_data[key] = from_string(value) ;
-}
-
-void receive_environ(string var, mixed value) {
-    set_environ_option(var, value) ;
-}
-
-void set_environ(mapping data) {
-    if(base_name(previous_object()) != LOGIN_OB)
-        return;
-
-    if(!mapp(data))
-        return ;
-
-    foreach(string key, mixed value in data) {
-        if(stringp(value))
-            set_environ_option(key, value) ;
-        else
-            environ_data[key] = value ;
-    }
-}
-
-int has_screenreader() {
-    return query_environ("SCREEN_READER") || false ;
-}
-
 /**
  * @description This function is called by the driver when the environment of
  *              an object is destructed. It will attempt to move the object to
@@ -685,6 +653,106 @@ void move_or_destruct(object ob) {
     }
 
     move_object(ob) ;
+}
+
+void set_gmcp_client(mapping data) {
+    gmcp_data["client"] = data;
+}
+
+mapping query_gmcp_client() {
+    return copy(gmcp_data["client"]);
+}
+
+void set_gmcp_supports(mapping data) {
+    gmcp_data["supports"] = data;
+}
+
+mapping query_gmcp_supports() {
+    return copy(gmcp_data["supports"]);
+}
+
+// Function to determine if a specific package (and optionally module/
+// submodule) is supported
+int query_gmcp_supported(string fullname) {
+    string *parts, package, module, submodule;
+    mapping supports = query_gmcp_supports();
+    class ClassGMCP gmcp ;
+
+    gmcp = GMCP_D->convert_message(fullname) ;
+
+    // Check if the package is supported
+    if (!supports[package]) return 0; // Package not found
+
+    // If a module is specified, check for its support
+    if (module && supports[package]["modules"]) {
+        if (!supports[package]["modules"][module]) return 0; // Module not found
+
+        // If a submodule is specified, check for its support
+        if (submodule && supports[package]["modules"][module]["submodules"]) {
+            if (!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
+        } else if (submodule) {
+            // Submodule specified but no submodules are supported under the module
+            return 0;
+        }
+    } else if (module) {
+        // Module specified but no modules are supported under the package
+        return 0;
+    }
+
+    // If we've reached this point, the specified package (and optionally module/submodule) is supported
+    return 1;
+}
+
+mixed query_environ(string key) {
+    return environ_data[key] ;
+}
+
+void clear_environ() {
+    environ_data = ([ ]) ;
+}
+
+mapping query_all_environ() {
+    return copy(environ_data) ;
+}
+
+void set_environ_option(string key, mixed value) {
+    environ_data[key] = from_string(value) ;
+
+    _log(1, "Setting environ option: %s = %O", key, value) ;
+}
+
+void receive_environ(string var, mixed value) {
+    set_environ_option(var, value) ;
+}
+
+void set_environ(mapping data) {
+    if(base_name(previous_object()) != LOGIN_OB)
+        return;
+
+    if(!mapp(data))
+        return ;
+
+    foreach(string key, mixed value in data) {
+        if(stringp(value))
+            set_environ_option(key, value) ;
+        else
+            environ_data[key] = value ;
+    }
+}
+
+int has_screenreader() {
+    return query_environ("SCREEN_READER") || false ;
+}
+
+int query_log_level() {
+    if(!query_env("log_level")) return 0 ;
+
+    return to_int(query_env("log_level")) ;
+}
+
+int supports_unicode() {
+    if(has_screenreader()) return 0 ;
+    return to_int(query_env("unicode")) ;
 }
 
 int is_pc() { return 1 ; }

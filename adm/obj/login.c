@@ -20,6 +20,7 @@ inherit STD_OBJECT ;
 
 inherit M_MESSAGING ;
 inherit M_GMCP ;
+inherit M_LOG ;
 
 private nosave mapping login_gmcp_data = ([
     "client" : null,
@@ -55,6 +56,8 @@ string email;
 int is_connected = 0, call_out_id;
 
 void create() {
+    set_log_level(0) ;
+
     if(clonep()) call_out_id = call_out("auto_destruct", 60);
 }
 
@@ -430,11 +433,12 @@ void enter_world(string str) {
         body = create_body(query_privs(user));
 
     exec(body, this_object());
+
     body->setup_body();
     body->set_user(user);
     user->set_body(body);
-    user->set_gmcp_client(login_gmcp_data["client"]);
-    user->set_gmcp_supports(login_gmcp_data["supports"]);
+    body->set_gmcp_client(login_gmcp_data["client"]);
+    body->set_gmcp_supports(login_gmcp_data["supports"]);
     body->clear_environ() ;
     body->set_environ(environ_data) ;
     if(body->gmcp_enabled()) {
