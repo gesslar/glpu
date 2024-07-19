@@ -59,7 +59,7 @@ int valid_function(mixed f) ;
 mixed *assemble_call_back(mixed arg...) ;
 mixed call_back(mixed *cb, mixed arg...) ;
 varargs string call_trace(int colour) ;
-mixed call_if(mixed ob, string func, mixed arg) ; ;
+mixed call_if(mixed ob, string func, mixed arg) ;
 
 // File: grammar
 string int_string (int num) ;
@@ -96,6 +96,12 @@ varargs mixed get_objects( string str, object player, int no_arr ) ;
 varargs object find_ob(mixed ob, mixed cont) ;
 varargs object get_object( string str, object player ) ;
 object top_environment(object ob) ;
+object *present_livings(object room) ;
+object *present_players(object room) ;
+object get_living(string name, object room) ;
+object *get_livings(mixed names, object room) ;
+object get_player(string name, object room) ;
+object *get_players(mixed names, object room) ;
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;

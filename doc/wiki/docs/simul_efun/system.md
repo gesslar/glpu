@@ -24,7 +24,7 @@ Retrieves a specific configuration value from the MUD config.
 ### Synopsis
 
 ```c
-int _info(mixed str, mixed args...)
+varargs int _info(mixed args...)
 ```
 
 ### Parameters
@@ -53,7 +53,7 @@ Returns the name of the MUD.
 ### Synopsis
 
 ```c
-int _ok(mixed str, mixed args...)
+varargs int _ok(mixed args...)
 ```
 
 ### Parameters
@@ -178,7 +178,7 @@ Returns the version of the base library.
 ### Synopsis
 
 ```c
-int _warn(mixed str, mixed args...)
+varargs int _warn(mixed args...)
 ```
 
 ### Parameters
@@ -195,7 +195,7 @@ Provides a warning message, optionally formatted with arguments.
 ### Synopsis
 
 ```c
-int _error(mixed str, mixed args...)
+varargs int _error(mixed args...)
 ```
 
 ### Parameters

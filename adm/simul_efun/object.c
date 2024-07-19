@@ -277,3 +277,100 @@ object top_environment(object ob) {
 
     return env ;
 }
+
+/**
+ * @simul_efun present_livings
+ * @description Retrieves all living objects present in the specified room.
+ * @param {object} room - The room to search for living objects in.
+ * @returns {object[]} - An array of living objects present in the room.
+ */
+object *present_livings(object room) {
+    if(!room)
+        return ({});
+
+    return filter(all_inventory(room), (: living($1) :));
+}
+
+/**
+ * @simul_efun present_players
+ * @description Retrieves all player objects present in the specified room.
+ * @param {object} room - The room to search for player objects in.
+ * @returns {object[]} - An array of player objects present in the room.
+ */
+object *present_players(object room) {
+    if(!room)
+        return ({});
+
+    return filter(present_livings(room), (: userp :));
+}
+
+/**
+ * @simul_efun get_living
+ * @param {string} name - The name of the living object to locate.
+ * @param {object} room - The room to search for the living object in.
+ * @return {object} - The located living object, or 0 if not found.
+ */
+object get_living(string name, object room) {
+    object ob;
+
+    if(!room)
+        return 0 ;
+
+    ob = present(name, room);
+    if(ob && living(ob))
+        return ob;
+
+    return 0;
+}
+
+/**
+ * @simul_efun get_livings
+ * @param {string|string[]} names - The name of the living objects to locate.
+ * @param {object} room - The room to search for the living objects in.
+ * @return {object*} - An array of located living objects.
+ */
+object *get_livings(mixed names, object room) {
+    object *obs, *ret = ({});
+
+    if(!room)
+        return ret ;
+
+    if(!pointerp(names)) names = ({ names });
+    names = filter(names, (: stringp :));
+
+    obs = map(names, (: get_living($1, $(room)) :));
+
+    return obs;
+}
+
+/**
+ * @simul_efun get_player
+ * @param {string} name - The name of the player to locate.
+ * @param {object} room - The room to search for the player in.
+ * @return {object} - The located player object, or 0 if not found.
+ */
+object get_player(string name, object room) {
+    object ob;
+
+    ob = get_living(name, room);
+
+    if(ob && userp(ob))
+        return ob;
+
+    return 0;
+}
+
+/**
+ * @simul_efun get_players
+ * @param {string|string[]} names - The name of the player objects to locate.
+ * @param {object} room - The room to search for the player objects in.
+ * @return {object*} - An array of located player objects.
+ */
+object *get_players(mixed names, object room) {
+    object *obs, *ret = ({});
+
+    ret = get_livings(names, room);
+    ret = filter(ret, (: userp :));
+
+    return ret;
+}

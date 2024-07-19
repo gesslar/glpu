@@ -110,9 +110,15 @@ title: simul_efun
 ## object
 
 * [find_ob](object#find_ob)
+* [get_living](object#get_living)
+* [get_livings](object#get_livings)
 * [get_object](object#get_object)
 * [get_objects](object#get_objects)
+* [get_player](object#get_player)
+* [get_players](object#get_players)
 * [getoid](object#getoid)
+* [present_livings](object#present_livings)
+* [present_players](object#present_players)
 * [top_environment](object#top_environment)
 
 ## resolve_path

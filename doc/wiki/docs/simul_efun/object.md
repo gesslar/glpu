@@ -22,6 +22,22 @@ varargs mixed get_objects( string str, object player, int no_arr )
 Locates objects based on the specified search string, which can
 include various search criteria and options.
 
+## present_players
+
+### Synopsis
+
+```c
+object *present_players(object room)
+```
+
+### Parameters
+
+* `object room` - The room to search for player objects in.
+
+### Description
+
+Retrieves all player objects present in the specified room.
+
 ## top_environment
 
 ### Synopsis
@@ -57,6 +73,22 @@ varargs object find_ob(mixed ob, mixed cont, function f)
 
 Searches for an object within a container or environment
 using the specified criteria.
+
+## present_livings
+
+### Synopsis
+
+```c
+object *present_livings(object room)
+```
+
+### Parameters
+
+* `object room` - The room to search for living objects in.
+
+### Description
+
+Retrieves all living objects present in the specified room.
 
 ## getoid
 
