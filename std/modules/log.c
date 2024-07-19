@@ -3,6 +3,7 @@ protected nosave nomask string _log_prefix = "" ;
 
 void set_log_level(int lvl) { _log_level = lvl ; }
 int log_level() { return _log_level ; }
+int query_log_level() { return _log_level ; }
 
 void set_log_prefix(string prefix) { _log_prefix = prefix ; }
 string log_prefix() { return _log_prefix ; }
@@ -48,20 +49,20 @@ varargs void _log(mixed args...) {
             break ;
     }
 
-    if(lvl > _log_level)
+    if(lvl > query_log_level())
         return ;
 
     no_time = lvl < 0 ;
     lvl = abs(lvl) ;
 
-    if(_log_level >= 2) {
+    if(query_log_level() >= 2) {
         string *funcs = call_stack(2), func ;
         string prep ;
 
         func = funcs[1] ;
         prep = func ;
 
-        if(_log_level >= 3) {
+        if(query_log_level() >= 3) {
             string *lines = call_stack(4), line ;
             string *matches ;
             string ob ;
@@ -75,7 +76,7 @@ varargs void _log(mixed args...) {
                 error("Failed to match line: " + line) ;
             line = matches[2] ;
 
-            if(_log_level > 3) {
+            if(query_log_level() > 3) {
                 ob = matches[0] ;
             }  else {
                 ob = matches[1] ;

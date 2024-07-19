@@ -20,6 +20,9 @@ int set_env(string var_name, string var_value) ;
 public int gmcp_enabled() ;
 private mixed gmcp_stringify(mixed data) ;
 
+// Functions from other objects
+varargs void _log(mixed args...) ;
+
 // This apply receives the GMCP messages from the client. We parse out the
 // information into what package, subpackage, command, and payload. We then
 // call the appropriate module to handle the GMCP message.
@@ -35,6 +38,8 @@ void gmcp(string message) {
     mixed err ;
     string gmcp_module ;
     object ob ;
+
+    _log("GMCP received\n%O", message) ;
 
     gmcp = GMCP_D->convert_message(message) ;
 
