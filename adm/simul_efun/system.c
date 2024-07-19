@@ -1,4 +1,5 @@
 #include "/adm/obj/simul_efun.h"
+#include <modules.h>
 
 //system.c
 
@@ -154,6 +155,8 @@ varargs void _debug(mixed str, mixed args...) {
     debug_message(str) ;
 }
 
+private nosave string _brief_circle = "\u25CB" ;
+
 /**
  * @function _format_message
  * @description Formats a message with a color and the name of the previous object.
@@ -164,15 +167,41 @@ varargs void _debug(mixed str, mixed args...) {
  */
 private string _format_message(string color, string str, mixed args...) {
     object po ;
+    object body = this_body() ;
     string name ;
 
     if(!po = previous_object())
         return null ;
 
-    name = query_file_name(po) ;
-    name = upper_case(name) ;
-    name = replace_string(name, "_", " ") ;
-    name = "["+color+name+"\eres\e] " ;
+    if(body) {
+        if(devp(body)) {
+            if(body->query_env("feedback_level") == "brief") {
+                if(body->has_screenreader())
+                    name = "" ;
+                else
+                    if(M_UNICODE->supports_unicode())
+                        name = color + _brief_circle + "\eres\e " ;
+                    else
+                        name = color + "o\eres\e " ;
+            } else {
+                name = query_file_name(po) ;
+                name = upper_case(name) ;
+                name = replace_string(name, "_", " ") ;
+
+                if(!body->has_screenreader()) {
+                    name = "["+color+name+"\eres\e] " ;
+                }
+            }
+        } else {
+            if(body->has_screenreader())
+                name = "" ;
+            else
+                if(M_UNICODE->supports_unicode())
+                    name = color + _brief_circle + "\eres\e " ;
+                else
+                    name = color + "o\eres\e " ;
+        }
+    }
 
     str = name + str ;
     str = sprintf(str, args...) ;
@@ -250,7 +279,7 @@ varargs int _error(mixed args...) {
     if(!tp)
         tp = this_player() ;
 
-    mess = _format_message("\e0124\e", str, args...) ;
+    mess = _format_message("\e0160\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 

@@ -77,7 +77,7 @@ mixed render_room(object caller, object room) {
     if(!objectp(room))
         return "You see nothing because you have no environment!\n" ;
 
-    if(devp(caller) && caller->query_env("look_filename") == "on") {
+    if(devp(caller) && of(caller->query_env("look_filename"), ({ "on", "all" }))) {
         result += "\e0032\e"+prepend(file_name(room), "/") + "\eres\e\n" ;
     }
 
@@ -156,7 +156,7 @@ mixed render_object(object caller, object room, string target) {
 
 
     if(strlen(desc)) {
-        if(devp(caller) && caller->query_env("look_filename") == "on") {
+        if(devp(caller) && caller->query_env("look_filename") == "all") {
             desc = "\e0032\e"+prepend(file_name(ob), "/") + "\eres\e\n" + desc ;
         }
     }
@@ -188,7 +188,7 @@ mixed render_living(object caller, object room, object target, object user) {
     }
 
     if(strlen(result)) {
-        if(devp(caller) && caller->query_env("look_filename") == "on") {
+        if(devp(caller) && caller->query_env("look_filename") == "all") {
             result = "\e0032\e"+prepend(file_name(target), "/") + "\eres\e\n" + result ;
         }
     }
