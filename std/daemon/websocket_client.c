@@ -23,7 +23,7 @@ inherit M_HTTP ;
 
 // Functions
 private nomask string random_string() ;
-protected nomask int websocket_connect(string url) ;
+protected nomask mapping websocket_connect(string url) ;
 
 private nomask void process_handshake(buffer buf) ;
 private nomask int is_message_complete(buffer buf) ;
@@ -64,7 +64,7 @@ void mudlib_setup() {
  *
  * @param {string} url - The URL to connect to.
  */
-protected nomask void websocket_connect(string url) {
+protected nomask mapping websocket_connect(string url) {
     string handshake_key ;
     int fd, resolve_key ;
     mapping parsed_url ;
@@ -74,17 +74,25 @@ protected nomask void websocket_connect(string url) {
     _log(3, "Server: %O", server) ;
 
     if(mapp(server))
-        return ;
+        return ([
+            "status" : "error",
+            "error" : "Already connected to a WebSocket server",
+        ]) ;
 
     if(!stringp(url)) {
-        error("No url specified") ;
-        return null ;
+        return ([
+            "status" : "error",
+            "error" : "Invalid URL",
+        ]) ;
     }
 
     parsed_url = parse_url(url) ;
     if(!parsed_url) {
         _log(2, "Failed to parse URL: %s", url) ;
-        return null ;
+        return ([
+            "status" : "error",
+            "error" : "Failed to parse URL",
+        ]) ;
     }
 
     handshake_key = random_string(16); // Raw random string
@@ -108,14 +116,19 @@ protected nomask void websocket_connect(string url) {
     if(fd < 0) {
         _log(0, "Unable to create socket: %s", socket_error(fd));
         server = null ;
-        return;
+        return ([
+            "status" : "error",
+            "error" : socket_error(fd),
+        ]) ;
     }
 
     _log(4, "Socket created: %d", fd) ;
 
     if(fd < 0) {
         _log(0, "Unable to create socket: %s", socket_error(fd));
-        return;
+        return ([
+            "error" : socket_error(fd),
+        ]) ;
     }
 
     if(server["request"]["secure"]) {
@@ -131,6 +144,11 @@ protected nomask void websocket_connect(string url) {
     server["key"] = resolve_key ;
 
     _log(3, "Server: %O", server) ;
+
+    return ([
+        "status" : "success",
+        "fd" : fd,
+    ]) ;
 }
 
 /**
@@ -160,8 +178,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
         server["ip"] = addr ;
         server["state"] = WS_STATE_CONNECTING ;
 
-        if(function_exists("websocket_handle_connecting"))
-            catch(call_other(this_object(), "websocket_handle_connecting")) ;
+        call_if(this_object(), "websocket_handle_resolved") ;
 
         result = socket_connect(fd, addr + " " + port, "websocket_read", "websocket_ready");
         if(result != EESUCCESS) {
@@ -170,8 +187,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
             server["state"] = WS_STATE_ERROR ;
             server["error"] = socket_error(result) ;
 
-            if(function_exists("websocket_handle_connection_error"))
-                call_other(this_object(), "websocket_handle_connection_error") ;
+            call_if(this_object(), "websocket_handle_connection_error", result) ;
 
             shutdown_websocket() ;
             return ;
@@ -188,8 +204,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
         server["state"] = WS_STATE_ERROR ;
         server["error"] = "Failed to resolve hostname " + host ;
 
-        if(function_exists("websocket_handle_resolve_error"))
-            call_other(this_object(), "websocket_handle_resolve_error") ;
+        call_if(this_object(), "websocket_handle_resolve_error") ;
 
         shutdown_websocket() ;
         return ;
@@ -261,8 +276,10 @@ protected nomask void websocket_ready(int fd) {
     result = socket_write(fd, out);
     if(result != EESUCCESS) {
         _log(2, "Failed to send handshake request: %d", result);
+        call_if(this_object(), "websocket_handle_handshake_error", result);
         shutdown_websocket();
     } else {
+        call_if(this_object(), "websocket_handle_handshake_sent");
         _log(2, "Handshake request sent");
     }
 }
@@ -283,8 +300,7 @@ protected nomask void websocket_closed(int fd) {
 
     _log(3, "Socket closed: %s %d", server["request"]["host"], server["request"]["port"]) ;
 
-    if(function_exists("websocket_handle_closed"))
-        catch(call_other(this_object(), "websocket_handle_closed")) ;
+    call_if(this_object(), "websocket_handle_closed") ;
 
     shutdown_websocket(fd) ;
 }
@@ -318,12 +334,7 @@ protected nomask void shutdown_websocket() {
     _log(3, "Total data received: %d bytes", server["received_total"]) ;
     _log(3, "Uptime: %.2f seconds", duration) ;
 
-    if(function_exists("websocket_handle_shutdown")) {
-        _log(3, "Handling shutdown for %d", fd) ;
-        catch(call_other(this_object(), "websocket_handle_shutdown")) ;
-    } else {
-        _log(3, "No shutdown handler for %d", fd) ;
-    }
+    call_if(this_object(), "websocket_handle_shutdown") ;
 
     result = socket_close(fd) ;
     if(result != EESUCCESS) {
@@ -492,6 +503,7 @@ private nomask void process_handshake(buffer buf) {
     if(accept != expected) {
         _log(1, "Accept and Expected do not match.");
         server["state"] = WS_STATE_HANDSHAKE_FAILED;
+        call_if(this_object(), "websocket_handle_handshake_failed", "Accept and Expected do not match.");
         shutdown_websocket();
         return;
     }
@@ -503,6 +515,7 @@ private nomask void process_handshake(buffer buf) {
         accept != expected) {
         _log(1, "Handshake invalid. Disconnecting.");
         server["state"] = WS_STATE_HANDSHAKE_FAILED;
+        call_if(this_object(), "websocket_handle_handshake_failed", "Handshake invalid. Disconnecting.");
         shutdown_websocket();
         return;
     }
@@ -515,8 +528,7 @@ private nomask void process_handshake(buffer buf) {
 
     map_delete(server, "handshake_key");
 
-    if(function_exists("websocket_handle_connected"))
-        catch(call_other(this_object(), "websocket_handle_connected"));
+    call_if(this_object(), "websocket_handle_connected");
 }
 
 /**
@@ -724,8 +736,7 @@ private nomask void process_text_frame(mapping frame_info) {
 
     _log(3, "Payload: %O", payload);
 
-    if(function_exists("websocket_handle_text_frame"))
-        catch(call_other(this_object(), "websocket_handle_text_frame", payload));
+    call_if(this_object(), "websocket_handle_text_frame", payload);
 }
 
 /**
@@ -744,8 +755,7 @@ private nomask void process_close_frame(mapping frame_info) {
     }
     _log(0, "Connection closed by server. Code: %d, Reason: %s", close_code, close_reason);
 
-    if(function_exists("websocket_handle_close_frame"))
-        catch(call_other(this_object(), "websocket_handle_close_frame", frame_info["payload"]));
+    call_if(this_object(), "websocket_handle_close_frame", frame_info["payload"]);
 }
 
 /**
@@ -757,8 +767,7 @@ private nomask void process_ping_frame(mapping frame_info) {
     _log(2, "Received ping frame");
     send_pong(to_string(frame_info["payload"]));
 
-    if(function_exists("websocket_handle_ping_frame"))
-        catch(call_other(this_object(), "websocket_handle_ping_frame", frame_info));
+    call_if(this_object(), "websocket_handle_ping_frame", frame_info) ;
 }
 
 /**
@@ -769,8 +778,7 @@ private nomask void process_ping_frame(mapping frame_info) {
 private nomask void process_pong_frame(mapping frame_info) {
     _log(2, "Received pong frame");
 
-    if(function_exists("websocket_handle_pong_frame"))
-        catch(call_other(this_object(), "websocket_handle_pong_frame", frame_info));
+    call_if(this_object(), "websocket_handle_pong_frame", frame_info);
 }
 
 /**
@@ -781,8 +789,7 @@ private nomask void process_pong_frame(mapping frame_info) {
 private nomask void process_continuation_frame(mapping frame_info) {
     _log(2, "Received continuation frame");
 
-    if(function_exists("websocket_handle_continuation_frame"))
-        catch(call_other(this_object(), "websocket_handle_continuation_frame", frame_info));
+    call_if(this_object(), "websocket_handle_continuation_frame", frame_info);
 }
 
 /**
@@ -793,8 +800,7 @@ private nomask void process_continuation_frame(mapping frame_info) {
 private nomask void process_binary_frame(mapping frame_info) {
     _log(2, "Received binary frame");
 
-    if(function_exists("websocket_handle_binary_frame"))
-        catch(call_other(this_object(), "websocket_handle_binary_frame",frame_info));
+    call_if(this_object(), "websocket_handle_binary_frame", frame_info);
 }
 
 /**
@@ -805,8 +811,7 @@ private nomask void process_binary_frame(mapping frame_info) {
 private nomask void process_unknown_frame(mapping frame_info) {
     _log(2, "Received unknown frame");
 
-    if(function_exists("websocket_handle_unknown_frame"))
-        catch(call_other(this_object(), "websocket_handle_unknown_frame", frame_info));
+    call_if(this_object(), "websocket_handle_unknown_frame", frame_info);
 }
 
 /**
@@ -1021,15 +1026,13 @@ protected nomask varargs int websocket_message(int frame_opcode, mixed args...) 
 
     if(result != EESUCCESS) {
         _log(2, "Failed to send message: %s", socket_error(result));
+        call_if(this_object(), "websocket_handle_message_error", result);
         shutdown_websocket();
         return 0;
     } else {
         _log(2, "Sent message to %s", server["request"]["host"]);
 
-        if(function_exists("websocket_handle_message_sent"))
-            catch(call_other(this_object(), "websocket_handle_message_sent", frame_opcode, args));
-        else
-            _log(3, "No message sent handler for opcode: %d", frame_opcode);
+        call_if(this_object(), "websocket_handle_message_sent", frame_opcode, args);
 
         return 1;
     }

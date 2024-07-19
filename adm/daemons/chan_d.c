@@ -20,7 +20,7 @@ int tune(string channel, string user, int flag);
 int valid_ch(string channel_name);
 int valid_module(string module_name);
 int chat(string channel, string user, string msg);
-void muddy_chat(mapping payload);
+void grapevine_chat(mapping data) ;
 int filter_listing(string element);
 string *get_channels(string module_name);
 string *get_modules();
@@ -189,17 +189,15 @@ int chat(string channel, string user, string msg) {
     else return 0;
 }
 
-int muddy_chat(mapping payload) {
+void grapevine_chat(mapping payload) {
     object mod_obj;
     string *keys;
-    string channel, user, msg, source ;
-    int echoed ;
+    string channel, user, msg, game ;
 
     channel = payload["channel"];
-    user = payload["talker"];
-    source = payload["identifier"];
     msg = payload["message"];
-    echoed = payload["echoed"];
+    game = payload["game"];
+    user = payload["name"];
 
     keys = keys(channels);
     if(member_array(channel, keys) == -1) return 0;
@@ -211,13 +209,7 @@ int muddy_chat(mapping payload) {
     }
 
     mod_obj = find_object(modules[channels[channel]["module"]]);
-_debug("mod_obj: " + mod_obj);
-_debug("channels[channel][\"real_name\"]: " + channels[channel]["real_name"]);
-_debug("function_exists(\"rec_muddy_msg\", mod_obj): " + function_exists("rec_muddy_msg", mod_obj));
-    if(function_exists("rec_muddy_msg", mod_obj) == 0) return 0;
-
-    if(mod_obj->rec_muddy_msg(channels[channel]["real_name"], user, msg, source, echoed)) return 1;
-    else return 0;
+    return call_if(mod_obj, "rec_grapevine_msg", channel, user, msg, game) ;
 }
 
 string *get_channels(string module_name) {

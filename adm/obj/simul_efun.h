@@ -59,6 +59,7 @@ int valid_function(mixed f) ;
 mixed *assemble_call_back(mixed arg...) ;
 mixed call_back(mixed *cb, mixed arg...) ;
 varargs string call_trace(int colour) ;
+mixed call_if(mixed ob, string func, mixed arg) ; ;
 
 // File: grammar
 string int_string (int num) ;
@@ -142,10 +143,10 @@ string open_status() ;
 varargs void _debug(string str, mixed args...) ;
 string log_dir() ;
 string tmp_dir() ;
-int _ok(string str, mixed args...) ;
-int _info(string str, mixed args...) ;
-int _error(string str, mixed args...) ;
-int _warn(string str, mixed args...) ;
+varargs int _ok(object tp, string str, mixed args...) ;
+varargs int _info(object tp, string str, mixed args...) ;
+varargs int _error(object tp, string str, mixed args...) ;
+varargs int _warn(object tp, string str, mixed args...) ;
 
 // File: time
 varargs string ldate(int x, int brief) ;

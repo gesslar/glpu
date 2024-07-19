@@ -185,3 +185,34 @@ mixed call_back(mixed cb, mixed new_arg...) {
 
     return catch((*fun)(final_arg...)) ;
 }
+
+/**
+ * @simul_efun call_if
+ * @description Calls the specified function on the given object if it exists.
+ * @param {mixed} ob - The object to call the function on.
+ * @param {string} func - The name of the function to call.
+ * @param {mixed} arg - The argument to pass to the function.
+ * @returns {mixed} - The return value of the function, or null if the function
+ *                    does not exist.
+ */
+varargs mixed call_if(mixed ob, string func, mixed arg...) {
+    if(nullp(ob))
+        error("Missing argument 1 to call_if()") ;
+
+    if(!objectp(ob) && !stringp(ob))
+        error("Bad argument 1 to call_if()") ;
+
+    if(nullp(func))
+        error("Missing argument 2 to call_if()") ;
+
+    if(!stringp(func))
+        error("Bad argument 2 to call_if()") ;
+
+    if(stringp(ob))
+        ob = load_object(ob);
+
+    if(function_exists(func, ob))
+        return call_other(ob, func, arg...);
+
+    return null ;
+}
