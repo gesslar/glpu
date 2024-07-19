@@ -29,7 +29,7 @@ private nosave mapping state = ([ ]) ;
 void setup() {
     set_log_level(4) ;
     set_log_prefix("(WSS ECHO)") ;
-    call_out("startup", 1) ;
+    // call_out("startup", 1) ;
 }
 
 // Start the Connection
@@ -77,14 +77,8 @@ void websocket_handle_shutdown() {
 }
 
 // Function to parse text frames
-void websocket_handle_text_frame(mapping frame_info) {
-    string payload ;
+void websocket_handle_text_frame(string payload) {
     mixed message ;
-
-    if(!frame_info) {
-        _log(2, "No frame info") ;
-        return ;
-    }
 
     if(!state)
         return ;
@@ -95,7 +89,11 @@ void websocket_handle_text_frame(mapping frame_info) {
     if(!state["last_message"])
         return ;
 
-    payload = to_string(frame_info["payload"]);
+    if(nullp(payload)) {
+        _log(2, "Received null payload") ;
+        return ;
+    }
+
     message = parse_body(payload, "auto") ;
 
     if(!stringp(message)) {

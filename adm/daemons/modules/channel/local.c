@@ -10,7 +10,7 @@
 
 inherit STD_DAEMON ;
 
-string *ch_list = ({"admin", "wiz", "dev", "gossip", "chat"});
+string *ch_list = ({"admin", "wiz", "dev", "chat"});
 mapping history = ([]);
 private nosave string module_name = query_file_name(this_object()) ;
 

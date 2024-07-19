@@ -68,6 +68,24 @@ mixed call_back(mixed cb, mixed new_arg...)
 
 Executes a callback with the given arguments.
 
+## call_if
+
+### Synopsis
+
+```c
+varargs mixed call_if(mixed ob, string func, mixed arg...)
+```
+
+### Parameters
+
+* `mixed ob` - The object to call the function on.
+* `string func` - The name of the function to call.
+* `mixed arg` - The argument to pass to the function.
+
+### Description
+
+Calls the specified function on the given object if it exists.
+
 ## valid_function
 
 ### Synopsis

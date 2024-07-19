@@ -19,6 +19,13 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Home", link: "/" },
+          {
+            collapsed: true,
+            text: "Help",
+            items: [
+              { text: "Environment Variables", link: "environment_variables" },
+            ],
+          },
           { text: "Contributing", link: "/contributing" },
         ]
       },
