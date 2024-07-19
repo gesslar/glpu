@@ -22,7 +22,7 @@ mixed main(object caller, string str) {
         case "start" :
         case "ansi" :
         case "begin" :
-            str = "enabled" ;
+            str = "on" ;
             caller->set_env("colour", str);
             return _ok(caller, "Colour " + str + ".");
         case "disable" :
@@ -30,7 +30,7 @@ mixed main(object caller, string str) {
         case "stop" :
         case "none" :
         case "kill" :
-            str = "disabled" ;
+            str = "off" ;
             caller->set_env("colour", str);
             return _ok(caller, "Colour " + str + ".");
         case "list" :
@@ -62,7 +62,7 @@ mixed main(object caller, string str) {
                 fg, num, fg, num) ;
         }
         default :
-            if(caller->query_env("colour") == "enabled")
+            if(caller->query_env("colour") == "on")
                 return _info(caller, "Colour is currently enabled.") ;
             else
                 return _info(caller, "Colour is currently disabled.") ;

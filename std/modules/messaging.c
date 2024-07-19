@@ -1,5 +1,5 @@
 // /std/modules/messaging.c
-// This modeul is heavily influenced by Lima's messaging system.
+// This module is heavily influenced by Lima's messaging system.
 //
 // Created:     2024/02/03: Gesslar
 // Last Change: 2024/02/03: Gesslar
@@ -129,7 +129,7 @@ void do_receive(string message, int message_type) {
         term = this_object()->query_env("colour");
         // If colour is not explicitly enabled, set NO_ANSI to disable
         // coloured messages.
-        if(term == "enabled") {
+        if(term == "on") {
             term = "xterm" ;
         } else {
             term = "plain";
