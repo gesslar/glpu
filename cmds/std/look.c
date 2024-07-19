@@ -40,11 +40,19 @@ string highlight_view(object tp, string str, string *keys) {
         colour = default_highlight_colour;
 
     // need to determine if number is from 0-256 with a leading 0
-    if(!pcre_match(colour, "^0(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
-        colour = "";
-    else
-        colour = "\e" + colour + "\e";
+    if(sscanf(colour, "%d", i) != 1)
+        colour = default_highlight_colour;
+    else {
+        if(i < 0 || i > 256) {
+            colour = default_highlight_colour;
+        } else {
+            colour = sprintf("%'0'4d", i);
+        }
+    }
 
+    tp->_log(1, "Colour: %s", colour);
+
+    colour = "\e" + colour + "\e";
     colour = COLOUR_D->substitute_too_dark(colour);
 
     for(i = 0; i < sizeof(keys); i++) {
@@ -76,8 +84,7 @@ mixed render_room(object caller, object room) {
     data = get_short(room);
     if(stringp(data) && strlen(data)) result += data + "\n" ;
     data = get_long(room);
-    if(stringp(data) && strlen(data)) result += "\n" + highlight_view(caller,
-        data, keys(room->query_items())) + "\n" ;
+    if(stringp(data) && strlen(data)) result += "\n" + highlight_view(caller, data, keys(room->query_items())) + "\n" ;
 
     exits = keys(room->query_exits());
 
