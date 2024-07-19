@@ -30,9 +30,9 @@ private nosave mapping config, restart, reffs ;
 private nosave mapping games ;
 
 void setup() {
-    set_log_level(4);
+    set_log_level(1);
     set_notify_destruct(1) ;
-    set_log_prefix("(GRAPEVINE) ") ;
+    set_log_prefix("(GRAPEVINE)") ;
     call_out("startup", 3) ;
 }
 
@@ -173,8 +173,6 @@ void websocket_handle_connected() {
         restart = null ;
     }
 
-    _debug(repeat_string("\n", 5)) ;
-
     grapevine_send_event_authenticate(auth) ;
 
     server["grapevine"] = grapevine ;
@@ -203,10 +201,10 @@ void websocket_handle_handshake_error(int result) {
 
 // Handle eventuality that the connection has been closed
 void websocket_handle_shutdown() {
-    if(!server) {
-        _log(2, "Not connected to any server") ;
-        return ;
-    }
+    _log(1, "Grapevine connection closed") ;
+
+    if(restart)
+        return restart_attempt() ;
 }
 
 // Handle incoming text frames
@@ -347,10 +345,9 @@ protected void websocket_handle_close_frame(mapping payload) {
 // Authentication
 
 void grapevine_handle_event_authenticate(string status, string err, mapping data) {
-    _debug("Received authentication response: %O", data) ;
+    _log(2, "Received authentication response: %s", identify(data)) ;
     if(status == GR_STATUS_OK) {
         _log(2, "Authenticated with Grapevine") ;
-        // grapevine_send_event_heartbeat() ;
     } else {
         _log(1, "Failed to authenticate with Grapevine, error: %s", err) ;
     }
@@ -818,7 +815,7 @@ private nomask varargs void send_outgoing_message(string ev, string reff, mappin
     if(reff)
         reffs[reff] = copy(message || ([])) + ([ "event" : ev, "callback" : cb ]) ;
 
-    _log(1, "Sending message: %O", outgoing) ;
+    _log(4, "Sending message: %O", outgoing) ;
     websocket_message(WS_TEXT_FRAME, json_encode(outgoing)) ;
 }
 // Games
@@ -884,7 +881,9 @@ varargs public nomask string z_time_string(int time: (: time() :)) {
 // This event will run when this object is being destructed, so we should
 // let the server know that we are going away.
 void on_destruct() {
+    _log(1, "Grapevine destructing.") ;
     if(server) {
+        _log(1, "Closing Grapevine connection.") ;
         websocket_close(WS_CLOSE_GOING_AWAY) ;
     }
 }
