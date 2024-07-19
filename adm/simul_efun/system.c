@@ -187,15 +187,33 @@ private string _format_message(string color, string str, mixed args...) {
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
-int _ok(mixed str, mixed args...) {
+varargs int _ok(mixed args...) {
     object tp ;
+    string str ;
     string mess ;
+
+    if(!sizeof(args))
+        return 0 ;
+
+    if(objectp(args[0])) {
+        tp = args[0] ;
+        str = args[1] ;
+        args = args[2..] ;
+    } else if(stringp(args[0])) {
+        str = args[0] ;
+        args = args[1..] ;
+    } else {
+        return 0 ;
+    }
+
+    if(!tp)
+        tp = this_player() ;
 
     mess = _format_message("\e0036\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
-    if(tp = this_player())
+    if(tp)
         tell(tp, mess + "\n") ;
     else
         _debug(mess) ;
@@ -210,15 +228,33 @@ int _ok(mixed str, mixed args...) {
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
-int _error(mixed str, mixed args...) {
+varargs int _error(mixed args...) {
     object tp ;
+    string str ;
     string mess ;
+
+    if(!sizeof(args))
+        return 0 ;
+
+    if(objectp(args[0])) {
+        tp = args[0] ;
+        str = args[1] ;
+        args = args[2..] ;
+    } else if(stringp(args[0])) {
+        str = args[0] ;
+        args = args[1..] ;
+    } else {
+        return 0 ;
+    }
+
+    if(!tp)
+        tp = this_player() ;
 
     mess = _format_message("\e0124\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
-    if(tp = this_player())
+    if(tp)
         tell(tp, mess + "\n") ;
     else
         _debug(mess) ;
@@ -233,15 +269,33 @@ int _error(mixed str, mixed args...) {
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
-int _warn(mixed str, mixed args...) {
+varargs int _warn(mixed args...) {
     object tp ;
+    string str ;
     string mess ;
+
+    if(!sizeof(args))
+        return 0 ;
+
+    if(objectp(args[0])) {
+        tp = args[0] ;
+        str = args[1] ;
+        args = args[2..] ;
+    } else if(stringp(args[0])) {
+        str = args[0] ;
+        args = args[1..] ;
+    } else {
+        return 0 ;
+    }
+
+    if(!tp)
+        tp = this_player() ;
 
     mess = _format_message("\e0214\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
-    if(tp = this_player())
+    if(tp)
         tell(tp, mess + "\n") ;
     else
         _debug(mess) ;
@@ -256,15 +310,33 @@ int _warn(mixed str, mixed args...) {
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
-int _info(mixed str, mixed args...) {
+varargs int _info(mixed args...) {
     object tp ;
+    string str ;
     string mess ;
+
+    if(!sizeof(args))
+        return 0 ;
+
+    if(objectp(args[0])) {
+        tp = args[0] ;
+        str = args[1] ;
+        args = args[2..] ;
+    } else if(stringp(args[0])) {
+        str = args[0] ;
+        args = args[1..] ;
+    } else {
+        return 0 ;
+    }
+
+    if(!tp)
+        tp = this_player() ;
 
     mess = _format_message("\e0228\e", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
-    if(tp = this_player())
+    if(tp)
         tell(tp, mess + "\n") ;
     else
         _debug(mess) ;

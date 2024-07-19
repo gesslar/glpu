@@ -1,17 +1,17 @@
 /**
- * @file /adm/daemons/modules/channel/muddy.c
- * @description Muddy chat channels module
+ * @file /adm/daemons/modules/channel/grapevine.c
+ * @description Grapevine chat channels module
  *
- * @created 2024/07/15 - Gesslar
- * @last_modified 2024/07/15 - Gesslar
+ * @created 2024/07/18 - Gesslar
+ * @last_modified 2024/07/18 - Gesslar
  *
  * @history
- * 2024/07/15 - Gesslar - Created
+ * 2024/07/18 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;
 
-string *ch_list = ({"general", "lpc"});
+string *ch_list = mud_config("GRAPEVINE")["channels"];
 mapping history = ([]);
 private nosave string module_name = query_file_name(this_object()) ;
 
@@ -84,14 +84,19 @@ int rec_msg(string chan, string usr, string msg) {
 
     CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
     history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-    MUDDY_D->muddy_send_message(chan, usr, msg);
+    GRAPEVINE_D->grapevine_broadcast_message(chan, usr, msg);
 
     save_data() ;
     return 1;
 }
 
-int rec_muddy_msg(string chan, string usr, string msg) {
+int rec_grapevine_msg(string chan, string usr, string msg, string game) {
     string real_message;
+    string name ;
+
+    if(sscanf(usr, "%s (%s in I3)", usr, game) == 2) {
+        _debug("Transforming I3 name to Grapevine name");
+    }
 
     if(msg[0..0] == ":") {
         msg = msg[1..<1];
@@ -99,8 +104,10 @@ int rec_muddy_msg(string chan, string usr, string msg) {
     } else
         real_message = sprintf(": %s", msg);
 
-    CHAN_D->rec_msg(chan, "{" + capitalize(chan) + "} " + capitalize(usr) + real_message + "\n");
-    history[chan] += ({ ldate(time(),1) +" "+ltime() + " {" + capitalize(chan) + "} " + capitalize(usr) + real_message + "\n" });
+    name = sprintf("%s@%s", usr, game) ;
+
+    CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + name + real_message + "\n");
+    history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + name + real_message + "\n" });
 
     save_data() ;
     return 1;

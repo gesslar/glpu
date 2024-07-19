@@ -41,3 +41,6 @@
 
 # Alarm Daemon
 /adm/daemons/alarm
+
+# Grapevine Daemon
+/adm/daemons/grapevine
