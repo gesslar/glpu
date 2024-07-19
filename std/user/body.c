@@ -741,7 +741,13 @@ void set_environ(mapping data) {
 }
 
 int has_screenreader() {
-    return query_environ("SCREEN_READER") || false ;
+    if(query_environ("SCREEN_READER") == true)
+        return true ;
+
+    if(query_env("screenreader") == "on")
+        return true ;
+
+    return false ;
 }
 
 int query_log_level() {
@@ -752,7 +758,7 @@ int query_log_level() {
 
 int supports_unicode() {
     if(has_screenreader()) return 0 ;
-    return to_int(query_env("unicode")) ;
+    return query_env("unicode") == "on" ;
 }
 
 int is_pc() { return 1 ; }
