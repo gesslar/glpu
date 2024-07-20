@@ -1,0 +1,12 @@
+string *dir_file(string path)
+
+Parameters:
+
+* `string path` - The path to extract the components from.
+
+Returns
+
+`string*` - An array containing the directory and file name components.
+
+Given a path, returns an array containing the directory and file
+name components.

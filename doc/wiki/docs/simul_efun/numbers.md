@@ -16,6 +16,10 @@ float percent_of(float a, float b)
 * `float a` - The part value.
 * `float b` - The whole value.
 
+### Returns
+
+`float` - The percentage of `a` in `b`.
+
 ### Description
 
 Calculates what percentage `a` is of `b`.
@@ -33,6 +37,10 @@ varargs float remainder(mixed a, mixed b)
 * `mixed a` - The dividend.
 * `mixed b` - The divisor.
 
+### Returns
+
+`float` - The remainder of `a` divided by `b`.
+
 ### Description
 
 Calculates the remainder of `a` divided by `b`.
@@ -49,6 +57,10 @@ float percent(float a, float b)
 
 * `float a` - The part value.
 * `float b` - The whole value.
+
+### Returns
+
+`float` - The percentage of `a` out of `b`.
 
 ### Description
 
@@ -68,6 +80,10 @@ float range(float min, float max, float val)
 * `float max` - The maximum value.
 * `float val` - The value to check.
 
+### Returns
+
+`float` - The value, constrained within the range of `min` to `max`.
+
 ### Description
 
 Ensures a value is within a specified range.
@@ -82,7 +98,11 @@ int sum(mixed *arr)
 
 ### Parameters
 
-* `mixed[] arr` - The array of numbers to sum.
+* `mixed* arr` - The array of numbers to sum.
+
+### Returns
+
+`int` - The sum of all elements in the array.
 
 ### Description
 

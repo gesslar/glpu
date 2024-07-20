@@ -167,6 +167,7 @@ title: simul_efun
 * [arch](system#arch)
 * [baselib_name](system#baselib_name)
 * [baselib_version](system#baselib_version)
+* [doc_dir](system#doc_dir)
 * [driver_version](system#driver_version)
 * [lib_name](system#lib_name)
 * [lib_version](system#lib_version)

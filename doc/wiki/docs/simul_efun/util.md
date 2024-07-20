@@ -11,6 +11,10 @@ title: util
 string generate_uuid()
 ```
 
+### Returns
+
+`string` - A randomly generated version 4 UUID.
+
 ### Description
 
 Generates a random "version 4" UUID. Version 4 UUIDs are based
@@ -28,6 +32,10 @@ int of(mixed needle, mixed haystack)
 
 * `mixed needle` - The value to search for.
 * `mixed haystack ` - The array, mapping, or string to search in.
+
+### Returns
+
+`int` - 1 if the value is found, 0 otherwise.
 
 ### Description
 

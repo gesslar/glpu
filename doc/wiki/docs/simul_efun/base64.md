@@ -15,6 +15,10 @@ string base64_decode(string source)
 
 * `string source` - The Base64 encoded string to be decoded.
 
+### Returns
+
+`string` - The decoded string.
+
 ### Description
 
 Decodes a given Base64 encoded string.
@@ -30,6 +34,10 @@ string base64_encode(mixed source_str)
 ### Parameters
 
 * `mixed source_str` - The string or buffer to be encoded.
+
+### Returns
+
+`string` - The Base64 encoded string.
 
 ### Description
 

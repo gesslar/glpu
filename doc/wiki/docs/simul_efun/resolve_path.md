@@ -16,6 +16,10 @@ string resolve_path(string Current, string Next)
 * `string Current` - The current path.
 * `string Next` - The next path to resolve.
 
+### Returns
+
+`string` - The resolved absolute path.
+
 ### Description
 
 Resolves a given path relative to the current path, handling

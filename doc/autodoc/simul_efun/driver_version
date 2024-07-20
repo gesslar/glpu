@@ -1,0 +1,7 @@
+string driver_version()
+
+Returns
+
+`string` - The driver version.
+
+Returns the version of the MUD driver.

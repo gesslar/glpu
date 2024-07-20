@@ -137,6 +137,16 @@ string tmp_dir() {
 }
 
 /**
+ * @simul_efun doc_dir
+ * @description Returns the directory where documentation files are stored.
+ * @returns {string} - The documentation directory.
+ */
+
+string doc_dir() {
+    return mud_config("DOC_DIR") ;
+}
+
+/**
  * @simul_efun debug
  * @description Logs a debug message, optionally formatted with arguments.
  * @param {string} str - The debug message.
@@ -159,11 +169,13 @@ private nosave string _brief_circle = "\u25CB" ;
 
 /**
  * @function _format_message
- * @description Formats a message with a color and the name of the previous object.
+ * @description Formats a message with a color and the name of the previous
+                object.
  * @param {string} color - The color to use for the message.
  * @param {string} str - The message to format.
  * @param {mixed} [args] - Optional arguments to format the message.
- * @returns {string} - The formatted message or null if there is no previous object.
+ * @returns {string} - The formatted message or null if there is no previous
+                       object.
  */
 private string _format_message(string color, string str, mixed args...) {
     object po ;
@@ -211,8 +223,13 @@ private string _format_message(string color, string str, mixed args...) {
 
 /**
  * @simul_efun _ok
- * @description Provides an informational message, optionally formatted with arguments.
- * @param {string} str - The informational message.
+ * @def varargs int _ok(object tp, string str, mixed args...)
+ * @def varargs int _ok(string str, mixed args...)
+ * @description Provides an confirmation message, optionally formatted with
+ *              arguments. If no object is provided, the message will be sent
+ *              to this_player(). If no object is found, the message will be
+ *              sent to the debug log.
+ * @param {string} str - The confirmation message.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
@@ -252,7 +269,12 @@ varargs int _ok(mixed args...) {
 
 /**
  * @simul_efun _error
- * @description Provides an error message, optionally formatted with arguments.
+ * @def varargs int _error(object tp, string str, mixed args...)
+ * @def varargs int _error(string str, mixed args...)
+ * @description Provides an error message, optionally formatted with
+ *              arguments. If no object is provided, the message will be sent
+ *              to this_player(). If no object is found, the message will be
+ *              sent to the debug log.
  * @param {string} str - The error message.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
@@ -293,7 +315,12 @@ varargs int _error(mixed args...) {
 
 /**
  * @simul_efun _warn
- * @description Provides a warning message, optionally formatted with arguments.
+ * @def varargs int _warn(object tp, string str, mixed args...)
+ * @def varargs int _warn(string str, mixed args...)
+ * @description Provides an warning message, optionally formatted with
+ *              arguments. If no object is provided, the message will be sent
+ *              to this_player(). If no object is found, the message will be
+ *              sent to the debug log.
  * @param {string} str - The warning message.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.
@@ -334,7 +361,12 @@ varargs int _warn(mixed args...) {
 
 /**
  * @simul_efun _info
- * @description Provides an informational message, optionally formatted with arguments.
+ * @def varargs int _info(object tp, string str, mixed args...)
+ * @def varargs int _info(string str, mixed args...)
+ * @description Provides an informational message, optionally formatted with
+ *              arguments. If no object is provided, the message will be sent
+ *              to this_player(). If no object is found, the message will be
+ *              sent to the debug log.
  * @param {string} str - The informational message.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {int} - Always returns 1, unless there is no previous object.

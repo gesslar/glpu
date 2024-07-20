@@ -16,6 +16,10 @@ varargs string identify( mixed a, string indent )
 * `mixed a` - The variable to identify.
 * `string [indent]` - The indentation string to use for formatting.
 
+### Returns
+
+`string` - The string representation of the variable.
+
 ### Description
 
 Converts a variable to its string representation for debugging

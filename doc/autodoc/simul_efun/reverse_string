@@ -1,0 +1,11 @@
+string reverse_string(string str)
+
+Parameters:
+
+* `string str` - The string to reverse.
+
+Returns
+
+`string` - The reversed string.
+
+Reverses a string.

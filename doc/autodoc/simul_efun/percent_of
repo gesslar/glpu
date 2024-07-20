@@ -1,0 +1,12 @@
+float percent_of(float a, float b)
+
+Parameters:
+
+* `float a` - The part value.
+* `float b` - The whole value.
+
+Returns
+
+`float` - The percentage of `a` in `b`.
+
+Calculates what percentage `a` is of `b`.
