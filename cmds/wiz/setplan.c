@@ -1,13 +1,16 @@
-/*
-setplan.c
-
-Parthenon@LPUniversity
-July 22nd, 2006
-command to allow editing of plan
-
-*/
-
-//Last edited on July 23rd, 2006 by Parthenon
+/**
+ * @file /cmds/wiz/setplan.c
+ * @description Command to manage one's .plan file
+ *
+ * @created 2006/07/22 - Parthenon
+ * @last_modified 2024/07/20 - Gesslar
+ *
+ * @history
+ * 2006/07/22 - Parthenon - Created
+ * 2006/07/23 - Parthenon - Updated - Gesslar has no idea what they updated
+ * 2024/07/20 - Gesslar - Entirely rewrote the command and added support
+ *                        for the new editor object.
+ */
 
 inherit STD_CMD ;
 
@@ -78,11 +81,11 @@ int delete_plan(object tp) {
     return _ok("Plan file %s deleted", file);
 }
 
-string help(object tp) {
+string query_help(object tp) {
     return
-    " SYNTAX: setplan [-o|-d]\n\n" +
-    "This command allows you to edit your plan that is shown in your finger\n"+
-    "information. If you use the '-o' option then your plan will be overwritten\n"+
-    "otherwise what you type in will be appended to your current plan. You \n"+
-    "may also delete your plan by using the '-d' option.\n";
+"SYNTAX: setplan [ -o|-d ]\n\n"
+"This command allows you to edit your .plan that is shown in your finger "
+"information. If you use the '-o' option then your plan will be overwritten "
+"otherwise what you type in will be appended to your current .plan.\n\n"
+"You may also delete your plan by using the '-d' option.\n";
 }
