@@ -40,6 +40,7 @@ export default defineConfig({
         items: [
           { text: "Simul Efuns", link: "/simul_efun/" },
           { text: "Overridden Efuns", link: "/efun_override/" },
+          { text: "Daemon Functions", link: "/daemon_function/" },
         ],
       },
     ],
