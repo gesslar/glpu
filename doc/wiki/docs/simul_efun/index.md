@@ -120,6 +120,7 @@ title: simul_efun
 * [present_livings](object#present_livings)
 * [present_players](object#present_players)
 * [this_body](object#this_body)
+* [this_caller](object#this_caller)
 * [top_environment](object#top_environment)
 
 ## resolve_path
