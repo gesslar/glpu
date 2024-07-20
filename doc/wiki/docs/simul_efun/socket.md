@@ -11,6 +11,10 @@ title: socket
 string dump_socket_status()
 ```
 
+### Returns
+
+`string` - The formatted socket status information.
+
 ### Description
 
 Returns a formatted string displaying the status of all sockets.

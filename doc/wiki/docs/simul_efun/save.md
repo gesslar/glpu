@@ -15,6 +15,10 @@ string object_save_directory(object ob)
 
 * `object ob` - The object to get the save directory for.
 
+### Returns
+
+`string` - The save directory path for the object.
+
 ### Description
 
 Returns the save directory path for the specified object.
@@ -30,6 +34,10 @@ string assure_object_save_dir(object ob)
 ### Parameters
 
 * `object ob` - The object to ensure the save directory for.
+
+### Returns
+
+`string` - The save directory path for the object, or 0 if creation failed.
 
 ### Description
 
@@ -47,6 +55,10 @@ string object_save_file(object ob)
 ### Parameters
 
 * `object ob` - The object to get the save file for.
+
+### Returns
+
+`string` - The save file path for the object.
 
 ### Description
 

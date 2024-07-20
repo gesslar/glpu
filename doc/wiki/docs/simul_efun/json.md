@@ -15,6 +15,10 @@ mixed json_decode(string text)
 
 * `string text` - The JSON string to deserialize.
 
+### Returns
+
+`mixed` - The deserialized LPC value.
+
 ### Description
 
 Deserializes a JSON string into an LPC value.
@@ -30,7 +34,11 @@ varargs string json_encode(mixed value, mixed* pointers)
 ### Parameters
 
 * `mixed value` - The LPC value to serialize.
-* `mixed[] [pointers]` - An optional array of pointers to handle circular references.
+* `mixed* [pointers]` - An optional array of pointers to handle circular references.
+
+### Returns
+
+`string` - The JSON string representation of the LPC value.
 
 ### Description
 

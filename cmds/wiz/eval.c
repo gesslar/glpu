@@ -15,11 +15,12 @@ mixed main(object caller, string arg) {
     object ob ;
     string err ;
     mixed result ;
+    int limit = max_eval_cost(), cost ;
 
     if(!directory_exists(user_path(caller->query_proper_name())))
-        return "Error [eval]: You must have a home directory to use eval.\n" ;
+        return _error("You must have a home directory to use eval.") ;
 
-    tell(caller, "Evaluating: " + arg + "\n\n");
+    _info(caller, "Evaluating: %s", arg );
     file = user_path(caller->query_proper_name()) + "tmp_eval_file.c" ;
     if(file_size(file) != -1)
         rm(file) ;
@@ -29,20 +30,26 @@ mixed main(object caller, string arg) {
 
     write_file(file,"mixed eval() { "+arg+"; }\n");
     if(err = catch(ob = load_object(file))) {
-        tell(caller, "\nError loading file " + file + "\n"+err+"\n");
         rm(file);
-        return 1 ;
+        return _error("Error loading file %s\n%s", file, err) ;
     }
 
-    if(err = catch(result = ob->eval())) {
-        tell(caller, "\nRuntime error:\n " + err + "\nSee logs for more details.\n");
-        rm(file);
-        return 1 ;
-    }
 
-    tell(caller, sprintf("Result = %O\n", result));
-    destruct(ob);
-    rm(file);
+    err = catch {
+        reset_eval_cost() ;
+        result = ob->eval() ;
+        cost = limit - eval_cost() ;
+    } ;
+
+    catch(destruct(ob)) ;
+    rm(file) ;
+
+    if(err)
+        return _error("Runtime error:\n%s\nSee logs for more details.", err) ;
+
+    _ok("Result = %O", result) ;
+    _ok("Eval cost: %s", add_commas(cost)) ;
+
     return 1 ;
 }
 

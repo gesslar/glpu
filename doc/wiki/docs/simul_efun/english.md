@@ -15,6 +15,10 @@ string cap_words(string str)
 
 * `string str` - The string to capitalize.
 
+### Returns
+
+`string` - The capitalized string.
+
 ### Description
 
 Capitalizes the first letter of each word in a string.
@@ -30,6 +34,10 @@ string subjective(mixed ob)
 ### Parameters
 
 * `mixed ob` - The object or gender string to convert.
+
+### Returns
+
+`string` - The subjective pronoun.
 
 ### Description
 
@@ -47,6 +55,10 @@ string possessive_noun(mixed ob)
 ### Parameters
 
 * `mixed ob` - The object or string to convert to possessive form.
+
+### Returns
+
+`string` - The possessive form of the noun.
 
 ### Description
 
@@ -66,6 +78,10 @@ varargs string cap_significant_words(string str, int title)
 * `string str` - The string to capitalize.
 * `int [title=0]` - Whether to capitalize the first word as a title.
 
+### Returns
+
+`string` - The string with significant words capitalized.
+
 ### Description
 
 Capitalizes significant words in a string, ignoring certain
@@ -84,6 +100,10 @@ string possessive(mixed ob)
 
 * `mixed ob` - The object or gender string to convert.
 
+### Returns
+
+`string` - The possessive adjective.
+
 ### Description
 
 Returns the possessive adjective corresponding to the object's
@@ -100,6 +120,10 @@ string possessive_pronoun(mixed ob)
 ### Parameters
 
 * `mixed ob` - The object or gender string to convert.
+
+### Returns
+
+`string` - The possessive pronoun.
 
 ### Description
 
@@ -118,6 +142,10 @@ string objective(mixed ob)
 
 * `mixed ob` - The object or gender string to convert.
 
+### Returns
+
+`string` - The objective pronoun.
+
 ### Description
 
 Returns the objective pronoun corresponding to the object's
@@ -134,6 +162,10 @@ string reflexive(mixed ob)
 ### Parameters
 
 * `mixed ob` - The object or gender string to convert.
+
+### Returns
+
+`string` - The reflexive pronoun.
 
 ### Description
 

@@ -1,0 +1,9 @@
+object get_living(string name, object room)
+
+Parameters:
+
+* `string name` - The name of the living object to locate.
+* `object room` - The room to search for the living object in.
+
+Locates a living object by the specified name within the
+specified room.

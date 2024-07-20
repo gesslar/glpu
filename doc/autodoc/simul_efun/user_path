@@ -1,0 +1,11 @@
+string user_path(string name)
+
+Parameters:
+
+* `string name` - The user's name.
+
+Returns
+
+`string` - The home directory path for the user.
+
+Returns the home directory path for the user.

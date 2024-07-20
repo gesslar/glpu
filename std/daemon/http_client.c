@@ -562,7 +562,8 @@ private nomask mixed send_http_request(int fd, mapping server) {
     headers += default_headers ;
 
     foreach(string key, string value in headers) {
-        request += key + ": " + value + "\r\n" ;
+        if(key != "Content-Type" && key != "Content-Length")
+            request += key + ": " + value + "\r\n" ;
     }
 
     body = server["request"]["body"] ;

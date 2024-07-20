@@ -16,6 +16,10 @@ string consolidate(int x, string str)
 * `int x` - The quantity of items.
 * `string str` - The description of the item(s).
 
+### Returns
+
+`string` - The consolidated string.
+
 ### Description
 
 Returns a consolidated string for a given quantity and item
@@ -33,6 +37,10 @@ string ordinal (int n)
 
 * `int n` - The integer to convert.
 
+### Returns
+
+`string` - The ordinal string representation of the integer.
+
 ### Description
 
 Converts an integer to its ordinal string representation.
@@ -48,6 +56,10 @@ string int_string (int num)
 ### Parameters
 
 * `int num` - The numerical number to convert.
+
+### Returns
+
+`string` - The worded number representation of the integer.
 
 ### Description
 

@@ -1,0 +1,11 @@
+mixed mud_config(string str)
+
+Parameters:
+
+* `string str` - The configuration key to retrieve.
+
+Returns
+
+`mixed` - The configuration value.
+
+Retrieves a specific configuration value from the MUD config.

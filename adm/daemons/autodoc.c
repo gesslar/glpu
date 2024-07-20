@@ -5,11 +5,12 @@
  *              format.
  *
  * @created 2024/02/18 - Gesslar
- * @last_modified 2024/07/11 - Gesslar
+ * @last_modified 2024/07/19 - Gesslar
  *
  * @history
  * 2024/02/18 - Gesslar - Created
  * 2024/07/11 - Gesslar - Entirely rewritten from Lima-style parsing to JSDoc
+ * 2024/07/19 - Gesslar - Added new tags to parse @def and now writes help files
  */
 
 inherit STD_DAEMON ;
@@ -20,7 +21,8 @@ private nomask int check_running();
 public nomask mixed autodoc_scan() ;
 private nomask void finish_scan();
 private nomask void parse_file(string file);
-private nomask string generate_function_markdown(mapping doc) ;
+private nomask mixed *consolidate_function(string function_name, mapping func) ;
+private nomask string generate_function_markdown(string function_name, mapping func) ;
 
 // Variables
 private nosave nomask float dir_delay = 0.02 ;
@@ -28,7 +30,7 @@ private nosave nomask float file_delay = 0.01 ;
 
 private nosave nomask float start_time = 0.0 ;
 
-private nosave nomask string doc_root ;
+private nosave nomask string doc_root, wiki_doc_root ;
 private nosave nomask string *dirs_to_check = ({});
 private nosave nomask string *files_to_check = ({});
 
@@ -39,7 +41,8 @@ private nosave nomask string jsdoc_function_regex,
                             *jsdoc_function_ignore_tags,
                             *tags, tag_regex,
                              continue_regex,
-                             function_detect_regex ;
+                             function_detect_regex,
+                             jsdoc_array_regex ;
 
 private nosave nomask mapping docs = ([]);
 private nosave int ci = false ;
@@ -49,10 +52,11 @@ void setup() {
     set_log_level(1) ;
 
     jsdoc_function_regex = "^\\s\\*\\s+@(\\w+)\\s+(\\w+)\\s*$" ;
+    jsdoc_array_regex = "\\w+(\\s*\\[\\s*\\]\\s*)" ;
 
     jsdoc_function_ignore_tags = ({ "function" }) ;
 
-    tags = ({ "description", "param", "returns", "example" }) ;
+    tags = ({ "description", "def", "param", "returns", "example" }) ;
     tag_regex = sprintf("^\\s*\\*\\s+@(%s)\\s+(.*)$",
         implode(tags, "|")) ;
 
@@ -64,13 +68,6 @@ void setup() {
     "(?:int|float|void|string|object|mixed|mapping|array|buffer|function)\\s*"
     "\\*?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
     ;
-}
-
-public nomask void ci_build() {
-    set_log_level(4) ;
-    _log(1, "Autodoc is running in CI mode") ;
-    ci = true ;
-    autodoc_scan() ;
 }
 
 public nomask mixed autodoc_scan() {
@@ -85,6 +82,7 @@ public nomask mixed autodoc_scan() {
 
     writing = false ;
     doc_root = mud_config("AUTODOC_ROOT") ;
+    wiki_doc_root = mud_config("WIKI_DOC_ROOT") ;
     start_time = time_frac();
     dirs_to_check = mud_config("AUTODOC_SOURCE_DIRS");
     scanning = sizeof(dirs_to_check) ;
@@ -147,7 +145,7 @@ private nomask void parse_file(string file) {
     string *lines ;
     int num, max ;
     int in_jsdoc = 0 ;
-    string doc_type, function_tag, function_def, line ;
+    string doc_type, function_tag, line ;
     int j ;
 
     if(!file_exists(file))
@@ -230,27 +228,36 @@ private nomask void parse_file(string file) {
                 /* NOW THAT WE HAVE FOUND THE END OF THE JSDOC COMMENT       */
                 /* BLOCK, WE MUST LOOK FOR THE FUNCTION DEFINITION AND       */
                 /* EXTRACT IT FOR OUR DOCUMENTATION.                         */
+                /*                                                           */
+                /* BUT ONLY IF WE DO NOT ALREADY HAVE A FUNCTION DEFINITION  */
+                /* FROM PARAM TAGS.                                          */
                 /* ********************************************************* */
-                for(j = num + 1; j < max; j++) {
-                    line = lines[j] ;
-                    matches = pcre_extract(line, function_detect_regex);
-                    if(sizeof(matches) == 1) {
-                        function_def = matches[0] ;
-                        if(function_def == function_tag) {
-                            // Ensure the line ends with '{' and remove it
-                            line = trim(chop((line), "{", -1));
-                            curr["function_def"] = line ;
-                            // Move the outer loop index to the function
-                            //  definition line
-                            num = j ;
-                            break ;
+                if(!of("def", curr)) {
+                    string function_def ;
+                    // We need to find the function definition
+                    // We can start looking for the function definition
+                    // after the current line
+                    for(j = num + 1; j < max; j++) {
+                        line = lines[j] ;
+                        matches = pcre_extract(line, function_detect_regex);
+                        if(sizeof(matches) == 1) {
+                            function_def = matches[0] ;
+                            if(function_def == function_tag) {
+                                // Ensure the line ends with '{' and remove it
+                                line = trim(chop((line), "{", -1));
+                                curr["def"] = ({ ({ line }) }) ;
+                                // Move the outer loop index to the function
+                                //  definition line
+                                num = j ;
+                                break ;
+                            }
                         }
                     }
                 }
 
                 // If a matching function is not found, skip to the next doc/
                 // function check
-                if(!of("function_def", curr)) {
+                if(!of("def", curr)) {
                     in_jsdoc = 0 ;
                     continue ;
                 }
@@ -355,73 +362,210 @@ private nomask void parse_file(string file) {
 
 private nomask string dash_wrap(string str, int width) ;
 
-private nomask string generate_function_markdown(mapping func) {
-    string out = "" ;
+// ({ function_name, *synopsis, *params, returns, description, *example })
+private nomask mixed *consolidate_function(string function_name, mapping func) {
+    mixed *result = allocate(6, 0) ;
+    mixed *currs ;
+    string *curr ;
     string line ;
     mixed err ;
+    int sz ;
 
     err = catch {
         // We need a description and a function definition to continue,
         // otherwise we can skip this function.
-        if(!of("description", func) || !of("function_def", func))
-            return null ;
+        if(!of("def", func) || !of("description", func))
+            return result ;
 
-        // Now we want the synopsis, which is the function definition
-        out += "### Synopsis\n\n" ;
-        out += sprintf("```c\n%s\n```\n", func["function_def"]) ;
+        // Add the function name [0]
+        result[0] = function_name  ;
 
-        // Next we need to parse the parameters
+        // Add the synopsis [1]
+        currs = func["def"] ;
 
+        sz = sizeof(currs) ;
+        result[1] = allocate(sz) ;
+        while(sz--) {
+            line = implode(currs[sz], " ") ;
+            result[1][sz] = line ;
+        }
+
+        // Add the parameters [2]
         if(of("param", func)) {
             mixed *params ;
             string *param ;
 
-            out += "\n### Parameters\n\n" ;
-
-            params = func["param"] ;
-            foreach(param in params) {
-                string *matches, *matches2 ;
+            currs = func["param"] ;
+            sz = sizeof(currs) ;
+            result[2] = allocate(sz) ;
+            while(sz--) {
                 string type, var, desc ;
 
-                line = implode(map(param, (: trim :)), " ") ;
-
-                if(sscanf(line, "%s - %s", line, desc) == 2) {
-                    if(sscanf(line, "{%s} %s", type, var) == 2) {
-                        out += sprintf("* `%s %s` - %s\n", type, var, desc) ;
+                line = implode(currs[sz], " ") ;
+                if(sscanf(line, "{%s} %s - %s", type, var, desc) == 3) {
+                    while(pcre_match(type, jsdoc_array_regex)) {
+                        type = pcre_replace(type, jsdoc_array_regex, ({ "*" }) ) ;
                     }
+                    result[2][sz] = sprintf("* `%s %s` - %s", type, var, desc) ;
+                } else {
+                    result[2][sz] = line ;
                 }
             }
         }
 
+        // Add the returns [3]
         if(of("returns", func)) {
             string *matches ;
-            string  type, var, desc ;
+            string type, desc ;
+            string *parts ;
 
-            line = implode(func["returns"][0], " ") ;
-            if(sscanf(line, "{%s} %s - %s", type, var, desc) == 3) {
-                out += "\n### Returns\n\n" ;
-                out += sprintf("`%s %s` - %s\n", type, var, desc) ;
+            currs = func["returns"] ;
+            curr = currs[0] ;
+            line = implode(curr, " ") ;
+
+            if(sizeof(parts = pcre_extract(line, "^\\{(.*)\\} - (.*)$")) == 2) {
+                if(pcre_match(parts[0], jsdoc_array_regex)) {
+                    parts[0] = pcre_replace(parts[0], jsdoc_array_regex, ({ "*" }) ) ;
+                }
+                result[3] = sprintf("`%s` - %s", parts[0], parts[1]) ;
+            } else {
+                result[3] = line ;
             }
         }
 
-        if(of("description", func)) {
-            string *desc ;
-
-            out += "\n### Description\n\n" ;
-
-            desc = func["description"][0] ;
-            out += implode(desc, "\n") ;
-
-            out += "\n" ;
-        }
-
-        // Write the file
-        return out ;
+        // Add the description
+        currs = func["description"] ;
+        curr = currs[0] ;
+        line = implode(curr, "\n") ;
+        result[4] = line ;
     } ;
-    if(err)
-        log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
 
-    return null ;
+    if(err) {
+        log_file("system/autodoc", "Error consolidating function: " + err + "\n") ;
+        return ({ }) ;
+    }
+
+    return result ;
+}
+
+private nomask string generate_doc_content(string function_name, mapping func) {
+    string out = "" ;
+    string line ;
+    mixed err ;
+    string *defs ;
+    mixed *parts ;
+
+    err = catch(parts = consolidate_function(function_name, func)) ;
+
+    if(err) {
+        log_file("system/autodoc", "Error generating document content: " + err + "\n") ;
+        return null ;
+    }
+
+    if(!sizeof(parts))
+        return null ;
+
+    // ({ function_name, *synopsis, *params, returns, description, *example })
+
+    // Add the synopsis
+    out += implode(parts[1], "\n") + "\n" ;
+
+    // Add the parameters
+    if(sizeof(parts[2])) {
+        string *param = parts[2] ;
+
+        out += "\nParameters:\n\n" + implode(parts[2], "\n") + "\n" ;
+    }
+
+    // Add the returns
+    if(sizeof(parts[3])) {
+        out += "\nReturns\n\n" + parts[3] + "\n" ;
+    }
+
+    // Add the description
+    out += "\n" + parts[4] + "\n" ;
+
+    return out ;
+}
+
+private nomask void generate_mud_docs() {
+    string *function_types, function_type ;
+
+    writing = true ;
+
+    function_types = keys(docs) ;
+
+    foreach(function_type in function_types) {
+        string *function_names, function_name ;
+        string dest_dir ;
+        mapping funcs ;
+        string *source_files, source_file ;
+
+        funcs = docs[function_type] ;
+        function_names = sort_array(keys(funcs), 1) ;
+        dest_dir = append(doc_root, function_type + "/") ;
+
+        foreach(function_name in function_names) {
+            mapping func ;
+            string doc_content ;
+            string dest_file = sprintf("%s%s", dest_dir, function_name) ;
+
+            func = funcs[function_name] ;
+            doc_content = generate_doc_content(function_name, func) ;
+
+            if(!doc_content)
+                continue ;
+
+            assure_file(dest_file) ;
+            write_file(dest_file, doc_content, 1) ;
+        }
+    }
+}
+
+private nomask string generate_function_markdown(string function_name, mapping func) {
+    string out = "" ;
+    string line ;
+    mixed err ;
+    string *defs ;
+    mixed *parts ;
+
+    err = catch(parts = consolidate_function(function_name, func)) ;
+
+    if(err) {
+        log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
+        return null ;
+    }
+
+    if(!sizeof(parts))
+        return null ;
+
+    // ({ function_name, *synopsis, *params, returns, description, *example })
+
+    // Add the synopsis
+    out += "### Synopsis\n\n" ;
+    out += "```c\n" ;
+    out += implode(parts[1], "\n") + "\n" ;
+    out += "```\n" ;
+
+    // Add the parameters
+    if(sizeof(parts[2])) {
+        string *param = parts[2] ;
+
+        out += "\n### Parameters\n\n" ;
+        out += implode(parts[2], "\n") + "\n" ;
+    }
+
+    // Add the returns
+    if(sizeof(parts[3])) {
+        out += "\n### Returns\n\n" ;
+        out += parts[3] + "\n" ;
+    }
+
+    // Add the description
+    out += "\n### Description\n\n" ;
+    out += parts[4] + "\n" ;
+
+    return out ;
 }
 
 private nomask string generate_index_markdown(string type, string source_file, mapping funcs) {
@@ -458,6 +602,7 @@ private nomask string generate_index_markdown(string type, string source_file, m
 
         return out ;
     } ;
+
     if(err)
         log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
 
@@ -492,13 +637,13 @@ private nomask void generate_wiki() {
 
         function_names = sort_array(keys(funcs), 1) ;
 
-        dest_dir = append(doc_root, function_type + "/") ;
+        dest_dir = append(wiki_doc_root, function_type + "/") ;
 
         source_files = map(values(funcs), (: $1["source_file"] :)) ;
         source_files = distinct_array(source_files) ;
         source_files = sort_array(source_files, 1) ;
 
-        index_file = append(doc_root, function_type + "/index.md") ;
+        index_file = append(wiki_doc_root, function_type + "/index.md") ;
         if(file_exists(index_file))
             rm(index_file) ;
         else
@@ -518,7 +663,7 @@ private nomask void generate_wiki() {
             index_content += sprintf("## %s\n\n", source_file_name) ;
             index_content += index_md + "\n" ;
 
-            dest_file = sprintf("%s%s/%s.md", doc_root, function_type, source_file_name) ;
+            dest_file = sprintf("%s%s/%s.md", wiki_doc_root, function_type, source_file_name) ;
 
             current_funcs = filter(funcs, (: $2["source_file"] == $3 :), source_file) ;
             curr_function_names = keys(current_funcs) ;
@@ -530,7 +675,7 @@ private nomask void generate_wiki() {
                 string func_md ;
 
                 func = current_funcs[curr_function_name] ;
-                func_md = generate_function_markdown(func) ;
+                func_md = generate_function_markdown(curr_function_name, func) ;
 
                 if(func_md) {
                     doc_content += sprintf("## %s\n\n", curr_function_name) ;
@@ -548,9 +693,8 @@ private nomask void generate_wiki() {
             doc_content = "" ;
         }
 
-        assure_file(append(doc_root, function_type+".md")) ;
+        assure_file(append(wiki_doc_root, function_type+".md")) ;
         write_file(index_file, index_content, 1) ;
-        // write_file(append(doc_root, ), index_content, 1) ;
         index_content = "" ;
     }
 
@@ -578,6 +722,9 @@ private nomask void finish_scan() {
         return ;
 
     end_time = time_frac() ;
+
+    // Generate the mud docs
+    generate_mud_docs() ;
 
     // Generate the wiki
     generate_wiki() ;

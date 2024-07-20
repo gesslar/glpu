@@ -1,0 +1,8 @@
+object this_body()
+
+Returns
+
+`object` - The this_player().
+
+This is an override of the efun this_body(). It will return
+the this_player().

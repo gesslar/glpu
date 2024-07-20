@@ -36,7 +36,19 @@
         "/adm/simul_efun/",
         "/adm/daemons/"
     ],
+    "DOC_DIR": "/doc/",
     "AUTODOC_ROOT" : "/doc/autodoc/",
+    "DOCS" : {
+        "general" : [
+            "general",
+            "game"
+        ],
+        "developer" : [
+            "autodoc/daemon_function",
+            "autodoc/efun_override",
+            "autodoc/simul_efun"
+        ]
+    },
     "CURRENCY" : [
         [ "copper", 1 ],
         [ "silver", 10 ],

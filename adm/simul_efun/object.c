@@ -306,6 +306,8 @@ object *present_players(object room) {
 
 /**
  * @simul_efun get_living
+ * @description Locates a living object by the specified name within the
+ *              specified room.
  * @param {string} name - The name of the living object to locate.
  * @param {object} room - The room to search for the living object in.
  * @return {object} - The located living object, or 0 if not found.
@@ -325,9 +327,11 @@ object get_living(string name, object room) {
 
 /**
  * @simul_efun get_livings
+ * @description Locates living objects by the specified names within the
+ *              specified room.
  * @param {string|string[]} names - The name of the living objects to locate.
  * @param {object} room - The room to search for the living objects in.
- * @return {object*} - An array of located living objects.
+ * @return {object[]} - An array of located living objects.
  */
 object *get_livings(mixed names, object room) {
     object *obs, *ret = ({});
@@ -345,6 +349,8 @@ object *get_livings(mixed names, object room) {
 
 /**
  * @simul_efun get_player
+ * @description Locates a player object by the specified name within the
+ *              specified room.
  * @param {string} name - The name of the player to locate.
  * @param {object} room - The room to search for the player in.
  * @return {object} - The located player object, or 0 if not found.
@@ -362,9 +368,10 @@ object get_player(string name, object room) {
 
 /**
  * @simul_efun get_players
+ * @description Locates player objects by the specified names within the
  * @param {string|string[]} names - The name of the player objects to locate.
  * @param {object} room - The room to search for the player objects in.
- * @return {object*} - An array of located player objects.
+ * @return {object[]} - An array of located player objects.
  */
 object *get_players(mixed names, object room) {
     object *obs, *ret = ({});
