@@ -34,6 +34,7 @@ void setup() {
 }
 
 /**
+ * @daemon_function create_issue
  * @description Create a new issue in the GitHub repository
  * @param {string} type - The type of issue to create
  * @param {string} title - The title of the issue
@@ -73,7 +74,7 @@ varargs mixed create_issue(string type, string title, string body, mixed *callba
         ([
             "Authorization": sprintf("token %s", config["token"]),
             "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json; charset=utf-8"
         ]),
         json_encode(([
             "title": title,
@@ -96,6 +97,7 @@ varargs mixed create_issue(string type, string title, string body, mixed *callba
 }
 
 /**
+ * @function http_handle_shutdown
  * @description Handle the response from the GitHub API
  * @param {mapping} response - The response from the GitHub API
  * @return {void}
@@ -140,6 +142,7 @@ void http_handle_shutdown(mapping response) {
 }
 
 /**
+ * @function execute_callback
  * @description Execute the callback function
  * @param {mapping} request - The request containing the callback function
  * @param {mapping} response - The response from the GitHub API
@@ -169,6 +172,7 @@ void execute_callback(mapping request, mapping response) {
 }
 
 /**
+ * @daemon_function process_backlog
  * @description Process the backlog of requests
  * @details This function processes the backlog of requests in the
  *          /data/github/issues/pending directory. It passes a list of files to
@@ -186,6 +190,7 @@ public nomask void process_backlog() {
 }
 
 /**
+ * @function process_next
  * @description Process the next request in the backlog
  * @param {string[]} files - The list of files remaining in the backlog to process
  * @return {void}
@@ -208,7 +213,7 @@ private nomask void process_next(string *files) {
             return ;
     }
 
-    err = catch(request = restore_variable(read_file("/data/github/issues/pending/" + file))) ;
+    err = catch(request = json_decode(read_file("/data/github/issues/pending/" + file))) ;
     if(err) {
         _log(2, "Error reading request file %s: %O", file, err) ;
         if(sizeof(files) > 1)
@@ -264,6 +269,7 @@ private nomask void process_next(string *files) {
     }
 }
 /**
+ * @function parse_time
  * @description convert a GitHub date-time string to an epoch time
  * @param {string} datetime - The date-time string to convert
  * @return {int} - The epoch time

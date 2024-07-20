@@ -17,10 +17,34 @@ varargs mixed get_objects( string str, object player, int no_arr )
 * `object [player]` - The player object to use as a reference for searching.
 * `int [no_arr]` - If specified, only a single object or 0 will be returned, otherwise an array of objects may be returned.
 
+### Returns
+
+`mixed` - The located object(s), or 0 if not found.
+
 ### Description
 
 Locates objects based on the specified search string, which can
 include various search criteria and options.
+
+## present_players
+
+### Synopsis
+
+```c
+object *present_players(object room)
+```
+
+### Parameters
+
+* `object room` - The room to search for player objects in.
+
+### Returns
+
+`object*` - An array of player objects present in the room.
+
+### Description
+
+Retrieves all player objects present in the specified room.
 
 ## top_environment
 
@@ -34,10 +58,31 @@ object top_environment(object ob)
 
 * `object ob` - The object to get the top-level environment of.
 
+### Returns
+
+`object` - The top-level environment of the object.
+
 ### Description
 
 Retrieves the top-level environment of the specified object,
 traversing up through nested environments.
+
+## get_players
+
+### Synopsis
+
+```c
+object *get_players(mixed names, object room)
+```
+
+### Parameters
+
+* `string|string* names` - The name of the player objects to locate.
+* `object room` - The room to search for the player objects in.
+
+### Description
+
+Locates player objects by the specified names within the
 
 ## find_ob
 
@@ -53,10 +98,70 @@ varargs object find_ob(mixed ob, mixed cont, function f)
 * `mixed [cont]` - The container or environment to search within. Defaults to the previous object.
 * `function [f]` - An optional function to further filter the search.
 
+### Returns
+
+`object` - The found object, or 0 if not found.
+
 ### Description
 
 Searches for an object within a container or environment
 using the specified criteria.
+
+## present_livings
+
+### Synopsis
+
+```c
+object *present_livings(object room)
+```
+
+### Parameters
+
+* `object room` - The room to search for living objects in.
+
+### Returns
+
+`object*` - An array of living objects present in the room.
+
+### Description
+
+Retrieves all living objects present in the specified room.
+
+## get_player
+
+### Synopsis
+
+```c
+object get_player(string name, object room)
+```
+
+### Parameters
+
+* `string name` - The name of the player to locate.
+* `object room` - The room to search for the player in.
+
+### Description
+
+Locates a player object by the specified name within the
+specified room.
+
+## get_livings
+
+### Synopsis
+
+```c
+object *get_livings(mixed names, object room)
+```
+
+### Parameters
+
+* `string|string* names` - The name of the living objects to locate.
+* `object room` - The room to search for the living objects in.
+
+### Description
+
+Locates living objects by the specified names within the
+specified room.
 
 ## getoid
 
@@ -70,9 +175,31 @@ int getoid(object ob)
 
 * `object ob` - The object to get the ID of.
 
+### Returns
+
+`int` - The unique object ID.
+
 ### Description
 
 Retrieves the unique object ID of the given object.
+
+## get_living
+
+### Synopsis
+
+```c
+object get_living(string name, object room)
+```
+
+### Parameters
+
+* `string name` - The name of the living object to locate.
+* `object room` - The room to search for the living object in.
+
+### Description
+
+Locates a living object by the specified name within the
+specified room.
 
 ## get_object
 
@@ -86,6 +213,10 @@ varargs object get_object( string str, object player )
 
 * `string str` - The name of the object to locate.
 * `object [player]` - The player object to use as a reference for searching.
+
+### Returns
+
+`object` - The located object, or 0 if not found.
 
 ### Description
 

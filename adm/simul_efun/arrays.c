@@ -23,7 +23,7 @@ mixed *distinct_array(mixed *arr) {
  *              all the elements of the input array.
  * @param {mixed[]} arr - The input array.
  * @param {int} start - The starting index of elements to be removed.
- * @param {int} [end] - The ending index of elements to be removed. Defaults to
+ * @param {int} end - The ending index of elements to be removed. Defaults to
  *                      start if not specified.
  * @returns {mixed[]} - A new array with specified elements removed.
  */

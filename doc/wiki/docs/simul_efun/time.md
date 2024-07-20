@@ -15,6 +15,10 @@ varargs float time_frac(int nanoseconds)
 
 * `int nanoseconds` - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
 
+### Returns
+
+`float` - The time value converted to a fractional value in seconds.
+
 ### Description
 
 Converts a time value from nanoseconds to a fractional value in seconds.
@@ -32,6 +36,10 @@ varargs int time_ms(int nanoseconds)
 ### Parameters
 
 * `int nanoseconds` - The time value in nanoseconds. Defaults to the current time in nanoseconds if not provided.
+
+### Returns
+
+`int` - The time value converted to milliseconds.
 
 ### Description
 
@@ -52,6 +60,10 @@ varargs string ltime(int x, int brief)
 * `int [x=time()]` - The timestamp to format. Defaults to the current time.
 * `int [brief=0]` - If set to 1, returns a brief time format (HH:MM). Otherwise, returns a full time format (HH:MM:SS).
 
+### Returns
+
+`string` - The formatted time string.
+
 ### Description
 
 Returns a formatted time string.
@@ -68,6 +80,10 @@ varargs string ldate(int x, int brief)
 
 * `int [x=time()]` - The timestamp to format. Defaults to the current time.
 * `int [brief=0]` - If set to 1, returns a brief date format (MM-DD). Otherwise, returns a full date format (YYYY-MM-DD).
+
+### Returns
+
+`string` - The formatted date string.
 
 ### Description
 

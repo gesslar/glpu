@@ -110,9 +110,15 @@ title: simul_efun
 ## object
 
 * [find_ob](object#find_ob)
+* [get_living](object#get_living)
+* [get_livings](object#get_livings)
 * [get_object](object#get_object)
 * [get_objects](object#get_objects)
+* [get_player](object#get_player)
+* [get_players](object#get_players)
 * [getoid](object#getoid)
+* [present_livings](object#present_livings)
+* [present_players](object#present_players)
 * [top_environment](object#top_environment)
 
 ## resolve_path
@@ -161,6 +167,7 @@ title: simul_efun
 * [arch](system#arch)
 * [baselib_name](system#baselib_name)
 * [baselib_version](system#baselib_version)
+* [doc_dir](system#doc_dir)
 * [driver_version](system#driver_version)
 * [lib_name](system#lib_name)
 * [lib_version](system#lib_version)

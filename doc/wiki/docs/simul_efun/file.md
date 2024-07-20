@@ -15,6 +15,10 @@ string file_owner(string file)
 
 * `string file` - The path of the file to check.
 
+### Returns
+
+`string` - The owner of the file, or 0 if not found.
+
 ### Description
 
 Determines the owner of a file based on its path.
@@ -30,6 +34,10 @@ string *dir_file(string path)
 ### Parameters
 
 * `string path` - The path to extract the components from.
+
+### Returns
+
+`string*` - An array containing the directory and file name components.
 
 ### Description
 
@@ -47,6 +55,10 @@ varargs string temp_file(mixed arg)
 ### Parameters
 
 * `mixed arg` - The file or object to create a temporary file for.
+
+### Returns
+
+`string` - The path to the temporary file.
 
 ### Description
 
@@ -82,6 +94,10 @@ varargs string tail(string path, int line_count)
 * `string path` - The path of the file to read.
 * `int [line_count=25]` - The number of lines to read from the end of the file. Defaults to 25.
 
+### Returns
+
+`string` - The last few lines of the file.
+
 ### Description
 
 Returns the last few lines of a file, similar to the Unix
@@ -98,7 +114,7 @@ varargs void implode_file(string file, string *lines, int overwrite)
 ### Parameters
 
 * `string file` - The path of the file to write to.
-* `string[] lines` - The array of lines to write.
+* `string* lines` - The array of lines to write.
 * `int [overwrite=0]` - Whether to overwrite the existing content. Defaults to 0 (append).
 
 ### Description
@@ -120,6 +136,10 @@ varargs int log_file(string file, string str, mixed arg...)
 * `string str` - The log message to write.
 * `mixed [arg]` - Additional arguments to include in the log message.
 
+### Returns
+
+`int` - 1 if the log message was written successfully, otherwise 0.
+
 ### Description
 
 Writes a log message to a specified log file.
@@ -135,6 +155,10 @@ string *explode_file(string file)
 ### Parameters
 
 * `string file` - The path of the file to read.
+
+### Returns
+
+`string*` - An array of lines from the file.
 
 ### Description
 
@@ -152,6 +176,10 @@ string query_file_name(object ob)
 ### Parameters
 
 * `object ob` - The object to query the file name of.
+
+### Returns
+
+`string` - The name of the file corresponding to the object.
 
 ### Description
 

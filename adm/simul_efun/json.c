@@ -176,7 +176,7 @@ private varargs int json_decode_parse_at_token(mixed* parse, string token, int s
 private varargs void json_decode_parse_error(mixed* parse, string msg, int ch) {
     if(ch)
         msg = sprintf("%s, '%c'", msg, ch);
-    msg = sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
+    msg = efun::sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
     error(msg);
 }
 
@@ -383,43 +383,63 @@ private varargs mixed json_decode_parse_string(mixed* parse, int initiator_check
         if(strsrch(out, "\\t") != -1)
             out = replace_string(out, "\\t", "\t");
         if(strsrch(out, "\\u") != -1) {
-          for (int i = 0; i< strlen(out); i++) {
-            if(out[i] == '\\' && out[i+1] == 'u') {
-              int* nybbles = allocate(4);
-              int character = 0;
-              i += 2;
-              for(int k = 0; k < 4; k++) {
-                if((nybbles[k] = json_decode_hexdigit(out[i + k])) == -1)
-                  json_decode_parse_error(parse, "Invalid hex digit", out[i + k]);
-              }
-              character = (nybbles[0] << 12) | (nybbles[1] << 8 )| (nybbles[2] << 4) | nybbles[3];
-              // Single codepoint character
-              if(!(((character)&0xfffff800)==0xd800)) {
-                i -= 2;
-                out[i .. i + 2 + 4 - 1] = sprintf("%c", character);
-                i = 0;
-                continue;
-              } else {
-                // UTF16 - Surrogate, attempts to parse the second value
-                int codepoint;
-                int next_character = 0;
-                int* nybbles2 = allocate(4);
-                i += 4;
-                if(out[i .. i+1] != "\\u") json_decode_parse_error(parse, "Invalid string, missing surrogate pair");
-                i += 2;
-                for(int k = 0; k < 4; k++) {
-                  if((nybbles2[k] = json_decode_hexdigit(out[i + k])) == -1)
-                    json_decode_parse_error(parse, "Invalid hex digit", out[i + k]);
+            int i, k, character, next_character, codepoint;
+            int* nybbles;
+            int* nybbles2;
+            buffer utf8_buf;
+            string unicode_char;
+
+            for(i = 0; i < strlen(out); i++) {
+                if(out[i] == '\\' && i + 1 < strlen(out) && out[i + 1] == 'u') {
+                    nybbles = allocate(4);
+                    character = 0;
+                    i += 2;
+                    if(i + 3 >= strlen(out)) {
+                        json_decode_parse_error(parse, "Incomplete Unicode escape sequence");
+                    }
+                    for(k = 0; k < 4; k++) {
+                        if((nybbles[k] = json_decode_hexdigit(out[i + k])) == -1) {
+                            json_decode_parse_error(parse, "Invalid hex digit", out[i + k]);
+                        }
+                    }
+                    character = (nybbles[0] << 12) | (nybbles[1] << 8) | (nybbles[2] << 4) | nybbles[3];
+
+                    // Check if it's a high surrogate
+                    if(character >= 0xD800 && character <= 0xDBFF) {
+                        // Attempt to parse the second value (low surrogate)
+                        if(i + 10 < strlen(out) && out[i + 4] == '\\' && out[i + 5] == 'u') {
+                            nybbles2 = allocate(4);
+                            for(k = 0; k < 4; k++) {
+                                if((nybbles2[k] = json_decode_hexdigit(out[i + 6 + k])) == -1) {
+                                    json_decode_parse_error(parse, "Invalid hex digit in second surrogate", out[i + 6 + k]);
+                                }
+                            }
+                            next_character = (nybbles2[0] << 12) | (nybbles2[1] << 8) | (nybbles2[2] << 4) | nybbles2[3];
+
+                            if(next_character >= 0xDC00 && next_character <= 0xDFFF) {
+                                // Valid surrogate pair
+                                codepoint = 0x10000 + ((character - 0xD800) << 10) + (next_character - 0xDC00);
+                                utf8_buf = string_encode(sprintf("%c", codepoint), "UTF-8");
+                                unicode_char = string_decode(utf8_buf, "UTF-8");
+                                out = out[0..i-3] + unicode_char + out[i + 10..];
+                                i = i - 2;  // Adjust index to account for the replaced characters
+                                continue;
+                            } else {
+                                json_decode_parse_error(parse, "Invalid low surrogate");
+                            }
+                        } else {
+                            json_decode_parse_error(parse, "Missing low surrogate");
+                        }
+                    } else {
+                        // Single codepoint character
+                        utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
+                        unicode_char = string_decode(utf8_buf, "UTF-8");
+                        out = out[0..i-3] + unicode_char + out[i + 4..];
+                        i = i - 2;  // Adjust index to account for the replaced characters
+                        continue;
+                    }
                 }
-                next_character = (nybbles2[0] << 12) | (nybbles2[1] << 8) | (nybbles2[2] << 4) | (nybbles2[3]);
-                i -= 2 + 4 + 2; // reset to first \u
-                codepoint = 0x10000 + (character - 0xd800) * 0x400 + (next_character - 0xDC00);
-                out[i .. i + 2 + 4 + 2 + 4 - 1] = sprintf("%c", codepoint);
-                i = 0;
-                continue;
-              }
             }
-          }
         }
         if(member_array('/', out) != -1)
             out = replace_string(out, "\\/", "/");
@@ -642,6 +662,8 @@ mixed json_decode(string text) {
     return json_decode_parse(parse);
 }
 
+private nosave nomask string unicode_pattern = "([^\\x00-\\x7F])" ;
+
 /**
  * @simul_efun json_encode
  * @description Serializes an LPC value into a JSON string.
@@ -651,6 +673,8 @@ mixed json_decode(string text) {
  * @returns {string} - The JSON string representation of the LPC value.
  */
 varargs string json_encode(mixed value, mixed* pointers) {
+
+
     if(undefinedp(value))
         return "null";
     if(intp(value) || floatp(value))
@@ -677,8 +701,37 @@ varargs string json_encode(mixed value, mixed* pointers) {
         if(member_array(0x1b, value) != -1)
           value = replace_string(value, "\x1b", "\\u001b");
 
+        // Unicode handling
+        while(pcre_match(value, unicode_pattern)) {
+            int codepoint;
+            string char_to_replace = pcre_extract(value, unicode_pattern)[0];
+            buffer utf8_buf = string_encode(char_to_replace, "UTF-8");
+
+            // Get the codepoint from the UTF-8 bytes
+            if (sizeof(utf8_buf) == 1) {
+                codepoint = utf8_buf[0];
+            } else if (sizeof(utf8_buf) == 2) {
+                codepoint = ((utf8_buf[0] & 0x1F) << 6) | (utf8_buf[1] & 0x3F);
+            } else if (sizeof(utf8_buf) == 3) {
+                codepoint = ((utf8_buf[0] & 0x0F) << 12) | ((utf8_buf[1] & 0x3F) << 6) | (utf8_buf[2] & 0x3F);
+            } else if (sizeof(utf8_buf) == 4) {
+                codepoint = ((utf8_buf[0] & 0x07) << 18) | ((utf8_buf[1] & 0x3F) << 12) |
+                            ((utf8_buf[2] & 0x3F) << 6) | (utf8_buf[3] & 0x3F);
+            }
+
+            if (codepoint <= 0xFFFF) {
+                value = pcre_replace(value, unicode_pattern, ({ sprintf("\\u%04X", codepoint) }));
+            } else {
+                // Encode as surrogate pair
+                int high = 0xD800 + ((codepoint - 0x10000) >> 10);
+                int low = 0xDC00 + ((codepoint - 0x10000) & 0x3FF);
+                value = pcre_replace(value, unicode_pattern, ({ sprintf("\\u%04X\\u%04X", high, low) }));
+            }
+        }
+
         return value;
     }
+
     if(mapp(value)) {
         string out;
         int ix = 0;

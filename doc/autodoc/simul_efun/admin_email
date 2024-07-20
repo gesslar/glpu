@@ -1,0 +1,7 @@
+string admin_email()
+
+Returns
+
+`string` - The admin email address.
+
+Returns the admin email address for the MUD.

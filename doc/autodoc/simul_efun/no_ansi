@@ -1,0 +1,11 @@
+string no_ansi(string str)
+
+Parameters:
+
+* `string str` - The string to remove ANSI codes from.
+
+Returns
+
+`string` - The string without ANSI codes.
+
+Returns a string with all ANSI colour codes removed.

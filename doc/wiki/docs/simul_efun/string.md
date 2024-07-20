@@ -17,6 +17,10 @@ varargs string substr(string str, string sub, int reverse)
 * `string sub` - The substring to extract to.
 * `int [reverse=0]` - If set, the substring will start at the last occurrence.
 
+### Returns
+
+`string` - The extracted substring.
+
 ### Description
 
 Returns a substring of a string, starting from 0 and ending at the
@@ -38,6 +42,10 @@ varargs string extract(string str, int from, int to)
 * `int from` - The starting position to extract from.
 * `int [to]` - The ending position to extract to.
 
+### Returns
+
+`string` - The extracted substring.
+
 ### Description
 
 Extracts a substring from a string.
@@ -55,6 +63,10 @@ varargs int reverse_strsrch(string str, string sub, int start)
 * `string str` - The string to search in.
 * `string sub` - The substring to search for.
 * `int [start=-1]` - The starting position to search from.
+
+### Returns
+
+`int` - The position of the substring in the string, or -1 if not found.
 
 ### Description
 
@@ -74,6 +86,10 @@ string append(string source, string to_append)
 * `string source` - The string to append to.
 * `string to_append` - The string to append.
 
+### Returns
+
+`string` - The original string with the appended string if it was not already present.
+
 ### Description
 
 Appends a string to another string if it is not already there.
@@ -90,6 +106,10 @@ string no_ansi(string str)
 ### Parameters
 
 * `string str` - The string to remove ANSI codes from.
+
+### Returns
+
+`string` - The string without ANSI codes.
 
 ### Description
 
@@ -108,6 +128,10 @@ varargs string chop(string str, string sub, int dir)
 * `string str` - The string to chop from.
 * `string sub` - The substring to chop.
 * `int [dir=-1]` - The direction to chop: 1 for left, -1 for right.
+
+### Returns
+
+`string` - The string with the substring chopped off if it was present.
 
 ### Description
 
@@ -128,6 +152,10 @@ varargs mixed from_string(string str, int flag)
 * `string str` - The string to convert.
 * `int [flag=0]` - If set, returns an array with the value and the remaining string.
 
+### Returns
+
+`mixed` - The LPC value represented by the string.
+
 ### Description
 
 Converts a string representation of an LPC value to the corresponding
@@ -145,6 +173,10 @@ string reverse_string(string str)
 
 * `string str` - The string to reverse.
 
+### Returns
+
+`string` - The reversed string.
+
 ### Description
 
 Reverses a string.
@@ -159,8 +191,12 @@ varargs string simple_list(string *arr, string conjunction)
 
 ### Parameters
 
-* `string[] arr` - The array to make a list from.
+* `string* arr` - The array to make a list from.
 * `string [conjunction="and"]` - The word to join the last two elements of the list.
+
+### Returns
+
+`string` - The simple list string.
 
 ### Description
 
@@ -179,6 +215,10 @@ string add_commas(mixed number)
 
 * `mixed number` - The number to add commas to.
 
+### Returns
+
+`string` - The number with commas added as a string.
+
 ### Description
 
 Returns a string with commas added to the number.
@@ -194,6 +234,10 @@ string stringify(mixed val)
 ### Parameters
 
 * `mixed val` - The value to convert.
+
+### Returns
+
+`string` - The string representation of the value.
 
 ### Description
 
@@ -211,6 +255,10 @@ string prepend(string source, string to_prepend)
 
 * `string source` - The string to prepend to.
 * `string to_prepend` - The string to prepend.
+
+### Returns
+
+`string` - The original string with the prepended string if it was not already present.
 
 ### Description
 

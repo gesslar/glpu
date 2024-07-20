@@ -15,6 +15,10 @@ varargs string call_trace(int colour)
 
 * `int [colour=0]` - Whether to include ANSI colour codes. Defaults to 0 (no colour).
 
+### Returns
+
+`string` - The formatted call stack trace.
+
 ### Description
 
 Returns a formatted string of the current call stack trace.
@@ -30,6 +34,10 @@ mixed *assemble_call_back(mixed arg...)
 ### Parameters
 
 * `mixed arg` - The arguments to assemble into a callback.
+
+### Returns
+
+`mixed*` - The assembled callback.
 
 ### Description
 
@@ -64,6 +72,10 @@ mixed call_back(mixed cb, mixed new_arg...)
 * `mixed cb` - The callback to execute.
 * `mixed new_arg` - The arguments to pass to the callback.
 
+### Returns
+
+`mixed` - The result of the callback execution.
+
 ### Description
 
 Executes a callback with the given arguments.
@@ -82,6 +94,10 @@ varargs mixed call_if(mixed ob, string func, mixed arg...)
 * `string func` - The name of the function to call.
 * `mixed arg` - The argument to pass to the function.
 
+### Returns
+
+`mixed` - The return value of the function, or null if the function does not exist.
+
 ### Description
 
 Calls the specified function on the given object if it exists.
@@ -97,6 +113,10 @@ int valid_function(mixed f)
 ### Parameters
 
 * `mixed f` - The function to check.
+
+### Returns
+
+`int` - 1 if the function is valid, otherwise 0.
 
 ### Description
 

@@ -15,6 +15,10 @@ string user_mob_data(string name)
 
 * `string name` - The user's name.
 
+### Returns
+
+`string` - The file path for the user's mob data file, or 0 if the input is invalid.
+
 ### Description
 
 Returns the file path for the user's mob data file.
@@ -30,6 +34,10 @@ string user_core_data_directory(string name)
 ### Parameters
 
 * `string name` - The user's name.
+
+### Returns
+
+`string` - The directory path for the user's core data directory, or 0 if the input is invalid.
 
 ### Description
 
@@ -48,6 +56,10 @@ string user_path(string name)
 
 * `string name` - The user's name.
 
+### Returns
+
+`string` - The home directory path for the user.
+
 ### Description
 
 Returns the home directory path for the user.
@@ -63,6 +75,10 @@ string user_data_directory(string name)
 ### Parameters
 
 * `string name` - The user's name.
+
+### Returns
+
+`string` - The directory path for the user's data directory, or 0 if the input is invalid.
 
 ### Description
 
@@ -80,6 +96,10 @@ string user_data_file(string name)
 ### Parameters
 
 * `string name` - The user's name.
+
+### Returns
+
+`string` - The file path for the user's data file, or 0 if the input is invalid.
 
 ### Description
 

@@ -1,0 +1,11 @@
+string object_save_directory(object ob)
+
+Parameters:
+
+* `object ob` - The object to get the save directory for.
+
+Returns
+
+`string` - The save directory path for the object.
+
+Returns the save directory path for the specified object.
