@@ -15,7 +15,7 @@ string compute_alias(string al, string args);
 
 void add_alias(string verb, string cmd)
 {
-     if(!adminp(previous_object()) && this_player() != this_object()) return;
+     if(!adminp(previous_object()) && this_body() != this_object()) return;
 
      if(verb[0] == '$' && strlen(verb) > 1)
      {
@@ -32,7 +32,7 @@ void add_alias(string verb, string cmd)
 
 int remove_alias(string verb)
 {
-     if(!adminp(previous_object()) && this_player() != this_object()) return 0;
+     if(!adminp(previous_object()) && this_body() != this_object()) return 0;
 
      if(alias[verb])
      {

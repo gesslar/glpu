@@ -21,7 +21,7 @@ mixed main(object caller, string arg)
     if(!mail_client)
     return notify_fail("Error [mail]: could not find mail client\n");
 
-    mail_client->move(this_player());
+    mail_client->move(this_body());
 
     mail_client->start_mail(arg);
 

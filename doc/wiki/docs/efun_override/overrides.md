@@ -113,25 +113,8 @@ void write(string msg)
 
 This function is an override of the write() efun. It will
 write a message to the player using the message() efun
-if this_player(), otherwise it will use the debug_message()
+if this_body(), otherwise it will use the debug_message()
 efun.
-
-## this_body
-
-### Synopsis
-
-```c
-object this_body()
-```
-
-### Returns
-
-`object` - The this_player().
-
-### Description
-
-This is an override of the efun this_body(). It will return
-the this_player().
 
 ## query_num
 
@@ -279,10 +262,10 @@ object this_user()
 
 ### Returns
 
-`object` - The this_player()->query_user().
+`object` - The this_body()->query_user().
 
 ### Description
 
 This is an override of the efun this_user(). It will return
-the this_player()->query_user().
+the this_body()->query_user().
 

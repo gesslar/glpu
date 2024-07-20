@@ -13,7 +13,7 @@ mixed main(object caller, string args)
     int range, i;
     string *history = ({});
 
-    history = this_player()->query_command_history();
+    history = this_body()->query_command_history();
 
     if(stringp(args))
     {

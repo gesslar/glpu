@@ -32,10 +32,10 @@ varargs int page(string data, string title, function callback, int no_ansi) {
 
     current_line = 0;
 
-    if(!this_player()->query_env("morelines"))
+    if(!this_body()->query_env("morelines"))
         my_lines_per_cycle = DEF_LINESPERCYCLE;
     else
-        my_lines_per_cycle = to_int(this_player()->query_env("morelines"));
+        my_lines_per_cycle = to_int(this_body()->query_env("morelines"));
 
     lines_per_cycle = my_lines_per_cycle - 1;
 
@@ -53,13 +53,13 @@ int page_more() {
 
     if(!ansi) msg_type = msg_type | NO_ANSI ;
     for(;current_line < total_lines && current_line < lines_per_cycle; current_line++) {
-        tell(this_player(), append(exploded[current_line], "\n"), msg_type);
+        tell(this_body(), append(exploded[current_line], "\n"), msg_type);
     }
 
     end = current_line;
 
     if(total_lines >= my_lines_per_cycle) {
-        switch(this_player()->query_env("page_display")) {
+        switch(this_body()->query_env("page_display")) {
             case "percent" :
                 write("-=-= [" + percent_of(current_line, total_lines) + "%] =-=-\n", MSG_PROMPT);
                 break;

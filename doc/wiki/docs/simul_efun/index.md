@@ -119,6 +119,7 @@ title: simul_efun
 * [getoid](object#getoid)
 * [present_livings](object#present_livings)
 * [present_players](object#present_players)
+* [this_body](object#this_body)
 * [top_environment](object#top_environment)
 
 ## resolve_path

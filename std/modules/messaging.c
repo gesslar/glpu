@@ -167,8 +167,8 @@ void do_receive(string message, int message_type) {
     // }
     receive(message) ;
 
-    if(this_player() && this_player() != this_object())
-        event( ({ this_object() }), "message", message, message_type, this_player()) ;
+    if(this_body() && this_body() != this_object())
+        event( ({ this_object() }), "message", message, message_type, this_body()) ;
 
     // Handle telnet go-ahead if it's a prompt.
     if(message_type & MSG_PROMPT) {

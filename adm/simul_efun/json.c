@@ -176,7 +176,7 @@ private varargs int json_decode_parse_at_token(mixed* parse, string token, int s
 private varargs void json_decode_parse_error(mixed* parse, string msg, int ch) {
     if(ch)
         msg = sprintf("%s, '%c'", msg, ch);
-    msg = efun::sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
+    msg = sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
     error(msg);
 }
 

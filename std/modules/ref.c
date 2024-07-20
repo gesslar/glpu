@@ -11,8 +11,8 @@ mixed resolv_ref( mixed a ) {
 
     if( !stringp( a ) ) return a;
     if( !sscanf( a, "#%s", Ref ) ) return a;
-    if( Ref == "#" ) return this_player()-> query( "cwf" );
-    ret = this_player()-> query( "ref" );
+    if( Ref == "#" ) return this_body()-> query( "cwf" );
+    ret = this_body()-> query( "ref" );
     if( !mapp( ret ) ) return a;
     ret = ret[Ref];
     if( nullp( ret ) ) return a;
@@ -20,7 +20,7 @@ mixed resolv_ref( mixed a ) {
 }
 
 void set_ref( string ref_name, mixed ref_contents ) {
-    this_player()-> set( "ref/" + ref_name, ref_contents );
+    this_body()-> set( "ref/" + ref_name, ref_contents );
 }
 
 // NB arrays or mappings containing arrays, mappings or

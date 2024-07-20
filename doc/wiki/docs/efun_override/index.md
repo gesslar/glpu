@@ -14,7 +14,6 @@ title: efun_override
 * [shutdown](overrides#shutdown)
 * [tell_object](overrides#tell_object)
 * [tell_room](overrides#tell_room)
-* [this_body](overrides#this_body)
 * [this_user](overrides#this_user)
 * [userp](overrides#userp)
 * [write](overrides#write)

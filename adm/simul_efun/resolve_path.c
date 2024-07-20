@@ -25,12 +25,12 @@ string resolve_path(string Current, string Next)
    string* path_segments;
 
    if(Next=="here")
-      return file_name(environment(this_player())) + ".c";
+      return file_name(environment(this_body())) + ".c";
 
    if(Next[0]=='~')
    {
       if((Next[1]=='/')||(sizeof(Next)==1))
-         Next=user_path(this_player()->query_proper_name())+Next[1..<1];
+         Next=user_path(this_body()->query_proper_name())+Next[1..<1];
       else
       {
          index=strsrch(Next, "/");

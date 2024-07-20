@@ -107,6 +107,23 @@ varargs object find_ob(mixed ob, mixed cont, function f)
 Searches for an object within a container or environment
 using the specified criteria.
 
+## this_body
+
+### Synopsis
+
+```c
+object this_body()
+```
+
+### Returns
+
+`object` - The body of the current calling player.
+
+### Description
+
+This is a simul_efun that will return the body of the current
+interactive user. It is used as a replacement for this_player().
+
 ## present_livings
 
 ### Synopsis

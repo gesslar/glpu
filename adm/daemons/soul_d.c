@@ -50,13 +50,13 @@ nomask varargs int request_emote(string emote, string arg) {
 
     if(stringp(arg)) {
         tmp_array = explode(arg, " ");
-            target = present(tmp_array[0], environment(this_player()));
+            target = present(tmp_array[0], environment(this_body()));
     }
 
     if(target) {
         if(member_array(emote+"/t", keys(emotes)) == -1)    return 0;
 
-        if(!present(target, environment(this_player())))
+        if(!present(target, environment(this_body())))
             return notify_fail("That person is not present\n");
 
         if(!living(target))
@@ -91,14 +91,14 @@ nomask varargs void do_emote(string emote, string mods, object target) {
     if(emote[<2..<1] == "/t") emote = emote[0..<3];
 
     if(!target) {
-        tell_object(this_player(), build_emote(msgs[0], emote, mods, 0, 0, 1) + "\n");
-        tell_room(environment(this_player()), build_emote(msgs[1], emote, mods, 0, 1, 0)
-             + "\n", this_player());
+        tell_object(this_body(), build_emote(msgs[0], emote, mods, 0, 0, 1) + "\n");
+        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, 0, 1, 0)
+             + "\n", this_body());
     } else {
-        tell_object(this_player(), build_emote(msgs[0], emote, mods, target, 0, 1) + "\n");
-        tell_room(environment(this_player()), build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_player(), target }) );
+        tell_object(this_body(), build_emote(msgs[0], emote, mods, target, 0, 1) + "\n");
+        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_body(), target }) );
 
-        if(target != this_player()) tell_object(target, build_emote(msgs[2], emote, mods, target, 1, 2) + "\n");
+        if(target != this_body()) tell_object(target, build_emote(msgs[2], emote, mods, target, 1, 2) + "\n");
     }//END ELSE
 }
 
@@ -107,12 +107,12 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
     string *tmp_array2 = ({});
     int i;
 
-    if(target == this_player()) {
+    if(target == this_body()) {
         if(to_player == 1) {
             msg = replace_string(msg, "$PI", "your");
             msg = replace_string(msg, "$I", "You");
         }
-        else msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
+        else msg = replace_string(msg, "$I", capitalize(this_body()->query_name()));
 
         if(to_player == 0) msg = replace_string(msg, "$T", "him/herself");
         else if(to_player == 1) msg = replace_string(msg, "$T", "yourself");
@@ -120,7 +120,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
 
     if(target) {
         if(to_player == 1) msg = replace_string(msg, "$I", "You");
-        else msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
+        else msg = replace_string(msg, "$I", capitalize(this_body()->query_name()));
 
         if(to_player == 1) msg = replace_string(msg, "$PI", "your");
         else msg = replace_string(msg, "$PI", "his/her");
@@ -142,7 +142,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
             else msg = replace_string(msg, "$V", emote);
     } else {
         if(to_player == 1) msg = replace_string(msg, "$I", "You");
-        else if(to_player == 0) msg = replace_string(msg, "$I", capitalize(this_player()->query_name()));
+        else if(to_player == 0) msg = replace_string(msg, "$I", capitalize(this_body()->query_name()));
 
         msg = replace_string(msg, "$PI", "his/her");
             msg = replace_string(msg, "$SI", "he/she");

@@ -13,7 +13,7 @@ mixed main(object caller, string str) {
      ret = "";
 
      if(!str || !sscanf(str, "-%s %s", action, arg)) {
-          path = this_player()->query_path();
+          path = this_body()->query_path();
           for(i = 0; i < sizeof(path); i++) {
                ret += path[i][0..<2] + ":";
           }
@@ -26,13 +26,13 @@ mixed main(object caller, string str) {
      switch(action) {
           case "add" :
                {
-                    this_player()->add_path(arg);
+                    this_body()->add_path(arg);
                     break;
                }
 
           case "remove" :
                {
-                    this_player()->rem_path(arg);
+                    this_body()->rem_path(arg);
                     break;
                }
 
@@ -43,7 +43,7 @@ mixed main(object caller, string str) {
                }
      }
 
-     path = this_player()->query_path();
+     path = this_body()->query_path();
 
      for(i = 0; i < sizeof(path); i++)
      {

@@ -15,7 +15,7 @@ int main() {
             return 1;
     }//END IF
 
-    if(!adminp(query_privs(this_player()))) {
+    if(!adminp(query_privs(this_body()))) {
         write("\n Error [lockdown]: access denied\n");
         remove() ;
         return 1;

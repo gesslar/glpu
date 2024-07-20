@@ -92,7 +92,7 @@ void tune_into_error() {
 protected void log_error(string file, string message) {
     string username;
 
-    if(this_player()) username = query_privs(this_player());
+    if(this_body()) username = query_privs(this_body());
     else username = "(none)";
 
     if(stringp(username)) {
@@ -100,9 +100,9 @@ protected void log_error(string file, string message) {
         if(directory_exists(path)) {
             write_file(path + "log", "\n" + message);
         }
-        if(devp(this_player())) {
-            if(this_player()->query_env("error_output") != "disabled")
-            tell_object(this_player(), message);
+        if(devp(this_body())) {
+            if(this_body()->query_env("error_output") != "disabled")
+            tell_object(this_body(), message);
         }
     }
 
@@ -171,8 +171,8 @@ void error_handler(mapping mp, int caught) {
     // if(what[0..23] == "*Error in loading object")
     //     return ;
 
-    if(this_player()) {
-        userid = query_privs(this_player());
+    if(this_body()) {
+        userid = query_privs(this_body());
         if(!userid || userid == "")
             userid = "(none)";
         printf("%sTrace written to %s\n", what, logfile);
@@ -266,7 +266,7 @@ mixed compile_object(string file) {
 }
 
 string make_path_absolute(string file) {
-    file = resolve_path((string)this_player()->query_cwd(), file);
+    file = resolve_path((string)this_body()->query_cwd(), file);
     return file;
 }
 

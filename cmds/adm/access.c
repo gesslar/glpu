@@ -259,7 +259,7 @@ int i_crGroup(string str, object tp) {
           i_MainMenu("2", tp);
           return 1;
      } else {
-          groups[str] = ({query_privs(this_player())});
+          groups[str] = ({query_privs(this_body())});
           write("\nSuccess:  group '" + str + "' created. Note: You were added to the new group.\n");
           i_MainMenu("2", tp);
           return 1;
