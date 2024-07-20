@@ -11,94 +11,74 @@ command to allow editing of plan
 
 inherit STD_CMD ;
 
-mapping in_edits = ([]);
+private int delete_plan(object tp);
+public finish_edit(string text, object tp, int overwrite);
 
-void write_plan();
-int delete_plan();
-
-mixed main(object caller, string arg) {
+mixed main(object tp, string arg) {
     string tmp = "";
-    string user = this_player()->query_proper_name();
+    string user = query_privs(tp);
+    object editor ;
+    int overwrite = false ;
+    string file ;
 
-    if(arg && (arg == "-d" || sscanf(arg, "-d %*s"))) return delete_plan();
+    if(arg && (arg == "-d" || sscanf(arg, "-d %*s")))
+        return delete_plan(tp);
 
-    if(arg && (arg == "-o" || sscanf(arg, "-o %*s")))
-    in_edits[user] = ({ tmp, 1 });
+    file = user_path(user) + ".plan";
+
+    if(arg && (arg == "-o" || sscanf(arg, "-o %*s"))) {
+        overwrite = true;
+    } else {
+        overwrite = false;
+    }
+
+    if(overwrite)
+        tell(tp, "Enter the text you wish to have for your plan.\n") ;
     else
-    in_edits[user] = ({ tmp, 0 });
+        tell(tp, "Enter the text you wish to append to your plan.\n") ;
 
-    if(in_edits[user][1] == 1)
-    write("\nEnter the text you wish to have for your plan.\n" +
-      "Enter '.' on a line alone to finish, and '~q' to exit without saving\n\n:");
-    else
-    write("\nEnter the text you wish to append to your plan.\n" +
-      "Enter '.' on a line alone to finish, and '~q' to exit without saving\n\n:");
+    _debug("file: %s", file) ;
+    _debug("overwrite: %d", overwrite) ;
 
-    input_to("get_text");
+    editor = new(OBJ_EDITOR) ;
+    if(overwrite) {
+        editor->edit(tp, null, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
+    } else {
+        if(file_exists(file))
+            editor->edit(tp, file, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
+        else
+            editor->edit(tp, null, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
+    }
 
     return 1;
 }
 
-int get_text(string arg) {
-    if(arg == "~q") {
-        write("\nSetplan not modified.\n\n");
-        return 1;
+public void finish_edit(string text, object tp, string file, int overwrite) {
+    if(!text || text == "")
+        return tell(tp, "Aborted.\n") ;
+
+    if(!write_file(file, text, overwrite)) {
+        _error(tp, "Plan could not be written.\n") ;
+        return;
     }
 
-    if(arg == ".") {
-        write_plan();
-        return 1;
-    }
-
-    in_edits[this_player()->query_proper_name()][0] += arg + "\n";
-    write(":");
-
-    input_to("get_text");
-    return 1;
+    _ok(tp, "Plan successfully written to %s", file) ;
 }
 
-int delete_plan() {
-    string file = "/home/" + this_player()->query_proper_name()[0..0] + "/" + this_player()->query_proper_name() + "/.plan";
+int delete_plan(object tp) {
+    string name = query_privs(tp);
+    string file = user_path(name) + ".plan";
 
-    map_delete(in_edits, this_player()->query_proper_name());
+    if(!file_exists(file))
+        return _error("No such file %s", file);
 
     if(!rm(file))
-        return notify_fail("\nError [setplan]: could not delete plan file\n");
-    else {
-        write("\nSuccess [setplan]: plan successfully deleted\n");
-        return 1;
-    }
+        return _error("Could not delete plan file %s", file);
+
+    return _ok("Plan file %s deleted", file);
 }
 
-void write_plan() {
-    string file = "/home/" + this_player()->query_proper_name()[0..0] + "/" + this_player()->query_proper_name() + "/.plan";
-
-    if(!in_edits[this_player()->query_proper_name()][0] || in_edits[this_player()->query_proper_name()][0] == "") get_text("~q");
-
-    if(in_edits[this_player()->query_proper_name()][1] == 1) {
-        if(!write_file(file, in_edits[this_player()->query_proper_name()][0], 1)) {
-            write("\nError [setplan]: New plan could not be created\n\n");
-            map_delete(in_edits, this_player()->query_proper_name());
-            return;
-        } else {
-            write("\nSuccess [setplan]: New plan created\n\n");
-            map_delete(in_edits, this_player()->query_proper_name());
-            return;
-        }
-    } else {
-        if(!write_file(file, in_edits[this_player()->query_proper_name()][0])) {
-            write("\nError [setplan]: Plan could not be appended to\n\n");
-            map_delete(in_edits, this_player()->query_proper_name());
-            return;
-        } else {
-            write("\nSuccess [setplan]: Plan successfully edited\n\n");
-            map_delete(in_edits, this_player()->query_proper_name());
-            return;
-        }
-    }
-}
-
-string help(object caller) {
+string help(object tp) {
     return
     " SYNTAX: setplan [-o|-d]\n\n" +
     "This command allows you to edit your plan that is shown in your finger\n"+

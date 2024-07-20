@@ -18,7 +18,6 @@ int remove() ;
 void edit(object tp, string source_file, mixed *callback) {
     string *lines;
     string text;
-    string temp ;
     int i;
 
     if(!tp)
@@ -33,13 +32,19 @@ void edit(object tp, string source_file, mixed *callback) {
   ═══════════════════════════════════════════════════════════════════════════\n") ;
 
     text = "" ;
+
     if(stringp(source_file)) {
         if(!file_exists(source_file)) {
-            error("ERROR: File does not exist: " + source_file);
+            _error("File does not exist: " + source_file);
+            remove() ;
+            return ;
         }
 
-        if(file_size(source_file) > get_config(__MAX_READ_FILE_SIZE__))
-            error("ERROR: File is too large to read: " + source_file);
+        if(file_size(source_file) > get_config(__MAX_READ_FILE_SIZE__)) {
+            _error("File is too large to read: " + source_file);
+            remove() ;
+            return ;
+        }
         text += read_file(source_file);
     }
 
@@ -48,16 +53,13 @@ void edit(object tp, string source_file, mixed *callback) {
     if(sizeof(text))
         text = append(text, "\n");
 
-    temp = temp_file(tp) ;
+    tell(tp, implode(lines, "\n") + "\n║ ") ;
 
-    tell(tp, text + "║ ") ;
-
-    input_to("parse_input", 0, tp, text, temp, callback) ;
+    input_to("parse_input", 0, tp, "", text, callback) ;
 }
 
-void parse_input(string input, object tp, string text, string file, mixed *callback) {
+void parse_input(string input, object tp, string buf, string text, mixed *callback) {
     string *lines;
-    string temp ;
     int i;
 
     if(!input || input == "#") {
@@ -67,13 +69,14 @@ void parse_input(string input, object tp, string text, string file, mixed *callb
     }
 
     if(input == ".") {
-        call_back(callback, text) ;
+        catch(call_back(callback, buf)) ;
         remove() ;
         return ;
     }
 
     tell(tp, "║ ") ;
 
-    text += input + "\n" ;
-    input_to("parse_input", 0, tp, text, file, callback) ;
+    buf += input + "\n" ;
+
+    input_to("parse_input", 0, tp, buf, text, callback) ;
 }
