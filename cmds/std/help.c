@@ -71,7 +71,7 @@ mixed main(object tp, string str) {
         }
     }
     log_file(LOG_HELP, "Not found: " + str + "\n");
-    return notify_fail("Error [help]: Unable to find helpfile for: " + str + "\n");
+    return notify_fail("Error [help]: Unable to find help file for: " + str + "\n");
 }
 
 string help(object caller) {
