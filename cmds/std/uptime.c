@@ -9,7 +9,7 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string arg) {
-     write(capitalize(mud_name()) + " has been running since " + ctime(time() - uptime()) + "\n");
+     write(mud_name() + " has been running since " + ctime(time() - uptime()) + "\n");
      return 1;
 }
 
