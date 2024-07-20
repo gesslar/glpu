@@ -57,7 +57,7 @@ mixed main(object tp, string a) {
     for( i = 0 ; i < s ; i++ ) {
         if( stringp( objs[i] ) ) ob = get_objects( objs[i],0,1 );
         else if( objectp( objs[i] ) ) ob = objs[i];
-        if( !ob ) write( "Can't identify " + identify( objs[i] ) + " as an object.");
+        if( !ob ) write( "Can't identify " + identify( objs[i] ) + " as an object.\n");
         else tmp += ({ ob });
     }
     if( !sizeof( tmp ) ) return 1;
@@ -69,7 +69,7 @@ mixed main(object tp, string a) {
     s = sizeof( funcs );
     for( i = 0 ; i < s ; i ++ ) {
         if( stringp( funcs[i] ) ) tmp += ({ funcs[i] });
-        else write("Can't identify " + identify( funcs[i] )+" as a string.");
+        else write("Can't identify " + identify( funcs[i] )+" as a string.\n");
     }
     if( !sizeof( tmp ) ) return 1;
     funcs = tmp;
