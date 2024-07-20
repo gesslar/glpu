@@ -10,9 +10,9 @@ inherit STD_CMD ;
 
 mixed main(object caller, string args)
 {
-    string *command_path = this_player()->query_path();
+    string *command_path = this_body()->query_path();
     mixed *actions = previous_object()->query_commands();
-    mapping aliases = this_player()->get_aliases(1);
+    mapping aliases = this_body()->get_aliases(1);
     int i, is_located = 0;
 
     if(!args) return notify_fail("Error: Syntax: which <verb/command>\n");
@@ -58,7 +58,7 @@ mixed main(object caller, string args)
     {
         is_located = 1;
         write("Local Exit: " +
-            environment(this_player())->query_exit(args) + "\n");
+            environment(this_body())->query_exit(args) + "\n");
     }
 
 

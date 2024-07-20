@@ -51,7 +51,7 @@ void post_setup() {
 }
 
 int authorize_client(string filename) {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     if(!file_exists(filename)) return 0;
 
@@ -63,7 +63,7 @@ int authorize_client(string filename) {
 }
 
 int revoke_client_authorization(string filename) {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     if(member_array(base_name(previous_object()), authorized_clients) == -1) return 0;
 
@@ -131,7 +131,7 @@ string *get_group_listings()
 
 int admin_action_delete_post(string group, int id)
 {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     if(!data[group]) return 0;
 
@@ -144,7 +144,7 @@ int admin_action_delete_post(string group, int id)
 
 int admin_action_create_group(string group)
 {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     if(data[group]) return 0;
     data += ([group : ({})]);
@@ -156,7 +156,7 @@ int admin_action_create_group(string group)
 
 int admin_action_delete_group(string group)
 {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     if(!data[group]) return 0;
     map_delete(data, group);
@@ -168,7 +168,7 @@ int admin_action_delete_group(string group)
 
 int admin_action_set_permissions(string news_group, string user_group, string options)
 {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
     if(!data[capitalize(news_group)]) return 0;
 
     news_group = capitalize(news_group);
@@ -193,14 +193,14 @@ int has_permission(string news_group, string action)
     int i = 0;
     string access, group;
 
-    if(adminp(this_player())) return 1;
+    if(adminp(this_body())) return 1;
 
     for(i = 0; i < sizeof(permissions[news_group]); i++)
     {
     access = permissions[news_group][keys(permissions[news_group])[i]];
     group = keys(permissions[news_group])[i];
 
-    if(is_member(query_privs(this_player()), group) && strsrch(access, action) != -1)
+    if(is_member(query_privs(this_body()), group) && strsrch(access, action) != -1)
         return 1;
     }
 

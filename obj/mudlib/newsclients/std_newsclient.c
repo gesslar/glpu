@@ -43,14 +43,14 @@ int is_new();
 void create()
 {
     viewed = ([]);
-    if(file_exists(user_data_directory(query_privs(this_player())) + "std_newsclient.o"))
-        viewed = restore_variable(read_file(user_data_directory(query_privs(this_player()))
+    if(file_exists(user_data_directory(query_privs(this_body())) + "std_newsclient.o"))
+        viewed = restore_variable(read_file(user_data_directory(query_privs(this_body()))
             + "std_newsclient.o"));
 
 }
 
 int remove() {
-    write_file(user_data_directory(query_privs(this_player())) + "std_newsclient.o",
+    write_file(user_data_directory(query_privs(this_body())) + "std_newsclient.o",
         save_variable(viewed), 1);
     return 1 ;
 }
@@ -245,8 +245,8 @@ int group_input(string args)
             {
             posts = NEWS_D->get_posts(groups[current_group]);
 
-            if(lower_case(posts[numerical_arg - 1]["author"]) != this_player()->query_proper_name()
-                && !adminp(this_player()))
+            if(lower_case(posts[numerical_arg - 1]["author"]) != this_body()->query_proper_name()
+                && !adminp(this_body()))
             {
                 write("\nYou cannot edit a post that you did not write.\n");
                 write("\n" + capitalize(groups[current_group]) + " > ");
@@ -441,13 +441,13 @@ int edit_msg(int num)
     write("Editing post: " + posts[num]["subject"] + "\n");
     write("=--------------------------------------=\n\n");
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+    current_file = "/tmp/" + random(9999999) + "." + this_body()->query_proper_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "."
-        + this_player()->query_proper_name();
+        + this_body()->query_proper_name();
 
     write_file(current_file, implode(explode(posts[num]["content"], "\n"), "\n"), 1);
 
-    if(!devp(this_player())) ed(current_file, "callback_write", "callback_edit", 1);
+    if(!devp(this_body())) ed(current_file, "callback_write", "callback_edit", 1);
     else ed(current_file, "callback_write", "callback_edit", 0);
 
     return 1;
@@ -458,17 +458,17 @@ int create_msg(string subject)
     if(!subject) subject = "(No Subject)";
     current_subject = subject;
     write("\nGroup: " + groups[current_group] + "\n");
-    write("Author: " + capitalize(this_player()->query_proper_name()) + "\n");
+    write("Author: " + capitalize(this_body()->query_proper_name()) + "\n");
     write("Date: " + ctime(time()) + "\n");
     write("Subject: " + subject + "\n");
     write("=--------------------------------------=\n\n");
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+    current_file = "/tmp/" + random(9999999) + "." + this_body()->query_proper_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "."
-        + this_player()->query_proper_name();
+        + this_body()->query_proper_name();
 
     write_file(current_file, "");
-    if(!devp(this_player())) ed(current_file, "callback_write", "callback_exit", 1);
+    if(!devp(this_body())) ed(current_file, "callback_write", "callback_exit", 1);
     else ed(current_file, "callback_write", "callback_exit", 0);
 
     return 1;
@@ -514,7 +514,7 @@ void callback_exit()
         return;
     }
 
-    NEWS_D->client_action_post(groups[current_group], capitalize(this_player()->query_proper_name()),
+    NEWS_D->client_action_post(groups[current_group], capitalize(this_body()->query_proper_name()),
         current_subject, contents);
 
     rm(current_file);

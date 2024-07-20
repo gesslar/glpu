@@ -475,7 +475,7 @@ void enter_world(string str) {
 void relogin() {
     object login = new(LOGIN_OB);
 
-    body = this_player();
+    body = this_body();
     user = body->query_user();
     body->exit_world();
     log_file(LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged out (relogin) from " +

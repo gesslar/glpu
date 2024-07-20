@@ -801,15 +801,15 @@ protected varargs void get_cc(string arg, int flag, int forward) {
         write("____________________________________________________________\n");
     }
 
-    current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+    current_file = "/tmp/" + random(9999999) + "." + this_body()->query_proper_name();
         while(file_exists(current_file))
-            current_file = "/tmp/" + random(9999999) + "." + this_player()->query_proper_name();
+            current_file = "/tmp/" + random(9999999) + "." + this_body()->query_proper_name();
 
         gflag = flag;
         gforward = forward;
 
     write_file(current_file, "");
-    if(!devp(this_player())) ed(current_file, "callback_write", "callback_exit", 1);
+    if(!devp(this_body())) ed(current_file, "callback_write", "callback_exit", 1);
     else ed(current_file, "callback_write", "callback_exit", 0);
 }//END get_cc
 
@@ -952,7 +952,7 @@ protected mixed save_message(string path, mapping message) {
         }
     }
 
-    if(!master()->valid_write(path, this_player(), "save_message"))
+    if(!master()->valid_write(path, this_body(), "save_message"))
     return "Could not write file to " + path;
 
     write_file(path, text, 1);

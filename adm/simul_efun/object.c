@@ -51,13 +51,13 @@ varargs object get_object( string str, object player ) {
     mixed tmp;
 
     if( !str ) return 0;
-    if( !player || !living( player ) ) player = this_player();
+    if( !player || !living( player ) ) player = this_body();
     if( sscanf( str, "@%s", tmp ) &&
         ( tmp = get_object( tmp, player ) ) &&
         ( what = environment( tmp ) )) {
             return what;
     }
-    if( player ) {   //  Check existance of this_player()
+    if( player ) {   //  Check existance of this_body()
         if( str == "me" ) return player;
         if( what = present( str, player ) ) return what;  // Inventory check
         if( what = environment( player ) ) {              // Environment check
@@ -380,4 +380,14 @@ object *get_players(mixed names, object room) {
     ret = filter(ret, (: userp :));
 
     return ret;
+}
+
+/**
+ * @simul_efun this_body
+ * @description This is a simul_efun that will return the body of the current
+ *              interactive user. It is used as a replacement for this_player().
+ * @returns {object} - The body of the current calling player.
+ */
+object this_body() {
+    return efun::this_player() ;
 }

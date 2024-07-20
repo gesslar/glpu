@@ -43,7 +43,7 @@ mixed main(object caller, string str) {
             if(!arg)
                 return _error(caller, "Invalid colour code.") ;
 
-            if(!caller->query_env("colour") != "on")
+            if(caller->query_env("colour") != "on")
                 return _error(caller, "Colour is currently disabled.") ;
 
             if(sscanf(arg, "%d", num) != 1)

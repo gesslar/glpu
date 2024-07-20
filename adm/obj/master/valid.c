@@ -213,8 +213,10 @@ int valid_object(object ob) {
 }
 
 int valid_override(string file, string efun_name, string mainfile) {
+    _debug("file %s, efun_name %s, mainfile %s", file, efun_name, mainfile);
     if(mainfile == "/adm/obj/simul_efun.c") return 1 ;
     if(mainfile == "/adm/simul_efun/overrides.c") return 1 ;
+    if(efun_name == "this_player" && mainfile == "/adm/simul_efun/object.c") return 1;
     if(efun_name == "destruct" && mainfile == "/std/object/object.c") return 1;
     if(efun_name == "ed") return 1;
     return 0;

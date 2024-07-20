@@ -29,7 +29,7 @@ int set_short(mixed str) {
 }
 
 
-string query_short(object viewer: (: this_player() :)) {
+string query_short(object viewer: (: this_body() :)) {
     mixed result ;
 
     result = short ;
@@ -46,7 +46,7 @@ int set_long(mixed str) {
     long = str;
 }
 
-string query_long(object viewer: (: this_player() :)) {
+string query_long(object viewer: (: this_body() :)) {
     mixed result ;
 
     result = long ;

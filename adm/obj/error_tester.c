@@ -19,7 +19,7 @@ private nosave string *exclude = ({
     ".", "..", "attic", "BACKUP", "old", "backup",
     "ATTIC", ".git", ".vscode", "tmp", "TMP", "u",
     "log", "doc", "plans", "players", "data", "_attic",
-    "weapon2", "removed", "cards",
+    "weapon2", "removed", "cards", "fluffos",
 }) ;
 
 private nosave int file_call_out = 0 ;

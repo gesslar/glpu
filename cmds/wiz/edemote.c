@@ -20,7 +20,7 @@ mixed main(object caller, string arg)
     return(notify_fail("Error [soul]: Access denied.\n"));
 
     emote_client = new(OBJ_SOUL_TOOL);
-    emote_client->move(this_player());
+    emote_client->move(this_body());
 
     if(stringp(arg))
     {

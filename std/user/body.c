@@ -170,7 +170,7 @@ void exit_world() {
     string *cmds;
     int i;
 
-    if(this_player() != this_object()) return;
+    if(this_body() != this_object()) return;
 
     if(file_size(user_path(query_proper_name()) + ".quit") > 0) {
         cmds = explode(read_file(user_path(query_proper_name()) + ".quit"), "\n");
@@ -201,7 +201,7 @@ void reconnect() {
     restore_user();
     set("last_login", time());
     tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_player());
+    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
     set_short(query_name());
     /* reconnection logged in login object */
 }
@@ -229,12 +229,12 @@ void heart_beat() {
 }
 
 void restore_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
 }
 
 void save_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
     catch(save_object(user_mob_data(query_proper_name())));
 }
 
@@ -304,7 +304,7 @@ string *query_path() {
 }
 
 void add_path(string str) {
-    if(!adminp(previous_object()) && this_player() != this_object()) return;
+    if(!adminp(previous_object()) && this_body() != this_object()) return;
 
     if(member_array(str, path) != -1) {
         write("Error [path]: Directory '" + str + "' is already in your path.\n");
@@ -322,7 +322,7 @@ void add_path(string str) {
 }
 
 void rem_path(string str) {
-    if(!adminp(previous_object()) && this_player() != this_object()) return;
+    if(!adminp(previous_object()) && this_body() != this_object()) return;
 
     if(member_array(str, path) == -1) {
         write("Error [path]: Directory '" + str + "' is not in your path.\n");
@@ -346,7 +346,7 @@ string process_input(string arg) {
 }
 
 nomask varargs string *query_command_history(int index, int range) {
-    if(this_player() != this_object() && !adminp(previous_object())) return ({});
+    if(this_body() != this_object() && !adminp(previous_object())) return ({});
     if(!index) return command_history + ({});
     else if(range) return command_history[index..range] + ({});
     else return ({ command_history[index] });
@@ -360,7 +360,7 @@ int command_hook(string arg) {
     mixed result ;
     object *obs, ob ;
 
-    caller = this_player() ;
+    caller = this_body() ;
 
     if(interactive(caller)) if(caller != this_object()) return 0;
 
@@ -404,31 +404,31 @@ int command_hook(string arg) {
     catch {
         if(environment()) {
             // if(environment()->valid_exit(verb)) {
-            //     if(this_player()->move_allowed(environment(this_player())->query_exit(verb))) {
-            //         if(this_player()->query_env("move_in") && wizardp(this_player())) {
-            //             custom = this_player()->query_env("move_in");
+            //     if(this_body()->move_allowed(environment(this_body())->query_exit(verb))) {
+            //         if(this_body()->query_env("move_in") && wizardp(this_body())) {
+            //             custom = this_body()->query_env("move_in");
             //             tmp = custom;
             //             tmp = replace_string(tmp, "$N", query_cap_name());
-            //             tell_room(environment(this_player())->query_exit(verb), capitalize(tmp) + "\n", this_player());
+            //             tell_room(environment(this_body())->query_exit(verb), capitalize(tmp) + "\n", this_body());
             //         } else {
-            //             tell_room(environment(this_player())->query_exit(verb), capitalize(name()) + " has entered the room.\n", this_player());
+            //             tell_room(environment(this_body())->query_exit(verb), capitalize(name()) + " has entered the room.\n", this_body());
             //         }
 
-            //         if(this_player()->query_env("move_out") && wizardp(this_player())) {
-            //             custom = this_player()->query_env("move_out");
+            //         if(this_body()->query_env("move_out") && wizardp(this_body())) {
+            //             custom = this_body()->query_env("move_out");
             //             tmp = custom;
             //             tmp = replace_string(tmp, "$N", query_ssssssssssssssssssssse());
             //             tmp = replace_string(tmp, "$D", verb);
-            //             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            //             tell_room(environment(this_body()), capitalize(tmp) + "\n", this_body());
             //         } else {
-            //             tell_room(environment(this_player()), capitalize(name())
-            //                 + " leaves through the " + verb + " exit.\n", this_player());
+            //             tell_room(environment(this_body()), capitalize(name())
+            //                 + " leaves through the " + verb + " exit.\n", this_body());
             //         }
 
-            //         write("You move to " + environment(this_player())->query_exit(verb)->query_short() +
+            //         write("You move to " + environment(this_body())->query_exit(verb)->query_short() +
             //             ".\n\n");
 
-            //         this_player()->move(environment(this_player())->query_exit(verb));
+            //         this_body()->move(environment(this_body())->query_exit(verb));
             //         return 1;
             //     } else {
             //         write("Error [move]: Unable to move through that exit.\n");
@@ -543,7 +543,7 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!is_member(query_privs(previous_object()), "admin") && this_player() != this_object())
+    if(!is_member(query_privs(previous_object()), "admin") && this_body() != this_object())
         return 0;
     else
         return command(cmd);

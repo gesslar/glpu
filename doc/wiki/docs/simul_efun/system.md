@@ -45,7 +45,7 @@ varargs int _info(string str, mixed args...)
 
 Provides an informational message, optionally formatted with
 arguments. If no object is provided, the message will be sent
-to this_player(). If no object is found, the message will be
+to this_body(). If no object is found, the message will be
 sent to the debug log.
 
 ## mud_name
@@ -86,7 +86,7 @@ varargs int _ok(string str, mixed args...)
 
 Provides an confirmation message, optionally formatted with
 arguments. If no object is provided, the message will be sent
-to this_player(). If no object is found, the message will be
+to this_body(). If no object is found, the message will be
 sent to the debug log.
 
 ## lib_name
@@ -271,7 +271,7 @@ varargs int _warn(string str, mixed args...)
 
 Provides an warning message, optionally formatted with
 arguments. If no object is provided, the message will be sent
-to this_player(). If no object is found, the message will be
+to this_body(). If no object is found, the message will be
 sent to the debug log.
 
 ## _error
@@ -296,7 +296,7 @@ varargs int _error(string str, mixed args...)
 
 Provides an error message, optionally formatted with
 arguments. If no object is provided, the message will be sent
-to this_player(). If no object is found, the message will be
+to this_body(). If no object is found, the message will be
 sent to the debug log.
 
 ## open_status

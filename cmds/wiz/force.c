@@ -15,14 +15,14 @@ mixed main(object caller, string args)
 
     if(!stringp(args) || sscanf(args, "%s %s", target, cmd) != 2)
         return(notify_fail("Syntax Error [force]: force <livining> <cmd>\n"));
-    if(!environment(this_player())) return 0;
+    if(!environment(this_body())) return 0;
 
     target = lower_case(target);
-    ob = present(target, environment(this_player()));
+    ob = present(target, environment(this_body()));
 
     if(!objectp(ob)) return notify_fail("Error [force]: " + target + " not found.\n");
     if(!living(ob)) return notify_fail("Error [force]: That object is not living.\n");
-    if(adminp(this_player()) && interactive(ob)) return 0;
+    if(adminp(this_body()) && interactive(ob)) return 0;
     else if(interactive(ob)) return notify_fail("Error [force]: You may not force them.\n");
 
     write("You force " + capitalize(target ) + " to: " + cmd + "\n");
@@ -39,7 +39,7 @@ string help(object caller)
     "Normal developers may not force interactive objects (ie.\n"
     "users).\n";
 
-    if(adminp(this_player())) ret +=
+    if(adminp(this_body())) ret +=
     "\nAdmins: There exists a seperate command to force interactives\n"
     "in the admin command directory. The mud will automatically use\n"
     "that command if you try to force an interactive - nothing special\n"

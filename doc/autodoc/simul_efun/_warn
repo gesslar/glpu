@@ -12,5 +12,5 @@ Returns
 
 Provides an warning message, optionally formatted with
 arguments. If no object is provided, the message will be sent
-to this_player(). If no object is found, the message will be
+to this_body(). If no object is found, the message will be
 sent to the debug log.
