@@ -22,7 +22,7 @@ varargs void prompt_colour(object body, mixed *cb, string prompt)
 Prompt the user for a colour. The user will be presented with a
 list of colours to choose from. The user can also enter a
 number corresponding to an xterm 256 colour, or the word "plain"
-tp select no colour.
+to select no colour.
 Upon selection, the callback function will be called with the
 selected colour as the argument.
 
