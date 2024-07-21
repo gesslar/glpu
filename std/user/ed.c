@@ -165,7 +165,8 @@ void finish_exit_callback() {
 }
 
 void abort_edit() {
-    defer((: rm, temp_file :)) ;
+    if(!nullp(temp_file))
+        defer((: rm, temp_file :)) ;
 
     if(!nullp(post_edit))
         catch(call_back(post_edit, ED_STATUS_ABORTED, edit_file, temp_file)) ;
