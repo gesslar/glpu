@@ -30,7 +30,7 @@ void create()
 
 int main_menu()
 {
-    if(!adminp(this_player())) return 0;
+    if(!adminp(this_body())) return 0;
 
     write("\n\t-= NEWS SYSTEM ADMINISTRATION =-\n\n");
     write(

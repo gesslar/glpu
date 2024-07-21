@@ -8,9 +8,9 @@
 //Last edited on June 19th, 2006 by Parthenon
 
 
-#define TP this_player()
-#define TPQN this_player()->query_name()
-#define TPQCN capitalize(this_player()->query_name())
+#define TP this_body()
+#define TPQN this_body()->query_name()
+#define TPQCN capitalize(this_body()->query_name())
 
 
 /********* GLOBALS ***************/
@@ -50,9 +50,9 @@ mixed main(object caller, string arg) {
     return 1;
     }// END IF
 
-    write("You emote: " + capitalize(this_player()->query_name()) + " " +
+    write("You emote: " + capitalize(this_body()->query_name()) + " " +
       arg + "\n");
-    say (capitalize(this_player()->query_name()) + " " + arg + "\n");
+    say (capitalize(this_body()->query_name()) + " " + arg + "\n");
     return 1;
 }
 
@@ -118,7 +118,7 @@ int get_users_targeted()
     {
     if(list_of_names_in_emote[i][<2..<1] == "'s")
     {
-        tmp = present(lower_case(list_of_names_in_emote[i][0..<3]), environment(this_player()));
+        tmp = present(lower_case(list_of_names_in_emote[i][0..<3]), environment(this_body()));
 
         if(!tmp)
         return notify_fail(capitalize(list_of_names_in_emote[i][0..<3]) + " is not present!\n");
@@ -127,7 +127,7 @@ int get_users_targeted()
     }// END IF
     else if(list_of_names_in_emote[i][<2..<1] == "s'")
     {
-        tmp = present(lower_case(list_of_names_in_emote[i][0..<2]), environment(this_player()));
+        tmp = present(lower_case(list_of_names_in_emote[i][0..<2]), environment(this_body()));
 
         if(!tmp)
         return notify_fail(capitalize(list_of_names_in_emote[i][0..<2]) + " is not present!\n");
@@ -136,7 +136,7 @@ int get_users_targeted()
     }// END ELSE IF
     else
     {
-        tmp = present(lower_case(list_of_names_in_emote[i]), environment(this_player()));
+        tmp = present(lower_case(list_of_names_in_emote[i]), environment(this_body()));
 
         if(!tmp)
         return notify_fail(capitalize(list_of_names_in_emote[i]) + " is not present!\n");

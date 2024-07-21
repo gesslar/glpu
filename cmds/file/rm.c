@@ -21,7 +21,7 @@ mixed main(object tp, string str) {
        return _info("Syntax: rm [-r] <file name>");
 
     if(sscanf(str, "-r %s", dir) == 1) {
-        dir = resolve_path(tp->query("cwd"), dir) + "/";
+        dir = resolve_path(tp->query_env("cwd"), dir) + "/";
 
         if(!directory_exists(dir))
             return _error("%s: No such directory.", dir);
@@ -43,27 +43,31 @@ mixed main(object tp, string str) {
     if(of("*", str) || of("?", str)) {
         string *files ;
         string *failed = ({});
+        string path, *parts ;
 
-        files = get_dir(resolve_path(tp->query("cwd"), str));
+        path = resolve_path(tp->query_env("cwd"), str) ;
+        parts = dir_file(path);
+
+        files = get_dir(path);
         files -= ({ ".", ".." });
 
         if(!sizeof(files))
-            return _error("%s: No matching file(s).", str);
+            return _error("%s: No matching file(s).", path);
 
-        files = map(files, (: resolve_path($(tp)->query("cwd"), $1) :));
+        files = map(files, (: $(parts[0]) + $1 :));
 
         foreach(string file in files) {
             if(!(int)master()->valid_write(file, tp, "rm")) {
-                _error("Permission denied for %s.", file);
+                _error("%s: Permission denied.", file);
                 failed += ({ file });
                 continue;
             }
 
             if(!rm(file)) {
                 failed += ({ file });
-                _error("Could not remove %s.", file);
+                _error("Could not remove %s", file);
             } else {
-                _ok("File removed: %s", file);
+                _info("%s: removed", file);
             }
         }
 
@@ -73,7 +77,7 @@ mixed main(object tp, string str) {
         return _ok("All files removed successfully.");
     }
 
-    str = resolve_path(tp->query("cwd"), str);
+    str = resolve_path(tp->query_env("cwd"), str);
 
     if(directory_exists(str) || !file_exists(str))
         return _error("%s: No such file.", str);
@@ -82,7 +86,7 @@ mixed main(object tp, string str) {
         return _error("Permission denied.");
     }
 
-    return(rm(str) ? _ok("File removed.") : _error("Could not remove file."));
+    return(rm(str) ? _ok("File removed: %s", str) : _error("Could not remove file: %s", str));
 }
 
 int confirm_recursive_delete(string arg, object tp) {

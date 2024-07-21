@@ -176,7 +176,7 @@ private varargs int json_decode_parse_at_token(mixed* parse, string token, int s
 private varargs void json_decode_parse_error(mixed* parse, string msg, int ch) {
     if(ch)
         msg = sprintf("%s, '%c'", msg, ch);
-    msg = efun::sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
+    msg = sprintf("%s @ line %d char %d\n", msg, parse[JSON_DECODE_PARSE_LINE], parse[JSON_DECODE_PARSE_CHAR]);
     error(msg);
 }
 
@@ -489,7 +489,7 @@ private mixed json_decode_parse_number(mixed* parse) {
           // consume until next non-whitespace
           json_decode_skip_whitespaces(parse);
           next_ch = parse[JSON_DECODE_PARSE_TEXT][parse[JSON_DECODE_PARSE_POS]];
-          // can not continue to be number.
+          // cannot continue to be number.
           if((next_ch >= '0' && next_ch <= '9') || next_ch == '-') json_decode_parse_error(parse, "Unexpected character", next_ch);
           return 0;
         }

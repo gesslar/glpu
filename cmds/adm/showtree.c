@@ -42,7 +42,7 @@ mixed main(object tp, string str) {
 
     ob = get_object(file) ;
     if(ob) file = base_name(ob);
-    else file = resolve_path(tp->query("cwd"), file);
+    else file = resolve_path(tp->query_env("cwd"), file);
 
     result = dig(file, func, 0);
 

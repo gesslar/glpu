@@ -62,6 +62,7 @@ title: simul_efun
 * [query_file_name](file#query_file_name)
 * [tail](file#tail)
 * [temp_file](file#temp_file)
+* [touch](file#touch)
 
 ## function
 
@@ -119,6 +120,8 @@ title: simul_efun
 * [getoid](object#getoid)
 * [present_livings](object#present_livings)
 * [present_players](object#present_players)
+* [this_body](object#this_body)
+* [this_caller](object#this_caller)
 * [top_environment](object#top_environment)
 
 ## resolve_path

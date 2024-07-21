@@ -68,13 +68,13 @@ void set_privs(object ob, string privs) {
  * @efun_override write
  * @description This function is an override of the write() efun. It will
  *              write a message to the player using the message() efun
- *              if this_player(), otherwise it will use the debug_message()
+ *              if this_body(), otherwise it will use the debug_message()
  *              efun.
  * @param {string} msg - The message to write.
  * @returns {void}
  */
 void write(string msg) {
-    if(this_player()) message("write", msg + "", this_player());
+    if(this_body()) message("write", msg + "", this_body());
     else debug_message(msg) ;
 }
 
@@ -90,7 +90,7 @@ void write(string msg) {
 varargs void say(string msg, mixed exclude) {
     object me;
 
-    if(this_player()) me = this_player();
+    if(this_body()) me = this_body();
     else me = previous_object();
 
     if(objectp(exclude)) exclude = ({ me, exclude });
@@ -113,8 +113,8 @@ varargs void shout(string msg, mixed exclude) {
         exclude = ({ exclude });
     else if(!pointerp(exclude))
         exclude = ({ });
-    if(this_player())
-        exclude += ({ this_player() });
+    if(this_body())
+        exclude += ({ this_body() });
     message("shout", msg, users(), exclude);
 }
 
@@ -204,23 +204,13 @@ varargs string ctime(int x) {
 }
 
 /**
- * @efun_override this_body
- * @description This is an override of the efun this_body(). It will return
- *              the this_player().
- * @returns {object} - The this_player().
- */
-object this_body() {
-    return this_player();
-}
-
-/**
  * @efun_override this_user
  * @description This is an override of the efun this_user(). It will return
- *              the this_player()->query_user().
- * @returns {object} - The this_player()->query_user().
+ *              the this_body()->query_user().
+ * @returns {object} - The this_body()->query_user().
  */
 object this_user() {
-    return this_player()->query_user();
+    return this_body()->query_user();
 }
 
 private nosave string _empty_buffer = null ;

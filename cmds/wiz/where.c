@@ -15,7 +15,7 @@ inherit STD_CMD ;
 mixed main(object caller, string str) {
     object ob;
 
-    if(!str) str = this_player()->query_proper_name();
+    if(!str) str = this_body()->query_proper_name();
 
     if(find_player(str)) {
         ob = find_player(str);

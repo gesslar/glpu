@@ -53,6 +53,7 @@ varargs string tail(string path, int line_count) ;
 void assure_file(string file) ;
 varargs string temp_file(mixed arg) ;
 string *dir_file(string path) ;
+int touch(string file) ;
 
 // File: function
 int valid_function(mixed f) ;
@@ -102,6 +103,7 @@ object get_living(string name, object room) ;
 object *get_livings(mixed names, object room) ;
 object get_player(string name, object room) ;
 object *get_players(mixed names, object room) ;
+object this_body() ;
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;

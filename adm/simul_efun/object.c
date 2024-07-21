@@ -51,13 +51,13 @@ varargs object get_object( string str, object player ) {
     mixed tmp;
 
     if( !str ) return 0;
-    if( !player || !living( player ) ) player = this_player();
+    if( !player || !living( player ) ) player = this_body();
     if( sscanf( str, "@%s", tmp ) &&
         ( tmp = get_object( tmp, player ) ) &&
         ( what = environment( tmp ) )) {
             return what;
     }
-    if( player ) {   //  Check existance of this_player()
+    if( player ) {   //  Check existance of this_body()
         if( str == "me" ) return player;
         if( what = present( str, player ) ) return what;  // Inventory check
         if( what = environment( player ) ) {              // Environment check
@@ -78,7 +78,7 @@ varargs object get_object( string str, object player ) {
     // Search for a matching file_name, completing path with
     // user's present path
     if( player ) {
-        str = resolve_path( (string)player-> query( "cwd" ), str );
+        str = resolve_path( (string)player-> query_env("cwd"), str );
     }
 
     what = find_object(str);
@@ -380,4 +380,29 @@ object *get_players(mixed names, object room) {
     ret = filter(ret, (: userp :));
 
     return ret;
+}
+
+/**
+ * @simul_efun this_body
+ * @description This is a simul_efun that will return the body of the current
+ *              interactive user. It is used as a replacement for this_player().
+ * @returns {object} - The body of the current calling player.
+ */
+object this_body() {
+    return efun::this_player() ;
+}
+
+/**
+ * @simul_efun this_caller
+ * @description This is a simul_efun that will return the object that called
+ *              the current operation. This may be this_body(), but it may
+ *              also be a shadow another player who initiated the chain.
+ *              For example, a wizard using the force command.
+ *
+ *              Be careful with this one, you don't want to accidentally
+ *              perform operations on the wrong object.
+ * @returns {object} - The object that called the current operation.
+ */
+object this_caller() {
+    return efun::this_player(1) ;
 }

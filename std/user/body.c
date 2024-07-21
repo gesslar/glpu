@@ -22,6 +22,7 @@ inherit STD_OBJECT;
 
 inherit __DIR__ "alias" ;
 inherit __DIR__ "wealth" ;
+inherit __DIR__ "ed" ;
 
 inherit CLASS_GMCP ;
 inherit M_GMCP ;
@@ -38,7 +39,6 @@ private nosave object link;
 
 void enter_world();
 void exit_world();
-void net_dead();
 void reconnect();
 
 /* User object functions */
@@ -113,7 +113,7 @@ void setup_body() {
     set_heart_beat(1);
     enable_commands();
     set("prevent_get", 1);
-    if(!query("cwd")) set("cwd", "/doc");
+    if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
@@ -137,29 +137,11 @@ void enter_world() {
     ANNOUNCE_CHDMOD->announce_login(query_name());
 
     catch {
-        news_client = new(query_env("news_client"));
-        news_client->move(this_object());
-        if(news_client->is_new()) write("\nNotice: There are new news posts.\n\n");
-        news_client->remove() ;
-        mail_client = new(OBJ_MAIL_CLIENT);
-        mail_client->move(this_object());
-        if(mail_client->has_new_mail()) write("You have new mail!\n\n");
-        mail_client->remove() ;
-    };
-
-    catch {
         ch = explode(query_env("auto_tune"), " ");
         if(sizeof(ch) > 0)
             foreach(string channel in ch)
                force_me("channel tune in " + channel);
     };
-
-    if(file_size(user_path(query_proper_name()) + ".login") > 0) {
-        write("\n");
-        cmds = explode(read_file(user_path(query_proper_name()) + ".login"), "\n");
-        if(sizeof(cmds) <= 0) return;
-        for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
-    }
 
     set("last_login", time());
     write("\n");
@@ -170,7 +152,7 @@ void exit_world() {
     string *cmds;
     int i;
 
-    if(this_player() != this_object()) return;
+    if(this_body() != this_object()) return;
 
     if(file_size(user_path(query_proper_name()) + ".quit") > 0) {
         cmds = explode(read_file(user_path(query_proper_name()) + ".quit"), "\n");
@@ -189,11 +171,17 @@ void exit_world() {
 }
 
 void net_dead() {
-    if(origin() != ORIGIN_DRIVER) return;
+    if(origin() != ORIGIN_DRIVER)
+        return;
+
+    abort_edit() ;
+
     set("last_login", time());
     save_user();
-    if(environment()) tell_room(environment(), query_name()+ " has gone link-dead.\n");
-    set_short(query_name() + " [link dead]");
+
+    if(environment())
+        tell_all(environment(), query_name()+ " falls into stupour.\n");
+    set("extra_short/link_dead", "[stupour]") ;
     log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
 }
 
@@ -201,8 +189,8 @@ void reconnect() {
     restore_user();
     set("last_login", time());
     tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_player());
-    set_short(query_name());
+    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
+    delete("extra_short/link_dead") ;
     /* reconnection logged in login object */
 }
 
@@ -229,12 +217,12 @@ void heart_beat() {
 }
 
 void restore_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_player()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
 }
 
 void save_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
     catch(save_object(user_mob_data(query_proper_name())));
 }
 
@@ -304,7 +292,7 @@ string *query_path() {
 }
 
 void add_path(string str) {
-    if(!adminp(previous_object()) && this_player() != this_object()) return;
+    if(!adminp(previous_object()) && this_body() != this_object()) return;
 
     if(member_array(str, path) != -1) {
         write("Error [path]: Directory '" + str + "' is already in your path.\n");
@@ -322,7 +310,7 @@ void add_path(string str) {
 }
 
 void rem_path(string str) {
-    if(!adminp(previous_object()) && this_player() != this_object()) return;
+    if(!adminp(previous_object()) && this_body() != this_object()) return;
 
     if(member_array(str, path) == -1) {
         write("Error [path]: Directory '" + str + "' is not in your path.\n");
@@ -346,7 +334,7 @@ string process_input(string arg) {
 }
 
 nomask varargs string *query_command_history(int index, int range) {
-    if(this_player() != this_object() && !adminp(previous_object())) return ({});
+    if(this_body() != this_object() && !adminp(previous_object())) return ({});
     if(!index) return command_history + ({});
     else if(range) return command_history[index..range] + ({});
     else return ({ command_history[index] });
@@ -360,7 +348,7 @@ int command_hook(string arg) {
     mixed result ;
     object *obs, ob ;
 
-    caller = this_player() ;
+    caller = this_body() ;
 
     if(interactive(caller)) if(caller != this_object()) return 0;
 
@@ -404,31 +392,31 @@ int command_hook(string arg) {
     catch {
         if(environment()) {
             // if(environment()->valid_exit(verb)) {
-            //     if(this_player()->move_allowed(environment(this_player())->query_exit(verb))) {
-            //         if(this_player()->query_env("move_in") && wizardp(this_player())) {
-            //             custom = this_player()->query_env("move_in");
+            //     if(this_body()->move_allowed(environment(this_body())->query_exit(verb))) {
+            //         if(this_body()->query_env("move_in") && wizardp(this_body())) {
+            //             custom = this_body()->query_env("move_in");
             //             tmp = custom;
             //             tmp = replace_string(tmp, "$N", query_cap_name());
-            //             tell_room(environment(this_player())->query_exit(verb), capitalize(tmp) + "\n", this_player());
+            //             tell_room(environment(this_body())->query_exit(verb), capitalize(tmp) + "\n", this_body());
             //         } else {
-            //             tell_room(environment(this_player())->query_exit(verb), capitalize(name()) + " has entered the room.\n", this_player());
+            //             tell_room(environment(this_body())->query_exit(verb), capitalize(name()) + " has entered the room.\n", this_body());
             //         }
 
-            //         if(this_player()->query_env("move_out") && wizardp(this_player())) {
-            //             custom = this_player()->query_env("move_out");
+            //         if(this_body()->query_env("move_out") && wizardp(this_body())) {
+            //             custom = this_body()->query_env("move_out");
             //             tmp = custom;
             //             tmp = replace_string(tmp, "$N", query_ssssssssssssssssssssse());
             //             tmp = replace_string(tmp, "$D", verb);
-            //             tell_room(environment(this_player()), capitalize(tmp) + "\n", this_player());
+            //             tell_room(environment(this_body()), capitalize(tmp) + "\n", this_body());
             //         } else {
-            //             tell_room(environment(this_player()), capitalize(name())
-            //                 + " leaves through the " + verb + " exit.\n", this_player());
+            //             tell_room(environment(this_body()), capitalize(name())
+            //                 + " leaves through the " + verb + " exit.\n", this_body());
             //         }
 
-            //         write("You move to " + environment(this_player())->query_exit(verb)->query_short() +
+            //         write("You move to " + environment(this_body())->query_exit(verb)->query_short() +
             //             ".\n\n");
 
-            //         this_player()->move(environment(this_player())->query_exit(verb));
+            //         this_body()->move(environment(this_body())->query_exit(verb));
             //         return 1;
             //     } else {
             //         write("Error [move]: Unable to move through that exit.\n");
@@ -503,12 +491,14 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     object curr = environment() ;
 
     result = move(dest);
+    if(result & MOVE_ALREADY_THERE)
+        return result ;
 
     if(result & MOVE_OK) { // Success
         string tmp ;
 
         if(curr) {
-            if(depart_message != "SNEAK") {
+            if(depart_message != "SILENT") {
                 if(!depart_message) depart_message = query_env("move_out");
                 if(!depart_message) depart_message = "$N leaves $D.";
                 if(!dir) dir = "somewhere" ;
@@ -520,11 +510,11 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             }
         }
 
-        if(arrive_message != "SNEAK") {
+        if(arrive_message != "SILENT") {
             curr = environment() ;
 
             if(!arrive_message) arrive_message = query_env("move_in");
-            if(!arrive_message) arrive_message = "$N arrives.";
+            if(!arrive_message) arrive_message = "$N arrives.\n";
             tmp = replace_string(arrive_message, "$N", query_name());
 
             tell_down(curr, tmp, null, ({ this_object() })) ;
@@ -543,7 +533,7 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!is_member(query_privs(previous_object()), "admin") && this_player() != this_object())
+    if(!is_member(query_privs(previous_object()), "admin") && this_body() != this_object())
         return 0;
     else
         return command(cmd);

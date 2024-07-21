@@ -62,9 +62,12 @@ string user_core_data_directory(string name) {
 /**
  * @simul_efun user_path
  * @description Returns the home directory path for the user.
- * @param {string} name - The user's name.
+ * @param {string|object} name - The user's name, or the body of the user.
  * @returns {string} - The home directory path for the user.
  */
-string user_path(string name) {
+string user_path(mixed name) {
+    if(objectp(name) && userp(name)) name = query_privs(name);
+    if(!stringp(name)) return null ;
+
     return "/home/" + name[0..0] + "/" + name + "/" ;
 }

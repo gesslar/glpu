@@ -259,7 +259,7 @@ int i_crGroup(string str, object tp) {
           i_MainMenu("2", tp);
           return 1;
      } else {
-          groups[str] = ({query_privs(this_player())});
+          groups[str] = ({query_privs(this_body())});
           write("\nSuccess:  group '" + str + "' created. Note: You were added to the new group.\n");
           i_MainMenu("2", tp);
           return 1;
@@ -280,7 +280,7 @@ int i_dlGroup(string str, object tp) {
      }
 
      if(str == "admin" || str == "soul") {
-          write("\nError:  group '" + str + "' can not be deleted.\n\t"
+          write("\nError:  group '" + str + "' cannot be deleted.\n\t"
                + "The group is a system group and is required for proper functionality of the mudlib.\n");
           i_MainMenu("2", tp);
           return 1;

@@ -25,8 +25,10 @@ variable allows you to set the tagging that appears before the message.
 If this is not set, then you will receive the default system tags for feedback
 messages.
 
-If it is set to `brief`, then you will receive a coloured symbol before the
-message. If you are using a screenreader, then you will receive nothing.
+* `brief` - a coloured symbol before the message
+* `none` - no symbol or file tag
+
+If you are using a screenreader, then you will receive feedback decoration.
 
 ## log_level
 

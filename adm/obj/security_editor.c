@@ -310,7 +310,7 @@ string *list_groups()
 void write_state(int flag)
 {
     integrity_check();
-     if(!adminp(previous_object()) && !adminp(this_player())) return;
+     if(!adminp(previous_object()) && !adminp(this_body())) return;
      write_gFile(flag);
      write_aFile(flag);
 
@@ -325,7 +325,7 @@ void write_gFile(int flag)
 
     integrity_check();
 
-     if(!adminp(previous_object()) && !adminp(this_player())) return;
+     if(!adminp(previous_object()) && !adminp(this_body())) return;
 
      i = 0;
      group_list = keys(groups);
@@ -365,7 +365,7 @@ void write_aFile(int flag)
 
      integrity_check();
 
-     if(!adminp(previous_object()) && !adminp(this_player())) return;
+     if(!adminp(previous_object()) && !adminp(this_body())) return;
 
      i = 0;
      j = 0;

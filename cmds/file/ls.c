@@ -159,12 +159,12 @@ mixed main(object caller, string arg) {
 
     /*Parse done, we have a list of paths and some boolean flags.*/
     foreach(__Path in paths) {
-        __Path=resolve_path(caller->query("cwd"), __Path);
+        __Path=resolve_path(caller->query_env("cwd"), __Path);
         if((always_show_path)||(sizeof(paths)>1)) {
             output_str+=__Path+":\n";
         }
         if(__Path=="")
-            __Path=caller->query("cwd");
+            __Path=caller->query_env("cwd");
 
         switch(file_size(__Path)) {
             case -2://Dir

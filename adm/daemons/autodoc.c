@@ -77,7 +77,7 @@ public nomask mixed autodoc_scan() {
         return "Autodoc is already running." ;
 
     _log(1, "Starting autodoc scan") ;
-    if(this_player() && devp(this_player()))
+    if(this_body() && devp(this_body()))
         _ok("Starting autodoc scan") ;
 
     writing = false ;
@@ -740,7 +740,7 @@ private nomask void finish_scan() {
     _log(1, dir_log) ;
     _log(1, file_log) ;
 
-    if(this_player() && devp(this_player())) {
+    if(this_body() && devp(this_body())) {
         _ok("Autodoc has completed.") ;
         _ok(time_log) ;
         _ok(dir_log) ;

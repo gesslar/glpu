@@ -36,16 +36,16 @@ nomask void net_dead() {
 }
 
 nomask void restore_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") && this_player() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_player())) restore_object(user_data_file(query_privs()));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == query_privs(this_body())) restore_object(user_data_file(query_privs()));
     set_log_prefix(sprintf("(%O)", this_object())) ;
 }
 
 nomask void save_user() {
     int result ;
 
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_player()), "admin") &&
-       this_player() != this_object() &&
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&
+       this_body() != this_object() &&
        origin() != ORIGIN_LOCAL) {
         return 0;
     } else {
@@ -54,7 +54,7 @@ nomask void save_user() {
 }
 
 nomask int set_password(string str) {
-    if(adminp(query_privs(previous_object())) || this_player() == body) {
+    if(adminp(query_privs(previous_object())) || this_body() == body) {
         password = crypt(str, 0);
     } else {
         return 0;
@@ -67,12 +67,12 @@ nomask int set_password(string str) {
 }
 
 nomask mixed query_password() {
-    if(adminp(query_privs(previous_object())) || this_player() == body) return password;
+    if(adminp(query_privs(previous_object())) || this_body() == body) return password;
     else return "Error [user]: Permission Denied.\n";
 }
 
 nomask int set_body_path(string file) {
-    if(!adminp(query_privs(previous_object())) && this_player() != body) return 0;
+    if(!adminp(query_privs(previous_object())) && this_body() != body) return 0;
     if(!file_exists(file)) return 0;
     body_path = file;
     return 1;
@@ -83,7 +83,7 @@ nomask string query_body_path() {
 }
 
 nomask int set_body(object ob) {
-    if(!adminp(query_privs(previous_object())) && this_player() != body) return 0;
+    if(!adminp(query_privs(previous_object())) && this_body() != body) return 0;
     ob->set_user(this_object());
     body = ob;
 }

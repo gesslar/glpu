@@ -107,6 +107,23 @@ varargs object find_ob(mixed ob, mixed cont, function f)
 Searches for an object within a container or environment
 using the specified criteria.
 
+## this_body
+
+### Synopsis
+
+```c
+object this_body()
+```
+
+### Returns
+
+`object` - The body of the current calling player.
+
+### Description
+
+This is a simul_efun that will return the body of the current
+interactive user. It is used as a replacement for this_player().
+
 ## present_livings
 
 ### Synopsis
@@ -162,6 +179,27 @@ object *get_livings(mixed names, object room)
 
 Locates living objects by the specified names within the
 specified room.
+
+## this_caller
+
+### Synopsis
+
+```c
+object this_caller()
+```
+
+### Returns
+
+`object` - The object that called the current operation.
+
+### Description
+
+This is a simul_efun that will return the object that called
+the current operation. This may be this_body(), but it may
+also be a shadow another player who initiated the chain.
+For example, a wizard using the force command.
+Be careful with this one, you don't want to accidentally
+perform operations on the wrong object.
 
 ## getoid
 

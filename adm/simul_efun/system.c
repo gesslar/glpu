@@ -187,7 +187,10 @@ private string _format_message(string color, string str, mixed args...) {
 
     if(body) {
         if(devp(body)) {
-            if(body->query_env("feedback_level") == "brief") {
+            string feedback_level = body->query_env("feedback_level") ;
+            if(feedback_level == "none")
+                name = "" ;
+            else if(body->query_env("feedback_level") == "brief") {
                 if(body->has_screenreader())
                     name = "" ;
                 else
@@ -227,7 +230,7 @@ private string _format_message(string color, string str, mixed args...) {
  * @def varargs int _ok(string str, mixed args...)
  * @description Provides an confirmation message, optionally formatted with
  *              arguments. If no object is provided, the message will be sent
- *              to this_player(). If no object is found, the message will be
+ *              to this_body(). If no object is found, the message will be
  *              sent to the debug log.
  * @param {string} str - The confirmation message.
  * @param {mixed} [args] - Optional arguments to format the message.
@@ -253,7 +256,7 @@ varargs int _ok(mixed args...) {
     }
 
     if(!tp)
-        tp = this_player() ;
+        tp = this_body() ;
 
     mess = _format_message("\e0036\e", str, args...) ;
     if(nullp(mess))
@@ -273,7 +276,7 @@ varargs int _ok(mixed args...) {
  * @def varargs int _error(string str, mixed args...)
  * @description Provides an error message, optionally formatted with
  *              arguments. If no object is provided, the message will be sent
- *              to this_player(). If no object is found, the message will be
+ *              to this_body(). If no object is found, the message will be
  *              sent to the debug log.
  * @param {string} str - The error message.
  * @param {mixed} [args] - Optional arguments to format the message.
@@ -299,7 +302,7 @@ varargs int _error(mixed args...) {
     }
 
     if(!tp)
-        tp = this_player() ;
+        tp = this_body() ;
 
     mess = _format_message("\e0160\e", str, args...) ;
     if(nullp(mess))
@@ -319,7 +322,7 @@ varargs int _error(mixed args...) {
  * @def varargs int _warn(string str, mixed args...)
  * @description Provides an warning message, optionally formatted with
  *              arguments. If no object is provided, the message will be sent
- *              to this_player(). If no object is found, the message will be
+ *              to this_body(). If no object is found, the message will be
  *              sent to the debug log.
  * @param {string} str - The warning message.
  * @param {mixed} [args] - Optional arguments to format the message.
@@ -345,7 +348,7 @@ varargs int _warn(mixed args...) {
     }
 
     if(!tp)
-        tp = this_player() ;
+        tp = this_body() ;
 
     mess = _format_message("\e0214\e", str, args...) ;
     if(nullp(mess))
@@ -365,7 +368,7 @@ varargs int _warn(mixed args...) {
  * @def varargs int _info(string str, mixed args...)
  * @description Provides an informational message, optionally formatted with
  *              arguments. If no object is provided, the message will be sent
- *              to this_player(). If no object is found, the message will be
+ *              to this_body(). If no object is found, the message will be
  *              sent to the debug log.
  * @param {string} str - The informational message.
  * @param {mixed} [args] - Optional arguments to format the message.
@@ -391,7 +394,7 @@ varargs int _info(mixed args...) {
     }
 
     if(!tp)
-        tp = this_player() ;
+        tp = this_body() ;
 
     mess = _format_message("\e0228\e", str, args...) ;
     if(nullp(mess))

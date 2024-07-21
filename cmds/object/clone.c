@@ -15,11 +15,11 @@ mixed main(object caller, string str) {
     string err, custom, tmp, short, file ;
     int result ;
 
-    if(!str) str = caller->query("cwf");
+    if(!str) str = caller->query_env("cwf");
     if(!str) return "SYNTAX: clone <filename>" ;
 
     str = append(str, ".c");
-    str = resolve_path(caller->query("cwd"), str);
+    str = resolve_path(caller->query_env("cwd"), str);
 
     if(!file_exists(str))
         return "Error [clone]: Unable to find file '" + str + "'.";
@@ -58,7 +58,7 @@ mixed main(object caller, string str) {
             tell_room(environment(caller),
                 capitalize(caller->query_name()) + " creates " + short + ".\n", caller);
         }
-        caller->set("cwf", str);
+        caller->set_env("cwf", str);
         return 1;
     } else {
         if(result & MOVE_TOO_HEAVY)
@@ -90,7 +90,7 @@ mixed main(object caller, string str) {
             caller->query_name() + " creates " + short + ".\n", caller);
     }
 
-    caller->set("cwf", str);
+    caller->set_env("cwf", str);
     return 1;
 }
 

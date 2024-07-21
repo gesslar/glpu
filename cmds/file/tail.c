@@ -15,7 +15,7 @@ mixed main(object caller, string file) {
     if(!file)
         return "Usage: tail <filename>\n" ;
 
-    file = resolve_path(caller->query("cwd"), file);
+    file = resolve_path(caller->query_env("cwd"), file);
 
     if(directory_exists(file))
         return "Error [tail]: File specified is a directory.\n" ;

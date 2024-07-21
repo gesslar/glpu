@@ -92,7 +92,7 @@ void tune_into_error() {
 protected void log_error(string file, string message) {
     string username;
 
-    if(this_player()) username = query_privs(this_player());
+    if(this_body()) username = query_privs(this_body());
     else username = "(none)";
 
     if(stringp(username)) {
@@ -100,9 +100,9 @@ protected void log_error(string file, string message) {
         if(directory_exists(path)) {
             write_file(path + "log", "\n" + message);
         }
-        if(devp(this_player())) {
-            if(this_player()->query_env("error_output") != "disabled")
-            tell_object(this_player(), message);
+        if(devp(this_body())) {
+            if(this_body()->query_env("error_output") != "disabled")
+            tell_object(this_body(), message);
         }
     }
 
@@ -171,8 +171,8 @@ void error_handler(mapping mp, int caught) {
     // if(what[0..23] == "*Error in loading object")
     //     return ;
 
-    if(this_player()) {
-        userid = query_privs(this_player());
+    if(this_body()) {
+        userid = query_privs(this_body());
         if(!userid || userid == "")
             userid = "(none)";
         printf("%sTrace written to %s\n", what, logfile);
@@ -208,7 +208,8 @@ void error_handler(mapping mp, int caught) {
 
 }
 
-protected void crash(string crash_message, object command_giver, object current_object) {
+private void crash(string crash_message, object command_giver, object current_object) {
+    debug_message("hi there") ;
     foreach (object ob in users()) {
         tell_object(ob, "Master object shouts: Damn!\nMaster object tells you: The game is crashing.\n");
         catch(ob->save_user());
@@ -224,22 +225,49 @@ protected void crash(string crash_message, object command_giver, object current_
         ", error: " + crash_message + "\n");
 
     if(command_giver) {
-        log_file("crashes", "this_player: " + file_name(command_giver) + " :: " + command_giver->query_proper_name() + "\n");
+        log_file("crashes", "this_player: " +
+            file_name(command_giver) + " :: " +
+            query_privs(command_giver) +
+            "\n"
+        );
     }
 
     if(current_object) {
+        // _debug("We are getting here somehow??") ;
         log_file("crashes", "this_object: " + file_name(current_object) + "\n");
     }
 
 }
 
-string get_save_file_name(string file, object who)
-{
-    return "/tmp/ed_SAVE_" + who->query_proper_name() + "#" + file + random(1000);
+// This doesn't actually seem to work and generates *Too long evaluation.
+// Execution aborted. errors even though it isn't that complicated.
+#if 0
+public string get_save_file_name(string file, object who) {
+    string temp, e ;
+
+    debug_message("Called from previous_object(): " + previous_object()) ;
+
+    e = catch {
+        temp = sprintf("/tmp/%s.%d",
+            who ? query_privs(who) : "unknown",
+            time()
+        ) ;
+    } ;
+
+    if(e) {
+        debug_message(sprintf("get_save_file_name error: %O", e)) ;
+        return null ;
+    }
+
+    debug_message(sprintf("get_save_file_name new file: %s", temp)) ;
+
+    return temp;
 }
+#endif
 
 string privs_file(string filename) {
     string temp;
+
     if(sscanf(filename, "/adm/daemons/%s", temp)) return "[daemon]";
     if(sscanf(filename, "/adm/obj/%s", temp)) return "[adm_obj]";
     if(sscanf(filename, "/adm/%s", temp)) return "[admin]";
@@ -266,7 +294,7 @@ mixed compile_object(string file) {
 }
 
 string make_path_absolute(string file) {
-    file = resolve_path((string)this_player()->query_cwd(), file);
+    file = resolve_path((string)this_body()->query_cwd(), file);
     return file;
 }
 

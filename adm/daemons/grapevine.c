@@ -33,7 +33,7 @@ void setup() {
     set_log_level(1);
     set_notify_destruct(1) ;
     set_log_prefix("(GRAPEVINE)") ;
-    call_out("startup", 3) ;
+    // call_out("startup", 3) ;
 }
 
 // Start the Connection
@@ -236,48 +236,51 @@ void websocket_handle_text_frame(mapping payload) {
     switch(event) {
         // Authentice
         case GR_EVENT_AUTHENTICATE:
+            _log(2, "Received authenticate event") ;
             call_if(this_object(), "grapevine_handle_event_authenticate", status, err, data) ;
             break ;
         // Heartbeat
         case GR_EVENT_HEARTBEAT:
+            _log(2, "Received heartbeat event") ;
             call_if(this_object(), "grapevine_handle_event_heartbeat", data) ;
             break ;
         // Restart
         case GR_EVENT_RESTART:
+            _log(2, "Received restart event") ;
             call_if(this_object(), "grapevine_handle_event_restart", reff, data) ;
             break ;
         // Channels
         case GR_EVENT_CHANNELS_SUBSCRIBE:
-            _log(1, "Received subscribe event, reference: %s", reff) ;
+            _log(2, "Received subscribe event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_channels_subscribe", reff, status, err) ;
             break ;
         case GR_EVENT_CHANNELS_UNSUBSCRIBE :
-            _log(1, "Received unsubscribe event, reference: %s", reff) ;
+            _log(2, "Received unsubscribe event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_channels_unsubscribe", reff) ;
         case GR_EVENT_CHANNELS_BROADCAST :
-            _log(1, "Received broadcast event, reference: %s", reff) ;
+            _log(2, "Received broadcast event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_channels_broadcast", reff, data) ;
             break ;
         case GR_EVENT_CHANNELS_SEND :
-            _log(1, "Received send event, reference: %s", reff) ;
+            _log(2, "Received send event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_channels_send", reff) ;
             break ;
         // Players
         case GR_EVENT_PLAYERS_SIGN_IN:
-            _log(1, "Received sign-in event, reference: %s", reff) ;
+            _log(2, "Received sign-in event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_players_sign_in", reff, data) ;
             break ;
         case GR_EVENT_PLAYERS_SIGN_OUT:
-            _log(1, "Received sign-out event, reference: %s", reff) ;
+            _log(2, "Received sign-out event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_players_sign_out", reff, data) ;
             break ;
         case GR_EVENT_PLAYERS_STATUS:
-            _log(1, "Received status event, reference: %s", reff) ;
+            _log(2, "Received status event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_players_status", reff, status, err, data) ;
             break ;
         // Tells
         case GR_EVENT_TELLS_SEND:
-            _log(1, "Received send event, reference: %s", reff) ;
+            _log(2, "Received send event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_tells_send", reff, status, err) ;
             break ;
         case GR_EVENT_TELLS_RECEIVE:
@@ -286,35 +289,35 @@ void websocket_handle_text_frame(mapping payload) {
             break ;
         // Game
         case GR_EVENT_GAMES_CONNECT:
-            _log(1, "Received connect event, reference: %s", reff) ;
+            _log(2, "Received connect event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_games_connect", reff, data) ;
             break ;
         case GR_EVENT_GAMES_DISCONNECT:
-            _log(1, "Received disconnect event, reference: %s", reff) ;
+            _log(2, "Received disconnect event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_games_disconnect", reff, data) ;
             break ;
         case GR_EVENT_GAMES_STATUS:
-            _log(1, "Received status event, reference: %s", reff) ;
+            _log(2, "Received status event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_games_status", reff, status, err, data) ;
             break ;
         case GR_EVENT_ACHIEVEMENTS:
-            _log(1, "Received sync event, reference: %s", reff) ;
+            _log(2, "Received sync event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_achievements_sync", reff, data) ;
             break ;
         case GR_EVENT_ACHIEVEMENTS_CREATE:
-            _log(1, "Received create event, reference: %s", reff) ;
+            _log(2, "Received create event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_achievements_create", reff, status, data) ;
             break ;
         case GR_EVENT_ACHIEVEMENTS_UPDATE:
-            _log(1, "Received update event, reference: %s", reff) ;
+            _log(2, "Received update event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_achievements_update", reff, status, data) ;
             break ;
         case GR_EVENT_ACHIEVEMENTS_DELETE:
-            _log(1, "Received delete event, reference: %s", reff) ;
+            _log(2, "Received delete event, reference: %s", reff) ;
             call_if(this_object(), "grapevine_handle_achievements_delete", reff, data) ;
             break ;
         default:
-            _log(1, "Unknown event: %s", event) ;
+            _log(2, "Unknown event: %s", event) ;
             break ;
     }
 }

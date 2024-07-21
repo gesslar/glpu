@@ -52,7 +52,7 @@ mixed main(object tp, string arg) {
 
         return 1;
     } else {
-        file = resolve_path(tp->query("cwd"), arg);
+        file = resolve_path(tp->query_env("cwd"), arg);
 
         file = append( file, ".c") ;
         if(!file_exists(file)) return "Error [goto]: " + file + " does not exist.";

@@ -22,7 +22,7 @@ mixed main(object caller, string arg) {
 
      if(!arg) target = caller;
      else {
-          if(arg[0]!='/') arg = resolve_path(caller->query("cwd"), arg);
+          if(arg[0]!='/') arg = resolve_path(caller->query_env("cwd"), arg);
           if(arg[<2..<1] != ".c") arg += ".c";
           if(!target) target = find_object(arg);
           if(!target) target = present(arg, caller);

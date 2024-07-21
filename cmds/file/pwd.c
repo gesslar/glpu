@@ -16,7 +16,7 @@ void setup() {
 }
 
 mixed main(object caller, string arg) {
-    write("Current working directory: " + caller->query("cwd") + "\n");
-    write("Current working file: " + caller->query("cwf") + "\n");
+    write("Current working directory: " + caller->query_env("cwd") + "\n");
+    write("Current working file: " + caller->query_env("cwf") + "\n");
     return 1;
 }

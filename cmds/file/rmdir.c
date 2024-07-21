@@ -9,7 +9,7 @@ inherit STD_CMD ;
 mixed main(object caller, string str)
 {
     if(!str) return notify_fail("Syntax: rmdir <directory name>\n");
-    str = resolve_path(caller->query("cwd"), str);
+    str = resolve_path(caller->query_env("cwd"), str);
     if(!directory_exists(str) || file_exists(str)) return notify_fail("Error [rmdir]: " + str + " is not a directory.\n");
     if(sizeof( get_dir(str + "/") )) return notify_fail("Error [rmdir]: " + str + " is not empty.\n");
     if(!(int)master()->valid_write(str, caller, "rmdir"))

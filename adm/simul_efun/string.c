@@ -332,28 +332,35 @@ private nosave string thousands = "," ;
  * @returns {string} - The number with commas added as a string.
  */
 string add_commas(mixed number) {
-    string num_str ;
+    string num_str;
     string result = "";
-    int len ;
-    int dot_index ;
+    int len;
+    int dot_index;
     int insert_position;
+    int is_negative = 0;
 
     if(typeof(number) == T_INT) {
         num_str = sprintf("%d", number);
     } else if(typeof(number) == T_FLOAT) {
         num_str = sprintf("%f", number);
-    } else if(typeof (number) == T_STRING) {
+    } else if(typeof(number) == T_STRING) {
         if((dot_index = strsrch(number, decimal)) > -1) {
-            string int_part = number[0..dot_index-1] ;
-            return sprintf("%s.%s", add_commas(to_int(int_part)), number[dot_index+1..]) ;
+            string int_part = number[0..dot_index-1];
+            return sprintf("%s.%s", add_commas(to_int(int_part)), number[dot_index+1..]);
         }
         else
             number = to_int(number);
         if(nullp(number))
-            error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
+            error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.");
         return add_commas(number);
     } else {
-        error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
+        error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.");
+    }
+
+    // Check if the number is negative
+    if (num_str[0] == '-') {
+        is_negative = 1;
+        num_str = num_str[1..]; // Remove the negative sign for processing
     }
 
     len = strlen(num_str);
@@ -363,7 +370,7 @@ string add_commas(mixed number) {
     if (dot_index != -1) {
         result = add_commas(to_int(num_str[0..dot_index-1])); // Recurse on the integer part
         result = sprintf("%s%s%s", result, decimal, num_str[dot_index+1..]);
-        return result;
+        return is_negative ? "-" + result : result;
     }
 
     // Calculate where to start inserting commas
@@ -378,7 +385,7 @@ string add_commas(mixed number) {
         }
     }
 
-    return result;
+    return is_negative ? "-" + result : result;
 }
 
 /**

@@ -251,7 +251,7 @@ string token_to_xterm(string token) {
 
         sscanf(token, "%d", num) ;
         if(num < 0 || num > 255) return "" ;
-// tell(this_player(), sprintf("FROM THE DAEMON: %d => %s\n", num, fg_codes[num][1..])) ;
+// tell(this_body(), sprintf("FROM THE DAEMON: %d => %s\n", num, fg_codes[num][1..])) ;
         return fg_codes[num] ;
     } else {
         switch(token) {
