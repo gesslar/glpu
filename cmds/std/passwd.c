@@ -13,52 +13,46 @@
 
 inherit STD_CMD ;
 
-void current_password(string str);
-void new_password(string str);
-void confirm_password(string str, string pass);
+void password_confirmed(int status, object tp);
+void new_password(string str, object tp);
+void confirm_password(string str, string pass, object tp);
 
-mixed main(object caller, string arg) {
-    tell(caller, "Please enter your current password: ") ;
-    input_to((:current_password:), 1, caller,);
-    return 1;
+mixed main(object tp, string arg) {
+    _info("Changing your password.");
+    prompt_password(tp, 3, assemble_call_back((:password_confirmed:), tp));
+
+    return 1 ;
 }
 
-int current_password(string str, object caller) {
-    string curr = caller->query_user()->query_password();
-
-    if(crypt(str, curr) != curr) {
-        _error("The password you provided does not match your current password.");
-        return ;
+void password_confirmed(int status, object tp) {
+    if(status) {
+        _question("Please enter your new password: ");
+        input_to((:new_password:), INPUT_NOECHO | INPUT_IGNORE_BANG, tp);
     } else {
-        _ok("Password confirmed.\n\nPlease enter your new password: ");
-        input_to((:new_password:), 1, caller);
-        return ;
+        _error("Password change failed.");
     }
 }
 
-void new_password(string input, object caller) {
-    if(!stringp(input) || input == "") {
-        _warn("Aborting password change.");
-        return ;
+void new_password(string str, object tp) {
+    if(!str || str == "") {
+        _error("Password cannot be empty.");
+        return;
     }
-
-    _ok("Please enter your new password again: ");
-    input_to("confirm_password", 1, caller, input);
+    _question("Please confirm your new password: ");
+    input_to((:confirm_password:), INPUT_NOECHO | INPUT_IGNORE_BANG, str, tp) ;
 }
 
-void confirm_password(string input, object caller, string pass) {
-    if(input != pass) {
-        _error("The passwords you provided do not match.");
-        return ;
+void confirm_password(string str, string pass, object tp) {
+    if(str == pass) {
+        _ok("Password accepted.");
+        tp->query_user()->set_password(str);
+        _ok("Password changed.");
     } else {
-        if(caller->query_user()->set_password(input))
-            _ok("Password changed successfully.");
-        else
-            _error("Unable to change password.");
+        _error("Passwords do not match.");
     }
 }
 
-string query_help(object caller) {
+string query_help(object tp) {
     return
 "SYNTAX: passwd\n\n"
 "This command allows you to change your current passwd. You will be asked to "

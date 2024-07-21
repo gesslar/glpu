@@ -91,7 +91,7 @@ float range(float min, float max, float val) ;
 varargs float remainder(mixed a, mixed b) ;
 int sum(mixed *arr) ;
 
-    // File: object
+// File: object
 int getoid(object ob) ;
 varargs mixed get_objects( string str, object player, int no_arr ) ;
 varargs object find_ob(mixed ob, mixed cont) ;
@@ -104,6 +104,9 @@ object *get_livings(mixed names, object room) ;
 object get_player(string name, object room) ;
 object *get_players(mixed names, object room) ;
 object this_body() ;
+
+// File: prompt
+void prompt_password(object user, int attempts, mixed *cb) ;
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;
@@ -151,10 +154,11 @@ string open_status() ;
 varargs void _debug(string str, mixed args...) ;
 string log_dir() ;
 string tmp_dir() ;
-varargs int _ok(object tp, string str, mixed args...) ;
-varargs int _info(object tp, string str, mixed args...) ;
-varargs int _error(object tp, string str, mixed args...) ;
-varargs int _warn(object tp, string str, mixed args...) ;
+varargs int _ok(mixed args...) ;
+varargs int _info(mixed args...) ;
+varargs int _error(mixed args...) ;
+varargs int _question(mixed args...) ;
+varargs int _warn(mixed args...) ;
 
 // File: time
 varargs string ldate(int x, int brief) ;

@@ -178,47 +178,22 @@ private nosave string _brief_circle = "\u25CB" ;
                        object.
  */
 private string _format_message(string color, string str, mixed args...) {
-    object po ;
     object body = this_body() ;
-    string name ;
-
-    if(!po = previous_object())
-        return null ;
+    string tag ;
 
     if(body) {
-        if(devp(body)) {
-            string feedback_level = body->query_env("feedback_level") ;
-            if(feedback_level == "none")
-                name = "" ;
-            else if(body->query_env("feedback_level") == "brief") {
-                if(body->has_screenreader())
-                    name = "" ;
-                else
-                    if(M_UNICODE->supports_unicode())
-                        name = color + _brief_circle + "\eres\e " ;
-                    else
-                        name = color + "o\eres\e " ;
-            } else {
-                name = query_file_name(po) ;
-                name = upper_case(name) ;
-                name = replace_string(name, "_", " ") ;
-
-                if(!body->has_screenreader()) {
-                    name = "["+color+name+"\eres\e] " ;
-                }
-            }
-        } else {
-            if(body->has_screenreader())
-                name = "" ;
+        if(body->has_screenreader())
+            tag = "" ;
+        else
+            if(M_UNICODE->supports_unicode())
+                tag = _brief_circle ;
             else
-                if(M_UNICODE->supports_unicode())
-                    name = color + _brief_circle + "\eres\e " ;
-                else
-                    name = color + "o\eres\e " ;
-        }
+                tag = "o" ;
+
+            tag = color + tag + "\eres\e " ;
     }
 
-    str = name + str ;
+    str = tag + str ;
     str = sprintf(str, args...) ;
 
     return str ;
@@ -404,6 +379,51 @@ varargs int _info(mixed args...) {
         tell(tp, mess + "\n") ;
     else
         _debug(mess) ;
+
+    return 1 ;
+}
+
+/**
+ * @simul_efun _question
+ * @def varargs int _question(object tp, string str, mixed args...)
+ * @def varargs int _question(string str, mixed args...)
+ * @description Provides a question message, optionally formatted with
+ *              arguments. If no object is provided, the message will be sent
+ *              to this_body(). If no object is found, the message will be
+ *              discarded.
+ * @param {string} str - The question message.
+ * @param {mixed} [args] - Optional arguments to format the message.
+ * @returns {int} - Always returns 1, unless there is no body object.
+ */
+varargs int _question(mixed args...) {
+    object tp ;
+    string str ;
+    string mess ;
+
+    if(!sizeof(args))
+        return 0 ;
+
+    if(objectp(args[0])) {
+        tp = args[0] ;
+        str = args[1] ;
+        args = args[2..] ;
+    } else if(stringp(args[0])) {
+        str = args[0] ;
+        args = args[1..] ;
+    } else {
+        return 0 ;
+    }
+
+    if(!tp)
+        tp = this_body() ;
+    if(!tp)
+        return 0 ;
+
+    mess = _format_message("\e0033\e", str, args...) ;
+    if(nullp(mess))
+        return 0 ;
+
+    tell(tp, mess) ;
 
     return 1 ;
 }
