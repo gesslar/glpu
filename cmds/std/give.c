@@ -29,12 +29,12 @@ mixed main(object caller, string arg)
      ob = present(lower_case(obname), caller);
 
      if(!ob) return(notify_fail("Error [give]: You do not appear to have that object.\n"));
-     if(ob->query("prevent_give")) return(notify_fail("Error [give]: You can not give that object away.\n"));
+     if(ob->query("prevent_give")) return(notify_fail("Error [give]: You cannot give that object away.\n"));
 
      target = present(targetname, environment(caller));
 
      if(!target) return(notify_fail("Error [give]: User '" + targetname + "' not found.\n"));
-     if(!living(target)) return(notify_fail("Error [give]: You can not give objects to other non-living objects.\n"));
+     if(!living(target)) return(notify_fail("Error [give]: You cannot give objects to other non-living objects.\n"));
 
      ob->move(target);
 

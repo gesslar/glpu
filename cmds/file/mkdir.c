@@ -11,7 +11,7 @@ inherit STD_CMD ;
 mixed main(object caller, string str)
 {
      if(!str) return notify_fail("Syntax: mkdir <directory name>\n");
-     str = resolve_path(caller->query("cwd"), str);
+     str = resolve_path(caller->query_env("cwd"), str);
      if(file_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a file.\n");
      if(directory_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a directory.\n");
      if(!(int)master()->valid_write(str, caller, "mkdir"))

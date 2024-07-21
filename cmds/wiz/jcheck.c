@@ -14,7 +14,7 @@
 inherit STD_CMD ;
 
 #define TP this_body()
-#define TPC this_body()->query("cwd")
+#define TPC this_body()->query_env("cwd")
 #define TPN this_body()->query_proper_name()
 #define JPATH "/doc/journals/"
 

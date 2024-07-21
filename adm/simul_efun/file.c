@@ -280,7 +280,7 @@ varargs string temp_file(mixed arg) {
     else
         file = sprintf("%s.%d", matches[1], time_ns()) ;
 
-    return file ;
+    return sprintf("%s%s", tmp_dir(), file) ;
 }
 
 /**
@@ -303,4 +303,29 @@ string *dir_file(string path) {
     file = matches[1] ;
 
     return ({ dir, file }) ;
+}
+
+/**
+ * @simul_efun touch
+ * @description Creates an empty file at the specified path. If the path does
+ *              not exist, the function will create the necessary directories.
+ * @param {string} file - The path of the file to create.
+ * @returns {int} - 1 if the file was created successfully, otherwise 0.
+ */
+int touch(string file) {
+    string old_privs ;
+
+    if(!file) return 0 ;
+
+    old_privs = query_privs() ;
+    set_privs(this_object(), query_privs(previous_object())) ;
+
+    catch {
+        assure_file(file) ;
+        write_file(file, "") ;
+    } ;
+
+    set_privs(this_object(), old_privs) ;
+
+    return file_size(file) != -1 ;
 }

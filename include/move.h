@@ -7,5 +7,6 @@
 #define MOVE_NO_DEST        ( 1 << 3)
 #define MOVE_NOT_ALLOWED    ( 1 << 4)
 #define MOVE_DESTRUCTED     ( 1 << 5)
+#define MOVE_ALREADY_THERE  ( 1 << 6)
 
 #endif // __MOVE_H__

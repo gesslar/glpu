@@ -71,6 +71,8 @@ int move(mixed dest) {
     result = allow_move(dest) ;
     if(!(result & MOVE_OK)) return result ;
 
+    if(result & MOVE_ALREADY_THERE) return MOVE_OK | MOVE_ALREADY_THERE ;
+
     prev = environment() ;
     if(prev) {
         prev->add_capacity(query_mass());
@@ -95,29 +97,24 @@ int allow_move(mixed dest) {
     if(stringp(dest)) catch(ob = load_object(dest)) ;
     else if(objectp(dest)) ob = dest;
 
-    if(!objectp(ob)) {
+    if(!objectp(ob))
         return MOVE_NO_DEST;
-    }
 
-    if(!ob->can_receive(this_object())) {
+    if(environment() == ob)
+        return MOVE_ALREADY_THERE ;
+
+    if(!ob->can_receive(this_object()))
         return MOVE_NOT_ALLOWED;
-    }
 
-    if(mud_config("USE_MASS")) {
-        if(!ob->query_ignore_mass()) {
-            if(ob->query_capacity() < query_mass()) {
+    if(mud_config("USE_MASS"))
+        if(!ob->query_ignore_mass())
+            if(ob->query_capacity() < query_mass())
                 return MOVE_TOO_HEAVY ;
-            }
-        }
-    }
 
-    if(mud_config("USE_BULK")) {
-        if(!ob->query_ignore_bulk()) {
-            if(ob->query_volume() < query_bulk()) {
+    if(mud_config("USE_BULK"))
+        if(!ob->query_ignore_bulk())
+            if(ob->query_volume() < query_bulk())
                 return MOVE_NO_ROOM ;
-            }
-        }
-    }
 
     if(environment())
         if(!environment()->can_release(this_object()))

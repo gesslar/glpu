@@ -187,7 +187,10 @@ private string _format_message(string color, string str, mixed args...) {
 
     if(body) {
         if(devp(body)) {
-            if(body->query_env("feedback_level") == "brief") {
+            string feedback_level = body->query_env("feedback_level") ;
+            if(feedback_level == "none")
+                name = "" ;
+            else if(body->query_env("feedback_level") == "brief") {
                 if(body->has_screenreader())
                     name = "" ;
                 else

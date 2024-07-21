@@ -12,6 +12,9 @@
  *                        for the new editor object.
  */
 
+
+#include <ed.h>
+
 inherit STD_CMD ;
 
 private int delete_plan(object tp);
@@ -20,7 +23,6 @@ public finish_edit(string text, object tp, int overwrite);
 mixed main(object tp, string arg) {
     string tmp = "";
     string user = query_privs(tp);
-    object editor ;
     int overwrite = false ;
     string file ;
 
@@ -40,32 +42,28 @@ mixed main(object tp, string arg) {
     else
         tell(tp, "Enter the text you wish to append to your plan.\n") ;
 
-    _debug("file: %s", file) ;
-    _debug("overwrite: %d", overwrite) ;
-
-    editor = new(OBJ_EDITOR) ;
     if(overwrite) {
-        editor->edit(tp, null, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
+        tp->start_edit(null, assemble_call_back((:finish_edit:), tp, overwrite)) ;
     } else {
-        if(file_exists(file))
-            editor->edit(tp, file, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
-        else
-            editor->edit(tp, null, assemble_call_back((:finish_edit:), tp, file, overwrite)) ;
+        tp->start_edit(file, assemble_call_back((:finish_edit:), tp, overwrite)) ;
     }
 
     return 1;
 }
 
-public void finish_edit(string text, object tp, string file, int overwrite) {
-    if(!text || text == "")
+public void finish_edit(int status, string file, string temp_file, object tp, int overwrite) {
+    string planfile = user_path(query_privs(tp)) + ".plan" ;
+
+    if(status == ED_STATUS_ABORTED)
         return tell(tp, "Aborted.\n") ;
 
-    if(!write_file(file, text, overwrite)) {
-        _error(tp, "Plan could not be written.\n") ;
-        return;
-    }
+_debug("Plan file: " + planfile);
+_debug("Temp file: " + temp_file);
 
-    _ok(tp, "Plan successfully written to %s", file) ;
+    if(!cp(temp_file, planfile))
+        _error(tp, "Plan could not be written.\n") ;
+    else
+        _ok(tp, "Plan successfully written to %s", planfile) ;
 }
 
 int delete_plan(object tp) {

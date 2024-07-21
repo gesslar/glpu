@@ -18,8 +18,7 @@
  * @param {string} Next - The next path to resolve.
  * @returns {string} - The resolved absolute path.
  */
-string resolve_path(string Current, string Next)
-{
+string resolve_path(string Current, string Next) {
    int index;
    int temp;
    string* path_segments;
@@ -27,12 +26,10 @@ string resolve_path(string Current, string Next)
    if(Next=="here")
       return file_name(environment(this_body())) + ".c";
 
-   if(Next[0]=='~')
-   {
+   if(Next[0]=='~') {
       if((Next[1]=='/')||(sizeof(Next)==1))
          Next=user_path(this_body()->query_proper_name())+Next[1..<1];
-      else
-      {
+      else {
          index=strsrch(Next, "/");
          if(index==-1) return user_path(Next[1..<0]);
          else Next=user_path(Next[1..index-1])+Next[index..<0];
@@ -42,12 +39,10 @@ string resolve_path(string Current, string Next)
    if(Next[0]!='/')  Next=Current+"/"+Next;
    path_segments = explode(Next,"/");
 
-   for (index=0;index<sizeof(path_segments);index++)
-   {
+   for (index=0;index<sizeof(path_segments);index++) {
       if(path_segments[index] == ".") path_segments[index] = "";
 
-      if(path_segments[index] == "..")
-      {
+      if(path_segments[index] == "..") {
          path_segments[index] = "";
          temp = index-1;
 

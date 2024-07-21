@@ -6,28 +6,27 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str)
-{
+mixed main(object caller, string str) {
      string *lines;
-     int i;
+     int i, max_lines ;
 
-     if(!str) {
-          write("Error [cat]: No argument passed.\n");
-          return 1;
-     }
+     if(!str)
+          return _error("No file specified.") ;
 
-     str=resolve_path(caller->query("cwd"),str);
+     str = resolve_path(caller->query_env("cwd"),str);
 
      if(!file_exists(str))
-     {
-          write("Error [cat]: That file does not exist.\n");
-          return 1;
-     }
+          return _error("No such file: %s", str);
 
-     lines = explode(read_file(str), "\n");
+     i = file_size(str);
+     if(i < 0)
+          return _error("No such file or 0-length file: %s", str);
 
-     for(i = 0; i < sizeof(lines); i++) write(lines[i] + "\n");
-     write("\n");
+     max_lines = file_length(str);
+
+     i = 0;
+     while(++i <= max_lines)
+          tell(caller, append(read_file(str, i, 1), "\n"));
 
      return 1;
 }
