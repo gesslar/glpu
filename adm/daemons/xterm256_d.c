@@ -11,9 +11,6 @@
 inherit STD_DAEMON ;
 inherit DM_CSS ;
 
-private nosave int too_dark_check ;
-private nosave mapping too_dark_map ;
-
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
 private nosave mapping alt_codes = ([ ]) ;
@@ -28,11 +25,14 @@ void resync() ;
 void setup() {
     set_no_clean() ;
     load_all_colours() ;
+}
 
-    too_dark_check = mud_config("XTERM_TOO_DARK") == "on" ;
-    if(too_dark_check == 1) {
-        too_dark_map = mud_config("XTERM_TOO_DARK_SUB") ;
-    }
+int too_dark_check() {
+    return mud_config("XTERM_TOO_DARK") == "on" ;
+}
+
+mapping too_dark_map() {
+    return mud_config("XTERM_TOO_DARK_SUB") ;
 }
 
 private void load_all_colours() {
@@ -325,7 +325,7 @@ string get_colour_list() {
             for(int k = 0; k < 12; k++) {
                 int colour = i*(6*12) + j + k*6 ;
 
-                output += sprintf("  %s%'0'4d\eres\e",
+                output += sprintf("  %s%'0'3d\eres\e",
                     sprintf("\e%'0'4d\e", xterm256[colour]),
                     xterm256[colour]
                 ) ;
@@ -341,7 +341,7 @@ string get_colour_list() {
         for(int j = 0; j < 12; j++) {
             int colour = i*12 + j;
 
-            output += sprintf("  %s%'0'4d\eres\e",
+            output += sprintf("  %s%'0'3d\eres\e",
                 sprintf("\e%'0'4d\e", xterm_greyscale[colour]),
                 xterm_greyscale[colour]
             ) ;
@@ -356,7 +356,7 @@ string get_colour_list() {
         for(int j = 0; j < 8; j++) {
             int colour = i*8 + j;
 
-            output += sprintf("  %s%'0'4d\eres\e",
+            output += sprintf("  %s%'0'3d\eres\e",
                 sprintf("\e%'0'4d\e", xterm16[colour]),
                 xterm16[colour]
             );
@@ -370,24 +370,28 @@ string get_colour_list() {
 int is_too_dark(string colour) {
     string *matches ;
 
-    if(!too_dark_check) return 0 ;
+    if(!too_dark_check())
+        return 0 ;
 
     if(!pcre_match(colour, "^[0-1](?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
         return 0 ;
 
     colour = colour[1..] ;
-    if(too_dark_map[colour]) return 1 ;
+    colour = sprintf("%03d", to_int(colour)) ;
+    if(too_dark_map()[colour]) return 1 ;
 }
 
 string substitute_too_dark(string text) {
     string *matches ;
     string result ;
+    int num ;
 
-    if(!too_dark_check) return text ;
+    if(!too_dark_check())
+        return text ;
 
-    matches = pcre_extract(text, "([0-1](?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]))") ;
+    num = to_int(text) ;
+    result = sprintf("%03d", num) ;
 
-    result = text[1..] ;
-    if(too_dark_map[result]) return too_dark_map[result] ;
+    if(too_dark_map()[result]) return too_dark_map()[result] ;
     else return text ;
 }

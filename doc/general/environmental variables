@@ -1,5 +1,5 @@
 The following document describes the different environmental variables that you
-can set with the 'set_env' command.
+can set with the 'set' command.
 
 \e0015\eIndex:\eres\e
 
@@ -156,4 +156,4 @@ user's name, and $Dwill be replaced with the location being teleported to.
 \e0011\eNote:\eres\e You are not required to use either $Nor
 $D you may put your name in literally if you wish.
 
-\e0015\eSee also:\eres\e set_env
+\e0015\eSee also:\eres\e set

@@ -124,6 +124,11 @@ title: simul_efun
 * [this_caller](object#this_caller)
 * [top_environment](object#top_environment)
 
+## prompt
+
+* [prompt_colour](prompt#prompt_colour)
+* [prompt_password](prompt#prompt_password)
+
 ## resolve_path
 
 * [resolve_path](resolve_path#resolve_path)
@@ -165,6 +170,7 @@ title: simul_efun
 * [_error](system#_error)
 * [_info](system#_info)
 * [_ok](system#_ok)
+* [_question](system#_question)
 * [_warn](system#_warn)
 * [admin_email](system#admin_email)
 * [arch](system#arch)

@@ -17,7 +17,7 @@
         "/adm/daemons/autodoc"
     ],
     "LOOK_HIGHLIGHT" : "on",
-    "LOOK_HIGHLIGHT_COLOUR" : "0243",
+    "LOOK_HIGHLIGHT_COLOUR" : "243",
     "XTERM_TOO_DARK" : "on",
     "XTERM_TOO_DARK_SUB" : {
         "000" : "238",

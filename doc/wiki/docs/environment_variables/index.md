@@ -6,6 +6,18 @@ an [administrator](administrator-environment-variables) or a player.
 Generally, if an environment variable offers `on` or `off` as options, the
 default is `off`, unless otherwise noted.
 
+To set an environment variable, use the `set` command. For example:
+
+```
+set colour on
+```
+
+To clear an environment variable, set the variable with no value. For example:
+
+```
+set colour
+```
+
 ## auto_tune
 
 This variable allows you to specify which channels or channels you wish to
