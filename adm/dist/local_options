@@ -26,7 +26,6 @@
 #undef NO_WIZARDS
 #define NO_LIGHT
 #define OLD_ED
-#undef OLD_ED
 #undef ED_INDENT_CASE
 #define ED_INDENT_SPACES 4
 #undef ED_USE_TABS
