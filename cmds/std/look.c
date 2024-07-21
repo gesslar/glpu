@@ -50,10 +50,8 @@ string highlight_view(object tp, string str, string *keys) {
         }
     }
 
-    tp->_log(1, "Colour: %s", colour);
-
-    colour = "\e" + colour + "\e";
     colour = COLOUR_D->substitute_too_dark(colour);
+    colour = "\e" + colour + "\e";
 
     for(i = 0; i < sizeof(keys); i++) {
         str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\eres\e ");

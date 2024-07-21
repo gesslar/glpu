@@ -331,3 +331,28 @@ string log_dir()
 
 Returns the directory where log files are stored.
 
+## _question
+
+### Synopsis
+
+```c
+varargs int _question(object tp, string str, mixed args...)
+varargs int _question(string str, mixed args...)
+```
+
+### Parameters
+
+* `string str` - The question message.
+* `mixed [args]` - Optional arguments to format the message.
+
+### Returns
+
+`int` - Always returns 1, unless there is no body object.
+
+### Description
+
+Provides a question message, optionally formatted with
+arguments. If no object is provided, the message will be sent
+to this_body(). If no object is found, the message will be
+discarded.
+

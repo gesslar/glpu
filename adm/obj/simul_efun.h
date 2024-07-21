@@ -106,7 +106,9 @@ object *get_players(mixed names, object room) ;
 object this_body() ;
 
 // File: prompt
+varargs void prompt_colour(object body, mixed *cb, string prompt) ;
 void prompt_password(object user, int attempts, mixed *cb) ;
+
 
 // File: resolve_path
 string resolve_path(string Current, string Next) ;

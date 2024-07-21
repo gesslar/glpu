@@ -1,8 +1,8 @@
 #ifndef __INPUT_H__
 #define __INPUT_H__
 
-#define INPUT_NOECHO 1
-#define INPUT_CHARMODE 2
-#define INPUT_IGNORE_BANG 4
+#define I_NOECHO 0x1
+#define I_NOESC 0x2
+#define I_SINGLE_CHAR 0x4
 
 #endif // __INPUT_H__
