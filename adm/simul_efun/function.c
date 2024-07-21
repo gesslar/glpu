@@ -111,7 +111,7 @@ mixed *assemble_call_back(mixed arg...) {
         ob = arg[0] ;
         fun = arg[1] ;
         if(sz > 2)
-            arg = arg[2] ;
+            arg = arg[2..] ;
         else
             arg = ({}) ;
 

@@ -312,9 +312,9 @@ mixed main(object caller, string str) {
 
   if(sizeof(opt) < 3) {
     if(opt[0]["R"])
-      str = caller->query("cwd");
+      str = caller->query_env("cwd");
     else
-      str = caller->query("cwf");
+      str = caller->query_env("cwf");
 
     if(!stringp(str))
       return notify_fail("Type 'help grep' for information on how to use this command.\n");
@@ -339,7 +339,7 @@ mixed main(object caller, string str) {
     string dir, *r;
 
     r     = ({ });
-    files = filter(glob_array(opt[2..], caller->query("cwd")),
+    files = filter(glob_array(opt[2..], caller->query_env("cwd")),
       (: file_size($1) == -2 :));
 
     while (sizeof(files) > 0) {
@@ -352,11 +352,11 @@ mixed main(object caller, string str) {
 
     files = r;
   } else {
-    files = glob_array(opt[2..], caller->query("cwd"));
+    files = glob_array(opt[2..], caller->query_env("cwd"));
 
     if(sizeof(files) == 1 && file_size(files[0]) == -2)
       files = glob_array(({ files[1] + (files[1][<1] == '/' ? "*" : "/*") }),
-        caller->query("cwd"));
+        caller->query_env("cwd"));
 
     files = filter(files, (: file_size($1) >= 0 :));
   }

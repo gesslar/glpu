@@ -44,6 +44,27 @@ string *dir_file(string path)
 Given a path, returns an array containing the directory and file
 name components.
 
+## touch
+
+### Synopsis
+
+```c
+int touch(string file)
+```
+
+### Parameters
+
+* `string file` - The path of the file to create.
+
+### Returns
+
+`int` - 1 if the file was created successfully, otherwise 0.
+
+### Description
+
+Creates an empty file at the specified path. If the path does
+not exist, the function will create the necessary directories.
+
 ## temp_file
 
 ### Synopsis

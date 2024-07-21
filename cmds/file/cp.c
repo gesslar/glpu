@@ -6,21 +6,22 @@
 
 //Last edited on January 25th, 2006 by Tacitus
 
-mixed main(object caller, string str)
-{
+mixed main(object tp, string str) {
      string source, dest;
 
-     if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: cp <source> <dest>\n");
+     if(!str || !sscanf(str, "%s %s", source, dest))
+          return _error(tp, "Syntax: cp <source> <dest>");
 
-     source = resolve_path(caller->query("cwd"), source);
-     dest = resolve_path(caller->query("cwd"), dest);
+     source = resolve_path(tp->query_env("cwd"), source);
+     dest = resolve_path(tp->query_env("cwd"), dest);
 
-     if(directory_exists(dest) || dest[<1..<1] == "/")
-     {
+     if(!file_exists(source))
+          return _error("No such source file: %s", source);
+
+     if(directory_exists(dest) || dest[<1..<1] == "/") {
           if(dest[<1..<1] != "/") dest += "/";
 
-          if(strsrch(source, "/", -1) != -1)
-          {
+          if(strsrch(source, "/", -1) != -1) {
              dest += source[(strsrch(source, "/", -1) + 1)..<1];
           }
 
@@ -28,20 +29,19 @@ mixed main(object caller, string str)
      }
 
      if(source == dest)
-          return(notify_fail("Error [cp]: Destination may not match source.\n"));
+          return(_error("Destination may not match source."));
 
      if(!(int)master()->valid_write(dest, this_object(), "cp"))
-          return(notify_fail("Error [cp]: Permission Denied.\n"));
+          return _error("Permission Denied.");
 
      if(cp(source, dest) < 0)
-          return(notify_fail("Error [cp]: Copy failed.\n"));
+          return _error(("Error [cp]: Copy failed."));
      else
-          write("Successful [cp]: " + source + " copied to " + dest + "\n");
-
-     return 1;
+          return _ok("%s copied to %s", source, dest);
 }
 
-string help(object caller) {
-    return (" SYNTAX: cp <source> <destination>\n\n" +
-    "This command copies a file from it's current destination to a specified one.\n");
+string query_help(object tp) {
+    return
+"SYNTAX: cp <source> <destination>\n\n" +
+"This command copies a file from it's current destination to a specified one.";
 }

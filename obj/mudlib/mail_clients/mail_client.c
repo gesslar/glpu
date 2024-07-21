@@ -490,7 +490,7 @@ protected varargs void i_SaveDir(string arg, int num1, int num2) {
     }
 
     if(arg[0] == '/') path = arg;
-    else path = find_player(owner)->query("cwd") + "/" + arg;
+    else path = find_player(owner)->query_env("cwd") + "/" + arg;
 
     if(file_exists(path)) {
         write("\nThat file already exists... would you like to overwrite it: ");

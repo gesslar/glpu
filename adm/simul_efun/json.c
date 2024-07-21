@@ -489,7 +489,7 @@ private mixed json_decode_parse_number(mixed* parse) {
           // consume until next non-whitespace
           json_decode_skip_whitespaces(parse);
           next_ch = parse[JSON_DECODE_PARSE_TEXT][parse[JSON_DECODE_PARSE_POS]];
-          // can not continue to be number.
+          // cannot continue to be number.
           if((next_ch >= '0' && next_ch <= '9') || next_ch == '-') json_decode_parse_error(parse, "Unexpected character", next_ch);
           return 0;
         }

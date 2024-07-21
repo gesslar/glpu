@@ -49,12 +49,12 @@ on their name.
 ### Synopsis
 
 ```c
-string user_path(string name)
+string user_path(mixed name)
 ```
 
 ### Parameters
 
-* `string name` - The user's name.
+* `string|object name` - The user's name, or the body of the user.
 
 ### Returns
 

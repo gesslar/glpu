@@ -10,6 +10,7 @@
  */
 
 #include <daemons.h>
+#include <ed.h>
 
 inherit STD_CMD ;
 inherit M_LOG ;
@@ -72,35 +73,52 @@ public nomask void get_subject(string subject, object tp) {
     if(!subject || !strlen(subject))
         return tell(tp, "Aborted.\n") ;
 
-    editor = new(OBJ_EDITOR) ;
-    editor->edit(tp, null, assemble_call_back((:finish_report:), tp, subject)) ;
+    tp->start_edit(
+        null,
+        assemble_call_back((:finish_report:), tp, subject)
+    ) ;
 }
 
-public nomask void finish_report(string text, object tp, string subject) {
-    string log_file ;
+public nomask void finish_report(int status, string file, string temp_file, object tp, string subject) {
+    string log_file, log_text, gh_text ;
+    string text ;
 
-    if(!text || text == "")
-        return tell(tp, "Aborted.\n") ;
+    defer((:rm, temp_file:)) ;
 
-    tell(tp, "Thank you for your "+report_type+" report.\n") ;
+    if(status == ED_STATUS_ABORTED || file_size(temp_file) < 1) {
+        if(interactive(tp))
+            _info(tp, "Report aborted.") ;
+        return ;
+    }
+
+    text = read_file(temp_file) ;
 
     assure_dir(log_dir()) ;
     log_file = log_dir() + "/" + upper_case(report_type) ;
 
-    write_file(log_file,
-        sprintf("%s\n%s\n%s\n%s\n",
-            ldatetime(),
-            subject,
-            query_privs(tp),
-            text
-        )
+    log_text = sprintf("%s\n%s - %s\nSubject: %s\nLocation: %s\n\n%s\n",
+        repeat_string("-", 79),
+        ldatetime(),
+        capitalize(query_privs(tp)),
+        subject,
+        file_name(environment(tp)),
+        text
     ) ;
 
+    write_file(log_file, log_text) ;
+
+    tell(tp, "Thank you for your "+report_type+" report.\n") ;
+
+    gh_text = sprintf("Reporter: %s\nLocation: %s\n\n%s\n",
+        capitalize(query_privs(tp)),
+        file_name(environment(tp)),
+        text
+    ) ;
     if(git_hub_label != "")
         GH_ISSUES_D->create_issue(
             git_hub_label,
             subject,
-            text,
+            gh_text,
             assemble_call_back((:finish_github:), tp)
         ) ;
 }

@@ -62,6 +62,7 @@ title: simul_efun
 * [query_file_name](file#query_file_name)
 * [tail](file#tail)
 * [temp_file](file#temp_file)
+* [touch](file#touch)
 
 ## function
 

@@ -33,7 +33,7 @@ void setup() {
     set_log_level(1);
     set_notify_destruct(1) ;
     set_log_prefix("(GRAPEVINE)") ;
-    call_out("startup", 3) ;
+    // call_out("startup", 3) ;
 }
 
 // Start the Connection

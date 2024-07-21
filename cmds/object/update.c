@@ -36,12 +36,12 @@ mixed main(object caller, string arg) {
     }
 
     if(!file) {
-        if(!caller->query("cwf"))
+        if(!caller->query_env("cwf"))
             return _error("You must provide an argument. Syntax: update [-rR] [<file>]") ;
-        file = caller->query("cwf");
+        file = caller->query_env("cwf");
     }
 
-    file = resolve_path(caller->query("cwd"), file);
+    file = resolve_path(caller->query_env("cwd"), file);
     file = append(file, ".c") ;
     if(file == append(file_name(), ".c")) {
         return _error("You cannot update the update command. Destruct it instead.") ;
@@ -72,7 +72,7 @@ mixed main(object caller, string arg) {
     if(!file_exists(file))
         return _error("%s does not exist.", file);
 
-    caller->set("cwf", start);
+    caller->set_env("cwf", start);
 
     obj = load_object(file);
     files = collect_inherits(obj, depth, ([]));

@@ -22,6 +22,7 @@ inherit STD_OBJECT;
 
 inherit __DIR__ "alias" ;
 inherit __DIR__ "wealth" ;
+inherit __DIR__ "ed" ;
 
 inherit CLASS_GMCP ;
 inherit M_GMCP ;
@@ -38,7 +39,6 @@ private nosave object link;
 
 void enter_world();
 void exit_world();
-void net_dead();
 void reconnect();
 
 /* User object functions */
@@ -113,7 +113,7 @@ void setup_body() {
     set_heart_beat(1);
     enable_commands();
     set("prevent_get", 1);
-    if(!query("cwd")) set("cwd", "/doc");
+    if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
@@ -137,29 +137,11 @@ void enter_world() {
     ANNOUNCE_CHDMOD->announce_login(query_name());
 
     catch {
-        news_client = new(query_env("news_client"));
-        news_client->move(this_object());
-        if(news_client->is_new()) write("\nNotice: There are new news posts.\n\n");
-        news_client->remove() ;
-        mail_client = new(OBJ_MAIL_CLIENT);
-        mail_client->move(this_object());
-        if(mail_client->has_new_mail()) write("You have new mail!\n\n");
-        mail_client->remove() ;
-    };
-
-    catch {
         ch = explode(query_env("auto_tune"), " ");
         if(sizeof(ch) > 0)
             foreach(string channel in ch)
                force_me("channel tune in " + channel);
     };
-
-    if(file_size(user_path(query_proper_name()) + ".login") > 0) {
-        write("\n");
-        cmds = explode(read_file(user_path(query_proper_name()) + ".login"), "\n");
-        if(sizeof(cmds) <= 0) return;
-        for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
-    }
 
     set("last_login", time());
     write("\n");
@@ -189,11 +171,17 @@ void exit_world() {
 }
 
 void net_dead() {
-    if(origin() != ORIGIN_DRIVER) return;
+    if(origin() != ORIGIN_DRIVER)
+        return;
+
+    abort_edit() ;
+
     set("last_login", time());
     save_user();
-    if(environment()) tell_room(environment(), query_name()+ " has gone link-dead.\n");
-    set_short(query_name() + " [link dead]");
+
+    if(environment())
+        tell_all(environment(), query_name()+ " falls into stupour.\n");
+    set("extra_short/link_dead", "[stupour]") ;
     log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
 }
 
@@ -202,7 +190,7 @@ void reconnect() {
     set("last_login", time());
     tell(this_object(), "Success: Reconnected.\n");
     if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
-    set_short(query_name());
+    delete("extra_short/link_dead") ;
     /* reconnection logged in login object */
 }
 
@@ -503,12 +491,14 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     object curr = environment() ;
 
     result = move(dest);
+    if(result & MOVE_ALREADY_THERE)
+        return result ;
 
     if(result & MOVE_OK) { // Success
         string tmp ;
 
         if(curr) {
-            if(depart_message != "SNEAK") {
+            if(depart_message != "SILENT") {
                 if(!depart_message) depart_message = query_env("move_out");
                 if(!depart_message) depart_message = "$N leaves $D.";
                 if(!dir) dir = "somewhere" ;
@@ -520,11 +510,11 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             }
         }
 
-        if(arrive_message != "SNEAK") {
+        if(arrive_message != "SILENT") {
             curr = environment() ;
 
             if(!arrive_message) arrive_message = query_env("move_in");
-            if(!arrive_message) arrive_message = "$N arrives.";
+            if(!arrive_message) arrive_message = "$N arrives.\n";
             tmp = replace_string(arrive_message, "$N", query_name());
 
             tell_down(curr, tmp, null, ({ this_object() })) ;

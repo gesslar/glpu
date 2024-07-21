@@ -16,7 +16,7 @@ mixed main(object caller, string str) {
     string custom, tmp;
     object ob;
 
-    if(!str) str = caller->query("cwf");
+    if(!str) str = caller->query_env("cwf");
 
     if(caller->query_env("custom_dest") && wizardp(caller))
         custom = caller->query_env("custom_dest");
@@ -77,9 +77,9 @@ mixed main(object caller, string str) {
     }
 
     if(str[<2..<1] != ".c") str += ".c";
-    str = resolve_path(caller->query("cwd"), str);
+    str = resolve_path(caller->query_env("cwd"), str);
     if(ob = find_object(str)) {
-        caller->set("cwf", str);
+        caller->set_env("cwf", str);
         ob->remove() ;
         if(ob) destruct(ob);
         return _ok("Destructing master object for '%s'.", str);

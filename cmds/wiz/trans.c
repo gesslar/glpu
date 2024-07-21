@@ -30,7 +30,7 @@ mixed main(object caller, string arg)
             + " requests your presence in " +
             environment(this_body())->query_short() + ".\n"));
 
-        return notify_fail("Error [trans]: You can not transport them but your wish has been made known.\n");
+        return notify_fail("Error [trans]: You cannot transport them but your wish has been made known.\n");
     }
 
     if(!environment(this_body()))

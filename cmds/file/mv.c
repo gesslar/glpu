@@ -12,8 +12,8 @@ mixed main(object caller, string str)
 {
      string source, dest;
      if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: mv <source> <dest>\n");
-     source = resolve_path(caller->query("cwd"), source);
-     dest = resolve_path(caller->query("cwd"), dest);
+     source = resolve_path(caller->query_env("cwd"), source);
+     dest = resolve_path(caller->query_env("cwd"), dest);
      if(!(int)master()->valid_write(source, caller, "mv") || !(int)master()->valid_write(dest, caller, "mv"))
      {
           write("Error [mv]: Permission denied.\n");

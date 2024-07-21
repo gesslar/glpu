@@ -78,7 +78,7 @@ varargs object get_object( string str, object player ) {
     // Search for a matching file_name, completing path with
     // user's present path
     if( player ) {
-        str = resolve_path( (string)player-> query( "cwd" ), str );
+        str = resolve_path( (string)player-> query_env("cwd"), str );
     }
 
     what = find_object(str);

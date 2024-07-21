@@ -429,6 +429,10 @@ void auto_destruct() {
 }
 
 void enter_world(string str) {
+    string loc ;
+    string e ;
+    object room ;
+
     if(!objectp(body))
         body = create_body(query_privs(user));
 
@@ -441,25 +445,53 @@ void enter_world(string str) {
     body->set_gmcp_supports(login_gmcp_data["supports"]);
     body->clear_environ() ;
     body->set_environ(environ_data) ;
-    if(body->gmcp_enabled()) {
+
+    if(body->gmcp_enabled())
         GMCP_D->init_gmcp(body) ;
-    }
 
+    // Now let's figure out where to put them
     if(devp(user)) {
-        if(body->query_env("start_location") == "last_location") body->move_living(body->query("last_location"), 0, "SNEAK");
-        else if(body->query_env("start_location")) body->move_living(body->query_env("start_location"), 0, "SNEAK");
-
-        else if(file_exists(user_path(query_privs(body)) + "workroom.c")) body->move_living(user_path(query_privs(user)) + "workroom.c", 0, "SNEAK");
-        else body->move_living(ROOM_START, 0, "SNEAK") ;
+        loc = body->query_env("start_location") ;
+        if(loc == "last_location")
+            loc = body->query("last_location") ;
+        else
+            loc = user_path(body) + "workroom" ;
+    } else {
+        loc = ROOM_START ;
     }
 
-    else body->move_living(ROOM_START, 0, "SNEAK") ;
+    loc = append(loc, ".c") ;
 
-    if(!environment(body)) body->move_living(ROOM_START, 0, "SNEAK");
+    if(!file_exists(loc)) {
+        tell(this_object(),"Error [login]: Unable to find your start location.\n");
+        tell(this_object(),"Please contact an admin for assistance.\n");
+    }
+
+    if(e = catch(room = load_object(loc))) {
+        tell(this_object(),"Error [login]: Unable to load your start location\n");
+        tell(this_object(),"Please contact an admin for assistance.\n");
+    }
+
+    if(e = catch(body->move_living(room, null, null, "SILENT"))) {
+        tell(this_object(),"Error [login]: Unable to move you to your start location.\n");
+        tell(this_object(),"Please contact an admin for assistance.\n");
+    }
+
+    if(devp(user) && !environment(body)) {
+        // Try one more time to put them in the start location
+        loc = ROOM_START ;
+        if(e = catch(room = load_object(loc))) {
+            tell(this_object(),"Error [login]: Unable to load your start location\n");
+            tell(this_object(),"Please contact an admin for assistance.\n");
+        }
+
+        if(e = catch(body->move_living(room, null, null, "SILENT"))) {
+            tell(this_object(),"Error [login]: Unable to move you to your start location.\n");
+            tell(this_object(),"Please contact an admin for assistance.\n");
+        }
+    }
 
     if(!environment(body)) {
-        tell(this_object(),"Error [login]: Unable to find a suitable location for your body.\n");
-        tell(this_object(),"Please contact an admin for assistance.\n");
         user->remove() ;
         body->remove() ;
         remove() ;

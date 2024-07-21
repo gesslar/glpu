@@ -16,9 +16,9 @@ mixed main(object caller, string file)
 {
     string text;
     pager = new("/obj/mudlib/pager/pager.c");
-    if(!file && this_interactive()->query("cwf")) file = this_interactive()->query("cwf");
+    if(!file && this_interactive()->query_env("cwf")) file = this_interactive()->query_env("cwf");
     else if(!file) return(notify_fail("SYNTAX: more <file>\n"));
-    file = resolve_path(caller->query("cwd"), file);
+    file = resolve_path(caller->query_env("cwd"), file);
     if(!file_exists(file)) return(notify_fail("Error [more]: File '" + file + "' does not exist.\n"));
     text = read_file(file);
     if(file[<2..<1] == ".c") pager->page(text, file, 0, 1);

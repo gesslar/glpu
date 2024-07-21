@@ -8,57 +8,38 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str)
-{
-     string *exp;
+mixed main(object tp, string str) {
+     string test, *exp;
 
-     if(!stringp(str))
-     {
-          if(directory_exists(user_path(caller->query_proper_name())))
-          {
-               str = user_path(caller->query_proper_name());
-          }
-          else
-          {
-               return notify_fail("Syntax: cd <directory>\n");
-          }
-     }
-     if(str[0]!='/') str=resolve_path(caller->query("cwd"), str);
-     exp=explode(str,"/");
-     if(sizeof(exp)<=1)
-     {
-          if(!directory_exists(str)) return notify_fail("Error [cd]: Directory doesn't exist.\n");
-          if(!(int)master()->valid_read(str, caller, "cd")) return notify_fail("Error [cd]: Permission denied.\n");
-          caller->set("cwd",str);
-          write(str+"\n");
-          return 1;
+     test = str ;
+
+     if(!stringp(test)) {
+          test = user_path(tp);
+          if(!directory_exists(test = user_path(tp)))
+              return _error("Syntax: cd <directory>");
      }
 
-     if(exp[<1]=="..")
-     {
-          str="/"+implode(exp[0..<3],"/");
-          if(str[0]!='/') str+="/";
-          if(!directory_exists(str)) return notify_fail("Error [cd]: Directory doesn't exist.\n");
-          if(!(int)master()->valid_read(str, caller, "cd")) return notify_fail("Error [cd]: Permission denied.\n");
-          caller->set("cwd",str);
-          write(str+"\n");
-          return 1;
-     }
+     test = resolve_path(tp->query_env("cwd"), test);
+     if(!directory_exists(test))
+          test = str ;
 
-     if(!(int)master()->valid_read(str, caller, "cd")) return notify_fail("Error [cd]: Permission denied.\n");
-     if(!directory_exists(str)) return notify_fail("Error [cd]: Directory doesn't exist.\n");
+     if(!directory_exists(test))
+          return _error("No such directory: %s", test);
 
-     if(str[<1..] != "/") str += "/";
-     caller->set("cwd",str);
-     write(str+"\n");
-     return 1;
+     if(!master()->valid_read(test, tp, "cd"))
+          return _error("Permission denied.");
+
+     tp->set_env("cwd", test);
+
+     return _ok("Current directory set to: %s", test);
 }
 
-string help(object caller) {
-    return (" SYNTAX: cd <directory>\n\n" +
-    "This command allows you to navigate through various directories.\n" +
-    "To use this command, you simply provide the directory (either\n" +
-    "an absolute path or one relative to the current directory) as the\n" +
-    "argument to this command.\n\n" +
-    "See also:  mkdir, rmdir, ls\n");
+string query_help(object tp) {
+    return
+"SYNTAX: cd [directory]\n\n" +
+"This command allows you to navigate through various directories. To use this "
+"command, you simply provide the directory, either an absolute path or one "
+"relative to the current directory, as the argument to this command.\n\n"
+"Typing 'cd' without any arguments will take you to your home directory.\n\n"
+"See also: mkdir, rmdir, ls";
 }
