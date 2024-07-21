@@ -5,6 +5,18 @@ Variables](index) section apply to administrators as well.
 In addition, the following environment variables are available to
 administrators:
 
+To set an environment variable, use the `set` command. For example:
+
+```
+set log_level 4
+```
+
+To clear an environment variable, set the variable with no value. For example:
+
+```
+set log_level
+```
+
 ## custom_clone
 
 This variable allows you to provide a custom message to be printed whenever you
@@ -25,7 +37,8 @@ variable allows you to set the tagging that appears before the message.
 If this is not set, then you will receive the default system tags for feedback
 messages.
 
-* `brief` - a coloured symbol before the message
+* `normal` - a coloured symbol, attempting to use Unicode
+* `plain` - a coloured symbol, using ASCII
 * `none` - no symbol or file tag
 
 If you are using a screenreader, then you will receive feedback decoration.

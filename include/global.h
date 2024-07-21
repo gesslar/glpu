@@ -12,12 +12,13 @@
 
 #include <config.h>
 #include <daemons.h>
-#include <modules.h>
+#include <input.h>
 #include <messaging.h>
+#include <modules.h>
+#include <move.h>
 #include <mudlib.h>
 #include <objects.h>
 #include <runtime_config.h>
-#include <move.h>
 #include <targeting.h>
 
 #define SIMUL_DIR  "/adm/simul_efun/"
