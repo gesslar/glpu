@@ -111,7 +111,12 @@ void prompt_password(object user, int attempts, mixed *cb) ;
 
 
 // File: resolve_path
-string resolve_path(string Current, string Next) ;
+string resolve_path(string base_dir, string path) ;
+string valid_path(string base_dir, string path) ;
+string valid_file(string base_dir, string path) ;
+string valid_dir(string base_dir, string path) ;
+string resolve_file(string base_dir, string path) ;
+string resolve_dir(string base_dir, string path) ;
 
 // File: save
 string object_save_directory(object ob) ;

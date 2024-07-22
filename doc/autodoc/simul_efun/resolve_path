@@ -1,4 +1,4 @@
-string resolve_path(string Current, string Next)
+string resolve_path(string base_dir, string path)
 
 Parameters:
 
