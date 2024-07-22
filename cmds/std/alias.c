@@ -9,7 +9,7 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string args) {
-    string verb, alias;
+    string verb, alias ;
     string *out = ({ }) ;
 
     if(!args) {
@@ -22,6 +22,7 @@ mixed main(object caller, string args) {
             return "Aliases: No local aliases defined.\n" ;
 
         keys = keys(data);
+        keys = sort_array(keys, 1) ;
         sz = sizeof(keys);
 
         if(!sz)
