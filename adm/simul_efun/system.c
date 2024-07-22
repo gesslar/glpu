@@ -165,7 +165,13 @@ varargs void _debug(mixed str, mixed args...) {
     debug_message(str) ;
 }
 
-private nosave string _brief_circle = "\u25CB" ;
+private nosave mapping _symbols = ([
+    "ok"      : ({ ({ "\e0036\e", "" }), ({ "\u2022 ", "o ", "" }) }),
+    "error"   : ({ ({ "\e0160\e", "" }), ({ "\u25CF ", "o ", "" }) }),
+    "warning" : ({ ({ "\e0214\e", "" }), ({ "\u25B2 ", "o ", "" }) }),
+    "info"    : ({ ({ "\e0228\e", "" }), ({ "\u25A0 ", "o ", "" }) }),
+    "question": ({ ({ "\e0033\e", "" }), ({ "\u25C6 ", "o ", "" }) }),
+]) ;
 
 /**
  * @function _format_message
@@ -177,23 +183,32 @@ private nosave string _brief_circle = "\u25CB" ;
  * @returns {string} - The formatted message or null if there is no previous
                        object.
  */
-private string _format_message(string color, string str, mixed args...) {
+private string _format_message(string type, string str, mixed args...) {
     object body = this_body() ;
-    string tag ;
+    string tag, colour ;
+    mixed *symbol = _symbols[type] ;
+    int colour_index, tag_index ;
+    string final ;
 
     if(body) {
-        if(body->has_screenreader())
-            tag = "" ;
-        else
-            if(M_UNICODE->supports_unicode())
-                tag = _brief_circle ;
-            else
-                tag = "o" ;
+        if(body->has_screenreader()) {
+            colour_index = 1 ;
+            tag_index = 2 ;
+        } else {
+            colour_index = 0 ;
 
-            tag = color + tag + "\eres\e " ;
+            if(M_UNICODE->supports_unicode())
+                tag_index = 0 ;
+            else
+                tag_index = 1 ;
+        }
+    } else {
+        colour_index = 1 ;
+        tag_index = 2 ;
     }
 
-    str = tag + str ;
+    final = symbol[0][colour_index] + symbol[1][tag_index] + "\eres\e" ;
+    str = final + str ;
     str = sprintf(str, args...) ;
 
     return str ;
@@ -233,7 +248,7 @@ varargs int _ok(mixed args...) {
     if(!tp)
         tp = this_body() ;
 
-    mess = _format_message("\e0036\e", str, args...) ;
+    mess = _format_message("ok", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -279,7 +294,7 @@ varargs int _error(mixed args...) {
     if(!tp)
         tp = this_body() ;
 
-    mess = _format_message("\e0160\e", str, args...) ;
+    mess = _format_message("error", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -325,7 +340,7 @@ varargs int _warn(mixed args...) {
     if(!tp)
         tp = this_body() ;
 
-    mess = _format_message("\e0214\e", str, args...) ;
+    mess = _format_message("warn", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -371,7 +386,7 @@ varargs int _info(mixed args...) {
     if(!tp)
         tp = this_body() ;
 
-    mess = _format_message("\e0228\e", str, args...) ;
+    mess = _format_message("info", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
@@ -419,7 +434,7 @@ varargs int _question(mixed args...) {
     if(!tp)
         return 0 ;
 
-    mess = _format_message("\e0033\e", str, args...) ;
+    mess = _format_message("question", str, args...) ;
     if(nullp(mess))
         return 0 ;
 
