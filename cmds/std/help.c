@@ -38,11 +38,11 @@ mixed main(object tp, string str) {
             err = catch(cmd = load_object(path[i] + str));
             if(!err) file = cmd->query_help(tp);
 
-            if(err) return _error("Error [help]: This is a problem with "+ str + "\nPlease inform an admin.\n\n");
+            if(err) return _error("This is a problem with "+ str + "\nPlease inform an admin.");
 
-            if(!file) return notify_fail("Error [help]: The command " + str +
+            if(!file) return _error("The command " + str +
                 " exists but there is no help file for it.\n"
-                " Please inform an admin.\n\n");
+                " Please inform an admin.");
 
             output += border;
             output += sprintf("%|*s\n", width, str) ;
@@ -71,7 +71,7 @@ mixed main(object tp, string str) {
         }
     }
     log_file(LOG_HELP, "Not found: " + str + "\n");
-    return notify_fail("Error [help]: Unable to find help file for: " + str + "\n");
+    return _error("Unable to find help file for: " + str);
 }
 
 string help(object caller) {
