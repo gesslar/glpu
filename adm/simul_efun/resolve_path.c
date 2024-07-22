@@ -28,18 +28,15 @@ string resolve_path(string base_dir, string path) {
 
     if(path[0] == '~') {
         if((path[1] == '/') || (sizeof(path) == 1))
-            path = user_path(this_body()->query_proper_name()) + path[1..<1];
+            path = user_path(this_body()->query_proper_name()) + path[1..];
         else {
             index = strsrch(path, "/");
-            if(index == -1) return user_path(path[1..<0]);
-            else path = user_path(path[1..index-1]) + path[index..<0];
+            if(index == -1) return user_path(path[1..]);
+            else path = user_path(path[1..index-1]) + path[index..];
         }
     }
 
-    if(path[0] != '/' && strsrch(path, "/") == -1) {
-        path = base_dir + "/" + path;
-    }
-
+    if(path[0] != '/') path = base_dir + "/" + path;
     path_segments = explode(path, "/");
 
     for(index = 0; index < sizeof(path_segments); index++) {
@@ -56,11 +53,8 @@ string resolve_path(string base_dir, string path) {
         }
     }
 
-    path = implode(path_segments, "/");
+    path = "/" + implode(path_segments, "/");
     path = replace_string(path, "//", "/");
-
-    // Remove leading '/' if present
-    if(path[0] == '/') path = path[1..];
 
     return path;
 }
