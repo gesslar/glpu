@@ -31,6 +31,7 @@
 #include "/adm/simul_efun/resolve_path.c"
 #include "/adm/simul_efun/save.c"
 #include "/adm/simul_efun/security.c"
+#include "/adm/simul_efun/signal.c"
 #include "/adm/simul_efun/socket.c"
 #include "/adm/simul_efun/string.c"
 #include "/adm/simul_efun/system.c"

@@ -129,6 +129,11 @@ int adminp(mixed user) ;
 int devp(mixed user) ;
 int wizardp(mixed user) ;
 
+// File: signal
+void emit(int sig, mixed arg...) ;
+int slot(int sig, string func) ;
+int unslot(int sig) ;
+
 // File: socket
 string dump_socket_status() ;
 
@@ -148,6 +153,7 @@ string reverse_strsrch(string str, string sub, int start) ;
 
 // File: system
 int port() ;
+object simul_efun() ;
 mixed mud_config(string str) ;
 string admin_email() ;
 string arch() ;
@@ -159,6 +165,7 @@ string lib_version() ;
 string mud_name() ;
 string open_status() ;
 varargs void _debug(string str, mixed args...) ;
+int boot_number() ;
 string log_dir() ;
 string tmp_dir() ;
 varargs int _ok(mixed args...) ;

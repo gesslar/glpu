@@ -3,9 +3,9 @@ title: daemon_function
 ---
 # daemon_function
 
-## boot
+## alarm
 
-* [event_boot](boot#event_boot)
+* [execute_boot_alarms](alarm#execute_boot_alarms)
 
 ## github_issues
 

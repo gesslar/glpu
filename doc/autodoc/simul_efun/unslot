@@ -1,0 +1,7 @@
+int unslot(int sig)
+
+Parameters:
+
+* `int sig` - signal number
+
+Unregister a slot for a signal.

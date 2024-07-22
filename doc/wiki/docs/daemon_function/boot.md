@@ -3,20 +3,15 @@ title: boot
 ---
 # boot.c
 
-## event_boot
+## query_boot_number
 
 ### Synopsis
 
 ```c
-void event_boot(object prev)
+int query_boot_number()
 ```
-
-### Parameters
-
-* `object prev` - The previous object that called this function.
 
 ### Description
 
-Called when the mud boots up. Increments the boot number and
-saves the data. Must be included in `adm/etc/preload`.
+Get the current boot number.
 

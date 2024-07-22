@@ -83,6 +83,10 @@ int port() {
     return __PORT__;
 }
 
+object simul_efun() {
+    return this_object() ;
+}
+
 /**
  * @simul_efun driver_version
  * @description Returns the version of the MUD driver.
@@ -441,4 +445,14 @@ varargs int _question(mixed args...) {
     tell(tp, mess) ;
 
     return 1 ;
+}
+
+/**
+ * @simul_efun boot_number
+    * @description Returns the boot number of the MUD. This is the number of
+    *              times the MUD has been booted.
+    * @returns {int} - The current boot number.
+ */
+int boot_number() {
+    return BOOT_D->query_boot_number() ;
 }

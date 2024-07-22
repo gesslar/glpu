@@ -93,6 +93,8 @@ void create() {
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     set_log_level(0) ;
+    if(clonep())
+        slot(SIG_SYS_CRASH, "on_crash") ;
 }
 
 private nosave string *body_slots = ({
@@ -223,9 +225,13 @@ void restore_user() {
     if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
 }
 
-void save_user() {
+int save_user() {
+    int result ;
+
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    catch(save_object(user_mob_data(query_proper_name())));
+    catch(result = save_object(user_mob_data(query_proper_name())));
+
+    return result;
 }
 
 varargs int move(mixed ob, int flag) {
@@ -755,6 +761,17 @@ int query_log_level() {
 int supports_unicode() {
     if(has_screenreader()) return 0 ;
     return query_env("unicode") == "on" ;
+}
+
+// Maybe you can get it to print to the user, but I can't. I even tried
+// receive() 😭
+void on_crash(mixed arg...) {
+    int result ;
+
+    if(previous_object() != signal_d())
+        return ;
+
+    catch(result = save_user()) ;
 }
 
 int is_pc() { return 1 ; }
