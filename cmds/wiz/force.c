@@ -32,12 +32,7 @@ mixed main(object tp, string args) {
     if(!stringp(args) || sscanf(args, "%s to %s", target, cmd) != 2)
         return _error("Syntax: force <living> to <cmd>");
 
-    _debug(repeat_string("\n", 10)) ;
-
-    _debug("typed: %O\n", args);
-
     if(sscanf(args, "all %s here to %s", target, cmd) == 2) {
-        _debug("1 Syntax: all `%s` here to `%s`\n", target, cmd);
         if(target == "users") {
             if(admin) {
                 obs = present_players(room) ;
@@ -51,7 +46,6 @@ mixed main(object tp, string args) {
             return _error("Unsupported argument to force.");
         }
     } else if(sscanf(args, "all to %s", cmd) == 1) {
-        _debug("2 Syntax: all to %s\n", cmd);
         if(admin) {
             obs = users();
         } else {
@@ -59,7 +53,6 @@ mixed main(object tp, string args) {
             obs = filter(obs, (: !interactive($1) :) );
         }
     } else if(sscanf(args, "all here to %s", target, cmd) == 1) {
-        _debug("3 Syntax: all here to %s\n", cmd);
         if(admin) {
             obs = all_inventory(room);
         } else {
@@ -67,7 +60,6 @@ mixed main(object tp, string args) {
             obs = filter_array(obs, (: !interactive($1) :) );
         }
     } else if(sscanf(args, "all %s to %s", target, cmd) == 2) {
-        _debug("4 Syntax: all %s to %s\n", target, cmd);
         if(target == "users") {
             if(admin) {
                 obs = users();
@@ -78,7 +70,6 @@ mixed main(object tp, string args) {
             return _error("Unsupported argument to force.");
         }
     } else if(sscanf(args, "%s to %s", target, cmd) == 2) {
-        _debug("5 Syntax: %s to %s\n", target, cmd);
         target = lower_case(target);
         if(admin) {
             ob = present(target, room);
