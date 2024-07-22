@@ -29,10 +29,10 @@ mixed main(object tp, string str) {
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
             } else {
-                tell_room(environment(tp), tp->query_proper_name() + " teleports home.\n", ({tp}));
+                tell_room(environment(tp), tp->query_name() + " teleports home.\n", ({tp}));
             }
 
-            tp->move_living(user_path(tp->query_proper_name()) + "workroom.c");
+            tp->move_living(user_path(tp->query_proper_name()) + "workroom.c", "SILENT", "SILENT");
 
             room = environment(tp);
             if(tp->query_env("teleport_in") && wizardp(tp)) {
@@ -69,7 +69,7 @@ mixed main(object tp, string str) {
                 tell_down(room, tp->query_name() + " teleports to someone's workroom.\n", 0, tp);
             }
 
-            tp->move_living(user_path(str) + "workroom.c");
+            tp->move_living(user_path(str) + "workroom.c", "SILENT");
 
             room = environment(tp);
             if(tp->query_env("teleport_in") && wizardp(tp)) {
