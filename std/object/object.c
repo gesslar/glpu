@@ -132,7 +132,7 @@ void set_proper_name(string str) {
 }
 
 string query_proper_name() {
-    return proper_name;
+    return proper_name ;
 }
 
 int set_name(string str) {
