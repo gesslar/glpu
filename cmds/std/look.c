@@ -199,10 +199,11 @@ mixed render_container(object caller, object room, string target) {
     return "Error: Containers are not implemented yet.\n" ;
 }
 
-string help(object caller) {
-    return("SYNTAX: look [<in/at>] <object> [<on/in> <object>]\n\n" +
-        "This command will allow you to look at objects in your environment.\n" +
-        "If no command is supplied, it will show you the whole room. You can\n" +
-        "also look at specific objects by typing 'look <object>' or 'look at object'.\n" +
-        "You might also try looking into an object by type 'look in <object>'.\n");
+string query_help(object caller) {
+    return(
+"SYNTAX: look [<in/at>] <object> [<on/in> <object>]\n\n"
+"This command will allow you to look at objects in your environment. "
+"If no argument is supplied, it will show you the whole room. You can "
+"also look at specific objects by typing 'look <object>' or 'look at object'. "
+"You might also try looking into an object by typing 'look in <object>'.");
 }
