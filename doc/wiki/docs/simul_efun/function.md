@@ -45,11 +45,13 @@ Assembles a callback function from the provided arguments.
 This function is used to create a callable structure that can be
 invoked later. The callback can be either a method on an object or
 a function. The assembled callback is returned as an array.
+
 Usage:
 - When you need to create a callback for an object method:
 `assemble_call_back(object, "method", args...)`
 - When you need to create a callback for a function:
 `assemble_call_back(function, args...)`
+
 The function performs the following steps:
 1. Checks if the provided arguments form a valid array.
 2. Determines the size of the arguments array.
