@@ -11,8 +11,8 @@ inherit STD_CMD ;
 
 void setup() {
     help =
-"work - Change your current working diretory to that of your environment\n"
-"work <object> - Change your current working directory to that of the object\n"
+"work - Change your current working directory to that of your environment\n"
+"work <object> - Change your current working directory to that of the object."
 ;
 }
 
@@ -27,14 +27,14 @@ mixed main(object tp, string arg) {
         ob = get_object(arg) ;
 
     if(!ob)
-        return "No such object: " + arg ;
+        return _error("No such object: %s", arg) ;
 
     path = query_directory(ob) ;
 
     if(!directory_exists(path))
-        return "No such directory: " + path ;
+        return _error("No such directory: %s", path) ;
 
-    tp->set_cwd(path) ;
+    tp->set_env("cwd", path) ;
 
-    return "Success [work]: CWD set to " + path ;
+    return _ok("Current working directory set to: %s", path) ;
 }
