@@ -45,6 +45,8 @@ void setup() {
     set_persistent(1) ;
 
     cid = call_out_walltime("poll_alarms", next_minute - time()) ;
+
+    slot(SIG_SYS_BOOT, "execute_boot_alarms") ;
 }
 
 void post_restore() {
@@ -412,9 +414,14 @@ private int next_minute_start() {
     return next_minute_time;
 }
 
-void execute_boot_alarms(object prev) {
+/**
+ * @function execute_boot_alarms
+ * @description Called from the master object when the mud boots up.
+ */
+void execute_boot_alarms(mixed arg...) {
     class Alarm *boot_alarms, boot_alarm ;
-    if(prev != find_object(BOOT_D))
+
+    if(previous_object() != signal_d())
         return ;
 
     boot_alarms = filter(alarms, (: $1.type == "B" :)) ;

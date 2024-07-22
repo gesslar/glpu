@@ -315,6 +315,22 @@ string open_status()
 
 Returns the open status of the MUD.
 
+## boot_number
+
+### Synopsis
+
+```c
+int boot_number()
+```
+
+### Returns
+
+`int` - The current boot number.
+
+### Description
+
+Returns the boot number of the MUD. This is the number of
+
 ## log_dir
 
 ### Synopsis

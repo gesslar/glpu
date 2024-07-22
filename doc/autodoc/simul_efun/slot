@@ -1,0 +1,8 @@
+int slot(int sig, string func)
+
+Parameters:
+
+* `int sig` - signal number
+* `string func` - function to call when the signal is emitted
+
+Register a slot for a signal.

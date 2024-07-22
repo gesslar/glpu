@@ -6,8 +6,13 @@
 
 # Note: File extension '.c' not required and no whitespaces allowed
 
-# Config daemon - should be first
+# ANYTHING ABOVE THE CONFIG DAEMON MUST NOT RELY ON THE CONFIG DAEMON
+# OR ANYTHING THAT USES THE CONFIG DAEMON IN ANY WAY, EVEN TANGENTIALLY.
+# Config Daemon
 /adm/daemons/config
+
+# Signal daemon
+/adm/daemons/signal
 
 # Database Daemon
 /adm/daemons/db
@@ -44,3 +49,6 @@
 
 # Grapevine Daemon
 /adm/daemons/grapevine
+
+# Boot Daemon
+/adm/daemons/boot
