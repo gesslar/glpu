@@ -31,8 +31,6 @@ void create() {
     call_out_walltime( (: set_privs, this_object(), "[master]" :), 0.01);
     // Tune into error channel
     call_out_walltime("tune_into_error", 0.02) ;
-    // BOOT_D call
-    call_out_walltime( (: BOOT_D->boot() :), 0.03);
 }
 
 void flag(string str) {
@@ -83,6 +81,8 @@ protected void epilog(int load_empty) {
         event(ob, "boot") ;
         debug_message(out);
     }
+
+    call_out_walltime((:emit:), 0.5, SIG_SYS_BOOT) ;
 }
 
 void tune_into_error() {
@@ -209,10 +209,12 @@ void error_handler(mapping mp, int caught) {
 }
 
 private void crash(string crash_message, object command_giver, object current_object) {
-    debug_message("hi there") ;
+    emit(SIG_SYS_CRASH) ;
+
     foreach (object ob in users()) {
-        tell_object(ob, "Master object shouts: Damn!\nMaster object tells you: The game is crashing.\n");
-        catch(ob->save_user());
+        tell_object(ob,
+            "Master object shouts: Damn!\n"
+            "Master object tells you: The game is crashing.\n");
     }
 
     catch(PERSIST_D->persist_objects()) ;

@@ -1,0 +1,7 @@
+int boot_number()
+
+Returns
+
+`int` - The current boot number.
+
+Returns the boot number of the MUD. This is the number of

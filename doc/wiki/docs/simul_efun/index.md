@@ -151,6 +151,13 @@ title: simul_efun
 * [is_member](security#is_member)
 * [wizardp](security#wizardp)
 
+## signal
+
+* [emit](signal#emit)
+* [signal_d](signal#signal_d)
+* [slot](signal#slot)
+* [unslot](signal#unslot)
+
 ## socket
 
 * [dump_socket_status](socket#dump_socket_status)
@@ -181,6 +188,7 @@ title: simul_efun
 * [arch](system#arch)
 * [baselib_name](system#baselib_name)
 * [baselib_version](system#baselib_version)
+* [boot_number](system#boot_number)
 * [doc_dir](system#doc_dir)
 * [driver_version](system#driver_version)
 * [lib_name](system#lib_name)
