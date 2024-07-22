@@ -198,6 +198,7 @@ This is a simul_efun that will return the object that called
 the current operation. This may be this_body(), but it may
 also be a shadow another player who initiated the chain.
 For example, a wizard using the force command.
+
 Be careful with this one, you don't want to accidentally
 perform operations on the wrong object.
 
