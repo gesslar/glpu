@@ -131,7 +131,12 @@ title: simul_efun
 
 ## resolve_path
 
+* [resolve_dir](resolve_path#resolve_dir)
+* [resolve_file](resolve_path#resolve_file)
 * [resolve_path](resolve_path#resolve_path)
+* [valid_dir](resolve_path#valid_dir)
+* [valid_file](resolve_path#valid_file)
+* [valid_path](resolve_path#valid_path)
 
 ## save
 

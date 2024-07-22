@@ -90,6 +90,8 @@ void init_capacity() ;
 void create() {
     if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/std/"});
+    if(!query("env_settings"))
+        set("env_settings", ([])) ;
     set_log_level(0) ;
 }
 
@@ -275,7 +277,7 @@ int set_env(string var_name, string var_value) {
 }
 
 mixed query_env(string var_name) {
-    mapping data = query("env_settings");
+    mapping data = query("env_settings") ;
     if(data[var_name]) return data[var_name];
 }
 
@@ -283,7 +285,6 @@ mapping list_env() {
     mapping data = query("env_settings");
     return data;
 }
-
 
 /* User path functions */
 
@@ -506,6 +507,8 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
                 tmp = replace_string(depart_message, "$N", query_name()) ;
                 tmp = replace_string(tmp, "$D", dir);
 
+                tmp = append(tmp, "\n") ;
+
                 tell_down(curr, tmp) ;
             }
         }
@@ -533,7 +536,10 @@ mixed* query_commands() {
 }
 
 int force_me(string cmd) {
-    if(!is_member(query_privs(previous_object()), "admin") && this_body() != this_object())
+    if(
+            this_body() != this_object()
+        && !adminp(previous_object())
+        && !adminp(this_caller()))
         return 0;
     else
         return command(cmd);

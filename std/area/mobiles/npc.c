@@ -11,8 +11,9 @@ inherit STD_BODY;
 void create() {
     path = ({ "/cmds/std/" });
     set("prevent_get", 1);
+    if(!mapp(query("env_settings"))) set("env_settings", ([])) ;
     if(!query_env("cwd")) set_env("cwd", "/doc");
-    if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
+    if(!query_env("colour")) set_env("colour", "on");
     if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
     enable_commands();
@@ -33,7 +34,7 @@ void restore_user() {}
 void save_user() {}
 
 int force_me(string cmd) {
-    command(cmd);
+    return command(cmd);
 }
 
 int is_npc() { return 1; }
