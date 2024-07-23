@@ -28,6 +28,7 @@
 #include "/adm/simul_efun/object.c"
 #include "/adm/simul_efun/overrides.c"
 #include "/adm/simul_efun/prompt.c"
+#include "/adm/simul_efun/random.c"
 #include "/adm/simul_efun/resolve_path.c"
 #include "/adm/simul_efun/save.c"
 #include "/adm/simul_efun/security.c"

@@ -3,36 +3,36 @@ title: simul_efun
 ---
 # simul_efun
 
-## arrays
+## [arrays](arrays)
 
 * [distinct_array](arrays#distinct_array)
 * [remove_array_element](arrays#remove_array_element)
 * [reverse_array](arrays#reverse_array)
 * [splice](arrays#splice)
 
-## base64
+## [base64](base64)
 
 * [base64_decode](base64#base64_decode)
 * [base64_encode](base64#base64_encode)
 
-## data
+## [data](data)
 
 * [data_del](data#data_del)
 * [data_inc](data#data_inc)
 * [data_value](data#data_value)
 * [data_write](data#data_write)
 
-## description
+## [description](description)
 
 * [get_long](description#get_long)
 * [get_short](description#get_short)
 
-## directory
+## [directory](directory)
 
 * [assure_dir](directory#assure_dir)
 * [query_directory](directory#query_directory)
 
-## english
+## [english](english)
 
 * [cap_significant_words](english#cap_significant_words)
 * [cap_words](english#cap_words)
@@ -43,7 +43,7 @@ title: simul_efun
 * [reflexive](english#reflexive)
 * [subjective](english#subjective)
 
-## exists
+## [exists](exists)
 
 * [cfile_exists](exists#cfile_exists)
 * [directory_exists](exists#directory_exists)
@@ -51,7 +51,7 @@ title: simul_efun
 * [ofile_exists](exists#ofile_exists)
 * [user_exists](exists#user_exists)
 
-## file
+## [file](file)
 
 * [assure_file](file#assure_file)
 * [dir_file](file#dir_file)
@@ -64,7 +64,7 @@ title: simul_efun
 * [temp_file](file#temp_file)
 * [touch](file#touch)
 
-## function
+## [function](function)
 
 * [assemble_call_back](function#assemble_call_back)
 * [call_back](function#call_back)
@@ -72,27 +72,27 @@ title: simul_efun
 * [call_trace](function#call_trace)
 * [valid_function](function#valid_function)
 
-## grammar
+## [grammar](grammar)
 
 * [consolidate](grammar#consolidate)
 * [int_string](grammar#int_string)
 * [ordinal](grammar#ordinal)
 
-## identify
+## [identify](identify)
 
 * [identify](identify#identify)
 
-## json
+## [json](json)
 
 * [json_decode](json#json_decode)
 * [json_encode](json#json_encode)
 
-## mappings
+## [mappings](mappings)
 
 * [element_of_weighted](mappings#element_of_weighted)
 * [pretty_map](mappings#pretty_map)
 
-## messaging
+## [messaging](messaging)
 
 * [tell](messaging#tell)
 * [tell_all](messaging#tell_all)
@@ -100,7 +100,7 @@ title: simul_efun
 * [tell_down](messaging#tell_down)
 * [tell_up](messaging#tell_up)
 
-## numbers
+## [numbers](numbers)
 
 * [percent](numbers#percent)
 * [percent_of](numbers#percent_of)
@@ -108,7 +108,7 @@ title: simul_efun
 * [remainder](numbers#remainder)
 * [sum](numbers#sum)
 
-## object
+## [object](object)
 
 * [find_ob](object#find_ob)
 * [get_living](object#get_living)
@@ -124,12 +124,20 @@ title: simul_efun
 * [this_caller](object#this_caller)
 * [top_environment](object#top_environment)
 
-## prompt
+## [prompt](prompt)
 
 * [prompt_colour](prompt#prompt_colour)
 * [prompt_password](prompt#prompt_password)
 
-## resolve_path
+## [random](random)
+
+* [random_element](random#random_element)
+* [random_float](random#random_float)
+* [random_number](random#random_number)
+* [random_range](random#random_range)
+* [random_weighted](random#random_weighted)
+
+## [resolve_path](resolve_path)
 
 * [resolve_dir](resolve_path#resolve_dir)
 * [resolve_file](resolve_path#resolve_file)
@@ -138,31 +146,31 @@ title: simul_efun
 * [valid_file](resolve_path#valid_file)
 * [valid_path](resolve_path#valid_path)
 
-## save
+## [save](save)
 
 * [assure_object_save_dir](save#assure_object_save_dir)
 * [object_save_directory](save#object_save_directory)
 * [object_save_file](save#object_save_file)
 
-## security
+## [security](security)
 
 * [adminp](security#adminp)
 * [devp](security#devp)
 * [is_member](security#is_member)
 * [wizardp](security#wizardp)
 
-## signal
+## [signal](signal)
 
 * [emit](signal#emit)
 * [signal_d](signal#signal_d)
 * [slot](signal#slot)
 * [unslot](signal#unslot)
 
-## socket
+## [socket](socket)
 
 * [dump_socket_status](socket#dump_socket_status)
 
-## string
+## [string](string)
 
 * [add_commas](string#add_commas)
 * [append](string#append)
@@ -177,7 +185,7 @@ title: simul_efun
 * [stringify](string#stringify)
 * [substr](string#substr)
 
-## system
+## [system](system)
 
 * [_error](system#_error)
 * [_info](system#_info)
@@ -200,14 +208,14 @@ title: simul_efun
 * [port](system#port)
 * [tmp_dir](system#tmp_dir)
 
-## time
+## [time](time)
 
 * [ldate](time#ldate)
 * [ltime](time#ltime)
 * [time_frac](time#time_frac)
 * [time_ms](time#time_ms)
 
-## user
+## [user](user)
 
 * [user_core_data_directory](user#user_core_data_directory)
 * [user_data_directory](user#user_data_directory)
@@ -215,7 +223,7 @@ title: simul_efun
 * [user_mob_data](user#user_mob_data)
 * [user_path](user#user_path)
 
-## util
+## [util](util)
 
 * [generate_uuid](util#generate_uuid)
 * [of](util#of)

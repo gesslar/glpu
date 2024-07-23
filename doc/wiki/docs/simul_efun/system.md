@@ -330,6 +330,7 @@ int boot_number()
 ### Description
 
 Returns the boot number of the MUD. This is the number of
+times the MUD has been booted.
 
 ## log_dir
 

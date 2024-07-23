@@ -109,6 +109,12 @@ object this_body() ;
 varargs void prompt_colour(object body, mixed *cb, string prompt) ;
 void prompt_password(object user, int attempts, mixed *cb) ;
 
+// File: random
+int *random_number(int seed, int max);
+mixed *random_float(int seed);
+int *random_range(int seed, int min, int max);
+mixed *random_element(int seed, mixed *arr);
+mixed *random_weighted(int seed, mapping weights);
 
 // File: resolve_path
 string resolve_path(string base_dir, string path) ;

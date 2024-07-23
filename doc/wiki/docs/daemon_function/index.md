@@ -3,11 +3,11 @@ title: daemon_function
 ---
 # daemon_function
 
-## alarm
+## [autodoc](autodoc)
 
-* [execute_boot_alarms](alarm#execute_boot_alarms)
+* [autodoc_scan](autodoc#autodoc_scan)
 
-## github_issues
+## [github_issues](github_issues)
 
 * [create_issue](github_issues#create_issue)
 * [process_backlog](github_issues#process_backlog)

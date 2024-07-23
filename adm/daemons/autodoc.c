@@ -41,8 +41,10 @@ private nosave nomask string jsdoc_function_regex,
                             *jsdoc_function_ignore_tags,
                             *tags, tag_regex,
                              continue_regex,
+                             blank_line_regex,
                              function_detect_regex,
-                             jsdoc_array_regex ;
+                             jsdoc_array_regex,
+                             * multi_line_tags ;
 
 private nosave nomask mapping docs = ([]);
 private nosave int ci = false ;
@@ -55,6 +57,8 @@ void setup() {
     jsdoc_array_regex = "\\w+(\\s*\\[\\s*\\]\\s*)" ;
 
     jsdoc_function_ignore_tags = ({ "function" }) ;
+    multi_line_tags = ({ "description", "example" }) ;
+    blank_line_regex = "^\\s\\*\\s*$" ;
 
     tags = ({ "description", "def", "param", "returns", "example" }) ;
     tag_regex = sprintf("^\\s*\\*\\s+@(%s)\\s+(.*)$",
@@ -70,6 +74,23 @@ void setup() {
     ;
 }
 
+/**
+ * @daemon_function autodoc_scan
+ * @description Start the autodoc scan process. This will trigger the daemon to
+ *              scan the directories specified in the AUTODOC_SOURCE_DIRS
+ *              configuration variable for LPC source files and parse the
+ *              JSDoc-style comments in those files.
+ *
+ *              The parsed documentation will be written to the
+ *              AUTODOC_ROOT directory in a structured format for use in
+ *              generating documentation for the mudlib.
+ *
+ *              The parsed documentation will also be written to the
+ *              WIKI_DOC_ROOT directory in a structured format for use in
+ *              generating documentation for the wiki.
+ * @return {mixed} - 1 if the scan was started successfully, an error message
+ *                   if the scan is already running.
+ */
 public nomask mixed autodoc_scan() {
     mixed *config ;
 
@@ -345,11 +366,19 @@ private nomask void parse_file(string file) {
                         // assume we are still parsing additional information
                         // for the current tag. We can append the current line
                         // to the current tag's information.
-                        if(pcre_match(line, continue_regex)) {
+                        if(pcre_match(rtrim(line), continue_regex)) {
                             matches = pcre_extract(line, continue_regex) ;
                             if(sizeof(matches) > 0) {
                                 tag_data += ({ matches[0] });
                             }
+                        } else if(of(current_tag, multi_line_tags)) {
+                            if(pcre_match(rtrim(line), blank_line_regex)) {
+                                tag_data += ({ "" }) ;
+                            } else  {
+                                tag_data += ({ line }) ;
+                            }
+                        } else {
+                            tag_data += ({ trim(line) }) ;
                         }
                     }
                 }
@@ -359,8 +388,6 @@ private nomask void parse_file(string file) {
         }
     }
 }
-
-private nomask string dash_wrap(string str, int width) ;
 
 // ({ function_name, *synopsis, *params, returns, description, *example })
 private nomask mixed *consolidate_function(string function_name, mapping func) {
@@ -389,7 +416,6 @@ private nomask mixed *consolidate_function(string function_name, mapping func) {
             line = implode(currs[sz], " ") ;
             result[1][sz] = line ;
         }
-
         // Add the parameters [2]
         if(of("param", func)) {
             mixed *params ;
@@ -660,7 +686,7 @@ private nomask void generate_wiki() {
             source_file_name = chop(parts[1], ".c", -1) ;
 
             index_md = generate_index_markdown(function_type, source_file, funcs) ;
-            index_content += sprintf("## %s\n\n", source_file_name) ;
+            index_content += sprintf("## [%s](%s)\n\n", source_file_name, source_file_name) ;
             index_content += index_md + "\n" ;
 
             dest_file = sprintf("%s%s/%s.md", wiki_doc_root, function_type, source_file_name) ;
@@ -699,19 +725,6 @@ private nomask void generate_wiki() {
     }
 
     writing = false ;
-}
-
-private nomask string dash_wrap(string str, int width) {
-    int dash_pos, space_pos ;
-
-    if(strlen(str) > width) {
-        dash_pos = strsrch(str, "-") + 2 ;
-        space_pos = reverse_strsrch(str[0..width], " ") ;
-        str = str[0..space_pos] + "\n" +
-        repeat_string(" ", dash_pos) + str[space_pos + 1..] ;
-    }
-
-    return str ;
 }
 
 private nomask void finish_scan() {
