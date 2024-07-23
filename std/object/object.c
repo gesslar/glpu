@@ -27,6 +27,8 @@ inherit M_MESSAGING ;
 
 private string proper_name, short, long;
 private nosave string name ;
+private nosave string virtual_master = 0;
+protected nomask nosave mixed *create_args ;
 
 int move(mixed dest);
 int allow_move(mixed dest);
@@ -41,8 +43,9 @@ int can_release(object ob);
 void on_remove(object env) {}
 
 // Private so only driver can call it.
-private void create() {
+private varargs void create(mixed args...) {
     init_ob() ;
+    create_args = args ;
     setup_chain() ;
     if(!proper_name) {
             if(name)
@@ -164,4 +167,12 @@ void register_crash() {
 
 void unregister_crash() {
     CRASH_D->unregister_crash_object(this_object()) ;
+}
+
+void set_virtual_master(string str) {
+    virtual_master = str;
+}
+
+string query_virtual_master() {
+    return virtual_master;
 }

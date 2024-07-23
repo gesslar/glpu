@@ -10,39 +10,38 @@
  */
 
 inherit STD_DAEMON ;
+inherit M_LOG ;
 
-object compile_object(string file) {
-    string *path_exploded, server_path;
-    object server, virtual_object;
-    int index;
+void setup() {
+    set_log_level(4) ;
+}
 
-    write_file("/log/virtual_compile", "Request: " + file + " ("+previous_object()+")\n") ;
+public nomask object compile_object(string file) {
+    string *path_components, vclass, e ;
+    string *dir_parts ;
+    object result ;
 
-    path_exploded = explode(file, "/");
-    index = member_array("virtual_area", path_exploded);
+    path_components = dir_file(file);
 
-    if(index != -1) {
-        server_path = "/" + implode(path_exploded[0..index], "/") + "/virtual_server.c";
-        if(file_exists(server_path)) {
-            write_file("/log/virtual_compile", "Server: " + server_path + " ("+previous_object()+")\n") ;
+    dir_parts = explode(path_components[0], "/") - ({""});
+    vclass = dir_parts[0] ;
 
-            catch(server = load_object(server_path));
-            if(objectp(server)) {
-                virtual_object = server->compile_object(file);
-
-                if(objectp(virtual_object))  {
-                    write_file("/log/virtual_compile", "Virtual object loaded for " + file + " ("+previous_object()+")\n") ;
-                    virtual_object->set_virtual_master(base_name(virtual_object)) ;
-                    return virtual_object;
-                } else {
-                    write_file("/log/virtual_compile", "No Virtual object loaded for " + file + " ("+previous_object()+")\n") ;
-                    return 0;
-                }
-            }
+    if(file_exists(__DIR__ "modules/virtual/%s.c", vclass)) {
+        e = catch(load_object(sprintf(__DIR__ "modules/virtual/%s", vclass))) ;
+        if(e) {
+            log_file("VIRTUAL", e) ;
+            return 0 ;
         }
 
-        _debug("No functional server found at " + server_path + " ("+previous_object()+")\n") ;
+        e = catch(result = call_other(sprintf(__DIR__ "modules/virtual/%s", vclass), "compile_object", file)) ;
+
+        if(e) {
+            log_file("VIRTUAL", e) ;
+            return 0 ;
+        }
+
+        return result ;
     }
 
-    return 0;
+    return 0 ;
 }

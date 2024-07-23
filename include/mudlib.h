@@ -35,9 +35,9 @@
 #define STD_SKILL           DIR_STD "cmd/skill"
 #define STD_SPELL           DIR_STD "cmd/spell"
 #define STD_USER            DIR_STD "user/user"
-#define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
 #define STD_WS_CLIENT       DIR_STD "daemon/websocket_client"
 #define STD_ZONE            DIR_STD "area/zones/zone"
+#define STD_ZONE_D          DIR_STD_DAEMON "zone_master"
 
 /* Mudlib Objects */
 
