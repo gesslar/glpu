@@ -129,6 +129,14 @@ title: simul_efun
 * [prompt_colour](prompt#prompt_colour)
 * [prompt_password](prompt#prompt_password)
 
+## [random](random)
+
+* [random_element](random#random_element)
+* [random_float](random#random_float)
+* [random_number](random#random_number)
+* [random_range](random#random_range)
+* [random_weighted](random#random_weighted)
+
 ## [resolve_path](resolve_path)
 
 * [resolve_dir](resolve_path#resolve_dir)

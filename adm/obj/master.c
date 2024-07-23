@@ -288,7 +288,7 @@ string privs_file(string filename) {
 
 string object_name(object ob) {
     if(ob->query_proper_name()) return ob->query_proper_name();
-    return file_name(ob);
+    return 0 ;
 }
 
 mixed compile_object(string file) {
