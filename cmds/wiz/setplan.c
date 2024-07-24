@@ -57,9 +57,6 @@ public void finish_edit(int status, string file, string temp_file, object tp, in
     if(status == ED_STATUS_ABORTED)
         return tell(tp, "Aborted.\n") ;
 
-_debug("Plan file: " + planfile);
-_debug("Temp file: " + temp_file);
-
     if(!cp(temp_file, planfile))
         _error(tp, "Plan could not be written.\n") ;
     else

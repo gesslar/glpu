@@ -212,7 +212,10 @@ varargs mixed call_if(mixed ob, string func, mixed arg...) {
         ob = load_object(ob);
 
     if(function_exists(func, ob))
-        return call_other(ob, func, arg...);
+        if(sizeof(arg))
+            return call_other(ob, func, arg...);
+        else
+            return call_other(ob, func);
 
     return null ;
 }

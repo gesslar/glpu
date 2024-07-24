@@ -1,4 +1,4 @@
-// /areas/village/virtual_area/field_inherit.c
+// /areas/village/field/field.c
 //
 // Created:     2024/02/04: Gesslar
 // Last Change: 2024/02/04: Gesslar
@@ -8,6 +8,8 @@
 inherit STD_ROOM ;
 
 void virtual_start() {
-    set_zone(__DIR__ "olum") ;
-    __DIR__ "virtual_server"->setup_exits(this_object()) ;
+    string file = create_args[0] ;
+
+    set_zone("../olum") ;
+    __DIR__ "field_daemon"->setup_exits(this_object(), file) ;
 }

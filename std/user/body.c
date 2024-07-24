@@ -191,7 +191,7 @@ void net_dead() {
         tell_all(environment(), query_name()+ " falls into stupour.\n");
     set("extra_short/link_dead", "[stupour]") ;
     log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
-_debug("interactive: " + interactive(this_object())) ;
+
     if(interactive(this_object()))
         emit(SIG_USER_LINKDEAD, this_object()) ;
 }

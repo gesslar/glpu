@@ -7,21 +7,34 @@
 
 inherit STD_DAEMON ;
 
-protected mapping virtual_info(string file) {
-    mapping result = ([ ]) ;
-    string *parts ;
-    int index, sz ;
+protected object generate_object(string path);
 
-    parts = explode(file, "/") ;
-    index = member_array("virtual_area", parts) ;
-    parts = parts[index+1..] ;
-_debug("parts: %O\n", parts) ;
+object compile_object(string path) {
+    string subzone, subzone_path;
+    object subzone_daemon;
+    string *current_dir;
+    string *path_parts;
 
-    if(sizeof(parts) < 1)
-        return result ;
+    path_parts = explode(path, "/");
+    if (sizeof(path_parts) < 1) return 0;
 
-    result["base"] = parts[0] ;
-    result["file"] = parts[1..] ;
+    current_dir = dir_file(this_object());
+    subzone = path_parts[0];
+    subzone_path = current_dir[0] + subzone + "/zone";
 
-    return result ;
+    if (file_size(subzone_path + ".c") > 0) {
+        subzone_daemon = load_object(subzone_path);
+        if (!subzone_daemon) {
+            return 0;
+        }
+        return subzone_daemon->compile_object(implode(path_parts[1..], "/"));
+    }
+
+    // No subzone found, handle the request
+    return generate_object(path);
+}
+
+// To be overridden by specific zone daemons
+protected object generate_object(string path) {
+    return 0;  // Default behavior: don't generate anything
 }

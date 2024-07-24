@@ -26,10 +26,18 @@ repo_root=$(cd ../.. && pwd)
 driver="${repo_root}/adm/dist/bin/driver"
 
 # Ensure the FluffOS driver submodule is up to date
-git submodule update --init --recursive > /dev/null
+if [ ! -d "fluffos" ] || [ -z "$(ls -A fluffos)" ]; then
+    # Submodule doesn't exist or is empty
+    git submodule update --init --recursive
+else
+    # Submodule exists and is populated
+    git submodule update --recursive
+fi
+
 cd fluffos
-git checkout master > /dev/null 2>&1
-git pull origin master > /dev/null
+git fetch origin
+git checkout master
+git reset --hard origin/master
 
 # Copy our custom local_options to the driver for compilation
 cp -v ../local_options src/local_options

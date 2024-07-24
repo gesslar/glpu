@@ -75,8 +75,8 @@ mixed main(object tp, string arg) {
         return _error("You cannot update the void object.");
     }
 
-    if(!file_exists(file))
-        return _error("%s does not exist.", file);
+    // if(!file_exists(file))
+    //     return _error("%s does not exist.", file);
 
     start = file;
 

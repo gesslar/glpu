@@ -12,7 +12,7 @@ inherit STD_DAEMON ;
 private nosave object *rooms ;
 private nosave string zone_name ;
 
-private nomask void mudlib_setup() {
+nomask void mudlib_setup() {
     rooms = ({}) ;
 
     zone_name = query_file_name(this_object()) ;
@@ -21,13 +21,13 @@ private nomask void mudlib_setup() {
 }
 
 void add_room(object room) {
-    if(member_array(room, rooms) == -1) {
+    if(!of(room, rooms)) {
         rooms += ({ room }) ;
     }
 }
 
 void remove_room(object room) {
-    if(member_array(room, rooms) != -1) {
+    if(of(member_array(room, rooms))) {
         rooms -= ({ room }) ;
     }
 }

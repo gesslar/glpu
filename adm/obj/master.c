@@ -236,7 +236,6 @@ private void crash(string crash_message, object command_giver, object current_ob
     }
 
     if(current_object) {
-        // _debug("We are getting here somehow??") ;
         log_file("crashes", "this_object: " + file_name(current_object) + "\n");
     }
 

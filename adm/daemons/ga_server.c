@@ -75,7 +75,6 @@ void parse_config() {
 
      out += "\nGlobal Alias Server: " + total_parsed + " global aliases parsed. " + total_errors + " errors encountered. " +
           sprintf("(%.2fms)\n", time_frac() - time) ;
-     _debug(out) ;
 }
 
 string *parse(string str) {

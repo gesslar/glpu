@@ -12,22 +12,21 @@ inherit STD_CMD ;
 
 object pager;
 
-mixed main(object caller, string file)
-{
+mixed main(object tp, string file) {
     string text;
-    pager = new("/obj/mudlib/pager/pager.c");
+
     if(!file && this_interactive()->query_env("cwf")) file = this_interactive()->query_env("cwf");
     else if(!file) return(notify_fail("SYNTAX: more <file>\n"));
-    file = resolve_path(caller->query_env("cwd"), file);
+    file = resolve_path(tp->query_env("cwd"), file);
     if(!file_exists(file)) return(notify_fail("Error [more]: File '" + file + "' does not exist.\n"));
     text = read_file(file);
-    if(file[<2..<1] == ".c") pager->page(text, file, 0, 1);
-    else if(file[<2..<1] == ".h") pager->page(text, file, 0, 1);
-    else pager->page(text, file);
+
+    tp->page(text, null, 1) ;
+
     return 1;
 }
 
-string help(object caller)
+string help(object tp)
 {
     return("SYNTAX: more <file>\n\n" +
       "This command will allow you to page files to your terminal,\n"

@@ -1,43 +1,33 @@
-// /areas/village/virtual_area/virtual_server.c
-// Virtual server for the Olum zone
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /areas/village/field_daemon.c
+ * @description Daemon for handling the field stuff
+ *
+ * @created 2024/07/24 - Gesslar
+ * @last_modified 2024/07/24 - Gesslar
+ *
+ * @history
+ * 2024/07/24 - Gesslar - Created
+ */
 
-inherit STD_VIRTUAL_SERVER ;
+inherit STD_DAEMON ;
 
-void setup_field_exits() ;
-mapping field_exits = ([]) ;
+// Functions
+public void setup_field_exits() ;
+
+// Variables
+private nosave mapping field_exits = ([]) ;
 
 void setup() {
     setup_field_exits() ;
 }
 
-object compile_object(string file) {
-    object result ;
-    mapping info = virtual_info(file) ;
+void setup_exits(object room, string file) {
+    mapping exits ;
 
-    if(info["base"] == "field") {
-        result = new(__DIR__ "field_inherit") ;
-        return result ;
-    }
+    if(!(exits = field_exits[file]))
+        return ;
 
-    return 0 ;
-}
-
-void setup_exits(object room) {
-    string file_name = file_name(room) ;
-    mapping info = virtual_info(file_name) ;
-
-    if(info["base"] == "field") {
-        string file = info["file"][0] ;
-        mapping exits = copy(field_exits[file]) ;
-        string direction, exit ;
-
-        room->set_exits(exits) ;
-    }
+    room->set_exits(exits) ;
 }
 
 void setup_field_exits() {
@@ -47,7 +37,7 @@ void setup_field_exits() {
         "field1" : ([
             "north" : "field4",
             "east" : "field2",
-            "south" : "/areas/village/virtual_area/village_path1"
+            "south" : "../village_path1"
         ]),
         "field2" : ([
             "west" : "field1",

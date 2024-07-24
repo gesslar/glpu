@@ -6,14 +6,13 @@
 //
 // 2024/02/04: Gesslar - Created
 
+string find_path(string path) ;
+
 private nosave object zone ;
 
 void set_zone(mixed z) {
     if(stringp(z)) {
-        z = append(z, ".c") ;
-        if(file_size(z) < 1) {
-            error("Zone file does not exist: " + z) ;
-        }
+        z = find_path(z) ;
         z = load_object(z) ;
     }
 
