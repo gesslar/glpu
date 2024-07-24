@@ -589,9 +589,6 @@ protected varargs void i_Overwrite(string arg, string path, int num1, int num2) 
 
 protected void read_message(int num) {
     string ret = "";
-    object pager;
-
-    pager = new(OBJ_PAGER);
 
     if(in_outbox) {
         ret += "\nFROM:    " + outbox[num]["FROM"] + "\n";
@@ -605,7 +602,7 @@ protected void read_message(int num) {
         curr_out_msg = num;
         save_mailbox();
         resync_mailbox();
-        pager->page(ret, 0, (: done_reading() :));
+        environment()->page(ret, assemble_call_back("done_reading"), 0) ;
         return;
     } else {
         ret += "\nFROM:    " + inbox[num]["FROM"] + "\n";
@@ -619,7 +616,7 @@ protected void read_message(int num) {
         curr_in_msg = num;
         save_mailbox();
         resync_mailbox();
-        pager->page(ret, 0, (: done_reading() :));
+        environment()->page(ret, assemble_call_back("done_reading"), 0) ;
         return;
     }
 }

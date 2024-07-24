@@ -19,7 +19,7 @@ inherit STD_CMD ;
 
 mixed main(object tp, string str) {
     string file, *path, err, output = "";
-    object cmd, pager;
+    object cmd ;
     int i;
     string border ;
     int width = 80 ;
@@ -29,7 +29,6 @@ mixed main(object tp, string str) {
 
     border = "╞" + repeat_string("═", width - 2) + "╡\n" ;
 
-    pager = new(OBJ_PAGER);
     if(!str) str = "help";
     path = tp->query_path();
 
@@ -49,7 +48,7 @@ mixed main(object tp, string str) {
             output += border + "\n";
             output += (file + "\n");
 
-            pager->page(output);
+            tp->page(output);
             return 1;
         }
     }
@@ -66,7 +65,7 @@ mixed main(object tp, string str) {
             output += border + "\n";
             output += (file + "\n");
 
-            pager->page(output);
+            tp->page(output);
             return 1;
         }
     }

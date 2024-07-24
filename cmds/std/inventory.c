@@ -19,8 +19,7 @@ mixed main(object tp, string args) {
     int vol, max_vol ;
 
     inventory = all_inventory(tp);
-    // if(sizeof(inventory) < 1)
-    //     return "You are not currently carrying anything.\n";
+    inventory = filter(inventory, (: $2->can_see($1) :), tp) ;
 
     shorts = map(inventory, (: get_short :) );
     shorts -= ({ 0, "" });

@@ -10,19 +10,14 @@
 // Last Change: 2024/02/04: Gesslar
 // - general formatting
 
-mixed main(object caller, string arg) {
+mixed main(object tp, string arg) {
     object ob, pager;
     string *funcs, ret;
 
     if(!arg || arg == "")
         return "Error: [functions]: SYNTAX: functions <object id>|<filename>.\n" ;
-    ob = present(arg);
 
-    if(!ob)
-        ob = present(arg, environment(caller));
-
-    if(!ob)
-        ob = find_object(arg);
+    ob = get_object(arg) ;
 
     if(!ob)
         return "Error: [functions]: Could not find object " + arg + ".\n" ;
@@ -32,13 +27,12 @@ mixed main(object caller, string arg) {
 
     ret = sprintf("%-#79.3s\n\n", implode(funcs, "\n"));
 
-    pager = new(OBJ_PAGER);
+    tp->page(ret) ;
 
-    pager->page(ret);
     return 1;
 }
 
-string help(object caller) {
+string help(object tp) {
     return
 "SYNTAX: functions <object>\n\n" +
 "This command will show the functions contained in <object> You may use the "
