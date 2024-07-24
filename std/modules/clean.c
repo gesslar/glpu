@@ -103,7 +103,7 @@ private int clean_up_check(mixed ob) {
 
     if(objectp(ob)) ob = ({ ob }) ;
     if(!pointerp(ob)) return 0 ;
-
+_debug("TESTING %O\n", ob) ;
     result = catch {
         ob -= ({ 0 }) ;
         if(!sizeof(ob)) return 0 ;

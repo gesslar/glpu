@@ -9,119 +9,167 @@
 
 /* Last edited on July 14th, 2006 by Tacitus */
 
-inherit STD_CMD ;
+inherit STD_CMD;
+
+// Function declarations
+private string format_channel_list(string *channels);
+private void display_channels_by_module(object tp);
+private void display_channel_members(object tp, string channel);
+private void display_tuned_channels(object tp, string name);
+public varargs int tune(string channel, string name, int in_out, int silent);
 
 mixed main(object tp, string args) {
-    string cmd, arg, arg_channel;
-    string *arr, multiple_tune;
-    int i;
-    string name = query_privs(tp);
+    string cmd, arg;
+    string name;
 
-    if(!args)
-        return "Sytnax: channel <list/show/tune> <argument>\n";
+    name = query_privs(tp);
 
-    sscanf(args, "%s", cmd);
-    sscanf(args, "%s %s", cmd, arg);
-    sscanf(args, "%s %s %s", cmd, arg, arg_channel);
+    if(!args) {
+        display_tuned_channels(tp, name);
+        return 1;
+    }
+
+    if(sscanf(args, "%s %s", cmd, arg) != 2)
+        cmd = args;
 
     switch(cmd) {
-        case "list" :
-        {
-            if(!arg) {
-                arr = CHAN_D->get_modules();
-
-                if(sizeof(arr) == 1)
-                    tell(tp, "The following channel module is installed:\n\t" + arr[0] + "\n");
-                else
-                    tell(tp, "The following channel modules are installed: \n\t"
-                        + implode(arr[0..(sizeof(arr) - 2)], ", ") + ", " + arr[sizeof(arr) - 1]
-                        + "\n");
-
-                tell(tp, "\nYou may list the channels registered by each module by typing:\n");
-                    tell(tp, "\tchannel list [<module_name> || all]\n");
-                    return 1;
-            }
-
-            arr = CHAN_D->get_channels(arg);
-            if(sizeof(arr) > 0) {
-                if(sizeof(arr) == 1)
-                    tell(tp, "The channels are as follows for '"+ arg + "':\n\t" + arr[0] + "\n");
-                else if(sizeof(arr) > 7)
-                    tell(tp, sprintf("The channels are as follows for '" + arg + "':\n\t%s,\n\t%s, and %s\n", implode(arr[0..6], ", "),
-                         implode(arr[7..(sizeof(arr)-2)], ", "), arr[sizeof(arr)-1]));
-                else
-                    tell(tp, sprintf("The channels are as follows for '" + arg
-                        + "':\n\t%s, and %s.\n", implode(arr[0..sizeof(arr)-2], ", "),
-                         arr[sizeof(arr)-1]));
-                return 1;
-            }
-            tell(tp, "Channel: No channels found for group " + arg + "\n");
+        case "list":
+            display_channels_by_module(tp);
             return 1;
-        }
-        case "show" :
-        {
+
+        case "show":
             if(!arg)
-                return "Sytnax: channel <list/show/tune> <argument>\n";
-            if(!CHAN_D->valid_ch(arg))
-                return notify_fail("Channel: Channel " + arg + " does not exist.\n");
-            arr = CHAN_D->get_tuned(arg);
-            if(sizeof(arr) > 0) {
-                if(sizeof(arr) == 1)
-                    tell(tp, "The the following user is tuned into '" + arg + "':\n\t" + capitalize(arr[0]) + "\n");
-                else
-                    tell(tp, sprintf("The following users are tuned into '" + arg + "':\n\t%s, and %s.\n", implode(arr[0..sizeof(arr)-2], ", "), arr[sizeof(arr)-1]));
-                    return 1;
-            }
-            tell(tp, "Channel: No users tuned into channel " + arg + "\n");
+                return "Syntax: channel show <channel_name>\n";
+            display_channel_members(tp, arg);
+            return 1;
+
+        case "tune": {
+            string direction, channel;
+            if(!arg)
+                return "Syntax: channel tune <in/out> <channel/network/all>\n";
+            if(sscanf(arg, "%s %s", direction, channel) != 2)
+                return "Syntax: channel tune <in/out> <channel/network/all>\n";
+            tune(channel, name, direction == "in", 0);
             return 1;
         }
-        case "tune" :
-        {
-            if(!arg_channel)
-                return "Syntax: channel tune <in/out> <channel/network>\n";
+        case "tuned":
+            display_tuned_channels(tp, arg || name);
+            return 1;
 
-            if(arg == "in") {
-                multiple_tune = CHAN_D->get_channels(arg_channel);
-                if(sizeof(multiple_tune) > 0) {
-                    for(i = 0; i < sizeof(multiple_tune); i ++) {
-                        if(CHAN_D->tune(multiple_tune[i], name, 1))
-                            tell(tp, "Tune: Tuned into channel " + multiple_tune[i] + "\n");
-                        else
-                            tell(tp, "Tune: Channel " + multiple_tune[i] + " does not exist.\n");
-                    }
-                    return 1;
-                }
-                if(CHAN_D->tune(arg_channel, name, 1))
-                    tell(tp, "Tune: Tuned into channel " + arg_channel + "\n");
-                else
-                    tell(tp, "Tune: Channel " + arg_channel + " does not exist.\n");
-                return 1;
-            }
+        default:
+            return "Syntax: channel [list/show/tune/tuned] [argument]\n";
+    }
+}
 
-            if(arg == "out") {
-                multiple_tune = CHAN_D->get_channels(arg_channel);
-                if(sizeof(multiple_tune) > 0) {
-                    for(i = 0; i < sizeof(multiple_tune); i ++) {
-                        if(CHAN_D->tune(multiple_tune[i], name, 0))
-                            tell(tp, "Tune: Tuned out of channel " +  multiple_tune[i] + "\n");
-                        else
-                            tell(tp, "Tune: Channel " + multiple_tune[i] + " does not exist.\n");
-                    }
-                    return 1;
-                }
-                if(CHAN_D->tune(arg_channel, name, 0))
-                    tell(tp, "Tune: Tuned out of channel " + arg_channel + "\n");
-                else
-                    tell(tp, "Tune: Channel " + arg_channel + " does not exist.\n");
-                return 1;
-            }
-        }
+// Formats a list of channels for display
+private string format_channel_list(string *channels) {
+    if(sizeof(channels) == 1)
+        return channels[0];
+    else if(sizeof(channels) > 7)
+        return sprintf("%s,\n\t%s, and %s", implode(channels[0..6], ", "),
+            implode(channels[7..<2], ", "), channels[<1]);
+    else
+        return sprintf("%s, and %s", implode(channels[0..<2], ", "), channels[<1]);
+}
 
-        default :
-        {
-            return "Sytnax: channel <list/show/tune> <argument>\n";
+// Displays all channels grouped by their modules
+private void display_channels_by_module(object tp) {
+    string *modules;
+    string output;
+    int i;
+
+    modules = sort_array(CHAN_D->get_modules(), 1);
+    output = "Channels by module:\n";
+
+    for(i = 0; i < sizeof(modules); i++) {
+        string *channels = sort_array(CHAN_D->get_channels(modules[i]), 1);
+        if(sizeof(channels) > 0) {
+            output += sprintf("%s - %s\n", modules[i], implode(channels, ", "));
         }
     }
+
+    tell(tp, output);
+}
+
+// Displays all members tuned into a specific channel
+private void display_channel_members(object tp, string channel) {
+    string *members;
+
+    if(!CHAN_D->valid_ch(channel))
+        return tell(tp, "Channel: Channel " + channel + " does not exist.\n");
+
+    members = CHAN_D->get_tuned(channel);
+    if(sizeof(members) > 0) {
+        tell(tp, sprintf("Users tuned into '%s':\n\t%s\n",
+            channel, format_channel_list(map(members, (: capitalize :)))));
+    } else {
+        tell(tp, "Channel: No users tuned into channel " + channel + "\n");
+    }
+}
+
+// Displays all channels a user is tuned into
+private void display_tuned_channels(object tp, string name) {
+    string *all_channels, *tuned_channels;
+    int i;
+
+    if(name != query_privs(tp) && !wizardp(tp)) {
+        name = query_privs(tp);
+    }
+
+    all_channels = CHAN_D->get_channels("all");
+    tuned_channels = ({});
+
+    for(i = 0; i < sizeof(all_channels); i++) {
+        string *members = CHAN_D->get_tuned(all_channels[i]);
+        if(member_array(name, members) != -1) {
+            tuned_channels += ({ all_channels[i] });
+        }
+    }
+
+    if(sizeof(tuned_channels) > 0) {
+        tell(tp, sprintf("%s currently tuned into:\n\t%s\n",
+            (name == query_privs(tp) ? "You are" : capitalize(name) + " is"),
+            format_channel_list(tuned_channels)));
+    } else {
+        tell(tp, sprintf("%s not currently tuned into any channels.\n",
+            (name == query_privs(tp) ? "You are" : capitalize(name) + " is")));
+    }
+}
+
+// Tunes a user in or out of a channel
+public varargs int tune(string channel, string name, int in_out, int silent) {
+    string *channels;
+    int result, i;
+
+    if(nullp(channel) || !stringp(channel) || nullp(name) || !stringp(name))
+        return 0;
+
+    result = 1;
+
+    if(channel == "all") {
+        channels = CHAN_D->get_channels("all");
+        if(sizeof(channels) == 0) {
+            if(!silent)
+                tell(this_player(), "No channels available to tune.\n");
+            return 0;
+        }
+    } else {
+        channels = ({ channel });
+    }
+
+    for(i = 0; i < sizeof(channels); i++) {
+        int tune_result = CHAN_D->tune(channels[i], name, in_out);
+        if(!silent) {
+            if(tune_result)
+                tell(this_player(), sprintf("Tune: %s channel %s\n",
+                    in_out ? "Tuned into" : "Tuned out of", channels[i]));
+            else
+                tell(this_player(), sprintf("Tune: Channel %s does not exist.\n", channels[i]));
+        }
+        result = result && tune_result;
+    }
+
+    return result;
 }
 
 string help(object tp) {

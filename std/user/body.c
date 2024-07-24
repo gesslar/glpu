@@ -17,6 +17,7 @@
 #include <logs.h>
 #include <rooms.h>
 #include <classes.h>
+#include <commands.h>
 
 inherit STD_OBJECT;
 inherit STD_CONTAINER ;
@@ -149,8 +150,9 @@ void enter_world() {
     catch {
         ch = explode(query_env("auto_tune"), " ");
         if(sizeof(ch) > 0)
-            foreach(string channel in ch)
-               force_me("channel tune in " + channel);
+            foreach(string channel in ch) {
+                CMD_CHANNEL->tune(channel, query_privs(this_object()), 1, 1) ;
+            }
     };
 
     set("last_login", time());
