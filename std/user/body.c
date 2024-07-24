@@ -97,8 +97,6 @@ void create() {
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
-
-    set_notify_destruct(1) ;
 }
 
 private nosave string *body_slots = ({
@@ -778,7 +776,7 @@ void on_crash(mixed arg...) {
     catch(result = save_user()) ;
 }
 
-void on_destruct() {
+void mudlib_unsetup() {
     if(interactive())
         emit(SIG_USER_LOGOUT, this_object()) ;
 }

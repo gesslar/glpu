@@ -20,7 +20,6 @@ private nosave mapping slots = ([]);
 
 void setup() {
     set_no_clean(1) ;
-    set_notify_destruct(1) ;
 
     slots = SWAP_D->swap_out("signal") ;
 
@@ -128,7 +127,7 @@ void heart_beat() {
     invalidate_slots() ;
 }
 
-void on_destruct() {
+void unsetup() {
     invalidate_slots() ;
     SWAP_D->swap_in("signal", slots) ;
 }

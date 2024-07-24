@@ -11,7 +11,9 @@
 
 inherit STD_DAEMON ;
 
-string *ch_list = mud_config("GRAPEVINE")["channels"];
+string *locals = mud_config("GRAPEVINE")["local_only"] ;
+string *ch_list = mud_config("GRAPEVINE")["channels"] + locals ;
+
 mapping history = ([]);
 private nosave string module_name = query_file_name(this_object()) ;
 
@@ -84,7 +86,9 @@ int rec_msg(string chan, string usr, string msg) {
 
     CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n");
     history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" });
-    GRAPEVINE_D->grapevine_broadcast_message(chan, usr, msg);
+
+    if(!of(chan, locals))
+        GRAPEVINE_D->grapevine_broadcast_message(chan, usr, msg);
 
     save_data() ;
     return 1;
@@ -94,9 +98,7 @@ int rec_grapevine_msg(string chan, string usr, string msg, string game) {
     string real_message;
     string name ;
 
-    if(sscanf(usr, "%s (%s in I3)", usr, game) == 2) {
-        _debug("Transforming I3 name to Grapevine name");
-    }
+    sscanf(usr, "%s (%s in I3)", usr, game) ;
 
     if(msg[0..0] == ":") {
         msg = msg[1..<1];

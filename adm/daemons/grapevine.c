@@ -30,8 +30,7 @@ private nosave mapping config, restart, reffs ;
 private nosave mapping games ;
 
 void setup() {
-    set_log_level(4);
-    set_notify_destruct(1) ;
+    set_log_level(1);
     set_log_prefix("(GRAPEVINE)") ;
 
     slot(SIG_USER_LOGIN, "grapevine_send_event_players_sign_in") ;
@@ -472,6 +471,13 @@ void grapevine_handle_players_sign_in(string reff, mapping data) {
         return ;
     }
 
+    catch(CHAN_D->grapevine_chat(([
+        "channel" : mud_config("GRAPEVINE")["notice"],
+        "message" : sprintf("%s has signed in to %s", data["name"], data["game"]),
+        "name" : "Grapevine",
+        "game" : mud_name(),
+    ]))) ;
+
     _log(1, "Player signed in: %s@%s", data["name"], data["game"]) ;
 }
 
@@ -497,6 +503,13 @@ void grapevine_handle_players_sign_out(string reff, mapping data) {
 
         return ;
     }
+
+    catch(CHAN_D->grapevine_chat(([
+        "channel" : mud_config("GRAPEVINE")["notice"],
+        "message" : sprintf("%s has signed out of %s", data["name"], data["game"]),
+        "name" : "Grapevine",
+        "game" : mud_name(),
+    ]))) ;
 
     _log(1, "Player signed out: %s@%s", data["name"], data["game"]) ;
 }
@@ -565,10 +578,24 @@ void grapevine_handle_tells_receive(string reff, mapping data) {
 // Game
 
 void grapevine_handle_games_connect(string reff, mapping data) {
+    catch(CHAN_D->grapevine_chat(([
+        "channel" : mud_config("GRAPEVINE")["notice"],
+        "message" : sprintf("%s has connected to Grapevine", data["game"]),
+        "name" : "Grapevine",
+        "game" : mud_name(),
+    ]))) ;
+
     _log(1, "Game connected: %s", data["game"]) ;
 }
 
 void grapevine_handle_games_disconnect(string reff, mapping data) {
+    catch(CHAN_D->grapevine_chat(([
+        "channel" : mud_config("GRAPEVINE")["notice"],
+        "message" : sprintf("%s has disconnected from Grapevine", data["game"]),
+        "name" : "Grapevine",
+        "game" : mud_name(),
+    ]))) ;
+
     _log(1, "Game disconnected: %s", data["game"]) ;
 }
 
@@ -896,7 +923,7 @@ varargs public nomask string z_time_string(int time: (: time() :)) {
 
 // This event will run when this object is being destructed, so we should
 // let the server know that we are going away.
-void on_destruct() {
+void unsetup() {
     _log(1, "Grapevine destructing.") ;
     if(server) {
         _log(1, "Closing Grapevine connection.") ;

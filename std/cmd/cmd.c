@@ -7,7 +7,6 @@
 // 2022/08/24: Gesslar - Created
 
 inherit STD_OBJECT ;
-inherit M_SETUP ;
 inherit M_TARGETING ;
 
 // Functions

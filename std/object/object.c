@@ -12,17 +12,17 @@
 
 inherit STD_OB_E;
 
-inherit __DIR__ "id" ;
-inherit __DIR__ "description" ;
-inherit __DIR__ "stats" ;
 inherit __DIR__ "contents" ;
-inherit __DIR__ "weight" ;
+inherit __DIR__ "description" ;
+inherit __DIR__ "heartbeat" ;
+inherit __DIR__ "id" ;
 inherit __DIR__ "init" ;
 inherit __DIR__ "persist" ;
-inherit __DIR__ "heartbeat" ;
+inherit __DIR__ "setup" ;
+inherit __DIR__ "stats" ;
+inherit __DIR__ "weight" ;
 
 inherit M_CLEAN ;
-inherit M_SETUP ;
 inherit M_MESSAGING ;
 
 private string proper_name, short, long;
@@ -44,10 +44,11 @@ mapping query_all_spawn_info();
 int can_receive(object ob);
 int can_release(object ob);
 
-void on_remove(object env) {}
+varargs void reset(mixed args...);
 
 // Private so only driver can call it.
-private void create() {
+private varargs void create(mixed args...) {
+    set_notify_destruct(1) ;
     init_ob() ;
     if(!proper_name) {
             if(name)
@@ -59,9 +60,13 @@ private void create() {
     reset() ;
 }
 
-void reset() {
-    setup_chain() ;
+varargs void reset(mixed args...) {
+    setup_chain(args...) ;
     call_if(this_object(), "reset_objects") ;
+}
+
+void on_destruct() {
+    unsetup_chain() ;
 }
 
 int remove() {
@@ -73,7 +78,7 @@ int remove() {
         environment()->add_volume(-query_bulk());
     }
 
-    on_remove(environment()) ;
+    catch(call_if(this_object(), "on_remove", environment())) ;
 
     inv = all_inventory() ;
     inv = filter(inv, (: !userp($1) :)) ;

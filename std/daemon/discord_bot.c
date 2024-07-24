@@ -47,7 +47,6 @@ void mudlib_setup() {
 
     register_crash() ;
     set_log_level(1) ;
-    set_notify_destruct(1) ;
 
     file = query_file_name() ;
 
@@ -632,12 +631,10 @@ public nomask int is_setup() {
            intp(bot_data["intents"]) ;
 }
 
-void on_destruct() {
+void mudlib_unsetup() {
     if(server) {
         if(server["discord"] && server["discord"]["heartbeat"]) {
             remove_call_out(server["discord"]["heartbeat"]) ;
         }
     }
-
-    ::on_destruct() ;
 }

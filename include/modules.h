@@ -12,7 +12,6 @@
 #define M_MESSAGING     DIR_STD_MODULES "messaging"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_SAVE          DIR_STD_MODULES "save"
-#define M_SETUP         DIR_STD_MODULES "setup"
 #define M_TARGETING     DIR_STD_MODULES "targeting"
 #define M_UNICODE       DIR_STD_MODULES "unicode"
 

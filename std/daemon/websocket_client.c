@@ -1149,22 +1149,13 @@ protected nomask string random_string(int length) {
     return result;
 }
 
-/**
- * Handles the eventuality that this object becomes unloaded.
- *
- * @param {object} prev - The previous object.
- */
-void event_on_remove(object prev) {
-    // shutdown(WS_CLOSE_GOING_AWAY) ;
-}
-
-/**
+ /**
  * Shuts down the WebSocket connection gracefully.
  */
 void shutdown() {
     websocket_close() ;
 }
 
-void on_destruct() {
+void mudlib_unsetup() {
     shutdown(WS_CLOSE_GOING_AWAY) ;
 }
