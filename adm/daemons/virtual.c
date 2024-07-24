@@ -31,8 +31,6 @@ public nomask object compile_object(string file) {
             return 0 ;
         }
 
-        // file = implode(dir_parts[2..], "/") + "/" + path_components[1] ;
-
         e = catch(result = call_other(sprintf(module), "compile_object", file)) ;
 
         if(e) {
