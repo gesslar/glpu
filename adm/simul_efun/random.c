@@ -50,7 +50,7 @@ int *prandom_range(int seed, int min, int max) {
 
     if (min >= max) return ({ seed, min });
 
-    result = random_number(seed, max - min + 1);
+    result = prandom(seed, max - min + 1);
     return ({ result[0], result[1] + min });
 }
 
@@ -67,7 +67,7 @@ mixed *pelement_of(int seed, mixed *arr) {
 
     if (!sizeof(arr)) return ({ seed, 0 });
 
-    result = random_number(seed, sizeof(arr));
+    result = prandom(seed, sizeof(arr));
     return ({ result[0], arr[result[1]] });
 }
 
@@ -151,7 +151,7 @@ mixed element_of_weighted(mapping m) {
 
 /**
  * @simul_efun random_range
- * @description Generates a random integer within a specified range.
+f * @description Generates a random integer within a specified range.
  * @param {int} min - The lower bound (inclusive) of the range.
  * @param {int} max - The upper bound (inclusive) of the range.
  * @returns {int} - A random number in the specified range.
