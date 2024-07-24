@@ -1,5 +1,9 @@
 public nomask mixed autodoc_scan()
 
+Returns
+
+`mixed` - 1 if the scan was started successfully, an error message if the scan is already running.
+
 Start the autodoc scan process. This will trigger the daemon to
 scan the directories specified in the AUTODOC_SOURCE_DIRS
 configuration variable for LPC source files and parse the

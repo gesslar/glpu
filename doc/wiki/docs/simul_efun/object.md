@@ -106,6 +106,10 @@ object *get_players(mixed names, object room)
 * `string|string* names` - The name of the player objects to locate.
 * `object room` - The room to search for the player objects in.
 
+### Returns
+
+`object*` - An array of located player objects.
+
 ### Description
 
 Locates player objects by the specified names within the
@@ -206,6 +210,10 @@ object get_player(string name, object room)
 * `string name` - The name of the player to locate.
 * `object room` - The room to search for the player in.
 
+### Returns
+
+`object` - The located player object, or 0 if not found.
+
 ### Description
 
 Locates a player object by the specified name within the
@@ -223,6 +231,10 @@ object *get_livings(mixed names, object room)
 
 * `string|string* names` - The name of the living objects to locate.
 * `object room` - The room to search for the living objects in.
+
+### Returns
+
+`object*` - An array of located living objects.
 
 ### Description
 
@@ -283,6 +295,10 @@ object get_living(string name, object room)
 
 * `string name` - The name of the living object to locate.
 * `object room` - The room to search for the living object in.
+
+### Returns
+
+`object` - The located living object, or 0 if not found.
 
 ### Description
 

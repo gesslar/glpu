@@ -17,7 +17,7 @@ void emit(int sig, mixed arg...) {
  * @description Register a slot for a signal.
  * @param {int} sig - signal number
  * @param {string} func - function to call when the signal is emitted
- * @return {int} - SIG_SLOT_OK if the slot was registered successfully. See signal.h for other return values.
+ * @returns {int} - SIG_SLOT_OK if the slot was registered successfully. See signal.h for other return values.
  */
 int slot(int sig, string func) {
     return SIGNAL_D->register_slot(sig, previous_object(), func) ;
@@ -27,7 +27,7 @@ int slot(int sig, string func) {
  * @simul_efun unslot
  * @description Unregister a slot for a signal.
  * @param {int} sig - signal number
- * @return {int} - SIG_SLOT_OK if the slot was unregistered successfully. See signal.h for other return values.
+ * @returns {int} - SIG_SLOT_OK if the slot was unregistered successfully. See signal.h for other return values.
  */
 int unslot(int sig) {
     return SIGNAL_D->unregister_slot(sig, previous_object()) ;
@@ -36,7 +36,7 @@ int unslot(int sig) {
 /**
  * @simul_efun signal_d
  * @description Get the signal daemon object.
- * @return {object} - signal daemon object
+ * @returns {object} - signal daemon object
  */
 object signal_d() {
     return load_object(SIGNAL_D) ;

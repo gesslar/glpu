@@ -7,4 +7,8 @@ Parameters:
 * `string body` - The body of the issue
 * `mixed callback` - The callback function to call when the request is complete
 
+Returns
+
+mixed - Returns 1 if the request was successful, a string if there was an error.
+
 Create a new issue in the GitHub repository

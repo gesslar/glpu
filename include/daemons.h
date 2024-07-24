@@ -27,6 +27,7 @@
 #define MSSP_D          DIR_DAEMONS "mssp"
 #define MUDDY_D         DIR_DAEMONS "muddy"
 #define NEWS_D          DIR_DAEMONS "news_d"
+#define PERLIN_D        DIR_DAEMONS "perlin"
 #define PERSIST_D       DIR_DAEMONS "persist"
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown"
 #define SIGNAL_D        DIR_DAEMONS "signal"

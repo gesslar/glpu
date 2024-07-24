@@ -41,7 +41,7 @@ void setup() {
  * @param {string} body - The body of the issue
  * @param {mixed} callback - The callback function to call when the request is
  *                           complete
- * @return mixed - Returns 1 if the request was successful, a string if there
+ * @returns mixed - Returns 1 if the request was successful, a string if there
  *                 was an error.
 */
 
@@ -100,7 +100,7 @@ varargs mixed create_issue(string type, string title, string body, mixed *callba
  * @function http_handle_shutdown
  * @description Handle the response from the GitHub API
  * @param {mapping} response - The response from the GitHub API
- * @return {void}
+ * @returns {void}
 */
 void http_handle_shutdown(mapping response) {
     mapping request ;
@@ -146,7 +146,7 @@ void http_handle_shutdown(mapping response) {
  * @description Execute the callback function
  * @param {mapping} request - The request containing the callback function
  * @param {mapping} response - The response from the GitHub API
- * @return {void}
+ * @returns {void}
 */
 void execute_callback(mapping request, mapping response) {
     mixed err ;
@@ -177,7 +177,7 @@ void execute_callback(mapping request, mapping response) {
  * @details This function processes the backlog of requests in the
  *          /data/github/issues/pending directory. It passes a list of files to
  *          process_next() to process each request.
- * @return {void}
+ * @returns {void}
 */
 public nomask void process_backlog() {
     string *files ;
@@ -193,7 +193,7 @@ public nomask void process_backlog() {
  * @function process_next
  * @description Process the next request in the backlog
  * @param {string[]} files - The list of files remaining in the backlog to process
- * @return {void}
+ * @returns {void}
 */
 private nomask void process_next(string *files) {
     string file ;
@@ -272,7 +272,7 @@ private nomask void process_next(string *files) {
  * @function parse_time
  * @description convert a GitHub date-time string to an epoch time
  * @param {string} datetime - The date-time string to convert
- * @return {int} - The epoch time
+ * @returns {int} - The epoch time
  */
 private nomask int parse_time(string datetime) {
     int epoch_time;

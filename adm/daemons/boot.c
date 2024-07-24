@@ -42,7 +42,7 @@ void boot(mixed arg...) {
 /**
  * @function query_boot_number
  * @description Get the current boot number.
- * @return {int} - current boot number
+ * @returns {int} - current boot number
  */
 int query_boot_number() {
     return boot_number ;

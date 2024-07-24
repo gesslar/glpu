@@ -1,3 +1,7 @@
 object signal_d()
 
+Returns
+
+`object` - signal daemon object
+
 Get the signal daemon object.

@@ -15,6 +15,10 @@ int unslot(int sig)
 
 * `int sig` - signal number
 
+### Returns
+
+`int` - SIG_SLOT_OK if the slot was unregistered successfully. See signal.h for other return values.
+
 ### Description
 
 Unregister a slot for a signal.
@@ -50,6 +54,10 @@ int slot(int sig, string func)
 * `int sig` - signal number
 * `string func` - function to call when the signal is emitted
 
+### Returns
+
+`int` - SIG_SLOT_OK if the slot was registered successfully. See signal.h for other return values.
+
 ### Description
 
 Register a slot for a signal.
@@ -61,6 +69,10 @@ Register a slot for a signal.
 ```c
 object signal_d()
 ```
+
+### Returns
+
+`object` - signal daemon object
 
 ### Description
 

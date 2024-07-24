@@ -43,7 +43,7 @@ void unregister_crash_object(object obj) {
 
 /**
  * @description Query the objects registered to be called when the mud crashes.
- * @return The objects registered to be called when the mud crashes.
+ * @returns The objects registered to be called when the mud crashes.
  */
 
 object *query_crash_objects() {

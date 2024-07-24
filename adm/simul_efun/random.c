@@ -151,7 +151,7 @@ mixed element_of_weighted(mapping m) {
 
 /**
  * @simul_efun random_range
-f * @description Generates a random integer within a specified range.
+ * @description Generates a random integer within a specified range.
  * @param {int} min - The lower bound (inclusive) of the range.
  * @param {int} max - The upper bound (inclusive) of the range.
  * @returns {int} - A random number in the specified range.

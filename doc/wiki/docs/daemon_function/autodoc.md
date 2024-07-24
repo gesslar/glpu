@@ -11,6 +11,10 @@ title: autodoc
 public nomask mixed autodoc_scan()
 ```
 
+### Returns
+
+`mixed` - 1 if the scan was started successfully, an error message if the scan is already running.
+
 ### Description
 
 Start the autodoc scan process. This will trigger the daemon to

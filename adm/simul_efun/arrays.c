@@ -87,8 +87,8 @@ mixed *reverse_array(mixed *arr) {
  *              type. If the array is of size 0, it is considered uniform.
  * @param {string} type - The type to check for.
  * @param {mixed*} arr - The array to check.
- * @return {int} - Returns 1 if all elements are of the specified type, 0
- *                 otherwise.
+ * @returns {int} - Returns 1 if all elements are of the specified type, 0
+ *                  otherwise.
  */
 int uniform_array(string type, mixed *arr) {
     int sz = sizeof(arr);

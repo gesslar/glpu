@@ -310,7 +310,7 @@ object *present_players(object room) {
  *              specified room.
  * @param {string} name - The name of the living object to locate.
  * @param {object} room - The room to search for the living object in.
- * @return {object} - The located living object, or 0 if not found.
+ * @returns {object} - The located living object, or 0 if not found.
  */
 object get_living(string name, object room) {
     object ob;
@@ -331,7 +331,7 @@ object get_living(string name, object room) {
  *              specified room.
  * @param {string|string[]} names - The name of the living objects to locate.
  * @param {object} room - The room to search for the living objects in.
- * @return {object[]} - An array of located living objects.
+ * @returns {object[]} - An array of located living objects.
  */
 object *get_livings(mixed names, object room) {
     object *obs, *ret = ({});
@@ -353,7 +353,7 @@ object *get_livings(mixed names, object room) {
  *              specified room.
  * @param {string} name - The name of the player to locate.
  * @param {object} room - The room to search for the player in.
- * @return {object} - The located player object, or 0 if not found.
+ * @returns {object} - The located player object, or 0 if not found.
  */
 object get_player(string name, object room) {
     object ob;
@@ -371,7 +371,7 @@ object get_player(string name, object room) {
  * @description Locates player objects by the specified names within the
  * @param {string|string[]} names - The name of the player objects to locate.
  * @param {object} room - The room to search for the player objects in.
- * @return {object[]} - An array of located player objects.
+ * @returns {object[]} - An array of located player objects.
  */
 object *get_players(mixed names, object room) {
     object *obs, *ret = ({});

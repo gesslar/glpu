@@ -4,4 +4,8 @@ Parameters:
 
 * `int sig` - signal number
 
+Returns
+
+`int` - SIG_SLOT_OK if the slot was unregistered successfully. See signal.h for other return values.
+
 Unregister a slot for a signal.

@@ -37,6 +37,10 @@ int uniform_array(string type, mixed *arr)
 * `string type` - The type to check for.
 * `mixed* arr` - The array to check.
 
+### Returns
+
+`int` - Returns 1 if all elements are of the specified type, 0 otherwise.
+
 ### Description
 
 Checks if all elements in the input array are of the specified
