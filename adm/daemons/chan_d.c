@@ -62,8 +62,6 @@ void setup() {
         else {
             out += sprintf(" Done (%.2fs)", time_frac() - time) ;
         }
-
-        debug_message(out) ;
     }
 }
 
@@ -201,7 +199,6 @@ void grapevine_chat(mapping payload) {
 
     keys = keys(channels);
     if(member_array(channel, keys) == -1) return 0;
-    _debug("We actually here?");
 
     if(!valid_module(channels[channel]["module"])) {
         map_delete(channels, channel);

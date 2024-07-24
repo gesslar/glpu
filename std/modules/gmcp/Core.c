@@ -11,7 +11,7 @@ void setup() {
     ]) ;
 }
 
-void Hello(mapping data) {
+void Hello(string submodule, mapping data) {
     object prev = previous_object();
     string key, value ;
 

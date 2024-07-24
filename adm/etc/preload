@@ -24,16 +24,13 @@
 /adm/daemons/chan_d
 
 # Shutdown Daemon
-/adm/daemons/shutdown_d
+/adm/daemons/shutdown
 
 # Global Alias Daemon
 /adm/daemons/ga_server
 
 # Finger Daemon
 /adm/daemons/finger_d
-
-# News Daemon
-/adm/daemons/news_d
 
 # Soul Daemon
 /adm/daemons/soul_d

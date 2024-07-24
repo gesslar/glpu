@@ -19,10 +19,10 @@ inherit STD_DAEMON ;
 // on labels in a GUI or messaging resulting from GMCP.
 //
 // The labels and values are all found in /include/gmcp.h
-void StatusVars(object who) {
+void StatusVars(object who, mapping payload) {
     mapping data ;
 
-    data = ([
+    data = payload || ([
         GMCP_LBL_CHAR_STATUS_NAME        : GMCP_DIS_CHAR_STATUS_NAME,
         GMCP_LBL_CHAR_STATUS_CAPACITY    : GMCP_DIS_CHAR_STATUS_CAPACITY,
         GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: GMCP_DIS_CHAR_STATUS_MAX_CAPACITY,
@@ -31,10 +31,10 @@ void StatusVars(object who) {
     who->do_gmcp(GMCP_PKG_CHAR_STATUSVARS, data) ;
 }
 
-void Status(object who) {
+void Status(object who, mapping payload) {
     mapping data ;
 
-    data = ([
+    data = payload || ([
         GMCP_LBL_CHAR_STATUS_NAME        : who->query_name(),
         GMCP_LBL_CHAR_STATUS_CAPACITY    : who->query_capacity(),
         GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: who->query_max_capacity(),
