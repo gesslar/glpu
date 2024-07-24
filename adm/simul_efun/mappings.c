@@ -30,32 +30,3 @@ string pretty_map(mapping map) {
 
     return implode(elements, "") ;
 }
-
-/**
- * @simul_efun element_of_weighted
- * @description Selects an element from a weighted mapping based on their weights.
- * @param {mapping} m - The weighted mapping to select from, where keys are the
- *                      elements and values are their weights.
- * @returns {mixed} - The selected element.
- */
-mixed element_of_weighted(mapping m) {
-    mixed *keys ;
-    int *values ;
-    int i ;
-    int total ;
-    int roll ;
-
-    keys = keys(m) ;
-    values = values(m) ;
-    total = sum(values) ;
-
-    roll = random(total) ;
-    i = sizeof(values) ;
-    while(i--) {
-        if(roll < values[i])
-            return keys[i] ;
-        roll -= values[i] ;
-    }
-
-    return keys[0] ;
-}

@@ -1,4 +1,4 @@
-mixed *random_weighted(int seed, mapping weights)
+mixed *pelement_of_weighted(int seed, mapping weights)
 
 Parameters:
 

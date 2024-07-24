@@ -3,12 +3,12 @@ title: random
 ---
 # random.c
 
-## random_element
+## pelement_of
 
 ### Synopsis
 
 ```c
-mixed *random_element(int seed, mixed *arr)
+mixed *pelement_of(int seed, mixed *arr)
 ```
 
 ### Parameters
@@ -24,12 +24,53 @@ mixed *random_element(int seed, mixed *arr)
 
 Selects a random element from an array, along with a new seed.
 
-## random_weighted
+## prandom
 
 ### Synopsis
 
 ```c
-mixed *random_weighted(int seed, mapping weights)
+int *prandom(int seed, int max)
+```
+
+### Parameters
+
+* `int seed` - The seed for random number generation.
+* `int max` - The upper bound (exclusive) for the random number.
+
+### Returns
+
+`int*` - An array where the first element is the new seed and the second element is the random number.
+
+### Description
+
+Generates a random integer between 0 and max-1, along with a new seed.
+
+## element_of_weighted
+
+### Synopsis
+
+```c
+mixed element_of_weighted(mapping m)
+```
+
+### Parameters
+
+* `mapping m` - The weighted mapping to select from, where keys are the elements and values are their weights.
+
+### Returns
+
+`mixed` - The selected element.
+
+### Description
+
+Selects an element from a weighted mapping based on their weights.
+
+## pelement_of_weighted
+
+### Synopsis
+
+```c
+mixed *pelement_of_weighted(int seed, mapping weights)
 ```
 
 ### Parameters
@@ -45,12 +86,12 @@ mixed *random_weighted(int seed, mapping weights)
 
 Selects a random element based on weighted probabilities, along with a new seed.
 
-## random_range
+## prandom_range
 
 ### Synopsis
 
 ```c
-int *random_range(int seed, int min, int max)
+int *prandom_range(int seed, int min, int max)
 ```
 
 ### Parameters
@@ -67,12 +108,33 @@ int *random_range(int seed, int min, int max)
 
 Generates a random integer within a specified range, along with a new seed.
 
-## random_float
+## random_range
 
 ### Synopsis
 
 ```c
-mixed *random_float(int seed)
+int random_range(int min, int max)
+```
+
+### Parameters
+
+* `int min` - The lower bound (inclusive) of the range.
+* `int max` - The upper bound (inclusive) of the range.
+
+### Returns
+
+`int` - A random number in the specified range.
+
+### Description
+
+Generates a random integer within a specified range.
+
+## prandom_float
+
+### Synopsis
+
+```c
+mixed *prandom_float(int seed)
 ```
 
 ### Parameters
@@ -87,24 +149,23 @@ mixed *random_float(int seed)
 
 Generates a random float between 0 and 1, along with a new seed.
 
-## random_number
+## random_float
 
 ### Synopsis
 
 ```c
-int *random_number(int seed, int max)
+float random_float(mixed upper_bound)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
-* `int max` - The upper bound (exclusive) for the random number.
+* `mixed upper_bound` - The upper bound for the random float.
 
 ### Returns
 
-`int*` - An array where the first element is the new seed and the second element is the random number.
+`float` - The random float between 0 and upper_bound.
 
 ### Description
 
-Generates a random integer between 0 and max-1, along with a new seed.
+Generates a random float between 0 and upper_bound.
 

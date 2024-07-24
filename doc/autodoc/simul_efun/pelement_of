@@ -1,4 +1,4 @@
-mixed *random_element(int seed, mixed *arr)
+mixed *pelement_of(int seed, mixed *arr)
 
 Parameters:
 

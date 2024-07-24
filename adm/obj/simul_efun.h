@@ -78,7 +78,6 @@ mapping json_encode(mixed arg) ;
 
 // File: mappings
 string pretty_map(mapping map);
-mixed element_of_weighted(mapping m) ;
 
 // File: messaging
 varargs void tell_up(object ob, string str, int msg_type, mixed exclude) ;
@@ -116,11 +115,14 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) ;
 void prompt_password(object user, int attempts, mixed *cb) ;
 
 // File: random
-int *random_number(int seed, int max);
-mixed *random_float(int seed);
-int *random_range(int seed, int min, int max);
-mixed *random_element(int seed, mixed *arr);
-mixed *random_weighted(int seed, mapping weights);
+int *prandom(int seed, int max) ;
+mixed *prandom_float(int seed) ;
+int *prandom_range(int seed, int min, int max) ;
+mixed *pelement_of(int seed, mixed *arr) ;
+mixed *pelement_of_weighted(int seed, mapping weights) ;
+float random_float(mixed upper_bound) ;
+mixed element_of_weighted(mapping m) ;
+int random_range(int min, int max) ;
 
 // File: resolve_path
 string resolve_path(string base_dir, string path) ;

@@ -1,4 +1,4 @@
-int *random_number(int seed, int max)
+int *prandom(int seed, int max)
 
 Parameters:
 

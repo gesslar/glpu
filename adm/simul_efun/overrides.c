@@ -225,6 +225,7 @@ object this_user() {
     return this_body()->query_user();
 }
 
+#if 0
 private nosave string _empty_buffer = null ;
 private mixed _fix_array(mixed *arr) ;
 private mapping _fix_mapping(mapping m) ;
@@ -289,3 +290,4 @@ void printf(string fmt, mixed args...) {
 
     efun::printf(fmt, args...);
 }
+#endif

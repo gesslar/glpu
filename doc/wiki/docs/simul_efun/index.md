@@ -91,7 +91,6 @@ title: simul_efun
 
 ## [mappings](mappings)
 
-* [element_of_weighted](mappings#element_of_weighted)
 * [pretty_map](mappings#pretty_map)
 
 ## [messaging](messaging)
@@ -140,11 +139,14 @@ title: simul_efun
 
 ## [random](random)
 
-* [random_element](random#random_element)
+* [element_of_weighted](random#element_of_weighted)
+* [pelement_of](random#pelement_of)
+* [pelement_of_weighted](random#pelement_of_weighted)
+* [prandom](random#prandom)
+* [prandom_float](random#prandom_float)
+* [prandom_range](random#prandom_range)
 * [random_float](random#random_float)
-* [random_number](random#random_number)
 * [random_range](random#random_range)
-* [random_weighted](random#random_weighted)
 
 ## [resolve_path](resolve_path)
 
