@@ -28,6 +28,7 @@ inherit M_MESSAGING ;
 private string proper_name, short, long;
 private nosave string name ;
 private nosave mapping spawn_info = ([]) ;
+protected nosave mixed *create_args = ({}) ;
 
 int move(mixed dest);
 int allow_move(mixed dest);
@@ -57,11 +58,13 @@ private varargs void create(mixed args...) {
             name = null ;
     }
 
+    create_args = args ;
+
     reset() ;
 }
 
-varargs void reset(mixed args...) {
-    setup_chain(args...) ;
+varargs void reset() {
+    setup_chain(create_args...) ;
     call_if(this_object(), "reset_objects") ;
 }
 
