@@ -54,7 +54,8 @@ string resolve_path(string base_dir, string path) {
     }
 
     path = "/" + implode(path_segments, "/");
-    path = replace_string(path, "//", "/");
+    while(pcre_match(path, "//"))
+        path = replace_string(path, "//", "/");
 
     return path;
 }

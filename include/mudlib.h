@@ -21,6 +21,7 @@
 #define STD_BODY            DIR_STD "user/body"
 #define STD_CLOTHING        DIR_STD "equip/clothing"
 #define STD_CMD             DIR_STD "cmd/cmd"
+#define STD_CONTAINER       DIR_STD_OBJECT "container"
 #define STD_DAEMON          DIR_STD "daemon/daemon"
 #define STD_DISCORD_BOT     DIR_STD "daemon/discord_bot"
 #define STD_EQUIP           DIR_STD "equip/equip"

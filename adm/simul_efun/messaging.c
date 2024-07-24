@@ -60,6 +60,26 @@ varargs void tell_direct(object ob, string str, int msg_type) {
  * @param {string} str - The message string to send.
  * @param {int} [msg_type] - The message type.
  */
-varargs void tell(object ob, string str, int msg_type) {
+varargs void tell(mixed args...) {
+    int sz ;
+    object ob ;
+    string str ;
+    int msg_type ;
+
+    if(!(sz = sizeof(args)))
+        error("tell() insufficient arguments") ;
+
+    if(sz == 1) {
+        ob = previous_object() ;
+        str = args[0] ;
+    } else if(sz >= 2) {
+        ob = args[0] ;
+        str = args[1] ;
+        if(sz == 3)
+            msg_type = args[2] ;
+    } else {
+        error("tell() too many arguments") ;
+    }
+
     tell_direct(ob, str, msg_type);
 }

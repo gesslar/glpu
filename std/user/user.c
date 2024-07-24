@@ -32,7 +32,7 @@ nomask void net_dead() {
 
     set("last_login", time());
     save_user();
-    destruct(this_object());
+    remove() ;
 }
 
 nomask void restore_user() {

@@ -24,6 +24,24 @@ mixed *reverse_array(mixed *arr)
 Returns a new array with the elements of the input array in
 reverse order.
 
+## uniform_array
+
+### Synopsis
+
+```c
+int uniform_array(string type, mixed *arr)
+```
+
+### Parameters
+
+* `string type` - The type to check for.
+* `mixed* arr` - The array to check.
+
+### Description
+
+Checks if all elements in the input array are of the specified
+type. If the array is of size 0, it is considered uniform.
+
 ## remove_array_element
 
 ### Synopsis

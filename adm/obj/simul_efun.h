@@ -6,6 +6,7 @@ mixed *distinct_array(mixed *arr) ;
 varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
 varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
 mixed *reverse_array(mixed *arr) ;
+int uniform_array(string type, mixed *arr) ;
 
 // File: base64
 string base64_encode(mixed source_str) ;
@@ -34,6 +35,8 @@ string possessive(mixed ob) ;
 string reflexive(mixed ob) ;
 string objective(mixed ob) ;
 string subjective(mixed ob) ;
+varargs string article(string str, int definite) ;
+varargs string add_article(string str, int definite) ;
 
 // File: exists
 int directory_exists(string dirname) ;
@@ -90,6 +93,7 @@ float percent(float a, float b) ;
 float range(float min, float max, float val) ;
 varargs float remainder(mixed a, mixed b) ;
 int sum(mixed *arr) ;
+int evaluate_number(int number, string condition) ;
 
 // File: object
 int getoid(object ob) ;
@@ -99,11 +103,13 @@ varargs object get_object( string str, object player ) ;
 object top_environment(object ob) ;
 object *present_livings(object room) ;
 object *present_players(object room) ;
+object *present_clones(string file, object room) ;
 object get_living(string name, object room) ;
 object *get_livings(mixed names, object room) ;
 object get_player(string name, object room) ;
 object *get_players(mixed names, object room) ;
 object this_body() ;
+int caller_is(mixed ob) ;
 
 // File: prompt
 varargs void prompt_colour(object body, mixed *cb, string prompt) ;

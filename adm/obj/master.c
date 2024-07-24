@@ -30,7 +30,7 @@ void create() {
     // Set privs to master
     call_out_walltime( (: set_privs, this_object(), "[master]" :), 0.01);
     // Tune into error channel
-    call_out_walltime("tune_into_error", 0.02) ;
+    // call_out_walltime("tune_into_error", 0.02) ;
 }
 
 void flag(string str) {
@@ -78,7 +78,6 @@ protected void epilog(int load_empty) {
         } else {
             out += sprintf(" Done (%.2fs)", time_frac() - time);
         }
-        event(ob, "boot") ;
         debug_message(out);
     }
 
@@ -164,6 +163,8 @@ void error_handler(mapping mp, int caught) {
     string userid;
 
     ret = "---\n" + standard_trace(mp, 1);
+debug_message(sprintf("ret = %s\n", ret)) ;
+    // debug_message(ret) ;
     write_file(logfile, ret);
 
     // If an object didn't load, they get compile errors. Don't spam
@@ -202,7 +203,7 @@ void error_handler(mapping mp, int caught) {
     // TODO: Temporary notifications, undo when above fixed
     message("error", sprintf("(%s) Error logged %s\n%s\n",
         logfile,
-        what,
+        ret,
         trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
     ), filter(users(), (: devp :))) ;
 

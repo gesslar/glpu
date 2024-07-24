@@ -46,7 +46,8 @@ void mudlib_setup() {
     ::mudlib_setup() ;
 
     register_crash() ;
-    set_log_level(4) ;
+    set_log_level(1) ;
+    set_notify_destruct(1) ;
 
     file = query_file_name() ;
 
@@ -210,10 +211,8 @@ void websocket_handle_connected() {
 
     server["discord"] = discord ;
 
-    if(function_exists("bot_handle_connected")) {
-        _log(2, "Handing connected event to bot %s", query_bot_name()) ;
-        call_other(this_object(), "bot_handle_connected") ;
-    }
+    _log(2, "Handing connected event to bot %s", query_bot_name()) ;
+    call_if(this_object(), "bot_handle_connected") ;
 }
 
 void websocket_handle_shutdown() {
@@ -227,17 +226,15 @@ void websocket_handle_shutdown() {
         return ;
     }
 
-    if(!nullp(hb = server["discord"]["heartbeat"])) {
+    if(of("discord", server) && of("heartbeat", server["discord"])) {
         if(find_call_out(hb) != -1) {
             _log(2, "Stopping heartbeat") ;
             remove_call_out(hb) ;
         }
     }
 
-    if(function_exists("bot_handle_shutdown")) {
-        _log(2, "Handing shutdown event to bot %s", query_bot_name()) ;
-        call_other(this_object(), "bot_handle_shutdown") ;
-    }
+    _log(2, "Handing shutdown event to bot %s", query_bot_name()) ;
+    call_if(this_object(), "bot_handle_shutdown") ;
 
     callouts = call_out_info() ;
     callouts = filter(callouts, (: $1[0] == this_object() :)) ;
@@ -310,10 +307,8 @@ void discord_handle_event(mapping payload) {
             // because we need to record the session_id and resume_gateway_url
             // The bot can have it after we're done.
             discord_handle_ready(data) ;
-            if(function_exists("bot_handle_ready")) {
-                _log(2, "Handing %s event to bot %s", event_name, query_bot_name()) ;
-                call_other(this_object(), "bot_handle_ready", data) ;
-            }
+            _log(2, "Handing %s event to bot %s", event_name, query_bot_name()) ;
+            call_if(this_object(), "bot_handle_ready", data) ;
             return ;
     }
 
@@ -332,12 +327,8 @@ void discord_handle_event(mapping payload) {
 
     bot_event_name = sprintf("bot_handle_%s", lower_case(event_name)) ;
 
-    if(function_exists(bot_event_name)) {
-        _log(2, "Handing event %s to bot %s", event_name, query_bot_name()) ;
-        call_other(this_object(), bot_event_name, data) ;
-    } else {
-        _log(3, "No event handler in bot %s", query_bot_name()) ;
-    }
+    _log(2, "Handing event %s to bot %s", event_name, query_bot_name()) ;
+    call_if(this_object(), bot_event_name, data) ;
 }
 
 void discord_handle_hello(mapping payload) {
@@ -639,4 +630,14 @@ public nomask int is_setup() {
            stringp(bot_data["token"]) &&
            stringp(bot_data["name"]) &&
            intp(bot_data["intents"]) ;
+}
+
+void on_destruct() {
+    if(server) {
+        if(server["discord"] && server["discord"]["heartbeat"]) {
+            remove_call_out(server["discord"]["heartbeat"]) ;
+        }
+    }
+
+    ::on_destruct() ;
 }

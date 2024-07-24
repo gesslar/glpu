@@ -406,3 +406,52 @@ object this_body() {
 object this_caller() {
     return efun::this_player(1) ;
 }
+
+/**
+ * @simul_efun present_clones
+ * @description Retrieves all clones of the specified file present in the
+ *              specified container. If the file is an object, it will
+ *              retrieve all clones using the object's base name.
+ * @param {mixed} file
+ * @param {object} container
+ * @returns {object[]} - An array of clones of the specified file present in
+ *                       the container.
+ */
+object *present_clones(mixed file, object container) {
+    object *obs = all_inventory(container);
+    object *result ;
+
+    if(objectp(file))
+        file = base_name(file);
+
+    if(!stringp(file))
+        return ({});
+
+    result = filter(obs, (: base_name($1) == $(file) :));
+
+    return result;
+}
+
+/**
+ * @simul_efun caller_is
+ * @description This simul_efun will return 1 if the caller of the current
+ *              operation is the specified object, or if the caller is the
+ *              object with the specified file name.
+ *
+ *              *NOTE* This simul_efun will not succeed when called from
+ *              other functions in the simul_efun object, as previous_object()
+ *              does not count the object itself in its call list.
+ * @param {mixed} ob - The object or file name to compare the caller to.
+ * @returns {int} - 1 if the caller is the specified object, 0 otherwise.
+ */
+int caller_is(mixed ob) {
+    object prev = previous_object(1);
+
+    if(objectp(ob))
+        return this_caller() == ob;
+
+    if(stringp(ob))
+        return base_name(ob) == base_name(prev);
+
+    return 0;
+}

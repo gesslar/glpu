@@ -41,10 +41,22 @@ void shutdown( int how ) {
     object po = previous_object() ;
     string f = base_name(po) ;
 
-    if(po == master() || of(f, mud_config("ALLOW_SHUTDOWN"))) {
-        PERSIST_D->persist_objects() ;
-        efun::shutdown(how);
-    }
+    if(   po != master()
+       && po != load_object(SHUTDOWN_D)
+    ) return ;
+
+    emit(SIG_SYS_SHUTDOWN) ;
+    PERSIST_D->persist_objects() ;
+    efun::shutdown(how);
+}
+
+/**
+ * @simul_efun shutdown_d
+ * @description This simul_efun returns the shutdown daemon.
+ * @returns {object} - The shutdown daemon.
+ */
+object shutdown_d() {
+    return load_object(SHUTDOWN_D);
 }
 
 /**

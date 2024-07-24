@@ -3,6 +3,32 @@ title: object
 ---
 # object.c
 
+## caller_is
+
+### Synopsis
+
+```c
+int caller_is(mixed ob)
+```
+
+### Parameters
+
+* `mixed ob` - The object or file name to compare the caller to.
+
+### Returns
+
+`int` - 1 if the caller is the specified object, 0 otherwise.
+
+### Description
+
+This simul_efun will return 1 if the caller of the current
+operation is the specified object, or if the caller is the
+object with the specified file name.
+
+*NOTE* This simul_efun will not succeed when called from
+other functions in the simul_efun object, as previous_object()
+does not count the object itself in its call list.
+
 ## get_objects
 
 ### Synopsis
@@ -123,6 +149,29 @@ object this_body()
 
 This is a simul_efun that will return the body of the current
 interactive user. It is used as a replacement for this_player().
+
+## present_clones
+
+### Synopsis
+
+```c
+object *present_clones(mixed file, object container)
+```
+
+### Parameters
+
+{mixed} file
+{object} container
+
+### Returns
+
+`object*` - An array of clones of the specified file present in the container.
+
+### Description
+
+Retrieves all clones of the specified file present in the
+specified container. If the file is an object, it will
+retrieve all clones using the object's base name.
 
 ## present_livings
 

@@ -9,6 +9,7 @@ title: simul_efun
 * [remove_array_element](arrays#remove_array_element)
 * [reverse_array](arrays#reverse_array)
 * [splice](arrays#splice)
+* [uniform_array](arrays#uniform_array)
 
 ## [base64](base64)
 
@@ -34,6 +35,7 @@ title: simul_efun
 
 ## [english](english)
 
+* [add_article](english#add_article)
 * [cap_significant_words](english#cap_significant_words)
 * [cap_words](english#cap_words)
 * [objective](english#objective)
@@ -102,6 +104,7 @@ title: simul_efun
 
 ## [numbers](numbers)
 
+* [evaluate_number](numbers#evaluate_number)
 * [percent](numbers#percent)
 * [percent_of](numbers#percent_of)
 * [range](numbers#range)
@@ -110,6 +113,7 @@ title: simul_efun
 
 ## [object](object)
 
+* [caller_is](object#caller_is)
 * [find_ob](object#find_ob)
 * [get_living](object#get_living)
 * [get_livings](object#get_livings)
@@ -118,11 +122,16 @@ title: simul_efun
 * [get_player](object#get_player)
 * [get_players](object#get_players)
 * [getoid](object#getoid)
+* [present_clones](object#present_clones)
 * [present_livings](object#present_livings)
 * [present_players](object#present_players)
 * [this_body](object#this_body)
 * [this_caller](object#this_caller)
 * [top_environment](object#top_environment)
+
+## [overrides](overrides)
+
+* [shutdown_d](overrides#shutdown_d)
 
 ## [prompt](prompt)
 

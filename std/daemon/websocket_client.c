@@ -166,6 +166,8 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
     if(!server)
         return ;
 
+    fd = server["fd"] ;
+
     map_delete(server, "key") ;
 
     _log(4, "Socket resolved: %d", fd) ;
@@ -216,7 +218,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
  *
  * @param {int} fd - The file descriptor of the socket.
  */
-protected nomask void websocket_ready(int fd) {
+public nomask void websocket_ready(int fd) {
     string out;
     string raw_key, sec_websocket_key;
     string host ;
@@ -353,7 +355,7 @@ protected nomask void shutdown_websocket() {
  * @param {int} fd - The file descriptor of the socket.
  * @param {buffer} incoming - The incoming data buffer.
  */
-protected nomask void websocket_read(int fd, buffer incoming) {
+public nomask void websocket_read(int fd, buffer incoming) {
     buffer buf;
     mapping frame_info;
     mapping http;
@@ -1161,4 +1163,8 @@ void event_on_remove(object prev) {
  */
 void shutdown() {
     websocket_close() ;
+}
+
+void on_destruct() {
+    shutdown(WS_CLOSE_GOING_AWAY) ;
 }

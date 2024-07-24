@@ -91,7 +91,7 @@ Determines whether Unicode characters are used in the client. The default is
 
 This variable allows you to change whether you see the percentage of a document
 viewed or the line numbers of the current page of a document. The default is
-`lines`.
+`line`.
 
 * `percent` - Display the percentage of the document viewed.
 * `line` - Display the line numbers of the current page.

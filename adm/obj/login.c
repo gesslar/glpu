@@ -38,7 +38,7 @@ void new_user(string str, string name);
 void auto_destruct();
 void reconnect(string str);
 void setup_new();
-void enter_world(string str);
+void enter_world(int reconnecting);
 void email_verified(string address, string resolved, int key);
 void get_email(string input);
 void idle_email(string str);
@@ -150,7 +150,7 @@ void get_name(string str) {
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
-            input_to("enter_world");
+            input_to("enter_world", 0);
         } else {
             enter_world(0);
         }
@@ -226,7 +226,7 @@ void get_password(string str, int i) {
             if(mud_config("DISPLAY_NEWS")) {
                 tell(this_object(), motd + "\n");
                 tell(this_object()," [Hit enter to continue] ");
-                input_to("enter_world");
+                input_to("enter_world", 0);
             } else {
                 enter_world(0);
             }
@@ -382,7 +382,7 @@ void setup_new() {
         tell(this_object(), motd + "\n");
         tell(this_object(),"\n");
         tell(this_object()," [Hit enter to continue] ");
-        input_to("enter_world");
+        input_to("enter_world", 0);
     } else {
         enter_world(0);
     }
@@ -401,9 +401,9 @@ void reconnect(string str) {
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
-            input_to("enter_world");
+            input_to("enter_world", 1);
         } else {
-            enter_world(0);
+            enter_world(1);
         }
         return;
     } else {
@@ -414,7 +414,7 @@ void reconnect(string str) {
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
             tell(this_object()," [Hit enter to continue] ");
-            input_to("enter_world");
+            input_to("enter_world", 0);
         } else {
             enter_world(0);
         }
@@ -428,7 +428,7 @@ void auto_destruct() {
     remove() ;
 }
 
-void enter_world(string str) {
+void enter_world(int reconnecting) {
     string loc ;
     string e ;
     object room ;
@@ -500,6 +500,11 @@ void enter_world(string str) {
 
     body->enter_world();
     remove_call_out(call_out_id);
+
+    if(reconnecting)
+        emit(SIG_USER_LINK_RESTORE, user) ;
+    else
+        emit(SIG_USER_LOGIN, user) ;
 
     remove() ;
 }

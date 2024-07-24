@@ -30,9 +30,15 @@ private nosave mapping config, restart, reffs ;
 private nosave mapping games ;
 
 void setup() {
-    set_log_level(1);
+    set_log_level(4);
     set_notify_destruct(1) ;
     set_log_prefix("(GRAPEVINE)") ;
+
+    slot(SIG_USER_LOGIN, "grapevine_send_event_players_sign_in") ;
+    slot(SIG_USER_LINK_RESTORE, "grapevine_send_event_players_sign_in") ;
+    slot(SIG_USER_LOGOUT, "grapevine_send_event_players_sign_out") ;
+    slot(SIG_USER_LINKDEAD, "grapevine_send_event_players_sign_out") ;
+
     // call_out("startup", 3) ;
 }
 
@@ -505,7 +511,7 @@ void grapevine_handle_players_status(string reff, string status, string err, map
         return ;
 
     map_delete(reffs, reff) ;
-_debug("this request = %O", request) ;
+
     _log(1, "Callback %O\n", request["callback"]) ;
 
     if(err) {
@@ -761,22 +767,22 @@ public nomask void grapevine_send_event_channels_send(object who, string chan, s
 
 // Players
 
-public nomask void grapevine_send_event_players_sign_in(object who, mixed *cb) {
+public nomask void grapevine_send_event_players_sign_in(object who) {
     mapping payload = ([
         "name" : who->query_proper_name(),
         "game" : get_config(__MUD_NAME__)
     ]) ;
 
-    send_outgoing_message(GR_EVENT_PLAYERS_SIGN_IN, generate_uuid(), payload, cb) ;
+    send_outgoing_message(GR_EVENT_PLAYERS_SIGN_IN, generate_uuid(), payload) ;
 }
 
 // TODO: Ask why this event does not take a game, but sign-in does
-public nomask void grapevine_send_event_players_sign_out(object who, mixed *cb) {
+public nomask void grapevine_send_event_players_sign_out(object who) {
     mapping payload = ([
         "name" : who->query_proper_name(),
     ]) ;
 
-    send_outgoing_message(GR_EVENT_PLAYERS_SIGN_OUT, generate_uuid(), payload, cb) ;
+    send_outgoing_message(GR_EVENT_PLAYERS_SIGN_OUT, generate_uuid(), payload) ;
 }
 
 // TODO: Ask if this can be made case-insensitive like tells/send
@@ -806,7 +812,14 @@ public nomask void grapevine_send_event_tells_send(object who, string to, string
 }
 
 private nomask varargs void send_outgoing_message(string ev, string reff, mapping message, mixed *cb) {
-    mapping outgoing = ([ "event" : ev ]) ;
+    mapping outgoing ;
+
+    if(!server) {
+        _log(1, "Not connected to Grapevine") ;
+        return ;
+    }
+
+    outgoing = ([ "event" : ev ]) ;
 
     if(!nullp(message))
     outgoing["payload"] = message ;

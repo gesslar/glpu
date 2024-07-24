@@ -11,7 +11,18 @@
 #define SIG_INVALID_OBJECT      -5
 
 // Standard system signals
-#define SIG_SYS_BOOT            0x01
-#define SIG_SYS_CRASH           0x02
+#define SIG_SYS_BOOT            100
+#define SIG_SYS_CRASH           101
+#define SIG_SYS_SHUTTING_DOWN   102
+#define SIG_SYS_SHUTDOWN        103
+#define SIG_SYS_SHUTDOWN_CANCEL 104
+#define SIG_SYS_REBOOTING       105
+#define SIG_SYS_REBOOT_CANCEL   106
+
+// Standard user signals
+#define SIG_USER_LOGIN          200
+#define SIG_USER_LOGOUT         201
+#define SIG_USER_LINKDEAD       202
+#define SIG_USER_LINK_RESTORE   203
 
 #endif // __SIGNAL_H__

@@ -17,7 +17,7 @@ private nosave string FAIL =
 "        showtree <func> in <file>\n" ;
 
 void setup() {
-    help =
+    help_text =
 "Syntax: showtree <file>\n"
 "        showtree <func> in <file>\n"
 "\n"
@@ -75,7 +75,7 @@ string dig (string file, string func, int indent) {
         return 0;
     }
 
-    str = sprintf("%*-' 's" + file, indent*2, "");
+    str = sprintf("%*-' 's%s", indent*4, "", file);
     if(func && (function_exists(func, ob) == file) ) {
         str += " (\e0220\e" + func + "\eres\e defined)\n";
     } else {

@@ -146,3 +146,44 @@ string subjective(mixed ob) {
         default: return "it" ;
     }
 }
+
+/**
+  * @simul_efun article
+  * @description Returns the article corresponding to the noun. If definite
+  *              is true, returns "the"; otherwise, returns "a" or "an"
+  *              depending on the noun's initial letter.
+  * @param {string} str - The noun to determine the article for.
+  * @param {int} [definite=0] - Whether to return the definite article.
+  * @returns {string} - The article.
+ */
+varargs string article(string str, int definite) {
+    if(!stringp(str))
+        return "" ;
+
+    if(definite)
+        return "the" ;
+
+    else
+        if(of(str[0], ({ 'a', 'e', 'i', 'o', 'u' })))
+            return "an" ;
+        else
+            return "a" ;
+}
+
+/**
+ * @simul_efun add_article
+ * @description Adds an article to a string. If definite is true, adds "the";
+ *              otherwise, adds "a" or "an" depending on the noun's initial
+ *              letter.
+ * @param {string} str - The string to add the article to.
+ * @param {int} [definite=0] - Whether to add the definite article.
+ * @returns {string} - The string with the article prepended.
+ */
+varargs string add_article(string str, int definite) {
+    string art = article(str, definite) ;
+
+    if(!strlen(art))
+        return str ;
+
+    return art + " " + str ;
+}

@@ -14,6 +14,7 @@ mixed main(object tp, string arg) {
     object ob, target, env, my_env;
     string file;
     string e ;
+    int result ;
 
     if(!arg)
         return _info("Where would you like to go?");
@@ -36,7 +37,9 @@ mixed main(object tp, string arg) {
             tell_down(my_env, tp->query_name() + " teleports to another location.\n", 0, tp);
         }
 
-        tp->move_living(env, null, "SILENT", "SILENT");
+        result = tp->move_living(env, null, "SILENT", "SILENT");
+        if(!(result & MOVE_OK))
+            return _error("Unable to move to %s (%d).", target->query_name(), result);
 
         if(tp->query_env("teleport_in") && wizardp(tp)) {
             custom = tp->query_env("teleport_in");
@@ -74,7 +77,9 @@ mixed main(object tp, string arg) {
             tell_down(my_env, tp->query_name() + " teleports to another location.\n", 0, tp);
         }
 
-        tp->move_living(ob, null, "SILENT", "SILENT");
+        result = tp->move_living(ob, null, "SILENT", "SILENT") ;
+        if(!(result & MOVE_OK))
+            return _error("Unable to move to %s (%d).", file, result);
 
         if(tp->query_env("teleport_in") && wizardp()) {
             custom = tp->query_env("teleport_in");
