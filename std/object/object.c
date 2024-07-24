@@ -74,8 +74,8 @@ int remove() {
     object *inv ;
 
     if(env && !env->is_room()) {
-        environment()->add_capacity(-query_mass());
-        environment()->add_volume(-query_bulk());
+        environment()->add_capacity(query_mass());
+        environment()->add_volume(query_bulk());
     }
 
     catch(call_if(this_object(), "on_remove", environment())) ;
