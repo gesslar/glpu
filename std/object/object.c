@@ -66,17 +66,19 @@ varargs void reset(mixed args...) {
 }
 
 void on_destruct() {
+    object env = environment() ;
+
+    if(env && !env->is_room()) {
+        env->add_capacity(query_mass());
+        env->add_volume(query_bulk());
+    }
+
     unsetup_chain() ;
 }
 
 int remove() {
     object env = environment() ;
     object *inv ;
-
-    if(env && !env->is_room()) {
-        environment()->add_capacity(query_mass());
-        environment()->add_volume(query_bulk());
-    }
 
     catch(call_if(this_object(), "on_remove", environment())) ;
 
