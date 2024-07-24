@@ -56,7 +56,7 @@ void mudlib_setup() {
     // set_option("deflate", 1) ;
 }
 
-void post_setup() {
+void post_setup_1() {
     string cache = get_option("cache") ;
 
     assure_dir(cache) ;

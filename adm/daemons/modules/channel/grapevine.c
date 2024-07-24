@@ -21,7 +21,7 @@ void setup() {
     set_persistent() ;
 }
 
-void post_setup() {
+void post_setup_1() {
     int i;
 
     CHAN_D->register_module(module_name, file_name());

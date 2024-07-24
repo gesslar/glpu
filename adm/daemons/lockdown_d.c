@@ -60,7 +60,7 @@ int setup() {
     set_persistent() ;
 }
 
-void post_setup() {
+void post_setup_1() {
     if(!users_banned)
         users_banned = ({});
     if(!ips_banned)
