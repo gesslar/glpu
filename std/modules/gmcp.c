@@ -62,28 +62,7 @@ void gmcp(string message) {
     if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
-    if(!function_exists(gmcp.module, ob)) {
-        log_file("system/gmcp", "[%s] [%s] Function %s not found in %s [%O]",
-            ctime(),
-            DIR_STD_MODULES "gmcp/",
-            gmcp.module,
-            gmcp.package,
-            previous_object() || this_object()
-        ) ;
-        return ;
-    }
-
-    if(gmcp.submodule)
-        if(gmcp.payload)
-            catch(call_other(gmcp_module, gmcp.module, gmcp.submodule, gmcp.payload)) ;
-        else
-            catch(call_other(gmcp_module, gmcp.module, gmcp.submodule)) ;
-    else
-        if(gmcp.payload)
-            catch(call_other(gmcp_module, gmcp.module, gmcp.payload)) ;
-        else
-            catch(call_other(gmcp_module, gmcp.module)) ;
-
+    call_if(gmcp_module, gmcp.module, gmcp.submodule, gmcp.payload) ;
 }
 
 // This function sends a GMCP message to the client. It will only send the

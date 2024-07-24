@@ -155,9 +155,7 @@ protected nomask void socket_shutdown(int fd) {
         _log(3, "Removing socket: %s %d", client["host"], client["port"]);
     }
 
-    if(function_exists("http_handle_shutdown")) {
-        catch(call_other(this_object(), "http_handle_shutdown", client)) ;
-    }
+    call_if(client, "http_handle_shutdown", client) ;
 
     map_delete(clients, fd) ;
 }

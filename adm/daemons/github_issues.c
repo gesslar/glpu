@@ -140,7 +140,7 @@ void http_handle_shutdown(mapping response) {
     if(err)
         _log(2, "Error calling callback: %O", err) ;
 }
-
+// TODO: fix up to use assemble_call_back and call_back
 /**
  * @function execute_callback
  * @description Execute the callback function

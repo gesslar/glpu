@@ -79,8 +79,7 @@ int remove() ;
     contents -= ({ 0 }) ;
     contents->move(VOID_ROOM) ;
 
-    if(function_exists("remove", this_object()))
-        remove() ;
+    call_if(this_object(), "remove") ;
 
     return CLEAN_NEVER_AGAIN ;
 }

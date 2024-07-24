@@ -164,8 +164,7 @@ nomask void socket_resolve(string host, string addr, int key) {
         server["port"] = port ;
         servers[fd] = server ;
 
-        if(function_exists("http_handle_connecting"))
-            catch(call_other(this_object(), "http_handle_connecting", server)) ;
+        call_if(this_object(), "http_handle_connecting", server) ;
 
         result = socket_connect(fd, addr + " " + port, "socket_read", "socket_ready");
         if(result != EESUCCESS) {
@@ -175,8 +174,7 @@ nomask void socket_resolve(string host, string addr, int key) {
             server["error"] = socket_error(result) ;
             servers[fd] = server ;
 
-            if(function_exists("http_handle_connection_error"))
-                catch(call_other(this_object(), "http_handle_connection_error", server)) ;
+            call_if(this_object(), "http_handle_connection_error", server) ;
 
             shutdown_socket(fd) ;
             return ;
@@ -190,15 +188,13 @@ nomask void socket_resolve(string host, string addr, int key) {
         servers[fd] = server ;
         _log(2, "Connected to %s %d", host, port) ;
 
-        if(function_exists("http_handle_connected", this_object()))
-            catch(call_other(this_object(), "http_handle_connected", server)) ;
+        call_if(this_object(), "http_handle_connected", server) ;
     } else {
         server["state"] = HTTP_STATE_ERROR ;
         server["error"] = "Failed to resolve hostname " + host ;
         servers[fd] = server ;
 
-        if(function_exists("http_handle_resolve_error"))
-            catch(call_other(this_object(), "http_handle_resolve_error", server)) ;
+        call_if(this_object(), "http_handle_resolve_error", server) ;
 
         _log(2, "Failed to resolve hostname %s", host) ;
 
@@ -219,8 +215,7 @@ nomask void socket_closed(int fd) {
 
     _log(2, "Socket closed: %s %d", server["host"], server["port"]) ;
 
-    if(function_exists("http_handle_closed", this_object()))
-        catch(call_other(this_object(), "http_handle_closed", server)) ;
+    call_if(this_object(), "http_handle_closed", server) ;
 
     shutdown_socket(fd) ;
 }
@@ -268,8 +263,7 @@ nomask void shutdown_socket(int fd) {
 
     }
 
-    if(function_exists("http_handle_shutdown"))
-        catch(call_other(this_object(), "http_handle_shutdown", server)) ;
+    call_if(this_object(), "http_handle_shutdown", server) ;
 
     map_delete(servers, fd) ;
 }
@@ -362,8 +356,7 @@ nomask void socket_read(int fd, buffer incoming) {
     if(member_array(status_code, HTTP_REDIRECT_CODES) != -1) {
         _log(1, "Redirecting") ;
 
-        if(function_exists("http_handle_redirect"))
-            catch(call_other(this_object(), "http_handle_redirect", server));
+        call_if(this_object(), "http_handle_redirect", server) ;
 
         server["buffer"] = buf ;
         servers[fd] = server ;
@@ -391,14 +384,12 @@ protected nomask void socket_ready(int fd) {
 
     _log(2, "Ready to send request") ;
 
-    if(function_exists("http_handle_ready"))
-        catch(call_other(this_object(), "http_handle_ready", server)) ;
+    call_if(this_object(), "http_handle_ready", server) ;
 
     server["state"] = HTTP_STATE_SENDING ;
     servers[fd] = server ;
 
-    if(function_exists("http_handle_sending"))
-        catch(call_other(this_object(), "http_handle_sending", server)) ;
+    call_if(this_object(), "http_handle_sending", server) ;
 
     _log(2, "Sending request") ;
     _log(3, "Request: %O", server["request"]) ;
@@ -465,8 +456,7 @@ private nomask void process_response(int fd, mapping server) {
         servers[fd] = server ;
         if(end_found) {
             _log(2, "Chunked transfer encoding complete") ;
-            if(function_exists("http_handle_response"))
-                catch(call_other(this_object(), "http_handle_response", server)) ;
+            call_if(this_object(), "http_handle_response", server) ;
         }
     } else if(server["response"]["headers"]["content-length"]) {
         int expected = server["response"]["headers"]["content-length"] ;
@@ -476,8 +466,7 @@ private nomask void process_response(int fd, mapping server) {
         if(sizeof(response) == expected) {
             _log(2, "Content-Length: %d", expected) ;
             _log(2, "Size of response: %d", sizeof(response)) ;
-            if(function_exists("http_handle_response"))
-                catch(call_other(this_object(), "http_handle_response", server)) ;
+            call_if(this_object(), "http_handle_response", server) ;
         }
     }
 

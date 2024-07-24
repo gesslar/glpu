@@ -65,27 +65,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
-    if(!function_exists(gmcp.module, ob)) {
-        log_file("system/gmcp", "[%s] [%s] Function %s not found in %s [%O]",
-            ctime(),
-            __DIR__ "modules/gmcp",
-            gmcp.module,
-            gmcp.package,
-            previous_object()
-        ) ;
-        return ;
-    }
-
-    if(gmcp.submodule)
-        if(gmcp.payload)
-            catch(call_other(gmcp_module, gmcp.module, body, gmcp.submodule, gmcp.payload)) ;
-        else
-            catch(call_other(gmcp_module, gmcp.module, body, gmcp.submodule)) ;
-    else
-        if(gmcp.payload)
-            catch(call_other(gmcp_module, gmcp.module, body, gmcp.payload)) ;
-        else
-            catch(call_other(gmcp_module, gmcp.module, body)) ;
+    catch(call_if(gmcp_module, gmcp.module, body, gmcp.payload)) ;
 }
 
 class ClassGMCP convert_message(string message) {
