@@ -1,0 +1,11 @@
+mixed *random_float(int seed)
+
+Parameters:
+
+* `int seed` - The seed for random number generation.
+
+Returns
+
+`mixed*` - An array where the first element is the new seed and the second element is the random float.
+
+Generates a random float between 0 and 1, along with a new seed.

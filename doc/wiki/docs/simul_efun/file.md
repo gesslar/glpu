@@ -28,12 +28,12 @@ Determines the owner of a file based on its path.
 ### Synopsis
 
 ```c
-string *dir_file(string path)
+string *dir_file(mixed path)
 ```
 
 ### Parameters
 
-* `string path` - The path to extract the components from.
+* `mixed path` - The path to extract the components from. If it is an object, the base name is used.
 
 ### Returns
 

@@ -7,7 +7,7 @@
 inherit STD_CMD ;
 
 void setup() {
-    help =
+    help_text =
 "Syntax: pwd\n\n"
 "This command will inform you of your current working directory and current "
 "working file. This is important, as sometimes if you don't supply arguments "

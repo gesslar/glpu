@@ -14,7 +14,7 @@ inherit STD_CMD ;
 mixed main(object caller, string arg) {
      string status;
      int time;
-     status = SHUTDOWN_D->get_status();
+     status = shutdown_d()->get_status();
 
      if(!adminp(previous_object())) return notify_fail("Error [shutdown]: Access denied.\n");
 
@@ -26,7 +26,7 @@ mixed main(object caller, string arg) {
 
      if(arg == "stop") {
           if(!status) return notify_fail("Error: There is no shutdown or reboot currently in progress.\n");
-          else SHUTDOWN_D->stop();
+          else shutdown_d()->stop();
           log_file(LOG_SHUTDOWN, capitalize(caller->query_proper_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
           return 1;
      } else {
@@ -34,7 +34,7 @@ mixed main(object caller, string arg) {
           else time = to_int(arg);
           if(time == 0 && arg != "now" && arg != "0") return notify_fail("SYNTAX: shutdown [<stop>||<time>/now]\n");
           log_file(LOG_SHUTDOWN, capitalize(caller->query_proper_name()) + " started shutdown sequence (" + time + "m) on " + ctime(time()) + "\n");
-          SHUTDOWN_D->start(time, 1);
+          shutdown_d()->start(time, SYS_SHUTDOWN);
           return 1;
      }
 }

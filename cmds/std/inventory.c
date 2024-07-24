@@ -10,7 +10,7 @@ inherit STD_CMD ;
 
 string query_wealth(object tp) ;
 
-mixed main(object caller, string args) {
+mixed main(object tp, string args) {
     object *inventory;
     string *shorts ;
     string wealth ;
@@ -18,9 +18,9 @@ mixed main(object caller, string args) {
     int cap, max_cap ;
     int vol, max_vol ;
 
-    inventory = all_inventory(caller);
-    if(sizeof(inventory) < 1)
-        return "You are not currently carrying anything.\n";
+    inventory = all_inventory(tp);
+    // if(sizeof(inventory) < 1)
+    //     return "You are not currently carrying anything.\n";
 
     shorts = map(inventory, (: get_short :) );
     shorts -= ({ 0, "" });
@@ -31,13 +31,13 @@ mixed main(object caller, string args) {
     if(sizeof(shorts) > 0)
         shorts = ({ "Inventory:" }) + shorts + ({ "" }) ;
 
-    cap = caller->query_capacity() ;
-    max_cap = caller->query_max_capacity() ;
+    cap = tp->query_capacity() ;
+    max_cap = tp->query_max_capacity() ;
 
-    vol = caller->query_volume() ;
-    max_vol = caller->query_max_volume() ;
+    vol = tp->query_volume() ;
+    max_vol = tp->query_max_volume() ;
 
-    wealth = query_wealth(caller) ;
+    wealth = query_wealth(tp) ;
     if(sizeof(wealth))
         shorts += ({ "Coin purse: " + wealth, "" }) ;
 
@@ -64,7 +64,7 @@ string query_wealth(object tp) {
     return implode(out, ", ") ;
 }
 
-string help(object caller) {
+string help(object tp) {
     return(" SYNTAX: inventory\n\n"
         "This command displays a list of everything that is currently\n"
         "in your inventory.\n");

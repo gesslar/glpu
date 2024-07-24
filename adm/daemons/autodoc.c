@@ -366,17 +366,19 @@ private nomask void parse_file(string file) {
                         // assume we are still parsing additional information
                         // for the current tag. We can append the current line
                         // to the current tag's information.
-                        if(pcre_match(line, continue_regex)) {
+                        if(pcre_match(rtrim(line), continue_regex)) {
                             matches = pcre_extract(line, continue_regex) ;
                             if(sizeof(matches) > 0) {
                                 tag_data += ({ matches[0] });
                             }
                         } else if(of(current_tag, multi_line_tags)) {
-                            if(pcre_match(line, blank_line_regex)) {
+                            if(pcre_match(rtrim(line), blank_line_regex)) {
                                 tag_data += ({ "" }) ;
                             } else  {
                                 tag_data += ({ line }) ;
                             }
+                        } else {
+                            tag_data += ({ trim(line) }) ;
                         }
                     }
                 }
@@ -414,7 +416,6 @@ private nomask mixed *consolidate_function(string function_name, mapping func) {
             line = implode(currs[sz], " ") ;
             result[1][sz] = line ;
         }
-
         // Add the parameters [2]
         if(of("param", func)) {
             mixed *params ;

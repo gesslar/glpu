@@ -27,6 +27,7 @@ inherit M_MESSAGING ;
 
 private string proper_name, short, long;
 private nosave string name ;
+private nosave mapping spawn_info = ([]) ;
 
 int move(mixed dest);
 int allow_move(mixed dest);
@@ -34,6 +35,11 @@ int set_name(string str);
 string query_name();
 string query_proper_name() ;
 void set_proper_name(string str);
+
+void set_spawn_info(mapping info);
+void add_spawn_info(string key, mixed value);
+mixed query_spawn_info(string key);
+mapping query_all_spawn_info();
 
 int can_receive(object ob);
 int can_release(object ob);
@@ -43,22 +49,36 @@ void on_remove(object env) {}
 // Private so only driver can call it.
 private void create() {
     init_ob() ;
-    setup_chain() ;
     if(!proper_name) {
             if(name)
-                set_proper_name(name) ;
-            else
-                name = null ;
+            set_proper_name(name) ;
+        else
+            name = null ;
     }
+
+    reset() ;
+}
+
+void reset() {
+    setup_chain() ;
+    call_if(this_object(), "reset_objects") ;
 }
 
 int remove() {
-    if(environment()) {
+    object env = environment() ;
+    object *inv ;
+
+    if(env && !env->is_room()) {
         environment()->add_capacity(-query_mass());
         environment()->add_volume(-query_bulk());
     }
 
     on_remove(environment()) ;
+
+    inv = all_inventory() ;
+    inv = filter(inv, (: !userp($1) :)) ;
+
+    catch(inv->remove()) ;
 
     destruct() ;
     return 1 ;
@@ -74,13 +94,15 @@ int move(mixed dest) {
     if(result & MOVE_ALREADY_THERE) return MOVE_OK | MOVE_ALREADY_THERE ;
 
     prev = environment() ;
-    if(prev) {
+    if(prev && !prev->is_room()) {
         prev->add_capacity(query_mass());
         prev->add_volume(query_bulk());
     }
 
-    dest->add_capacity(-query_mass());
-    dest->add_volume(-query_bulk());
+    if(!dest->is_room()) {
+        dest->add_capacity(-query_mass());
+        dest->add_volume(-query_bulk());
+    }
 
     move_object(dest);
     event(this_object(), "moved", prev) ;
@@ -121,6 +143,22 @@ int allow_move(mixed dest) {
             return 0;
 
     return MOVE_OK ;
+}
+
+void set_spawn_info(mapping info) {
+    spawn_info = info ;
+}
+
+void add_spawn_info(string key, mixed value) {
+    spawn_info[key] = value ;
+}
+
+mixed query_spawn_info(string key) {
+    return spawn_info[key] ;
+}
+
+mapping query_all_spawn_info() {
+    return copy(spawn_info) ;
 }
 
 void set_proper_name(string str) {

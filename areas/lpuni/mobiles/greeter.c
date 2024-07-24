@@ -13,13 +13,13 @@ string *cmd_queue;
 mapping messages;
 
 void setup() {
-    set_name("johnathon");
-    set_short("Johnathon stands in front of the Podium");
+    set_name("claude");
+    set_short("Claude stands in front of the Podium");
     set_long(
-      "Johnathon is positioned at the podium wearing his\n"
+      "Claude is positioned at the podium wearing his\n"
       "black tuxedo. His brown shaggy hair sways back and\n"
       "forth as he goes about seating guests.\n");
-    set_id( ({"butler", "johnathon", "Johnathon", "john", "John" }) );
+    set_id( ({"butler", "claude", "Claude", "john", "John" }) );
 
     if(clonep())
         set_heart_beat(1);

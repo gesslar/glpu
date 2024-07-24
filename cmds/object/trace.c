@@ -82,7 +82,7 @@ mixed main(object tp, string str) {
 
             //    If the object has an environment, display it...
             if(environment( clones[loop] ))
-                hold += "\tin " + file_name(environment(clones[loop])) + "\n";
+                hold += "\tin " + sprintf("%O\n", environment(clones[loop]));
             else
                 hold += "\n";
         }

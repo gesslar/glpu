@@ -8,10 +8,10 @@
 
 inherit STD_ACT ;
 
-mixed render_room(object,object);
-mixed render_object(object,object,string);
-mixed render_container(object,object,string);
-mixed render_living(object,object,object);
+mixed render_room(object caller, object room, int brief);
+mixed render_object(object caller, object room, string target);
+mixed render_container(object caller, object room, string target);
+mixed render_living(object caller, object room, object target, int brief);
 string highlight_view(string str, string *keys);
 
 private nosave string default_highlight_colour = mud_config("LOOK_HIGHLIGHT_COLOUR");
@@ -21,7 +21,7 @@ mixed main(object caller, string arguments) {
     string target;
     object room = environment(caller);
 
-    if(!stringp(arguments)) return render_room(caller, room) ;
+    if(!stringp(arguments)) return render_room(caller, room, 0) ;
     if(sscanf(arguments, "at %s", target)) return render_object(caller, room, lower_case(target)) ;
     if(sscanf(arguments, "in %s", target)) return render_container(caller, room, lower_case(target)) ;
     else return render_object(caller, room, arguments) ;
@@ -67,7 +67,7 @@ string highlight_view(object tp, string str, string *keys) {
     return str;
 }
 
-mixed render_room(object caller, object room) {
+mixed render_room(object caller, object room, int brief) {
     string *exits, *users, *objects;
     string result = "" ;
     mixed data, datum ;
@@ -145,7 +145,7 @@ mixed render_object(object caller, object room, string target) {
 
     if(!objectp(ob)) return "You do not see " + target + ".\n" ;
 
-    if(living(ob)) return render_living(caller, room, ob) ;
+    if(living(ob)) return render_living(caller, room, ob, 0) ;
 
     temp = get_short(ob);
     if(stringp(temp)) desc += temp + "\n" ;
@@ -167,7 +167,7 @@ mixed render_object(object caller, object room, string target) {
     return 1 ;
 }
 
-mixed render_living(object caller, object room, object target, object user) {
+mixed render_living(object caller, object room, object target, int brief) {
     object *inv;
     string temp, result = "" ;
     string name ;

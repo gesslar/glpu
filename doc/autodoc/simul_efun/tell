@@ -1,4 +1,4 @@
-varargs void tell(object ob, string str, int msg_type)
+varargs void tell(mixed args...)
 
 Parameters:
 

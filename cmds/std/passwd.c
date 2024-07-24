@@ -27,7 +27,7 @@ mixed main(object tp, string arg) {
 void password_confirmed(int status, object tp) {
     if(status) {
         _question("Please enter your new password: ");
-        input_to((:new_password:), INPUT_NOECHO | INPUT_IGNORE_BANG, tp);
+        input_to((:new_password:), I_NOECHO | I_NOESC, tp);
     } else {
         _error("Password change failed.");
     }
@@ -39,7 +39,7 @@ void new_password(string str, object tp) {
         return;
     }
     _question("Please confirm your new password: ");
-    input_to((:confirm_password:), INPUT_NOECHO | INPUT_IGNORE_BANG, str, tp) ;
+    input_to((:confirm_password:), I_NOECHO | I_NOESC, str, tp) ;
 }
 
 void confirm_password(string str, string pass, object tp) {

@@ -91,3 +91,38 @@ varargs object find_local_target(object tp, string arg, function f) {
 
     return target ;
 }
+
+varargs object find_carried_object(object tp, string arg, function f) {
+    object *obs, ob ;
+    string *matches ;
+    int num ;
+
+    if(nullp(tp))
+        error("Missing argument 1 for find_carried_object");
+
+    if(nullp(arg))
+        error("Missing argument 2 for find_carried_object");
+
+    obs = all_inventory(tp) ;
+    matches = pcre_extract(arg, "^(.+?)(?: (\\d+))?$") ;
+    if(!sizeof(matches))
+        return 0 ;
+
+    if(sizeof(matches) > 1) {
+        arg = matches[0] ;
+        num = to_int(matches[1]) - 1 ;
+    } else {
+        num = 0 ;
+    }
+
+    obs = filter(obs, (: $1->id($(arg)) :)) ;
+    obs = filter(obs, (: $(tp)->can_see($1) :)) ;
+
+    if(sizeof(obs) < 1)
+        return 0 ;
+
+    if(num > sizeof(obs) - 1)
+        return 0 ;
+
+    return obs[num] ;
+}

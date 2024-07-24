@@ -16,11 +16,13 @@
 
 #define CONFIG_DIR "/adm/etc"
 
-
 #define OB_DATA_DIR     "/data/objects/"
 
 // classes for message() efun.
 #define M_STATUS "status"
 #define M_SAY    "say"
+
+#define SYS_SHUTDOWN  -1
+#define SYS_REBOOT     0
 
 #endif // __CONFIG_H__

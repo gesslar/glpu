@@ -28,7 +28,7 @@ of their position in the containment hierarchy.
 ### Synopsis
 
 ```c
-varargs void tell(object ob, string str, int msg_type)
+varargs void tell(mixed args...)
 ```
 
 ### Parameters

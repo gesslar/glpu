@@ -10,7 +10,7 @@
 inherit STD_CMD ;
 
 void setup() {
-    help =
+    help_text =
 "work - Change your current working directory to that of your environment\n"
 "work <object> - Change your current working directory to that of the object."
 ;

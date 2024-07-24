@@ -8,13 +8,12 @@
 
 inherit STD_BODY;
 
-void create() {
+private varargs void create(mixed arg...) {
     path = ({ "/cmds/std/" });
     set("prevent_get", 1);
     if(!mapp(query("env_settings"))) set("env_settings", ([])) ;
     if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_env("colour")) set_env("colour", "on");
-    if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
     enable_commands();
     setup();

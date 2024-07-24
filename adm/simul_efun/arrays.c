@@ -80,3 +80,21 @@ mixed *reverse_array(mixed *arr) {
 
     return ret;
 }
+
+/**
+ * @simul_efun uniform_array
+ * @description Checks if all elements in the input array are of the specified
+ *              type. If the array is of size 0, it is considered uniform.
+ * @param {string} type - The type to check for.
+ * @param {mixed*} arr - The array to check.
+ * @return {int} - Returns 1 if all elements are of the specified type, 0
+ *                 otherwise.
+ */
+int uniform_array(string type, mixed *arr) {
+    int sz = sizeof(arr);
+
+    if(!sz)
+        return 1;
+
+    return sizeof(filter(arr, (: typeof($1) == $2 :), type)) == sz;
+}

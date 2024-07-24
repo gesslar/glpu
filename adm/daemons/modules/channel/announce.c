@@ -14,6 +14,9 @@ string module_name = query_file_name(this_object()) ;
 void setup() {
      CHAN_D->register_module(module_name, file_name());
      CHAN_D->register_channel(module_name, "announce");
+
+     slot(SIG_USER_LOGIN, "announce_login") ;
+     slot(SIG_USER_LOGOUT, "announce_logoff") ;
 }
 
 int rec_msg(string chan, string usr, string msg) {
@@ -42,26 +45,32 @@ int rec_msg(string chan, string usr, string msg) {
     return 1;
 }
 
-void announce_login(string user) {
+void announce_login(object user) {
+     string name = capitalize(query_privs(user));
+
     CHAN_D->rec_msg("announce",
-         "[Announce] System: "
-             + capitalize(user) + " has logged into "
-            + mud_name() + ".\n");
+          "[Announce] System: "
+          + name + " has logged into "
+          + mud_name() + ".\n");
     history += ({ ldate(time(),1) +" "+ltime()
-        + " [Announce] System: "
-             + capitalize(user) + " has logged into "
-            + mud_name() + ".\n" });
+          + " [Announce] System: "
+          + name + " has logged into "
+          + mud_name() + ".\n" }
+     );
 }
 
-void announce_logoff(string user) {
-    CHAN_D->rec_msg("announce",
-         "[Announce] System: "
-             + capitalize(user) + " has left "
-            + mud_name() + ".\n");
-    history += ({ ldate(time(),1) +" "+ltime()
-        + " [Announce] System: "
-             + capitalize(user) + " has left "
-            + mud_name() + ".\n" });
+void announce_logoff(object user) {
+     string name = capitalize(query_privs(user));
+
+     CHAN_D->rec_msg("announce",
+          "[Announce] System: "
+          + name + " has left "
+          + mud_name() + ".\n");
+     history += ({ ldate(time(),1) +" "+ltime()
+          + " [Announce] System: "
+          + name + " has left "
+          + mud_name() + ".\n" }
+     );
 }
 
 int is_allowed(string channel, string usr, int flag: (: 0 :)) {

@@ -34,7 +34,7 @@ mixed main(object caller, string arg) {
           else time = to_int(arg);
           if(time == 0 && arg != "now" && arg != "0") return notify_fail("SYNTAX: shutdown [<stop>||<time>/now]\n");
           log_file(LOG_SHUTDOWN, capitalize(caller->query_proper_name()) + " started reboot sequence (" + time + "m) on " + ctime(time()) + "\n");
-          SHUTDOWN_D->start(time, 0);
+          SHUTDOWN_D->start(time, SYS_REBOOT);
           return 1;
      }
 }

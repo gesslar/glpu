@@ -13,6 +13,7 @@
 #include <config.h>
 #include <daemons.h>
 #include <input.h>
+#include <inventory.h>
 #include <messaging.h>
 #include <modules.h>
 #include <move.h>

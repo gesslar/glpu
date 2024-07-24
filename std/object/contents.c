@@ -6,6 +6,11 @@
 //
 // 2024/02/18: Gesslar - Created
 
+// Functions
+void init_capacity() ;
+void rehash_capacity() ;
+void rehash_volume() ;
+
 // Functions from other objects
 int query_total_coins() ;
 
@@ -77,6 +82,11 @@ int remove_volume(int x) {
     }
     volume -= x ;
     return 1 ;
+}
+
+void init_capacity() {
+    rehash_capacity() ;
+    rehash_volume() ;
 }
 
 void rehash_capacity() {

@@ -9,7 +9,7 @@
  * @param {mixed...} arg - arguments to pass to the signal
  */
 void emit(int sig, mixed arg...) {
-    catch(SIGNAL_D->dispatch_signal(sig, arg)) ;
+    catch(SIGNAL_D->dispatch_signal(sig, arg...)) ;
 }
 
 /**

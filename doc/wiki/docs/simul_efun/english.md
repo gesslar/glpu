@@ -23,6 +23,29 @@ string cap_words(string str)
 
 Capitalizes the first letter of each word in a string.
 
+## add_article
+
+### Synopsis
+
+```c
+varargs string add_article(string str, int definite)
+```
+
+### Parameters
+
+* `string str` - The string to add the article to.
+* `int [definite=0]` - Whether to add the definite article.
+
+### Returns
+
+`string` - The string with the article prepended.
+
+### Description
+
+Adds an article to a string. If definite is true, adds "the";
+otherwise, adds "a" or "an" depending on the noun's initial
+letter.
+
 ## subjective
 
 ### Synopsis

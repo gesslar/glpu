@@ -19,10 +19,13 @@
 #include <classes.h>
 
 inherit STD_OBJECT;
+inherit STD_CONTAINER ;
 
 inherit __DIR__ "alias" ;
-inherit __DIR__ "wealth" ;
 inherit __DIR__ "ed" ;
+inherit __DIR__ "pager" ;
+inherit __DIR__ "visibility" ;
+inherit __DIR__ "wealth" ;
 
 inherit CLASS_GMCP ;
 inherit M_GMCP ;
@@ -83,7 +86,6 @@ private nosave mapping environ_data = ([]) ;
 /* Misc functions */
 
 void write_prompt();
-void init_capacity() ;
 
 /* Functions */
 
@@ -95,6 +97,8 @@ void create() {
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
+
+    set_notify_destruct(1) ;
 }
 
 private nosave string *body_slots = ({
@@ -120,7 +124,6 @@ void setup_body() {
     if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
-    if(!query_env("news_client")) set_env("news_client", "/obj/mudlib/newsclients/std_newsclient.c");
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
@@ -130,6 +133,13 @@ void setup_body() {
     set_log_prefix(sprintf("(%O)", this_object())) ;
 }
 
+void init_capacity() {
+    set_max_capacity(1000) ;
+    set_max_volume(500) ;
+
+    ::init_capacity() ;
+}
+
 void enter_world() {
     string *cmds, *ch;
     int i;
@@ -137,8 +147,6 @@ void enter_world() {
 
     if(!is_member(query_privs(previous_object()), "admin"))
         return;
-
-    ANNOUNCE_CHDMOD->announce_login(query_name());
 
     catch {
         ch = explode(query_env("auto_tune"), " ");
@@ -169,8 +177,6 @@ void exit_world() {
     if(environment())
         say(query_name()+ " leaves " + mud_name() + ".\n");
 
-    ANNOUNCE_CHDMOD->announce_logoff(query_name());
-
     save_user();
 }
 
@@ -187,6 +193,9 @@ void net_dead() {
         tell_all(environment(), query_name()+ " falls into stupour.\n");
     set("extra_short/link_dead", "[stupour]") ;
     log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
+_debug("interactive: " + interactive(this_object())) ;
+    if(interactive(this_object()))
+        emit(SIG_USER_LINKDEAD, this_object()) ;
 }
 
 void reconnect() {
@@ -235,9 +244,14 @@ int save_user() {
 }
 
 varargs int move(mixed ob, int flag) {
-    if(!::move(ob)) return 0;
+    int result = ::move(ob) ;
+
+    if(!(result & MOVE_OK))
+        return result ;
+
     set("last_location", base_name(ob));
-    return 1;
+
+    return result ;
 }
 
 void event_remove(object prev) {
@@ -477,15 +491,14 @@ private nomask int evaluate_result(mixed result) {
             return 0 ;
         } else {
             result = append(result, "\n") ;
-            message("info", result, this_object()) ;
+            page(result) ;
             return 1 ;
         }
     } else if(pointerp(result)) {
         if(!sizeof(result)) {
             return 0 ;
         } else {
-            object pager = new(OBJ_PAGER) ;
-            pager->page(implode(result, "\n")) ;
+            page(result) ;
             return 1 ;
         }
     }
@@ -528,11 +541,9 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 
             tell_down(curr, tmp, null, ({ this_object() })) ;
         }
-    } else {
-        tell(this_object(), "You went nowhere.") ;
-    }
 
-    defer((: force_me, "look" :)) ;
+        force_me("look") ;
+    }
 
     return result ;
 }
@@ -556,13 +567,6 @@ void write_prompt() {
     string prompt = query_env("prompt");
 
     tell(this_object(), prompt + " ") ;
-}
-
-void init_capacity() {
-    set_max_capacity(1000) ;
-    set_max_volume(500) ;
-    rehash_capacity() ;
-    rehash_volume() ;
 }
 
 varargs void add_module(string module, mixed args...) {
@@ -772,6 +776,11 @@ void on_crash(mixed arg...) {
         return ;
 
     catch(result = save_user()) ;
+}
+
+void on_destruct() {
+    if(interactive())
+        emit(SIG_USER_LOGOUT, this_object()) ;
 }
 
 int is_pc() { return 1 ; }
