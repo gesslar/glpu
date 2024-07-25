@@ -27,7 +27,8 @@ void setup() {
     count = 0;
     cmd_queue = ({});
     messages = ([]);
-    add_hb("chatter") ;
+    // shut UP!
+    // add_hb("chatter") ;
 }
 
 void chatter() {

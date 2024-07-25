@@ -26,10 +26,12 @@ mixed main(object tp, string arg) {
     name = tp->query_name() ;
     vname = victim->query_name() ;
 
-    tell(tp, "You engage " + vname + " in combat.") ;
-    tell(victim, name + " engages you in combat.") ;
-    tell_down(room, name + " engages " + vname + " in combat.", 0,
+    tell(tp, "You engage " + vname + " in combat.\n") ;
+    tell(victim, name + " engages you in combat.\n") ;
+    tell_down(room, name + " engages " + vname + " in combat.\n", 0,
         ({ tp, victim }) ) ;
+
+    tp->start_attack(victim) ;
 
     return 1;
 }

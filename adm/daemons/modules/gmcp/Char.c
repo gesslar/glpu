@@ -26,6 +26,8 @@ void StatusVars(object who, mapping payload) {
         GMCP_LBL_CHAR_STATUS_NAME        : GMCP_DIS_CHAR_STATUS_NAME,
         GMCP_LBL_CHAR_STATUS_CAPACITY    : GMCP_DIS_CHAR_STATUS_CAPACITY,
         GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: GMCP_DIS_CHAR_STATUS_MAX_CAPACITY,
+        GMCP_LBL_CHAR_STATUS_XP          : GMCP_DIS_CHAR_STATUS_XP,
+        GMCP_LBL_CHAR_STATUS_TNL         : GMCP_DIS_CHAR_STATUS_TNL,
     ]);
 
     who->do_gmcp(GMCP_PKG_CHAR_STATUSVARS, data) ;
@@ -36,9 +38,26 @@ void Status(object who, mapping payload) {
 
     data = payload || ([
         GMCP_LBL_CHAR_STATUS_NAME        : who->query_name(),
-        GMCP_LBL_CHAR_STATUS_CAPACITY    : who->query_capacity(),
-        GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: who->query_max_capacity(),
+        GMCP_LBL_CHAR_STATUS_CAPACITY    : sprintf("%d", who->query_capacity()),
+        GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: sprintf("%d", who->query_max_capacity()),
+        GMCP_LBL_CHAR_STATUS_XP          : sprintf("%d", who->query_xp()),
+        GMCP_LBL_CHAR_STATUS_TNL         : sprintf("%d", who->query_tnl()),
     ]) ;
 
     who->do_gmcp(GMCP_PKG_CHAR_STATUS, data) ;
+}
+
+void Vitals(object who, mapping payload) {
+    mapping data ;
+
+    data = payload || ([
+        GMCP_LBL_CHAR_VITALS_HP     : sprintf("%.2f", who->query_hp()),
+        GMCP_LBL_CHAR_VITALS_MAX_HP : sprintf("%.2f", who->query_max_hp()),
+        GMCP_LBL_CHAR_VITALS_SP     : sprintf("%.2f", who->query_sp()),
+        GMCP_LBL_CHAR_VITALS_MAX_SP : sprintf("%.2f", who->query_max_sp()),
+        GMCP_LBL_CHAR_VITALS_MP     : sprintf("%.2f", who->query_mp()),
+        GMCP_LBL_CHAR_VITALS_MAX_MP : sprintf("%.2f", who->query_max_mp()),
+    ]) ;
+
+    who->do_gmcp(GMCP_PKG_CHAR_VITALS, data) ;
 }

@@ -18,14 +18,18 @@
 #include <rooms.h>
 #include <classes.h>
 #include <commands.h>
+#include <gmcp.h>
 
 inherit STD_OBJECT;
 inherit STD_CONTAINER ;
 
+inherit __DIR__ "advancement" ;
 inherit __DIR__ "alias" ;
+inherit __DIR__ "combat" ;
 inherit __DIR__ "ed" ;
 inherit __DIR__ "pager" ;
 inherit __DIR__ "visibility" ;
+inherit __DIR__ "vitals" ;
 inherit __DIR__ "wealth" ;
 
 inherit CLASS_GMCP ;
@@ -79,6 +83,9 @@ void add_module(string module);
 void remove_module(string module);
 object get_module(string module);
 
+// Death
+void die() ;
+
 private nosave mapping modules = ([]);
 private nosave int finished_setup = 0 ;
 private nosave mapping gmcp_data = ([ ]);
@@ -127,7 +134,7 @@ void setup_body() {
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
     init_capacity() ;
-    init_wealth() ;
+    init_vitals() ;
 
     set_log_prefix(sprintf("(%O)", this_object())) ;
 }
@@ -209,6 +216,7 @@ void reconnect() {
 
 /* Body Object Functions */
 void heart_beat() {
+
     if(userp()) {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
@@ -226,7 +234,30 @@ void heart_beat() {
         }
     }
 
+    if(!is_dead() && query_hp() <= 0) {
+        set_dead(1) ;
+        die() ;
+        return ;
+    }
+
+    heal_tick() ;
+
     evaluate_heart_beat() ;
+
+    if(gmcp_enabled()) {}
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, null) ;
+}
+
+void die() {
+    if(!environment())
+        return ;
+
+    if(!is_dead())
+        return ;
+
+    stop_all_attacks() ;
+    tell(this_object(), "You have perished.\n");
+    tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
 }
 
 void restore_user() {

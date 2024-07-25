@@ -11,7 +11,7 @@
 inherit STD_CMD ;
 
 mixed main(object tp, string arg) {
-    object *who, ob, *obs ;
+    object *who ;
     object room = environment(tp) ;
 
     if(!arg) {
@@ -28,13 +28,12 @@ mixed main(object tp, string arg) {
     if(!sizeof(who))
         return "No such target." ;
 
-    obs = map(who, (: COMBAT_D->find_combat_object($1) :)) ;
-    obs -= ({ 0 }) ;
+    who -= ({ 0 }) ;
 
-    if(sizeof(obs) == 0)
+    if(sizeof(who) == 0)
         return "No combat to halt." ;
 
-    obs->stop_combat() ;
+    who->stop_all_attacks() ;
 
     return "You halt combat for "+
         simple_list(sort_array(who->query_name(), 1))+"." ;

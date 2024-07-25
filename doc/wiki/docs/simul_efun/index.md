@@ -124,6 +124,7 @@ title: simul_efun
 * [present_clones](object#present_clones)
 * [present_livings](object#present_livings)
 * [present_players](object#present_players)
+* [same_env_check](object#same_env_check)
 * [this_body](object#this_body)
 * [this_caller](object#this_caller)
 * [top_environment](object#top_environment)

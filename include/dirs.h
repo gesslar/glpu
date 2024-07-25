@@ -13,6 +13,7 @@
 #define DIR_DAEMONS         "/adm/daemons/"
 #define DIR_OBJ             "/obj/"
 #define DIR_STD             "/std/"
+#define DIR_STD_USER        DIR_STD "user/"
 #define DIR_STD_MODULES     DIR_STD "modules/"
 #define DIR_STD_OBJECT      DIR_STD "object/"
 

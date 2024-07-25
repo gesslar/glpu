@@ -455,3 +455,35 @@ int caller_is(mixed ob) {
 
     return 0;
 }
+
+/**
+ * @simul_efun same_env_check
+ * @description This simul_efun will return 1 if the two objects are in the
+ *              same environment, or 0 if they are not.
+ *
+ *              If top_env is set to 1, the simul_efun will check if the two
+ *              objects share the same top-level environment.
+ * @param {object} one
+ * @param {object} two
+ * @param {int} top_env
+ * @return {int}
+ */
+varargs int same_env_check(object one, object two, int top_env) {
+    object env1, env2 ;
+
+    if(!objectp(one) || !objectp(two))
+        return 0 ;
+
+    if(top_env) {
+        env1 = top_environment(one) ;
+        env2 = top_environment(two) ;
+    } else {
+        env1 = environment(one) ;
+        env2 = environment(two) ;
+    }
+
+    if(!env1 || !env2)
+        return 0 ;
+
+    return env1 == env2 ;
+}

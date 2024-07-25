@@ -16,6 +16,7 @@ private nosave string module_name = query_file_name(this_object()) ;
 
 void setup() {
     set_persistent() ;
+    set_no_clean(1) ;
 }
 
 void post_setup_1() {

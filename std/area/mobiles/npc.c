@@ -8,6 +8,8 @@
 
 inherit STD_BODY;
 
+void setup_body() ;
+
 private varargs void create(mixed arg...) {
     path = ({ "/cmds/std/" });
     set("prevent_get", 1);
@@ -16,8 +18,10 @@ private varargs void create(mixed arg...) {
     if(!query_env("colour")) set_env("colour", "on");
     if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
     enable_commands();
-    setup();
+    call_if(this_object(), "setup", arg...);
     add_action("command_hook", "", 1);
+
+    init_vitals() ;
 }
 
 // void setup_body() {

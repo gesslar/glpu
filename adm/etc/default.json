@@ -69,5 +69,7 @@
     "DECIMAL" : ".",
     "THOUSANDS" : ",",
     "MORELINES" : 40,
-    "PAGE_DISPLAY" : "line"
+    "PAGE_DISPLAY" : "line",
+    "TIME_TO_HEAL" : 60,
+    "HEARTBEATS_TO_REGEN" : 10
 }

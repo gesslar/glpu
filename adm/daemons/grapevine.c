@@ -38,7 +38,7 @@ void setup() {
     slot(SIG_USER_LOGOUT, "grapevine_send_event_players_sign_out") ;
     slot(SIG_USER_LINKDEAD, "grapevine_send_event_players_sign_out") ;
 
-    // call_out("startup", 3) ;
+    call_out("startup", 3) ;
 }
 
 // Start the Connection

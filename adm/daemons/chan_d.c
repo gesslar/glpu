@@ -63,6 +63,8 @@ void setup() {
             out += sprintf(" Done (%.2fs)", time_frac() - time) ;
         }
     }
+
+    set_no_clean(1) ;
 }
 
 int register_module(string name, string path) {

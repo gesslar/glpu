@@ -18,6 +18,8 @@ string *history = ({});
 void setup() {
      mixed result ;
 
+     set_no_clean(1) ;
+
      CHAN_D->register_module(module_name, file_name());
      result = filter(channels, (: CHAN_D->register_channel($(module_name), $1) :));
 }

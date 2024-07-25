@@ -354,3 +354,19 @@ int retrieve_ed_setup(object user) {
 mapping get_mud_stats() {
     return MSSP_D->get_mud_stats();
 }
+
+string *DEFAULT_PATH = ({ ":DEFAULT:" }) ;
+
+string *get_include_path(string object_path) {
+    string *parts = explode(object_path, "/") ;
+    string *include_path = ({ }) ;
+
+    if(parts[0] == "std") {
+        string path = "/" + implode(parts[0..<2], "/") + "/include/" ;
+        if(directory_exists(path)) {
+            include_path += ({ path }) ;
+        }
+    }
+
+    return DEFAULT_PATH + include_path ;
+}

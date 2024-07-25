@@ -12,6 +12,8 @@ string *history = ({});
 string module_name = query_file_name(this_object()) ;
 
 void setup() {
+     set_no_clean(1) ;
+
      CHAN_D->register_module(module_name, file_name());
      CHAN_D->register_channel(module_name, "announce");
 
