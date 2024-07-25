@@ -10,6 +10,7 @@
 
 #include <logs.h>
 #include <commands.h>
+#include <shutdown.h>
 
 inherit STD_DAEMON ;
 

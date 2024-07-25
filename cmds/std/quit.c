@@ -7,7 +7,6 @@
 //Last edited on October 8th, 2005 by Tacitus
 
 #include <logs.h>
-#include <config.h>
 
 inherit STD_CMD ;
 

@@ -15,7 +15,6 @@ Purpose  : identify the variable 'a' as a string.
            Pallando included config.h (for __tmi__) and origin.h
 */
 #include <origin.h>
-#include <config.h>
 
 #define MAX_RECURSION 20
 

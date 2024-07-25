@@ -7,8 +7,6 @@
 //08-APR-05
 //Simul-efuns
 
-#include <config.h>
-
 /* Please keep the following as is */
 /**
  * @simul_efun baselib_name

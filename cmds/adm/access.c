@@ -8,8 +8,6 @@
 
 /* Last edited on July 17th, 2006 by Tacitus */
 
-#include <config.h>
-
 inherit STD_CMD ;
 
 #define FILE_GROUPDATA "/adm/etc/groups"

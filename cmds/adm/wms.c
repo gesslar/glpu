@@ -22,8 +22,6 @@ Ported to LPUniversity     :: 06-MAY-06
 
 */
 
-#include <config.h>
-
 inherit STD_CMD ;
 
 #define DATAFILE "/data/tools/wms"

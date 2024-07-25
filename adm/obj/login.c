@@ -10,7 +10,6 @@
 
 /* Last edited on October 6th, 2006 by Tacitus */
 
-#include <config.h>
 #include <logs.h>
 #include <daemons.h>
 #include <origin.h>
@@ -575,8 +574,8 @@ string parse_tokens(string text) {
             (: $1 != "login" :) )[<1]);
         text = replace_string(text, "%user_count", "" + sizeof(users()));
         text = replace_string(text, "%date", ctime(time()));
-        text = replace_string(text, "%open_status", OPEN_STATUS);
-        text = replace_string(text, "%email", ADMIN_EMAIL);
+        text = replace_string(text, "%open_status", open_status()) ;
+        text = replace_string(text, "%email", admin_email()) ;
         text = replace_string(text, "%lib_name", lib_name());
         text = replace_string(text, "%lib_version", lib_version());
         text = replace_string(text, "%baselib_version", baselib_version());

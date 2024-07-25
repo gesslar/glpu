@@ -71,5 +71,6 @@
     "MORELINES" : 40,
     "PAGE_DISPLAY" : "line",
     "TIME_TO_HEAL" : 60,
-    "HEARTBEATS_TO_REGEN" : 10
+    "HEARTBEATS_TO_REGEN" : 10,
+    "OBJECT_DATA_DIR" : "/data/obj/"
 }

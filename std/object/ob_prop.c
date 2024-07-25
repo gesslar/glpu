@@ -6,8 +6,6 @@
 
 //Last updated: January 2nd, 2006 by Tacitus
 
-#include <config.h>
-
 int set(string name, mixed var);
 int delete(string name);
 int add(string name, mixed var);

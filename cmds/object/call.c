@@ -17,7 +17,6 @@ Purpose  :  allow wizards to call functions in objects
 #include <daemons.h>
 #include <logs.h>
 #include <clean.h>
-#include <config.h>
 
 #define NO_USER_CALLS
 

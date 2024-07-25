@@ -8,7 +8,6 @@
 
 /* Last edited on July 17th, 2006 by Tacitus */
 
-#include <config.h>
 #include <origin.h>
 #include <clean.h>
 

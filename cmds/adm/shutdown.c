@@ -8,6 +8,7 @@
 //Last edited on October 22nd, 2005 by Tacitus
 
 #include <logs.h>
+#include <shutdown.h>
 
 inherit STD_CMD ;
 

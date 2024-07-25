@@ -1,7 +1,5 @@
 #include "/adm/obj/simul_efun.h"
 
-#include <config.h>
-
 /**
  * @simul_efun assure_file
  * @description Given a file, ensures that the directory structure leading to

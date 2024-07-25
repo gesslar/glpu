@@ -10,7 +10,6 @@
 
 /* Preprocessor Statement */
 
-#include <config.h>
 #include <localtime.h>
 #include <logs.h>
 
@@ -362,10 +361,15 @@ string *get_include_path(string object_path) {
     string *include_path = ({ }) ;
 
     if(parts[0] == "std") {
-        string path = "/" + implode(parts[0..<2], "/") + "/include/" ;
-        if(directory_exists(path)) {
-            include_path += ({ path }) ;
-        }
+        string path1, path2 ;
+
+        path1 = "/" + implode(parts[0..<2], "/") + "/" ;
+        path2 = "/" + implode(parts[0..<2], "/") + "/include/" ;
+
+        if(directory_exists(path1))
+            include_path += ({ path1 }) ;
+        if(directory_exists(path2))
+            include_path += ({ path2 }) ;
     }
 
     return DEFAULT_PATH + include_path ;

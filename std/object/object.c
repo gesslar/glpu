@@ -8,8 +8,6 @@
 
 /* Last updated July 14th, 2006 by Tacitus */
 
-#include <config.h>
-
 inherit STD_OB_E;
 
 inherit __DIR__ "contents" ;

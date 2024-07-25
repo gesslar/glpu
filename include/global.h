@@ -10,7 +10,6 @@
 #ifndef __GLOBAL_H__
 #define __GLOBAL_H__
 
-#include <config.h>
 #include <daemons.h>
 #include <input.h>
 #include <inventory.h>
