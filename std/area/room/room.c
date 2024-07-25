@@ -7,7 +7,6 @@
 
 // Last edited by Tacitus on May 3rd, 2006
 
-#include <config.h>
 
 inherit STD_OBJECT;
 inherit STD_CONTAINER ;
