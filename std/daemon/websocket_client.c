@@ -49,7 +49,6 @@ protected nosave nomask mapping server ;
 private nosave nomask string *subprotocols, *charset ;
 
 void mudlib_setup() {
-    set_no_clean(1) ;
     set_log_level(0) ;
     subprotocols = ({ }) ;
 
