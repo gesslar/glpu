@@ -432,9 +432,13 @@ private nomask void process_response(int fd, mapping server) {
         if(!response)
             response = "" ;
 
+        _log(2, "Chunked transfer encoding found") ;
+
         buf = read_cache(file) ;
 
         assoc = pcre_assoc(buf, ({ "(\r\n0\r\n\r\n)", "(\r\n[0-9a-fA-F]+\r\n)", "([0-9a-fA-F]+\r\n)", "(\r\n)" }), ({ 2, 1, 1, 1 }));
+
+        _debug(4, printf("assoc: %O\n", assoc)) ;
 
         parts = assoc[0] ;
         indices = assoc[1] ;
@@ -460,7 +464,32 @@ private nomask void process_response(int fd, mapping server) {
         }
     } else if(server["response"]["headers"]["content-length"]) {
         int expected = server["response"]["headers"]["content-length"] ;
+        mixed *assoc ;
+        string *parts ;
+        int *indices ;
+        int i, sz ;
+
+        _log(2, "Content-Length: %d", expected) ;
+
         response = read_cache(file) ;
+
+        _log(2, "Size of response: %d", sizeof(response)) ;
+
+        assoc = pcre_assoc(response, ({ "(\r\n\r\n)" }), ({ 1 })) ;
+        parts = assoc[0] ;
+        indices = assoc[1] ;
+
+        _log(4, "assoc: %O\n", assoc) ;
+
+        i = 0 ;
+        sz = sizeof(parts) ;
+        for(i = 0; i < sz; i++) {
+            if(indices[i] == 1)
+                parts[i] = "" ;
+        }
+
+        response = implode(parts, "") ;
+
         server["response"]["body"] = response ;
         servers[fd] = server ;
         if(sizeof(response) == expected) {
@@ -468,6 +497,8 @@ private nomask void process_response(int fd, mapping server) {
             _log(2, "Size of response: %d", sizeof(response)) ;
             call_if(this_object(), "http_handle_response", server) ;
         }
+    } else {
+        _log("No content-length or chunked transfer encoding found") ;
     }
 
     _log(2, "Removing cache file: %s", file) ;
@@ -565,25 +596,24 @@ private nomask mixed send_http_request(int fd, mapping server) {
 
             matches = pcre_extract(
                 content_type,
-                "\\b(\\w+)/(\\w+)(?:\\s*;\\s*charset=(\\S+))?\\b"
-            ) ;
+                "(\\w+)/([-\\w]+)(?:\\s*;\\s*charset=(\\S+))?"
+            );
 
             switch(sizeof(matches)) {
                 case 2:
-                    type = matches[0] ;
-                    subtype = matches[1] ;
-                    charset = "utf-8" ;
-                    break ;
+                    type = matches[0];
+                    subtype = matches[1];
+                    charset = "utf-8";
+                    break;
                 case 3:
-                    type = matches[0] ;
-                    subtype = matches[1] ;
-                    charset = matches[2] ;
-                    break ;
+                    type = matches[0];
+                    subtype = matches[1];
+                    charset = matches[2] || "utf-8";
+                    break;
                 default:
-                    _log(2, "Failed to parse Content-Type header: %s", content_type) ;
-                    shutdown_socket(fd) ;
-                    return "Failed to parse Content-Type header: " + content_type ;
-                    break ;
+                    _log(2, "Failed to parse Content-Type header: %s", content_type);
+                    shutdown_socket(fd);
+                    return "Failed to parse Content-Type header: " + content_type;
             }
 
             request += sprintf("Content-Type: %s/%s; charset=%s\r\n", type, subtype, charset) ;
