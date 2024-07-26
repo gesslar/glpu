@@ -58,11 +58,11 @@ private varargs void create(mixed args...) {
 
     create_args = args ;
 
+    setup_chain(create_args...) ;
     reset() ;
 }
 
 varargs void reset() {
-    setup_chain(create_args...) ;
     call_if(this_object(), "reset_objects") ;
 }
 
