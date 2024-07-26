@@ -125,4 +125,5 @@ class ClassGMCP convert_message(string message) {
 void init_gmcp(object who) {
     GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_STATUSVARS) ;
     GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_STATUS) ;
+    GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_VITALS) ;
 }
