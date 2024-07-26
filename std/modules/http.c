@@ -32,7 +32,7 @@ protected nomask mixed get_option(string key) ;
 nomask mapping parse_http_request(buffer buf) ;
 nomask mapping parse_http_response(string str) ;
 nomask mapping parse_http_request_line(string str) ;
-nomask mapping parse_headers(string str) ;
+nomask mapping parse_headers(string str, int keep_remainder) ;
 nomask mapping parse_body(string str, string content_type) ;
 nomask mapping parse_route(string str) ;
 nomask mapping parse_query(string str) ;
@@ -90,7 +90,7 @@ protected nomask mapping parse_http_request(buffer buf) {
     }
 
     // We found the headers
-    result["headers"] = parse_headers(matches[0]) ;
+    result["headers"] = parse_headers(matches[0], 0) ;
     _log(3, "Request headers: %O", result["headers"]) ;
     if(!result["headers"]) return 0 ;
 
@@ -127,7 +127,7 @@ protected nomask mapping parse_http_response(string str) {
 
     _log(1, "header: %s", header) ;
 
-    result["headers"] = parse_headers(header) ;
+    result["headers"] = parse_headers(header, 0) ;
     if(!result["headers"]) return 0 ;
 
     result["body"] = parse_body(body, result["headers"]["content-type"]) ;
@@ -187,9 +187,10 @@ protected nomask mapping parse_route(string route) {
 protected nomask mapping parse_response_status(mixed str, int keep_remainder: (: 0 :)) {
     string *parts;
     mapping result = ([]);
+    int sz ;
 
     // Define the regex pattern for matching the HTTP status code and message
-    string pattern = "^HTTP/\\d(?:\\.\\d)?\\s+(\\d{3})\\s+([\\w ]+)\r\n([\\s\\S]*)";
+    string pattern = "^HTTP/\\d(?:\\.\\d)?\\s+(\\d{3})(?: )?([\\w ]+)?\\r\\n([\\s\\S]+)$";
 
     if(bufferp(str))
         str = to_string(str) ;
@@ -202,11 +203,15 @@ protected nomask mapping parse_response_status(mixed str, int keep_remainder: (:
     _log(4, "parts: %O", parts) ;
 
     // Ensure parts were extracted correctly
-    if (sizeof(parts) >= 2) {
+    sz = sizeof(parts) ;
+    if(sz >= 1) {
         result["code"] = to_int(parts[0]);
-        result["message"] = parts[1];
-
-        if(keep_remainder && sizeof(parts) == 3) {
+        if(sz >= 2) {
+            result["message"] = parts[1];
+        } else {
+            result["message"] = "";
+        }
+        if(keep_remainder && sz == 3) {
             result["buffer"] = to_binary(parts[2]);
         }
     } else {
@@ -257,7 +262,7 @@ protected nomask mapping parse_headers(mixed str, int keep_remainder) {
     }
 
     if (keep_remainder) {
-        headers["buffer"] = to_binary(str);
+        headers["buffer"] = to_binary(str)[2..];
     }
 
     return headers;
@@ -459,35 +464,39 @@ protected nomask varargs int find_marker(mixed buf, string marker) {
         buf = to_binary(buf);
 
     if(bufferp(buf))
-        return bufsrch(buf, marker) ;
+        return bufsrch(buf, to_binary(marker)) ;
 
     error("Invalid buffer type: " + type) ;
 }
 
 protected nomask varargs int bufsrch(buffer buf, mixed str) {
-    int buf_sz ;
-    int sub_buf_sz ;
-    mixed sub_buf ;
-    int start, direction ;
+    int buf_sz;
+    int sub_buf_sz;
+    mixed sub_buf;
+    int start;
 
     buf_sz = sizeof(buf);
     if(stringp(str))
         sub_buf = to_binary(str);
     else
-        sub_buf = str ;
+        sub_buf = str;
 
     sub_buf_sz = sizeof(sub_buf);
+    start = 0;
 
-    // If searching from the end, set the start index to the end of the buffer
-    start = 0 ;
-
-    // If sub-buffer is larger than the buffer or start is out of bounds, return -1
     if (sub_buf_sz > buf_sz || start < 0)
         return -1;
 
-    // Iterate over the buffer to find the sub-buffer
-    for (int i = start; i < buf_sz - sub_buf_sz + 1; i++) {
-        if (buf[i..i + sub_buf_sz - 1] == sub_buf) {
+    for (int i = start; i <= buf_sz - sub_buf_sz; i++) {
+        int match = 1;
+        for (int j = 0; j < sub_buf_sz; j++) {
+            if (buf[i+j] != sub_buf[j]) {
+                match = 0;
+                break;
+            }
+        }
+        printf("Debug: Checking at index %d, match = %d\n", i, match);
+        if (match) {
             return i;
         }
     }
@@ -551,46 +560,38 @@ protected nomask void cache_response(string file, mixed response) {
 }
 
 protected nomask mixed read_cache(string file) {
-    mixed response = "" ;
-    int chunk_size = get_config(__MAX_BYTE_TRANSFER__) ;
-    int max = get_config(__MAX_STRING_LENGTH__) ;
+    mixed response = "";
+    int chunk_size = get_config(__MAX_BYTE_TRANSFER__);
+    int max = get_config(__MAX_STRING_LENGTH__);
 
-    int curr = 0 ;
-    int sz = file_size(file) ;
-    string input ;
-    int bytes_to_read ;
-
-    // _log(1, "File size of " + file + ": " + sz) ;
+    int curr = 0;
+    int sz = file_size(file);
+    string input;
+    int bytes_to_read;
 
     if (sz < 1) {
-        return response ;
+        return response;
     }
 
-    if(sz > max) {
-        // _log(1, "File size exceeds maximum allowed size") ;
-        return 0 ;
+    if (sz > max) {
+        return 0;
     }
 
-    while (curr < sz) {
-        bytes_to_read = (sz - curr) < chunk_size ? (sz - curr) : chunk_size;
-        // _log(1, "Reading " + bytes_to_read + " bytes from position " + curr) ;
+    while (curr < sz) {  // This condition is correct
+        bytes_to_read = min(({sz - curr, chunk_size}));
 
-        while(curr < sz) {
-            input = read_bytes(file, curr, bytes_to_read) ;
+        input = read_bytes(file, curr, bytes_to_read);
 
-            if (!input) {
-                // _log(1, "Failed to read bytes at position " + curr) ;
-                break ; // Exit loop if read_bytes fails
-            }
-
-            response += input ;
-            curr += chunk_size ;
+        if (!input) {
+            break; // Exit loop if read_bytes fails
         }
+
+        response += input;
+        curr += sizeof(input);  // This is the key change
     }
 
-    // write_file(file+".2", response) ;
-    _log(3, "Bytes read: %d", sizeof(response)) ;
-    return response ;
+    _log(3, "Bytes read: %d", sizeof(response));
+    return response;
 }
 
 protected nomask string http_time_string(mapping client) {
