@@ -20,6 +20,7 @@ mixed main(object tp, string arg) {
     string *files, file, *parts, start;
     int depth = 0;
     int is_room_obj;
+    string e ;
 
     if(!objectp(room = environment(tp)))
         return "You are not in a valid environment.";
@@ -111,7 +112,13 @@ mixed main(object tp, string arg) {
 
     tp->set_env("cwf", start);
 
-    obj = load_object(file);
+    e = catch(obj = load_object(file)) ;
+    if(e)
+        return _error("Failed to load: %s\n%s", file, e);
+
+    if(!objectp(obj))
+        return _error("Failed to load: %s", file);
+
     files = collect_inherits(obj, depth);
     files = map(files, (: append($1, ".c") :));
     filter(files, (: do_update :));
@@ -147,9 +154,13 @@ void do_update(string file, string vfile) {
 
 // Function to collect immediate and deep inherits.
 string *collect_inherits(object obj, int depth) {
-    string fname = file_name(obj); // The file name of the requested object
-    mapping seen = ([ fname: 1 ]); // Initialize seen with the object itself to avoid adding it twice
-    string *files = ({});
+    string fname ;  // The file name of the requested object
+    mapping seen ;  // Initialize seen with the object itself to avoid adding it twice
+    string *files ;
+
+    fname = file_name(obj);
+    seen = ([ fname: 1 ]);
+    files = ({});
 
     if (depth == 0) {
         // Directly return the file name of the object for depth 0
