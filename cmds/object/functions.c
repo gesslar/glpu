@@ -23,6 +23,7 @@ mixed main(object tp, string arg) {
         return "Error: [functions]: Could not find object " + arg + ".\n" ;
 
     funcs = functions(ob);
+    funcs = distinct_array(funcs);
     funcs = sort_array(funcs, 1);
 
     ret = sprintf("%-#79.3s\n\n", implode(funcs, "\n"));
