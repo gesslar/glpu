@@ -19,7 +19,8 @@ private nosave string *exclude = ({
     ".", "..", "attic", "BACKUP", "old", "backup",
     "ATTIC", ".git", ".vscode", "tmp", "TMP", "u",
     "log", "doc", "plans", "players", "data", "_attic",
-    "weapon2", "removed", "cards", "fluffos",
+    "weapon2", "removed", "cards", "fluffos", ".github", "ARCHIVE",
+    "archive", "home",
 }) ;
 
 private nosave int file_call_out = 0 ;
@@ -27,21 +28,21 @@ private nosave int dir_call_out = 0 ;
 private nosave int files_checked = 0 ;
 private nosave int dirs_checked = 0 ;
 
-private nosave int started ;
+private nosave float started ;
 private nosave object notify ;
 
 void check_running() {
     if(!sizeof(dirs_to_check) && !sizeof(files_to_check)) {
         message("info", "\aDone!\n", notify) ;
         message("info", sprintf("%d dirs and %d files checked.\n", dirs_checked, files_checked), notify) ;
-        message("info", "Duration: " + (time() - started)+"s\n", notify) ;
+        message("info", sprintf("Duration: %.2fs\n", time_frac()-started), notify) ;
     }
 }
 
 void runit(object who) {
     notify = who ;
 
-    started = time() ;
+    started = time_frac() ;
     message("info", "=== STARTING THE ERROR FINDER ===\n", notify) ;
 
     dirs_to_check = ({ "/" }) ;
@@ -106,7 +107,7 @@ void check_file() {
 
     files_to_check = files_to_check[1..] ;
 
-    if(err = catch(load_object(file))) {
+    if(err = catch(test_load(file))) {
         errs += ({ ({ file, err }) }) ;
         write_file("/log/ERRORS", file + "\n" + err + "\n") ;
     }
