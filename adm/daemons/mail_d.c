@@ -55,7 +55,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
     outbox = ([]);
 
     if(!s_editor)
-        s_editor = new("/adm/obj/security_editor.c");
+        s_editor = new(OBJ_SECURITY_EDITOR);
 
     recipients = mail["TO"];
 

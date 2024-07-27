@@ -44,7 +44,7 @@ void client(object tp) ;
 void setup() {
     inbox = ([ ]);
     outbox = ([ ]);
-    s_editor = new("/adm/obj/security_editor.c");
+    s_editor = new(OBJ_SECURITY_EDITOR);
     add_init( (: client :)) ;
 }//END create
 

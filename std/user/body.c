@@ -12,7 +12,6 @@
 
 /* Last edited by Tacitus on October 4th, 2006 */
 
-#include <config.h>
 #include <origin.h>
 #include <logs.h>
 #include <rooms.h>
@@ -28,6 +27,7 @@ inherit __DIR__ "alias" ;
 inherit __DIR__ "combat" ;
 inherit __DIR__ "ed" ;
 inherit __DIR__ "pager" ;
+inherit __DIR__ "race" ;
 inherit __DIR__ "visibility" ;
 inherit __DIR__ "vitals" ;
 inherit __DIR__ "wealth" ;
@@ -124,7 +124,8 @@ void setup_body() {
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
     // set_proper_name(name());
-    set_heart_beat(1);
+    set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
+    if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
     enable_commands();
     set("prevent_get", 1);
     if(!query_env("cwd")) set_env("cwd", "/doc");
@@ -134,6 +135,7 @@ void setup_body() {
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
     init_capacity() ;
+    update_regen_interval() ;
     init_vitals() ;
 
     set_log_prefix(sprintf("(%O)", this_object())) ;
@@ -600,9 +602,10 @@ void write_prompt() {
     tell(this_object(), prompt + " ") ;
 }
 
-varargs void add_module(string module, mixed args...) {
+varargs object add_module(string module, mixed args...) {
     object ob ;
     string path ;
+    string name ;
 
     if(!module || module == "") error("Error [add_module]: Invalid module name.\n") ;
     if(modules[module]) error("Error [add_module]: Module " + module + " already exists.\n") ;
@@ -621,7 +624,19 @@ varargs void add_module(string module, mixed args...) {
         return ;
     }
 
-    modules[module] = ob ;
+    name = ob->query_name() ;
+
+    modules[name] = ob ;
+
+    return ob ;
+}
+
+object query_module(string module) {
+    if(!module || module == "") error("Error [query_module]: Invalid module name.\n") ;
+    if(!modules[module])
+        return 0 ;
+
+    return modules[module] ;
 }
 
 void remove_module(string module) {
@@ -648,6 +663,53 @@ object get_module(string module) {
         return 0 ;
 
     return modules[module] ;
+}
+
+mapping query_modules() {
+    return copy(modules) ;
+}
+
+varargs mixed module(string module, string func, mixed args...) {
+    object ob ;
+
+    if(!stringp(module) || module == "") error("Error [query_module]: Invalid module name.\n") ;
+    if(!stringp(func) || func == "") error("Error [query_module]: Invalid function name.\n") ;
+
+    ob = modules[module] ;
+
+    if(!objectp(ob))
+        return null ;
+
+    return call_if(ob, func, args...) ;
+}
+
+void remove_all_modules() {
+    foreach(string module, object ob in modules) {
+        catch(ob->remove()) ;
+    }
+
+    modules = ([ ]) ;
+}
+
+protected nosave mapping equipment = ([ ]) ;
+public mapping query_equipped() { return copy(equipment); }
+public object equipped_on(string slot) { return equipment[slot] || null ; }
+int equip(string slot, object ob) {
+    if(equipment[slot])
+        return 0 ;
+
+    equipment[slot] = ob ;
+
+    return 1 ;
+}
+
+int unequip(string slot) {
+    if(!equipment[slot])
+        return 0 ;
+
+    map_delete(equipment, slot) ;
+
+    return 1 ;
 }
 
 /**

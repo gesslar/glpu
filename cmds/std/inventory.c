@@ -17,18 +17,25 @@ mixed main(object tp, string args) {
     int i;
     int cap, max_cap ;
     int vol, max_vol ;
+    object *equipped = values(tp->query_equipped()) ;
 
     inventory = all_inventory(tp);
     inventory = filter(inventory, (: $2->can_see($1) :), tp) ;
 
-    shorts = map(inventory, (: get_short :) );
-    shorts -= ({ 0, "" });
+    shorts = map(inventory, function(object ob, object *items) {
+        if(!ob->query_short())
+            return 0 ;
+
+        return sprintf("%s%s", get_short(ob), of(ob, items) ? " (worn)" : "") ;
+    }, equipped);
+
+    shorts -= ({ 0 }) ;
 
     if(sizeof(shorts) > 1)
         shorts += ({ "" }) ;
 
     if(sizeof(shorts) > 0)
-        shorts = ({ "Inventory:" }) + shorts + ({ "" }) ;
+        shorts = ({ "Inventory:" }) + shorts ;
 
     cap = tp->query_capacity() ;
     max_cap = tp->query_max_capacity() ;

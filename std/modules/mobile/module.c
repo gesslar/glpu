@@ -19,9 +19,12 @@ void mudlib_setup() {
 }
 
 varargs mixed attach(object ob, mixed args...) {
+    int result ;
+
     owner = ob ;
-    owner->attach_module(this_object(), args...) ;
-    return start_module(args...) ;
+    result = call_if(this_object(), "start_module", ob, args...) ;
+
+    return result ;
 }
 
 void detach() {
@@ -34,16 +37,18 @@ object query_owner() {
     return owner ;
 }
 
-int remove() {
+void post_unsetup_5() {
     if(objectp(owner)) {
         detach() ;
     }
-
-    return ::remove() ;
 }
 
 int request_clean_up() {
     if(!clonep()) return 1 ;
     if(!objectp(owner)) return 1 ;
     return 0 ;
+}
+
+string query_name() {
+    return module_name ;
 }

@@ -18,4 +18,7 @@ void setup() {
     set_id(({ "boar", "wild boar" })) ;
 
     set_level(1) ;
+    set_race("human") ;
 }
+
+private nomask int m() { return 1 ; }

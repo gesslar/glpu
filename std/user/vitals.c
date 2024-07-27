@@ -11,10 +11,14 @@
 
 #include <gmcp.h>
 #include <vitals.h>
+#include <runtime_config.h>
+
+void update_regen_interval() ;
 
 private float hp, max_hp, sp, max_sp, mp, max_mp ;
 private int dead = false ;
 private nosave int tick ;
+private nosave int regen_interval_pulses; // Number of pulses to trigger a regen
 
 void init_vitals() {
     hp = hp || 100.0 ;
@@ -24,7 +28,7 @@ void init_vitals() {
     mp = mp || 100.0 ;
     max_mp = max_mp || 100.0 ;
 
-    update_heal_tick() ;
+    update_regen_interval(); // Calculate regen interval based on the product of HEART_PULSE and HEARTBEATS_TO_REGEN
 }
 
 float query_hp() { return hp ; }
@@ -87,7 +91,7 @@ float add_mp(float x) {
 }
 
 protected void heal_tick(int force: (: 0 :)) {
-    if(++tick >= 10 || force) {
+    if(++tick >= regen_interval_pulses  || force) {
         if(!force)
             tick = 0 ;
 
@@ -100,14 +104,39 @@ protected void heal_tick(int force: (: 0 :)) {
     }
 }
 
-void update_heal_tick(int tth: (: mud_config("TIME_TO_HEAL") :)) {
-    int ticks ;
+int set_heart_rate(int x) {
+    if(x < 5)
+        x = 5 ;
+    else if(x > 100)
+        x = 100 ;
 
-    if(tth < 10)
-        tth = 10 ;
+    set_heart_beat(x) ;
 
-    ticks = tth / mud_config("HEARTBEATS_TO_REGEN") ;
-    tick = 0 ;
+    return x ;
+}
+
+int adjust_heart_rate(int x) {
+    return set_heart_rate(query_heart_beat() + x) ;
+}
+
+// This function calculates the number of pulses needed based on HEART_PULSE and HEARTBEATS_TO_REGEN
+void update_regen_interval() {
+    // Calculate the number of pulses for the regen interval
+    regen_interval_pulses = to_int((mud_config("HEART_PULSE") * mud_config("HEARTBEATS_TO_REGEN")) / 1000.0); // Convert ms to seconds
+    tick = 0;
+}
+
+// This function initializes the healing process
+void initialize_healing(object character) {
+    update_regen_interval(); // Calculate regen interval based on the product of HEART_PULSE and HEARTBEATS_TO_REGEN
+}
+
+int query_heart_rate() {
+    return query_heart_beat() ;
+}
+
+int query_regen_duration() {
+    return regen_interval_pulses ;
 }
 
 void restore() {

@@ -25,7 +25,7 @@ object s_editor;
 
 void create()
 {
-    s_editor = new("/adm/obj/security_editor.c");
+    s_editor = new(OBJ_SECURITY_EDITOR);
 }
 
 int main_menu()

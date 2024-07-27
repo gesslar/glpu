@@ -70,7 +70,9 @@
     "THOUSANDS" : ",",
     "MORELINES" : 40,
     "PAGE_DISPLAY" : "line",
-    "TIME_TO_HEAL" : 60,
-    "HEARTBEATS_TO_REGEN" : 10,
-    "OBJECT_DATA_DIR" : "/data/obj/"
+    "HEART_PULSE" : 1000.0,
+    "HEARTBEATS_TO_REGEN" : 5,
+    "DEFAULT_HEART_RATE" : 20,
+    "OBJECT_DATA_DIR" : "/data/obj/",
+    "DEFAULT_RACE" : "human"
 }

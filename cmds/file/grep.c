@@ -391,10 +391,8 @@ mixed main(object caller, string str) {
   if(opt[0]["m"] && strlen(out) < __LARGEST_PRINTABLE_STRING__) {
     write(out + "\n");
   } else {
-    object pager;
-
-    pager = new("/obj/mudlib/pager/pager");
-    pager->page(out, "grep " + opt[1] + " (in " + implode(opt[2..], " ") + ")");
+    out = "grep " + opt[1] + " (in " + implode(opt[2..], " ") + ")" + "\n\n" + out;
+    caller->page(out, null, 1) ;
   }
 
   return 1;

@@ -42,7 +42,7 @@ void confirm_nuke(string str, object caller, string user) {
 
     tell(caller, "Warning [nuke]: Now stripping user of system group memberships.\n");
 
-    security_editor = new("/adm/obj/security_editor.c");
+    security_editor = new(OBJ_SECURITY_EDITOR);
 
     foreach(mixed group in security_editor->list_groups()) {
         if(is_member(user, group)) write("\t* " + group + " membership revoked.\n");

@@ -168,9 +168,11 @@ mixed render_object(object caller, object room, string target) {
 }
 
 mixed render_living(object caller, object room, object target, int brief) {
-    object *inv;
     string temp, result = "" ;
     string name ;
+    mapping equipment ;
+    object ob ;
+    string slot ;
 
     if(stringp(temp = get_short(target))) result += temp + "\n" ;
     if(stringp(temp = get_long(target))) result += "\n" + temp + "\n" ;
@@ -188,6 +190,17 @@ mixed render_living(object caller, object room, object target, int brief) {
     if(strlen(result)) {
         if(devp(caller) && caller->query_env("look_filename") == "all") {
             result = "\e0032\e"+prepend(file_name(target), "/") + "\eres\e\n" + result ;
+        }
+    }
+
+    equipment = target->query_equipped() ;
+    if(sizeof(equipment)) {
+        string *slots = keys(equipment) ;
+        int max = max(map(slots, (: strlen :))) ;
+
+        result += "\n" ;
+        foreach(slot, ob in equipment) {
+            result += sprintf("%*s : %s\n", max, capitalize(slot), get_short(ob)) ;
         }
     }
 

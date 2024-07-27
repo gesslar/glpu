@@ -1,6 +1,8 @@
 #ifndef __DIRS_H__
 #define __DIRS_H__
 
+#define DIR_ADM             "/adm/"
+#define DIR_ADM_OBJ         DIR_ADM "obj/"
 #define DIR_AREAS           "/areas/"
 #define DIR_CLASSES         "/std/classes/"
 #define DIR_CMDS            "/cmds/"
@@ -15,6 +17,7 @@
 #define DIR_STD             "/std/"
 #define DIR_STD_USER        DIR_STD "user/"
 #define DIR_STD_MODULES     DIR_STD "modules/"
+#define DIR_STD_MODULES_MOBILE DIR_STD_MODULES "mobile/"
 #define DIR_STD_OBJECT      DIR_STD "object/"
 
 #endif // __DIRS_H__
