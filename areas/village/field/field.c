@@ -13,3 +13,7 @@ void virtual_start() {
     set_zone("../olum") ;
     __DIR__ "field_daemon"->setup_exits(this_object(), file) ;
 }
+
+void setup() {
+    add_object(__DIR__ "mon/boar") ;
+}

@@ -70,9 +70,9 @@
     "THOUSANDS" : ",",
     "MORELINES" : 40,
     "PAGE_DISPLAY" : "line",
-    "HEART_PULSE" : 1000.0,
+    "HEART_PULSE" : 2000.0,
     "HEARTBEATS_TO_REGEN" : 5,
-    "DEFAULT_HEART_RATE" : 20,
+    "DEFAULT_HEART_RATE" : 10,
     "OBJECT_DATA_DIR" : "/data/obj/",
     "DEFAULT_RACE" : "human"
 }

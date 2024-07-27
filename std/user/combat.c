@@ -64,9 +64,9 @@ int start_attack(object victim) {
         seen_enemies[victim] = 1.0;
     }
 
-    victim->start_attack(this_object());
-
     next_combat_round = call_out_walltime("combat_round", attack_speed);
+
+    victim->start_attack(this_object());
 
     return 1;
 }
