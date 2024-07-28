@@ -52,3 +52,6 @@
 
 # Death Daemon
 /adm/daemons/death
+
+# Message Daemon
+/adm/daemons/message

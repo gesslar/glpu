@@ -33,6 +33,8 @@ inherit __DIR__ "vitals" ;
 inherit __DIR__ "wealth" ;
 
 inherit CLASS_GMCP ;
+
+inherit M_ACTION ;
 inherit M_GMCP ;
 inherit M_LOG ;
 
@@ -267,8 +269,7 @@ void die() {
         return ;
 
     stop_all_attacks() ;
-    tell(this_object(), "You have perished.\n");
-    tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
+    simple_action("$N $vhave perished.") ;
 
     save_user() ;
     emit(SIG_PLAYER_DIED, this_object(), killed_by()) ;

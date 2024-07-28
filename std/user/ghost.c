@@ -44,6 +44,8 @@ inherit __DIR__ "vitals" ;
 inherit __DIR__ "wealth" ;
 
 inherit CLASS_GMCP ;
+
+inherit M_ACTION ;
 inherit M_GMCP ;
 inherit M_LOG ;
 
@@ -161,8 +163,7 @@ int revive(string str) {
 
     body->move(environment()) ;
 
-    tell(body, "You have revived.\n") ;
-    tell_down(environment(body), body->query_name() + " has revived.\n", 0, body) ;
+    body->simple_action("$N $vhave revived.") ;
 
     emit(SIG_PLAYER_REVIVED, body) ;
 

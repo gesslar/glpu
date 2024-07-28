@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define ACTION_D        DIR_DAEMONS "action"
 #define ALARM_D         DIR_DAEMONS "alarm"
 #define AUTODOC_D       DIR_DAEMONS "autodoc"
 #define BANK_D          DIR_DAEMONS "bank"
@@ -25,6 +26,7 @@
 #define LINES_D         DIR_DAEMONS "lines"
 #define LOCKDOWN_D      DIR_DAEMONS "lockdown_d"
 #define MAIL_D          DIR_DAEMONS "mail_d"
+#define MESS_D          DIR_DAEMONS "messages"
 #define MOVE_D          DIR_DAEMONS "movement"
 #define MSSP_D          DIR_DAEMONS "mssp"
 #define MUDDY_D         DIR_DAEMONS "muddy"
