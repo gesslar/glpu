@@ -216,6 +216,10 @@ private void crash(string crash_message, object command_giver, object current_ob
         "Master object tells you: The game is crashing.\n"
     );
 
+    // This is to allow all pending messages to be printed
+    // https://www.fluffos.info/efun/system/flush_messages.html
+    flush_messages() ;
+
     log_file("shutdown", MUD_NAME + " crashed on: " + ctime(time()) +
         ", error: " + crash_message + "\n");
 
