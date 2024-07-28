@@ -161,7 +161,7 @@ int revive(string str) {
 
     body->move(environment()) ;
 
-    tell(body, "You have been revived.\n") ;
+    tell(body, "You have revived.\n") ;
     tell_down(environment(body), body->query_name() + " has revived.\n", 0, body) ;
 
     remove() ;
