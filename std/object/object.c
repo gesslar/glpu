@@ -113,14 +113,6 @@ string query_name() {
     return name ;
 }
 
-void register_crash() {
-    CRASH_D->register_crash_object(this_object()) ;
-}
-
-void unregister_crash() {
-    CRASH_D->unregister_crash_object(this_object()) ;
-}
-
 string find_path(string path) {
     return resolve_path(query_directory(), path) ;
 }

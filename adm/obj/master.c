@@ -211,14 +211,10 @@ debug_message(sprintf("ret = %s\n", ret)) ;
 private void crash(string crash_message, object command_giver, object current_object) {
     emit(SIG_SYS_CRASH) ;
 
-    foreach (object ob in users()) {
-        tell_object(ob,
-            "Master object shouts: Damn!\n"
-            "Master object tells you: The game is crashing.\n");
-    }
-
-    catch(PERSIST_D->persist_objects()) ;
-    catch(CRASH_D->crashing()) ;
+    shout(
+        "Master object shouts: Damn!\n"
+        "Master object tells you: The game is crashing.\n"
+    );
 
     log_file("shutdown", MUD_NAME + " crashed on: " + ctime(time()) +
         ", error: " + crash_message + "\n");
@@ -238,6 +234,7 @@ private void crash(string crash_message, object command_giver, object current_ob
         log_file("crashes", "this_object: " + file_name(current_object) + "\n");
     }
 
+    shutdown_d()->shutdown(0) ;
 }
 
 // This doesn't actually seem to work and generates *Too long evaluation.

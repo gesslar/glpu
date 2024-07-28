@@ -914,6 +914,12 @@ void on_crash(mixed arg...) {
     if(previous_object() != signal_d())
         return ;
 
+    debug_message("on_crash called 1\n") ;
+
+    receive("Oh no! We've crashed\n") ;
+
+    debug_message("on_crash called 2\n") ;
+
     catch(result = save_user()) ;
 }
 

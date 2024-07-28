@@ -45,7 +45,6 @@ void mudlib_setup() {
 
     ::mudlib_setup() ;
 
-    register_crash() ;
     set_log_level(1) ;
 
     file = query_file_name() ;
