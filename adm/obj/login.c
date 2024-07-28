@@ -512,20 +512,6 @@ void enter_world(int reconnecting) {
     remove() ;
 }
 
-void relogin() {
-    object login = new(LOGIN_OB);
-
-    body = this_body();
-    user = body->query_user();
-    body->exit_world();
-    log_file(LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged out (relogin) from " +
-      query_ip_number(body) + " on " + ctime(time()) + "\n");
-    exec(login, body);
-    body->save_user();
-    body->remove();
-    login->logon();
-}
-
 object create_body(string name) {
     string err;
 
