@@ -119,8 +119,6 @@ int add_body_part(string part, int size, int vitalness) {
     if(valid_body_part(part, 1))
         return 0 ;
 
-    printf("Adding body part: %s\n", part) ;
-
     body_parts[part] = size ;
     body_part_vitalness[part] = vitalness ;
     body_part_modifiers[part] = ([ ]) ;

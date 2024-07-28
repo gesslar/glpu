@@ -100,7 +100,7 @@ mixed render_room(object caller, object room, int brief) {
             data = "You may go " + implode(exits[0..<2], ", ") + ", or " + exits[<1] + ".";
             break;
     }
-    if(data) result += "\n" + data + "\n";
+    if(data) result += "\n" + data + "\n" ;
 
     users = filter(all_inventory(room), (: living($1) && $1 != $2 :), caller);
     objects = filter(all_inventory(room), (: !living($1) :));

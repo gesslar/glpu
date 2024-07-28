@@ -9,6 +9,10 @@
 inherit STD_OBJECT ;
 inherit M_SAVE ;
 
+void create(mixed args...) {
+    setup_chain() ;
+}
+
 int is_daemon() {
     return 1 ;
 }

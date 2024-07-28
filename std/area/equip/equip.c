@@ -6,7 +6,7 @@
 //
 // 2024/03/02: Gesslar - Created
 
-inherit STD_OBJECT ;
+inherit STD_ITEM ;
 
 private nosave string slot ;
 private nosave string equipped = 0 ;

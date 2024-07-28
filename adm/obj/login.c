@@ -15,7 +15,7 @@
 #include <origin.h>
 #include <rooms.h>
 
-inherit STD_OBJECT ;
+inherit STD_ITEM ;
 
 inherit M_MESSAGING ;
 inherit M_GMCP ;

@@ -21,8 +21,8 @@ mixed main(object caller, string str) {
     str = append(str, ".c");
     str = resolve_path(caller->query_env("cwd"), str);
 
-    if(!file_exists(str))
-        return "Error [clone]: Unable to find file '" + str + "'.";
+    // if(!file_exists(str))
+    //     return "Error [clone]: Unable to find file '" + str + "'.";
 
     err = catch(ob = new(str));
 

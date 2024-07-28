@@ -8,30 +8,14 @@
 
 inherit STD_BODY;
 
-void setup_body() ;
-
-private varargs void create(mixed arg...) {
-    path = ({ "/cmds/std/" });
-    set("prevent_get", 1);
-    if(!mapp(query("env_settings"))) set("env_settings", ([])) ;
-    if(!query_env("cwd")) set_env("cwd", "/doc");
-    if(!query_env("colour")) set_env("colour", "on");
-    if(!query_env("auto_tune")) set_env("auto_tune", "local_net");
-    enable_commands();
-    call_if(this_object(), "setup", arg...);
-    add_action("command_hook", "", 1);
-
-    init_vitals() ;
+void setup_body() {
+    set_name("Generic NPC");
+    set_living_name(lower_case(query_name()));
+    set_ids(({lower_case(query_name()), query_name(), "npc", "generic npc", "NPC" }));
+    if(!clonep()) set_heart_beat(0) ;
+    set_long(capitalize(query_name()) + " is a generic NPC.");
+    set_short(query_name());
 }
-
-// void setup_body() {
-//     set_name("Generic NPC");
-//     set_living_name(lower_case(name()));
-//     set_ids(({name(), "npc", "generic npc", "NPC" }));
-//     if(clonep()) set_heart_beat(1);
-//     set_long(capitalize(name()) + " is a generic NPC.");
-//     set_short(name());
-// }
 
 void restore_user() {}
 void save_user() {}

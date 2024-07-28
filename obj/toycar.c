@@ -1,4 +1,4 @@
-inherit STD_OBJECT;
+inherit STD_ITEM;
 
 void setup() {
     set_id(({"toycar", "car", "toy car"}));

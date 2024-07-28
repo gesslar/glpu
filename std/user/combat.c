@@ -16,10 +16,54 @@
 
 inherit __DIR__ "damage" ;
 
+// Functions from other objects
+public mapping query_equipped() ;
+
+// Functions
+void combat_round() ;
+int start_attack(object victim) ;
+void swing() ;
+int next_round() ;
+void strike_enemy(object enemy) ;
+int attacking(object victim) ;
+varargs int stop_attack(object victim, int seen) ;
+void stop_all_attacks() ;
+int in_combat() ;
+int seen_enemy(object victim) ;
+int current_enemy(object victim) ;
+mapping current_enemies() ;
+object highest_threat() ;
+object lowest_threat() ;
+object highest_seen_threat() ;
+object lowest_seen_threat() ;
+void clean_up_enemies() ;
+varargs int valid_enemy(object enemy, int threat) ;
+void clean_up_seen_enemies() ;
+varargs int valid_seen_enemy(object enemy, int threat) ;
+float adjust_threat(object enemy, float amount) ;
+float adjust_seen_threat(object enemy, float amount) ;
+float adjust_attack_speed(float amount) ;
+void set_attack_speed(float speed) ;
+float query_attack_speed() ;
+void set_defense(mapping def) ;
+void add_defense(string type, float amount) ;
+mapping query_defense() ;
+float query_defense_amount(string type) ;
+mapping adjust_protection() ;
+object last_damaged_by() ;
+object set_last_damaged_by(object ob) ;
+object killed_by() ;
+object set_killed_by(object ob) ;
+
+// Variables
 private nosave mapping _current_enemies = ([]);
 private nosave mapping seen_enemies = ([]);
 private nosave float attack_speed = 2.0;
 private nosave int next_combat_round = 0;
+private nosave mapping _defense = ([]);
+private nosave float _ac = 0.0;
+private nosave object last_damager ;
+private nosave object killed_by_ob ;
 
 void combat_round() {
     object enemy ;
@@ -104,7 +148,7 @@ void strike_enemy(object enemy) {
     tell(enemy, this_object()->query_name() + " strikes you!\n");
     tell_down(environment(), this_object()->query_name() + " strikes " + enemy->query_name() + "!\n", 0, ({ this_object(), enemy }));
 
-    deliver_damage(enemy, random_float(10.0));
+    deliver_damage(enemy, random_float(10.0), "bludgeoning");
     add_mp(-random_float(5.0));
     adjust_threat(enemy, 1.0);
     adjust_seen_threat(enemy, 1.0);
@@ -308,4 +352,78 @@ float adjust_attack_speed(float amount) {
     attack_speed = range(0.5, 10.0, attack_speed);
 
     return attack_speed;
+}
+
+void set_attack_speed(float speed) {
+    attack_speed = speed;
+}
+
+float query_attack_speed() {
+    return attack_speed;
+}
+
+void set_defense(mapping def) {
+    _defense = def ;
+}
+
+void add_defense(string type, float amount) {
+    if(!_defense) _defense = ([ ]) ;
+    _defense[type] = amount ;
+}
+
+mapping query_defense() {
+    return copy(_defense) ;
+}
+
+float query_defense_amount(string type) {
+    if(!_defense) return 0.0 ;
+    return _defense[type] ;
+}
+
+public mapping query_equipped() ;
+mapping adjust_protection() {
+    mapping equipment = query_equipped() ;
+    object *obs = values(equipment), ob ;
+
+    { // Defenses
+        _defense = ([]);
+        foreach(ob in obs) {
+            mapping def = ob->query_defense() ;
+
+            if(!mapp(def))
+                continue ;
+
+            foreach(string type, float amount in def) {
+                if(!_defense[type])
+                    _defense[type] = 0.0 ;
+
+                _defense[type] += amount ;
+            }
+        }
+    }
+
+    { // Armor Class
+        _ac = 0.0 ;
+        foreach(ob in obs) {
+            _ac += ob->query_ac() ;
+        }
+    }
+}
+
+object last_damaged_by() {
+    return last_damager ;
+}
+
+object set_last_damaged_by(object ob) {
+    last_damager = ob ;
+    return last_damager ;
+}
+
+object killed_by() {
+    return killed_by_ob ;
+}
+
+object set_killed_by(object ob) {
+    killed_by_ob = ob ;
+    return killed_by_ob ;
 }

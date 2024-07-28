@@ -22,6 +22,20 @@ string query_long();
 
 private nosave string virtual_master = 0;
 
+void create(mixed args...) {
+    ::create(args...) ;
+
+    if(!clonep()) {
+        setup_chain(create_args...) ;
+        reset() ;
+    }
+}
+
+void virtual_start() {
+    virtual_setup_chain(create_args...) ;
+    reset() ;
+}
+
 int query_roomType() {
     return 1;
 }

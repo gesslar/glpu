@@ -6,7 +6,7 @@
 //
 // 2024/02/19: Gesslar - Created
 
-inherit STD_OBJECT ;
+inherit STD_ITEM ;
 
 string coin_type ;
 int coin_num ;

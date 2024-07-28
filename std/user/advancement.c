@@ -12,6 +12,7 @@
 #include <advancement.h>
 
 private float level = 1.0 ;
+private float level_mod = 0.0 ;
 private float xp = 0.0 ;
 private float tnl = 100.0 ;
 
@@ -27,10 +28,34 @@ float query_level() {
     return level ;
 }
 
+float query_effective_level() {
+    return level + level_mod ;
+}
+
 float set_level(float l) {
     level = to_float(l) ;
     tnl = 100.0 * level ;
     return level ;
+}
+
+float add_level(float l) {
+    level += to_float(l) ;
+    tnl = 100.0 * level ;
+    return level ;
+}
+
+float query_level_mod() {
+    return level_mod ;
+}
+
+float set_level_mod(float l) {
+    level_mod = to_float(l) ;
+    return level_mod ;
+}
+
+float add_level_mod(float l) {
+    level_mod += to_float(l) ;
+    return level_mod ;
 }
 
 float add_xp(float amount) {

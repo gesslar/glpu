@@ -23,8 +23,41 @@ public mapping query_covers() ;
 private void add_cover(string slot) ;
 int is_clothing() ;
 
-mixed equip(object tp) {
-    return call_if(this_object(), "equip_check", tp) || 1 ;
+private nosave int equipped = 0 ;
+
+mixed can_equip(string slot, object tp) {
+    return call_if(this_object(), "equip_check", slot, tp) || 1 ;
+}
+
+mixed equip(string slot, object tp) {
+    mixed result = tp->equip(slot, this_object()) ;
+    if(result != 1)
+        return result ;
+
+    equipped = 1 ;
+    return 1 ;
+}
+
+mixed can_unequip(object tp) {
+    return call_if(this_object(), "unequip_check", tp) || 1 ;
+}
+
+int unequip() {
+    object tp = environment() ;
+
+    if(tp) {
+        if(tp->equipped_on(query_slot()) != this_object())
+            return 0 ;
+        tp->unequip(query_slot()) ;
+    }
+
+    if(!equipped)
+        return 0 ;
+
+    equipped = 0 ;
+
+
+    return 1 ;
 }
 
 public void set_slots(mapping sl) {
@@ -94,6 +127,10 @@ private void add_cover(string slot) {
         default:
             break ;
     }
+}
+
+void unsetup() {
+    unequip() ;
 }
 
 int is_clothing() { return 1; }

@@ -1,5 +1,5 @@
-#ifndef __ARMOR_H__
-#define __ARMOR_H__
+#ifndef __ARMOUR_H__
+#define __ARMOUR_H__
 
 #include <clothing.h>
 
@@ -7,7 +7,7 @@ public void set_defense(mapping def) ;
 public void add_defense(string type, float amount) ;
 public mapping query_defense() ;
 public float query_defense_amount(string type) ;
-int is_armor() ;
+int is_armour() ;
 
 
-#endif // __ARMOR_H__
+#endif // __ARMOUR_H__

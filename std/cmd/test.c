@@ -1,6 +1,6 @@
 // Test cases for header generation
 
-inherit OBJECT;
+inherit STD_OBJECT;
 
 public int simple_function(int a, int b) {
     return a + b;

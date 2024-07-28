@@ -12,7 +12,7 @@
 
 /* QC by Tacitus on July 13th, 2006 */
 
-inherit STD_OBJECT;
+inherit STD_ITEM;
 
 #define MAIL_DIR "/data/users/"
 #define MAX_SUBJECT_SIZE 65

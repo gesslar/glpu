@@ -19,7 +19,7 @@
 #include <commands.h>
 #include <gmcp.h>
 
-inherit STD_OBJECT;
+inherit STD_ITEM;
 inherit STD_CONTAINER ;
 
 inherit __DIR__ "advancement" ;
@@ -97,7 +97,8 @@ void write_prompt();
 
 /* Functions */
 
-void create() {
+void create(mixed args...) {
+    ::create(args...) ;
     if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/std/"});
     if(!query("env_settings"))
@@ -126,6 +127,8 @@ void setup_body() {
     // set_proper_name(name());
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
+    if(!query_level()) set_level(1.0) ;
+    set_level_mod(0.0) ;
     enable_commands();
     set("prevent_get", 1);
     if(!query_env("cwd")) set_env("cwd", "/doc");
@@ -236,7 +239,7 @@ void heart_beat() {
         }
     }
 
-    if(!is_dead() && query_hp() <= 0) {
+    if(!is_dead() && query_hp() <= 0.0) {
         set_dead(1) ;
         die() ;
         return ;
@@ -260,6 +263,13 @@ void die() {
     stop_all_attacks() ;
     tell(this_object(), "You have perished.\n");
     tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
+
+    if(!userp()) {
+        object corpse = new(STD_CORPSE) ;
+        corpse->setup_corpse(this_object(), killed_by()) ;
+        corpse->move(environment()) ;
+        remove() ;
+    }
 }
 
 void restore_user() {
@@ -632,7 +642,8 @@ varargs object add_module(string module, mixed args...) {
 }
 
 object query_module(string module) {
-    if(!module || module == "") error("Error [query_module]: Invalid module name.\n") ;
+    if(!module || module == "")
+        error("Error [query_module]: Invalid module name. " + module) ;
     if(!modules[module])
         return 0 ;
 
@@ -694,7 +705,12 @@ void remove_all_modules() {
 protected nosave mapping equipment = ([ ]) ;
 public mapping query_equipped() { return copy(equipment); }
 public object equipped_on(string slot) { return equipment[slot] || null ; }
+mixed can_equip(string slot, object ob) ;
+
 int equip(string slot, object ob) {
+    if(!of(slot, body_slots))
+        return 0 ;
+
     if(equipment[slot])
         return 0 ;
 
@@ -708,6 +724,16 @@ int unequip(string slot) {
         return 0 ;
 
     map_delete(equipment, slot) ;
+
+    return 1 ;
+}
+
+mixed can_equip(string slot, object ob) {
+    if(!of(slot, body_slots))
+        return "Your body cannot wear something in there." ;
+
+    if(equipment[slot])
+        return "You are already wearing something like that." ;
 
     return 1 ;
 }

@@ -154,24 +154,37 @@ varargs string substr(string str, string sub, int reverse) {
 // https://github.com/fluffos/dead-souls/blob/09a74caa87d8aadbfe303c294cc0bebb25fdb4db/lib/secure/sefun/strings.c#L104C1-L242C1
 /**
  * @simul_efun from_string
- * @description Converts a string representation of an LPC value to the corresponding
- *              LPC value.
+ * @description Converts a string representation of an LPC value to the
+ *              corresponding LPC value.
  * @param {string} str - The string to convert.
- * @param {int} [flag=0] - If set, returns an array with the value and the remaining string.
+ * @param {int} [flag=0] - If set, returns an array with the value and the
+ *                         remaining string.
  * @returns {mixed} - The LPC value represented by the string.
  */
-varargs mixed from_string(string str, int flag) {
+varargs mixed from_string(string str, int flag)
+{
     mixed *ret = ({ 0, "" });
 
     if(!str || !sizeof(str) || str == "") return 0;
 
     if( (str = trim(str)) == "" ) return 0;
-    if( str[0] == '(' ) {
-        switch(str[1]) {
+
+    str = implode(map(explode(str, "\n"), function(string line) {
+        return trim(line);
+    }), "\n");
+
+    str = replace_string(str, "\n", "");
+    str = replace_string(str, "\"\"", "");
+
+    if( str[0] == '(' )
+    {
+        switch(str[1])
+        {
             case '{':
                 ret[0] = ({});
                 str = str[2..];
-                while(str[0] != '}') {
+                while(str[0] != '}')
+                {
                     mixed *tmp;
 
                     tmp = from_string(str, 1);
@@ -179,13 +192,18 @@ varargs mixed from_string(string str, int flag) {
                     str = tmp[1];
                     while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     if( str[0] != ',' && str[0] != '}' )
-                    error("Improperly formatted array: " + str + "\n");
-                    else if( str[0] == ',') {
+                    {
+                        error("Improperly formatted array: " + str + "\n");
+                    }
+                    else if( str[0] == ',')
+                    {
                         str = str[1..];
                         while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     }
                 }
-                if( str[1] != ')' ) {
+
+                if( str[1] != ')' )
+                {
                     str = str[2..];
                     while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     if( str[0] != ')' ) error("Illegal array terminator.\n");
@@ -198,7 +216,8 @@ varargs mixed from_string(string str, int flag) {
             case '[':
                 ret[0] = ([]);
                 str = str[2..];
-                while(str[0] != ']') {
+                while(str[0] != ']')
+                {
                     mixed *tmp;
                     mixed cle;
 
@@ -206,20 +225,26 @@ varargs mixed from_string(string str, int flag) {
                     str = tmp[1];
                     while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     if( str[0] != ':' )
+                    {
                         error("Illegally formatting mapping: " + str + "\n");
+                    }
                     cle = tmp[0];
                     tmp = from_string(str[1..], 1);
                     ret[0][cle] = tmp[0];
                     str = tmp[1];
                     while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     if( str[0] != ',' && str[0] != ']' )
+                    {
                         error("Illegally formatted mapping: " + str + "n");
-                    else if( str[0] != ']' ) {
+                    }
+                    else if( str[0] != ']' )
+                    {
                         str = str[1..];
                         while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     }
                 }
-                if( str[1] != ')' ) {
+                if( str[1] != ')' )
+                {
                     str = str[2..];
                     while(str[0] == ' ' || str[0] == '\t') str = str[1..];
                     if( str[0] != ')' ) error("Illegal array terminator.\n");
@@ -230,11 +255,14 @@ varargs mixed from_string(string str, int flag) {
                 while(ret[1][0] == ' ' || ret[1][0] == '\t') ret[1] = ret[1][1..];
                 return ret;
         }
-    } else if( str[0] == '"' ) {
+    }
+    else if( str[0] == '"' )
+    {
         string tmp;
 
         tmp = "";
-        while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') ) {
+        while( str[1] != '"' || (str[1] == '"' && str[0] == '\\') )
+        {
             if( str[1] == '"' ) tmp = tmp[0..<2] + "\"";
             else tmp += str[1..1];
             str = str[1..];
@@ -242,54 +270,73 @@ varargs mixed from_string(string str, int flag) {
         if( !flag ) return tmp;
         if( strlen(str) > 2 ) str = trim(str[2..]);
         return ({ tmp, str });
-    } else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' ) {
+    }
+    else if( str[0] >= '0' && str[0] <= '9' || str[0] == '-' )
+    {
         string tmp;
         int y;
 
-        if( strlen(str) > 1 && str[0] == '-' ) {
+        if( strlen(str) > 1 && str[0] == '-' )
+        {
             tmp = str[0..0];
             str = str[1..];
-        } else {
+        }
+        else
+        {
             tmp = "";
         }
-        if( strlen(str) > 1 && str[0..1] == "0x" ) {
+        if( strlen(str) > 1 && str[0..1] == "0x" )
+        {
             tmp = "0x";
             str = str[2..];
-            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+            while(str != "" && (str[0] >= '0' && str[0] <= '9'))
+            {
                 tmp += str[0..0];
                 if( strlen(str) > 1 ) str = str[1..];
                 else str = "";
             }
             sscanf(tmp, "%x", y);
-        } else {
-            while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
+        }
+        else
+        {
+            int decimal_found = 0 ;
+            while(str != "" && (str[0] == '.' || (str[0] >= '0' && str[0] <= '9')))
+            {
+                if( str[0] == '.' ) {
+                    if( decimal_found ) {
+                        error("Improperly formatted number: " + str + "\n");
+                    }
+                    decimal_found = 1 ;
+                }
+
                 tmp += str[0..0];
                 if( strlen(str) > 1 ) str = str[1..];
                 else str = "";
             }
-            sscanf(tmp, "%d", y);
+            if( decimal_found )
+                sscanf(tmp, "%f", y);
+            else
+                sscanf(tmp, "%d", y);
         }
         if( !flag ) return y;
         if( str != "" ) str = trim(str);
         return ({ y, str });
-    } else {
+    }
+    else
+    {
         string tmp;
-        mixed result;
-        string original_str = str; // Save the original input string
 
         tmp = "";
         while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
-                    (str[0] >= 'A' && str[0] <= 'Z') ||
-                    (str[0] >= '0' && str[0] <= '9') ||
-                    (str[0] == '_'))) {
+                (str[0] >= 'A' && str[0] <= 'Z') ||
+                (str[0] >= '0' && str[0] <= '9') ||
+                (str[0] == '_'))) {
             tmp += str[0..0];
             if( strlen(str) > 1 ) str = str[1..];
             else str = "";
         }
-        result = get_objects(tmp);
-        if( result == 0 ) return original_str; // Return the original input string if get_objects() fails
-        if( !flag ) return result;
-        else return ({ result, str });
+        if( !flag ) return get_object(tmp);
+        else return ({ get_object(tmp), str });
     }
     error("Gobbledygook in string.\n");
 }

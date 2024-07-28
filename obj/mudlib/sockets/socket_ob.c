@@ -15,7 +15,7 @@
 
 #include <socket.h>
 
-inherit STD_OBJECT ;
+inherit STD_ITEM ;
 
 nosave int type;
 nosave int s = -1;

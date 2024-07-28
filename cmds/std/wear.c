@@ -13,7 +13,7 @@ inherit STD_ACT ;
 
 void setup() {
     help_text =
-"This command enables you to wear an item of clothing or armor. You must "
+"This command enables you to wear an item of clothing or armour. You must "
 "possess the item in your inventory to wear it. The item will have specific "
 "slots that it can be worn in. For example, a pair of boots might have a slot "
 "of 'feet'. To wear the boots, you would type 'wear boots'. You may not wear "
@@ -32,8 +32,8 @@ mixed main(object tp, string str) {
     if(!ob = find_carried_object(tp, str))
         return "You do not have that item." ;
 
-    if(!ob->is_armor() && !ob->is_clothing())
-        return "You can only wear clothing and armor." ;
+    if(!ob->is_armour() && !ob->is_clothing())
+        return "You can only wear clothing and armour." ;
 
     slot = ob->query_slot() ;
     if(nullp(slot))
@@ -45,14 +45,16 @@ mixed main(object tp, string str) {
     if(tp->equipped_on(slot))
         return "You are already wearing something in that slot." ;
 
-    result = ob->equip(tp) ;
+    result = ob->can_equip(slot, tp) ;
     if(stringp(result))
         return result ;
-
-    if(!result)
+    if(result == 0)
         return "You cannot wear that item." ;
 
-    if(!tp->equip(slot, ob))
+    result = ob->equip(slot, tp) ;
+    if(stringp(result))
+        return result ;
+    if(result == 0)
         return "You cannot wear that item." ;
 
     return "You wear the "+get_short(ob)+"." ;

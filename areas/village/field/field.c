@@ -7,13 +7,14 @@
 
 inherit STD_ROOM ;
 
-void virtual_start() {
-    string file = create_args[0] ;
+void virtual_setup(mixed args...) {
+    string file = args[0] ;
 
     set_zone("../olum") ;
-    __DIR__ "field_daemon"->setup_exits(this_object(), file) ;
-}
 
-void setup() {
-    add_object(__DIR__ "mon/boar") ;
+    __DIR__ "field_daemon"->setup_exits(this_object(), file) ;
+    __DIR__ "field_daemon"->setup_short(this_object(), file) ;
+    __DIR__ "field_daemon"->setup_long(this_object(), file) ;
+
+    add_object("/mob/wild_boar") ;
 }

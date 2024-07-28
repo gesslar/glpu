@@ -6,7 +6,7 @@
 //
 // 2024/02/21: Gesslar - Created
 
-inherit STD_OBJECT ;
+inherit STD_ITEM ;
 
 protected nosave object owner;
 protected nosave string module_name;

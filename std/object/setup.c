@@ -52,3 +52,20 @@ void unsetup_chain(mixed args...) {
         call_if(this_object(), "post_save") ;
     }
 }
+
+// same as above but for virtual
+varargs void virtual_setup_chain(mixed args...) {
+    int x;
+
+    call_if(this_object(), "virtual_mudlib_setup", args...);
+
+    x = 5;
+    while (x--)
+        call_if(this_object(), "pre_virtual_setup_" + x, args...);
+
+    call_if(this_object(), "virtual_setup", args...);
+
+    x = 5;
+    while (x--)
+        call_if(this_object(), "post_virtual_setup_" + x, args...);
+}

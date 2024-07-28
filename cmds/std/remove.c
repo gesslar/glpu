@@ -13,7 +13,7 @@ inherit STD_ACT ;
 
 void setup() {
     help_text =
-"Use this command to remove an item of clothing or armor that you are wearing. "
+"Use this command to remove an item of clothing or armour that you are wearing. "
 "For example, to remove a pair of boots, you would type 'remove boots'. You "
 "may only remove items that you are wearing." ;
     usage_text = "remove <item>" ;
@@ -25,12 +25,29 @@ mixed main(object tp, string str) {
     string *slots ;
     string *items ;
     int i ;
+    mixed result ;
 
-    if(!ob = tp->query_equipment(str))
+    if(!ob = find_carried_object(tp, str))
+        return "You do not have that item." ;
+
+    slot = ob->query_slot() ;
+    if(nullp(slot))
+        return "That item cannot be removed." ;
+
+    if(tp->equipped_on(slot) != ob)
         return "You are not wearing that item." ;
 
-    if(!ob->unequip())
+    result = ob->can_unequip(tp) ;
+    if(stringp(result))
+        return result ;
+    if(result == 0)
         return "You cannot remove that item." ;
 
-    return "You remove the "+ob_short(ob)+"." ;
+    result = ob->unequip() ;
+    if(stringp(result))
+        return result ;
+    if(result == 0)
+        return "You cannot remove that item." ;
+
+    return "You remove the "+get_short(ob)+"." ;
 }

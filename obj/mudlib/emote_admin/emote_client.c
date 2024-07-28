@@ -15,7 +15,7 @@
                   "$OI - Objective emoter", "$OT - Objective target", \
                   "$M - Modifier", "$V - Verb"})
 
-inherit STD_OBJECT;
+inherit STD_ITEM;
 
 object soul_d;
 nosave string tmp_emote_targeted_name;
