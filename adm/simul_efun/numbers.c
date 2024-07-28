@@ -2,24 +2,24 @@
 
 /**
  * @simul_efun percent_of
- * @description Calculates what percentage `a` is of `b`.
- * @param {float} a - The part value.
+ * @description Calculates what `a` percent of `b` is.
+ * @param {float} a - The percentage value.
  * @param {float} b - The whole value.
- * @returns {float} - The percentage of `a` in `b`.
+ * @returns {float} - The value that is `a` percent of `b`.
  */
 float percent_of(float a, float b) {
-    return (to_float(a) / to_float(b)) * 100.0;
+    return (a / 100.0) * to_float(b);
 }
 
 /**
  * @simul_efun percent
- * @description Calculates the percentage of `a` out of `b`.
+ * @description Calculates what percentage `a` is of `b`.
  * @param {float} a - The part value.
  * @param {float} b - The whole value.
  * @returns {float} - The percentage of `a` out of `b`.
  */
 float percent(float a, float b) {
-    return to_float(a) * 100.0 / to_float(b);
+    return (to_float(a) / to_float(b)) * 100.0;
 }
 
 /**
