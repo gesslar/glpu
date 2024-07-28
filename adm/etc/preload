@@ -18,7 +18,7 @@
 /adm/daemons/db
 
 # COLOUR_D color daemon
-/adm/daemons/xterm256_d
+/adm/daemons/colour
 
 # Channel Daemon
 /adm/daemons/chan_d

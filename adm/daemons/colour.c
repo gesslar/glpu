@@ -1,12 +1,12 @@
-// /adm/daemons/xterm256_d.c
-// XTerm Parser
+// /adm/daemons/colour.c
+// Colour Parser
 //
 // Created:     2022/08/22: Gesslar
 // Last Change: 2022/08/22: Gesslar
 //
 // 2022/08/22: Gesslar - Created
 
-#include <xterm256.h>
+#include <colour.h>
 
 inherit STD_DAEMON ;
 inherit DM_CSS ;
@@ -14,12 +14,12 @@ inherit DM_CSS ;
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
 private nosave mapping alt_codes = ([ ]) ;
-private nosave string *fallback_codes = ({ }) ;
-private nosave mapping x256_to_16_fg = ([ ]) ;
-private nosave mapping x256_to_16_bg = ([ ]) ;
+private nosave string *low_codes = ({ }) ;
+private nosave mapping high_to_low_fg = ([ ]) ;
+private nosave mapping high_to_low_bg = ([ ]) ;
 
 private void load_all_colours() ;
-public string xterm256_wrap(string str, int wrap_at, int indent_at) ;
+public string wrap(string str, int wrap_at, int indent_at) ;
 void resync() ;
 
 void setup() {
@@ -28,11 +28,11 @@ void setup() {
 }
 
 int too_dark_check() {
-    return mud_config("XTERM_TOO_DARK") == "on" ;
+    return mud_config("COLOUR_TOO_DARK") == "on" ;
 }
 
 mapping too_dark_map() {
-    return mud_config("XTERM_TOO_DARK_SUB") ;
+    return mud_config("COLOUR_TOO_DARK_SUB") ;
 }
 
 private void load_all_colours() {
@@ -68,35 +68,35 @@ private void load_all_colours() {
         "ol1" : "\e[53m", // overline on
     ]) ;
 
-    lines = explode(read_file("/adm/etc/xterm256/256_to_16_fallback.txt"), "\n") ;
+    lines = explode(read_file("/adm/etc/colour/high_to_low_map.txt"), "\n") ;
     i = 256 ;
-    fallback_codes = allocate(i) ;
+    low_codes = allocate(i) ;
     while(i--) {
-        string fallback ;
+        string low ;
 
-        sscanf(lines[i], "%*s,%s", fallback) ;
+        sscanf(lines[i], "%*s,%s", low) ;
 
-        fallback_codes[i] = fallback ;
+        low_codes[i] = low ;
     }
 
-    lines = explode(read_file("/adm/etc/xterm256/xterm_ansi_16_fg.txt"), "\n") ;
+    lines = explode(read_file("/adm/etc/colour/high_to_low_fg.txt"), "\n") ;
     i = 16 ;
     while(i--) {
-        string xterm ;
-        string fallback ;
+        string high ;
+        string low ;
 
-        sscanf(lines[i], "%s,%s", xterm, fallback) ;
-        x256_to_16_fg[xterm] = sprintf("\e[%sm", fallback) ;
+        sscanf(lines[i], "%s,%s", high, low) ;
+        high_to_low_fg[high] = sprintf("\e[%sm", low) ;
     }
 
-    lines = explode(read_file("/adm/etc/xterm256/xterm_ansi_16_bg.txt"), "\n") ;
+    lines = explode(read_file("/adm/etc/colour/high_to_low_bg.txt"), "\n") ;
     i = 16 ;
     while(i--) {
-        string xterm ;
-        string fallback ;
+        string high ;
+        string low ;
 
-        sscanf(lines[i], "%s,%s", xterm, fallback) ;
-        x256_to_16_bg[xterm] = sprintf("\e[%sm", fallback) ;
+        sscanf(lines[i], "%s,%s", high, low) ;
+        high_to_low_bg[high] = sprintf("\e[%sm", low) ;
     }
 }
 
@@ -107,8 +107,8 @@ private void load_all_colours() {
 // available modes are:
 // plain - strip all colour and style codes
 // vt100 - strip only colour codes
-// xterm - replace all tokens with xterm256 colour codes
-// ansi  - fall back to ansi colour codes
+// high - replace all tokens with 256 colour codes
+// low  - fall back to lower 16 colour codes
 public string substitute_colour(string text, string mode) {
     mixed *assoc ;
     string *parts, sub ;
@@ -119,7 +119,7 @@ public string substitute_colour(string text, string mode) {
     if(nullp(text)) return "" ;
     if(nullp(mode)) mode = "plain" ;
 
-    assoc = pcre_assoc(text, ({ XTERM256_COLOURS }), ({ 1 })) ;
+    assoc = pcre_assoc(text, ({ COLOUR_REGEX }), ({ 1 })) ;
     parts = assoc[0] ;
     matched = assoc[1] ;
     sz = sizeof(parts) ;
@@ -149,7 +149,7 @@ public string substitute_colour(string text, string mode) {
                 parts[sz] = "" ;
             }
             break ;
-        case "xterm" :
+        case "high" :
             while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
@@ -168,7 +168,7 @@ public string substitute_colour(string text, string mode) {
 
             }
             break ;
-        case "ansi" :
+        case "low" :
             while(sz--) {
                 // Skip non matches
                 if(matched[sz] == 0) continue ;
@@ -182,8 +182,8 @@ public string substitute_colour(string text, string mode) {
                 }
 
                 // Now, we have to be one of the colour codes!
-                if(sscanf(parts[sz], "\e0%d\e", num) == 1) parts[sz] = x256_to_16_fg[fallback_codes[num]] ;
-                else if(sscanf(parts[sz], "\e<1%d\e", num) == 1) parts[sz] = x256_to_16_bg[fallback_codes[num]] ;
+                if(sscanf(parts[sz], "\e0%d\e", num) == 1) parts[sz] = high_to_low_fg[low_codes[num]] ;
+                else if(sscanf(parts[sz], "\e<1%d\e", num) == 1) parts[sz] = high_to_low_bg[low_codes[num]] ;
                 else parts[sz] = "" ;
             }
             break ;
@@ -196,7 +196,7 @@ public string substitute_colour(string text, string mode) {
     return result ;
 }
 
-public string xterm256_wrap(string str, int wrap_at, int indent_at) {
+public string wrap(string str, int wrap_at, int indent_at) {
     string *sections ;
 
     sections = map(explode(str, "\n"), function(string section, int wrap_at, int indent_at) {
@@ -238,14 +238,14 @@ public string xterm256_wrap(string str, int wrap_at, int indent_at) {
 }
 
 int colourp(string text) {
-    return pcre_match(text, XTERM256_COLOURS) ;
+    return pcre_match(text, COLOUR_REGEX) ;
 }
 
 void resync() {
     load_all_colours() ;
 }
 
-string token_to_xterm(string token) {
+string token_to_colour(string token) {
     if(pcre_match(token, "\\d{3}")) {
         int num ;
 
@@ -255,25 +255,25 @@ string token_to_xterm(string token) {
         return fg_codes[num] ;
     } else {
         switch(token) {
-            case "black"    : return x256_to_16_fg[fallback_codes[0]] ;
-            case "red"      : return x256_to_16_fg[fallback_codes[1]] ;
-            case "green"    : return x256_to_16_fg[fallback_codes[2]] ;
-            case "orange"   : return x256_to_16_fg[fallback_codes[3]] ;
-            case "yellow"   : return x256_to_16_fg[fallback_codes[14]] ;
-            case "blue"     : return x256_to_16_fg[fallback_codes[4]] ;
-            case "cyan"     : return x256_to_16_fg[fallback_codes[5]] ;
-            case "magenta"  : return x256_to_16_fg[fallback_codes[6]] ;
-            case "white"    : return x256_to_16_fg[fallback_codes[7]] ;
-            case "b_red"    : return x256_to_16_fg[fallback_codes[9]] ;
-            case "b_green"  : return x256_to_16_fg[fallback_codes[10]] ;
-            case "b_orange" : return x256_to_16_fg[fallback_codes[14]] ;
-            case "b_yellow" : return x256_to_16_fg[fallback_codes[14]] ;
-            case "b_blue"   : return x256_to_16_fg[fallback_codes[11]] ;
-            case "b_cyan"   : return x256_to_16_fg[fallback_codes[12]] ;
-            case "b_black"  : return x256_to_16_fg[fallback_codes[13]] ;
-            case "b_white"  : return x256_to_16_fg[fallback_codes[14]] ;
-            case "b_magenta": return x256_to_16_fg[fallback_codes[15]] ;
-            case "bold"     : return x256_to_16_fg[fallback_codes[15]] ;
+            case "black"    : return high_to_low_fg[low_codes[0]] ;
+            case "red"      : return high_to_low_fg[low_codes[1]] ;
+            case "green"    : return high_to_low_fg[low_codes[2]] ;
+            case "orange"   : return high_to_low_fg[low_codes[3]] ;
+            case "yellow"   : return high_to_low_fg[low_codes[14]] ;
+            case "blue"     : return high_to_low_fg[low_codes[4]] ;
+            case "cyan"     : return high_to_low_fg[low_codes[5]] ;
+            case "magenta"  : return high_to_low_fg[low_codes[6]] ;
+            case "white"    : return high_to_low_fg[low_codes[7]] ;
+            case "b_red"    : return high_to_low_fg[low_codes[9]] ;
+            case "b_green"  : return high_to_low_fg[low_codes[10]] ;
+            case "b_orange" : return high_to_low_fg[low_codes[14]] ;
+            case "b_yellow" : return high_to_low_fg[low_codes[14]] ;
+            case "b_blue"   : return high_to_low_fg[low_codes[11]] ;
+            case "b_cyan"   : return high_to_low_fg[low_codes[12]] ;
+            case "b_black"  : return high_to_low_fg[low_codes[13]] ;
+            case "b_white"  : return high_to_low_fg[low_codes[14]] ;
+            case "b_magenta": return high_to_low_fg[low_codes[15]] ;
+            case "bold"     : return high_to_low_fg[low_codes[15]] ;
             case "reset"    : return "\e[0m" ;
             default: return "" ;
         }
@@ -285,7 +285,7 @@ string token_to_xterm(string token) {
 string get_colour_list() {
     string output = "" ;
     int base ;
-    int *xterm256 = ({
+    int *colours = ({
         016,  017,  018,  019,  020,  021,  022,  023,  024,  025,  026,  027,
         028,  029,  030,  031,  032,  033,  034,  035,  036,  037,  038,  039,
         040,  041,  042,  043,  044,  045,  046,  047,  048,  049,  050,  051,
@@ -306,14 +306,14 @@ string get_colour_list() {
         202,  203,  204,  205,  206,  207,  196,  197,  198,  199,  200,  201,
     });
 
-      // render as two 12 cell rows
-    int *xterm_greyscale = ({
+    // render as two 12 cell rows
+    int *colours_greyscale = ({
         232,  233,  234,  235,  236,  237,  238,  239,  240,  241,  242,  243,
         255,  254,  253,  252,  251,  250,  249,  248,  247,  246,  245,  244,
     });
 
       // render as two 8 cell rows
-    int *xterm16 = ({
+    int *colours_low = ({
         000,  001,  002,  003,  004,  005,  006,  007,
         008,  009,  010,  011,  012,  013,  014,  015,
     });
@@ -326,8 +326,8 @@ string get_colour_list() {
                 int colour = i*(6*12) + j + k*6 ;
 
                 output += sprintf("  %s%'0'3d\eres\e",
-                    sprintf("\e%'0'4d\e", xterm256[colour]),
-                    xterm256[colour]
+                    sprintf("\e%'0'4d\e", colours[colour]),
+                    colours[colour]
                 ) ;
             }
             output += "\n";
@@ -342,8 +342,8 @@ string get_colour_list() {
             int colour = i*12 + j;
 
             output += sprintf("  %s%'0'3d\eres\e",
-                sprintf("\e%'0'4d\e", xterm_greyscale[colour]),
-                xterm_greyscale[colour]
+                sprintf("\e%'0'4d\e", colours_greyscale[colour]),
+                colours_greyscale[colour]
             ) ;
         }
         output += "\n";
@@ -357,8 +357,8 @@ string get_colour_list() {
             int colour = i*8 + j;
 
             output += sprintf("  %s%'0'3d\eres\e",
-                sprintf("\e%'0'4d\e", xterm16[colour]),
-                xterm16[colour]
+                sprintf("\e%'0'4d\e", colours_low[colour]),
+                colours_low[colour]
             );
         }
       output += "\n";
@@ -394,4 +394,15 @@ string substitute_too_dark(string text) {
 
     if(too_dark_map()[result]) return too_dark_map()[result] ;
     else return text ;
+}
+
+int color_to_greyscale(int color_code) {
+    float normalized ;
+    int greyscale_code ;
+
+    normalized = color_code / 255.0;
+    greyscale_code = to_int(normalized * 23) + 232;
+
+    // Return the corresponding greyscale color code
+    return greyscale_code;
 }

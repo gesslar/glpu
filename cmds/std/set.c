@@ -30,7 +30,7 @@ mixed main(object tp, string str) {
             for(i = 0; i < sizeof(keys); i ++)
                 tell(tp,
                         sprintf("%-20s : %-20s\n", keys[i], data[keys[i]]),
-                        NO_ANSI
+                        NO_COLOUR
                 ) ;
 
             return 1;

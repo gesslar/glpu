@@ -59,7 +59,7 @@ int set_user(object ob);
 /* User environmental variable functions */
 
 int set_env(string var_name, string var_value);
-mixed query_env(string var_name);
+varargs mixed query_env(string var_name, mixed def) ;
 mapping list_env();
 
 /* User path functions */
@@ -338,9 +338,10 @@ int set_env(string var_name, string var_value) {
     return 1;
 }
 
-mixed query_env(string var_name) {
+varargs mixed query_env(string var_name, mixed def) {
     mapping data = query("env_settings") ;
-    if(data[var_name]) return data[var_name];
+    if(data[var_name]) return data[var_name] ;
+    else return def ;
 }
 
 mapping list_env() {

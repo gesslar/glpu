@@ -18,12 +18,14 @@ inherit __DIR__ "damage" ;
 
 // Functions from other objects
 public mapping query_equipped() ;
+string query_name() ;
 
 // Functions
 void combat_round() ;
 int start_attack(object victim) ;
 void swing() ;
 int next_round() ;
+private int can_strike(object enemy) ;
 void strike_enemy(object enemy) ;
 int attacking(object victim) ;
 varargs int stop_attack(object victim, int seen) ;
@@ -124,6 +126,14 @@ void swing() {
     if(!valid_enemy(enemy))
         return;
 
+    if(!query_mp()) {
+        tell(this_object(), "You are too exhausted to attack.\n");
+        return;
+    }
+
+    if(!can_strike(enemy))
+        return;
+
     strike_enemy(enemy);
 }
 
@@ -137,6 +147,36 @@ int next_round() {
     return next_combat_round;
 }
 
+private int can_strike(object enemy) {
+    float ac = enemy->query_ac() ;
+    float chance = mud_config("DEFAULT_HIT_CHANCE") ;
+    float lvl = query_effective_level() ;
+    float vlvl = enemy->query_effective_level() ;
+    float result ;
+    string name, vname ;
+    object env ;
+
+    chance = chance
+           + (lvl - vlvl)
+           - (ac * 2.0)
+           ;
+
+    result = random_float(100.0) ;
+
+    if(result < chance)
+        return 1;
+
+    name = query_name() ;
+    vname = enemy->query_name() ;
+
+    env = environment() ;
+    tell(this_object(), "You swing at " + vname + " and miss!\n", MSG_COMBAT_MISS) ;
+    tell(enemy, name + " swings at you and misses!\n", MSG_COMBAT_MISS) ;
+    tell_down(env, name + " swings at " + vname + " and misses!\n", MSG_COMBAT_MISS, ({ this_object(), enemy }));
+
+    return 0;
+}
+
 void strike_enemy(object enemy) {
     if(!valid_enemy(enemy))
         return;
@@ -144,9 +184,9 @@ void strike_enemy(object enemy) {
     if(!current_enemy(enemy))
         return;
 
-    tell(this_object(), "You strike " + enemy->query_name() + "!\n");
-    tell(enemy, this_object()->query_name() + " strikes you!\n");
-    tell_down(environment(), this_object()->query_name() + " strikes " + enemy->query_name() + "!\n", 0, ({ this_object(), enemy }));
+    tell(this_object(), "You strike " + enemy->query_name() + "!\n", MSG_COMBAT_HIT);
+    tell(enemy, this_object()->query_name() + " strikes you!\n", MSG_COMBAT_HIT);
+    tell_down(environment(), this_object()->query_name() + " strikes " + enemy->query_name() + "!\n", MSG_COMBAT_HIT, ({ this_object(), enemy }));
 
     deliver_damage(enemy, random_float(10.0), "bludgeoning");
     add_mp(-random_float(5.0));

@@ -17,6 +17,7 @@ void mudlib_setup() {
     set_ids(({lower_case(query_name()), query_name(), "npc", "generic npc", "NPC" }));
     set_long(capitalize(query_name()) + " is a generic NPC.");
     set_short(query_name());
+    if(!query("env_settings")) set("env_settings", ([]));
     add_init("start_heart_beat") ;
     add_hb("stop_heart_beat") ;
     init_vitals() ;

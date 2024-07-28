@@ -41,7 +41,12 @@ mixed main(object tp, string str) {
     }
 
     ob = get_object(file) ;
-    if(ob) file = base_name(ob);
+    if(ob) {
+        if(virtualp(ob))
+            file = ob->query_virtual_master() ;
+        else
+            file = base_name(ob);
+    }
     else file = resolve_path(tp->query_env("cwd"), file);
 
     result = dig(file, func, 0);

@@ -49,5 +49,5 @@ mixed main(object tp, string str) {
     if(result == 0)
         return "You cannot remove that item." ;
 
-    return "You remove the "+get_short(ob)+"." ;
+    return 1 ;
 }

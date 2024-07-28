@@ -32,7 +32,7 @@ string help(object tp)
       "This command will allow you to page files to your terminal,\n"
       "a screen at a time. For more information about using this\n"
       "application and it's feature, type 'help' within the pager.\n\n"
-      "Note: Ansi is not parsed for any file ending with the\n"
+      "Note: Colour is not parsed for any file ending with the\n"
       "'.c' extension. All other files, however, will render with\n"
       "colour.\n");
 }

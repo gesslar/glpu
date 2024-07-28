@@ -150,4 +150,30 @@ int set_dead(int x) {
     return dead ;
 }
 
+float query_condition() {
+    return percent(hp, max_hp) ;
+}
+
+string query_condition_string() {
+    float ratio = query_condition() ;
+    if (ratio <= 0.0)
+        return "dead";
+    else if (ratio <= 15.5)
+        return "critical";
+    else if (ratio <= 30.0)
+        return "severely injured";
+    else if (ratio <= 45.0)
+        return "moderately injured";
+    else if (ratio <= 60.0)
+        return "injured";
+    else if (ratio <= 75.0)
+        return "hurt";
+    else if (ratio <= 90.0)
+        return "wounded";
+    else if(ratio < 100.0)
+        return "bruised and nicked";
+    else
+        return "healthy";
+}
+
 int is_dead() { return dead ; }

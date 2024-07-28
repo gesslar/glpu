@@ -10,9 +10,14 @@
  * @returns {string} - The short description of the object, including any
  *                     extra short descriptions.
  */
-string get_short(object ob, int extras: (: 1 :)) {
+varargs string get_short(object ob, int extras) {
     string result ;
     string *extra_shorts ;
+
+    if(!ob)
+        ob = previous_object() ;
+    if(nullp(extras))
+        extras = 1 ;
 
     result = ob->query_short() ;
     if(!result) return "" ;
@@ -42,9 +47,14 @@ string get_short(object ob, int extras: (: 1 :)) {
  * @returns {string} - The long description of the object, including any
  *                     extra long descriptions.
  */
-string get_long(object ob, int extras: (: 1 :)) {
+string get_long(object ob, int extras) {
     string result ;
     string *extra_longs, *parts ; ;
+
+    if(!ob)
+        ob = previous_object() ;
+    if(nullp(extras))
+        extras = 1 ;
 
     result = ob->query_long() ;
     if(!result) return "" ;

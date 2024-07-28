@@ -105,15 +105,15 @@ string no_ansi(string str)
 
 ### Parameters
 
-* `string str` - The string to remove ANSI codes from.
+* `string str` - The string to remove colour from.
 
 ### Returns
 
-`string` - The string without ANSI codes.
+`string` - The string without colour.
 
 ### Description
 
-Returns a string with all ANSI colour codes removed.
+Returns a string with all colour removed.
 
 ## chop
 
@@ -158,8 +158,8 @@ varargs mixed from_string(string str, int flag)
 
 ### Description
 
-Converts a string representation of an LPC value to the corresponding
-LPC value.
+Converts a string representation of an LPC value to the
+corresponding LPC value.
 
 ## reverse_string
 

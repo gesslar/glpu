@@ -4,5 +4,5 @@
     "short" : "wild boar",
     "long" : "A wild boar is here, snuffling around for food.",
     "id" : ({ "wild boar", "boar" }),
-    "level" : 4.0
+    "level" : 1.0
 ])

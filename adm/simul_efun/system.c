@@ -162,7 +162,7 @@ varargs void _debug(mixed str, mixed args...) {
         str = sprintf("%O", str) ;
     }
 
-    str = COLOUR_D->substitute_colour(str, "xterm") ;
+    str = COLOUR_D->substitute_colour(str, "high") ;
 
     debug_message(str) ;
 }

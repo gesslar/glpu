@@ -17,19 +17,12 @@ mixed main(object caller, string str) {
 
 
     switch(cmd) {
-        case "enable" :
         case "on" :
-        case "start" :
-        case "ansi" :
         case "begin" :
             str = "on" ;
             caller->set_env("colour", str);
             return _ok(caller, "Colour " + str + ".");
-        case "disable" :
         case "off" :
-        case "stop" :
-        case "none" :
-        case "kill" :
             str = "off" ;
             caller->set_env("colour", str);
             return _ok(caller, "Colour " + str + ".");
@@ -71,10 +64,10 @@ mixed main(object caller, string str) {
 
 string query_help(object caller) {
     return
-"SYNTAX: colour [<enable>|<disable>|list|show [#]]\n\n"
+"SYNTAX: colour [<on>|<off>|list|show [#]]\n\n"
 "With no arguments, this command will tell you if you currently have "
 "colour enabled or disabled. You can also toggle colour by providing the "
-"arguments \eul1\eenable\eul0\e to enable or \eul1\edisable\eul0\e to "
+"arguments \eul1\eon\eul0\e to enable or \eul1\eoff\eul0\e to "
 "disable.\n"
 "\n"
 "Use the \eul1\elist\eul0\e argument to list all the available colours.\n"
@@ -83,5 +76,5 @@ string query_help(object caller) {
 "will appear in the foreground and background. The argument must be a "
 "number between 0 and 255.\n"
 "\n"
-"See also: set_env\n" ;
+"See also: set\n" ;
 }

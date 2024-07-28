@@ -18,8 +18,8 @@
     ],
     "LOOK_HIGHLIGHT" : "on",
     "LOOK_HIGHLIGHT_COLOUR" : "243",
-    "XTERM_TOO_DARK" : "on",
-    "XTERM_TOO_DARK_SUB" : {
+    "COLOUR_TOO_DARK" : "on",
+    "COLOUR_TOO_DARK_SUB" : {
         "000" : "238",
         "016" : "238",
         "017" : "019",
@@ -75,5 +75,6 @@
     "DEFAULT_HEART_RATE" : 10,
     "OBJECT_DATA_DIR" : "/data/obj/",
     "DEFAULT_RACE" : "human",
-    "DAMAGE_LEVEL_MODIFIER" : 25.0
+    "DAMAGE_LEVEL_MODIFIER" : 25.0,
+    "DEFAULT_HIT_CHANCE" : 65.0
 }

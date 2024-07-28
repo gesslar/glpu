@@ -9,5 +9,5 @@ Returns
 
 `mixed` - The LPC value represented by the string.
 
-Converts a string representation of an LPC value to the corresponding
-LPC value.
+Converts a string representation of an LPC value to the
+corresponding LPC value.

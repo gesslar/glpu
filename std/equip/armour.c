@@ -33,9 +33,7 @@ void mudlib_setup() {
         "piercing" : 1.0,
         "bludgeoning" : 1.0,
     ])) ;
-    set_slots(([
-        "torso" : 100.0,
-    ])) ;
+    set_slot("torso") ;
 }
 
 int equip(string slot, object tp) {
@@ -49,7 +47,7 @@ int equip(string slot, object tp) {
 int unequip() {
     object tp = environment() ;
 
-    if(!::unequip()) return 0 ;
+    if(!::unequip(tp)) return 0 ;
 
     if(tp)
         tp->adjust_protection() ;

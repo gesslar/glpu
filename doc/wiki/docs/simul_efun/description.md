@@ -8,7 +8,7 @@ title: description
 ### Synopsis
 
 ```c
-string get_long(object ob, int extras: (: 1 :))
+string get_long(object ob, int extras)
 ```
 
 ### Parameters
@@ -30,7 +30,7 @@ including extra long descriptions.
 ### Synopsis
 
 ```c
-string get_short(object ob, int extras: (: 1 :))
+varargs string get_short(object ob, int extras)
 ```
 
 ### Parameters

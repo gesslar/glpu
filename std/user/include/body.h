@@ -15,7 +15,7 @@ int set_user(object ob) ;
 
 /* User environmental variable functions */
 int set_env(string var_name, string var_value) ;
-mixed query_env(string var_name) ;
+mixed query_env(string var_name, mixed def) ;
 mapping list_env() ;
 
 /* User path functions */

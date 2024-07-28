@@ -2,7 +2,7 @@ varargs string call_trace(int colour)
 
 Parameters:
 
-* `int [colour=0]` - Whether to include ANSI colour codes. Defaults to 0 (no colour).
+* `int [colour=0]` - Whether to include colour codes. Defaults to 0 (no colour).
 
 Returns
 

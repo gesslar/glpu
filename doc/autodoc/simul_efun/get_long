@@ -1,4 +1,4 @@
-string get_long(object ob, int extras: (: 1 :))
+string get_long(object ob, int extras)
 
 Parameters:
 

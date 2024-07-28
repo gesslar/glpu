@@ -13,16 +13,16 @@ float percent_of(float a, float b)
 
 ### Parameters
 
-* `float a` - The part value.
+* `float a` - The percentage value.
 * `float b` - The whole value.
 
 ### Returns
 
-`float` - The percentage of `a` in `b`.
+`float` - The value that is `a` percent of `b`.
 
 ### Description
 
-Calculates what percentage `a` is of `b`.
+Calculates what `a` percent of `b` is.
 
 ## remainder
 
@@ -64,7 +64,7 @@ float percent(float a, float b)
 
 ### Description
 
-Calculates the percentage of `a` out of `b`.
+Calculates what percentage `a` is of `b`.
 
 ## evaluate_number
 

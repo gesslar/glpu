@@ -9,4 +9,4 @@ Returns
 
 `float` - The percentage of `a` out of `b`.
 
-Calculates the percentage of `a` out of `b`.
+Calculates what percentage `a` is of `b`.

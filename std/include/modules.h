@@ -15,6 +15,6 @@
 #define M_TARGETING     DIR_STD_MODULES "targeting"
 #define M_UNICODE       DIR_STD_MODULES "unicode"
 
-#define DM_CSS          DIR_DAEMON_MODULES "xterm256/css"
+#define DM_CSS          DIR_DAEMON_MODULES "colour/css"
 
 #endif  // __MODULES_H__

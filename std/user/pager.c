@@ -16,9 +16,9 @@
 mixed query_env(string var);
 
 // Functions
-void continue_page(string input, string *text, mixed *cb, int no_ansi, int lines, string display, int num, int curr) ;
+void continue_page(string input, string *text, mixed *cb, int no_colour, int lines, string display, int num, int curr) ;
 
-varargs void page(mixed text, mixed *cb, int no_ansi) {
+varargs void page(mixed text, mixed *cb, int no_colour) {
     int more_lines, sz ;
     string page_display ;
 
@@ -37,16 +37,16 @@ varargs void page(mixed text, mixed *cb, int no_ansi) {
     more_lines = to_int(query_env("morelines")) || mud_config("MORELINES") ;
     page_display = query_env("page_display") || mud_config("PAGE_DISPLAY") ;
 
-    if(no_ansi == 1)
-        no_ansi = MSG_PROMPT | NO_ANSI ;
+    if(no_colour == 1)
+        no_colour = MSG_PROMPT | NO_COLOUR ;
     else
-        no_ansi = MSG_PROMPT ;
+        no_colour = MSG_PROMPT ;
 
     sz = sizeof(text) ;
-    continue_page("", text, cb, no_ansi, more_lines, page_display, sz, 0) ;
+    continue_page("", text, cb, no_colour, more_lines, page_display, sz, 0) ;
 }
 
-void continue_page(string input, string *text, mixed *cb, int no_ansi, int more_lines, string page_display, int num, int curr) {
+void continue_page(string input, string *text, mixed *cb, int no_colour, int more_lines, string page_display, int num, int curr) {
     int sz, end;
     string mess;
     string *this_page;
@@ -70,10 +70,10 @@ void continue_page(string input, string *text, mixed *cb, int no_ansi, int more_
                 break;
         }
 
-        tell(this_object(), mess, no_ansi);
-        input_to("continue_page", text, cb, no_ansi, more_lines, page_display, num, curr);
+        tell(this_object(), mess, no_colour);
+        input_to("continue_page", text, cb, no_colour, more_lines, page_display, num, curr);
     } else {
-        tell(this_object(), mess, no_ansi);
+        tell(this_object(), mess, no_colour);
         if(!nullp(cb))
             call_back(cb);
     }

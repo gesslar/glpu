@@ -8,8 +8,15 @@
 
 inherit STD_ITEM ;
 
+void set_slot(string str) ;
+string query_slot() ;
+private mapping slots = ([ ]) ;
 private nosave string slot ;
-private nosave string equipped = 0 ;
+private nosave int equipped = 0 ;
+
+mixed can_equip(string slot, object tp) {
+    return call_if(this_object(), "equip_check", slot, tp) || 1 ;
+}
 
 void set_slot(string str) {
     slot = str ;
@@ -19,46 +26,63 @@ string query_slot() {
     return slot ;
 }
 
-mixed equip(object tp, string slot) {
+mixed equip(string slot, object tp) {
+    mixed result ;
     object env = environment() ;
-    string *slots ;
 
     if(env != tp)
         return 0 ;
 
-    if (equipped)
+    if(equipped)
         return 0 ;
 
-    if (env->query_equipment(slot))
+    if(tp->equipped_on(slot))
         return 0 ;
 
-    slots = env->query_body_slots() ;
-    if(member_array(slot, slots) == -1)
-        return 0 ;
+    result = tp->equip(slot, this_object()) ;
+    if(result != 1)
+        return result ;
 
-    equipped = slot ;
+    equipped = 1 ;
     return 1 ;
 }
 
-mixed unequip() {
-    object env = environment() ;
+mixed can_unequip(object tp) {
+    return call_if(this_object(), "unequip_check", tp) || 1 ;
+}
 
-    if (equipped) {
-        equipped = 0 ;
+varargs int unequip(object tp, int silent) {
+    mixed result ;
+
+    if(!equipped)
+        return 0 ;
+
+    if(tp) {
+        if(tp->equipped_on(query_slot()) != this_object())
+            return 0 ;
+
+        if(!tp->unequip(query_slot()))
+            return 0 ;
+
+        if(!silent) {
+            tell_object(tp, "You remove the "+get_short()+".\n") ;
+            tell_down(environment(tp), tp->query_name()+" removes "+tp->query_possessive()+" "+get_short()+".\n", 0, tp) ;
+        }
     }
+
+    equipped = 0 ;
 
     return 1 ;
 }
 
 int move(mixed dest) {
-    object env ;
+    object env = environment() ;
     int ret = ::move(dest) ;
 
-    env = environment() ;
     if(env)
         if(equipped)
             if(ret == MOVE_OK)
-                unequip() ;
+                unequip(env) ;
 
     return ret ;
 }
