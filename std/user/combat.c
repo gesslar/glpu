@@ -13,6 +13,7 @@
 #include <damage.h>
 #include <gmcp.h>
 #include <vitals.h>
+#include <action.h>
 
 inherit __DIR__ "damage" ;
 
@@ -155,6 +156,9 @@ private int can_strike(object enemy) {
     float result ;
     string name, vname ;
     object env ;
+    object weapon ;
+    string wname, wtype ;
+    string *messes, mess ;
 
     chance = chance
            + (lvl - vlvl)
@@ -170,25 +174,56 @@ private int can_strike(object enemy) {
     vname = enemy->query_name() ;
 
     env = environment() ;
-    tell(this_object(), "You swing at " + vname + " and miss!\n", MSG_COMBAT_MISS) ;
-    tell(enemy, name + " swings at you and misses!\n", MSG_COMBAT_MISS) ;
-    tell_down(env, name + " swings at " + vname + " and misses!\n", MSG_COMBAT_MISS, ({ this_object(), enemy }));
+
+    weapon = query_equipped()["weapon"] || null ;
+    if(weapon) {
+        wname = weapon->query_name() ;
+        wtype = weapon->query_type() ;
+    } else {
+        wname = "fist" ;
+        wtype = "bludgeoning" ;
+    }
+
+    mess = MESS_D->get_message("combat", wtype, 0) ;
+    messes = ACTION_D->action(({ this_object(), enemy }), mess, ({wname})) ;
+
+    tell(this_object(), messes[0], MSG_COMBAT_MISS) ;
+    tell(enemy, messes[1], MSG_COMBAT_MISS) ;
+    tell_down(env, messes[2], MSG_COMBAT_MISS, ({ this_object(), enemy })) ;
 
     return 0;
 }
 
 void strike_enemy(object enemy) {
+    object weapon ;
+    string wname, wtype ;
+    string *messes, mess ;
+    float dam ;
+
     if(!valid_enemy(enemy))
         return;
 
     if(!current_enemy(enemy))
         return;
 
-    tell(this_object(), "You strike " + enemy->query_name() + "!\n", MSG_COMBAT_HIT);
-    tell(enemy, this_object()->query_name() + " strikes you!\n", MSG_COMBAT_HIT);
-    tell_down(environment(), this_object()->query_name() + " strikes " + enemy->query_name() + "!\n", MSG_COMBAT_HIT, ({ this_object(), enemy }));
+    weapon = query_equipped()["weapon"] || null ;
+    if(weapon) {
+        wname = weapon->query_name() ;
+        wtype = weapon->query_type() ;
+    } else {
+        wname = "fist" ;
+        wtype = "bludgeoning" ;
+    }
 
-    deliver_damage(enemy, random_float(10.0), "bludgeoning");
+    dam = random_float(10.0) ;
+    mess = MESS_D->get_message("combat", wtype, to_int(ceil(dam))) ;
+    messes = ACTION_D->action(({ this_object(), enemy }), mess, ({wname})) ;
+
+    tell(this_object(), messes[0], MSG_COMBAT_HIT) ;
+    tell(enemy, messes[1], MSG_COMBAT_HIT) ;
+    tell_down(environment(), messes[2], MSG_COMBAT_HIT, ({ this_object(), enemy })) ;
+
+    deliver_damage(enemy, dam, "bludgeoning");
     add_mp(-random_float(5.0));
     adjust_threat(enemy, 1.0);
     adjust_seen_threat(enemy, 1.0);
