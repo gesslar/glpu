@@ -120,9 +120,7 @@ void setup_body() {
     if(finished_setup)
         return;
 
-    _debug("We got here") ;
     add_action("command_hook", "", 1);
-    _debug("all commands: %O", commands()) ;
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
     // set_proper_name(name());

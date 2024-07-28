@@ -123,10 +123,8 @@ void setup_body() {
     if(finished_setup)
         return;
 
-    _debug("We got here") ;
     add_action("command_hook", "", 1);
     add_action("revive", "revive") ;
-    _debug("all commands: %O", commands()) ;
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
@@ -443,7 +441,7 @@ int command_hook(string arg) {
         if(file_exists(path[i] + verb + ".c"))
             cmds += ({ path[i] + verb });
     }
-printf("cmds = %O\n", cmds) ;
+
     if(sizeof(cmds) > 0) {
         mixed return_value;
 
