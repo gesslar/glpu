@@ -25,4 +25,7 @@
 #define SIG_USER_LINKDEAD       202
 #define SIG_USER_LINK_RESTORE   203
 
+#define SIG_PLAYER_DIED         300
+#define SIG_PLAYER_REVIVED      301
+
 #endif // __SIGNAL_H__

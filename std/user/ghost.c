@@ -164,6 +164,8 @@ int revive(string str) {
     tell(body, "You have revived.\n") ;
     tell_down(environment(body), body->query_name() + " has revived.\n", 0, body) ;
 
+    emit(SIG_PLAYER_REVIVED, body) ;
+
     remove() ;
 
     return 1 ;
@@ -788,17 +790,6 @@ int query_log_level() {
 int supports_unicode() {
     if(has_screenreader()) return 0 ;
     return query_env("unicode") == "on" ;
-}
-
-// Maybe you can get it to print to the user, but I can't. I even tried
-// receive() 😭
-void on_crash(mixed arg...) {
-    int result ;
-
-    if(previous_object() != signal_d())
-        return ;
-
-    catch(result = save_user()) ;
 }
 
 void mudlib_unsetup() {

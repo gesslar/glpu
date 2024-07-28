@@ -271,7 +271,7 @@ void die() {
     tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
 
     save_user() ;
-
+    emit(SIG_PLAYER_DIED, this_object(), killed_by()) ;
     corpse = new(OBJ_CORPSE) ;
     corpse->setup_corpse(this_object(), killed_by()) ;
     corpse->move(environment()) ;
@@ -906,8 +906,6 @@ int supports_unicode() {
     return query_env("unicode") == "on" ;
 }
 
-// Maybe you can get it to print to the user, but I can't. I even tried
-// receive() 😭
 void on_crash(mixed arg...) {
     int result ;
 

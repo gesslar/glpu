@@ -49,3 +49,6 @@
 
 # Boot Daemon
 /adm/daemons/boot
+
+# Death Daemon
+/adm/daemons/death

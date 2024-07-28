@@ -15,6 +15,7 @@
 #define CRASH_D         DIR_DAEMONS "crash"
 #define CURRENCY_D      DIR_DAEMONS "currency"
 #define DB_D            DIR_DAEMONS "db"
+#define DEATH_D         DIR_DAEMONS "death"
 #define FINGER_D        DIR_DAEMONS "finger_d"
 #define GA_SERVER       DIR_DAEMONS "ga_server"
 #define GH_ISSUES_D     DIR_DAEMONS "github_issues"
