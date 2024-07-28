@@ -9,7 +9,7 @@ public nomask object compile_object(string file) {
     parts = dir_file(file) ;
     mob_name = parts[1] ;
 
-    mob_file = "/areas/mobs/" + mob_name + ".txt" ;
+    mob_file = "/d/mobs/" + mob_name + ".txt" ;
     if(file_size(mob_file) < 1)
         return 0 ;
 

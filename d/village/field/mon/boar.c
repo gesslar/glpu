@@ -1,5 +1,5 @@
 /**
- * @file /areas/village/field/mon/boar.c
+ * @file /d/village/field/mon/boar.c
  * @description A boar monster
  *
  * @created 2024/07/24 - Gesslar

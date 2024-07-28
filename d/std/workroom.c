@@ -35,8 +35,8 @@ void create() {
           "you can type 'more here'. There is a sign on the wall."
      );
      set_exits( ([
-        "square": "/areas/village/virtual_area/square",
-        "void"  : "/areas/std/void"
+        "square": "/d/village/virtual_area/square",
+        "void"  : "/d/std/void"
      ]) );
      set_items( ([
           "sign" : "The sign reads:\n"

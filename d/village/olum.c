@@ -1,4 +1,4 @@
-// /areas/village/olum.c
+// /d/village/olum.c
 // Zone file for the village of Olum
 //
 // Created:     2024/02/04: Gesslar

@@ -5,7 +5,7 @@
 (/doc/) (doc)[rw]:(admin)[rwl]:(all)[r]
 (/tmp/) (all)[rw]
 (/adm/etc/login/) (admin)[rwnseb]:(all)[r]
-(/areas/lpuni) (admin)[rwnse]:(all)[rwe]:samantha[rwse]
+(/d/lpuni) (admin)[rwnse]:(all)[rwe]:samantha[rwse]
 (/data/) (admin)[rwo]
 (/home/) (admin)[rwnsleb]:(all)[rle]
 (/adm/) (admin)[rwnsebo]

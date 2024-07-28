@@ -1,4 +1,4 @@
-// /areas/village/virtual_area/financier.c
+// /d/village/virtual_area/financier.c
 // Bank
 //
 // Created:     2024/02/29: Gesslar

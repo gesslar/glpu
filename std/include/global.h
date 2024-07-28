@@ -25,8 +25,8 @@
 #define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"
 #define LOGIN_OB   "/adm/obj/login"
-#define VOID_ROOM  "/areas/std/void"
-#define SAFE_ROOM  "/areas/std/safe_room"
+#define VOID_ROOM  "/d/std/void"
+#define SAFE_ROOM  "/d/std/safe_room"
 
 #define true 1
 #define false 0

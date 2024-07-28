@@ -3,6 +3,6 @@
 
 #include <dirs.h>
 
-#define AREA_VILLAGE            DIR_AREAS "village/"
+#define AREA_VILLAGE            DIR_DOMAIN "village/"
 
 #endif // __AREAS_H__

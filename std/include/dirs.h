@@ -3,7 +3,7 @@
 
 #define DIR_ADM             "/adm/"
 #define DIR_ADM_OBJ         DIR_ADM "obj/"
-#define DIR_AREAS           "/areas/"
+#define DIR_DOMAIN         "/d/"
 #define DIR_CLASSES         "/std/classes/"
 #define DIR_CMDS            "/cmds/"
 #define DIR_CMDS_ADM        DIR_CMDS "adm/"

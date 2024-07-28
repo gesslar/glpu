@@ -1,4 +1,4 @@
-// /areas/village/square.c
+// /d/village/square.c
 // Short description of this file and its purpose.
 //
 // Created:     2024/02/04: Gesslar

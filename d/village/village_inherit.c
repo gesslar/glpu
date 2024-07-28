@@ -1,4 +1,4 @@
-// /areas/village/village_inherit.c
+// /d/village/village_inherit.c
 // General inherit for the village area
 //
 // Created:     2024/02/04: Gesslar

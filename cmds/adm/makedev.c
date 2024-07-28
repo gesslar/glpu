@@ -42,7 +42,7 @@ mixed main(object caller, string args)
      mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name());
      mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/public");
      mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private");
-     cp("/areas/std/workroom.c", user_path(user->query_proper_name()));
+     cp("/d/std/workroom.c", user_path(user->query_proper_name()));
      write_file("/doc/journals/journal." + user->query_proper_name(),
          capitalize(user->query_proper_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
      catch(link("/doc/journals/journal." + user->query_proper_name(),
