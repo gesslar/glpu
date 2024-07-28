@@ -152,6 +152,7 @@ void do_receive(string message, int message_type) {
                 break;
             default:
                 term = "plain" ;
+                message_type |= NO_COLOUR;
                 break;
         }
     } else {
