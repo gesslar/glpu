@@ -6,6 +6,7 @@
 #define ALARM_D         DIR_DAEMONS "alarm"
 #define AUTODOC_D       DIR_DAEMONS "autodoc"
 #define BANK_D          DIR_DAEMONS "bank"
+#define BODY_D          DIR_DAEMONS "body"
 #define BOOT_D          DIR_DAEMONS "boot"
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COLOUR_D        DIR_DAEMONS "colour"

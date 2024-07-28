@@ -1,3 +1,14 @@
+/**
+ * @file /std/user/ghost.c
+ * @description You're a ghost OooOoOOOOoOOoOooooOOo
+ *
+ * @created 2024/07/28 - Gesslar
+ * @last_modified 2024/07/28 - Gesslar
+ *
+ * @history
+ * 2024/07/28 - Gesslar - Created
+ */
+
 /* mob.c
 
  Tacitus @ LPUniversity
@@ -99,20 +110,12 @@ void write_prompt();
 
 void mudlib_setup() {
     // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
-    path = ({"/cmds/std/"});
+    path = ({"/cmds/ghost/"});
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
-}
-
-private nosave string *body_slots = ({
-    "head", "neck", "torso", "back", "arms", "hands", "legs", "feet"
-});
-
-void query_body_slots() {
-    return copy(body_slots);
 }
 
 /* Connection functions */
@@ -122,38 +125,54 @@ void setup_body() {
 
     _debug("We got here") ;
     add_action("command_hook", "", 1);
+    add_action("revive", "revive") ;
     _debug("all commands: %O", commands()) ;
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
-    // set_proper_name(name());
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
-    if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
-    if(!query_level()) set_level(1.0) ;
-    set_level_mod(0.0) ;
+    set_race("ghost") ;
+    set_level(1.0) ;
     enable_commands();
     set("prevent_get", 1);
-    if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
-    if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
-    if(!query_env("auto_tune")) set_env("auto_tune", "all");
-    if(!query_env("biff")) set_env("biff", "on");
+    if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "off"]));
     if(!query_env("prompt")) set_env("prompt", ">");
-    init_capacity() ;
     update_regen_interval() ;
     init_vitals() ;
-
     set_log_prefix(sprintf("(%O)", this_object())) ;
+}
+
+int revive(string str) {
+    object body ;
+    object user = query_user() ;
+
+    if(this_body() != this_object())
+        return 0;
+
+    body = BODY_D->create_body_basic(user) ;
+
+    exec(body, this_object()) ;
+    body->setup_body() ;
+    body->set_dead(0) ;
+    body->set_hp(1) ;
+    body->set_sp(1) ;
+    body->set_mp(1) ;
+
+    body->set_user(user) ;
+    user->set_body(body) ;
+
+    body->move(environment()) ;
+
+    tell(body, "You have been revived.\n") ;
+    tell_down(environment(body), body->query_name() + " has revived.\n", 0, body) ;
+
+    remove() ;
+
+    return 1 ;
 }
 
 string *query_all_commands() {
     return commands() ;
-}
-
-void init_capacity() {
-    set_max_capacity(1000) ;
-    set_max_volume(500) ;
-
-    ::init_capacity() ;
 }
 
 void enter_world() {
@@ -164,15 +183,6 @@ void enter_world() {
     if(!is_member(query_privs(previous_object()), "admin"))
         return;
 
-    catch {
-        ch = explode(query_env("auto_tune"), " ");
-        if(sizeof(ch) > 0)
-            foreach(string channel in ch) {
-                CMD_CHANNEL->tune(channel, query_privs(this_object()), 1, 1) ;
-            }
-    };
-
-    set("last_login", time());
     write("\n");
     say(capitalize(query_name()) + " has entered.\n");
 }
@@ -181,34 +191,29 @@ void exit_world() {
     string *cmds;
     int i;
 
-    if(this_body() != this_object()) return;
+    if(this_body() != this_object())
+        return;
 
-    if(file_size(user_path(query_proper_name()) + ".quit") > 0) {
-        cmds = explode(read_file(user_path(query_proper_name()) + ".quit"), "\n");
-        if(sizeof(cmds) <= 0) return;
-        for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
-    }
 
-    set("last_login", time());
+    // set("last_login", time());
 
     if(environment())
         say(query_name()+ " leaves " + mud_name() + ".\n");
 
-    save_user();
+    // save_user();
 }
 
 void net_dead() {
     if(origin() != ORIGIN_DRIVER)
         return;
 
-    abort_edit() ;
-
-    set("last_login", time());
-    save_user();
+    // set("last_login", time());
+    // save_user();
 
     if(environment())
-        tell_all(environment(), query_name()+ " falls into stupour.\n");
-    set("extra_short/link_dead", "[stupour]") ;
+        tell_all(environment(), query_name()+ " begins to fade.\n");
+
+    set("extra_short/link_dead", "[fading]") ;
     log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
 
     if(interactive(this_object()))
@@ -216,17 +221,16 @@ void net_dead() {
 }
 
 void reconnect() {
-    restore_user();
-    set("last_login", time());
+    // restore_user();
+    // set("last_login", time());
     tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
+    if(environment()) tell_room(environment(), query_name() + " brigtens.\n", this_body());
     delete("extra_short/link_dead") ;
     /* reconnection logged in login object */
 }
 
 /* Body Object Functions */
 void heart_beat() {
-
     if(userp()) {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
@@ -244,63 +248,10 @@ void heart_beat() {
         }
     }
 
-    if(!is_dead() && query_hp() <= 0.0) {
-        set_dead(1) ;
-        die() ;
-        return ;
-    }
-
-    heal_tick() ;
-
     evaluate_heart_beat() ;
 
     if(gmcp_enabled())
         GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, null) ;
-}
-
-void die() {
-    object ghost ;
-    object corpse ;
-
-    if(!environment())
-        return ;
-
-    if(!is_dead())
-        return ;
-
-    stop_all_attacks() ;
-    tell(this_object(), "You have perished.\n");
-    tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
-
-    save_user() ;
-
-    corpse = new(OBJ_CORPSE) ;
-    corpse->setup_corpse(this_object(), killed_by()) ;
-    corpse->move(environment()) ;
-    if(userp()) {
-        ghost = BODY_D->create_ghost(query_user(), this_object()) ;
-        exec(ghost, this_object()) ;
-        ghost->setup_body() ;
-        query_user()->set_body(ghost) ;
-        ghost->move(environment()) ;
-    }
-
-    if(objectp(ghost))
-        remove() ;
-}
-
-void restore_user() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
-}
-
-int save_user() {
-    int result ;
-
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    catch(result = save_object(user_mob_data(query_proper_name())));
-
-    return result;
 }
 
 varargs int move(mixed ob, int flag) {
@@ -432,7 +383,9 @@ int command_hook(string arg) {
 
     caller = this_body() ;
 
-    if(interactive(caller)) if(caller != this_object()) return 0;
+    if(interactive(caller))
+        if(caller != this_object())
+            return 0;
 
     if(query_env("away")) {
         write("You return from away\n");
@@ -453,13 +406,15 @@ int command_hook(string arg) {
         result = evaluate_result(result) ;
         if(result == 1) return 1 ;
     }
+
     // Now let's check in our environment
     if(environment()) {
         obs = ({ environment() }) + all_inventory(environment()) - ({ this_object() }) ;
         foreach(ob in obs) {
             result = ob->evaluate_command(this_object(), verb, arg) ;
             result = evaluate_result(result) ;
-            if(result == 1) return 1 ;
+            if(result == 1)
+                tell(this_object(), "You may not interact with the physical plane.\n") ;
         }
     }
 
@@ -473,44 +428,13 @@ int command_hook(string arg) {
 
     catch {
         if(environment()) {
-            // if(environment()->valid_exit(verb)) {
-            //     if(this_body()->move_allowed(environment(this_body())->query_exit(verb))) {
-            //         if(this_body()->query_env("move_in") && wizardp(this_body())) {
-            //             custom = this_body()->query_env("move_in");
-            //             tmp = custom;
-            //             tmp = replace_string(tmp, "$N", query_cap_name());
-            //             tell_room(environment(this_body())->query_exit(verb), capitalize(tmp) + "\n", this_body());
-            //         } else {
-            //             tell_room(environment(this_body())->query_exit(verb), capitalize(name()) + " has entered the room.\n", this_body());
-            //         }
-
-            //         if(this_body()->query_env("move_out") && wizardp(this_body())) {
-            //             custom = this_body()->query_env("move_out");
-            //             tmp = custom;
-            //             tmp = replace_string(tmp, "$N", query_ssssssssssssssssssssse());
-            //             tmp = replace_string(tmp, "$D", verb);
-            //             tell_room(environment(this_body()), capitalize(tmp) + "\n", this_body());
-            //         } else {
-            //             tell_room(environment(this_body()), capitalize(name())
-            //                 + " leaves through the " + verb + " exit.\n", this_body());
-            //         }
-
-            //         write("You move to " + environment(this_body())->query_exit(verb)->query_short() +
-            //             ".\n\n");
-
-            //         this_body()->move(environment(this_body())->query_exit(verb));
-            //         return 1;
-            //     } else {
-            //         write("Error [move]: Unable to move through that exit.\n");
-            //         return 1;
-            //     }
-            // }
-
+            // TODO: have the soul daemon prevent ghosts
             if(SOUL_D->request_emote(verb, arg)) return 1;
         }
 
         err = catch(load_object(CHAN_D));
         if(!err) {
+            // TODO: have the channel daemon prevent ghosts
             if(CHAN_D->chat(verb, query_privs(), arg)) return 1;
         }
     };
@@ -519,7 +443,7 @@ int command_hook(string arg) {
         if(file_exists(path[i] + verb + ".c"))
             cmds += ({ path[i] + verb });
     }
-
+printf("cmds = %O\n", cmds) ;
     if(sizeof(cmds) > 0) {
         mixed return_value;
 
@@ -581,7 +505,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
         if(curr) {
             if(depart_message != "SILENT") {
                 if(!depart_message) depart_message = query_env("move_out");
-                if(!depart_message) depart_message = "$N leaves $D.";
+                if(!depart_message) depart_message = "$N floats out $D.";
                 if(!dir) dir = "somewhere" ;
 
                 tmp = replace_string(depart_message, "$N", query_name()) ;
@@ -597,7 +521,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             curr = environment() ;
 
             if(!arrive_message) arrive_message = query_env("move_in");
-            if(!arrive_message) arrive_message = "$N arrives.\n";
+            if(!arrive_message) arrive_message = "$N floats in.\n";
             tmp = replace_string(arrive_message, "$N", query_name());
 
             tell_down(curr, tmp, null, ({ this_object() })) ;
@@ -720,42 +644,6 @@ void remove_all_modules() {
     modules = ([ ]) ;
 }
 
-protected nosave mapping equipment = ([ ]) ;
-public mapping query_equipped() { return copy(equipment); }
-public object equipped_on(string slot) { return equipment[slot] || null ; }
-mixed can_equip(string slot, object ob) ;
-
-int equip(string slot, object ob) {
-    if(!of(slot, body_slots))
-        return 0 ;
-
-    if(equipment[slot])
-        return 0 ;
-
-    equipment[slot] = ob ;
-
-    return 1 ;
-}
-
-int unequip(string slot) {
-    if(!equipment[slot])
-        return 0 ;
-
-    map_delete(equipment, slot) ;
-
-    return 1 ;
-}
-
-mixed can_equip(string slot, object ob) {
-    if(!of(slot, body_slots))
-        return "Your body cannot wear something in there." ;
-
-    if(equipment[slot])
-        return "You are already wearing something like that." ;
-
-    return 1 ;
-}
-
 /**
  * @description This function is called by the driver when the environment of
  *              an object is destructed. It will attempt to move the object to
@@ -796,10 +684,6 @@ void move_or_destruct(object ob) {
     }
 
     move_object(ob) ;
-}
-
-void clear_gmcp_data() {
-    gmcp_data = ([ ]) ;
 }
 
 void set_gmcp_client(mapping data) {
@@ -854,7 +738,7 @@ mixed query_environ(string key) {
     return environ_data[key] ;
 }
 
-void clear_environ_data() {
+void clear_environ() {
     environ_data = ([ ]) ;
 }
 

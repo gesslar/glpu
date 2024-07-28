@@ -15,14 +15,16 @@
  * @efun_override exec
  * @description This function is an override for the efun exec(). It checks
  *              if the object calling the function has admin privs. If it does,
- *              it will
- * execute the function as normal. If it does not, it will return 0.
+ *              it will execute the function as normal. If it does not, it will
+ *              return 0.
  * @param {object} to - The object to exec to.
  * @param {object} from - The object to exec from.
  * @returns {int} - 1 if the exec was successful, 0 if it was not.
  */
-int exec( object to, object from ) {
-    if(is_member(query_privs(previous_object()), "admin"))
+int exec(object to, object from) {
+    if(is_member(query_privs(previous_object()), "admin") ||
+       base_name(previous_object()) == STD_GHOST ||
+       base_name(previous_object()) == STD_BODY)
         return efun::exec(to, from);
     else
         return 0;
@@ -37,7 +39,7 @@ int exec( object to, object from ) {
  * @param {int} how - The type of shutdown to perform.
  * @returns {void}
  */
-void shutdown( int how ) {
+void shutdown(int how) {
     object po = previous_object() ;
     string f = base_name(po) ;
 

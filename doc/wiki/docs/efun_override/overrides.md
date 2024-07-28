@@ -165,7 +165,7 @@ write a message to the room using the message() efun.
 ### Synopsis
 
 ```c
-void shutdown( int how )
+void shutdown(int how)
 ```
 
 ### Parameters
@@ -211,7 +211,7 @@ write a message to the room using the message() efun.
 ### Synopsis
 
 ```c
-int exec( object to, object from )
+int exec(object to, object from)
 ```
 
 ### Parameters
@@ -227,8 +227,8 @@ int exec( object to, object from )
 
 This function is an override for the efun exec(). It checks
 if the object calling the function has admin privs. If it does,
-it will
-execute the function as normal. If it does not, it will return 0.
+it will execute the function as normal. If it does not, it will
+return 0.
 
 ## userp
 

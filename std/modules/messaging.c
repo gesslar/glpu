@@ -85,18 +85,6 @@ varargs void receive_down(string msg, object *exclude, int msg_type) {
     contents->receive_down(msg, exclude, msg_type);
 }
 
-private string colour_replace(string colour, string text) {
-    int col = to_int(colour);
-
-    if(nullp(col))
-        return text;
-
-    colour = sprintf("%:4d", col);
-    text = "\e" + colour + "\e" + text + "\eres\e";
-
-    return text;
-}
-
 // tell_all() is a function that sends a message to the environment of an object
 // and all of the contents of that object, excluding the object passed as the
 // second argument.
@@ -155,16 +143,12 @@ void do_receive(string message, int message_type) {
                 message_type |= NO_COLOUR;
                 break;
         }
+
+        if(!(message_type & NO_COLOUR))
+            message = COLOUR_D->body_colour_replace(this_object(), message, message_type) ;
     } else {
         // For non-user objects, also disable coloured messages.
         message_type |= NO_COLOUR;
-    }
-
-    if(living()) {
-        if(message_type & MSG_COMBAT_HIT)
-            message = colour_replace(query_env("combat_hit_colour", ""), message);
-        else if(message_type & MSG_COMBAT_MISS)
-            message = colour_replace(query_env("combat_miss_colour", ""), message);
     }
 
     // If NO_COLOUR flag is set, substitute colours with "plain" (i.e., no

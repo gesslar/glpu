@@ -136,7 +136,7 @@ mixed render_object(object caller, object room, string target) {
         string result = highlight_view(caller, room->query_item(target), keys(room->query_items())) ;
         result = append(result, "\n");
         tell(caller, result);
-        tell_direct(room, name + " looks at " + target + ".\n", null, ({ caller }) );
+        tell_down(room, name + " looks at " + target + ".", null, ({ caller }) );
         return 1;
     }
 
@@ -164,7 +164,7 @@ mixed render_object(object caller, object room, string target) {
     }
 
     tell(ob, name + " looks at you.") ;
-    tell_down(room, name + " looks at " + get_short(ob) + ".\n", null, ({ caller, ob }) );
+    tell_down(room, name + " looks at " + ob->query_short() + ".", null, ({ caller, ob }) );
 
     tell(caller, desc) ;
 

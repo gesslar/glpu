@@ -396,13 +396,43 @@ string substitute_too_dark(string text) {
     else return text ;
 }
 
-int color_to_greyscale(int color_code) {
+int colour_to_greyscale(int colour_code) {
     float normalized ;
     int greyscale_code ;
 
-    normalized = color_code / 255.0;
+    normalized = colour_code / 255.0;
     greyscale_code = to_int(normalized * 23) + 232;
 
-    // Return the corresponding greyscale color code
+    // Return the corresponding greyscale colour code
     return greyscale_code;
+}
+
+public string body_colour_replace(object body, string text, int message_type) {
+    int col ;
+    string pref, colour ;
+
+    if(!objectp(body) || !stringp(text) || !strlen(text) || !message_type)
+        return text ;
+
+    if(message_type & NO_COLOUR)
+        return text ;
+    else if(message_type & MSG_COMBAT_HIT)
+        pref = body->query_env("combat_hit_colour") ;
+    else if(message_type & MSG_COMBAT_MISS)
+        pref = body->query_env("combat_miss_colour") ;
+    else
+        return text ;
+
+    if(!stringp(pref) || !strlen(pref))
+        return text ;
+
+    col = to_int(pref);
+
+    if(nullp(col))
+        return text;
+
+    colour = sprintf("%:4d", col);
+    text = "\e" + colour + "\e" + text + "\eres\e";
+
+    return text;
 }

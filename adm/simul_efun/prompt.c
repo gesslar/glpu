@@ -102,7 +102,7 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) {
 
     mess += "\n" ;
 
-    mess += "Select one of (color), (0-255), (c)olour list, (p)lain, or (q)uit.\n"
+    mess += "Select one of (colour), (0-255), (c)olour list, (p)lain, or (q)uit.\n"
             "Your choice: " ;
 
     tell(body, mess) ;

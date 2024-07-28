@@ -1,6 +1,6 @@
 /**
  * @file /adm/daemons/modules/colour/css.c
- * @description CSS color codes for colour, forward and reverse
+ * @description CSS colour codes for colour, forward and reverse
  *
  * @created 2024/07/14 - Gesslar
  * @last_modified 2024/07/14 - Gesslar
@@ -9,7 +9,7 @@
  * 2024/07/14 - Gesslar - Created
  */
 
-mapping color_to_hex = ([
+mapping colour_to_hex = ([
     "000": "#000000", "001": "#800000", "002": "#008000", "003": "#808000",
     "004": "#000080", "005": "#800080", "006": "#008080", "007": "#C0C0C0",
     "008": "#808080", "009": "#FF0000", "010": "#00FF00", "011": "#FFFF00",
@@ -76,7 +76,7 @@ mapping color_to_hex = ([
     "252": "#D0D0D0", "253": "#DADADA", "254": "#E4E4E4", "255": "#EEEEEE"
 ]);
 
-mapping hex_to_color = ([
+mapping hex_to_colour = ([
     "#000000": "000", "#800000": "001", "#008000": "002", "#808000": "003",
     "#000080": "004", "#800080": "005", "#008080": "006", "#C0C0C0": "007",
     "#808080": "008", "#FF0000": "009", "#00FF00": "010", "#FFFF00": "011",
@@ -143,16 +143,16 @@ mapping hex_to_color = ([
     "#D0D0D0": "252", "#DADADA": "253", "#E4E4E4": "254", "#EEEEEE": "255"
 ]);
 
-varargs mapping query_color_to_hex(int color) {
-    if(nullp(color)) {
-        return color_to_hex;
+varargs mapping query_colour_to_hex(int colour) {
+    if(nullp(colour)) {
+        return colour_to_hex;
     }
-    return color_to_hex[color];
+    return colour_to_hex[colour];
 }
 
-varargs mapping query_hex_to_color(string hex) {
+varargs mapping query_hex_to_colour(string hex) {
     if(nullp(hex)) {
-        return hex_to_color;
+        return hex_to_colour;
     }
 
     hex = upper_case(hex);
@@ -160,5 +160,5 @@ varargs mapping query_hex_to_color(string hex) {
         hex = hex[1..];
     }
 
-    return hex_to_color[hex];
+    return hex_to_colour[hex];
 }

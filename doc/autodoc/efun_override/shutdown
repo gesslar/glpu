@@ -1,4 +1,4 @@
-void shutdown( int how )
+void shutdown(int how)
 
 Parameters:
 

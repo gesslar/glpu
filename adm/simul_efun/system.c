@@ -177,9 +177,9 @@ private nosave mapping _symbols = ([
 
 /**
  * @function _format_message
- * @description Formats a message with a color and the name of the previous
+ * @description Formats a message with a colour and the name of the previous
                 object.
- * @param {string} color - The color to use for the message.
+ * @param {string} colour - The colour to use for the message.
  * @param {string} str - The message to format.
  * @param {mixed} [args] - Optional arguments to format the message.
  * @returns {string} - The formatted message or null if there is no previous

@@ -105,7 +105,7 @@ string setup_field_longs() {
         "North of the village, an open grassy field spreads out, the tall "
         "blades of grass swaying gently in the breeze. The field is a vibrant "
         "green, with the occasional wildflower peeking through, adding "
-        "splashes of color to the verdant landscape. The air is fresh and "
+        "splashes of colour to the verdant landscape. The air is fresh and "
         "carries the faint scent of earth and grass, creating a serene and "
         "peaceful atmosphere. This expansive field invites travelers to "
         "wander and enjoy the natural beauty that lies just beyond the "

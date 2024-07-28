@@ -433,17 +433,21 @@ void enter_world(int reconnecting) {
     object room ;
 
     if(!objectp(body))
-        body = create_body(query_privs(user));
+        body = BODY_D->create_body(user) ;
+
+    if(body->is_dead()) {
+        body->remove() ;
+        body = BODY_D->create_ghost(user);
+    }
 
     exec(body, this_object());
-
-    body->setup_body();
+    body->setup_body() ;
     body->set_user(user);
+    user->clear_gmcp_data() ;
+    user->set_gmcp_data(login_gmcp_data) ;
+    user->clear_environ_data() ;
+    user->set_environ_data(environ_data) ;
     user->set_body(body);
-    body->set_gmcp_client(login_gmcp_data["client"]);
-    body->set_gmcp_supports(login_gmcp_data["supports"]);
-    body->clear_environ() ;
-    body->set_environ(environ_data) ;
 
     if(body->gmcp_enabled())
         GMCP_D->init_gmcp(body) ;

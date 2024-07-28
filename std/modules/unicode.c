@@ -33,7 +33,7 @@ private nomask nosave mapping _c = ([
     "white" : "\e0015\e",
 ]) ;
 
-private nomask nosave string *slider_colors = ({
+private nomask nosave string *slider_colours = ({
     "\e0009\e", // red
     "\e0202\e", // dark orange
     "\e0208\e", // orange
@@ -168,14 +168,14 @@ string green_bar(int value, int max, int width) {
 }
 
 //: FUNCTION critical_bar
-// A bar that change color the lower it gets
+// A bar that change colour the lower it gets
 string critical_bar(int value, int max, int width) {
     object body = this_body() ;
     int green, white;
     float p;
     string barchar = supports_unicode() ? "▅" : "=";
     string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_color = "\e0036\e";
+    string bar_colour = "\e0036\e";
 
     if(body->has_screenreader())
         return value + "/" + max;
@@ -183,11 +183,11 @@ string critical_bar(int value, int max, int width) {
     p = value / (max * 1.0);
 
     if(p < 0.10)
-        bar_color = _c["purple"] ;
+        bar_colour = _c["purple"] ;
     else if(p < 0.20)
-        bar_color = _c["yellow"] ;
+        bar_colour = _c["yellow"] ;
     else if(p < 0.50)
-      bar_color = _c["gold"] ;
+      bar_colour = _c["gold"] ;
 
     if(value > max)
         value = max;
@@ -198,19 +198,19 @@ string critical_bar(int value, int max, int width) {
     white = width - 1 - green;
 
     return sprintf(
-        "[" + bar_color + "%s\eres\e"+_c["black"]+"%s\eres\e]",
+        "[" + bar_colour + "%s\eres\e"+_c["black"]+"%s\eres\e]",
             repeat_string(barchar, green), repeat_string(nobarchar, white));
 }
 
 //: FUNCTION reverse_critical_bar
-// A bar that change color the lower it gets
+// A bar that change colour the lower it gets
 string reverse_critical_bar(int value, int max, int width) {
     object body = this_body() ;
     int green, white;
     float p;
     string barchar = supports_unicode() ? "▅" : "=";
     string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_color = "\e0036\e";
+    string bar_colour = "\e0036\e";
 
     if(!max)
         return "";
@@ -221,11 +221,11 @@ string reverse_critical_bar(int value, int max, int width) {
     p = value / (max * 1.0);
 
     if(p < 0.30)
-        bar_color = _c["green"] ;
+        bar_colour = _c["green"] ;
     if(p < 0.60)
-        bar_color = _c["gold"] ;
+        bar_colour = _c["gold"] ;
     else if (p < 0.80)
-        bar_color = _c["yellow"] ;
+        bar_colour = _c["yellow"] ;
 
     if(value > max)
         value = max;
@@ -235,7 +235,7 @@ string reverse_critical_bar(int value, int max, int width) {
         green = 0;
     white = width - 1 - green;
 
-    return sprintf("[" + bar_color + "%s\eres\e"+_c["black"]+"%s\eres\e]",
+    return sprintf("[" + bar_colour + "%s\eres\e"+_c["black"]+"%s\eres\e]",
         repeat_string(barchar, green), repeat_string(nobarchar, white));
 }
 
@@ -266,26 +266,26 @@ string slider_red_green(int value, int max, int width) {
 
     return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
     return_string = return_string[0..(width / 2)] + return_string[(width / 2 + 1)..];
-    return_string = gradient_string(return_string, slider_colors);
+    return_string = gradient_string(return_string, slider_colours);
     return_string = replace_string(return_string, x_char, _c["white"]+ x_char + "\eres\e");
     return "[" + return_string + "\eres\e] ";
 }
 
-//: FUNCTION slider_colors_sum
-// A slider with multiple colors and cumulative ranges and a marker.
-// The colors mapping should be on the format:
+//: FUNCTION slider_colours_sum
+// A slider with multiple colours and cumulative ranges and a marker.
+// The colours mapping should be on the format:
 //   ([20:"040",50:"041",100:"042"])
-// where each number is bigger and strings are ANSI colors.
-string slider_colors_sum(int value, mapping colors, int width) {
+// where each number is bigger and strings are ANSI colours.
+string slider_colours_sum(int value, mapping colours, int width) {
     object body = this_body() ;
     int marker;
-    int max = sort_array(keys(colors), -1)[0];
+    int max = sort_array(keys(colours), -1)[0];
     string return_string;
-    int color_add = 0;
+    int colour_add = 0;
     int next_pos = 0;
     string x_char;
     string line_char;
-    string color_after_marker; // Save this color to make things easier later.
+    string colour_after_marker; // Save this colour to make things easier later.
 
     if(body->has_screenreader())
         return value + "/" + max;
@@ -307,20 +307,20 @@ string slider_colors_sum(int value, mapping colors, int width) {
     else
         return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
 
-    foreach(int val in sort_array(keys(colors), 1)) {
-        string col = colors[val];
+    foreach(int val in sort_array(keys(colours), 1)) {
+        string col = colours[val];
         if(!next_pos)
             return_string = col + return_string;
         if(next_pos)
-            return_string = return_string[0..(next_pos + color_add)] + col +
-                            return_string[((next_pos + color_add) + 1)..];
-        color_add += strlen(col) ; // TODO: Check this is correct
+            return_string = return_string[0..(next_pos + colour_add)] + col +
+                            return_string[((next_pos + colour_add) + 1)..];
+        colour_add += strlen(col) ; // TODO: Check this is correct
         next_pos = width * (1.0 * val / max);
-        if (next_pos > marker && !color_after_marker)
-            color_after_marker = col;
+        if (next_pos > marker && !colour_after_marker)
+            colour_after_marker = col;
     }
 
-    return_string = replace_string(return_string, x_char, _c["white"] + x_char + color_after_marker);
+    return_string = replace_string(return_string, x_char, _c["white"] + x_char + colour_after_marker);
 
     return "[" + return_string + "\eres\e] ";
 }

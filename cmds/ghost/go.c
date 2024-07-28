@@ -1,0 +1,40 @@
+// /cmds/std/go.c
+// Command for moving around in the game.
+//
+// Created:     2024/02/03: Gesslar
+// Last Change: 2024/02/03: Gesslar
+//
+// 2024/02/03: Gesslar - Created
+
+inherit STD_CMD ;
+
+mixed main(object tp, string arg) {
+    mixed dest ;
+    mixed result ;
+    object room = environment(tp) ;
+
+    result = MOVE_D->allow_walk_direction(tp, room, arg) ;
+    if(result != 1) {
+        if(stringp(result))
+            return result ;
+        else
+            return "You may not move in that direction." ;
+    }
+
+    dest = room->query_exit_dest(arg) ;
+    result = MOVE_D->prevent_walk_direction(tp, room, dest) ;
+    if(result != 0) {
+        if(stringp(result))
+            return result ;
+        else
+            return "You may not move in that direction." ;
+    }
+
+    if(tp->move_living(dest, arg) != MOVE_OK)
+        return "You are not allowed to go there." ;
+
+    MOVE_D->pre_walk_direction(tp, room, arg) ;
+    MOVE_D->post_walk_direction(tp, dest, arg) ;
+
+    return 1 ;
+}
