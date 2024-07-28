@@ -26,8 +26,11 @@ mixed main(object caller, string str) {
 
     err = catch(ob = new(str));
 
-    if(stringp(err) || !ob)
-        return "Error [clone]: An error was encountered when cloning the object:\n" + err  ;
+    if(stringp(err))
+        return _error("An error was encountered when cloning the object:\n%s", err) ;
+
+    if(!ob)
+        return _error("Unable to clone the object.");
 
     short = get_short(ob);
     file = file_name(ob);

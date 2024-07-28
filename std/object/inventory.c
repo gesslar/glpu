@@ -64,6 +64,9 @@ object add_inventory(mixed file, mixed args...) {
         log_file("OBJECT", e) ;
     }
 
+    if(!ob)
+        return 0 ;
+
     ob->set_spawn_info(([
         "created" : time(),
         "spawn_point" : file_name(),

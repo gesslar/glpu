@@ -1,5 +1,5 @@
 /**
- * @file /std/area/mobiles/pig.c
+ * @file /std/mobiles/pig.c
  * @description Virtual pigs
  *
  * @created 2024/07/27 - Gesslar

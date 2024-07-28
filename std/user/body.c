@@ -264,7 +264,7 @@ void die() {
     tell_all(environment(), query_name() + " has perished.\n", 0, this_object()) ;
 
     if(!userp()) {
-        object corpse = new(STD_CORPSE) ;
+        object corpse = new(OBJ_CORPSE) ;
         corpse->setup_corpse(this_object(), killed_by()) ;
         corpse->move(environment()) ;
         remove() ;
