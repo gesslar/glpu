@@ -1,4 +1,4 @@
-#include "/adm/obj/simul_efun.h"
+#include <simul_efun.h>
 
 //security.c
 

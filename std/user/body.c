@@ -105,9 +105,6 @@ void mudlib_setup() {
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
-
-    _debug("Mudlib setup = %O", this_object());
-
 }
 
 private nosave string *body_slots = ({

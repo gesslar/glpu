@@ -1,4 +1,4 @@
-#include "/adm/obj/simul_efun.h"
+#include <simul_efun.h>
 
 // mudlib: basis
 // date:   1992/09/05

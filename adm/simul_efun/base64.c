@@ -3,7 +3,7 @@
  * Minor modifications by Gesslar@ThresholdRPG
  */
 
-#include "/adm/obj/simul_efun.h"
+#include <simul_efun.h>
 
 private nosave string b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
 

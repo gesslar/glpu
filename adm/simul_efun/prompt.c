@@ -1,4 +1,4 @@
-#include "/adm/obj/simul_efun.h"
+#include <simul_efun.h>
 
 private nomask void _password(string input, object body, int attempts, int count, mixed *cb) {
     string current_password ;

@@ -13,8 +13,6 @@ void setup_body() ;
 void mudlib_setup() {
     enable_commands() ;
 
-    _debug("Mudlib setup = %O", this_object());
-
     set_name("Generic NPC");
     set_ids(({lower_case(query_name()), query_name(), "npc", "generic npc", "NPC" }));
     set_long(capitalize(query_name()) + " is a generic NPC.");
@@ -33,17 +31,13 @@ int force_me(string cmd) {
 
 int player_check() ;
 void start_heart_beat() {
-    if(player_check()) {
-        _debug("Players in environment, starting heartbeat = %O", this_object());
+    if(player_check())
         set_heart_beat(mud_config("DEFAULT_HEART_RATE"));
-    }
 }
 
 void stop_heart_beat() {
-    if(!player_check()) {
-        _debug("No players in environment, stopping heartbeat = %O", this_object());
+    if(!player_check())
         set_heart_beat(0);
-    }
 }
 
 int player_check() {

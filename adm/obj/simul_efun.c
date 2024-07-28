@@ -8,7 +8,7 @@
 // Order does not matter.
 // 1. When adding new simul_efuns, prototype them in /adm/obj/simul_efun.h
 // 2. When adding new files to the simuL_efun include list, in that file,
-//    #include "/adm/obj/simul_efun.h"
+//    #include <simul_efun.h>
 
 #include "/adm/simul_efun/arrays.c"
 #include "/adm/simul_efun/base64.c"

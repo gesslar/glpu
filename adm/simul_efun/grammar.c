@@ -1,4 +1,4 @@
-#include "/adm/obj/simul_efun.h"
+#include <simul_efun.h>
 
 // https://github.com/michaelprograms/nightmare-residuum/blob/main/lib/secure/sefun/grammar.c#L18
 
