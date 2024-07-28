@@ -97,15 +97,17 @@ void write_prompt();
 
 /* Functions */
 
-void create(mixed args...) {
-    ::create(args...) ;
-    if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
+void mudlib_setup() {
+    // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/std/"});
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
+
+    _debug("Mudlib setup = %O", this_object());
+
 }
 
 private nosave string *body_slots = ({

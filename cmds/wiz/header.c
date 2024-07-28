@@ -20,6 +20,7 @@ int is_function_declaration(string line);
 string extract_function_name(string line);
 int should_include_function(string func_name);
 string format_function(string line);
+int is_potential_function_start(string line) ;
 
 void setup() {
     string *apply_files;
@@ -118,6 +119,10 @@ string parse_file(string file) {
     int in_function = 0;
     int brace_count = 0;
     mixed open_braces, close_braces;
+    int in_comment = 0;
+    int in_if_0_block = 0;
+    int potential_function_start = 0;
+    string potential_function = "";
 
     content = read_file(file);
     lines = explode(content, "\n");
@@ -125,37 +130,50 @@ string parse_file(string file) {
     _info("Parsing file: %s", file);
 
     foreach(string line in lines) {
-        if (!in_function && is_function_declaration(line)) {
-            _info("Found function declaration: %s", line);
-            current_function = line;
-            func_name = extract_function_name(current_function);
-            if (strsrch(line, "{") != -1 && strsrch(line, "}") != -1) {
-                // Single line function with empty body
-                if (func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
-                    _info("Including single-line function: %s", func_name);
-                    file_header += format_function(current_function) + "\n";
-                    processed_functions[func_name] = 1;
-                } else {
-                    _info("Skipping function: %s (empty name: %d, should_include: %d, already processed: %d)",
-                    func_name, func_name == "", !should_include_function(func_name), processed_functions[func_name]);
+        // Skip empty lines and full-line comments
+        if (trim(line) == "" || pcre_match(trim(line), "^//")) continue;
+
+        // Handle start/end of multi-line comments
+        if (pcre_match(line, "/\\*")) in_comment = 1;
+        if (pcre_match(line, "\\*/")) {
+            in_comment = 0;
+            continue;
+        }
+        if (in_comment) continue;
+
+        // Handle #if 0 blocks
+        if (pcre_match(trim(line), "^#if 0")) in_if_0_block = 1;
+        if (pcre_match(trim(line), "^#endif") && in_if_0_block) {
+            in_if_0_block = 0;
+            continue;
+        }
+        if (in_if_0_block) continue;
+
+        if (!in_function) {
+            if (potential_function_start) {
+                potential_function += " " + trim(line);
+                if (pcre_match(potential_function, ".*\\)\\s*(\\{|;)")) {
+                    current_function = potential_function;
+                    func_name = extract_function_name(current_function);
+                    if (func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
+                        _info("Including multi-line function: %s", func_name);
+                        file_header += format_function(current_function) + "\n";
+                        processed_functions[func_name] = 1;
+                    }
+                    potential_function_start = 0;
+                    potential_function = "";
+                    if (strsrch(line, "{") != -1) {
+                        in_function = 1;
+                        brace_count = 1;
+                    }
                 }
-                current_function = "";
-            } else if (strsrch(line, "{") != -1) {
-                in_function = 1;
-                brace_count = 1;
-            } else {
-                // Single line function declaration without body
-                if (func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
-                    _info("Including single-line declaration: %s", func_name);
-                    file_header += format_function(current_function) + "\n";
-                    processed_functions[func_name] = 1;
-                } else {
-                    _info("Skipping function: %s (empty name: %d, should_include: %d, already processed: %d)",
-                    func_name, func_name == "", !should_include_function(func_name), processed_functions[func_name]);
-                }
-                current_function = "";
+            } else if (is_potential_function_start(line)) {
+                potential_function_start = 1;
+                potential_function = line;
+            } else if (is_function_declaration(line)) {
+                // ... (existing code for single-line function declarations)
             }
-        } else if (in_function) {
+        } else {
             current_function += " " + line;
             open_braces = pcre_match_all(line, "\\{");
             close_braces = pcre_match_all(line, "\\}");
@@ -166,9 +184,6 @@ string parse_file(string file) {
                     _info("Including multi-line function: %s", func_name);
                     file_header += format_function(current_function) + "\n";
                     processed_functions[func_name] = 1;
-                } else {
-                    _info("Skipping function: %s (empty name: %d, should_include: %d, already processed: %d)",
-                    func_name, func_name == "", !should_include_function(func_name), processed_functions[func_name]);
                 }
                 current_function = "";
             }
@@ -180,12 +195,9 @@ string parse_file(string file) {
 int is_function_declaration(string line) {
     int result = pcre_match(line, function_detect_regex);
     _info("pcre_match result for is_function_declaration: %d", result);
-    if (result) {
-        // Check if it's a forward declaration (ends with semicolon)
-        if (pcre_match(line, ".*;\\s*$")) {
-            _info("Forward declaration detected: %s", line);
-            return 0;
-        }
+    if (!result) {
+        // Check for potential start of multi-line declaration
+        result = is_potential_function_start(line);
     }
     _info("is_function_declaration: %s -> %d", line, result);
     return result;
@@ -227,6 +239,7 @@ int should_include_function(string func_name) {
 string format_function(string line) {
     string formatted_line;
     int brace_index;
+    string comments ;
 
     _info("Formatting function: %s", line);
 
@@ -248,14 +261,28 @@ string format_function(string line) {
     formatted_line = pcre_replace(formatted_line, "(\\s+)", ({ " " }));
     _info("After removing extra whitespace: %s", formatted_line);
 
+    // Preserve inline comments
+    comments = "";
+    while (pcre_match(formatted_line, "/\\*.*?\\*/")) {
+        string *parts = pcre_extract(formatted_line, "(.*?)(/\\*.*?\\*/)(.*)");
+        if (sizeof(parts) > 3) {
+            formatted_line = parts[1] + parts[3];
+            comments += " " + parts[2];
+        }
+    }
+
     // Ensure there's a semicolon at the end
     formatted_line = trim(formatted_line);
     if (formatted_line[<1] != ';') {
         formatted_line += ";";
     }
 
-    // Only add 'varargs' if there's a default parameter (indicated by ':')
-    if (strsrch(line, ":") != -1 && strsrch(formatted_line, "varargs") == -1) {
+    // Add back preserved comments
+    formatted_line += comments;
+
+    // Only add 'varargs' if there's a default parameter or variadic argument
+    if ((strsrch(line, ":(") != -1 || strsrch(line, "...") != -1) &&
+        strsrch(formatted_line, "varargs") == -1) {
         string visibility = "";
         if (pcre_match(formatted_line, "^(public|protected|private)")) {
             sscanf(formatted_line, "%s %s", visibility, formatted_line);
@@ -267,4 +294,10 @@ string format_function(string line) {
 
     _info("Final formatted function: %s", formatted_line);
     return formatted_line;
+}
+
+int is_potential_function_start(string line) {
+    return pcre_match(line, "^\\s*(public|protected|private|nomask|varargs)*\\s*"
+        "(int|float|void|string|object|mixed|mapping|array|buffer|function)\\s*"
+        "\\*?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(?");
 }

@@ -16,7 +16,7 @@ private string killer_name ;
 private string dead_name ;
 
 void setup_corpse(object dead, object killer) {
-    killer_name = killer->query_name() ;
+    killer_name = killer ? killer->query_name() : "unknown" ;
     dead_name = dead->query_name() ;
 
     set_name(dead_name+"'s' corpse") ;

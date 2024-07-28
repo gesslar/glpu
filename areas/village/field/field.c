@@ -10,6 +10,8 @@ inherit STD_ROOM ;
 void virtual_setup(mixed args...) {
     string file = args[0] ;
 
+    _debug("Virtual setup in %O", this_object()) ;
+
     set_zone("../olum") ;
 
     __DIR__ "field_daemon"->setup_exits(this_object(), file) ;

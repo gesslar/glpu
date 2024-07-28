@@ -90,32 +90,29 @@ varargs void receive_down(string msg, object *exclude, int msg_type) {
 varargs void receive_all(string msg, object *exclude, int msg_type) {
     object env;
     object *contents;
-    int i;
-
-    do_receive(msg, msg_type);
-
-    if(!query_environment_can_hear()) return ;
-    if(!query_contents_can_hear()) return ;
 
     if(objectp(exclude)) exclude = ({ exclude });
     if(!pointerp(exclude)) exclude = ({});
+
+    // If we've already received this message, don't propagate further
+    if(member_array(this_object(), exclude) != -1) return;
+
+    do_receive(msg, msg_type);
+
+    if(!query_environment_can_hear() && !query_contents_can_hear()) return;
+
     exclude += ({ this_object() });
 
-    env = environment() ;
-    if(env) {
-        contents = all_inventory(env);
-        contents -= exclude;
-        contents->receive_all(msg, exclude, msg_type);
-
-        if(member_array(env, exclude) == -1) {
-            exclude += ({ env });
-            env->receive_all(msg, exclude, msg_type);
-        }
+    env = environment();
+    if(env && member_array(env, exclude) == -1) {
+        exclude += ({ env });
+        env->receive_all(msg, exclude, msg_type);
     }
 
-    contents = all_inventory();
-    contents -= exclude;
-    contents->receive_all(msg, exclude, msg_type);
+    contents = all_inventory() - exclude;
+    if(sizeof(contents)) {
+        contents->receive_all(msg, exclude, msg_type);
+    }
 }
 
 varargs receive_direct(string msg, int message_type) {

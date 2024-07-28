@@ -76,7 +76,11 @@ mixed render_room(object caller, object room, int brief) {
         return "You see nothing because you have no environment!\n" ;
 
     if(devp(caller) && of(caller->query_env("look_filename"), ({ "on", "all" }))) {
-        result += "\e0032\e"+room+"\eres\e\n" ;
+        result += "\e0032\e"+room+"\eres\e" ;
+        if(virtualp(room))
+            result += " \e0068\e(vm: " + room->query_virtual_master() + ")\eres\e" ;
+
+        result += "\n" ;
     }
 
     data = get_short(room);

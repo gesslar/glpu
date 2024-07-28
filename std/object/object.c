@@ -26,6 +26,7 @@ inherit M_MESSAGING ;
 private string proper_name, short, long;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
+private nosave string virtual_master = 0;
 
 int set_name(string str);
 string query_name();
@@ -35,7 +36,7 @@ void set_proper_name(string str);
 varargs void reset(mixed args...);
 
 // Private so only driver can call it.
-protected varargs void create(mixed args...) {
+private varargs void create(mixed args...) {
     set_notify_destruct(1) ;
     init_ob() ;
 
@@ -46,6 +47,14 @@ protected varargs void create(mixed args...) {
         else
             name = null ;
     }
+
+    setup_chain(create_args...) ;
+    reset() ;
+}
+
+void virtual_start() {
+    virtual_setup_chain(create_args...) ;
+    reset() ;
 }
 
 varargs void reset() {
@@ -67,29 +76,37 @@ int remove() {
     return 1 ;
 }
 
-
-
-void set_proper_name(string str) {
+string set_proper_name(string str) {
     if(interactive(this_object()) && !is_member(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
+
     proper_name = lower_case(str);
+
     if(living())
         set_living_name(proper_name);
+
+    return proper_name ;
 }
 
 string query_proper_name() {
     return proper_name ;
 }
 
-int set_name(string str) {
+string set_name(string str) {
+    string result ;
+
     if(!str)
         return 0;
 
     name = capitalize(lower_case(str)) ;
 
-    if(!proper_name) set_proper_name(str);
+    result = set_proper_name(name) ;
+    if(!result)
+        return 0;
+
     rehash_ids() ;
-    return 1;
+
+    return result ;
 }
 
 string query_name() {
@@ -106,4 +123,12 @@ void unregister_crash() {
 
 string find_path(string path) {
     return resolve_path(query_directory(), path) ;
+}
+
+void set_virtual_master(string str) {
+    virtual_master = str;
+}
+
+string query_virtual_master() {
+    return virtual_master;
 }

@@ -20,18 +20,6 @@ int allow_move(mixed dest);
 
 private nosave mapping spawn_info = ([]) ;
 
-void create(mixed args...) {
-    ::create(args...) ;
-
-    setup_chain(create_args...) ;
-    reset() ;
-}
-
-void virtual_start() {
-    virtual_setup_chain(create_args...) ;
-    reset() ;
-}
-
 void on_destruct() {
     object env = environment() ;
 

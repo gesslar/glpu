@@ -25,7 +25,7 @@ mixed main(object tp, string str) {
         return _error("No object found with that name.") ;
 
     if(ob->is_room())
-        return _error("You cannot renew rooms.") ;
+        return _error("You cannot renew rooms. Use update.") ;
 
     if(ob->no_renew())
         return _error("That object cannot be renewed.") ;
@@ -33,16 +33,17 @@ mixed main(object tp, string str) {
     if(!clonep(ob))
         return _error("That object is not a clone. Use update instead.") ;
 
-    if(virtualp(ob))
-        return _error("You cannot renew virtual objects.") ;
-
     env = environment(ob) ;
 
     if(ob->move(VOID_ROOM) != MOVE_OK)
         return _error("Failed to move the object to the void.") ;
 
     file = base_name(ob) ;
-    tp->set_env("cwf", file) ;
+    if(virtualp(ob))
+        tp->set_env("cwf", ob->query_virtual_master()) ;
+    else
+        tp->set_env("cwf", file) ;
+
     ob->remove() ;
 
     // Destruct the original master file

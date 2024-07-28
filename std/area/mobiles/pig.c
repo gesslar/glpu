@@ -24,4 +24,5 @@ void virtual_setup(mixed args...) {
     set_long(data["long"]) ;
     set_id(({ data["id"]..., "pig", })) ;
     set_level(data["level"]) ;
+    set_race("human") ;
 }

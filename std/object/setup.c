@@ -11,6 +11,7 @@
 
 varargs void setup_chain(mixed args...) {
     int x ;
+
     call_if(this_object(), "mudlib_setup", args...) ;
 
     x = 5 ;
@@ -30,11 +31,14 @@ varargs void setup_chain(mixed args...) {
 
     call_if(this_object(), "restore_data") ;
     call_if(this_object(), "post_restore") ;
+
+    call_if(this_object(), "mudlib_complete_setup") ;
 }
 
 // exactly the same as setup_chain()
 void unsetup_chain(mixed args...) {
     int x ;
+
     call_if(this_object(), "mudlib_unsetup", args...) ;
 
     x = 5 ;
@@ -68,4 +72,6 @@ varargs void virtual_setup_chain(mixed args...) {
     x = 5;
     while (x--)
         call_if(this_object(), "post_virtual_setup_" + x, args...);
+
+    call_if(this_object(), "virtual_mudlib_complete_setup");
 }
