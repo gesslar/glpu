@@ -139,11 +139,20 @@ void do_receive(string message, int message_type) {
         term = this_object()->query_env("colour");
         // If colour is not explicitly enabled, set NO_COLOUR to disable
         // coloured messages.
-        if(term == "on") {
-            term = "high" ;
-        } else {
-            term = "plain";
-            message_type |= NO_COLOUR;
+        switch(term) {
+            case "on" :
+                term = "high" ;
+                break;
+            case "off" :
+                term = "plain" ;
+                message_type |= NO_COLOUR;
+                break;
+            case "low" :
+                term = "low" ;
+                break;
+            default:
+                term = "plain" ;
+                break;
         }
     } else {
         // For non-user objects, also disable coloured messages.
