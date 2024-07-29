@@ -13,35 +13,27 @@ mapping alias = ([]);
 
 string compute_alias(string al, string args);
 
-void add_alias(string verb, string cmd)
-{
+void add_alias(string verb, string cmd) {
      if(!adminp(previous_object()) && this_body() != this_object()) return;
 
-     if(verb[0] == '$' && strlen(verb) > 1)
-     {
+     if(verb[0] == '$' && strlen(verb) > 1) {
           if(!mapp(xverb)) xverb = ([]);
           xverb += ([ verb[1..<1] : cmd ]);
-     }
-
-     else
-     {
+     } else {
           if(!mapp(alias)) alias = ([]);
           alias += ([ verb : cmd ]);
      }
 }
 
-int remove_alias(string verb)
-{
+int remove_alias(string verb) {
      if(!adminp(previous_object()) && this_body() != this_object()) return 0;
 
-     if(alias[verb])
-     {
+     if(alias[verb]) {
           map_delete(alias, verb);
           return 1;
      }
 
-     if(xverb[verb])
-     {
+     if(xverb[verb]) {
           map_delete(xverb, verb);
           return 1;
      }
@@ -49,14 +41,12 @@ int remove_alias(string verb)
      else return 0;
 }
 
-mapping get_aliases(int all)
-{
+mapping get_aliases(int all) {
      if(!all) return alias + xverb + ([]);
-     else return GA_SERVER->get_alias(query_privs()) + GA_SERVER->get_xverb(query_privs()) + alias + xverb + ([]);
+     else return GA_SERVER->get_alias(query_privs()) + GA_SERVER->get_xverb(query_privs()) + ([]);
 }
 
-string compute_alias(string al, string args)
-{
+string compute_alias(string al, string args) {
      string *words = ({});
      string imp;
      int n = -1;
@@ -65,8 +55,7 @@ string compute_alias(string al, string args)
 
      al = replace_string(al, "$*", "::*::");
 
-     while(n != 0)
-     {
+     while(n != 0) {
           /* Scan */
 
 
@@ -85,8 +74,7 @@ string compute_alias(string al, string args)
 
           if(n == -1) break;
 
-          if(n < 1 || n > sizeof(words))
-          {
+          if(n < 1 || n > sizeof(words)) {
                al = replace_string(al, " $" + n + " ", "");
                al = replace_string(al, " $" + n, "");
                al = replace_string(al, "$" + n + " ", "");
@@ -94,15 +82,13 @@ string compute_alias(string al, string args)
                continue;
           }
 
-          if(stringp(words[n - 1]))
-          {
+          if(stringp(words[n - 1])) {
                al = replace_string(al, "$" + n, words[n - 1]);
                words[n - 1] = 0;
                n = -1;
           }
 
-          else
-          {
+          else {
                al = replace_string(al, "$" + n + " ", "");
                n = -1;
           }
@@ -113,8 +99,7 @@ string compute_alias(string al, string args)
 
      al = replace_string(al, "::*::", "$*");
 
-     if(sizeof(words))
-     {
+     if(sizeof(words)) {
           imp = implode(words, " ");
           if(al[<2..<1] == "$*") al = replace_string(al, "$*", imp);
           if(!stringp(imp) || imp == "") al = replace_string(al, " $*", "");
@@ -126,8 +111,7 @@ string compute_alias(string al, string args)
      return al;
 }
 
-string alias_parse(string verb, string args)
-{
+string alias_parse(string verb, string args) {
      string *keys;
      int i;
      mapping tmp_alias;
@@ -139,19 +123,15 @@ string alias_parse(string verb, string args)
      tmp_alias = GA_SERVER->get_alias(query_privs()) + alias;
      tmp_xverb = GA_SERVER->get_xverb(query_privs()) + xverb;
 
-     if(sizeof(tmp_alias))
-     {
+     if(sizeof(tmp_alias)) {
           if(tmp_alias[verb]) return(compute_alias(tmp_alias[verb], args));
      }
 
-     if(sizeof(tmp_xverb))
-     {
+     if(sizeof(tmp_xverb)) {
           keys = keys(tmp_xverb);
 
-          for(i = 0; i < sizeof(keys); i++)
-          {
-               if(keys[i] == verb[0..(strlen(keys[i]) - 1)])
-               {
+          for(i = 0; i < sizeof(keys); i++) {
+               if(keys[i] == verb[0..(strlen(keys[i]) - 1)]) {
                     if(args) return compute_alias(tmp_xverb[keys[i]], verb[(strlen(keys[i]))..(strlen(verb) - 1)] + " " + args);
                     else return compute_alias(tmp_xverb[keys[i]], verb[(strlen(keys[i]))..(strlen(verb) - 1)]);
                }

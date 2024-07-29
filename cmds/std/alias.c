@@ -8,82 +8,77 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string args) {
-    string verb, alias ;
-    string *out = ({ }) ;
+mixed list_aliases(object tp, int global) ;
 
-    if(!args) {
-        mapping data = caller->get_aliases(0);
-        string *keys;
-        int i ;
-        int sz ;
+mixed main(object tp, string args) {
+    string verb, alias;
+    mapping aliases ;
 
-        if(!mapp(data))
-            return "Aliases: No local aliases defined.\n" ;
-
-        keys = keys(data);
-        keys = sort_array(keys, 1) ;
-        sz = sizeof(keys);
-
-        if(!sz)
-            return "Aliases: No local aliases defined.\n" ;
-
-        out = allocate(sz + 1);
-        out[0] = "Current local aliases:";
-
-        for(i = 0; i < sz; i++) {
-            out[i+1] = sprintf("%-10s %-20s", keys[i], data[keys[i]]) ;
-        }
-
-        out += ({ "", sprintf("Number of local aliases: %d", sz) }) ;
-
-        return out ;
-    }
-
-     if(args == "-g") {
-        mapping data = caller->get_aliases(1);
-        string *keys;
-        int i, sz;
-
-        if(!mapp(data))
-            return "Aliases: No global aliases defined.\n" ;
-
-        keys = keys(data);
-        sz = sizeof(keys);
-
-        if(!sz)
-            return "Aliases: No global aliases defined.\n" ;
-
-        out = allocate(sz + 1);
-        out[0] = "Current global aliases:";
-
-        for(i = 0; i < sz; i++) {
-            out[i+1] = sprintf("%-10s %-20s", keys[i], data[keys[i]]) ;
-        }
-
-        out += ({ "", sprintf("Number of global aliases: %d", sz) }) ;
-
-        return out ;
-    }
+    if(!args) return list_aliases(tp, 0) ;
+    else if(args == "-g") return list_aliases(tp, 1) ;
 
     if(sscanf(args, "%s %s", verb, alias) == 2) {
-        if(strsrch(alias, "$*") == -1) {
-            if(alias[<1] != ' ') alias += " $*";
-            else alias += "$*";
-        }
-
         if(verb == "alias" || verb == "unalias")
-            return "Error: You may not alias 'alias' or 'unalias'.\n";
+            return _error("You may not alias 'alias' or 'unalias'.") ;
 
-        caller->add_alias(verb, alias);
+        tp->add_alias(verb, alias);
 
-        return "Alias: Added alias '" + verb + " " + alias + "'\n" ;
+        return _ok("Added alias `%s`\n>> %s", verb, alias) ;
     }
 
-    return "Syntax: alias [-g] <[$]verb> <alias>\n";
+    aliases = tp->get_aliases(0) ;
+    if(of(args, aliases)) {
+        alias = aliases[args] ;
+        return _info("%s is aliased to:\n>> %s", args, alias) ;
+    }
+    aliases = tp->get_aliases(1) ;
+    if(of(args, aliases)) {
+        alias = aliases[args] ;
+        return _info("%s is globally aliased to:\n>> %s", args, alias) ;
+    }
+
+    return _error("No such alias `%s` defined.", args) ;
 }
 
-string help(object caller) {
+mixed list_aliases(object tp, int global) {
+    mapping data = tp->get_aliases(global);
+    string *keys, header, footer ;
+    int i, sz;
+    string *out ;
+
+    if(!mapp(data))
+        return "Aliases: No aliases defined.\n" ;
+
+    if(global) {
+        header = "Current global aliases:";
+        footer = "Number of global aliases: %d";
+    } else {
+        header = "Current local aliases:";
+        footer = "Number of local aliases: %d";
+    }
+
+    keys = keys(data);
+    sz = sizeof(keys);
+
+    if(!sz)
+        return "Aliases: No aliases defined.\n" ;
+
+    keys = sort_array(keys, 1) ;
+
+    out = allocate(sz + 4) ;
+    out[0] = header ;
+    out[1] = "" ;
+    out[<2] = "" ;
+    out[<1] = sprintf(footer, sz) ;
+
+    for(i = 0; i < sz; i++) {
+        out[i+2] = sprintf("%-10s %-20s", keys[i], data[keys[i]]) ;
+    }
+
+    return out ;
+}
+
+string help(object tp) {
     return(" SYNTAX: alias [-g] <[$]verb> <alias>\n\n"
     "This command allows you to display your current aliases and\n"
     "add new ones. If you would like to view your current aliases,\n"
@@ -91,7 +86,7 @@ string help(object caller) {
     "aliases plus global aliases then affect you, provie -g as an\n"
     "argument by it's self. To add an alias, you must provide two arguments;\n"
     "the verb you wish to alias and the actual alias. You may use $n,\n"
-    "where represents a number that repsents the index of a word as an\n"
+    "where represents a number that represents the index of a word as an\n"
     "argument when the alias is parsed. (example: 'alias say say %2 %1'\n"
     "will result in the first and second word to be always switched when\n"
     "you type say). You can also use $*, which will be replaced with all\n"
