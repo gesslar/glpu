@@ -263,7 +263,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
                         bit = possessive(who[num]) ;
                         break;
                     }
-                    bit = who[num]->query_name()+"'s" ;
+                    bit = possessive_proper_noun(who[num]) ;
                     has[who[num]]++;
                     break;
                 }

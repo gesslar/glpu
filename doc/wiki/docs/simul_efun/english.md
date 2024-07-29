@@ -23,6 +23,23 @@ string cap_words(string str)
 
 Capitalizes the first letter of each word in a string.
 
+## possessive_proper_noun
+
+### Synopsis
+
+```c
+string possessive_proper_noun(mixed ob)
+```
+
+### Parameters
+
+* `mixed ob` - The object or string to convert to possessive form.
+
+### Description
+
+Returns the possessive form of a proper noun. Applies 's to the
+end of the noun.
+
 ## add_article
 
 ### Synopsis

@@ -42,6 +42,7 @@ title: simul_efun
 * [possessive](english#possessive)
 * [possessive_noun](english#possessive_noun)
 * [possessive_pronoun](english#possessive_pronoun)
+* [possessive_proper_noun](english#possessive_proper_noun)
 * [reflexive](english#reflexive)
 * [subjective](english#subjective)
 

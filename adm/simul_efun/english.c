@@ -58,6 +58,20 @@ string possessive_noun(mixed ob) {
 }
 
 /**
+ * @simul_efun possessive_proper_noun
+ * @description Returns the possessive form of a proper noun. Applies 's to the
+ *              end of the noun.
+ * @param {mixed} ob - The object or string to convert to possessive form.
+ * @return {string} - The possessive form of the proper noun.
+ */
+string possessive_proper_noun(mixed ob) {
+    if(objectp(ob)) ob = ob->query_name() ;
+    if(!stringp(ob)) return "its" ;
+
+    return ob + "'s" ;
+}
+
+/**
  * @simul_efun possessive_pronoun
  * @description Returns the possessive pronoun corresponding to the object's
  *              gender. Defaults to "its" for non-string or unknown gender.
@@ -71,6 +85,8 @@ string possessive_pronoun(mixed ob) {
     switch(ob) {
         case "male" : return "his" ;
         case "female" : return "hers" ;
+        case "other" : return "theirs" ;
+        case "none" : "its" ;
         default: return "its" ;
     }
 
@@ -89,6 +105,8 @@ string possessive(mixed ob) {
     switch(ob) {
         case "male" : return "his" ;
         case "female" : return "her" ;
+        case "other" : return "their" ;
+        case "none" : "its" ;
         default: return "its" ;
     }
 }
@@ -107,6 +125,8 @@ string reflexive(mixed ob) {
     switch(ob) {
         case "male" : return "himself" ;
         case "female" : return "herself" ;
+        case "other" : return "themself" ;
+        case "none" : "itself" ;
         default: return "itself" ;
     }
 }
@@ -125,6 +145,8 @@ string objective(mixed ob) {
     switch(ob) {
         case "male" : return "him" ;
         case "female" : return "her" ;
+        case "other" : return "them" ;
+        case "none" : "it" ;
         default: return "it" ;
     }
 }
@@ -143,6 +165,8 @@ string subjective(mixed ob) {
     switch(ob) {
         case "male" : return "he" ;
         case "female" : return "she" ;
+        case "other" : return "they" ;
+        case "none" : "it" ;
         default: return "it" ;
     }
 }
