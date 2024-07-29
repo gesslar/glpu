@@ -79,8 +79,6 @@ int kill_xp(object killer, object killed) {
     float adjustment_factor;
     int killer_level, killed_level, level_difference;
 
-    _debug("Killer: %O, Killed: %O", killer, killed);
-
     if (nullp(killer) || nullp(killed))
         return 0;
 
