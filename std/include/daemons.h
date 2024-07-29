@@ -12,7 +12,6 @@
 #define BOOT_D          DIR_DAEMONS "boot"
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COLOUR_D        DIR_DAEMONS "colour"
-#define COMBAT_D        DIR_DAEMONS "combat"
 #define CONFIG_D        DIR_DAEMONS "config"
 #define CRASH_D         DIR_DAEMONS "crash"
 #define CURRENCY_D      DIR_DAEMONS "currency"

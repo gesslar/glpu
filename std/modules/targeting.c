@@ -43,7 +43,7 @@ varargs object find_local_target(object tp, string arg, function f) {
         tell(tp, "You are in a void, you can't target anything here.");
         return 0 ;
     }
-
+#if 0
     if(!arg && test_bit(target_flags, TARGET_ATTACKER)) {
         object combat = COMBAT_D->find_combat_object(tp) ;
 
@@ -54,7 +54,7 @@ varargs object find_local_target(object tp, string arg, function f) {
                 return victim ;
         }
     }
-
+#endif
     obs = all_inventory(room) ;
     if(test_bit(target_flags, TARGET_LIVING)) {
         object *tmp = ({}) ;
