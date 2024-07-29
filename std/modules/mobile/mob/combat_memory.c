@@ -44,3 +44,8 @@ void add_to_memory(object target) {
     if(!of(name, combat_memory))
         combat_memory += ({ name }) ;
 }
+
+void unsetup() {
+    query_owner()->remove_init((: attack_on_sight :)) ;
+    query_owner()->remove_module(module_name) ;
+}
