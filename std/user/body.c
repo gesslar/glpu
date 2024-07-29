@@ -18,6 +18,7 @@
 #include <classes.h>
 #include <commands.h>
 #include <gmcp.h>
+#include <body.h>
 
 inherit STD_ITEM;
 inherit STD_CONTAINER ;
@@ -45,59 +46,10 @@ private nosave object link;
 
 /* Prototypes */
 
-/* Connection functions */
-
-void enter_world();
-void exit_world();
-void reconnect();
-
-/* User object functions */
-varargs int move(mixed ob, int flag);
-void restore_user();
-void save_user();
-object query_user();
-int set_user(object ob);
-
-/* User environmental variable functions */
-
-int set_env(string var_name, string var_value);
-varargs mixed query_env(string var_name, mixed def) ;
-mapping list_env();
-
-/* User path functions */
-
-string *query_path();
-void add_path(string str);
-void rem_path(string str);
-
-/* Communication & Interaction functions */
-
-void catch_tell(string message);
-void receive_message(string type, string msg);
-string process_input(string arg);
-int command_hook(string arg);
-private nomask int evaluate_result(mixed result) ;
-mixed* query_commands();
-int force_me(string cmd);
-
-// Module functions
-void add_module(string module);
-void remove_module(string module);
-object get_module(string module);
-
-// Death
-void die() ;
-
 private nosave mapping modules = ([]);
 private nosave int finished_setup = 0 ;
 private nosave mapping gmcp_data = ([ ]);
 private nosave mapping environ_data = ([]) ;
-
-/* Misc functions */
-
-void write_prompt();
-
-/* Functions */
 
 void mudlib_setup() {
     // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;

@@ -105,7 +105,3 @@ int set_xp(int amount) {
 void on_advance(object tp, float l) {
     tell(tp, "You have advanced to level " + to_int(l) + "!\n") ;
 }
-
-void on_advance_partial(object tp, float l) {
-    tell(tp, sprintf("You have solidified your understanding and are now level %.2f.\n", l)) ;
-}

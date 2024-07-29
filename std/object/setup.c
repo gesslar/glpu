@@ -36,20 +36,20 @@ varargs void setup_chain(mixed args...) {
 }
 
 // exactly the same as setup_chain()
-void unsetup_chain(mixed args...) {
+void unsetup_chain() {
     int x ;
 
-    call_if(this_object(), "mudlib_unsetup", args...) ;
+    call_if(this_object(), "mudlib_unsetup", previous_object(1)) ;
 
     x = 5 ;
     while(x--)
-        call_if(this_object(), "pre_unsetup_"+x, args...) ;
+        call_if(this_object(), "pre_unsetup_"+x, previous_object(1)) ;
 
-    call_if(this_object(), "unsetup", args...) ;
+    call_if(this_object(), "unsetup", previous_object(1)) ;
 
     x = 5 ;
     while(x--)
-        call_if(this_object(), "post_unsetup_"+x, args...) ;
+        call_if(this_object(), "post_unsetup_"+x, previous_object(1)) ;
 
     if(call_if(this_object(), "query_persistent")) {
         call_if(this_object(), "save_data") ;

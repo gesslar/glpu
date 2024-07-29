@@ -6,6 +6,8 @@
 //
 // 2024/02/19: Gesslar - Created
 
+#include <wealth.h>
+
 // Functions from other objects
 int query_capacity() ;
 void rehash_capacity() ;

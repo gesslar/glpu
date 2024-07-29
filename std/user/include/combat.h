@@ -1,28 +1,41 @@
 #ifndef __COMBAT_H__
 #define __COMBAT_H__
 
-float add_attack_speed(float amount) ;
-float add_seen_threat(object enemy, float amount) ;
-float add_threat(object enemy, float amount) ;
-int attacking(object victim) ;
-int current_enemy(object victim) ;
-int in_combat() ;
-int next_round() ;
-int seen_enemy(object victim) ;
-int start_attack(object victim) ;
-int stop_attack(object victim) ;
-mapping current_enemies() ;
-varargs int stop_attack(object victim, int seen) ;
-object highest_seen_threat() ;
-object highest_threat() ;
-object lowest_seen_threat() ;
-object lowest_threat() ;
-varargs int valid_enemy(object enemy, int threat) ;
-varargs int valid_seen_enemy(object enemy, int threat) ;
-void clean_up_enemies() ;
-void clean_up_seen_enemies() ;
-void combat_round() ;
-void strike_enemy(object enemy) ;
-void swing() ;
+void combat_round();
+int start_attack(object victim);
+void swing();
+int next_round();
+private int can_strike(object enemy);
+void strike_enemy(object enemy);
+int attacking(object victim);
+varargs int stop_attack(object victim, int seen);
+void stop_all_attacks();
+int in_combat();
+int seen_enemy(object victim);
+int current_enemy(object victim);
+mapping current_enemies();
+object highest_threat();
+object lowest_threat();
+object highest_seen_threat();
+object lowest_seen_threat();
+void clean_up_enemies();
+varargs int valid_enemy(object enemy);
+void clean_up_seen_enemies();
+varargs int valid_seen_enemy(object enemy, int threat);
+float add_threat(object enemy, float amount);
+float add_seen_threat(object enemy, float amount);
+float add_attack_speed(float amount);
+void set_attack_speed(float speed);
+float query_attack_speed();
+void set_defense(mapping def);
+void add_defense(string type, float amount);
+mapping query_defense();
+float query_defense_amount(string type);
+public mapping query_equipped();
+mapping adjust_protection();
+object last_damaged_by();
+object set_last_damaged_by(object ob);
+object killed_by();
+object set_killed_by(object ob);
 
 #endif // __COMBAT_H__

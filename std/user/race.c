@@ -9,6 +9,7 @@
  * 2024/07/25 - Gesslar - Created
  */
 
+#include <race.h>
 #include <body.h>
 
 private nosave string racial_bodies = DIR_STD_MODULES_MOBILE "race/" ;

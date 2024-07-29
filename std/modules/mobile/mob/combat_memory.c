@@ -9,6 +9,8 @@
  * 2024/07/29 - Gesslar - Created
  */
 
+#include <origin.h>
+
 inherit DIR_STD_MODULES_MOBILE "module" ;
 
 void attack_on_sight(object target) ;
@@ -45,8 +47,8 @@ void add_to_memory(object target) {
         combat_memory += ({ name }) ;
 }
 
-void unsetup() {
-    if(query_owner()) {
+void unsetup(object prev) {
+    if(query_owner() && prev != query_owner()) {
         query_owner()->remove_init((: attack_on_sight :)) ;
         query_owner()->remove_module(module_name) ;
     }

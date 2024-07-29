@@ -9,6 +9,7 @@
  * 2024/07/25 - Gesslar - Created
  */
 
+#include <damage.h>
 #include <vitals.h>
 
 // Functions from other objects
@@ -25,10 +26,6 @@ float deliver_damage(object victim, float damage, string type) {
         return 0;
 
     return victim->receive_damage(this_object(), damage, type) ;
-}
-
-float percent_of(float a, float b) {
-    return (a / 100.0) * to_float(b);
 }
 
 /**
