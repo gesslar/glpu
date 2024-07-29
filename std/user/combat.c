@@ -14,6 +14,7 @@
 #include <gmcp.h>
 #include <vitals.h>
 #include <action.h>
+#include <body.h>
 
 inherit __DIR__ "damage" ;
 
@@ -43,9 +44,9 @@ void clean_up_enemies() ;
 varargs int valid_enemy(object enemy) ;
 void clean_up_seen_enemies() ;
 varargs int valid_seen_enemy(object enemy, int threat) ;
-float adjust_threat(object enemy, float amount) ;
-float adjust_seen_threat(object enemy, float amount) ;
-float adjust_attack_speed(float amount) ;
+float add_threat(object enemy, float amount) ;
+float add_seen_threat(object enemy, float amount) ;
+float add_attack_speed(float amount) ;
 void set_attack_speed(float speed) ;
 float query_attack_speed() ;
 void set_defense(mapping def) ;
@@ -67,12 +68,18 @@ private nosave mapping _defense = ([]);
 private nosave float _ac = 0.0;
 private nosave object last_damager ;
 private nosave object killed_by_ob ;
+private nosave string *combat_memory = ({ }) ;
 
 void combat_round() {
     object enemy ;
 
     if(is_dead())
         return;
+
+    if(query_hp() <= 0.0) {
+        stop_all_attacks();
+        return;
+    }
 
     clean_up_enemies() ;
 
@@ -110,6 +117,9 @@ int start_attack(object victim) {
     if(!seen_enemies[victim]) {
         seen_enemies[victim] = 1.0;
     }
+
+    if(!userp())
+        module("combat_memory", "add_to_memory", victim) ;
 
     next_combat_round = call_out_walltime("combat_round", attack_speed);
 
@@ -225,8 +235,8 @@ void strike_enemy(object enemy) {
 
     deliver_damage(enemy, dam, "bludgeoning");
     add_mp(-random_float(5.0));
-    adjust_threat(enemy, 1.0);
-    adjust_seen_threat(enemy, 1.0);
+    add_threat(enemy, 1.0);
+    add_seen_threat(enemy, 1.0);
 }
 
 int attacking(object victim) {
@@ -270,17 +280,14 @@ void stop_all_attacks() {
         GMCP_LBL_CHAR_STATUS_CURRENT_ENEMIES: ({}),
     ])) ;
 
+    clean_up_enemies();
+
     if(is_dead())
         return;
-
-    tell(this_object(), "You stop attacking.\n");
 }
 
 int in_combat() {
-    if(sizeof(_current_enemies) > 0)
-        return 1;
-
-    return 0;
+    return sizeof(_current_enemies) > 0;
 }
 
 int seen_enemy(object victim) {
@@ -371,11 +378,18 @@ void clean_up_enemies() {
     if(is_dead())
         return;
 
-    _current_enemies = map(_current_enemies, (: valid_enemy :));
+    _current_enemies = filter(_current_enemies, (: valid_enemy :));
 
     if(!in_combat()) {
         next_combat_round = 0;
-        tell(this_object(), "You are no longer in combat.\n");
+
+        if(query_hp() > 0.0)
+            tell(this_object(), "You are no longer in combat.\n");
+
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+            GMCP_LBL_CHAR_STATUS_CURRENT_ENEMY: "",
+            GMCP_LBL_CHAR_STATUS_CURRENT_ENEMIES: ({}),
+        ])) ;
     }
 }
 
@@ -403,7 +417,7 @@ varargs int valid_seen_enemy(object enemy, int threat) {
     return 1;
 }
 
-float adjust_threat(object enemy, float amount) {
+float add_threat(object enemy, float amount) {
     if(!valid_enemy(enemy))
         return 0.0;
 
@@ -412,7 +426,7 @@ float adjust_threat(object enemy, float amount) {
     return _current_enemies[enemy];
 }
 
-float adjust_seen_threat(object enemy, float amount) {
+float add_seen_threat(object enemy, float amount) {
     if(!valid_seen_enemy(enemy))
         return 0.0;
 
@@ -421,7 +435,7 @@ float adjust_seen_threat(object enemy, float amount) {
     return seen_enemies[enemy];
 }
 
-float adjust_attack_speed(float amount) {
+float add_attack_speed(float amount) {
     attack_speed += amount;
 
     attack_speed = range(0.5, 10.0, attack_speed);

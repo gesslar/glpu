@@ -1,0 +1,47 @@
+/**
+ * @file /std/modules/mobile/mob/combat_memory.c
+ * @description NPC combat memory module
+ *
+ * @created 2024/07/29 - Gesslar
+ * @last_modified 2024/07/29 - Gesslar
+ *
+ * @history
+ * 2024/07/29 - Gesslar - Created
+ */
+
+inherit DIR_STD_MODULES_MOBILE "module" ;
+
+void attack_on_sight(object target) ;
+
+private nomask nosave string *combat_memory = ({}) ;
+
+void setup() {
+    module_name = query_file_name() ;
+}
+
+int start_module(object ob, mixed args...) {
+    ob->add_init((: attack_on_sight :)) ;
+
+    return 1 ;
+}
+
+void attack_on_sight(object target) {
+    string name ;
+
+    name = target->query_name() ;
+    if(of(name, combat_memory)) {
+        query_owner()->targetted_action(
+            "\e0197\eRaging, $N $vattack $t with a vengeance!\eres\e\n\n", target) ;
+        query_owner()->start_attack(target) ;
+        query_owner()->strike_enemy(target) ;
+        query_owner()->strike_enemy(target) ;
+    }
+}
+
+void add_to_memory(object target) {
+    string name = target->query_name() ;
+
+    if(!of(name, combat_memory)) {
+        combat_memory += ({ name }) ;
+    }
+}

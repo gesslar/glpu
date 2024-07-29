@@ -259,7 +259,6 @@ void heart_beat() {
 }
 
 void die() {
-    object ghost ;
     object corpse ;
 
     if(!environment())
@@ -276,10 +275,13 @@ void die() {
     corpse = new(OBJ_CORPSE) ;
     corpse->setup_corpse(this_object(), killed_by()) ;
     corpse->move(environment()) ;
-    if(userp()) {
-        ghost = BODY_D->create_ghost(query_user(), this_object()) ;
+    if(userp())  {
+        object ghost = BODY_D->create_ghost(query_user(), this_object()) ;
         exec(ghost, this_object()) ;
         ghost->setup_body() ;
+        ghost->set_hp(-1.0) ;
+        ghost->set_sp(-1.0) ;
+        ghost->set_mp(-1.0) ;
         query_user()->set_body(ghost) ;
         ghost->move(environment()) ;
     } else {
@@ -670,7 +672,7 @@ varargs object add_module(string module, mixed args...) {
 
     if(ob->attach(this_object(), args...) == 0) {
         ob->remove() ;
-        return ;
+        return 0 ;
     }
 
     name = ob->query_name() ;
@@ -735,7 +737,8 @@ varargs mixed module(string module, string func, mixed args...) {
 
 void remove_all_modules() {
     foreach(string module, object ob in modules) {
-        catch(ob->remove()) ;
+        if(objectp(ob))
+            catch(ob->remove()) ;
     }
 
     modules = ([ ]) ;
@@ -939,6 +942,8 @@ void on_crash(mixed arg...) {
 }
 
 void mudlib_unsetup() {
+    remove_all_modules() ;
+
     if(interactive())
         emit(SIG_USER_LOGOUT, this_object()) ;
 }

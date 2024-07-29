@@ -26,6 +26,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     string gmcp_module ;
     mixed err ;
     object ob ;
+    string base ;
 
     if(!get_config(__RC_ENABLE_GMCP__))
         return ;
@@ -33,10 +34,11 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(!body || !gmcp_package)
         return ;
 
-    if(base_name(body) == LOGIN_OB) {
+    base = base_name(body) ;
+    if(base == LOGIN_OB) {
         if(!has_gmcp(body))
             return ;
-    } else if(base_name(body) == STD_BODY) {
+    } else if(base == STD_BODY || base == STD_GHOST) {
         if(!body->gmcp_enabled())
             return ;
     } else {

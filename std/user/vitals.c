@@ -43,22 +43,22 @@ float query_mp() { return mp ; }
 float query_max_mp() { return max_mp ; }
 float mp_ratio() { return percent_of(mp, max_mp) ; }
 
-void set_hp(float x) { hp = x ; }
-void set_max_hp(float x) { max_hp = x ; }
+void set_hp(float x) { hp = to_float(x) ; }
+void set_max_hp(float x) { max_hp = to_float(x) ; }
 
-void set_sp(float x) { sp = x ; }
-void set_max_sp(float x) { max_sp = x ; }
+void set_sp(float x) { sp = to_float(x) ; }
+void set_max_sp(float x) { max_sp = to_float(x) ; }
 
-void set_mp(float x) { mp = x ; }
-void set_max_mp(float x) { max_mp = x ; }
+void set_mp(float x) { mp = to_float(x) ; }
+void set_max_mp(float x) { max_mp = to_float(x) ; }
 
 float add_hp(float x) {
-    hp += x ;
+    hp += to_float(x) ;
     if (hp > max_hp)
         hp = max_hp ;
 
-    if(hp <= 0) {
-        hp = 0 ;
+    if(hp <= 0.0) {
+        hp = 0.0 ;
     }
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
@@ -69,18 +69,19 @@ float add_hp(float x) {
 }
 
 float add_sp(float x) {
-    sp += x ;
+    sp += to_float(x) ;
     if (sp > max_sp)
         sp = max_sp ;
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
         GMCP_LBL_CHAR_VITALS_SP: sprintf("%.2f", sp),
     ])) ;
+
     return sp ;
 }
 
 float add_mp(float x) {
-    mp += x ;
+    mp += to_float(x) ;
     if (mp > max_mp)
         mp = max_mp ;
 
@@ -115,7 +116,7 @@ int set_heart_rate(int x) {
     return x ;
 }
 
-int adjust_heart_rate(int x) {
+int add_heart_rate(int x) {
     return set_heart_rate(query_heart_beat() + x) ;
 }
 

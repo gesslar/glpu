@@ -18,9 +18,13 @@ void mudlib_setup() {
     set_long(capitalize(query_name()) + " is a generic NPC.");
     set_short(query_name());
     if(!query("env_settings")) set("env_settings", ([]));
-    add_init("start_heart_beat") ;
-    add_hb("stop_heart_beat") ;
     init_vitals() ;
+
+    if(clonep()) {
+        add_init("start_heart_beat") ;
+        add_hb("stop_heart_beat") ;
+        add_module("mob/combat_memory") ;
+    }
 }
 
 void restore_user() {}
@@ -37,7 +41,7 @@ void start_heart_beat() {
 }
 
 void stop_heart_beat() {
-    if(!player_check())
+    if(!player_check() && query_hp() >= 100.0)
         set_heart_beat(0);
 }
 

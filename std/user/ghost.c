@@ -154,9 +154,9 @@ int revive(string str) {
     exec(body, this_object()) ;
     body->setup_body() ;
     body->set_dead(0) ;
-    body->set_hp(1) ;
-    body->set_sp(1) ;
-    body->set_mp(1) ;
+    body->set_hp(1.0) ;
+    body->set_sp(1.0) ;
+    body->set_mp(1.0) ;
 
     body->set_user(user) ;
     user->set_body(body) ;

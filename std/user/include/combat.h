@@ -1,9 +1,9 @@
 #ifndef __COMBAT_H__
 #define __COMBAT_H__
 
-float adjust_attack_speed(float amount) ;
-float adjust_seen_threat(object enemy, float amount) ;
-float adjust_threat(object enemy, float amount) ;
+float add_attack_speed(float amount) ;
+float add_seen_threat(object enemy, float amount) ;
+float add_threat(object enemy, float amount) ;
 int attacking(object victim) ;
 int current_enemy(object victim) ;
 int in_combat() ;
