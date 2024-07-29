@@ -5,7 +5,7 @@
 //
 // 2024/02/23: Gesslar - Created
 
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 inherit STD_DAEMON ;
 

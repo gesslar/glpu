@@ -12,21 +12,24 @@
 
 /* Last edited by Tacitus on October 4th, 2006 */
 
-#include <origin.h>
-#include <logs.h>
-#include <rooms.h>
+#include <body.h>
 #include <classes.h>
 #include <commands.h>
-#include <gmcp.h>
-#include <body.h>
+#include <gmcp_defines.h>
+#include <logs.h>
+#include <module.h>
+#include <origin.h>
+#include <rooms.h>
 
-inherit STD_ITEM;
 inherit STD_CONTAINER ;
+inherit STD_ITEM;
 
 inherit __DIR__ "advancement" ;
 inherit __DIR__ "alias" ;
 inherit __DIR__ "combat" ;
 inherit __DIR__ "ed" ;
+inherit __DIR__ "equipment" ;
+inherit __DIR__ "module" ;
 inherit __DIR__ "pager" ;
 inherit __DIR__ "race" ;
 inherit __DIR__ "visibility" ;
@@ -46,9 +49,7 @@ private nosave object link;
 
 /* Prototypes */
 
-private nosave mapping modules = ([]);
 private nosave int finished_setup = 0 ;
-private nosave mapping gmcp_data = ([ ]);
 private nosave mapping environ_data = ([]) ;
 
 void mudlib_setup() {
@@ -63,7 +64,7 @@ private nosave string *body_slots = ({
     "head", "neck", "torso", "back", "arms", "hands", "legs", "feet"
 });
 
-void query_body_slots() {
+string *query_body_slots() {
     return copy(body_slots);
 }
 
@@ -179,6 +180,8 @@ void reconnect() {
 
 /* Body Object Functions */
 void heart_beat() {
+    clean_up_enemies() ;
+
     if(userp()) {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
@@ -605,133 +608,6 @@ void write_prompt() {
     tell(this_object(), prompt + " ") ;
 }
 
-varargs object add_module(string module, mixed args...) {
-    object ob ;
-    string path ;
-    string name ;
-
-    if(!module || module == "") error("Error [add_module]: Invalid module name.\n") ;
-    if(modules[module]) error("Error [add_module]: Module " + module + " already exists.\n") ;
-
-    path = "/std/modules/mobile/" + module + ".c" ;
-    path = replace_string(path, " ", "_") ;
-    if(!file_exists(path))
-        error("Error [add_module]: Module " + module + " does not exist.\n") ;
-
-    catch(ob = new(path)) ;
-    if(!ob)
-        error("Error [add_module]: Module " + module + " failed to load.\n") ;
-
-    if(ob->attach(this_object(), args...) == 0) {
-        ob->remove() ;
-        return 0 ;
-    }
-
-    name = ob->query_name() ;
-
-    modules[name] = ob ;
-
-    return ob ;
-}
-
-object query_module(string module) {
-    if(!module || module == "")
-        error("Error [query_module]: Invalid module name. " + module) ;
-    if(!modules[module])
-        return 0 ;
-
-    return modules[module] ;
-}
-
-void remove_module(string module) {
-    object ob ;
-
-    if(!module || module == "") error("Error [remove_module]: Invalid module name.\n") ;
-    if(!modules[module]) error("Error [remove_module]: Module " + module + " does not exist.\n") ;
-
-    ob = modules[module] ;
-    if(!objectp(ob))
-        return ;
-
-    ob->remove() ;
-    map_delete(modules, module) ;
-}
-
-object get_module(string module) {
-    object ob ;
-
-    if(!module || module == "") error("Error [get_module]: Invalid module name.\n") ;
-    ob = modules[module] ;
-
-    if(!objectp(ob))
-        return 0 ;
-
-    return modules[module] ;
-}
-
-mapping query_modules() {
-    return copy(modules) ;
-}
-
-varargs mixed module(string module, string func, mixed args...) {
-    object ob ;
-
-    if(!stringp(module) || module == "") error("Error [query_module]: Invalid module name.\n") ;
-    if(!stringp(func) || func == "") error("Error [query_module]: Invalid function name.\n") ;
-
-    ob = modules[module] ;
-
-    if(!objectp(ob))
-        return null ;
-
-    return call_if(ob, func, args...) ;
-}
-
-void remove_all_modules() {
-    foreach(string module, object ob in modules) {
-        if(objectp(ob))
-            catch(ob->remove()) ;
-    }
-
-    modules = ([ ]) ;
-}
-
-protected nosave mapping equipment = ([ ]) ;
-public mapping query_equipped() { return copy(equipment); }
-public object equipped_on(string slot) { return equipment[slot] || null ; }
-mixed can_equip(string slot, object ob) ;
-
-int equip(string slot, object ob) {
-    if(!of(slot, body_slots))
-        return 0 ;
-
-    if(equipment[slot])
-        return 0 ;
-
-    equipment[slot] = ob ;
-
-    return 1 ;
-}
-
-int unequip(string slot) {
-    if(!equipment[slot])
-        return 0 ;
-
-    map_delete(equipment, slot) ;
-
-    return 1 ;
-}
-
-mixed can_equip(string slot, object ob) {
-    if(!of(slot, body_slots))
-        return "Your body cannot wear something in there." ;
-
-    if(equipment[slot])
-        return "You are already wearing something like that." ;
-
-    return 1 ;
-}
-
 /**
  * @description This function is called by the driver when the environment of
  *              an object is destructed. It will attempt to move the object to
@@ -772,58 +648,6 @@ void move_or_destruct(object ob) {
     }
 
     move_object(ob) ;
-}
-
-void clear_gmcp_data() {
-    gmcp_data = ([ ]) ;
-}
-
-void set_gmcp_client(mapping data) {
-    gmcp_data["client"] = data;
-}
-
-mapping query_gmcp_client() {
-    return copy(gmcp_data["client"]);
-}
-
-void set_gmcp_supports(mapping data) {
-    gmcp_data["supports"] = data;
-}
-
-mapping query_gmcp_supports() {
-    return copy(gmcp_data["supports"]);
-}
-
-// Function to determine if a specific package (and optionally module/
-// submodule) is supported
-int query_gmcp_supported(string fullname) {
-    string *parts, package, module, submodule;
-    mapping supports = query_gmcp_supports();
-    class ClassGMCP gmcp ;
-
-    gmcp = GMCP_D->convert_message(fullname) ;
-
-    // Check if the package is supported
-    if (!supports[package]) return 0; // Package not found
-
-    // If a module is specified, check for its support
-    if (module && supports[package]["modules"]) {
-        if (!supports[package]["modules"][module]) return 0; // Module not found
-
-        // If a submodule is specified, check for its support
-        if (submodule && supports[package]["modules"][module]["submodules"]) {
-            if (!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
-        } else if (submodule) {
-            // Submodule specified but no submodules are supported under the module
-            return 0;
-        }
-    } else if (module) {
-        // Module specified but no modules are supported under the package
-        return 0;
-    }
-
-    // If we've reached this point, the specified package (and optionally module/submodule) is supported
-    return 1;
 }
 
 mixed query_environ(string key) {

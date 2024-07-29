@@ -7,7 +7,7 @@
 // 2024/02/22: Gesslar - Created
 
 #include <classes.h>
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 inherit STD_DAEMON ;
 inherit CLASS_GMCP ;

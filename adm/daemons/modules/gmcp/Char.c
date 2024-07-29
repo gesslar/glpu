@@ -9,7 +9,7 @@
  * 2024/02/23 - Gesslar - Created
  */
 
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 inherit STD_DAEMON ;
 
@@ -18,7 +18,7 @@ inherit STD_DAEMON ;
 // is to inform the client what to display, if desired, for each variable
 // on labels in a GUI or messaging resulting from GMCP.
 //
-// The labels and values are all found in /include/gmcp.h
+// The labels and values are all found in /include/gmcp_defines.h
 void StatusVars(object who, mapping payload) {
     mapping data ;
 

@@ -23,6 +23,8 @@ private mixed gmcp_stringify(mixed data) ;
 // Functions from other objects
 varargs void _log(mixed args...) ;
 
+private nosave mapping gmcp_data = ([ ]);
+
 // This apply receives the GMCP messages from the client. We parse out the
 // information into what package, subpackage, command, and payload. We then
 // call the appropriate module to handle the GMCP message.
@@ -130,6 +132,59 @@ mixed gmcp_stringify(mixed data) {
 
     return "" ;
 }
+
+void clear_gmcp_data() {
+    gmcp_data = ([ ]) ;
+}
+
+void set_gmcp_client(mapping data) {
+    gmcp_data["client"] = data;
+}
+
+mapping query_gmcp_client() {
+    return copy(gmcp_data["client"]);
+}
+
+void set_gmcp_supports(mapping data) {
+    gmcp_data["supports"] = data;
+}
+
+mapping query_gmcp_supports() {
+    return copy(gmcp_data["supports"]);
+}
+
+// Function to determine if a specific package (and optionally module/
+// submodule) is supported
+int query_gmcp_supported(string fullname) {
+    string *parts, package, module, submodule;
+    mapping supports = query_gmcp_supports();
+    class ClassGMCP gmcp ;
+
+    gmcp = GMCP_D->convert_message(fullname) ;
+
+    // Check if the package is supported
+    if (!supports[package]) return 0; // Package not found
+
+    // If a module is specified, check for its support
+    if (module && supports[package]["modules"]) {
+        if (!supports[package]["modules"][module]) return 0; // Module not found
+
+        // If a submodule is specified, check for its support
+        if (submodule && supports[package]["modules"][module]["submodules"]) {
+            if (!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
+        } else if (submodule) {
+            // Submodule specified but no submodules are supported under the module
+            return 0;
+        }
+    } else if (module) {
+        // Module specified but no modules are supported under the package
+        return 0;
+    }
+
+    // If we've reached this point, the specified package (and optionally module/submodule) is supported
+    return 1;
+}
+
 
 public int gmcp_enabled() {
     return  has_gmcp(this_object()) &&

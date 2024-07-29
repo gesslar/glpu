@@ -11,7 +11,7 @@
 
 #include <combat.h>
 #include <damage.h>
-#include <gmcp.h>
+#include <gmcp_defines.h>
 #include <vitals.h>
 #include <action.h>
 #include <body.h>
@@ -341,6 +341,9 @@ void clean_up_enemies() {
     if(is_dead())
         return;
 
+    if(!in_combat())
+        return;
+
     _current_enemies = filter(_current_enemies, (: valid_enemy :));
 
     if(!in_combat()) {
@@ -432,7 +435,6 @@ float query_defense_amount(string type) {
     return _defense[type] ;
 }
 
-public mapping query_equipped() ;
 mapping adjust_protection() {
     mapping equipment = query_equipped() ;
     object *obs = values(equipment), ob ;

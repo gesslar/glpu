@@ -53,6 +53,7 @@ void set_environ(mapping data);
 int has_screenreader();
 int query_log_level();
 int supports_unicode();
+string *query_body_slots() ;
 int is_pc();
 int is_npc();
 

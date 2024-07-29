@@ -31,7 +31,6 @@ void set_defense(mapping def);
 void add_defense(string type, float amount);
 mapping query_defense();
 float query_defense_amount(string type);
-public mapping query_equipped();
 mapping adjust_protection();
 object last_damaged_by();
 object set_last_damaged_by(object ob);

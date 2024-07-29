@@ -1,5 +1,5 @@
-#ifndef __GMCP_H__
-#define __GMCP_H__
+#ifndef __GMCP_DEFINES_H__
+#define __GMCP_DEFINES_H__
 
 // Packages, subpackges, and commands
 #define GMCP_PKG_CORE                       "Core"
@@ -50,4 +50,4 @@
 #define GMCP_LBL_CHAR_VITALS_MP             "mp"
 #define GMCP_LBL_CHAR_VITALS_MAX_MP         "max_mp"
 
-#endif // __GMCP_H__
+#endif // __GMCP_DEFINES_H__

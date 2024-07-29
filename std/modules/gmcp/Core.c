@@ -1,5 +1,5 @@
 #include <daemons.h>
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 inherit __DIR__ "gmcp_module" ;
 

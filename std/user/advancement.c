@@ -10,7 +10,7 @@
  */
 
 #include <advancement.h>
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 private float level = 1.0 ;
 private float level_mod = 0.0 ;

@@ -9,7 +9,7 @@
  * 2024/07/24 - Gesslar - Created
  */
 
-#include <gmcp.h>
+#include <gmcp_defines.h>
 #include <vitals.h>
 #include <runtime_config.h>
 

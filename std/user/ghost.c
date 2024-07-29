@@ -28,7 +28,7 @@
 #include <rooms.h>
 #include <classes.h>
 #include <commands.h>
-#include <gmcp.h>
+#include <gmcp_defines.h>
 
 inherit STD_ITEM;
 inherit STD_CONTAINER ;
