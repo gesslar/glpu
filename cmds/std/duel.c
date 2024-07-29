@@ -17,19 +17,28 @@ mixed main(object tp, string arg) {
     string name, vname ;
     object room = environment(tp) ;
 
-    if (!arg)
+    if(!arg)
         return "Duel whom?" ;
+
+    if(tp->is_dead())
+        return "You can't duel while dead." ;
+
+    if(tp->is_ghost())
+        return "You can't duel while a ghost." ;
 
     if(!victim = find_local_target(tp, arg))
         return 1 ;
 
+    if(victim->is_dead())
+        return "You can't duel a dead person." ;
+
+    if(victim->is_ghost())
+        return "You can't duel a ghost." ;
+
     name = tp->query_name() ;
     vname = victim->query_name() ;
 
-    tell(tp, "You engage " + vname + " in combat.\n") ;
-    tell(victim, name + " engages you in combat.\n") ;
-    tell_down(room, name + " engages " + vname + " in combat.\n", 0,
-        ({ tp, victim }) ) ;
+    tp->targetted_action("$N $vengage $t in combat.\n", victim) ;
 
     tp->start_attack(victim) ;
 

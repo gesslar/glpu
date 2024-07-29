@@ -105,8 +105,6 @@ void mudlib_setup() {
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     set_log_level(0) ;
-    if(clonep())
-        slot(SIG_SYS_CRASH, "on_crash") ;
 }
 
 private nosave string *body_slots = ({
@@ -143,6 +141,9 @@ void setup_body() {
     init_vitals() ;
 
     set_log_prefix(sprintf("(%O)", this_object())) ;
+
+    slot(SIG_SYS_CRASH, "on_crash") ;
+    slot(SIG_PLAYER_ADVANCED, "on_advance") ;
 }
 
 string *query_all_commands() {
@@ -226,7 +227,6 @@ void reconnect() {
 
 /* Body Object Functions */
 void heart_beat() {
-
     if(userp()) {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
@@ -282,10 +282,11 @@ void die() {
         ghost->setup_body() ;
         query_user()->set_body(ghost) ;
         ghost->move(environment()) ;
+    } else {
+        ADVANCE_D->kill_xp(killed_by(), this_object()) ;
     }
 
-    if(objectp(ghost))
-        remove() ;
+    remove() ;
 }
 
 void restore_user() {

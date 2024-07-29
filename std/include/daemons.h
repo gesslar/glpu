@@ -4,6 +4,7 @@
 #include <dirs.h>
 
 #define ACTION_D        DIR_DAEMONS "action"
+#define ADVANCE_D       DIR_DAEMONS "advance"
 #define ALARM_D         DIR_DAEMONS "alarm"
 #define AUTODOC_D       DIR_DAEMONS "autodoc"
 #define BANK_D          DIR_DAEMONS "bank"

@@ -40,7 +40,7 @@ object lowest_threat() ;
 object highest_seen_threat() ;
 object lowest_seen_threat() ;
 void clean_up_enemies() ;
-varargs int valid_enemy(object enemy, int threat) ;
+varargs int valid_enemy(object enemy) ;
 void clean_up_seen_enemies() ;
 varargs int valid_seen_enemy(object enemy, int threat) ;
 float adjust_threat(object enemy, float amount) ;
@@ -379,7 +379,7 @@ void clean_up_enemies() {
     }
 }
 
-varargs int valid_enemy(object enemy, int threat) {
+varargs int valid_enemy(object enemy) {
     if(!same_env_check(this_object(), enemy))
         return 0 ;
 

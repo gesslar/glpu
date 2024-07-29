@@ -29,6 +29,8 @@
 #define GMCP_DIS_CHAR_STATUS_XP             "XP"
 #define GMCP_LBL_CHAR_STATUS_TNL            "tnl"
 #define GMCP_DIS_CHAR_STATUS_TNL            "TNL"
+#define GMCP_LBL_CHAR_STATUS_LEVEL          "level"
+#define GMCP_DIS_CHAR_STATUS_LEVEL          "Level"
 #define GMCP_LBL_CHAR_STATUS_CAPACITY       "capacity"
 #define GMCP_DIS_CHAR_STATUS_CAPACITY       "Capacity"
 #define GMCP_LBL_CHAR_STATUS_MAX_CAPACITY   "max_capacity"
