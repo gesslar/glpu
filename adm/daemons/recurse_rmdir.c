@@ -31,13 +31,9 @@ public nomask void recurse_rmdir(string dir) {
     if(!stringp(dir) || dir == "")
         return;
 
-    if(origin() != ORIGIN_LOCAL) {
-        _debug("Not local") ;
-        if(!of(base_name(prev), allowed)) {
-            _debug("Not allowed") ;
+    if(origin() != ORIGIN_LOCAL)
+        if(!of(base_name(prev), allowed))
             return;
-        }
-    }
 
     if(!directory_exists(dir))
         return;
@@ -51,7 +47,6 @@ public nomask void recurse_rmdir(string dir) {
 
     log_file("system/recurse_rmdir", sprintf("%s: %s\n", ctime(), dir));
 
-    _debug("%O", get_dir(dir));
     contents = get_dir(dir);
     contents -= ({ ".", ".." });
     contents = map(contents, (: $(dir) + $1 :));
