@@ -41,7 +41,6 @@ void attack_on_sight(object target) {
 void add_to_memory(object target) {
     string name = target->query_name() ;
 
-    if(!of(name, combat_memory)) {
+    if(!of(name, combat_memory))
         combat_memory += ({ name }) ;
-    }
 }
