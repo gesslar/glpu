@@ -46,6 +46,8 @@ void add_to_memory(object target) {
 }
 
 void unsetup() {
-    query_owner()->remove_init((: attack_on_sight :)) ;
-    query_owner()->remove_module(module_name) ;
+    if(query_owner()) {
+        query_owner()->remove_init((: attack_on_sight :)) ;
+        query_owner()->remove_module(module_name) ;
+    }
 }
