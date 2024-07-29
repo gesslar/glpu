@@ -3,26 +3,6 @@ title: user
 ---
 # user.c
 
-## user_mob_data
-
-### Synopsis
-
-```c
-string user_mob_data(string name)
-```
-
-### Parameters
-
-* `string name` - The user's name.
-
-### Returns
-
-`string` - The file path for the user's mob data file, or 0 if the input is invalid.
-
-### Description
-
-Returns the file path for the user's mob data file.
-
 ## user_core_data_directory
 
 ### Synopsis
@@ -64,6 +44,26 @@ string user_path(mixed name)
 
 Returns the home directory path for the user.
 
+## user_inventory_data
+
+### Synopsis
+
+```c
+string user_inventory_data(string name)
+```
+
+### Parameters
+
+* `string name` - The user's name.
+
+### Returns
+
+`string` - The file path for the user's inventory data file, or 0 if the input is invalid.
+
+### Description
+
+Returns the file path for the user's inventory data file.
+
 ## user_data_directory
 
 ### Synopsis
@@ -104,4 +104,24 @@ string user_data_file(string name)
 ### Description
 
 Returns the file path for the user's data file.
+
+## user_body_data
+
+### Synopsis
+
+```c
+string user_body_data(string name)
+```
+
+### Parameters
+
+* `string name` - The user's name.
+
+### Returns
+
+`string` - The file path for the user's mob data file, or 0 if the input is invalid.
+
+### Description
+
+Returns the file path for the user's mob data file.
 

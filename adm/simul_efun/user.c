@@ -19,16 +19,29 @@ string user_data_file(string name) {
 }
 
 /**
- * @simul_efun user_mob_data
+ * @simul_efun user_body_data
  * @description Returns the file path for the user's mob data file.
  * @param {string} name - The user's name.
  * @returns {string} - The file path for the user's mob data file, or 0 if the input
  *                     is invalid.
  */
-string user_mob_data(string name) {
+string user_body_data(string name) {
     if(!name ||!stringp(name)) return 0;
     name = lower_case((string)name);
-    return("/data/users/" + name[0..0] + "/" + name + "/" + name + "_mob");
+    return("/data/users/" + name[0..0] + "/" + name + "/" + name + "_body");
+}
+
+/**
+ * @simul_efun user_inventory_data
+ * @description Returns the file path for the user's inventory data file.
+ * @param {string} name - The user's name.
+ * @returns {string} - The file path for the user's inventory data file, or 0
+ *                     if the input is invalid.
+ */
+string user_inventory_data(string name) {
+    if(!name ||!stringp(name)) return 0;
+    name = lower_case((string)name);
+    return user_data_directory(name) + name + "_inv.txt" ;
 }
 
 /**

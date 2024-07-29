@@ -110,6 +110,9 @@ public nomask mixed autodoc_scan() {
     total_dirs_scanned = 0 ;
     total_files_scanned = 0 ;
 
+    RECURSE_RMDIR_D->recurse_rmdir(doc_root) ;
+    // RECURD_RMDIR_D->recurse_rmdir(wiki_doc_root) ;
+
     docs = ([]);
     files_to_check = ({});
 

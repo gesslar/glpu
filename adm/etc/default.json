@@ -83,5 +83,9 @@
     "OVERLEVEL_THRESHOLD" : 5.0,
     "OVERLEVEL_XP_PUNISH" : 0.05,
     "UNDERLEVEL_THRESHOLD" : 0.0,
-    "UNDERLEVEL_XP_BONUS" : 0.05
+    "UNDERLEVEL_XP_BONUS" : 0.05,
+    "ALLOW_RECURSE_RMDIR" : [
+        "/adm/daemons/autodoc",
+        "/cmds/file/rm"
+    ]
 }

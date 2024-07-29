@@ -140,7 +140,7 @@ mixed get_body(object user) {
 
     error = catch(body = new(user->query_body_path()));
     if(error) return -1;
-    if(!ofile_exists(user_mob_data(query_privs(user)))) return -2;
+    if(!ofile_exists(user_body_data(query_privs(user)))) return -2;
 
     set_privs(body, query_privs(user));
     body->set_name(user->query_proper_name());

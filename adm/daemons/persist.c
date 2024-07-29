@@ -17,6 +17,7 @@ void setup() {
     set_heart_beat(30) ;
     find_persistent_objects();
     slot(SIG_SYS_CRASH, "persist_objects");
+    slot(SIG_SYS_PERSIST, "persist_objects");
 }
 
 void find_persistent_objects() {

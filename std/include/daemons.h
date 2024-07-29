@@ -34,6 +34,7 @@
 #define NEWS_D          DIR_DAEMONS "news_d"
 #define PERLIN_D        DIR_DAEMONS "perlin"
 #define PERSIST_D       DIR_DAEMONS "persist"
+#define RECURSE_RMDIR_D DIR_DAEMONS "recurse_rmdir"
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown"
 #define SIGNAL_D        DIR_DAEMONS "signal"
 #define SOUL_D          DIR_DAEMONS "soul_d"

@@ -229,10 +229,11 @@ title: simul_efun
 
 ## [user](user)
 
+* [user_body_data](user#user_body_data)
 * [user_core_data_directory](user#user_core_data_directory)
 * [user_data_directory](user#user_data_directory)
 * [user_data_file](user#user_data_file)
-* [user_mob_data](user#user_mob_data)
+* [user_inventory_data](user#user_inventory_data)
 * [user_path](user#user_path)
 
 ## [util](util)

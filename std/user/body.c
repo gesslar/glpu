@@ -290,15 +290,36 @@ void die() {
 }
 
 void restore_user() {
+    string e ;
+    string file, data ;
+
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_mob_data(query_proper_name()));
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_body_data(query_proper_name()));
+
+    file = user_inventory_data(query_privs(this_object())) ;
+
+    if(file_exists(file)) {
+        e = catch {
+            data = read_file(file) ;
+            load_from_string(data, 1) ;
+        } ;
+
+        if(e) {
+            write("Error [restore_user]: Unable to restore user data.\n") ;
+        }
+    }
 }
 
 int save_user() {
     int result ;
+    string save ;
+    string e ;
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    catch(result = save_object(user_mob_data(query_proper_name())));
+    catch(result = save_object(user_body_data(query_proper_name())));
+
+    e = catch(save = save_to_string(1));
+    write_file(user_inventory_data(query_privs(this_object())), save, 1) ;
 
     return result;
 }

@@ -1,4 +1,4 @@
-string user_mob_data(string name)
+string user_body_data(string name)
 
 Parameters:
 
