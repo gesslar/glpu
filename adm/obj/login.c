@@ -42,7 +42,7 @@ void email_verified(string address, string resolved, int key);
 void get_email(string input);
 void idle_email(string str);
 object create_body(string name);
-object create_user() ;
+object create_user(string name) ;
 string parse_tokens(string text);
 
 object user;
@@ -138,7 +138,7 @@ void get_name(string str) {
             return;
         }
 
-        if(!user = create_user())
+        if(!user = create_user(str))
             return ;
 
         user->set_name("guest");
@@ -169,7 +169,7 @@ void get_name(string str) {
     }
 
     if(!body = find_player(str)) {
-        if(!user = create_user())
+        if(!user = create_user(str))
             return ;
         else {
             set_privs(user, str);
@@ -178,7 +178,7 @@ void get_name(string str) {
         }
     } else {
         if(!user = body->query_user()) {
-            if(!user = create_user())
+            if(!user = create_user(str))
                 return ;
             else {
                 set_privs(user, str);
@@ -361,7 +361,7 @@ void email_verified(string address, string resolved, int key)
 
 void new_user(string str, string name) {
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
-        user = create_user() ;
+        user = create_user(name) ;
         user->set_name(name);
         tell(this_object(),"Please enter a password for your account: ");
         input_to("get_password", 1, 1);
@@ -517,12 +517,13 @@ object create_body(string name) {
 
     if(origin() != ORIGIN_LOCAL) return 0;
 
-
     // err = catch(body = new(user->query_body_path()));
-    err = catch(body = new(STD_PLAYER));
-    if(err) {
-        error("Error [login]: There was an error creating your mobile.\n" +
-          "\tBody: " + STD_PLAYER + "\n" + err);
+    err = catch(body = BODY_D->create_body_basic(user));
+    if(err || !body) {
+        receive("\nThere was a problem creating your body.\n") ;
+        user->remove() ;
+        remove() ;
+        return 0 ;
     }
 
     body->set_name(query_privs(user));
@@ -533,13 +534,13 @@ object create_body(string name) {
     return body;
 }
 
-object create_user() {
+object create_user(string name) {
     object user;
     mixed err;
 
     if(origin() != ORIGIN_LOCAL) return 0;
 
-    err = catch(user = new(STD_USER));
+    err = catch(user = load_object(sprintf("/link/%s", name))) ;
 
     if(err) {
         tell(this_object(),"Error [login]: Unable to create user object.\n");

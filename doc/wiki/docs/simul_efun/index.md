@@ -230,6 +230,8 @@ title: simul_efun
 
 ## [user](user)
 
+* [ghostp](user#ghostp)
+* [linkp](user#linkp)
 * [user_body_data](user#user_body_data)
 * [user_core_data_directory](user#user_core_data_directory)
 * [user_data_directory](user#user_data_directory)

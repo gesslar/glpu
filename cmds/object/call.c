@@ -47,9 +47,9 @@ mixed main(object tp, string a) {
 
     objs = resolv_ref( objs );
     if( objs == "users" ) objs = users();
-    else if( objs == "actives" ) objs = filter(users(), (: query_idle($1) < 180 :)) ;
+    else if(objs == "actives" ) objs = filter(users(), (: query_idle($1) < 180 :)) ;
     else if(objs == "livings") objs = filter(livings(), (: clonep($1) && environment($1) :)) ;
-    else if(objs == "monsters") objs = filter(livings(), (: clonep($1) && environment($1) && base_name($1) != STD_USER :)) ;
+    else if(objs == "monsters") objs = filter(livings(), (: clonep($1) && environment($1) && !userp($1) :)) ;
     if( !pointerp( objs ) ) objs = ({ objs });
     tmp = ({ });
     s = sizeof( objs );

@@ -9,7 +9,7 @@
 inherit STD_CMD ;
 
 #define SYNTAX "Syntax: trace -[d/v] [object/filename]\n"
-#define PROTECT ({ STD_USER, STD_PLAYER })
+#define PROTECT ({ })
 
 mixed main(object tp, string str) {
     object target;
@@ -49,7 +49,7 @@ mixed main(object tp, string str) {
             hold += "There are no active copies of this object.\n";
 
         if(dest) {
-            if((interactive(target) || member_array(base_name(target), PROTECT) != -1) && adminp(tp))
+            if((interactive(target) || userp(target) || member_array(base_name(target), PROTECT) != -1) && adminp(tp))
                 return "You do not have authorization to destruct that object.\n" ;
 
             target->remove();

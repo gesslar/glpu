@@ -3,6 +3,26 @@ title: user
 ---
 # user.c
 
+## ghostp
+
+### Synopsis
+
+```c
+int ghostp(object ob)
+```
+
+### Parameters
+
+* `object ob` - The object to check.
+
+### Returns
+
+`int` - 1 if the object is a ghost, otherwise 0.
+
+### Description
+
+Returns 1 if the object is a ghost, 0 if not.
+
 ## user_core_data_directory
 
 ### Synopsis
@@ -43,6 +63,22 @@ string user_path(mixed name)
 ### Description
 
 Returns the home directory path for the user.
+
+## linkp
+
+### Synopsis
+
+```c
+int linkp(object ob)
+```
+
+### Parameters
+
+* `object ob` - The object to check.
+
+### Description
+
+Returns 1 if the object is a user object, 0 if not.
 
 ## user_inventory_data
 

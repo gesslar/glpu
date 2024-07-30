@@ -107,10 +107,6 @@ nomask object query_body() {
     return body;
 }
 
-void setup() {
-    return;
-}
-
 void catch_tell(string message) {
     receive(message);
 }
@@ -192,7 +188,6 @@ object revert() {
         return 0;
     }
 
-_debug("body = " + body + " su_body = " + su_body) ;
     if(!exec(su_body, body)) {
         _debug("Failed to revert to body.") ;
         return 0 ;
@@ -209,3 +204,5 @@ _debug("body = " + body + " su_body = " + su_body) ;
 
     return ret ;
 }
+
+int is_user() { return 1 ; }

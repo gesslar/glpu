@@ -201,6 +201,7 @@ string user_mob_data(string name) ;
 string user_data_directory(string priv) ;
 string user_core_data_directory(string priv) ;
 string user_path(string name) ;
+int linkp(object user) ;
 
 // File: util
 string generate_uuid() ;

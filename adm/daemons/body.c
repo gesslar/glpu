@@ -19,12 +19,26 @@ mixed revive(object ghost, object user) ;
 object create_body_basic(object user) {
     object body ;
     string err;
+    string type ;
+    string dest ;
 
-    err = catch(body = new(STD_PLAYER)) ;
+    if(adminp(user))
+        type = "admin" ;
+    else if(devp(user))
+        type = "dev" ;
+    else
+        type = "player" ;
+
+    dest = sprintf("/%s/%s", type, query_privs(user)) ;
+    _debug("Dest: %s", dest) ;
+
+    err = catch(body = load_object(dest)) ;
 
     if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
           "\tBody: " + user->query_body_path() + "\n" + err);
+
+        return 0 ;
     }
 
     body->set_name(query_privs(user));
@@ -38,9 +52,10 @@ object create_body_basic(object user) {
 object create_body(object user) {
     string err;
     object body ;
-_debug("aroo?");
+
     body = create_body_basic(user);
-_debug("body = %O", body);
+    if(!body)
+        return 0;
 
     if(body->is_dead())
         body = create_ghost(user);
@@ -57,7 +72,7 @@ mixed create_ghost(object user) {
     string name ;
 
     name = query_privs(user) ;
-    err = catch(ghost = new(STD_GHOST)) ;
+    err = catch(ghost = load_object(sprintf("/ghost/%s", query_privs(user)))) ;
     if (err) {
         log_file("ghost", err) ;
         return err ;

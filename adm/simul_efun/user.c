@@ -84,3 +84,23 @@ string user_path(mixed name) {
 
     return "/home/" + name[0..0] + "/" + name + "/" ;
 }
+
+/**
+ * @simul_efun ghostp
+ * @description Returns 1 if the object is a ghost, 0 if not.
+ * @param {object} ob - The object to check.
+ * @returns {int} - 1 if the object is a ghost, otherwise 0.
+ */
+int ghostp(object ob) {
+    return ob->is_ghost() ;
+}
+
+/**
+ * @simul_efun linkp
+ * @description Returns 1 if the object is a user object, 0 if not.
+ * @param {object} ob - The object to check.
+ * @return {int} - 1 if the object is a user object, otherwise 0.
+ */
+int linkp(object ob) {
+    return ob->is_user() ;
+}

@@ -276,11 +276,11 @@ int save_user() {
     int result ;
     string save ;
     string e ;
-_debug("previous_object() = %O, this_body() = %O", previous_object(), this_body()) ;
+
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&
         this_body() != this_object() &&
         base_name(previous_object()) != CMD_QUIT) return 0;
-_debug("user_body_data(query_proper_name()) = %O", user_body_data(query_proper_name())) ;
+
     catch(result = save_object(user_body_data(query_proper_name())));
 
     e = catch(save = save_to_string(1));

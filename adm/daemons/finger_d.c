@@ -121,7 +121,7 @@ mixed get_user(string username) {
 
     if(origin() != ORIGIN_LOCAL && !adminp(query_privs(previous_object()))) return 0;
 
-    error = catch(user = new(STD_USER));
+    error = catch(user = load_object(sprintf("/link/%s", username)));
     if(error) return -1;
     if(!ofile_exists(user_data_file(username))) return -2;
 

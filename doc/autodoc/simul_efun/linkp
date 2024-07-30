@@ -1,0 +1,7 @@
+int linkp(object ob)
+
+Parameters:
+
+* `object ob` - The object to check.
+
+Returns 1 if the object is a user object, 0 if not.
