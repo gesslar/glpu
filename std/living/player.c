@@ -32,7 +32,6 @@ void setup_body() {
     if(!query_level()) set_level(1.0) ;
     set_level_mod(0.0) ;
     enable_commands();
-    set("prevent_get", 1);
     if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
@@ -47,6 +46,8 @@ void setup_body() {
 
     slot(SIG_SYS_CRASH, "on_crash") ;
     slot(SIG_PLAYER_ADVANCED, "on_advance") ;
+
+    this_user()->set_body_path(base_name()) ;
 }
 
 void enter_world() {

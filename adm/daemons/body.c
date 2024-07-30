@@ -20,7 +20,7 @@ object create_body_basic(object user) {
     object body ;
     string err;
 
-    err = catch(body = new(user->query_body_path()));
+    err = catch(body = new(STD_PLAYER)) ;
 
     if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
@@ -38,8 +38,9 @@ object create_body_basic(object user) {
 object create_body(object user) {
     string err;
     object body ;
-
+_debug("aroo?");
     body = create_body_basic(user);
+_debug("body = %O", body);
 
     if(body->is_dead())
         body = create_ghost(user);

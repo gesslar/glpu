@@ -19,10 +19,14 @@ inherit __DIR__ "advancement" ;
 inherit __DIR__ "alias" ;
 inherit __DIR__ "combat" ;
 inherit __DIR__ "ed" ;
+inherit __DIR__ "equipment" ;
 inherit __DIR__ "module" ;
 inherit __DIR__ "pager" ;
 inherit __DIR__ "race" ;
+inherit __DIR__ "vitals" ;
+inherit __DIR__ "wealth" ;
 
+inherit M_ACTION ;
 inherit M_LOG ;
 
 /* Global Variables */
@@ -38,6 +42,7 @@ void mudlib_setup() {
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     set_log_level(0) ;
+    set("prevent_get", 1);
 }
 
 private nosave string *body_slots = ({
@@ -79,11 +84,11 @@ void die() {
     if(userp())  {
         object ghost = BODY_D->create_ghost(query_user(), this_object()) ;
         exec(ghost, this_object()) ;
+        query_user()->set_body(ghost) ;
         ghost->setup_body() ;
         ghost->set_hp(-1.0) ;
         ghost->set_sp(-1.0) ;
         ghost->set_mp(-1.0) ;
-        query_user()->set_body(ghost) ;
         ghost->move(environment()) ;
     } else {
         ADVANCE_D->kill_xp(killed_by(), this_object()) ;
@@ -357,6 +362,8 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
             if(!arrive_message) arrive_message = query_env("move_in");
             if(!arrive_message) arrive_message = "$N arrives.\n";
             tmp = replace_string(arrive_message, "$N", query_name());
+
+            tmp = append(tmp, "\n") ;
 
             tell_down(curr, tmp, null, ({ this_object() })) ;
         }

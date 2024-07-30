@@ -441,8 +441,8 @@ void enter_world(int reconnecting) {
     }
 
     exec(body, this_object());
-    body->setup_body() ;
     body->set_user(user);
+    body->setup_body() ;
     user->clear_gmcp_data() ;
     user->set_gmcp_data(login_gmcp_data) ;
     user->clear_environ_data() ;
@@ -517,11 +517,12 @@ object create_body(string name) {
 
     if(origin() != ORIGIN_LOCAL) return 0;
 
-    err = catch(body = new(user->query_body_path()));
 
+    // err = catch(body = new(user->query_body_path()));
+    err = catch(body = new(STD_PLAYER));
     if(err) {
         error("Error [login]: There was an error creating your mobile.\n" +
-          "\tBody: " + user->query_body_path() + "\n" + err);
+          "\tBody: " + STD_PLAYER + "\n" + err);
     }
 
     body->set_name(query_privs(user));

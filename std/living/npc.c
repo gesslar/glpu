@@ -6,6 +6,8 @@
 
 */
 
+#include <logs.h>
+
 inherit STD_BODY;
 
 void setup_body() ;
@@ -85,9 +87,6 @@ void heart_beat() {
     heal_tick() ;
 
     evaluate_heart_beat() ;
-
-    if(gmcp_enabled())
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, null) ;
 }
 
 int is_npc() { return 1; }

@@ -15,11 +15,11 @@
 #include <vitals.h>
 #include <action.h>
 #include <module.h>
+#include <equipment.h>
 
 inherit __DIR__ "damage" ;
 
 // Functions from other objects
-public mapping query_equipped() ;
 string query_name() ;
 
 // Variables

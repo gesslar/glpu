@@ -30,6 +30,9 @@ int start_module(object ob, mixed args...) {
 void attack_on_sight(object target) {
     string name ;
 
+    if(target->is_ghost())
+        return ;
+
     name = target->query_name() ;
     if(of(name, combat_memory)) {
         query_owner()->targetted_action(

@@ -24,7 +24,7 @@ public nomask object compile_object(string file) {
 
     { // parse the data and make the monster
         string mob_type = data["type"] ;
-        string object_file = "/std/mobiles/%s.c" ;
+        string object_file = "/std/mobs/%s.c" ;
         mixed args ;
         object mob ;
 
