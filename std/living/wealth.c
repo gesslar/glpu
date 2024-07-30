@@ -45,12 +45,12 @@ int query_wealth(string currency) {
 }
 
 int add_wealth(string currency, int amount) {
-    if(nullp(wealth[currency])) return 0 ;
+    if(nullp(wealth[currency]))
+        return null ;
 
-    if(amount < 0) {
-        if(wealth[currency] + amount < 0)
-            return 0 ;
-    }
+    if(amount < 0)
+        if(wealth[currency] - amount < 0)
+            return null ;
 
     wealth[currency] += amount ;
 
@@ -61,7 +61,6 @@ int add_wealth(string currency, int amount) {
 
 void set_wealth(mapping w) {
     mixed *config = mud_config("CURRENCY") ;
-
 
     foreach(mixed *c in config) {
         if(nullp(w[c[0]])) w[c[0]] = 0 ;

@@ -45,5 +45,7 @@ void setup() {
         "with a flourish that binds word to deed.",
     ])) ;
 
+    add_exit("west", "village_path3") ;
+
     init_bank() ;
 }
