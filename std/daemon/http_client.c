@@ -438,8 +438,6 @@ private nomask void process_response(int fd, mapping server) {
 
         assoc = pcre_assoc(buf, ({ "(\r\n0\r\n\r\n)", "(\r\n[0-9a-fA-F]+\r\n)", "([0-9a-fA-F]+\r\n)", "(\r\n)" }), ({ 2, 1, 1, 1 }));
 
-        _debug(4, printf("assoc: %O\n", assoc)) ;
-
         parts = assoc[0] ;
         indices = assoc[1] ;
 

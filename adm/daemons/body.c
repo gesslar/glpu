@@ -30,7 +30,6 @@ object create_body_basic(object user) {
         type = "player" ;
 
     dest = sprintf("/%s/%s", type, query_privs(user)) ;
-    _debug("Dest: %s", dest) ;
 
     err = catch(body = load_object(dest)) ;
 

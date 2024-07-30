@@ -178,25 +178,17 @@ int clear_su_body() {
 object revert() {
     object ret ;
 
-    if(!objectp(su_body)) {
-        _debug("No su body to revert to.") ;
+    if(!objectp(su_body))
         return 0 ;
-    }
 
-    if(!objectp(body)) {
-        _debug("No body to revert to.") ;
+    if(!objectp(body))
         return 0;
-    }
 
-    if(!exec(su_body, body)) {
-        _debug("Failed to revert to body.") ;
+    if(!exec(su_body, body))
         return 0 ;
-    }
 
-    if(!set_body(su_body)) {
-        _debug("Failed to set body.") ;
+    if(!set_body(su_body))
         return 0 ;
-    }
 
     ret = su_body ;
 
