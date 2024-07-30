@@ -24,7 +24,7 @@ int save_user();
 
 void create() {
     if(origin() != ORIGIN_DRIVER) return;
-    if(!body_path) body_path = STD_BODY ;
+    /*if(!body_path)*/ body_path = STD_PLAYER ;
     set_log_level(0) ;
 }
 

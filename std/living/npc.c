@@ -55,5 +55,39 @@ int player_check() {
     return 0;
 }
 
+/* Body Object Functions */
+void heart_beat() {
+    clean_up_enemies() ;
+
+    if(userp()) {
+        if(!interactive(this_object())) {
+            if((time() - query("last_login")) > 3600) {
+                if(environment())
+                    tell_room(environment(), query_name() + " fades out of existance.\n");
+                log_file(LOG_LOGIN, query_proper_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                destruct(this_object());
+            }
+        } else {
+            /* Prevent link-dead from idle */
+            if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
+                    && query_env("keepalive") && query_env("keepalive") != "off") {
+                telnet_nop() ;
+            }
+        }
+    }
+
+    if(!is_dead() && query_hp() <= 0.0) {
+        set_dead(1) ;
+        die() ;
+        return ;
+    }
+
+    heal_tick() ;
+
+    evaluate_heart_beat() ;
+
+    if(gmcp_enabled())
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, null) ;
+}
+
 int is_npc() { return 1; }
-int is_pc() { return 0; }

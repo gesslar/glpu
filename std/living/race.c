@@ -10,7 +10,7 @@
  */
 
 #include <race.h>
-#include <body.h>
+#include <module.h>
 
 private nosave string racial_bodies = DIR_STD_MODULES_MOBILE "race/" ;
 private nomask race ;

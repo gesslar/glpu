@@ -24,7 +24,7 @@
 int exec(object to, object from) {
     if(is_member(query_privs(previous_object()), "admin") ||
        base_name(previous_object()) == STD_GHOST ||
-       base_name(previous_object()) == STD_BODY)
+       base_name(previous_object()) == STD_PLAYER)
         return efun::exec(to, from);
     else
         return 0;

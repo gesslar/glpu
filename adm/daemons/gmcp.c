@@ -38,7 +38,7 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(base == LOGIN_OB) {
         if(!has_gmcp(body))
             return ;
-    } else if(base == STD_BODY || base == STD_GHOST) {
+    } else if(base == STD_PLAYER || base == STD_GHOST) {
         if(!body->gmcp_enabled())
             return ;
     } else {

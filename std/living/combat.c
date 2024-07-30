@@ -14,7 +14,7 @@
 #include <gmcp_defines.h>
 #include <vitals.h>
 #include <action.h>
-#include <body.h>
+#include <module.h>
 
 inherit __DIR__ "damage" ;
 
