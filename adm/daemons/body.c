@@ -42,7 +42,7 @@ object create_body_basic(object user) {
 
     body->set_name(query_privs(user));
     user->set_body(body);
-    set_privs(body, body->query_proper_name());
+    set_privs(body, query_privs(user)) ;
     body->restore_user();
 
     return body;

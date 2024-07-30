@@ -18,6 +18,7 @@ inherit STD_ITEM;
 
 inherit __DIR__ "advancement" ;
 inherit __DIR__ "alias" ;
+inherit __DIR__ "appearance" ;
 inherit __DIR__ "combat" ;
 inherit __DIR__ "ed" ;
 inherit __DIR__ "equipment" ;

@@ -77,12 +77,13 @@ private void display_channels_by_module(object tp) {
     string *modules;
     string output;
     int i;
+    string name = query_privs(tp);
 
     modules = sort_array(CHAN_D->get_modules(), 1);
     output = "Channels by module:\n";
 
     for(i = 0; i < sizeof(modules); i++) {
-        string *channels = sort_array(CHAN_D->get_channels(modules[i]), 1);
+        string *channels = sort_array(CHAN_D->get_channels(modules[i], name), 1);
         if(sizeof(channels) > 0) {
             output += sprintf("%s - %s\n", modules[i], implode(channels, ", "));
         }
@@ -116,7 +117,7 @@ private void display_tuned_channels(object tp, string name) {
         name = query_privs(tp);
     }
 
-    all_channels = CHAN_D->get_channels("all");
+    all_channels = CHAN_D->get_channels("all", name);
     tuned_channels = ({});
 
     for(i = 0; i < sizeof(all_channels); i++) {
@@ -147,7 +148,7 @@ public varargs int tune(string channel, string name, int in_out, int silent) {
     result = 1;
 
     if(channel == "all") {
-        channels = CHAN_D->get_channels("all");
+        channels = CHAN_D->get_channels("all", name);
         if(sizeof(channels) == 0) {
             if(!silent)
                 tell(this_player(), "No channels available to tune.\n");

@@ -22,7 +22,7 @@ inherit M_GMCP ;
 private nosave mapping environ_data = ([]) ;
 
 /* Connection functions */
-void setup_body() {
+void setup_body(object user) {
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
     // set_proper_name(name());
@@ -45,7 +45,7 @@ void setup_body() {
     slot(SIG_SYS_CRASH, "on_crash") ;
     slot(SIG_PLAYER_ADVANCED, "on_advance") ;
 
-    this_user()->set_body_path(base_name()) ;
+    user->set_body_path(base_name()) ;
 }
 
 void enter_world() {
@@ -110,7 +110,7 @@ void net_dead() {
 void reconnect() {
     restore_user();
     set("last_login", time());
-    tell(this_object(), "Success: Reconnected.\n");
+    tell(this_object(), "You have reconnected to your body.\n");
     if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
     delete("extra_short/link_dead") ;
     /* reconnection logged in login object */

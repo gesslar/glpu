@@ -11,6 +11,10 @@
 #define GMCP_PKG_CHAR_STATUS                GMCP_PKG_CHAR".Status"
 #define GMCP_PKG_CHAR_STATUSVARS            GMCP_PKG_CHAR".StatusVars"
 #define GMCP_PKG_CHAR_VITALS                GMCP_PKG_CHAR".Vitals"
+#define GMCP_PKG_CHAR_LOGIN                 GMCP_PKG_CHAR".Login"
+#define GMCP_PKG_CHAR_LOGIN_DEFAULT         GMCP_PKG_CHAR_LOGIN".Default"
+#define GMCP_PKG_CHAR_LOGIN_CREDENTIALS     GMCP_PKG_CHAR_LOGIN".Credentials"
+#define GMCP_PKG_CHAR_LOGIN_RESULT          GMCP_PKG_CHAR_LOGIN".Result"
 
 #define GMCP_PKG_COMM                       "Comm"
 #define GMCP_PKG_COMM_CHANNEL               GMCP_PKG_COMM".Channel"

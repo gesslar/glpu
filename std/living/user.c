@@ -70,7 +70,11 @@ nomask int set_password(string str) {
 }
 
 nomask mixed query_password() {
-    if(adminp(query_privs(previous_object())) || this_body() == body) return password;
+    if(adminp(query_privs(previous_object())) ||
+       this_body() == body ||
+       base_name(previous_object()) == "/std/modules/gmcp/Char")
+       return password;
+
     else return "Error [user]: Permission Denied.\n";
 }
 

@@ -227,6 +227,7 @@ varargs string ctime(int x) {
  * @returns {object} - The this_body()->query_user().
  */
 object this_user() {
+    _debug("this body = %O\n", this_body()) ;
     return this_body()->query_user();
 }
 

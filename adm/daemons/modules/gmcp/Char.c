@@ -61,3 +61,12 @@ void Vitals(object who, mapping payload) {
 
     who->do_gmcp(GMCP_PKG_CHAR_VITALS, data) ;
 }
+
+void Login(object who, string submodule, mapping payload) {
+    switch(submodule) {
+        case "Default" : {
+            who->do_gmcp(GMCP_PKG_CHAR_LOGIN_DEFAULT, payload) ;
+            break ;
+        }
+    }
+}

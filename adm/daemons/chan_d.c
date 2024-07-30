@@ -21,7 +21,7 @@ int valid_ch(string channel_name);
 int valid_module(string module_name);
 int chat(string channel, string user, string msg);
 void grapevine_chat(mapping data) ;
-int filter_listing(string element);
+varargs int filter_listing(string element, string name);
 string *get_channels(string module_name);
 string *get_modules();
 string *get_tuned(string argument);
@@ -211,7 +211,7 @@ void grapevine_chat(mapping payload) {
     return call_if(mod_obj, "rec_grapevine_msg", channel, user, msg, game) ;
 }
 
-string *get_channels(string module_name) {
+string *get_channels(string module_name, string name) {
     string *ret = ({}), *keys;
     int i;
 
@@ -223,7 +223,7 @@ string *get_channels(string module_name) {
         if(channels[keys[i]]["module"] == module_name) ret += ({keys[i]});
     }
 
-    ret = filter_array(ret, "filter_listing", this_object());
+    ret = filter_array(ret, "filter_listing", this_object(), name) ;
     ret = sort_array(ret, 1);
 
     return ret;
@@ -241,11 +241,22 @@ string *get_tuned(string argument) {
     return ret;
 }
 
-int filter_listing(string element) {
+varargs int filter_listing(string element, string name) {
     object mod_obj;
+
+    if(!element)
+        return 0 ;
+
+    if(!name) {
+        if(!this_body())
+            return 0 ;
+        else
+            name = query_privs(this_body()) ;
+    }
+
     catch(mod_obj = load_object(modules[channels[element]["module"]])) ;
     if(!mod_obj) return 0;
-    if(mod_obj->is_allowed(element, this_body()->query_proper_name())) return 1;
+    if(mod_obj->is_allowed(element, name)) return 1;
     return 0;
 }
 

@@ -67,7 +67,10 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
     if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
-    catch(call_if(gmcp_module, gmcp.module, body, gmcp.payload)) ;
+    if(gmcp.submodule)
+        call_other(gmcp_module, gmcp.module, body, gmcp.submodule, gmcp.payload) ;
+    else
+        call_other(gmcp_module, gmcp.module, body, gmcp.payload) ;
 }
 
 class ClassGMCP convert_message(string message) {

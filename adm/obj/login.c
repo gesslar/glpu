@@ -14,6 +14,7 @@
 #include <daemons.h>
 #include <origin.h>
 #include <rooms.h>
+#include <gmcp_defines.h>
 
 inherit STD_ITEM ;
 
@@ -44,6 +45,7 @@ void idle_email(string str);
 object create_body(string name);
 object create_user(string name) ;
 string parse_tokens(string text);
+void greet() ;
 
 object user;
 object body;
@@ -53,17 +55,51 @@ string login_message = parse_tokens(read_file(mud_config("LOGIN_MSG")));
 string email;
 
 int is_connected = 0, call_out_id;
+int gmcp_login_status = 0 ;
+int greet_call ;
 
 void create() {
     set_log_level(0) ;
 
-    if(clonep()) call_out_id = call_out("auto_destruct", 60);
+    if(clonep())
+        call_out_id = call_out("auto_destruct", 60);
 }
 
 void logon() {
     tell(this_object(), login_message) ;
+    greet_call = call_out_walltime((:greet:), 0.2) ;
+}
+
+void greet(int gmcp_auth) {
+    if(gmcp_login_status && find_call_out(gmcp_login_status) == -1)
+        return ;
+
     tell(this_object(), "\nPlease select a name: ", MSG_PROMPT) ;
     input_to("get_name");
+}
+
+void gmcp_authenticated(string name) {
+    int reconnecting = 0 ;
+    object old_body ;
+
+    user = create_user(name) ;
+    set_privs(user, name) ;
+    user->set_name(name);
+    user->restore_user();
+
+    if(old_body = find_player(name)) {
+        tell_object(old_body, "Warning: Your body has been displaced by another user.\n");
+        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->query_proper_name()) + " ("+getoid(old_body)+") reconnected from " +
+          query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
+
+        if(interactive(old_body))
+            remove_interactive(old_body);
+
+        body = old_body;
+        enter_world(1) ;
+    } else {
+        enter_world(0) ;
+    }
 }
 
 void get_name(string str) {
@@ -433,7 +469,7 @@ void enter_world(int reconnecting) {
     object room ;
 
     if(!objectp(body))
-        body = BODY_D->create_body(user) ;
+        body = BODY_D->create_body_basic(user) ;
 
     if(body->is_dead()) {
         body->remove() ;
@@ -441,8 +477,12 @@ void enter_world(int reconnecting) {
     }
 
     exec(body, this_object());
+
+    if(reconnecting)
+        body->reconnect();
+
     body->set_user(user);
-    body->setup_body() ;
+    body->setup_body(user) ;
     user->clear_gmcp_data() ;
     user->set_gmcp_data(login_gmcp_data) ;
     user->clear_environ_data() ;
@@ -502,6 +542,7 @@ void enter_world(int reconnecting) {
     }
 
     body->enter_world();
+
     remove_call_out(call_out_id);
 
     if(reconnecting)
@@ -590,6 +631,18 @@ mapping query_gmcp_client() {
 
 void set_gmcp_supports(mapping supports) {
     login_gmcp_data["supports"] = supports ;
+
+    if(of("Char", supports) &&
+       of("modules", supports["Char"]) &&
+       of("Login", supports["Char"]["modules"])) {
+        mapping payload = ([ "type" : ({ "password-credentials" }) ]) ;
+
+        tell(this_object(), "["+mud_name()+"] GMCP Authentication available.\n") ;
+
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_LOGIN_DEFAULT, payload) ;
+
+        gmcp_login_status = call_out_walltime((: greet :), 1.0) ;
+    }
 }
 
 mapping query_gmcp_supports() {

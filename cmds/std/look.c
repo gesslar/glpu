@@ -178,8 +178,39 @@ mixed render_living(object caller, object room, object target, int brief) {
     object ob ;
     string slot ;
 
-    if(stringp(temp = get_short(target))) result += temp + "\n" ;
-    if(stringp(temp = get_long(target))) result += "\n" + temp + "\n" ;
+    temp = get_short(target);
+    if(stringp(temp))
+        result += temp + "\n" ;
+    temp = get_long(target);
+    if(stringp(temp))
+        if(strlen(result) && strlen(temp))
+            temp += "\n" ;
+        result += temp ;
+
+    { // hair and eyes
+        string hair = target->query_hair_string() ;
+        string eyes = target->query_eyes_string() ;
+
+        if(hair && eyes)
+            temp = hair + " and " + eyes + "." ;
+        else if(hair)
+            temp = hair + "." ;
+        else if(eyes)
+            temp = eyes + "." ;
+        else
+            temp = "" ;
+
+        if(strlen(temp)) {
+            if(caller == target)
+                temp = "You have " + temp ;
+            else
+                temp = target->query_name() + " has " + temp ;
+        }
+
+        if(strlen(temp) && strlen(result))
+            result += "\n" ;
+        result += temp + "\n";
+    }
 
     name = caller->query_name() ;
     if(target == caller) {

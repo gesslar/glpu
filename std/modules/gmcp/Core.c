@@ -29,7 +29,7 @@ void Hello(string submodule, mapping data) {
 }
 
 void Supports(string submodule, mixed data) {
-    object prev = previous_object();
+    object prev = previous_object(1);
     mapping supports ;
 
     switch(submodule) {
@@ -133,7 +133,6 @@ void Supports(string submodule, mixed data) {
             }
             break ;
     }
-
     prev->set_gmcp_supports(supports) ;
 }
 

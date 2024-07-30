@@ -119,7 +119,10 @@ mixed get_user(string username) {
     object user;
     string error;
 
-    if(origin() != ORIGIN_LOCAL && !adminp(query_privs(previous_object()))) return 0;
+    if(origin() != ORIGIN_LOCAL &&
+      !adminp(query_privs(previous_object())) &&
+      base_name(previous_object()) != "/std/modules/gmcp/Char"
+    ) return 0;
 
     error = catch(user = load_object(sprintf("/link/%s", username)));
     if(error) return -1;

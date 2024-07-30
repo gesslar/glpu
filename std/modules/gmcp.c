@@ -41,8 +41,6 @@ void gmcp(string message) {
     string gmcp_module ;
     object ob ;
 
-    _log("GMCP received\n%O", message) ;
-
     gmcp = GMCP_D->convert_message(message) ;
 
     if(gmcp == null)
@@ -187,6 +185,11 @@ int query_gmcp_supported(string fullname) {
 
 
 public int gmcp_enabled() {
-    return  has_gmcp(this_object()) &&
-            query_env("gmcp") != "off";
+    if(!has_gmcp(this_object()))
+        return 0 ;
+
+    if(base_name() == LOGIN_OB)
+        return 1 ;
+
+    return query_env("gmcp") != "off";
 }
