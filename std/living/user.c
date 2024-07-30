@@ -10,6 +10,7 @@
 
 #include <origin.h>
 #include <clean.h>
+#include <commands.h>
 
 inherit STD_OBJECT;
 inherit M_LOG ;
@@ -17,6 +18,7 @@ inherit M_LOG ;
 private string password, body_path;
 
 private nosave object body;
+private nosave object su_body ;
 private nosave mapping gmcp_data = ([ ]);
 private nosave mapping environ_data = ([]) ;
 
@@ -84,7 +86,12 @@ nomask string query_body_path() {
 }
 
 nomask int set_body(object ob) {
-    if(!adminp(query_privs(previous_object())) && this_body() != body) return 0;
+    object po = previous_object() ;
+
+    if(!adminp(query_privs(po)) && this_body() != body && base_name(po) != CMD_SU &&
+       origin() != ORIGIN_LOCAL)
+        return 0;
+
     ob->set_user(this_object());
     body = ob;
     body->clear_environ() ;
@@ -92,6 +99,8 @@ nomask int set_body(object ob) {
     body->clear_gmcp_data() ;
     body->set_gmcp_client(gmcp_data["client"]);
     body->set_gmcp_supports(gmcp_data["supports"]);
+
+    return 1 ;
 }
 
 nomask object query_body() {
@@ -144,4 +153,59 @@ void set_environ_data(mapping data) {
 
 void clear_environ_data() {
     environ_data = ([ ]) ;
+}
+
+int set_su_body(object source, object dest) {
+    if(!objectp(source) || !objectp(dest))
+        return 0;
+
+    if(objectp(su_body))
+        return 0;
+
+    su_body = source ;
+    return 1;
+}
+
+object query_su_body() {
+    return su_body ;
+}
+
+int clear_su_body() {
+    if(!objectp(su_body))
+        return 0;
+
+    su_body = 0 ;
+
+    return 1;
+}
+
+object revert() {
+    object ret ;
+
+    if(!objectp(su_body)) {
+        _debug("No su body to revert to.") ;
+        return 0 ;
+    }
+
+    if(!objectp(body)) {
+        _debug("No body to revert to.") ;
+        return 0;
+    }
+
+_debug("body = " + body + " su_body = " + su_body) ;
+    if(!exec(su_body, body)) {
+        _debug("Failed to revert to body.") ;
+        return 0 ;
+    }
+
+    if(!set_body(su_body)) {
+        _debug("Failed to set body.") ;
+        return 0 ;
+    }
+
+    ret = su_body ;
+
+    clear_su_body() ;
+
+    return ret ;
 }

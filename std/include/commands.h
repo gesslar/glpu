@@ -9,5 +9,7 @@
 
 // Std commands
 #define CMD_CHANNEL          DIR_CMDS_STD "channel"
+#define CMD_QUIT             DIR_CMDS_STD "quit"
+#define CMD_SU               DIR_CMDS_STD "su"
 
 #endif // __COMMANDS_H__

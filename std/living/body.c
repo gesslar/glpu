@@ -11,6 +11,7 @@
 
 #include <body.h>
 #include <player.h>
+#include <commands.h>
 
 inherit STD_CONTAINER ;
 inherit STD_ITEM;
@@ -38,11 +39,14 @@ private nosave object link;
 
 void mudlib_setup() {
     // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
+    enable_commands() ;
     path = ({"/cmds/std/"});
     if(!query("env_settings"))
         set("env_settings", ([])) ;
+    if(!query_env("prompt")) set_env("prompt", ">");
     set_log_level(0) ;
     set("prevent_get", 1);
+    add_action("command_hook", "", 1);
 }
 
 private nosave string *body_slots = ({
@@ -136,8 +140,11 @@ object query_user() {
 }
 
 int set_user(object ob) {
-    if(query_privs(previous_object()) != query_privs()
-        && !adminp(previous_object())) return 0;
+    if(query_privs(previous_object()) != query_privs() &&
+       !adminp(previous_object()) &&
+       base_name(previous_object(1)) != CMD_SU)
+        return 0;
+
     link = ob;
     return 1;
 }
@@ -228,7 +235,9 @@ int command_hook(string arg) {
 
     caller = this_body() ;
 
-    if(interactive(caller)) if(caller != this_object()) return 0;
+    if(interactive(caller))
+        if(caller != this_object())
+            return 0;
 
     if(query_env("away")) {
         write("You return from away\n");
@@ -240,7 +249,10 @@ int command_hook(string arg) {
 
     if(sscanf(alias_parse(verb, arg), "%s %s", verb, arg) != 2)
         verb = alias_parse(verb, arg);
-    if(arg == "") arg = 0;
+
+    if(arg == "")
+        arg = 0;
+
     verb = lower_case(verb);
     // First let's check in our immediate inventory
     obs = all_inventory() ;
@@ -249,13 +261,15 @@ int command_hook(string arg) {
         result = evaluate_result(result) ;
         if(result == 1) return 1 ;
     }
+
     // Now let's check in our environment
     if(environment()) {
         obs = ({ environment() }) + all_inventory(environment()) - ({ this_object() }) ;
         foreach(ob in obs) {
             result = ob->evaluate_command(this_object(), verb, arg) ;
             result = evaluate_result(result) ;
-            if(result == 1) return 1 ;
+            if(result == 1)
+                return 1 ;
         }
     }
 

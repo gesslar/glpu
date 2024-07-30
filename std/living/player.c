@@ -23,7 +23,6 @@ private nosave mapping environ_data = ([]) ;
 
 /* Connection functions */
 void setup_body() {
-    add_action("command_hook", "", 1);
     set_living_name(query_proper_name());
     set_ids(({query_proper_name()}));
     // set_proper_name(name());
@@ -31,7 +30,6 @@ void setup_body() {
     if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
     if(!query_level()) set_level(1.0) ;
     set_level_mod(0.0) ;
-    enable_commands();
     if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
     if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
@@ -278,8 +276,11 @@ int save_user() {
     int result ;
     string save ;
     string e ;
-
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+_debug("previous_object() = %O, this_body() = %O", previous_object(), this_body()) ;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&
+        this_body() != this_object() &&
+        base_name(previous_object()) != CMD_QUIT) return 0;
+_debug("user_body_data(query_proper_name()) = %O", user_body_data(query_proper_name())) ;
     catch(result = save_object(user_body_data(query_proper_name())));
 
     e = catch(save = save_to_string(1));

@@ -1,5 +1,6 @@
 #include <simul_efun.h>
 
+#include <commands.h>
 #include <daemons.h>
 #include <type.h>
 
@@ -24,7 +25,9 @@
 int exec(object to, object from) {
     if(is_member(query_privs(previous_object()), "admin") ||
        base_name(previous_object()) == STD_GHOST ||
-       base_name(previous_object()) == STD_PLAYER)
+       base_name(previous_object()) == STD_PLAYER ||
+       base_name(previous_object()) == CMD_SU ||
+       base_name(previous_object()) == STD_USER)
         return efun::exec(to, from);
     else
         return 0;

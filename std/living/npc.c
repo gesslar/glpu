@@ -13,7 +13,7 @@ inherit STD_BODY;
 void setup_body() ;
 
 void mudlib_setup() {
-    enable_commands() ;
+    ::mudlib_setup() ;
 
     set_name("Generic NPC");
     set_ids(({lower_case(query_name()), query_name(), "npc", "generic npc", "NPC" }));
