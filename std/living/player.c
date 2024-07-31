@@ -65,7 +65,7 @@ void enter_world() {
     };
 
     set("last_login", time());
-    write("\n");
+    tell(this_object(), "\n") ;
     say(capitalize(query_name()) + " has entered.\n");
 }
 
