@@ -16,7 +16,7 @@ object create_body(object user) ;
 mixed create_ghost(object user) ;
 mixed revive(object ghost, object user) ;
 
-object create_body_basic(object user) {
+object create_body(object user) {
     object body ;
     string err;
     string type ;
@@ -48,23 +48,6 @@ object create_body_basic(object user) {
     return body;
 }
 
-object create_body(object user) {
-    string err;
-    object body ;
-
-    body = create_body_basic(user);
-    if(!body)
-        return 0;
-
-    if(body->is_dead())
-        body = create_ghost(user);
-
-    body->setup_body() ;
-    body->set_user(user);
-
-    return body;
-}
-
 mixed create_ghost(object user) {
     string err ;
     object ghost ;
@@ -78,8 +61,8 @@ mixed create_ghost(object user) {
     }
 
     ghost->set_name(name) ;
-    user->set_body(ghost) ;
     set_privs(ghost, name) ;
+    user->set_body(ghost) ;
 
     return ghost ;
 }

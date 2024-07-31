@@ -143,7 +143,8 @@ object query_user() {
 int set_user(object ob) {
     if(query_privs(previous_object()) != query_privs() &&
        !adminp(previous_object()) &&
-       base_name(previous_object(1)) != CMD_SU)
+       base_name(previous_object(1)) != CMD_SU
+    )
         return 0;
 
     link = ob;

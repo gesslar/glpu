@@ -58,12 +58,11 @@ int revive(string str) {
     if(this_body() != this_object())
         return 0;
 
-    body = BODY_D->create_body_basic(user) ;
+    body = BODY_D->create_body(user) ;
 
     exec(body, this_object()) ;
-    body->set_user(user) ;
     user->set_body(body) ;
-    body->setup_body() ;
+    body->setup_body(user) ;
     body->set_dead(0) ;
     body->set_hp(1.0) ;
     body->set_sp(1.0) ;
@@ -71,6 +70,9 @@ int revive(string str) {
 
     body->move(environment()) ;
     body->simple_action("$N $vhave revived.") ;
+
+    if(body->gmcp_enabled())
+        GMCP_D->init_gmcp(body) ;
 
     emit(SIG_PLAYER_REVIVED, body) ;
 

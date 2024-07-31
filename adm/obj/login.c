@@ -469,7 +469,7 @@ void enter_world(int reconnecting) {
     object room ;
 
     if(!objectp(body))
-        body = BODY_D->create_body_basic(user) ;
+        body = BODY_D->create_body(user) ;
 
     if(body->is_dead()) {
         body->remove() ;
@@ -560,7 +560,7 @@ object create_body(string name) {
     if(origin() != ORIGIN_LOCAL) return 0;
 
     // err = catch(body = new(user->query_body_path()));
-    err = catch(body = BODY_D->create_body_basic(user));
+    err = catch(body = BODY_D->create_body(user));
     if(err || !body) {
         receive("\nThere was a problem creating your body.\n") ;
         user->remove() ;
