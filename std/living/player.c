@@ -17,6 +17,8 @@
 
 inherit STD_BODY ;
 
+inherit __DIR__ "living" ;
+
 inherit M_GMCP ;
 
 private nosave mapping environ_data = ([]) ;
@@ -36,6 +38,7 @@ void setup_body(object user) {
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
+    init_boon() ;
     init_capacity() ;
     update_regen_interval() ;
     init_vitals() ;
@@ -144,8 +147,8 @@ void heart_beat() {
     }
 
     heal_tick() ;
-
     evaluate_heart_beat() ;
+    process_boon() ;
 
     if(gmcp_enabled())
         GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, null) ;

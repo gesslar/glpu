@@ -1,0 +1,26 @@
+{
+    "strength": {
+        "min": 3,
+        "max": 20
+    },
+    "dexterity": {
+        "min": 3,
+        "max": 20
+    },
+    "constitution": {
+        "min": 3,
+        "max": 20
+    },
+    "intelligence": {
+        "min": 3,
+        "max": 20
+    },
+    "wisdom": {
+        "min": 3,
+        "max": 20
+    },
+    "charisma": {
+        "min": 3,
+        "max": 20
+    }
+}

@@ -87,5 +87,6 @@
     "ALLOW_RECURSE_RMDIR" : [
         "/adm/daemons/autodoc",
         "/cmds/file/rm"
-    ]
+    ],
+    "ATTRIBUTES" : "/adm/etc/attributes/default.json"
 }

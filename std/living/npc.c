@@ -10,6 +10,8 @@
 
 inherit STD_BODY;
 
+inherit __DIR__ "living" ;
+
 void setup_body() ;
 
 void mudlib_setup() {
@@ -20,6 +22,7 @@ void mudlib_setup() {
     set_long(capitalize(query_name()) + " is a generic NPC.");
     set_short(query_name());
     if(!query("env_settings")) set("env_settings", ([]));
+    init_boon() ;
     init_vitals() ;
 
     if(clonep()) {
@@ -85,8 +88,8 @@ void heart_beat() {
     }
 
     heal_tick() ;
-
     evaluate_heart_beat() ;
+    process_boon() ;
 }
 
 int is_npc() { return 1; }

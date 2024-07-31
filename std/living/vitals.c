@@ -15,10 +15,10 @@
 
 void update_regen_interval() ;
 
-private float hp, max_hp, sp, max_sp, mp, max_mp ;
-private int dead = false ;
-private nosave int tick ;
-private nosave int regen_interval_pulses; // Number of pulses to trigger a regen
+private nomask float hp, max_hp, sp, max_sp, mp, max_mp ;
+private nomask int dead = false ;
+private nomask nosave int tick ;
+private nomask nosave int regen_interval_pulses; // Number of pulses to trigger a regen
 
 void init_vitals() {
     hp = hp || 100.0 ;
@@ -68,6 +68,24 @@ float add_hp(float x) {
     return hp ;
 }
 
+float add_max_hp(float x) {
+    max_hp += to_float(x) ;
+
+    if (max_hp < 0.0)
+        max_hp = 0.0 ;
+
+    if(hp > max_hp) {
+        hp = max_hp ;
+    }
+
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
+        GMCP_LBL_CHAR_VITALS_HP: sprintf("%.2f", hp),
+        GMCP_LBL_CHAR_VITALS_MAX_HP: sprintf("%.2f", max_hp),
+    ])) ;
+
+    return max_hp ;
+}
+
 float add_sp(float x) {
     sp += to_float(x) ;
     if (sp > max_sp)
@@ -80,6 +98,24 @@ float add_sp(float x) {
     return sp ;
 }
 
+float add_max_sp(float x) {
+    max_sp += to_float(x);
+
+    if (max_sp < 0.0)
+        max_sp = 0.0;
+
+    if (sp > max_sp) {
+        sp = max_sp;
+    }
+
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
+        GMCP_LBL_CHAR_VITALS_SP: sprintf("%.2f", sp),
+        GMCP_LBL_CHAR_VITALS_MAX_SP: sprintf("%.2f", max_sp),
+    ]));
+
+    return max_sp;
+}
+
 float add_mp(float x) {
     mp += to_float(x) ;
     if (mp > max_mp)
@@ -89,6 +125,24 @@ float add_mp(float x) {
         GMCP_LBL_CHAR_VITALS_MP: sprintf("%.2f", mp),
     ])) ;
     return mp ;
+}
+
+float add_max_mp(float x) {
+    max_mp += to_float(x);
+
+    if (max_mp < 0.0)
+        max_mp = 0.0;
+
+    if (mp > max_mp) {
+        mp = max_mp;
+    }
+
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
+        GMCP_LBL_CHAR_VITALS_MP: sprintf("%.2f", mp),
+        GMCP_LBL_CHAR_VITALS_MAX_MP: sprintf("%.2f", max_mp),
+    ]));
+
+    return max_mp;
 }
 
 protected void heal_tick(int force: (: 0 :)) {
