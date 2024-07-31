@@ -12,6 +12,7 @@
 #include <boon.h>
 #include <attributes.h>
 #include <living.h>
+#include <skills.h>
 
 private nomask mapping boon = ([]) ;
 private nomask mapping curse = ([]) ;
@@ -38,8 +39,7 @@ public nomask int boon(string name, string cl, string type, int amt, int dur) {
 
     boon[cl][type][tag] = ([ "name" : name, "amt" : amt, "expires" : time() + dur ]) ;
 
-    return apply_boon_effect(BOON,
-        ([ "class" : cl, "type" : type, ]) + copy(boon[cl][type][tag]), 0) ;
+    return tag ;
 }
 
 public nomask int curse(string name, string cl, string type, int amt, int dur) {
@@ -53,8 +53,7 @@ public nomask int curse(string name, string cl, string type, int amt, int dur) {
 
     curse[cl][type][tag] = ([ "name" : name, "amt" : amt, "expires" : time() + dur ]) ;
 
-    return apply_boon_effect(CURSE,
-        ([ "class" : cl, "type" : type, ]) + copy(curse[cl][type][tag]), 0) ;
+    return tag ;
 }
 
 public nomask int query_boon(string cl, string type) {
@@ -101,62 +100,6 @@ public nomask int query_effective_boon(string cl, string type) {
     return query_boon(cl, type) - query_curse(cl, type) ;
 }
 
-private nomask int apply_boon_effect(int type, mapping data, int reversing) {
-    int adjustment;
-
-    // Determine the adjustment amount based on the type and whether reversing is applied
-    switch (type) {
-        case 1: // Boon
-            adjustment = data["amt"];
-            break;
-        case 2: // Curse
-            adjustment = -data["amt"];
-            break;
-        default:
-            return 0; // Invalid type
-    }
-
-    // Apply reversing effect if needed
-    if (reversing) {
-        adjustment = -adjustment;
-    }
-
-    switch(data["class"]) {
-        case "attribute" : {
-            int result ;
-
-            if(nullp(query_attribute(data["type"])))
-                return 0 ;
-
-            living_adjust_attributes() ;
-            result = modify_attribute(data["type"], adjustment) ;
-            if(result < 0) {
-                map_delete(boon[data["class"]][data["type"]], data["tag"]) ;
-                return 0 ;
-            }
-            return 1 ;
-        }
-        case "vitals" : {
-            string *matches = pcre_extract(data["type"], "^max_(hp|sp|mp)$") ;
-            float curr, max ;
-
-            if(!sizeof(matches))
-                return 0 ;
-
-            curr = call_other(this_object(), sprintf("query_max_%s", matches[0])) ;
-            max = call_other(this_object(), sprintf("add_max_%s", matches[0]), adjustment) ;
-
-            if(max == curr) {
-                map_delete(boon[data["class"]][data["type"]], data["tag"]) ;
-                return 0 ;
-            }
-            living_adjust_vitals() ;
-            return 1 ;
-            break ;
-        }
-    }
-}
-
 protected nomask void process_boon() {
     int now = time(), tag;
     string cl, type ;
@@ -167,12 +110,7 @@ protected nomask void process_boon() {
             foreach(tag, b in boon_data) {
                 if(b["expires"] < now) {
                     map_delete(boon_data, tag) ;
-                    if(apply_boon_effect(BOON,
-                        ([ "class" : cl, "type" : type, ]) + copy(b), 1)) {
-                        tell(this_object(), "Your " + b["name"] + " has worn off.\n") ;
-                    } else {
-                        tell(this_object(), "Your " + b["name"] + " had a problem wearing off.\n") ;
-                    }
+                    tell(this_object(), "Your " + b["name"] + " has worn off.\n") ;
                 }
             }
         }
@@ -183,12 +121,7 @@ protected nomask void process_boon() {
             foreach(tag, c in curse_data) {
                 if(c["expires"] < now) {
                     map_delete(curse_data, tag) ;
-                    if(apply_boon_effect(CURSE,
-                        ([ "class" : cl, "type" : type, ]) + copy(c), 1)) {
-                        tell(this_object(), "Your " + c["name"] + " has worn off.\n") ;
-                    } else {
-                        tell(this_object(), "Your " + c["name"] + " had a problem wearing off.\n") ;
-                    }
+                    tell(this_object(), "Your " + c["name"] + " has worn off.\n") ;
                 }
             }
         }

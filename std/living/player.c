@@ -38,10 +38,10 @@ void setup_body(object user) {
     if(!query_env("auto_tune")) set_env("auto_tune", "all");
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
-    init_boon() ;
+    init_living() ;
     init_capacity() ;
     update_regen_interval() ;
-    init_vitals() ;
+
 
     set_log_prefix(sprintf("(%O)", this_object())) ;
 

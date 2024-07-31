@@ -12,6 +12,7 @@
 #include <gmcp_defines.h>
 #include <vitals.h>
 #include <runtime_config.h>
+#include <boon.h>
 
 void update_regen_interval() ;
 
@@ -32,15 +33,30 @@ void init_vitals() {
 }
 
 float query_hp() { return hp ; }
-float query_max_hp() { return max_hp ; }
+varargs float query_max_hp(int raw) {
+    if(raw)
+        return max_hp ;
+
+    return max_hp + query_effective_boon("vital", "max_hp") ;
+}
 float hp_ratio() { return percent_of(hp, max_hp) ; }
 
 float query_sp() { return sp ; }
-float query_max_sp() { return max_sp ; }
+varargs float query_max_sp(int raw) {
+    if(raw)
+        return max_sp ;
+
+    return max_sp + query_effective_boon("vital", "max_sp") ;
+}
 float sp_ratio() { return percent_of(sp, max_sp) ; }
 
 float query_mp() { return mp ; }
-float query_max_mp() { return max_mp ; }
+varargs float query_max_mp(int raw) {
+    if(raw)
+        return max_mp ;
+
+    return max_mp + query_effective_boon("vital", "max_mp") ;
+}
 float mp_ratio() { return percent_of(mp, max_mp) ; }
 
 void set_hp(float x) { hp = to_float(x) ; }

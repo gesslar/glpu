@@ -12,12 +12,14 @@
 #include <living.h>
 #include <attributes.h>
 #include <boon.h>
+#include <skills.h>
 #include <vitals.h>
 
 public nomask void init_living() {
     init_attributes();
     init_vitals();
     init_boon();
+    init_skills();
 }
 
 public nomask void adjust_living() {

@@ -3,13 +3,13 @@
 
 void init_vitals();
 float query_hp();
-float query_max_hp();
+varargs float query_max_hp(int raw);
 float hp_ratio();
 float query_sp();
-float query_max_sp();
+varargs float query_max_sp(int raw);
 float sp_ratio();
 float query_mp();
-float query_max_mp();
+varargs float query_max_mp(int raw);
 float mp_ratio();
 void set_hp(float x);
 void set_max_hp(float x);

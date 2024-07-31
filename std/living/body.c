@@ -26,6 +26,7 @@ inherit __DIR__ "ed" ;
 inherit __DIR__ "equipment" ;
 inherit __DIR__ "module" ;
 inherit __DIR__ "pager" ;
+inherit __DIR__ "skills" ;
 inherit __DIR__ "race" ;
 inherit __DIR__ "vitals" ;
 inherit __DIR__ "wealth" ;

@@ -88,5 +88,42 @@
         "/adm/daemons/autodoc",
         "/cmds/file/rm"
     ],
-    "ATTRIBUTES" : "/adm/etc/attributes/default.json"
+    "SKILLS" : {
+        "combat" : {
+            "defense" : [
+                "dodge",
+                "parry"
+            ],
+            "melee" : [
+                "attack",
+                "bludgeoning",
+                "piercing",
+                "slashing",
+                "unarmed"
+            ]
+        },
+        "social" : [
+            "barter",
+            "charm",
+            "intimidate",
+            "persuade"
+        ],
+        "general" : [
+            "appraise",
+            "hide",
+            "jump",
+            "listen",
+            "search",
+            "spot",
+            "swim"
+        ]
+    },
+    "ATTRIBUTES" : [
+        "strength",
+        "dexterity",
+        "constitution",
+        "intelligence",
+        "wisdom",
+        "charisma"
+    ]
 }

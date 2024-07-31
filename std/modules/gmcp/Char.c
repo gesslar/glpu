@@ -11,7 +11,7 @@ void setup() {
 }
 
 void StatusVars() {
-    object prev = previous_object(1);
+    object prev = previous_object();
 
     if(!cooldown_check(GMCP_PKG_CHAR_STATUSVARS, prev))
         return;
@@ -22,7 +22,7 @@ void StatusVars() {
 }
 
 void Status() {
-    object prev = previous_object(1);
+    object prev = previous_object();
 
     if(!cooldown_check(GMCP_PKG_CHAR_STATUS, prev))
         return;

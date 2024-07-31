@@ -3,7 +3,7 @@
 
 void init_attributes();
 int set_attribute(string key, int value);
-int query_attribute(string key);
+varargs int query_attribute(string key, int raw);
 int modify_attribute(string key, int value);
 mapping query_attributes();
 

@@ -9,7 +9,6 @@ public mapping query_boon_data() ;
 public nomask int query_curse(string cl, string type);
 public mapping query_curse_data() ;
 public nomask int query_effective_boon(string cl, string type);
-private nomask void apply_boon_effect(int type, mapping data, int reversing);
 protected nomask void process_boon() ;
 
 #endif // __BOON_H__

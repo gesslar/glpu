@@ -9,18 +9,23 @@
  * 2024/07/30 - Gesslar - Created
  */
 
-private nomask nosave mapping default_attributes = ([]) ;
+#include <attributes.h>
+#include <boon.h>
+
+private nomask nosave string *default_attributes = ({}) ;
 private nomask mapping attributes = ([]) ;
 
 void init_attributes() {
     string key ;
     mixed data ;
 
-    default_attributes = json_decode(read_file(mud_config("ATTRIBUTES"))) ;
+    default_attributes = mud_config("ATTRIBUTES") ;
 
-    foreach(key, data in default_attributes) {
+    attributes = attributes || ([]) ;
+
+    foreach(key in default_attributes) {
         if(!of(key, attributes)) {
-            attributes[key] = (data["max"] - data["min"]) / 2 + data["min"] ;
+            attributes[key] = 5 ;
         }
     }
 
@@ -41,12 +46,15 @@ int set_attribute(string key, int value) {
     return attributes[key];
 }
 
-int query_attribute(string key) {
+varargs int query_attribute(string key, int raw) {
     if(!of(key, attributes)) {
         return null ;
     }
 
-    return attributes[key];
+    if(raw)
+        return attributes[key];
+
+    return attributes[key] + query_effective_boon("attribute", key) ;
 }
 
 int modify_attribute(string key, int value) {
