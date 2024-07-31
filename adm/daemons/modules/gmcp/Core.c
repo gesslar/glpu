@@ -22,5 +22,6 @@
 inherit STD_DAEMON ;
 
 void Ping(object who) {
+_debug("Core.Ping") ;
     who->do_gmcp(GMCP_PKG_CORE_PING) ;
 }

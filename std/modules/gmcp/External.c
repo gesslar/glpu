@@ -4,7 +4,7 @@
 inherit __DIR__ "gmcp_module" ;
 
 void Discord(string submodule, mixed data) {
-    object prev = previous_object() ;
+    object prev = previous_object(1) ;
 
     switch(submodule) {
         case "Hello":

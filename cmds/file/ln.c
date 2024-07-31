@@ -8,6 +8,21 @@
 
 inherit STD_CMD ;
 
+void setup() {
+     usage_text = "ln <original file> <new refrence>" ;
+     help_text =
+     "This command is a very powerful tool that allows you to create a "
+     "file that references to another file. This means when you access "
+     "the new file you created with this command, you'll be actually "
+     "accessing the original file. This is a very dangerous tool as "
+     "well because the new file will inherit the permissions of its "
+     "new directory, possibly allowing people to access the file who "
+     "wouldn't be able to access it before. For this command to work, "
+     "you must have read and linking permissions in the directory of "
+     "the original file and then write and linking permissions in the "
+     "directory of the new reference." ;
+}
+
 mixed main(object caller, string args)
 {
      string file, refrence;

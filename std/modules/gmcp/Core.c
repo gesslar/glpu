@@ -11,7 +11,7 @@ void setup() {
     ]) ;
 }
 
-void Hello(string submodule, mapping data) {
+void Hello(mapping data) {
     object prev = previous_object();
     string key, value ;
 
@@ -29,7 +29,7 @@ void Hello(string submodule, mapping data) {
 }
 
 void Supports(string submodule, mixed data) {
-    object prev = previous_object(1);
+    object prev = previous_object(1) || previous_object() ;
     mapping supports ;
 
     switch(submodule) {

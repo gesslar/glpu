@@ -53,8 +53,16 @@ string query_hair_string() {
     if(!hair)
         return "no hair" ;
 
-    if(hair && hair_colour)
-        ret = replace_string(hair, "$C", hair_colour) ;
+    if(hair) {
+        if(hair_colour)
+            ret = replace_string(hair, "$C", hair_colour) ;
+        else
+            ret = hair ;
+    } else if(hair_colour)
+        ret = hair_colour + " hair" ;
+
+    if(strsrch(ret, "hair") == -1)
+        ret += " hair" ;
 
     return ret ;
 }
@@ -65,8 +73,16 @@ string query_eyes_string() {
     if(!eyes)
         return "no eyes" ;
 
-    if(eyes && eye_colour)
-        ret = replace_string(eyes, "$C", eye_colour) ;
+    if(eyes) {
+        if(eye_colour)
+            ret = replace_string(eyes, "$C", eye_colour) ;
+        else
+            ret = eyes ;
+    } else if(eye_colour)
+        ret = eye_colour + " eyes" ;
+
+    if(strsrch(ret, "eyes") == -1)
+        ret += " eyes" ;
 
     return ret ;
 }

@@ -19,8 +19,6 @@ private string password, body_path;
 
 private nosave object body;
 private nosave object su_body ;
-private nosave mapping gmcp_data = ([ ]);
-private nosave mapping environ_data = ([]) ;
 
 int save_user();
 
@@ -98,11 +96,6 @@ nomask int set_body(object ob) {
 
     ob->set_user(this_object());
     body = ob;
-    body->clear_environ() ;
-    body->set_environ(environ_data) ;
-    body->clear_gmcp_data() ;
-    body->set_gmcp_client(gmcp_data["client"]);
-    body->set_gmcp_supports(gmcp_data["supports"]);
 
     return 1 ;
 }
@@ -125,34 +118,6 @@ int clean_up(int refs) {
 
 int query_log_level() {
     return query_body()->query_log_level() ;
-}
-
-void clear_gmcp_data() {
-    gmcp_data = ([ ]);
-}
-
-void set_gmcp_data(mapping data) {
-    if(base_name(previous_object()) != BODY_D)
-        return;
-
-    if(!mapp(data))
-        return ;
-
-    gmcp_data = data ;
-}
-
-void set_environ_data(mapping data) {
-    if(base_name(previous_object()) != BODY_D)
-        return;
-
-    if(!mapp(data))
-        return ;
-
-    environ_data = data ;
-}
-
-void clear_environ_data() {
-    environ_data = ([ ]) ;
 }
 
 int set_su_body(object source, object dest) {

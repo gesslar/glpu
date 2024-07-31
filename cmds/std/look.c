@@ -147,9 +147,11 @@ mixed render_object(object caller, object room, string target) {
         if(!objectp(ob)) ob = present(target, caller);
     }
 
-    if(!objectp(ob)) return "You do not see " + target + ".\n" ;
+    if(!objectp(ob))
+        return "You do not see " + target + ".\n" ;
 
-    if(living(ob)) return render_living(caller, room, ob, 0) ;
+    if(living(ob))
+        return render_living(caller, room, ob, 0) ;
 
     temp = get_short(ob);
     if(stringp(temp)) desc += temp + "\n" ;

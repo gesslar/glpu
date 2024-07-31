@@ -62,7 +62,10 @@ void gmcp(string message) {
     if(err = catch(ob = load_object(gmcp_module)))
         return ;
 
-    call_if(gmcp_module, gmcp.module, gmcp.submodule, gmcp.payload) ;
+    if(gmcp.submodule)
+        call_other(ob, gmcp.module, gmcp.submodule, gmcp.payload) ;
+    else
+        call_other(ob, gmcp.module, gmcp.payload) ;
 }
 
 // This function sends a GMCP message to the client. It will only send the

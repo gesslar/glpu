@@ -483,10 +483,11 @@ void enter_world(int reconnecting) {
 
     body->set_user(user);
     body->setup_body(user) ;
-    user->clear_gmcp_data() ;
-    user->set_gmcp_data(login_gmcp_data) ;
-    user->clear_environ_data() ;
-    user->set_environ_data(environ_data) ;
+    body->clear_gmcp_data() ;
+    body->set_gmcp_client(login_gmcp_data["client"]) ;
+    body->set_gmcp_supports(login_gmcp_data["supports"]) ;
+    body->clear_environ_data() ;
+    body->set_environ_data(environ_data) ;
     user->set_body(body);
 
     if(body->gmcp_enabled())

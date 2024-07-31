@@ -11,7 +11,7 @@ void setup() {
 }
 
 void StatusVars() {
-    object prev = previous_object();
+    object prev = previous_object(1);
 
     if(!cooldown_check(GMCP_PKG_CHAR_STATUSVARS, prev))
         return;
@@ -22,7 +22,7 @@ void StatusVars() {
 }
 
 void Status() {
-    object prev = previous_object();
+    object prev = previous_object(1);
 
     if(!cooldown_check(GMCP_PKG_CHAR_STATUS, prev))
         return;
@@ -32,10 +32,10 @@ void Status() {
     GMCP_D->send_gmcp(prev, GMCP_PKG_CHAR_STATUS) ;
 }
 
-void Login(string command, mapping data) {
-    object prev = previous_object(1) ;
+void Login(string submodule, mapping data) {
+    object prev = previous_object() ;
 
-    switch(command) {
+    switch(submodule) {
         case "Credentials" : {
             string account, password, curr, test ;
             object link ;
