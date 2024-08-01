@@ -59,7 +59,7 @@ int add_wealth(string currency, int amount) {
     return wealth[currency] ;
 }
 
-void set_wealth(mapping w) {
+mapping set_wealth(mapping w) {
     mixed *config = mud_config("CURRENCY") ;
 
     foreach(mixed *c in config) {
@@ -67,6 +67,8 @@ void set_wealth(mapping w) {
     }
 
     rehash_capacity() ;
+
+    return wealth = w ;
 }
 
 // This is only useful for livings that can carry wealth

@@ -9,7 +9,6 @@
 /* Last edited on July 17th, 2006 by Tacitus */
 
 #include <origin.h>
-#include <clean.h>
 #include <commands.h>
 
 inherit STD_OBJECT;

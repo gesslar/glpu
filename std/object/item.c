@@ -10,26 +10,9 @@
  */
 
 inherit STD_OBJECT ;
-
-void set_spawn_info(mapping info);
-void add_spawn_info(string key, mixed value);
-mixed query_spawn_info(string key);
-mapping query_all_spawn_info();
-int move(mixed dest);
-int allow_move(mixed dest);
+inherit STD_VALUE ;
 
 private nosave mapping spawn_info = ([]) ;
-
-void on_destruct() {
-    object env = environment() ;
-
-    if(env && !env->is_room()) {
-        env->add_capacity(query_mass());
-        env->add_volume(query_bulk());
-    }
-
-    unsetup_chain() ;
-}
 
 void set_spawn_info(mapping info) {
     spawn_info = info ;
@@ -63,13 +46,13 @@ int allow_move(mixed dest) {
         return MOVE_NOT_ALLOWED;
 
     if(mud_config("USE_MASS"))
-        if(!ob->query_ignore_mass())
-            if(ob->query_capacity() < query_mass())
+        if(!dest->ignore_mass())
+            if(dest->query_capacity() < query_mass())
                 return MOVE_TOO_HEAVY ;
 
     if(mud_config("USE_BULK"))
-        if(!ob->query_ignore_bulk())
-            if(ob->query_volume() < query_bulk())
+        if(!dest->query_ignore_bulk())
+            if(dest->query_volume() < query_bulk())
                 return MOVE_NO_ROOM ;
 
     if(environment())
@@ -89,15 +72,17 @@ int move(mixed dest) {
     if(result & MOVE_ALREADY_THERE) return MOVE_OK | MOVE_ALREADY_THERE ;
 
     prev = environment() ;
-    if(prev && !prev->is_room()) {
-        prev->add_capacity(query_mass());
-        prev->add_volume(query_bulk());
+    if(prev) {
+        if(!prev->ignore_capacity())
+            prev->add_capacity(query_mass());
+        if(!prev->query_ignore_bulk())
+            prev->add_volume(query_bulk());
     }
 
-    if(!dest->is_room()) {
+    if(!dest->no_capacity())
         dest->add_capacity(-query_mass());
+    if(!dest->query_ignore_bulk())
         dest->add_volume(-query_bulk());
-    }
 
     move_object(dest);
     event(this_object(), "moved", prev) ;

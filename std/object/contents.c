@@ -26,10 +26,18 @@ void clean_contents() {
 
 void set_max_capacity(int x) {
     max_capacity = x ;
+
+    if(nullp(capacity)) {
+        capacity = x ;
+    }
 }
 
 void set_max_volume(int x) {
     max_volume = x ;
+
+    if(nullp(volume)) {
+        volume = x ;
+    }
 }
 
 int query_max_capacity() {
@@ -87,6 +95,10 @@ int remove_volume(int x) {
 void init_capacity() {
     rehash_capacity() ;
     rehash_volume() ;
+}
+
+int can_hold(int x) {
+    return capacity >= x && volume >= x ;
 }
 
 void rehash_capacity() {

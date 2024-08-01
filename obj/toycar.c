@@ -6,4 +6,5 @@ void setup() {
     set_name("toy car");
     set_long("A small toy car for testing purposes.\n");
     set_mass(20) ;
+    set_value(10, "gold") ;
 }

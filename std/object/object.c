@@ -8,6 +8,8 @@
 
 /* Last updated July 14th, 2006 by Tacitus */
 
+#include <object.h>
+
 inherit STD_OB_E;
 
 inherit __DIR__ "contents" ;
@@ -23,17 +25,11 @@ inherit __DIR__ "weight" ;
 inherit M_CLEAN ;
 inherit M_MESSAGING ;
 
+private nomask nosave function *destruct_functions = ({}) ;
 private string proper_name, short, long;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
 private nosave string virtual_master = 0;
-
-int set_name(string str);
-string query_name();
-string query_proper_name() ;
-void set_proper_name(string str);
-
-varargs void reset(mixed args...);
 
 // Private so only driver can call it.
 private varargs void create(mixed args...) {
@@ -123,4 +119,40 @@ void set_virtual_master(string str) {
 
 string query_virtual_master() {
     return virtual_master;
+}
+
+void on_destruct() {
+    object env = environment() ;
+
+    if(env && !env->is_room()) {
+        env->add_capacity(query_mass());
+        env->add_volume(query_bulk());
+    }
+
+    process_destruct() ;
+    unsetup_chain() ;
+}
+
+int add_destruct(function f) {
+    if(valid_function(f) && !of(f, destruct_functions)) {
+        destruct_functions += ({ f }) ;
+        return 1 ;
+    }
+
+    return 0 ;
+}
+
+int remove_destruct(function f) {
+    if(of(f, destruct_functions)) {
+        destruct_functions -= ({ f }) ;
+        return 1 ;
+    }
+
+    return 0 ;
+}
+
+void process_destruct() {
+    foreach(function f in destruct_functions) {
+        catch(evaluate(f)) ;
+    }
 }

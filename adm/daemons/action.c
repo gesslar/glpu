@@ -373,7 +373,7 @@ varargs void my_action(mixed msg, mixed *obs...) {
     who = ({ previous_object() });
     if(pointerp(msg)) msg = msg[random(sizeof(msg))];
     us = compose_message(previous_object(), msg, who, obs...);
-    previous_object()->tell(us) ;
+    tell(previous_object(), us) ;
 }
 
 //:FUNCTION target_action

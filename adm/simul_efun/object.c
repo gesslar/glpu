@@ -262,7 +262,7 @@ object top_environment(object ob) {
     if(!objectp(ob))
         error("Missing argument 1 to top_environment()") ;
 
-    if(ob->query_room())
+    if(ob->is_room())
         return ob ;
 
     if(!environment(ob))

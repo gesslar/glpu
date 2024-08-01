@@ -7,8 +7,6 @@
 //
 // 2024/02/20: Gesslar - Created
 
-#include <clean.h>
-
 inherit STD_DAEMON ;
 
 private nosave mapping data = ([]);

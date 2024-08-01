@@ -6,16 +6,9 @@
 //
 // 2024/03/03: Gesslar - Created
 
-private nosave mapping commands = ([]);
+#include <command.h>
 
-int add_command(mixed command, mixed action) ;
-void remove_command(mixed command) ;
-void remove_command_all(mixed action) ;
-mixed query_command(string command) ;
-mapping query_commands() ;
-string *query_matching_commands(string command) ;
-void init_commands() ;
-mixed evaluate_command(object tp, string command, string arg) ;
+private nosave mapping commands = ([]);
 
 void add_command(mixed command, mixed action) {
     if (stringp(command)) {
