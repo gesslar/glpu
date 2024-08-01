@@ -1,7 +1,7 @@
 ([
     "bludgeoning" : ([
         "=0"          : ({
-                            "$N $vswing $p $o at $t and $vmiss by a mile.",
+                            "$N $vswing $p $o at $t and $vmiss wildly.",
                             "$N $vmiss $t entirely.",
                         }),
         ">=1AND<=3"   : "$N $vswing $p $o at $t and barely $vhit $t.",

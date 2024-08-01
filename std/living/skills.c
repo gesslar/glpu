@@ -129,7 +129,7 @@ float query_skill(string skill) {
     return null ;
 }
 
-varargs int query_skill_level(string skill, int raw) {
+varargs float query_skill_level(string skill, int raw) {
     string *path = explode(skill, ".");
     mapping current = skills;
     int x, sz;
@@ -142,7 +142,7 @@ varargs int query_skill_level(string skill, int raw) {
         if(!mapp(current[path[x]]))
             return null ;
         if(x == sz - 1) {
-            int lvl = to_int(floor(current[path[x]]["level"]));
+            float lvl = floor(current[path[x]]["level"]);
             if(raw)
                 return lvl;
             else
@@ -206,20 +206,45 @@ void set_skills(mapping s) {
  * @param {float} progress - The fractional progress to add to the skill level
  */
 
-int train_skill(string skill, float progress) {
+varargs float improve_skill(string skill, float progress) {
     string *path = explode(skill, ".");
     mapping current = skills;
-    int x, sz;
+    int x, sz = sizeof(path);
 
-    if(!stringp(skill) || nullp(progress) || progress < 0.0)
+    if(!stringp(skill))
         return null ;
 
-    sz = sizeof(path);
+    // Automatic progress here and skill skill selection.
+    // If you didn't pass a progress, it will automatically
+    // pick a skill from a weighted distrbution among the
+    // skill tree leading to the specified skill and apply
+    // a random amount of progress to it.
+    if(nullp(progress)) {
+        mapping chances = ([]);
+        string p ;
+        int i = sz ;
+
+        while(i--)
+            chances[implode(path[0..i], ".")] = (i+1) * 3 ;
+
+        skill = element_of_weighted(chances);
+        progress = random_float(0.01) ;
+
+        path = explode(skill, ".");
+        sz = sizeof(path);
+    }
+
     for(x = 0; x < sz; x++) {
-        if(!mapp(current[path[x]])) return 0;
+        if(!mapp(current[path[x]]))
+            return 0;
         if(x == sz - 1) {
+            float level = query_skill_level(skill, 1), new_level ;
             current[path[x]]["level"] += progress;
-            return 1;
+            new_level = query_skill_level(skill, 1) ;
+            if(new_level > level)
+                tell(this_object(), "You have improved your " + skill + " skill.\n");
+
+            return progress ;
         }
         current = current[path[x]]["subskills"];
     }
@@ -228,28 +253,31 @@ int train_skill(string skill, float progress) {
 }
 
 int query_skill_progress(string skill) {
-    string *path  ;
+    string *path;
     mapping current = skills;
     int x, sz;
+    float level, fractional_part;
 
-    if(!stringp(skill))
-        return null ;
+    if (!stringp(skill))
+        return null; // Return null for invalid input
 
     path = explode(skill, ".");
     sz = sizeof(path);
 
-    for(x = 0; x < sz; x++) {
-        if(!mapp(current[path[x]]))
-            return null ;
-        if(x == sz - 1)
-            return to_int(
-                ceil(current[path[x]]["level"]) -
-                current[path[x]]["level"]) * 100.0;
+    for (x = 0; x < sz; x++) {
+        if (!mapp(current[path[x]]))
+            return null; // Return null if the skill path doesn't exist
+
+        if (x == sz - 1) {
+            level = current[path[x]]["level"];
+            fractional_part = level - floor(level);
+            return to_int(fractional_part * 100.0); // Convert fractional part to percentage
+        }
 
         current = current[path[x]]["subskills"];
     }
 
-    return null ;
+    return null; // Return null if the skill was not found
 }
 
 int modify_skill_level(string skill, int level) {
@@ -272,4 +300,44 @@ int modify_skill_level(string skill, int level) {
     }
 
     return null ;
+}
+
+/**
+ * @description Adjust all skills for NPCs based on their level.
+ * @param {float} level - The level of the NPC.
+ * @returns {int} 1 if adjustments were made, 0 otherwise.
+ */
+public int adjust_skills_by_npc_level(float level) {
+    if (nullp(skills) || !mapp(skills)) {
+        return 0; // No skills to adjust
+    }
+
+    adjust_skill_levels(skills) ;
+
+    return 1;
+}
+
+/**
+ * @description Helper function to adjust skill levels recursively.
+ * @param {mapping} current_skills - The current mapping of skills to adjust.
+ * @param {float} new_level - The new level to set for each skill.
+ */
+private nomask mapping adjust_skill_levels(mapping current_skills) {
+    string skill;
+    mixed skill_data;
+
+    if(userp())
+        error("This function is only intended for NPCs.");
+
+    foreach (skill, skill_data in current_skills) {
+        if (mapp(skill_data) && mapp(skill_data["subskills"])) {
+            // If there are subskills, recurse into them
+            adjust_skill_levels(skill_data["subskills"]);
+        }
+
+        // Set the skill level
+        current_skills[skill]["level"] = random_float(0.01) ;
+    }
+
+    return current_skills;
 }

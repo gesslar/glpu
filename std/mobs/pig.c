@@ -24,5 +24,13 @@ void virtual_setup(mixed args...) {
     set_long(data["long"]) ;
     set_id(({ data["id"]..., "pig", })) ;
     set_level(data["level"]) ;
+
+    if(!nullp(data["damage"]))
+        set_damage(data["damage"]) ;
+    if(!nullp(data["weapon_name"]))
+        set_weapon_name(data["weapon_name"]) ;
+    if(!nullp(data["weapon_type"]))
+        set_weapon_type(data["weapon_type"]) ;
+
     set_race("human") ;
 }

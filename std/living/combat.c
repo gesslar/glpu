@@ -16,6 +16,8 @@
 #include <action.h>
 #include <module.h>
 #include <equipment.h>
+#include <skills.h>
+#include <advancement.h>
 
 inherit __DIR__ "damage" ;
 
@@ -100,7 +102,7 @@ void swing() {
     if(!valid_enemy(enemy))
         return;
 
-    if(!query_mp()) {
+    if(query_mp() <= 0.0) {
         tell(this_object(), "You are too exhausted to attack.\n");
         return;
     }
@@ -132,30 +134,39 @@ private int can_strike(object enemy) {
     object weapon ;
     string wname, wtype ;
     string *messes, mess ;
+    string skill_name, *skill_parts ;
+    float skill ;
+    mapping weapon_info = query_weapon_info() ;
+
+    skill_name = "combat.melee" ;
+    skill = query_skill_level(skill_name) ;
+
+    wname = weapon_info["name"] ;
+    wtype = weapon_info["type"] ;
+
+    if(enemy->query_mp() < 0.0)
+        chance += 25.0 ;
 
     chance = chance
            + (lvl - vlvl)
+           + skill
            - (ac * 2.0)
+           - enemy->query_skill_level("combat.defense.dodge")
            ;
+
+    tell(this_object(), "Chance: " + chance + "\n") ;
 
     result = random_float(100.0) ;
 
-    if(result < chance)
+    if(result < chance) {
+        enemy->improve_skill("combat.defense.dodge") ;
         return 1;
+    }
 
     name = query_name() ;
     vname = enemy->query_name() ;
 
     env = environment() ;
-
-    weapon = query_equipped()["weapon"] || null ;
-    if(weapon) {
-        wname = weapon->query_name() ;
-        wtype = weapon->query_type() ;
-    } else {
-        wname = "fist" ;
-        wtype = "bludgeoning" ;
-    }
 
     mess = MESS_D->get_message("combat", wtype, 0) ;
     messes = ACTION_D->action(({ this_object(), enemy }), mess, ({wname})) ;
@@ -172,6 +183,10 @@ void strike_enemy(object enemy) {
     string wname, wtype ;
     string *messes, mess ;
     float dam ;
+    string skill_name ;
+    float skill ;
+    float base ;
+    mapping weapon_info = query_weapon_info() ;
 
     if(!valid_enemy(enemy))
         return;
@@ -179,16 +194,36 @@ void strike_enemy(object enemy) {
     if(!current_enemy(enemy))
         return;
 
-    weapon = query_equipped()["weapon"] || null ;
-    if(weapon) {
-        wname = weapon->query_name() ;
-        wtype = weapon->query_type() ;
-    } else {
-        wname = "fist" ;
-        wtype = "bludgeoning" ;
-    }
 
-    dam = random_float(10.0) ;
+    skill_name = sprintf("combat.melee.%s", weapon_info["skill"]) ;
+    skill = query_skill_level(skill_name) ;
+    base = weapon_info["base"] ;
+    wname = weapon_info["name"] ;
+    wtype = weapon_info["type"] ;
+
+    base = 5.0 + random_float(5.0) ;
+
+    if(enemy->query_mp() < 0.0)
+        base += 4.0 ;
+
+    dam =
+        base
+      + query_effective_level()
+      + skill
+      - enemy->query_effective_level()
+      - enemy->query_defense_amount(wtype)
+      - enemy->query_skill_level("combat.defense")
+      ;
+
+    tell(this_object(), sprintf("Base: %f, Skill: %f, Level: %f, Enemy Level: %f, Enemy Defense: %f, Enemy Skill: %f\n",
+        base, skill, query_effective_level(), enemy->query_effective_level(), enemy->query_defense_amount(wtype), enemy->query_skill_level("combat.defense"))) ;
+    tell(this_object(), "Damage: " + dam + "\n") ;
+
+    improve_skill(skill_name) ;
+
+    if(dam < 0.0)
+        dam = 1.0 ;
+
     mess = MESS_D->get_message("combat", wtype, to_int(ceil(dam))) ;
     messes = ACTION_D->action(({ this_object(), enemy }), mess, ({wname})) ;
 
@@ -196,10 +231,43 @@ void strike_enemy(object enemy) {
     tell(enemy, messes[1], MSG_COMBAT_HIT) ;
     tell_down(environment(), messes[2], MSG_COMBAT_HIT, ({ this_object(), enemy })) ;
 
-    deliver_damage(enemy, dam, "bludgeoning");
+    deliver_damage(enemy, dam, wtype) ;
     add_mp(-random_float(5.0));
-    add_threat(enemy, 1.0);
-    add_seen_threat(enemy, 1.0);
+    add_threat(enemy, dam);
+    add_seen_threat(enemy, dam);
+}
+
+mapping query_weapon_info() {
+    object weapon ;
+    string wname, wtype ;
+    string skill_name ;
+    float base ;
+
+    weapon = query_equipped()["weapon"] || null ;
+    if(weapon) {
+        wname = weapon->query_name() ;
+        wtype = weapon->query_type() ;
+        skill_name = wtype ;
+        base = weapon->query_damage() ;
+    } else {
+        if(userp()) {
+            wname = "fist" ;
+            wtype = "bludgeoning" ;
+            skill_name = "unarmed" ;
+            base = random_float(3.0) ;
+        } else {
+            wname = query_weapon_name() ;
+            wtype = query_weapon_type() ;
+            skill_name = "unarmed" ;
+        }
+    }
+
+    return ([
+        "name": wname,
+        "type": wtype,
+        "skill": skill_name,
+        "base": base,
+    ]) ;
 }
 
 int attacking(object victim) {
@@ -419,11 +487,15 @@ float query_attack_speed() {
 
 void set_defense(mapping def) {
     _defense = def ;
+
+    adjust_protection() ;
 }
 
 void add_defense(string type, float amount) {
     if(!_defense) _defense = ([ ]) ;
     _defense[type] = amount ;
+
+    adjust_protection() ;
 }
 
 mapping query_defense() {
@@ -480,4 +552,44 @@ object killed_by() {
 object set_killed_by(object ob) {
     killed_by_ob = ob ;
     return killed_by_ob ;
+}
+
+// The following are generally used by NPCs, but are available for special
+// circumstances for players.
+
+private nomask float damage = 0.0 ;
+private nomask string weapon_name = "fist";
+private nomask string weapon_type = "bludgeoning";
+
+float set_damage(float x) {
+    if(x < 0.0)
+        return 0.0;
+
+    return damage = x;
+}
+
+float query_damage() {
+    if(damage <= 0.0)
+        return random_float(query_level() * 2.0);
+    return random(damage) ;
+}
+
+string set_weapon_name(string str) {
+    if(!stringp(str))
+        return weapon_name;
+    return weapon_name = str;
+}
+
+string query_weapon_name() {
+    return weapon_name;
+}
+
+string set_weapon_type(string str) {
+    if(!stringp(str))
+        return weapon_type;
+    return weapon_type = str;
+}
+
+string query_weapon_type() {
+    return weapon_type;
 }

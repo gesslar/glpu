@@ -7,6 +7,7 @@ void swing();
 int next_round();
 private int can_strike(object enemy);
 void strike_enemy(object enemy);
+mapping query_weapon_info() ;
 int attacking(object victim);
 varargs int stop_attack(object victim, int seen);
 void stop_all_attacks();
@@ -36,5 +37,11 @@ object last_damaged_by();
 object set_last_damaged_by(object ob);
 object killed_by();
 object set_killed_by(object ob);
+float set_damage(float x) ;
+float query_damage() ;
+string set_weapon_name(string str) ;
+string query_weapon_name() ;
+string set_weapon_type(string str) ;
+string query_weapon_type() ;
 
 #endif // __COMBAT_H__

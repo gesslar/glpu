@@ -34,6 +34,15 @@ void mudlib_setup() {
 void restore_user() {}
 void save_user() {}
 
+float set_level(float level) {
+    if(!::set_level(level))
+        return null ;
+
+    adjust_skills_by_npc_level(level) ;
+
+    return query_level() ;
+}
+
 int force_me(string cmd) {
     return command(cmd);
 }

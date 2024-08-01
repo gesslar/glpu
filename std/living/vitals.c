@@ -211,9 +211,9 @@ int query_regen_duration() {
 }
 
 void restore() {
-    hp = max_hp ;
-    sp = max_sp ;
-    mp = max_mp ;
+    set_hp(max_hp) ;
+    set_sp(max_sp) ;
+    set_mp(max_mp) ;
 }
 
 int set_dead(int x) {
