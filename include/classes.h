@@ -5,5 +5,6 @@
 
 #define CLASS_ALARM          DIR_CLASSES "alarm.c"
 #define CLASS_GMCP           DIR_CLASSES "gmcp.c"
+#define CLASS_STORAGE        DIR_CLASSES "storage.c"
 
 #endif // __CLASSES_H__

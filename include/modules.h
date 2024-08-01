@@ -6,6 +6,7 @@
 #define M_ACTION        DIR_STD_MODULES "action"
 #define M_BANK          DIR_STD_MODULES "bank"
 #define M_CHECKS        DIR_STD_MODULES "checks"
+#define M_CURRENCY      DIR_STD_MODULES "currency"
 #define M_CLEAN         DIR_STD_MODULES "clean"
 #define M_GMCP          DIR_STD_MODULES "gmcp"
 #define M_HTTP          DIR_STD_MODULES "http"
@@ -13,6 +14,7 @@
 #define M_MESSAGING     DIR_STD_MODULES "messaging"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_SAVE          DIR_STD_MODULES "save"
+#define M_SHOP          DIR_STD_MODULES "shop"
 #define M_TARGETING     DIR_STD_MODULES "targeting"
 #define M_UNICODE       DIR_STD_MODULES "unicode"
 
