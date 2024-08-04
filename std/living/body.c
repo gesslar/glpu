@@ -66,11 +66,13 @@ string *query_all_commands() {
     return commands() ;
 }
 
-void init_capacity() {
-    set_max_capacity(1000) ;
-    set_max_volume(500) ;
+void rehash_contents() {
+    if(mud_config("USE_MASS") && !query_max_capacity())
+        set_max_capacity(1000) ;
+    if(mud_config("USE_BULK") && !query_max_volume())
+        set_max_volume(500) ;
 
-    ::init_capacity() ;
+    ::rehash_contents() ;
 }
 
 void die() {

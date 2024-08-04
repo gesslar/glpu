@@ -7,6 +7,6 @@ mapping query_all_wealth();
 int query_wealth(string currency);
 int add_wealth(string currency, int amount);
 void set_wealth(mapping w);
-int can_carry_wealth(int amount);
+void wipe_wealth() ;
 
 #endif // __WEALTH_H__

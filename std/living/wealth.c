@@ -7,10 +7,8 @@
 // 2024/02/19: Gesslar - Created
 
 #include <wealth.h>
-
-// Functions from other objects
-int query_capacity() ;
-void rehash_capacity() ;
+#include <daemons.h>
+#include "/std/object/include/contents.h"
 
 private nomask mapping wealth = ([]) ;
 
@@ -45,16 +43,37 @@ int query_wealth(string currency) {
 }
 
 int add_wealth(string currency, int amount) {
-    if(nullp(wealth[currency]))
+    int bulk, mass ;
+
+    if(nullp(wealth))
+        wealth = ([]);
+
+    if(!CURRENCY_D->valid_currency_type(currency))
         return null ;
 
     if(amount < 0)
         if(wealth[currency] - amount < 0)
             return null ;
 
+    if(mud_config("USE_MASS")) {
+        mass = amount ;
+        if(!can_hold_mass(mass)) {
+            printf("Failed mass check\n") ;
+            return null ;
+        }
+    }
+
+    if(mud_config("USE_BULK")) {
+        bulk = amount ;
+        if(!can_hold_bulk(bulk)) {
+            printf("Failed bulk check\n") ;
+            return null ;
+        }
+    }
+
     wealth[currency] += amount ;
 
-    rehash_capacity() ;
+    rehash_contents() ;
 
     return wealth[currency] ;
 }
@@ -62,19 +81,24 @@ int add_wealth(string currency, int amount) {
 mapping set_wealth(mapping w) {
     mixed *config = mud_config("CURRENCY") ;
 
+    wipe_wealth() ;
+
     foreach(mixed *c in config) {
-        if(nullp(w[c[0]])) w[c[0]] = 0 ;
+        if(!w[c[0]]) {
+            w[c[0]] = 0 ;
+            continue ;
+        }
+
+        if(!add_wealth(c[0], w[c[0]]))
+            w[c[0]] = 0 ;
     }
 
-    rehash_capacity() ;
+    rehash_contents() ;
 
     return wealth = w ;
 }
 
-// This is only useful for livings that can carry wealth
-// and checks if the living has the capacity for it.
-int can_carry_wealth(int amount) {
-    int cap = query_capacity() ;
-
-    return amount <= cap ;
+void wipe_wealth() {
+    wealth = ([]);
+    rehash_contents() ;
 }

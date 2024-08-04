@@ -3,7 +3,7 @@
 
 string *query_body_slots();
 string *query_all_commands();
-void init_capacity();
+void rehash_contents();
 void die();
 object query_user();
 int set_user(object ob);

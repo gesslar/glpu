@@ -32,115 +32,139 @@ varargs mixed handle_transaction(object tp, int cost, string currency) {
 }
 
 mixed complex_transaction(object tp, int cost, string currency) {
-    mapping wealth = tp->query_all_wealth();
-    string *currencies = reverse_array(CURRENCY_D->currency_list());
-    int total_wealth = tp->query_total_wealth();
-    int remaining_cost = cost;
-    mapping to_subtract = ([]);
-    mapping change = ([]);
-    int coin_difference;
-    int change_amount;
-    int available;
-    int to_use;
-    int converted_cost;
-    int converted_change;
+    mapping wealth;
+    string *currencies;
+    int total_wealth, remaining_cost, change_amount, used_value;
+    mapping to_subtract, change;
+    string curr;
+    int i, available, to_use, curr_value;
+    int amount;
+    int currency_index ;
 
-    { // Sanity checks
-        // Check for valid currency
-        if (member_array(currency, currencies) == -1) {
-            return "Invalid currency type.";
+    wealth = tp->query_all_wealth();
+    currencies = reverse_array(CURRENCY_D->currency_list());
+    total_wealth = tp->query_total_wealth();
+    remaining_cost = CURRENCY_D->convert_currency(cost, currency, "copper");
+    change_amount = 0;
+    used_value = 0;
+    to_subtract = ([]);
+    change = ([]);
+
+    // Sanity checks
+    if (member_array(currency, currencies) == -1) return "Invalid currency type.";
+    if (cost <= 0) return "Transaction amount must be positive.";
+    if (total_wealth < remaining_cost) return "You cannot afford this transaction.";
+
+    // Find the index of the transaction currency
+    currency_index = member_array(currency, currencies);
+
+    // There is still a slight issue where sometimes it tries to grab an extra
+    // coin from a higher denomination to cover the cost. This is only really
+    // an issue if you don't have enough where it will result in a "no correct
+    // "combination" message when you do actually have enough, it's just not
+    // picking the right combo. - Gesslar 2024-08-04
+
+    // Example of buying something costed at 25 silver
+    //    > do reset,buy car
+    //    • Reset called on Olum Village Shop (/d/village/shop).
+    //    You buy toy car for 2 gold, 9 silver and receive 4 silver in change.
+    //    > do reset,buy car
+    //    • Reset called on Olum Village Shop (/d/village/shop).
+    //    You buy toy car for 3 gold, 4 silver and receive 9 silver in change.
+
+    // Process currencies starting from the transaction currency, then higher, then lower
+    for (i = currency_index; i >= 0; i--) {
+        curr = currencies[i];
+        curr_value = CURRENCY_D->currency_value(curr);
+        available = wealth[curr];
+
+        // printf("DEBUG: Currency: %s, Available: %d units (%d copper each)\n", curr, available, curr_value);
+        // printf("DEBUG: Available in copper: %d, Remaining cost in copper: %d\n", available * curr_value, remaining_cost);
+
+        to_use = min(({available, (remaining_cost + curr_value - 1) / curr_value}));
+        used_value = to_use * curr_value;
+
+        if (to_use > 0) {
+            to_subtract[curr] = (to_subtract[curr] || 0) + to_use;
+            remaining_cost -= used_value;
+            // printf("DEBUG: Using %d units of %s (value: %d copper)\n", to_use, curr, used_value);
+            // printf("DEBUG: Subtracted %d units of %s, New remaining cost: %d copper\n", to_use, curr, remaining_cost);
         }
 
-        // Check for negative cost
-        if (cost < 0) {
-            return "Transaction amount must be positive.";
-        }
+        if (remaining_cost <= 0) break;
     }
 
-    // Step 1: Check if they can afford it at all
-    if (total_wealth < CURRENCY_D->convert_currency(cost, currency, currencies[<1])) {
-        return "You don't have enough wealth for this transaction.";
-    }
-
-    // Step 2: Try to use the exact currency first
-    available = wealth[currency];
-    if (available > 0) {
-        to_use = min(({available, cost}));
-        to_subtract[currency] = to_use;
-        remaining_cost -= to_use;
-    }
-
-    // Step 3: If we still have remaining cost, iterate from the transaction currency down
+    // If still not enough, go for lower denominations
     if (remaining_cost > 0) {
-        int start_index = member_array(currency, currencies);
-        for (int i = start_index; i < sizeof(currencies); i++) {
-            string curr = currencies[i];
+        for (i = currency_index + 1; i < sizeof(currencies); i++) {
+            curr = currencies[i];
+            curr_value = CURRENCY_D->currency_value(curr);
             available = wealth[curr];
-            converted_cost = CURRENCY_D->convert_currency(remaining_cost, currency, curr);
 
-            if (available > 0) {
-                to_use = min(({available, converted_cost}));
+            to_use = min(({available, (remaining_cost + curr_value - 1) / curr_value}));
+            used_value = to_use * curr_value;
+
+            if (to_use > 0) {
                 to_subtract[curr] = (to_subtract[curr] || 0) + to_use;
-                remaining_cost -= CURRENCY_D->convert_currency(to_use, curr, currency);
+                remaining_cost -= used_value;
+                // printf("DEBUG: Using %d units of %s (value: %d copper)\n", to_use, curr, used_value);
+                // printf("DEBUG: Subtracted %d units of %s, New remaining cost: %d copper\n", to_use, curr, remaining_cost);
             }
 
             if (remaining_cost <= 0) break;
         }
     }
 
-    // Step 4: If we still have remaining cost, iterate from highest to lowest
-    if (remaining_cost > 0) {
-        foreach (string curr in currencies) {
-            if (curr == currency) continue;  // Skip the currency we've already processed
-            available = wealth[curr];
-            converted_cost = CURRENCY_D->convert_currency(remaining_cost, currency, curr);
+    if (remaining_cost > 0) return "You don't have the right combination of coins for this transaction.";
 
-            if (available > 0) {
-                to_use = min(({available, converted_cost}));
-                to_subtract[curr] = (to_subtract[curr] || 0) + to_use;
-                remaining_cost -= CURRENCY_D->convert_currency(to_use, curr, currency);
-            }
-
-            if (remaining_cost <= 0) break;
-        }
-    }
-
-    if (remaining_cost > 0) {
-        return "You don't have the right combination of coins for this transaction.";
-    }
-
-    // Step 5: Calculate change
+    // Calculate change
     if (remaining_cost < 0) {
         change_amount = -remaining_cost;
-
-        foreach (string curr in currencies) {
-            converted_change = CURRENCY_D->convert_currency(change_amount, currency, curr);
-            if (converted_change > 0) {
-                change[curr] = converted_change;
-                change_amount -= CURRENCY_D->convert_currency(converted_change, curr, currency);
+        for (i = 0; i < sizeof(currencies); i++) {
+            int change_in_curr ;
+            curr = currencies[i];
+            curr_value = CURRENCY_D->currency_value(curr);
+            change_in_curr = change_amount / curr_value;
+            if (change_in_curr > 0) {
+                change[curr] = change_in_curr;
+                change_amount %= curr_value;
             }
-            if (change_amount <= 0) break;
+            if (change_amount == 0) break;
         }
     }
 
-    // Step 6: Optimize the transaction (convert higher denominations if possible)
-    foreach (string curr in currencies) {
-        if (to_subtract[curr] && change[curr]) {
-            int min_value = min(({to_subtract[curr], change[curr]}));
-            to_subtract[curr] -= min_value;
-            change[curr] -= min_value;
-            if (to_subtract[curr] == 0) map_delete(to_subtract, curr);
-            if (change[curr] == 0) map_delete(change, curr);
+    // Capacity checks
+    {
+        int use_mass = mud_config("USE_MASS");
+        int use_bulk = mud_config("USE_BULK");
+
+        if(use_mass) {
+            int max_capacity = tp->query_max_capacity();
+            int subtract_mass = sum(values(to_subtract));
+            int add_mass = sum(values(change));
+            int current_capacity = tp->query_capacity();
+            int net = add_mass - subtract_mass;
+
+            if(current_capacity - net < 0) {
+                return "You can't carry that much currency.";
+            }
+        }
+        if(use_bulk) {
+            int max_volume = tp->query_max_volume();
+            int subtract_bulk = sum(values(to_subtract));
+            int add_bulk = sum(values(change));
+            int current_volume = tp->query_volume();
+            int net = add_bulk - subtract_bulk;
+
+            if(current_volume - net < 0) {
+                return "You can't carry that much currency.";
+            }
         }
     }
 
-    // Step 7: Apply the transaction
-    foreach (string curr, int amount in to_subtract) {
-        tp->add_wealth(curr, -amount);
-    }
-    foreach (string curr, int amount in change) {
-        tp->add_wealth(curr, amount);
-    }
+    // Apply the transaction
+    foreach (curr, amount in to_subtract) tp->add_wealth(curr, -amount);
+    foreach (curr, amount in change) tp->add_wealth(curr, amount);
 
     return ({ format_return_currency(to_subtract), format_return_currency(change) });
 }

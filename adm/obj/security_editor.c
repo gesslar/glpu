@@ -274,12 +274,10 @@ int toggle_membership(string user, string group)
 
      if(member_array(user, user_list) == -1)
      {
-          write("DEBUG: Adding user!\n");
            groups[group] += ({user});
      }
      else
      {
-          write("DEBUG: Removign User!\n");
           groups[group] -= ({user});
      }
 

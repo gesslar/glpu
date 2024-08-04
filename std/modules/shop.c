@@ -18,17 +18,18 @@ inherit M_CURRENCY ;
 inherit CLASS_STORAGE ;
 
 void add_shop_inventory(mixed args) ;
-mixed query_cost(object tp, object ob) ;
+mixed query_cost(object tp, object ob, string transaction) ;
+protected void remove_shop() ;
+protected void reset_shop() ;
+private nomask object create_storage() ;
 
 protected nosave int shop_open = 1;
 protected nosave int allow_npcs = 0;
-protected nosave int allow_npc_factor = 0.5; // when a player sells, use this
+protected nosave int sell_factor = 0.5; // when a player sells, use this
                                         // factor to determine the price
 protected nosave string shop_keep_file ;
 protected nosave object store ;
-
-protected void remove_shop() ;
-private nomask object create_storage() ;
+private nosave mixed *shop_inventory = ({}) ;
 
 void init_shop() {
     add_command("buy", "cmd_buy") ;
@@ -37,29 +38,39 @@ void init_shop() {
 
     create_storage() ;
 
+    add_reset((:reset_shop:)) ;
     add_destruct((:remove_shop:)) ;
+
 }
 
 protected void remove_shop() {
-    _debug("Removing shop") ;
     if(objectp(store))
         store->remove() ;
 }
 
 void add_shop_inventory(mixed args) {
     mixed arg ;
-    object ob ;
-
-    create_storage() ;
 
     if(!pointerp(args))
         args = ({ args }) ;
 
     foreach(arg in args) {
+        shop_inventory += ({ arg }) ;
+    }
+}
+
+protected void reset_shop() {
+    mixed arg ;
+
+    create_storage() ;
+    store->clean_contents() ;
+
+    foreach(arg in shop_inventory) {
         string file ;
         int number ;
         mixed *clone_args ;
         int sz ;
+        object ob ;
 
         if(!pointerp(arg))
             arg = ({ arg }) ;
@@ -117,7 +128,7 @@ mixed cmd_list(object tp) {
     lines = ({ get_short(), "" }) ;
 
     foreach(item in items) {
-        cost = query_cost(tp, item) ;
+        cost = query_cost(tp, item, "list") ;
         short = get_short(item) ;
         line = sprintf("%s (%d %s)", short, cost[0], cost[1]) ;
         lines += ({ line }) ;
@@ -148,7 +159,7 @@ mixed cmd_buy(object tp, string str) {
     if(!ob = present(str, store))
         return "The shop does not have that item.";
 
-    cost = query_cost(tp, ob) ;
+    cost = query_cost(tp, ob, "buy") ;
 
     result = handle_transaction(tp, cost[0], cost[1]) ;
 
@@ -182,12 +193,61 @@ mixed cmd_buy(object tp, string str) {
     return 1 ;
 }
 
-mixed *query_cost(object tp, object ob) {
-    return ob->query_value() ;
+mixed cmd_sell(object tp, string str) {
+    object ob ;
+    mixed result ;
+    string action ;
+    mixed cost ;
+    string short ;
+    mixed *paid, *change ;
+    int coin_bulk, coin_mass ;
+
+    create_storage() ;
+
+    if(!allow_npcs && !userp(tp))
+        return 0 ;
+
+    if (!shop_open)
+        return "The shop is closed.";
+
+    if(!userp(tp))
+        return "Only players can sell to the shop.";
+
+    if(!ob = present(str, tp))
+        return "You don't have that item.";
+
+    cost = query_cost(tp, ob, "sell") ;
+    coin_bulk = cost[0] / 2 ;
+    coin_mass = cost[0] ;
+
+    if(!(ob->move(store) & MOVE_OK))
+        return "The shop refuses your item." ;
+
+    if(nullp(tp->add_wealth(cost[1], cost[0]))) {
+        ob->move(tp) ;
+        return "You are overburdened and cannot carry the coins." ;
+    }
+
+    tp->other_action("$N $vsell %o.", get_short(ob)) ;
+    tp->my_action("$N $vsell $o for $o1.\n",
+        get_short(ob),
+        format_currency(cost[0], cost[1])) ;
+
+    return 1 ;
 }
 
-mixed cmd_sell(object tp, string str) {
+mixed *query_cost(object tp, object ob, int transaction) {
+    mixed *value = ob->query_value() ;
 
+    switch(transaction) {
+        case "buy":
+            return value ;
+        case "sell":
+            return ({ to_int(to_float(value[0]) * sell_factor), value[1] }) ;
+        case "list":
+            return value ;
+    }
+    return ob->query_value() ;
 }
 
 private nomask object create_storage() {

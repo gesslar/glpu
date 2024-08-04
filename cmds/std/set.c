@@ -57,10 +57,15 @@ mixed main(object tp, string str) {
 
     tp->set_env(var_name, var_value);
 
-    if(!var_value)
-        return _ok(tp, "Value '" + var_name + "' cleared.");
-    else
-        return _ok(tp, "Value '" + var_name + "' set to '" + var_value + "'.");
+    if(!var_value) {
+        _ok(tp, "Value '" + var_name + "' cleared.");
+        emit(SIG_USER_ENV_VAR_CHANGED, tp, var_name, "");
+    } else {
+        _ok(tp, "Value '" + var_name + "' set to '" + var_value + "'.");
+        emit(SIG_USER_ENV_VAR_CHANGED, tp, var_name, var_value);
+    }
+
+    return 1;
 }
 
 void prompt_colour_result(string result, object tp, string variable) {

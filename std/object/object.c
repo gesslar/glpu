@@ -26,6 +26,7 @@ inherit M_CLEAN ;
 inherit M_MESSAGING ;
 
 private nomask nosave function *destruct_functions = ({}) ;
+private nomask nosave function *reset_functions = ({}) ;
 private string proper_name, short, long;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
@@ -55,6 +56,7 @@ void virtual_start() {
 
 varargs void reset() {
     call_if(this_object(), "reset_objects") ;
+    process_reset() ;
 }
 
 int remove() {
@@ -131,6 +133,24 @@ void on_destruct() {
 
     process_destruct() ;
     unsetup_chain() ;
+}
+
+void add_reset(function f) {
+    if(valid_function(f) && !of(f, reset_functions)) {
+        reset_functions += ({ f }) ;
+    }
+}
+
+void remove_reset(function f) {
+    if(of(f, reset_functions)) {
+        reset_functions -= ({ f }) ;
+    }
+}
+
+void process_reset() {
+    foreach(function f in reset_functions) {
+        catch(evaluate(f)) ;
+    }
 }
 
 int add_destruct(function f) {

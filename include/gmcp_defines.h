@@ -26,6 +26,10 @@
 #define GMCP_PKG_EXTERNAL_DISCORD_HELLO      GMCP_PKG_EXTERNAL_DISCORD".Hello"
 #define GMCP_PKG_EXTERNAL_DISCORD_GET        GMCP_PKG_EXTERNAL_DISCORD".Get"
 
+#define GMCP_PKG_CLIENT                      "Client"
+#define GMCP_PKG_CLIENT_GUI                  GMCP_PKG_CLIENT".GUI"
+#define GMCP_PKG_CLIENT_GUI_INSTALL          GMCP_PKG_CLIENT_GUI".Install"
+
 // Labels and display values
 #define GMCP_LBL_CHAR_STATUS_NAME           "name"
 #define GMCP_DIS_CHAR_STATUS_NAME           "Name"
@@ -39,6 +43,10 @@
 #define GMCP_DIS_CHAR_STATUS_CAPACITY       "Capacity"
 #define GMCP_LBL_CHAR_STATUS_MAX_CAPACITY   "max_capacity"
 #define GMCP_DIS_CHAR_STATUS_MAX_CAPACITY   "Max Capacity"
+#define GMCP_LBL_CHAR_STATUS_VOLUME         "volume"
+#define GMCP_DIS_CHAR_STATUS_VOLUME         "Volume"
+#define GMCP_LBL_CHAR_STATUS_MAX_VOLUME     "max_volume"
+#define GMCP_DIS_CHAR_STATUS_MAX_VOLUME     "Max Volume"
 #define GMCP_LBL_CHAR_STATUS_CURRENT_ENEMY  "current_enemy"
 #define GMCP_DIS_CHAR_STATUS_CURRENT_ENEMY  "Current Enemy"
 #define GMCP_LBL_CHAR_STATUS_CURRENT_ENEMY_HEALTH "current_enemy_health"
@@ -53,5 +61,7 @@
 #define GMCP_LBL_CHAR_VITALS_MAX_SP         "max_sp"
 #define GMCP_LBL_CHAR_VITALS_MP             "mp"
 #define GMCP_LBL_CHAR_VITALS_MAX_MP         "max_mp"
+#define GMCP_LBL_GMCP_CLIENT_GUI_URL        "url"
+#define GMCP_LBL_GMCP_CLIENT_GUI_VERSION    "version"
 
 #endif // __GMCP_DEFINES_H__

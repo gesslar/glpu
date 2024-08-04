@@ -49,6 +49,24 @@ int convert_currency(int amount, string from_currency, string to_currency) {
     return to_int(result + 0.5);
 }
 
+float fconvert_currency(int amount, string from_currency, string to_currency) {
+    float from_rate, to_rate;
+    float result;
+
+    if(!valid_currency_type(from_currency) || !valid_currency_type(to_currency)) {
+        return -1;
+    }
+
+    from_rate = to_float(currency_map[from_currency]) ;
+    to_rate = to_float(currency_map[to_currency]) ;
+
+    // Use float for intermediate calculation to avoid integer division issues
+    result = to_float(amount) * from_rate / to_rate;
+
+    // Round to nearest integer
+    return result ;
+}
+
 string lowest_currency() {
     return currency_order[0];
 }

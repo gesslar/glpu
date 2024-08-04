@@ -51,7 +51,7 @@ int allow_move(mixed dest) {
                 return MOVE_TOO_HEAVY ;
 
     if(mud_config("USE_BULK"))
-        if(!dest->query_ignore_bulk())
+        if(!dest->ignore_bulk())
             if(dest->query_volume() < query_bulk())
                 return MOVE_NO_ROOM ;
 
@@ -67,21 +67,23 @@ int move(mixed dest) {
     object prev ;
 
     result = allow_move(dest) ;
-    if(!(result & MOVE_OK)) return result ;
+    if(!(result & MOVE_OK))
+        return result ;
 
-    if(result & MOVE_ALREADY_THERE) return MOVE_OK | MOVE_ALREADY_THERE ;
+    if(result & MOVE_ALREADY_THERE)
+        return MOVE_OK | MOVE_ALREADY_THERE ;
 
     prev = environment() ;
     if(prev) {
         if(!prev->ignore_capacity())
             prev->add_capacity(query_mass());
-        if(!prev->query_ignore_bulk())
+        if(!prev->ignore_bulk())
             prev->add_volume(query_bulk());
     }
 
-    if(!dest->no_capacity())
+    if(!dest->ignore_capacity())
         dest->add_capacity(-query_mass());
-    if(!dest->query_ignore_bulk())
+    if(!dest->ignore_bulk())
         dest->add_volume(-query_bulk());
 
     move_object(dest);

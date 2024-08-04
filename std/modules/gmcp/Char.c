@@ -5,8 +5,8 @@ inherit __DIR__ "gmcp_module" ;
 
 void setup() {
     cooldown_limits = ([
-        GMCP_PKG_CHAR_STATUS : 60,
-        GMCP_PKG_CHAR_STATUSVARS: 60,
+        GMCP_PKG_CHAR_STATUS : 0,
+        GMCP_PKG_CHAR_STATUSVARS: 0,
     ]) ;
 }
 

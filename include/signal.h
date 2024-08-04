@@ -30,5 +30,6 @@
 #define SIG_PLAYER_DIED             300
 #define SIG_PLAYER_REVIVED          301
 #define SIG_PLAYER_ADVANCED         302
+#define SIG_USER_ENV_VAR_CHANGED    303
 
 #endif // __SIGNAL_H__

@@ -126,5 +126,6 @@
         "wisdom",
         "charisma"
     ],
-    "STORAGE_DATA_DIR" : "/data/storage/"
+    "STORAGE_DATA_DIR" : "/data/storage/",
+    "GUI" : true
 }

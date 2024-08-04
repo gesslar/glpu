@@ -16,5 +16,8 @@ string query_virtual_master();
 int add_destruct(function f);
 int remove_destruct(function f);
 void process_destruct() ;
+void add_reset(function f) ;
+void remove_reset(function f) ;
+void process_reset() ;
 
 #endif // __OBJECT_H__
