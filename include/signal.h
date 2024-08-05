@@ -32,4 +32,7 @@
 #define SIG_PLAYER_ADVANCED         302
 #define SIG_USER_ENV_VAR_CHANGED    303
 
+// Game Signals
+#define SIG_GAME_MIDNIGHT           400
+
 #endif // __SIGNAL_H__

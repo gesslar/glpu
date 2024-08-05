@@ -38,6 +38,7 @@
 #define SIGNAL_D        DIR_DAEMONS "signal"
 #define SOUL_D          DIR_DAEMONS "soul_d"
 #define SWAP_D          DIR_DAEMONS "swap"
+#define TIME_D          DIR_DAEMONS "time"
 #define VIRTUAL_D       DIR_DAEMONS "virtual"
 #define WEBSOCKET_D     DIR_DAEMONS "websocket_client"
 
