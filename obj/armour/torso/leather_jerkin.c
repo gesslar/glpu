@@ -14,6 +14,7 @@ inherit STD_ARMOUR ;
 void setup() {
     set_id(({"sturdy leather jerkin","leather jerkin", "jerkin", "armour"}));
     set_short("sturdy leather jerkin");
+    set_name("sturdy leather jerkin");
     set_long("This sturdy leather jerkin is crafted from high-quality, "
              "supple leather, designed to offer both protection and "
              "mobility. The jerkin is dyed a rich, earthy brown, and the "

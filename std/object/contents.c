@@ -37,11 +37,43 @@ void set_max_capacity(int x) {
     ) ;
 }
 
+void adjust_max_capacity(int x) {
+    if(!mud_config("USE_MASS"))
+        return ;
+
+    max_capacity += x ;
+
+    rehash_capacity() ;
+
+    GMCP_D->send_gmcp(this_object(),
+        GMCP_PKG_CHAR_STATUS, ([
+            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
+            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity()
+        ])
+    ) ;
+}
+
 void set_max_volume(int x) {
     if(!mud_config("USE_BULK"))
         return ;
 
     max_volume = x ;
+
+    rehash_volume() ;
+
+    GMCP_D->send_gmcp(this_object(),
+        GMCP_PKG_CHAR_STATUS, ([
+            GMCP_LBL_CHAR_STATUS_VOLUME : query_volume(),
+            GMCP_LBL_CHAR_STATUS_MAX_VOLUME : query_max_volume()
+        ])
+    ) ;
+}
+
+void adjust_max_volume(int x) {
+    if(!mud_config("USE_BULK"))
+        return ;
+
+    max_volume += x ;
 
     rehash_volume() ;
 
@@ -81,15 +113,15 @@ int query_volume() {
     return volume ;
 }
 
-int add_capacity(int x) {
+int adjust_capacity(int x) {
     if(!mud_config("USE_MASS"))
         return null ;
 
-    if (capacity - x < 0) {
+    if (capacity + x < 0 || capacity + x > max_capacity) {
         return 0 ;
     }
 
-    capacity -= x ;
+    capacity += x ;
 
     GMCP_D->send_gmcp(this_object(),
         GMCP_PKG_CHAR_STATUS, ([
@@ -101,52 +133,14 @@ int add_capacity(int x) {
     return 1 ;
 }
 
-int add_volume(int x) {
+int adjust_volume(int x) {
     if(!mud_config("USE_BULK"))
         return null ;
 
-    if (volume - x < 0) {
+    if (volume + x < 0 || volume + x > max_volume) {
         return 0 ;
     }
-    volume -= x ;
-
-    GMCP_D->send_gmcp(this_object(),
-        GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_VOLUME : query_volume(),
-            GMCP_LBL_CHAR_STATUS_MAX_VOLUME : query_max_volume()
-        ])
-    ) ;
-
-    return 1 ;
-}
-
-int remove_capacity(int x) {
-    if(!mud_config("USE_MASS"))
-        return null ;
-
-    if (capacity - x < 0) {
-        return 0 ;
-    }
-    capacity -= x ;
-
-    GMCP_D->send_gmcp(this_object(),
-        GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
-            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity()
-        ])
-    ) ;
-
-    return 1 ;
-}
-
-int remove_volume(int x) {
-    if(!mud_config("USE_BULK"))
-        return null ;
-
-    if (volume - x < 0) {
-        return 0 ;
-    }
-    volume -= x ;
+    volume += x ;
 
     GMCP_D->send_gmcp(this_object(),
         GMCP_PKG_CHAR_STATUS, ([

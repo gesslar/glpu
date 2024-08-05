@@ -127,8 +127,8 @@ void on_destruct() {
     object env = environment() ;
 
     if(env && !env->is_room()) {
-        env->add_capacity(query_mass());
-        env->add_volume(query_bulk());
+        env->adjust_capacity(query_mass());
+        env->adjust_volume(query_bulk());
     }
 
     process_destruct() ;

@@ -38,7 +38,7 @@ mixed main(object tp, string arg) {
         }
 
         result = tp->move_living(env, null, "SILENT", "SILENT");
-        if(!(result & MOVE_OK))
+        if(result)
             return _error("Unable to move to %s (%d).", target->query_name(), result);
 
         if(tp->query_env("teleport_in") && wizardp(tp)) {
@@ -78,7 +78,7 @@ mixed main(object tp, string arg) {
         }
 
         result = tp->move_living(ob, null, "SILENT", "SILENT") ;
-        if(!(result & MOVE_OK))
+        if(result)
             return _error("Unable to move to %s (%d).", file, result);
 
         if(tp->query_env("teleport_in") && wizardp()) {

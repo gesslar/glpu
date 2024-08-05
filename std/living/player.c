@@ -26,7 +26,7 @@ private nosave mapping environ_data = ([]) ;
 /* Connection functions */
 void setup_body(object user) {
     set_living_name(query_proper_name());
-    set_ids(({query_proper_name()}));
+    set_id(({query_proper_name()}));
     // set_proper_name(name());
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;

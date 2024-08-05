@@ -5,7 +5,7 @@ int query_total_coins();
 int query_total_wealth();
 mapping query_all_wealth();
 int query_wealth(string currency);
-int add_wealth(string currency, int amount);
+int adjust_wealth(string currency, int amount);
 void set_wealth(mapping w);
 void wipe_wealth() ;
 

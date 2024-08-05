@@ -18,7 +18,7 @@ private string dead_name ;
 void setup_corpse(object dead, object killer) {
     killer_name = killer ? killer->query_name() : "unknown" ;
     dead_name = dead->query_name() ;
-    set_ids(({ "body", "dead body", "corpse" })) ;
+    set_id(({ "body", "dead body", "corpse" })) ;
     set_name(dead_name+"'s' body") ;
     set_short("dead body of "+dead_name) ;
     set_long("This is the dead body of "+dead_name+".") ;

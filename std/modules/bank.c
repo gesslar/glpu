@@ -69,7 +69,7 @@ mixed cmd_deposit(object tp, string str) {
     if(have < num)
         return "You do not have that many " + type + " coins.\n" ;
 
-    if(nullp(tp->add_wealth(type, -num)))
+    if(nullp(tp->adjust_wealth(type, -num)))
         return "We were unable to process your transaction.\n" ;
 
     conv = to_int(CURRENCY_D->convert_currency(num, type, "copper")) ;
@@ -116,7 +116,7 @@ mixed cmd_withdraw(object tp, string str) {
     if(stringp(result))
         return result + "\n" ;
 
-    tp->add_wealth(type, num) ;
+    tp->adjust_wealth(type, num) ;
 
     return "You have withdrawn " + add_commas(num) + " " + type + " coins.\n" ;
 }

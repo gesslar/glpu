@@ -68,8 +68,8 @@ void event_moved(object prev, object previous_environment) {
                 remove() ;
             }
         } else {
-            add_mass(-coin_num) ;
-            env->add_wealth(coin_type, coin_num) ;
+            adjust_mass(-coin_num) ;
+            env->adjust_wealth(coin_type, coin_num) ;
             printf("You pick up %d %s coins.\n", coin_num, coin_type) ;
             remove() ;
         }

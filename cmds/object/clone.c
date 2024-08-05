@@ -36,16 +36,17 @@ mixed main(object caller, string str) {
     file = file_name(ob);
     dest = caller ;
 /*
-#define MOVE_OK             ( 1 << 0)
-#define MOVE_TOO_HEAVY      ( 1 << 1)
-#define MOVE_NO_ROOM        ( 1 << 2)
-#define MOVE_NO_DEST        ( 1 << 3)
-#define MOVE_NOT_ALLOWED    ( 1 << 4)
-#define MOVE_DESTRUCTED     ( 1 << 5)
+#define MOVE_OK             0
+#define MOVE_TOO_HEAVY      1
+#define MOVE_NO_ROOM        2
+#define MOVE_NO_DEST        3
+#define MOVE_NOT_ALLOWED    4
+#define MOVE_DESTRUCTED     5
+#define MOVE_ALREADY_THERE  6
 */
 
     result = ob->move(dest) ;
-    if(result & MOVE_OK) {
+    if(result == MOVE_OK) {
         if(caller->query_env("custom_clone") && wizardp(caller))
             custom = caller->query_env("custom_clone");
         if(custom) {
@@ -64,16 +65,16 @@ mixed main(object caller, string str) {
         caller->set_env("cwf", str);
         return 1;
     } else {
-        if(result & MOVE_TOO_HEAVY)
-            return "Error [clone]: The object is too heavy to carry.";
-        if(result & MOVE_NO_ROOM)
-            return "Error [clone]: There is not enough room to carry the object.";
-        if(result & MOVE_NO_DEST)
-            return "Error [clone]: The object has no destination.";
-        if(result & MOVE_NOT_ALLOWED)
-            return "Error [clone]: You are not allowed to carry the object.";
-        if(result & MOVE_DESTRUCTED)
-            return "Error [clone]: The object has been destructed.";
+        if(result == MOVE_TOO_HEAVY)
+            return _error("The object is too heavy to carry.");
+        if(result == MOVE_NO_ROOM)
+            return _error("There is not enough room to carry the object.");
+        if(result == MOVE_NO_DEST)
+            return _error("The object has no destination.");
+        if(result == MOVE_NOT_ALLOWED)
+            return _error("You are not allowed to carry the object.");
+        if(result == MOVE_DESTRUCTED)
+            return _error("The object has been destructed.");
     }
 
     if(caller->query_env("custom_clone") && wizardp(caller))

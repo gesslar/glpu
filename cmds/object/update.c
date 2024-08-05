@@ -46,9 +46,7 @@ mixed main(object tp, string arg) {
         file = tp->query_env("cwf");
     } else {
         // First, try to find an object with the given name
-        obj = present(file, tp);
-        if(!obj)
-            obj = present(file, room);
+        obj = get_object(file);
 
         if(obj) {
             // If we found an object, check if it's a clone

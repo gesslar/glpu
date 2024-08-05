@@ -25,7 +25,7 @@ int set_mass(int x) {
         if(_capacity < x) {
             return 0;
         }
-        environment()->add_capacity(-x);
+        environment()->adjust_capacity(-x);
     }
     mass = x;
     return 1;
@@ -40,14 +40,14 @@ int set_bulk(int x) {
         if(_volume < x) {
             return 0;
         }
-        environment()->add_volume(-x) ;
+        environment()->adjust_volume(-x) ;
     }
     bulk = x;
 
     return 1;
 }
 
-int add_mass(int x) {
+int adjust_mass(int x) {
     if(x == 0)
         return 1;
 
@@ -63,14 +63,14 @@ int add_mass(int x) {
                 return 0;
             }
         }
-        environment()->add_capacity(-(mass+x));
+        environment()->adjust_capacity(-(mass+x));
     }
     mass += x;
 
     return 1;
 }
 
-int add_bulk(int x) {
+int adjust_bulk(int x) {
     if(x == 0)
         return 1;
 
@@ -86,7 +86,7 @@ int add_bulk(int x) {
                 return 0;
             }
         }
-        environment()->add_volume(-(bulk+x));
+        environment()->adjust_volume(-(bulk+x));
     }
     bulk += x;
     return 1;

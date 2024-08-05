@@ -28,7 +28,7 @@ int alphabetize(string arg1, string arg2);
 
 void create()
 {
-    set_ids( ({ "/emote_client" }) );
+    set_id( ({ "/emote_client" }) );
     soul_d = load_object(SOUL_D);
 }
 

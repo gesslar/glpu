@@ -38,7 +38,7 @@ object add_inventory(mixed file, mixed args...) {
 
             result = file->move(this_object()) ;
 
-            if(!(result & MOVE_OK))
+            if(result)
                 return 0 ;
 
             return file ;

@@ -43,7 +43,6 @@ private nosave object link;
 /* Prototypes */
 
 void mudlib_setup() {
-    // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     enable_commands() ;
     path = ({"/cmds/std/"});
     if(!query("env_settings"))
@@ -58,8 +57,16 @@ private nosave string *body_slots = ({
     "head", "neck", "torso", "back", "arms", "hands", "legs", "feet"
 });
 
+private nosave string *weapon_slots = ({
+    "right hand", "left hand"
+});
+
 string *query_body_slots() {
     return copy(body_slots);
+}
+
+string *query_weapon_slots() {
+    return copy(weapon_slots);
 }
 
 string *query_all_commands() {
@@ -111,7 +118,7 @@ void die() {
 varargs int move(mixed ob, int flag) {
     int result = ::move(ob) ;
 
-    if(!(result & MOVE_OK))
+    if(result)
         return result ;
 
     set("last_location", base_name(ob));
@@ -132,8 +139,8 @@ void event_remove(object prev) {
         } else {
             if(environment()) {
                 int result = ob->move(environment()) ;
-                if(result & MOVE_OK) {
-                    if(!(result & MOVE_DESTRUCTED)) {
+                if(result) {
+                    if(result == MOVE_DESTRUCTED) {
                         ob->remove() ;
                     }
                 }
@@ -355,43 +362,40 @@ private nomask int evaluate_result(mixed result) {
 varargs int move_living(mixed dest, string dir, string depart_message, string arrive_message) {
     int result ;
     object curr = environment() ;
+    string tmp ;
 
     result = move(dest);
-    if(result & MOVE_ALREADY_THERE)
+    if(result)
         return result ;
 
-    if(result & MOVE_OK) { // Success
-        string tmp ;
+    if(curr) {
+        if(depart_message != "SILENT") {
+            if(!depart_message) depart_message = query_env("move_out");
+            if(!depart_message) depart_message = "$N leaves $D.";
+            if(!dir) dir = "somewhere" ;
 
-        if(curr) {
-            if(depart_message != "SILENT") {
-                if(!depart_message) depart_message = query_env("move_out");
-                if(!depart_message) depart_message = "$N leaves $D.";
-                if(!dir) dir = "somewhere" ;
-
-                tmp = replace_string(depart_message, "$N", query_name()) ;
-                tmp = replace_string(tmp, "$D", dir);
-
-                tmp = append(tmp, "\n") ;
-
-                tell_down(curr, tmp) ;
-            }
-        }
-
-        if(arrive_message != "SILENT") {
-            curr = environment() ;
-
-            if(!arrive_message) arrive_message = query_env("move_in");
-            if(!arrive_message) arrive_message = "$N arrives.\n";
-            tmp = replace_string(arrive_message, "$N", query_name());
+            tmp = replace_string(depart_message, "$N", query_name()) ;
+            tmp = replace_string(tmp, "$D", dir);
 
             tmp = append(tmp, "\n") ;
 
-            tell_down(curr, tmp, null, ({ this_object() })) ;
+            tell_down(curr, tmp) ;
         }
-
-        force_me("look") ;
     }
+
+    if(arrive_message != "SILENT") {
+        curr = environment() ;
+
+        if(!arrive_message) arrive_message = query_env("move_in");
+        if(!arrive_message) arrive_message = "$N arrives.\n";
+        tmp = replace_string(arrive_message, "$N", query_name());
+
+        tmp = append(tmp, "\n") ;
+
+        tell_down(curr, tmp, null, ({ this_object() })) ;
+    }
+
+    force_me("look") ;
 
     return result ;
 }

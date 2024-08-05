@@ -9,20 +9,15 @@
  * 2024/07/25 - Gesslar - Created
  */
 
-inherit STD_CLOTHING ;
+#include <armour.h>
 
-public void set_defense(mapping def) ;
-public void add_defense(string type, float amount) ;
-public mapping query_defense() ;
-public float query_defense_amount(string type) ;
-public void set_ac(float ac) ;
-public float query_ac() ;
-public float add_ac(float ac) ;
+inherit STD_CLOTHING ;
 
 private mapping _defense = ([ ]) ;
 private float _ac = 0.0 ;
 
 void mudlib_setup() {
+    ::mudlib_setup() ;
     set_name("armour") ;
     set_short("armour") ;
     set_long("This is a piece of chest armour.") ;
@@ -36,18 +31,25 @@ void mudlib_setup() {
     set_slot("torso") ;
 }
 
-int equip(string slot, object tp) {
-    if(!::equip(slot, tp)) return 0 ;
+void set_id(mixed ids) {
+    ::set_id(ids) ;
+    add_id(({ "armour", "armor" })) ;
+}
+
+int equip(object tp, string slot) {
+    if(!::equip(tp, slot)) return 0 ;
 
     tp->adjust_protection() ;
 
     return 1 ;
 }
 
-int unequip() {
-    object tp = environment() ;
+int unequip(object tp, int silent) {
+    if(!objectp(tp))
+        tp = environment() ;
 
-    if(!::unequip(tp)) return 0 ;
+    if(!::unequip(tp))
+        return 0 ;
 
     if(tp)
         tp->adjust_protection() ;

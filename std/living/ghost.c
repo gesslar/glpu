@@ -32,7 +32,7 @@ void setup_body() {
     add_action("command_hook", "", 1);
     add_action("revive", "revive") ;
     set_living_name(query_proper_name());
-    set_ids(({query_proper_name()}));
+    set_id(({query_proper_name()}));
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     set_race("ghost") ;
     set_level(1.0) ;

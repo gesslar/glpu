@@ -49,13 +49,13 @@ mixed main(object tp, string str) {
     if(stringp(result))
         return result ;
     if(result == 0)
-        return "You cannot wear that item." ;
+        return "1 You cannot wear that item." ;
 
-    result = ob->equip(slot, tp) ;
+    result = ob->equip(tp, slot) ;
     if(stringp(result))
         return result ;
     if(result == 0)
-        return "You cannot wear that item." ;
+        return "2 You cannot wear that item." ;
 
     return "You wear the "+get_short(ob)+"." ;
 }

@@ -24,14 +24,12 @@ mixed main(object caller, string arg) {
             return "You don't have anything in your inventory.\n";
 
         foreach(object item in inv) {
-            int result ;
-
             if(item->prevent_drop()) {
                 tell(caller, "You cannot drop " + get_short(item) + ".\n") ;
                 continue ;
             }
 
-            if(!(result = item->move(room) & MOVE_OK)) {
+            if(item->move(room)) {
                 tell(caller, "You could not drop " + get_short(item) + ".\n");
                 continue ;
             }
@@ -47,8 +45,7 @@ mixed main(object caller, string arg) {
             return "You don't have any '" + arg + "' in your inventory.\n";
 
         foreach(item in inv) {
-            int result ;
-            if(!(result = item->move(room) != MOVE_OK)) {
+            if(item->move(room)) {
                 if(item->id(arg)) {
                     tell(caller, "You drop " + get_short(item) + ".\n");
                     tell_down(room, caller->query_name() + " drops " + get_short(item) + ".\n", 0, caller);
@@ -67,8 +64,7 @@ mixed main(object caller, string arg) {
         } else if(ob->prevent_drop()) {
             return "You cannot drop " + get_short(ob) + ".\n";
         } else {
-            int result ;
-            if((result = ob->move(room) != MOVE_OK)) {
+            if(ob->move(room)) {
                 return "You could not drop " + get_short(ob) + ".\n";
             } else {
                 tell(caller, "You drop " + get_short(ob) + ".\n");

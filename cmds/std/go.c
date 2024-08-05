@@ -30,7 +30,7 @@ mixed main(object tp, string arg) {
             return "You may not move in that direction." ;
     }
 
-    if(tp->move_living(dest, arg) != MOVE_OK)
+    if(tp->move_living(dest, arg))
         return "You are not allowed to go there." ;
 
     MOVE_D->pre_walk_direction(tp, room, arg) ;

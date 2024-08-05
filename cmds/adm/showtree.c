@@ -68,34 +68,34 @@ string dig (string file, string func, int indent) {
     string str;
     int found;
 
-    if( strlen(file) > 2 && file[<2..] == ".c" ) file = file[0..<3];
-    if( file[0] != '/' ) file = "/" + file;
+    if(strlen(file) > 2 && file[<2..] == ".c") file = file[0..<3];
+    if(file[0] != '/') file = "/" + file;
     if(!file_exists(file+".c")) {
         Error = "No such file " + file + ".c\n";
         return 0;
     }
 
-    if( !(ob = load_object(file)) ) {
+    if(!(ob = load_object(file))) {
         Error = "Error in loading " + file + ".\n";
         return 0;
     }
 
     str = sprintf("%*-' 's%s", indent*4, "", file);
-    if(func && (function_exists(func, ob) == file) ) {
+    if(func && (function_exists(func, ob) == file)) {
         str += " (\e0220\e" + func + "\eres\e defined)\n";
     } else {
         str += "\n";
     }
 
-    if( !func || function_exists(func, ob) ) found = 1;
+    if(!func || function_exists(func, ob)) found = 1;
     indent++;
     foreach(file in sort_array(inherit_list(ob), 1)) {
         string tmp;
         tmp = dig(file, func, indent);
-        if( tmp && tmp != "" ) {
+        if(tmp && tmp != "") {
             str += tmp;
             found = 1;
-        } else if( !tmp ) {
+        } else if(!tmp) {
             return 0;
         }
     }

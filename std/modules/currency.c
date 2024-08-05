@@ -141,9 +141,9 @@ mixed complex_transaction(object tp, int cost, string currency) {
         if(use_mass) {
             int max_capacity = tp->query_max_capacity();
             int subtract_mass = sum(values(to_subtract));
-            int add_mass = sum(values(change));
+            int adjust_mass = sum(values(change));
             int current_capacity = tp->query_capacity();
-            int net = add_mass - subtract_mass;
+            int net = adjust_mass - subtract_mass;
 
             if(current_capacity - net < 0) {
                 return "You can't carry that much currency.";
@@ -152,9 +152,9 @@ mixed complex_transaction(object tp, int cost, string currency) {
         if(use_bulk) {
             int max_volume = tp->query_max_volume();
             int subtract_bulk = sum(values(to_subtract));
-            int add_bulk = sum(values(change));
+            int adjust_bulk = sum(values(change));
             int current_volume = tp->query_volume();
-            int net = add_bulk - subtract_bulk;
+            int net = adjust_bulk - subtract_bulk;
 
             if(current_volume - net < 0) {
                 return "You can't carry that much currency.";
@@ -163,8 +163,8 @@ mixed complex_transaction(object tp, int cost, string currency) {
     }
 
     // Apply the transaction
-    foreach (curr, amount in to_subtract) tp->add_wealth(curr, -amount);
-    foreach (curr, amount in change) tp->add_wealth(curr, amount);
+    foreach (curr, amount in to_subtract) tp->adjust_wealth(curr, -amount);
+    foreach (curr, amount in change) tp->adjust_wealth(curr, amount);
 
     return ({ format_return_currency(to_subtract), format_return_currency(change) });
 }
@@ -206,7 +206,7 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
         if (tp->query_wealth(currency) < amount) {
             return "Not enough " + currency + " to reverse the transaction";
         }
-        tp->add_wealth(currency, -amount);
+        tp->adjust_wealth(currency, -amount);
         to_subtract[currency] = (to_subtract[currency] || 0) + amount;
     }
 
@@ -214,7 +214,7 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
     foreach (mixed *currency_info in subtracted) {
         currency = currency_info[0];
         amount = currency_info[1];
-        tp->add_wealth(currency, amount);
+        tp->adjust_wealth(currency, amount);
         to_add[currency] = (to_add[currency] || 0) + amount;
     }
 
@@ -265,15 +265,15 @@ private mixed check_capacity(object tp, string currency, int amount) {
 private mixed transfer_funds(object from, object to, string currency, int amount) {
     int from_result, to_result;
 
-    from_result = from->add_wealth(currency, -amount);
+    from_result = from->adjust_wealth(currency, -amount);
     if (from_result < 0) {
         return "Failed to remove funds from the source.";
     }
 
-    to_result = to->add_wealth(currency, amount);
+    to_result = to->adjust_wealth(currency, amount);
     if (to_result < 0) {
         // Revert the transaction if adding to the destination fails
-        from->add_wealth(currency, amount);
+        from->adjust_wealth(currency, amount);
         return "Failed to add funds to the destination.";
     }
 

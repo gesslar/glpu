@@ -27,7 +27,7 @@ mixed main(object tp, string str) {
     if(!of(type, CURRENCY_D->currency_list()))
         return "Invalid currency type.\n" ;
 
-    if(!tp->add_wealth(type, number))
+    if(!tp->adjust_wealth(type, number))
         return "You can't add that many coins.\n" ;
 
     return sprintf("You receive %d %s.\n", number, type) ;

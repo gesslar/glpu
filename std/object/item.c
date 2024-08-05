@@ -63,34 +63,82 @@ int allow_move(mixed dest) {
 }
 
 int move(mixed dest) {
-    int result ;
-    object prev ;
+    int result;
+    object prev;
+    object env = environment();
+    int use_bulk = mud_config("USE_BULK");
+    int use_mass = mud_config("USE_MASS");
+    int env_ignore_mass = env ? call_if(env, "ignore_mass") : 0 ;
+    int env_ignore_bulk = env ? call_if(env, "ignore_bulk") : 0 ;
+    int dest_ignore_mass = call_if(dest, "ignore_mass") || 0 ;
+    int dest_ignore_bulk = call_if(dest, "ignore_bulk") || 0 ;
+    int mass = query_mass();
+    int bulk = query_bulk();
 
-    result = allow_move(dest) ;
-    if(!(result & MOVE_OK))
-        return result ;
+    result = allow_move(dest);
 
-    if(result & MOVE_ALREADY_THERE)
-        return MOVE_OK | MOVE_ALREADY_THERE ;
+    if(result)
+        return result;
 
-    prev = environment() ;
-    if(prev) {
-        if(!prev->ignore_capacity())
-            prev->add_capacity(query_mass());
-        if(!prev->ignore_bulk())
-            prev->add_volume(query_bulk());
+    if(!objectp(dest)) {
+        if(stringp(dest)) {
+            dest = load_object(dest);
+        } else {
+            return MOVE_NO_DEST;
+        }
     }
 
-    if(!dest->ignore_capacity())
-        dest->add_capacity(-query_mass());
-    if(!dest->ignore_bulk())
-        dest->add_volume(-query_bulk());
+    if(!objectp(dest))
+        return MOVE_NO_DEST;
+
+    if(env && env == dest)
+        return MOVE_ALREADY_THERE;
+
+    if(use_mass || use_bulk) {
+        int cap, max_cap ;
+        int vol, max_vol ;
+
+        cap = dest->query_capacity();
+        max_cap = dest->query_max_capacity();
+        vol = dest->query_volume();
+        max_vol = dest->query_max_volume();
+
+        // First do the checks
+        if(use_mass) {
+            if(!dest_ignore_mass) {
+                if(cap - mass < 0) {
+                    return MOVE_TOO_HEAVY ;
+                }
+            }
+        }
+        if(use_bulk) {
+            if(!dest_ignore_bulk) {
+                if(vol - bulk < 0) {
+                    return MOVE_NO_ROOM ;
+                }
+            }
+        }
+
+        // Now do the adjustements
+        if(use_mass) {
+            if(!dest_ignore_mass)
+                dest->adjust_capacity(-mass);
+            if(env && !env_ignore_mass)
+                env->adjust_capacity(mass);
+        }
+        if(use_bulk) {
+            if(!dest_ignore_bulk)
+                dest->adjust_volume(-bulk);
+            if(env && !env_ignore_bulk)
+                env->adjust_volume(bulk);
+        }
+    }
 
     move_object(dest);
-    event(this_object(), "moved", prev) ;
-    if(prev && this_object()) event(prev, "released", environment()) ;
-    if(this_object()) event(environment(), "received", prev) ;
+    event(this_object(), "moved", prev);
+    if(prev && this_object()) event(prev, "released", environment());
+    if(this_object()) event(environment(), "received", prev);
 
-    if(this_object()) return MOVE_OK ;
-    else return MOVE_OK | MOVE_DESTRUCTED ;
+    if(this_object()) return MOVE_OK;
+    else return MOVE_DESTRUCTED;
 }

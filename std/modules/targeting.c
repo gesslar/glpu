@@ -40,7 +40,7 @@ varargs object find_local_target(object tp, string arg, function f) {
         return 0 ;
 
     if(!room) {
-        tell(tp, "You are in a void, you can't target anything here.");
+        tell(tp, "You are in a void, you can't target anything here.\n");
         return 0 ;
     }
 #if 0
@@ -78,14 +78,17 @@ varargs object find_local_target(object tp, string arg, function f) {
     obs = filter(obs, (: $1->id($(arg)) :)) ;
 
     if(sizeof(obs) > 1) {
-        tell(tp, "You need to be more specific.") ;
+        tell(tp, "You need to be more specific.\n") ;
+        return 0 ;
+    } else if(sizeof(obs) < 1) {
+        tell(tp, "You don't see that here.\n") ;
         return 0 ;
     }
 
     target = obs[0] ;
 
     if(!objectp(target)) {
-        tell(tp, "You don't see that here.") ;
+        tell(tp, "You don't see that here.\n") ;
         return 0 ;
     }
 

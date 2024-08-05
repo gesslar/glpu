@@ -6,81 +6,78 @@
 //
 // 2024/01/31: Gesslar - Created
 
-// Prototypes
-void set_id(mixed str) ;
-void add_id(mixed str) ;
-void remove_id(mixed str) ;
-void set_ids(mixed arg) ;
-int id(string arg) ;
+#include <type.h>
+#include <id.h>
+#include <object.h>
 
-void set_adj(mixed str) ;
-void add_adj(mixed str) ;
-void remove_adj(mixed str) ;
-void set_adjs(mixed arg) ;
-
-void rehash_ids() ;
-
-// From other objects
-string query_name();
-
-private string *ids = ({});
 private string *_ids = ({});
 private string *_plural_ids = ({});
 private string *_adj = ({});
 
 void set_id(mixed str) {
-    if(pointerp(str)) set_ids(str);
-    else set_ids(({ str }));
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to set_id().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to set_id().");
+
+    _ids = distinct_array(str);
 }
 
 void set_adj(mixed str) {
-    if(pointerp(str)) set_adjs(str);
-    else set_adjs(({ str }));
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to set_adj().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to set_adj().");
+
+    _adj = distinct_array(str);
 }
 
 void add_id(mixed str) {
-    if(pointerp(str)) set_ids(_ids + str);
-    else set_ids(_ids + ({ str }));
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to add_id().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to add_id().");
+
+    _ids = distinct_array(_ids + str);
 }
 
 void add_adj(mixed str) {
-    if(pointerp(str)) set_adjs(_adj + str);
-    else set_adjs(_adj + ({ str }));
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to add_adj().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to add_adj().");
+
+    _adj = distinct_array(_adj + str);
 }
 
 void remove_id(mixed str) {
-    if(pointerp(str)) set_ids(_ids - str);
-    else set_ids(_ids - ({ str }));
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to remove_id().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to remove_id().");
+
+    _ids = distinct_array(_ids - str);
 }
 
 void remove_adj(mixed str) {
-    if(pointerp(str)) set_adjs(_adj - str);
-    else set_adjs(_adj - ({ str }));
-}
+    if(stringp(str))
+        str = ({ str });
+    if(!pointerp(str))
+        error("Bad argument 1 to remove_adj().");
+    if(!uniform_array(T_STRING, str))
+        error("Bad argument 1 to remove_adj().");
 
-void set_ids(mixed arg) {
-    if(stringp(arg)) arg = ({arg});
-    else if(pointerp(arg)) arg = filter(arg, (: stringp :));
-    else error("Bad argument 1 to set_ids().\n");
-
-    if(!sizeof(arg)) _ids = ({});
-    else _ids = arg;
-
-    if(query_name() && member_array(query_name(), _ids) == -1) {
-        _ids += ({ query_name() });
-    }
-    rehash_ids();
-}
-
-void set_adjs(mixed arg) {
-    if(stringp(arg)) arg = ({arg});
-    else if(pointerp(arg)) arg = filter(arg, (: stringp :));
-    else error("Bad argument 1 to set_adjs().\n");
-
-    if(!sizeof(arg)) _adj = ({});
-    else _adj = arg;
-
-    rehash_ids();
+    _adj = distinct_array(_adj - str);
 }
 
 string *query_ids() {
@@ -99,8 +96,8 @@ int id(string arg) {
     if(!arg || !stringp(arg))
         return 0;
 
-    if(sizeof(ids) < 1) ids = ({query_name()});
-    if(member_array(arg, ids) != -1) return 1;
+    if(sizeof(_ids) < 1) _ids = ({query_name()});
+    if(member_array(arg, _ids) != -1) return 1;
     return 0;
 }
 
@@ -119,5 +116,5 @@ void rehash_ids() {
 
     tmp += ({ name }) ;
 
-    ids = distinct_array(tmp);
+    _ids = distinct_array(tmp);
 }

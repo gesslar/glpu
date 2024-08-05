@@ -1,7 +1,6 @@
 #ifndef __BODY_H__
 #define __BODY_H__
 
-string *query_body_slots();
 string *query_all_commands();
 void rehash_contents();
 void die();
@@ -20,5 +19,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 mixed* query_commands();
 int force_me(string cmd);
 int query_log_level();
+string *query_body_slots() ;
+string *query_weapon_slots() ;
 
 #endif // __BODY_H__

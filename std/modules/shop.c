@@ -107,7 +107,7 @@ protected void reset_shop() {
             if(!objectp(ob))
                 continue ;
 
-            if(!(ob->move(store) & MOVE_OK))
+            if(ob->move(store))
                 ob->remove() ;
         }
     }
@@ -166,7 +166,7 @@ mixed cmd_buy(object tp, string str) {
     if(stringp(result))
         return result ;
 
-    if(!(ob->move(tp) & MOVE_OK)) {
+    if(ob->move(tp)) {
         reverse_transaction(tp, result) ;
 
         return "You can't carry that much weight.";
@@ -220,10 +220,10 @@ mixed cmd_sell(object tp, string str) {
     coin_bulk = cost[0] / 2 ;
     coin_mass = cost[0] ;
 
-    if(!(ob->move(store) & MOVE_OK))
+    if(ob->move(store))
         return "The shop refuses your item." ;
 
-    if(nullp(tp->add_wealth(cost[1], cost[0]))) {
+    if(nullp(tp->adjust_wealth(cost[1], cost[0]))) {
         ob->move(tp) ;
         return "You are overburdened and cannot carry the coins." ;
     }

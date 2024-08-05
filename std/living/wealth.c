@@ -42,7 +42,7 @@ int query_wealth(string currency) {
     return wealth[currency] ;
 }
 
-int add_wealth(string currency, int amount) {
+int adjust_wealth(string currency, int amount) {
     int bulk, mass ;
 
     if(nullp(wealth))
@@ -89,7 +89,7 @@ mapping set_wealth(mapping w) {
             continue ;
         }
 
-        if(!add_wealth(c[0], w[c[0]]))
+        if(!adjust_wealth(c[0], w[c[0]]))
             w[c[0]] = 0 ;
     }
 

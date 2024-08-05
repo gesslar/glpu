@@ -43,6 +43,7 @@
 #define STD_USER            DIR_STD_LIVING "user"
 #define STD_VALUE           DIR_STD "object/value"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
+#define STD_WEAPON          DIR_STD "equip/weapon"
 #define STD_WS_CLIENT       DIR_STD "daemon/websocket_client"
 #define STD_ZONE            DIR_STD "zones/zone"
 

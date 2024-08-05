@@ -12,23 +12,28 @@
 inherit STD_ACT ;
 
 mixed main(object tp, string str) {
-    mapping eq ;
+    mapping eq, wielded ;
     string slot, *slots ;
-    object item ;
     string out = "" ;
     int sz, max ;
 
     eq = tp->query_equipped() ;
+    wielded = tp->query_wielded() ;
 
-    if(!sizeof(eq))
+    if(!sizeof(eq) && !sizeof(wielded))
         return "You are not equipping anything." ;
 
     out += "You have equipped the following items:\n\n" ;
 
-    slots = keys(eq) ;
+    slots = keys(wielded) ;
+    slots += keys(eq) ;
+
     max = max(map(slots, (: strlen :))) ;
-    foreach(slot, item in eq)
+
+    foreach(slot in slots) {
+        object item = wielded[slot] || eq[slot] ;
         out += sprintf("%*s : %s\n", max, capitalize(slot), get_short(item)) ;
+    }
 
     return out ;
 }

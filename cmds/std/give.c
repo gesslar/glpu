@@ -51,7 +51,7 @@ mixed main(object tp, string arg) {
      if(ob->prevent_transfer(target, room))
           return "You can't give that to "+target->query_name()+".";
 
-     if(!(ob->move(target)) & MOVE_OK)
+     if(ob->move(target))
           return "You can't give that to "+target->query_name()+".";
 
      {

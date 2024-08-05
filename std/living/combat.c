@@ -11,6 +11,7 @@
 
 #include <combat.h>
 #include <damage.h>
+#include <body.h>
 #include <gmcp_defines.h>
 #include <vitals.h>
 #include <action.h>
@@ -18,6 +19,7 @@
 #include <equipment.h>
 #include <skills.h>
 #include <advancement.h>
+#include <equipment.h>
 
 inherit __DIR__ "damage" ;
 
@@ -93,8 +95,18 @@ int start_attack(object victim) {
     return 1;
 }
 
-void swing() {
+void swing(int count, int multi) {
     object enemy = highest_threat();
+    object weapon ;
+    string *slots = query_weapon_slots() ;
+    mapping wielded ;
+    int num ;
+
+    if(nullp(count))
+        count = 1 ;
+
+    if(count < 1)
+        return ;
 
     if(!enemy)
         return;
@@ -107,10 +119,28 @@ void swing() {
         return;
     }
 
-    if(!can_strike(enemy))
-        return;
+    wielded = query_wielded() ;
+    wielded = filter(wielded, (: objectp($2) :)) ;
+    if(sizeof(wielded)) {
+        string main_slot = slots[0] ;
+        if(multi) {
+            object *poss ;
+            poss = filter(wielded, (: $1 != $(main_slot) :)) ;
+            poss = distinct_array(values(wielded)) ;
+            weapon = element_of(poss) ;
+            multi = 0 ;
+        } else {
+            weapon = wielded[main_slot] ;
+            if(random(100) < 5 + query_skill("combat.melee"))
+                multi = 1 ;
+        }
+    }
 
-    strike_enemy(enemy);
+    if(can_strike(enemy, weapon)) {
+        strike_enemy(enemy, weapon) ;
+    }
+
+    swing(count - 1, multi) ;
 }
 
 int next_round() {
@@ -123,7 +153,7 @@ int next_round() {
     return next_combat_round;
 }
 
-private int can_strike(object enemy) {
+private int can_strike(object enemy, object weapon) {
     float ac = enemy->query_ac() ;
     float chance = mud_config("DEFAULT_HIT_CHANCE") ;
     float lvl = query_effective_level() ;
@@ -131,12 +161,11 @@ private int can_strike(object enemy) {
     float result ;
     string name, vname ;
     object env ;
-    object weapon ;
     string wname, wtype ;
     string *messes, mess ;
     string skill_name, *skill_parts ;
     float skill ;
-    mapping weapon_info = query_weapon_info() ;
+    mapping weapon_info = query_weapon_info(weapon) ;
 
     skill_name = "combat.melee" ;
     skill = query_skill_level(skill_name) ;
@@ -154,7 +183,7 @@ private int can_strike(object enemy) {
            - enemy->query_skill_level("combat.defense.dodge")
            ;
 
-    tell(this_object(), "Chance: " + chance + "\n") ;
+    // tell(this_object(), "Chance: " + chance + "\n") ;
 
     result = random_float(100.0) ;
 
@@ -178,15 +207,14 @@ private int can_strike(object enemy) {
     return 0;
 }
 
-void strike_enemy(object enemy) {
-    object weapon ;
+void strike_enemy(object enemy, object weapon) {
     string wname, wtype ;
     string *messes, mess ;
     float dam ;
     string skill_name ;
     float skill ;
-    float base ;
-    mapping weapon_info = query_weapon_info() ;
+    float base, variance, rand, wbase ;
+    mapping weapon_info ;
 
     if(!valid_enemy(enemy))
         return;
@@ -194,14 +222,19 @@ void strike_enemy(object enemy) {
     if(!current_enemy(enemy))
         return;
 
+    weapon_info = query_weapon_info(weapon) ;
 
     skill_name = sprintf("combat.melee.%s", weapon_info["skill"]) ;
     skill = query_skill_level(skill_name) ;
-    base = weapon_info["base"] ;
+    base = percent_of(5.0, enemy->query_max_hp()) ;
+    variance = percent_of(25.0, base) ;
+    base -= variance ;
+    variance = random_float(variance) ;
+    base += variance ;
+
+    wbase = weapon_info["base"] ;
     wname = weapon_info["name"] ;
     wtype = weapon_info["type"] ;
-
-    base = 5.0 + random_float(5.0) ;
 
     if(enemy->query_mp() < 0.0)
         base += 4.0 ;
@@ -215,9 +248,9 @@ void strike_enemy(object enemy) {
       - enemy->query_skill_level("combat.defense")
       ;
 
-    tell(this_object(), sprintf("Base: %f, Skill: %f, Level: %f, Enemy Level: %f, Enemy Defense: %f, Enemy Skill: %f\n",
+    tell(enemy, sprintf("Base: %f, Skill: %f, Level: %f, Enemy Level: %f, Enemy Defense: %f, Enemy Skill: %f\n",
         base, skill, query_effective_level(), enemy->query_effective_level(), enemy->query_defense_amount(wtype), enemy->query_skill_level("combat.defense"))) ;
-    tell(this_object(), "Damage: " + dam + "\n") ;
+    tell(enemy, "Damage: " + dam + "\n") ;
 
     improve_skill(skill_name) ;
 
@@ -237,29 +270,27 @@ void strike_enemy(object enemy) {
     add_seen_threat(enemy, dam);
 }
 
-mapping query_weapon_info() {
-    object weapon ;
+mapping query_weapon_info(object weapon) {
     string wname, wtype ;
     string skill_name ;
     float base ;
 
-    weapon = query_equipped()["weapon"] || null ;
     if(weapon) {
         wname = weapon->query_name() ;
-        wtype = weapon->query_type() ;
+        wtype = weapon->query_damage_type() ;
         skill_name = wtype ;
-        base = weapon->query_damage() ;
+        base = weapon->query_dc() ;
     } else {
         if(userp()) {
             wname = "fist" ;
             wtype = "bludgeoning" ;
             skill_name = "unarmed" ;
-            base = random_float(3.0) ;
         } else {
             wname = query_weapon_name() ;
             wtype = query_weapon_type() ;
             skill_name = "unarmed" ;
         }
+        base = query_level() * 0.5 ;
     }
 
     return ([
@@ -534,6 +565,12 @@ mapping adjust_protection() {
             _ac += ob->query_ac() ;
         }
     }
+
+    return _defense ;
+}
+
+float query_ac() {
+    return _ac ;
 }
 
 object last_damaged_by() {

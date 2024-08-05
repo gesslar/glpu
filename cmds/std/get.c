@@ -31,7 +31,7 @@ mixed main(object caller, string arg) {
             return "There is nothing to get.\n";
 
         for(i = 0; i < sz; i++) {
-            if(obs[i]->move(caller) & MOVE_OK) {
+            if(!obs[i]->move(caller)) {
                 tell(caller, "You get "+get_short(obs[i])+".\n");
                 tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
             }
@@ -48,7 +48,7 @@ mixed main(object caller, string arg) {
             return "There is nothing to get.\n";
 
         for(i = 0; i < sz; i++) {
-            if(obs[i]->move(caller) & MOVE_OK) {
+            if(!obs[i]->move(caller)) {
                 tell(caller, "You get "+get_short(obs[i])+".\n");
                 tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
             }
@@ -62,7 +62,7 @@ mixed main(object caller, string arg) {
         if(ob->prevent_get())
             return get_short(ob) + " cannot be picked up.\n";
 
-        if(!(ob->move(caller) & MOVE_OK))
+        if(ob->move(caller))
             return "You were unable to pick up "+get_short(ob)+".\n";
 
         tell(caller, "You get "+get_short(ob)+".\n");

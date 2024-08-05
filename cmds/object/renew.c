@@ -35,7 +35,7 @@ mixed main(object tp, string str) {
 
     env = environment(ob) ;
 
-    if(ob->move(VOID_ROOM) != MOVE_OK)
+    if(ob->move(VOID_ROOM))
         return _error("Failed to move the object to the void.") ;
 
     file = base_name(ob) ;
@@ -59,8 +59,7 @@ mixed main(object tp, string str) {
     if(e)
         return _error("Failed to renew the object: " + e) ;
 
-    // bit-shifted return of move needs to be & MOVE_OK
-    if(!(ob->move(env) & MOVE_OK)) {
+    if(ob->move(env)) {
         ob->remove() ;
         return _error("Failed to move the object back to its original location.") ;
     }

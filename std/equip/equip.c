@@ -6,6 +6,9 @@
 //
 // 2024/03/02: Gesslar - Created
 
+#include <clothing.h>
+#include <armour.h>
+
 inherit STD_ITEM ;
 
 void set_slot(string str) ;
@@ -26,7 +29,7 @@ string query_slot() {
     return slot ;
 }
 
-mixed equip(string slot, object tp) {
+mixed equip(object tp, string slot) {
     mixed result ;
     object env = environment() ;
 
@@ -39,7 +42,7 @@ mixed equip(string slot, object tp) {
     if(tp->equipped_on(slot))
         return 0 ;
 
-    result = tp->equip(slot, this_object()) ;
+    result = tp->equip(this_object(), slot) ;
     if(result != 1)
         return result ;
 
@@ -57,15 +60,18 @@ varargs int unequip(object tp, int silent) {
     if(!equipped)
         return 0 ;
 
+    if(!tp)
+        tp = environment() ;
+
     if(tp) {
         if(tp->equipped_on(query_slot()) != this_object())
             return 0 ;
 
-        if(!tp->unequip(query_slot()))
+        if(!tp->unequip(this_object()))
             return 0 ;
 
         if(!silent) {
-            tell_object(tp, "You remove the "+get_short()+".\n") ;
+            tell(tp, "You remove the "+get_short()+".\n") ;
             tell_down(environment(tp), tp->query_name()+" removes "+tp->query_possessive()+" "+get_short()+".\n", 0, tp) ;
         }
     }
@@ -81,8 +87,12 @@ int move(mixed dest) {
 
     if(env)
         if(equipped)
-            if(ret == MOVE_OK)
+            if(!ret)
                 unequip(env) ;
 
     return ret ;
+}
+
+void unsetup() {
+    unequip(environment()) ;
 }

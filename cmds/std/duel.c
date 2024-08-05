@@ -9,7 +9,7 @@
 inherit STD_ACT ;
 
 void setup() {
-    target(TARGET_LOCAL) ;
+    target(TARGET_LIVING) ;
 }
 
 mixed main(object tp, string arg) {
