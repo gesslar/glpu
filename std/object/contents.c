@@ -9,7 +9,6 @@
 #include <contents.h>
 #include <gmcp_defines.h>
 #include <daemons.h>
-#include <weight.h>
 
 #include "/std/living/include/wealth.h"
 
