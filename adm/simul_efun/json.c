@@ -384,49 +384,51 @@ private varargs mixed json_decode_parse_string(mixed* parse, int initiator_check
         if(strsrch(out, "\\t") != -1)
             out = replace_string(out, "\\t", "\t");
         if(strsrch(out, "\\u") != -1) {
-int i, k, character, next_character;
-buffer utf8_buf;
-string unicode_char;
+            int i, k, character, next_character;
+            string new_out = "";
 
-i = 0;
-while(i < strlen(out)) {
-    if(out[i] == '\\' && i + 1 < strlen(out) && out[i + 1] == 'u') {
-        if(i + 5 >= strlen(out)) {
-            break;
-        }
+            i = 0;
+            while(i < strlen(out)) {
+                if(out[i] == '\\' && i + 1 < strlen(out) && out[i + 1] == 'u') {
+                    string unicode_sequence = "";
+                    int sequence_length ;
+                    string decoded_char ;
 
-        sscanf(out[i+2..i+5], "%x", character);
+                    while(i + 5 < strlen(out) && out[i] == '\\' && out[i + 1] == 'u') {
+                        unicode_sequence += out[i..i+5];
+                        i += 6;
+                    }
+                    i--; // Adjust for the outer loop increment
 
-        if(character >= 0xD800 && character <= 0xDBFF) {
-            if(i + 11 < strlen(out) && out[i + 6] == '\\' && out[i + 7] == 'u') {
-                sscanf(out[i+8..i+11], "%x", next_character);
-                if(next_character >= 0xDC00 && next_character <= 0xDFFF) {
-                    int codepoint = 0x10000 + ((character - 0xD800) << 10) + (next_character - 0xDC00);
-                    utf8_buf = string_encode(sprintf("%c", codepoint), "UTF-8");
-                    unicode_char = string_decode(utf8_buf, "UTF-8");
-                    out = out[0..i-1] + unicode_char + out[i+12..];
-                    i += strlen(unicode_char) - 1;
+                    sequence_length = strlen(unicode_sequence) / 6;
+                    decoded_char = "";
+
+                    for(k = 0; k < sequence_length; k++) {
+                        sscanf(unicode_sequence[k*6+2..k*6+5], "%x", character);
+
+                        if(k + 1 < sequence_length &&
+                        character >= 0xD800 && character <= 0xDBFF) {
+                            // This is a high surrogate, look for low surrogate
+                            sscanf(unicode_sequence[(k+1)*6+2..(k+1)*6+5], "%x", next_character);
+                            if(next_character >= 0xDC00 && next_character <= 0xDFFF) {
+                                // Valid surrogate pair
+                                int codepoint = 0x10000 + ((character - 0xD800) << 10) + (next_character - 0xDC00);
+                                decoded_char += sprintf("%c", codepoint);
+                                k++; // Skip the next character as we've used it
+                            } else {
+                                decoded_char += sprintf("%c", character);
+                            }
+                        } else {
+                            decoded_char += sprintf("%c", character);
+                        }
+                    }
+                    new_out += decoded_char;
                 } else {
-                    utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
-                    unicode_char = string_decode(utf8_buf, "UTF-8");
-                    out = out[0..i-1] + unicode_char + out[i+6..];
-                    i += strlen(unicode_char) - 1;
+                    new_out += out[i..i];
                 }
-            } else {
-                utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
-                unicode_char = string_decode(utf8_buf, "UTF-8");
-                out = out[0..i-1] + unicode_char + out[i+6..];
-                i += strlen(unicode_char) - 1;
+                i++;
             }
-        } else {
-            utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
-            unicode_char = string_decode(utf8_buf, "UTF-8");
-            out = out[0..i-1] + unicode_char + out[i+6..];
-            i += strlen(unicode_char) - 1;
-        }
-    }
-    i++;
-}
+            out = new_out;
         }
         if(member_array('/', out) != -1)
             out = replace_string(out, "\\/", "/");
@@ -649,7 +651,7 @@ mixed json_decode(string text) {
     return json_decode_parse(parse);
 }
 
-private nosave nomask string unicode_pattern = "([^\\x00-\\x7F])" ;
+private nosave nomask string unicode_pattern = "([\\x{80}-\\x{10FFFF}])" ;
 
 /**
  * @simul_efun json_encode
