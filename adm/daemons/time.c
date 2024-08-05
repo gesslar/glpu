@@ -217,11 +217,8 @@ int last_midnight() {
 
     // Calculate the number of full in-game years that have passed
     year = query_year(); // Current in-game year
-    printf("Year: %d\n", year);
     year_offset = year - year_start;
-    printf("Year offset: %d\n", year_offset);
     current_year_start = year_offset * (days_in_year * hours_in_day * hour_length);
-    printf("Current year start: %d\n", current_year_start);
 
     // Time elapsed within the current year
     elapsed_in_year = elapsed - current_year_start;
