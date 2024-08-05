@@ -383,63 +383,49 @@ private varargs mixed json_decode_parse_string(mixed* parse, int initiator_check
         if(strsrch(out, "\\t") != -1)
             out = replace_string(out, "\\t", "\t");
         if(strsrch(out, "\\u") != -1) {
-            int i, k, character, next_character, codepoint;
-            int* nybbles;
-            int* nybbles2;
-            buffer utf8_buf;
-            string unicode_char;
+int i, k, character, next_character;
+buffer utf8_buf;
+string unicode_char;
 
-            for(i = 0; i < strlen(out); i++) {
-                if(out[i] == '\\' && i + 1 < strlen(out) && out[i + 1] == 'u') {
-                    nybbles = allocate(4);
-                    character = 0;
-                    i += 2;
-                    if(i + 3 >= strlen(out)) {
-                        json_decode_parse_error(parse, "Incomplete Unicode escape sequence");
-                    }
-                    for(k = 0; k < 4; k++) {
-                        if((nybbles[k] = json_decode_hexdigit(out[i + k])) == -1) {
-                            json_decode_parse_error(parse, "Invalid hex digit", out[i + k]);
-                        }
-                    }
-                    character = (nybbles[0] << 12) | (nybbles[1] << 8) | (nybbles[2] << 4) | nybbles[3];
+i = 0;
+while(i < strlen(out)) {
+    if(out[i] == '\\' && i + 1 < strlen(out) && out[i + 1] == 'u') {
+        if(i + 5 >= strlen(out)) {
+            break;
+        }
 
-                    // Check if it's a high surrogate
-                    if(character >= 0xD800 && character <= 0xDBFF) {
-                        // Attempt to parse the second value (low surrogate)
-                        if(i + 10 < strlen(out) && out[i + 4] == '\\' && out[i + 5] == 'u') {
-                            nybbles2 = allocate(4);
-                            for(k = 0; k < 4; k++) {
-                                if((nybbles2[k] = json_decode_hexdigit(out[i + 6 + k])) == -1) {
-                                    json_decode_parse_error(parse, "Invalid hex digit in second surrogate", out[i + 6 + k]);
-                                }
-                            }
-                            next_character = (nybbles2[0] << 12) | (nybbles2[1] << 8) | (nybbles2[2] << 4) | nybbles2[3];
+        sscanf(out[i+2..i+5], "%x", character);
 
-                            if(next_character >= 0xDC00 && next_character <= 0xDFFF) {
-                                // Valid surrogate pair
-                                codepoint = 0x10000 + ((character - 0xD800) << 10) + (next_character - 0xDC00);
-                                utf8_buf = string_encode(sprintf("%c", codepoint), "UTF-8");
-                                unicode_char = string_decode(utf8_buf, "UTF-8");
-                                out = out[0..i-3] + unicode_char + out[i + 10..];
-                                i = i - 2;  // Adjust index to account for the replaced characters
-                                continue;
-                            } else {
-                                json_decode_parse_error(parse, "Invalid low surrogate");
-                            }
-                        } else {
-                            json_decode_parse_error(parse, "Missing low surrogate");
-                        }
-                    } else {
-                        // Single codepoint character
-                        utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
-                        unicode_char = string_decode(utf8_buf, "UTF-8");
-                        out = out[0..i-3] + unicode_char + out[i + 4..];
-                        i = i - 2;  // Adjust index to account for the replaced characters
-                        continue;
-                    }
+        if(character >= 0xD800 && character <= 0xDBFF) {
+            if(i + 11 < strlen(out) && out[i + 6] == '\\' && out[i + 7] == 'u') {
+                sscanf(out[i+8..i+11], "%x", next_character);
+                if(next_character >= 0xDC00 && next_character <= 0xDFFF) {
+                    int codepoint = 0x10000 + ((character - 0xD800) << 10) + (next_character - 0xDC00);
+                    utf8_buf = string_encode(sprintf("%c", codepoint), "UTF-8");
+                    unicode_char = string_decode(utf8_buf, "UTF-8");
+                    out = out[0..i-1] + unicode_char + out[i+12..];
+                    i += strlen(unicode_char) - 1;
+                } else {
+                    utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
+                    unicode_char = string_decode(utf8_buf, "UTF-8");
+                    out = out[0..i-1] + unicode_char + out[i+6..];
+                    i += strlen(unicode_char) - 1;
                 }
+            } else {
+                utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
+                unicode_char = string_decode(utf8_buf, "UTF-8");
+                out = out[0..i-1] + unicode_char + out[i+6..];
+                i += strlen(unicode_char) - 1;
             }
+        } else {
+            utf8_buf = string_encode(sprintf("%c", character), "UTF-8");
+            unicode_char = string_decode(utf8_buf, "UTF-8");
+            out = out[0..i-1] + unicode_char + out[i+6..];
+            i += strlen(unicode_char) - 1;
+        }
+    }
+    i++;
+}
         }
         if(member_array('/', out) != -1)
             out = replace_string(out, "\\/", "/");
