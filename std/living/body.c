@@ -76,14 +76,13 @@ string *query_all_commands() {
 void rehash_contents() {
     if(mud_config("USE_MASS") && !query_max_capacity())
         set_max_capacity(1000) ;
-    if(mud_config("USE_BULK") && !query_max_volume())
-        set_max_volume(500) ;
 
     ::rehash_contents() ;
 }
 
 void die() {
     object corpse ;
+    object ob, next ;
 
     if(!environment())
         return ;
@@ -98,7 +97,17 @@ void die() {
     emit(SIG_PLAYER_DIED, this_object(), killed_by()) ;
     corpse = new(OBJ_CORPSE) ;
     corpse->setup_corpse(this_object(), killed_by()) ;
-    corpse->move(environment()) ;
+    ob = first_inventory(this_object()) ;
+    while(ob) {
+        next = next_inventory(ob) ;
+        if(ob->move(corpse))
+            ob->remove() ;
+        ob = next ;
+    }
+
+    if(corpse->move(environment()))
+        corpse->remove() ;
+
     if(userp())  {
         object ghost = BODY_D->create_ghost(query_user(), this_object()) ;
         exec(ghost, this_object()) ;

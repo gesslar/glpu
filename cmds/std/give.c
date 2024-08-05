@@ -60,9 +60,7 @@ mixed main(object tp, string arg) {
           string name = tp->query_name();
           string vname = target->query_name();
 
-          tell(tp, "You give your "+short+" to "+vname+".\n");
-          tell(target, name+" gives you "+poss+" "+short+".\n");
-          tell_down(room, name+" gives "+vname+" "+poss+" "+short+".\n");
+          tp->targetted_action("$N $vgive $p $o to $t.", target, short);
      }
 
      return 1;

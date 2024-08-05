@@ -16,7 +16,6 @@ mixed main(object tp, string args) {
     string wealth ;
     int i;
     int cap, max_cap ;
-    int vol, max_vol ;
     object *equipped = values(tp->query_equipped()) ;
 
     inventory = all_inventory(tp);
@@ -40,15 +39,11 @@ mixed main(object tp, string args) {
     cap = tp->query_capacity() ;
     max_cap = tp->query_max_capacity() ;
 
-    vol = tp->query_volume() ;
-    max_vol = tp->query_max_volume() ;
-
     wealth = query_wealth(tp) ;
     if(sizeof(wealth))
         shorts += ({ "Coin purse: " + wealth, "" }) ;
 
     shorts += ({ sprintf("Capacity: %d/%d", cap, max_cap) }) ;
-    shorts += ({ sprintf("  Volume: %d/%d", vol, max_vol) }) ;
 
     return shorts ;
 }

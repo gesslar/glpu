@@ -19,5 +19,4 @@ void setup() {
         "providing a secure and adjustable fit. The soles are thick and "
         "sturdy, suggesting durability and comfort for prolonged wear.") ;
     set_mass(15) ;
-    set_bulk(5) ;
 }

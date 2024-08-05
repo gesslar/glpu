@@ -18,5 +18,4 @@ void setup() {
         "high waist secured by a simple leather belt, and they taper neatly "
         "to the ankle.") ;
     set_mass(100) ;
-    set_bulk(50) ;
 }

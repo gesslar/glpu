@@ -60,15 +60,34 @@ varargs void reset() {
 }
 
 int remove() {
-    object env = environment() ;
-    object *inv ;
+    object ob, next, env = environment() ;
 
     catch(call_if(this_object(), "on_remove", environment())) ;
 
-    inv = all_inventory() ;
-    inv = filter(inv, (: !userp($1) :)) ;
+    if(!env) {
+        ob = first_inventory() ;
+        while(ob) {
+            next = next_inventory(ob) ;
+            ob->remove() ;
+            if(objectp(ob))
+                destruct(ob) ;
+            ob = next ;
+        }
+    } else {
+        ob = first_inventory() ;
+        while(ob) {
+            next = next_inventory(ob) ;
+            if(ob->move(env)) {
+                ob->remove() ;
+                if(objectp(ob))
+                    destruct(ob) ;
+            }
+            ob = next ;
+        }
+    }
 
-    catch(inv->remove()) ;
+    if(sizeof(all_inventory()))
+        filter(all_inventory(), (: destruct :)) ;
 
     destruct() ;
     return 1 ;
@@ -128,7 +147,6 @@ void on_destruct() {
 
     if(env && !env->is_room()) {
         env->adjust_capacity(query_mass());
-        env->adjust_volume(query_bulk());
     }
 
     process_destruct() ;

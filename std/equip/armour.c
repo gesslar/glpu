@@ -22,7 +22,6 @@ void mudlib_setup() {
     set_short("armour") ;
     set_long("This is a piece of chest armour.") ;
     set_mass(1) ;
-    set_bulk(1) ;
     set_defense(([
         "slashing" : 1.0,
         "piercing" : 1.0,

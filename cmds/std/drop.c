@@ -12,52 +12,50 @@ Last edited on June 27th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, string arg) {
-    object room = environment(caller);
+mixed main(object tp, string arg) {
+    object room = environment(tp);
 
     if(!arg) return(notify_fail("SYNTAX: drop <object>\n"));
 
     if(arg == "all") {
-        object *inv = all_inventory(caller);
+        object *inv = all_inventory(tp);
 
         if(!sizeof(inv))
             return "You don't have anything in your inventory.\n";
 
         foreach(object item in inv) {
             if(item->prevent_drop()) {
-                tell(caller, "You cannot drop " + get_short(item) + ".\n") ;
+                tell(tp, "You cannot drop " + get_short(item) + ".\n") ;
                 continue ;
             }
 
             if(item->move(room)) {
-                tell(caller, "You could not drop " + get_short(item) + ".\n");
+                tell(tp, "You could not drop " + get_short(item) + ".\n");
                 continue ;
             }
 
-            tell(caller, "You drop " + get_short(item) + ".\n");
-            tell_down(room, caller->query_name() + " drops " + get_short(item) + ".\n", 0, caller);
+            tp->simple_action("$N $vdrop $p $o.", get_short(item)) ;
         }
     } else if(sscanf(arg, "all %s", arg)) {
         object item, *inv ;
 
-        inv = filter(all_inventory(caller), (: $1->id($(arg)) :));
+        inv = filter(all_inventory(tp), (: $1->id($(arg)) :));
         if(!sizeof(inv))
             return "You don't have any '" + arg + "' in your inventory.\n";
 
         foreach(item in inv) {
             if(item->move(room)) {
                 if(item->id(arg)) {
-                    tell(caller, "You drop " + get_short(item) + ".\n");
-                    tell_down(room, caller->query_name() + " drops " + get_short(item) + ".\n", 0, caller);
+                    tp->simple_action("$N $vdrop $p $o.", get_short(item)) ;
                 }
             } else {
-                tell(caller, "You could not drop " + get_short(item) + ".\n");
+                tell(tp, "You could not drop " + get_short(item) + ".\n");
             }
         }
     } else {
         object ob;
 
-        ob = present(arg, caller);
+        ob = present(arg, tp);
 
         if(!ob) {
             return "You don't have a '" + arg + "' in your inventory.\n";
@@ -67,8 +65,7 @@ mixed main(object caller, string arg) {
             if(ob->move(room)) {
                 return "You could not drop " + get_short(ob) + ".\n";
             } else {
-                tell(caller, "You drop " + get_short(ob) + ".\n");
-                tell_down(room, caller->query_name() + " drops " + get_short(ob) + ".\n", 0, caller);
+                tp->simple_action("$N $vdrop $p $o.", get_short(ob)) ;
             }
         }
     }
@@ -76,7 +73,7 @@ mixed main(object caller, string arg) {
     return 1;
 }
 
-string help(object caller)
+string help(object tp)
 {
      return(" SYNTAX: drop <item>\n\n"
      "This command will allow you to drop an object you are currently\n"

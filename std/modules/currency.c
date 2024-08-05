@@ -136,7 +136,6 @@ mixed complex_transaction(object tp, int cost, string currency) {
     // Capacity checks
     {
         int use_mass = mud_config("USE_MASS");
-        int use_bulk = mud_config("USE_BULK");
 
         if(use_mass) {
             int max_capacity = tp->query_max_capacity();
@@ -146,17 +145,6 @@ mixed complex_transaction(object tp, int cost, string currency) {
             int net = adjust_mass - subtract_mass;
 
             if(current_capacity - net < 0) {
-                return "You can't carry that much currency.";
-            }
-        }
-        if(use_bulk) {
-            int max_volume = tp->query_max_volume();
-            int subtract_bulk = sum(values(to_subtract));
-            int adjust_bulk = sum(values(change));
-            int current_volume = tp->query_volume();
-            int net = adjust_bulk - subtract_bulk;
-
-            if(current_volume - net < 0) {
                 return "You can't carry that much currency.";
             }
         }

@@ -71,8 +71,7 @@ varargs int unequip(object tp, int silent) {
             return 0 ;
 
         if(!silent) {
-            tell(tp, "You remove the "+get_short()+".\n") ;
-            tell_down(environment(tp), tp->query_name()+" removes "+tp->query_possessive()+" "+get_short()+".\n", 0, tp) ;
+            tp->simple_action("$N $vremove $p $o.", get_short()) ;
         }
     }
 

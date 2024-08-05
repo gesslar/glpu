@@ -200,7 +200,7 @@ mixed cmd_sell(object tp, string str) {
     mixed cost ;
     string short ;
     mixed *paid, *change ;
-    int coin_bulk, coin_mass ;
+    int coin_mass ;
 
     create_storage() ;
 
@@ -217,7 +217,6 @@ mixed cmd_sell(object tp, string str) {
         return "You don't have that item.";
 
     cost = query_cost(tp, ob, "sell") ;
-    coin_bulk = cost[0] / 2 ;
     coin_mass = cost[0] ;
 
     if(ob->move(store))

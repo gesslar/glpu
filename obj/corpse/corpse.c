@@ -15,6 +15,8 @@ inherit STD_CONTAINER ;
 private string killer_name ;
 private string dead_name ;
 
+void decay(int it) ;
+
 void setup_corpse(object dead, object killer) {
     killer_name = killer ? killer->query_name() : "unknown" ;
     dead_name = dead->query_name() ;
@@ -23,7 +25,33 @@ void setup_corpse(object dead, object killer) {
     set_short("dead body of "+dead_name) ;
     set_long("This is the dead body of "+dead_name+".") ;
     set_mass(1) ;
-    set_bulk(1) ;
     set_max_capacity(1000) ;
-    set_max_volume(1000) ;
+
+    call_out_walltime((: decay, 0 :), 1.0) ;
+}
+
+void decay(int it) {
+    if(!environment())
+        return ;
+
+    switch(it) {
+        case 0:
+            set_short("the decaying body of "+dead_name) ;
+            break ;
+        case 1:
+            set_short("the rotting body of "+dead_name) ;
+            break ;
+        case 2:
+            set_short("the putrid body of "+dead_name) ;
+            break ;
+        case 3:
+            set_short("the skeletal remains of "+dead_name) ;
+            break ;
+        default:
+            clean_contents() ;
+            remove() ;
+            return ;
+    }
+
+    call_out_walltime((: decay, ++it :), 10.0) ;
 }

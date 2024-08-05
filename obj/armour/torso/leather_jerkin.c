@@ -24,7 +24,6 @@ void setup() {
              "for added comfort. The jerkin features adjustable straps "
              "along the sides and shoulders, allowing for a snug fit.");
     set_mass(200);
-    set_bulk(100) ;
     set_slot("torso");
     set_ac(2.0) ;
     set_defense(([

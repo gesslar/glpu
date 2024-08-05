@@ -50,11 +50,6 @@ int allow_move(mixed dest) {
             if(dest->query_capacity() < query_mass())
                 return MOVE_TOO_HEAVY ;
 
-    if(mud_config("USE_BULK"))
-        if(!dest->ignore_bulk())
-            if(dest->query_volume() < query_bulk())
-                return MOVE_NO_ROOM ;
-
     if(environment())
         if(!environment()->can_release(this_object()))
             return 0;
@@ -66,14 +61,10 @@ int move(mixed dest) {
     int result;
     object prev;
     object env = environment();
-    int use_bulk = mud_config("USE_BULK");
     int use_mass = mud_config("USE_MASS");
     int env_ignore_mass = env ? call_if(env, "ignore_mass") : 0 ;
-    int env_ignore_bulk = env ? call_if(env, "ignore_bulk") : 0 ;
     int dest_ignore_mass = call_if(dest, "ignore_mass") || 0 ;
-    int dest_ignore_bulk = call_if(dest, "ignore_bulk") || 0 ;
     int mass = query_mass();
-    int bulk = query_bulk();
 
     result = allow_move(dest);
 
@@ -94,27 +85,17 @@ int move(mixed dest) {
     if(env && env == dest)
         return MOVE_ALREADY_THERE;
 
-    if(use_mass || use_bulk) {
+    if(use_mass) {
         int cap, max_cap ;
-        int vol, max_vol ;
 
         cap = dest->query_capacity();
         max_cap = dest->query_max_capacity();
-        vol = dest->query_volume();
-        max_vol = dest->query_max_volume();
 
         // First do the checks
         if(use_mass) {
             if(!dest_ignore_mass) {
                 if(cap - mass < 0) {
                     return MOVE_TOO_HEAVY ;
-                }
-            }
-        }
-        if(use_bulk) {
-            if(!dest_ignore_bulk) {
-                if(vol - bulk < 0) {
-                    return MOVE_NO_ROOM ;
                 }
             }
         }
@@ -125,12 +106,6 @@ int move(mixed dest) {
                 dest->adjust_capacity(-mass);
             if(env && !env_ignore_mass)
                 env->adjust_capacity(mass);
-        }
-        if(use_bulk) {
-            if(!dest_ignore_bulk)
-                dest->adjust_volume(-bulk);
-            if(env && !env_ignore_bulk)
-                env->adjust_volume(bulk);
         }
     }
 

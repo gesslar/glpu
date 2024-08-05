@@ -133,5 +133,4 @@ int request_clean_up() {
 }
 
 int ignore_capacity() { return 1 ; }
-int ignore_bulk() { return 1 ; }
 int query_storage_object() { return 1 ; }

@@ -43,7 +43,7 @@ int query_wealth(string currency) {
 }
 
 int adjust_wealth(string currency, int amount) {
-    int bulk, mass ;
+    int mass ;
 
     if(nullp(wealth))
         wealth = ([]);
@@ -59,14 +59,6 @@ int adjust_wealth(string currency, int amount) {
         mass = amount ;
         if(!can_hold_mass(mass)) {
             printf("Failed mass check\n") ;
-            return null ;
-        }
-    }
-
-    if(mud_config("USE_BULK")) {
-        bulk = amount ;
-        if(!can_hold_bulk(bulk)) {
-            printf("Failed bulk check\n") ;
             return null ;
         }
     }

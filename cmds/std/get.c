@@ -12,9 +12,9 @@ Last edited on March 24th, 2006 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, string arg) {
-    object ob;
-    object room = environment(caller);
+mixed main(object tp, string arg) {
+    object ob ;
+    object room = environment(tp);
 
     if(!arg)
         return "SYNTAX: get <object|all|all <id>>\n";
@@ -22,6 +22,7 @@ mixed main(object caller, string arg) {
     if(arg == "all") {
         object *obs;
         int i, sz ;
+        int got ;
 
         obs = all_inventory(room);
         obs = filter(obs, (: !living($1) :) );
@@ -31,14 +32,23 @@ mixed main(object caller, string arg) {
             return "There is nothing to get.\n";
 
         for(i = 0; i < sz; i++) {
-            if(!obs[i]->move(caller)) {
-                tell(caller, "You get "+get_short(obs[i])+".\n");
-                tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+            ob = obs[i] ;
+
+            if(ob->move(tp)) {
+                tell(tp, "You were unable to pick up "+get_short(ob)+".\n");
+                continue;
             }
+
+            tp->simple_action("$N $vpick up $o.", get_short(obs[i])) ;
+            got = 1 ;
         }
+
+        if(!got)
+            return "You picked up nothing.\n";
     } else if(sscanf(arg, "all %s", arg)) {
         object *obs;
         int i, sz;
+        int got ;
 
         obs = filter(all_inventory(room), (: $1->id($2) :) , arg);
         obs = filter(obs, (: !living($1) :) );
@@ -48,31 +58,41 @@ mixed main(object caller, string arg) {
             return "There is nothing to get.\n";
 
         for(i = 0; i < sz; i++) {
-            if(!obs[i]->move(caller)) {
-                tell(caller, "You get "+get_short(obs[i])+".\n");
-                tell_down(room, caller->query_name() + " gets "+get_short(obs[i])+".\n", 0, caller);
+            ob = obs[i] ;
+
+            if(ob->move(tp)) {
+                tell(tp, "You were unable to pick up "+get_short(ob)+".\n");
+                continue;
             }
+
+            tp->simple_action("$N $vpick up $o.", get_short(obs[i])) ;
+            got = 1 ;
         }
+
+        if(!got)
+            return "You picked up nothing.\n";
     } else {
         ob = present(arg, room);
 
         if(!ob)
             return "You see no '" + arg + "' here.\n";
 
+        if(living(ob))
+            return "You cannot pick up living things.\n";
+
         if(ob->prevent_get())
             return get_short(ob) + " cannot be picked up.\n";
 
-        if(ob->move(caller))
+        if(ob->move(tp))
             return "You were unable to pick up "+get_short(ob)+".\n";
 
-        tell(caller, "You get "+get_short(ob)+".\n");
-        tell_down(room, caller->query_name() + " gets "+get_short(ob)+".\n", 0, caller);
+        tp->simple_action("$N $vpick up $o.", get_short(ob)) ;
     }
 
     return 1;
 }
 
-string help(object caller) {
+string help(object tp) {
     return(" SYNTAX: get <item>\n\n"
         "This command will allow you to get an object from your current\n"
         "environment. The argument you provide, will be the name of the\n"

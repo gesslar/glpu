@@ -20,7 +20,6 @@ void setup() {
              "cracked leather. Despite its appearance, the sword is still "
              "sharp and serviceable, and the blade is straight and true.") ;
     set_mass(50) ;
-    set_bulk(10) ;
     set_hands(1) ;
     set_dc(1) ;
     set_damage_type("piercing") ;

@@ -18,5 +18,4 @@ void setup() {
         "small, wooden toggles. The fabric has a natural, subtle texture, "
         "hinting at its fine weave.") ;
     set_mass(50) ;
-    set_bulk(20) ;
 }
