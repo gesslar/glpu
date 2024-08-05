@@ -19,6 +19,7 @@
  * v1.0.3: fix for empty data structures
  * v1.0.4: Removed array keyword. (Yucong Sun)
  * v1.0.5: Fix decoding number 0.
+ * v1.1.0: Adding unicode support for complex emoji, etc
  *
  * LICENSE
  *
