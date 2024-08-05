@@ -25,8 +25,8 @@ private nomask object create_storage() ;
 
 protected nosave int shop_open = 1;
 protected nosave int allow_npcs = 0;
-protected nosave int sell_factor = 0.5; // when a player sells, use this
-                                        // factor to determine the price
+protected nosave float sell_factor = 0.5; // when a player sells, use this
+                                          // factor to determine the price
 protected nosave string shop_keep_file ;
 protected nosave object store ;
 private nosave mixed *shop_inventory = ({}) ;
@@ -48,7 +48,7 @@ protected void remove_shop() {
         store->remove() ;
 }
 
-void add_shop_inventory(mixed args) {
+void add_shop_inventory(mixed args...) {
     mixed arg ;
 
     if(!pointerp(args))

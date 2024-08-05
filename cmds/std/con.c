@@ -28,7 +28,7 @@ mixed main(object tp, string str) {
     string target ;
     string result = "";
 
-    if (!str) {
+    if(!str) {
         ob = tp;
     } else {
         object room = environment(tp);
@@ -40,8 +40,11 @@ mixed main(object tp, string str) {
         return ob->query_name() + " is " + ob->query_name() ;
 
     name = ob->query_name();
-    if (ob == tp) {
-        result += "You are " + ob->query_condition_string() + ".\n";
+    if(ob == tp) {
+        string *conditions = ob->query_condition_string();
+        result += "You are " + conditions[0] + ".\n";
+        result += "Your mind feels " + conditions[1] + ".\n";
+        result += "You are feeling " + conditions[2] + ".\n";
     } else {
         if(ob->is_npc()) {
             float lvl = tp->query_level();
@@ -61,7 +64,7 @@ mixed main(object tp, string str) {
             }
         }
 
-        result += name + " is " + ob->query_condition_string() + ".\n";
+        result += name + " is " + ob->query_condition_string()[0] + ".\n";
     }
 
     return result;

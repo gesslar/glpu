@@ -39,6 +39,7 @@ int covers_body_part(string slot, string part) ;
 string covered_by_slot(string part) ;
 
 protected nosave string race ;
+protected nosave mapping regen_rate = ([ "hp" : 0.0, "sp" : 0.0, "mp" : 0.0 ]) ;
 
 // This is a mapping of body parts and their target sizes on the body.
 // Each body part has an array of two integers. The first integer is the
@@ -290,4 +291,11 @@ string covered_by_slot(string part) {
             return slot ;
 
     return 0 ;
+}
+
+varargs mapping query_regen_rate(string type) {
+    if(type)
+        return regen_rate[type] ;
+
+    return copy(regen_rate) ;
 }

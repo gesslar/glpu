@@ -19,9 +19,10 @@ void setup() {
 "patrons, speaks to the steady rhythm of village life, where the baker's humble "
 "offerings are a staple of daily existence.") ;
     set_exits(([
-        "south" : "square",
+        "south": "square",
         "west" : "baker",
-        "north" : "field/field1",
+        "east" : "shop",
+        "north": "field/field1",
     ]) ) ;
     set_items(([
         ({ "village square", "square" }) :

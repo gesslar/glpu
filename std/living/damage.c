@@ -72,7 +72,7 @@ float receive_damage(object attacker, float damage, string type) {
         return 0.0;
 
     // Take the damage
-    add_hp(-damage);
+    adjust_hp(-damage);
 
     // Set the last damaged by object
     set_last_damaged_by(attacker);

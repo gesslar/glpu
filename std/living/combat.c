@@ -248,9 +248,9 @@ void strike_enemy(object enemy, object weapon) {
       - enemy->query_skill_level("combat.defense")
       ;
 
-    tell(enemy, sprintf("Base: %f, Skill: %f, Level: %f, Enemy Level: %f, Enemy Defense: %f, Enemy Skill: %f\n",
-        base, skill, query_effective_level(), enemy->query_effective_level(), enemy->query_defense_amount(wtype), enemy->query_skill_level("combat.defense"))) ;
-    tell(enemy, "Damage: " + dam + "\n") ;
+    // tell(enemy, sprintf("Base: %f, Skill: %f, Level: %f, Enemy Level: %f, Enemy Defense: %f, Enemy Skill: %f\n",
+    //     base, skill, query_effective_level(), enemy->query_effective_level(), enemy->query_defense_amount(wtype), enemy->query_skill_level("combat.defense"))) ;
+    // tell(enemy, "Damage: " + dam + "\n") ;
 
     improve_skill(skill_name) ;
 
@@ -265,7 +265,7 @@ void strike_enemy(object enemy, object weapon) {
     tell_down(environment(), messes[2], MSG_COMBAT_HIT, ({ this_object(), enemy })) ;
 
     deliver_damage(enemy, dam, wtype) ;
-    add_mp(-random_float(5.0));
+    adjust_mp(-random_float(5.0));
     add_threat(enemy, dam);
     add_seen_threat(enemy, dam);
 }

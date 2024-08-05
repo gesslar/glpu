@@ -32,4 +32,6 @@ void setup() {
         "piercing" : 1.0,
         "bludgeoning" : 1.0,
     ])) ;
+
+    set_value(25, "copper") ;
 }

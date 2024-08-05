@@ -57,10 +57,13 @@
 #define GMCP_DIS_CHAR_STATUS_SEEN_ENEMIES   "Seen Enemies"
 #define GMCP_LBL_CHAR_VITALS_HP             "hp"
 #define GMCP_LBL_CHAR_VITALS_MAX_HP         "max_hp"
+#define GMCP_LBL_CHAR_VITALS_HP_RATIO       "hp_ratio"
 #define GMCP_LBL_CHAR_VITALS_SP             "sp"
 #define GMCP_LBL_CHAR_VITALS_MAX_SP         "max_sp"
+#define GMCP_LBL_CHAR_VITALS_SP_RATIO       "sp_ratio"
 #define GMCP_LBL_CHAR_VITALS_MP             "mp"
 #define GMCP_LBL_CHAR_VITALS_MAX_MP         "max_mp"
+#define GMCP_LBL_CHAR_VITALS_MP_RATIO       "mp_ratio"
 #define GMCP_LBL_GMCP_CLIENT_GUI_URL        "url"
 #define GMCP_LBL_GMCP_CLIENT_GUI_VERSION    "version"
 

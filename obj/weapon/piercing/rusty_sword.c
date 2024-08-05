@@ -24,4 +24,6 @@ void setup() {
     set_hands(1) ;
     set_dc(1) ;
     set_damage_type("piercing") ;
+
+    set_value(10, "copper") ;
 }
