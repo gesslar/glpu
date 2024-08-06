@@ -13,7 +13,8 @@
 #include <module.h>
 
 private nosave string racial_bodies = DIR_STD_MODULES_MOBILE "race/" ;
-private nomask string _race ;
+private nomask nosave string _race ;
+private string gender ;
 
 public string set_race(string race) {
     object module ;
@@ -38,4 +39,21 @@ public string set_race(string race) {
 
 public string query_race() {
     return _race || module("race", "query_race") ;
+}
+
+public nomask void set_gender(string g) {
+    gender = g ;
+}
+
+public nomask string query_gender() {
+    return gender ;
+}
+
+public nomask void adjust_living() {
+}
+
+public nomask void living_adjust_attributes() {
+}
+
+public nomask void living_adjust_vitals() {
 }

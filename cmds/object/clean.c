@@ -15,39 +15,50 @@ Last edited on October 29th, 2005 by Tacitus
 
 inherit STD_CMD ;
 
-mixed main(object caller, string arg) {
+mixed main(object tp, string arg) {
      int i;
      object target;
-     object *inventory;
+     object ob, next ;
 
-     if(!arg) target = caller;
+     if(!arg) target = tp;
      else {
-          if(arg[0]!='/') arg = resolve_path(caller->query_env("cwd"), arg);
+          if(arg[0]!='/') arg = resolve_path(tp->query_env("cwd"), arg);
           if(arg[<2..<1] != ".c") arg += ".c";
           if(!target) target = find_object(arg);
-          if(!target) target = present(arg, caller);
-          if(!target) target = present(arg, environment(caller));
+          if(!target) target = present(arg, tp);
+          if(!target) target = present(arg, environment(tp));
      }
 
      if(!target)
-          return "Error [clean]: Error locating target." ;
+          return _error("Error locating target.") ;
 
-     tell(caller, "Success [clean]: Destroying all objects in '" + get_short(target) + "'.\n");
-     inventory = all_inventory(target);
+     tp->_info("Destroying all objects in '" + get_short(target) + "'.\n");
+     ob = first_inventory(target);
+     while(ob) {
+          string short = get_short(ob);
 
-     for(i=0; i<sizeof(inventory); i++) {
-          if(inventory[i]->query("no_clean") || inventory[i]->can_clean_up()) continue;
-          if(living(inventory[i])) continue;
+          next = next_inventory(ob);
+          if(ob->query("no_clean") || ob->can_clean_up()) {
+               ob = next;
+               continue;
+          }
+          if(living(ob)) {
+               ob = next;
+               continue;
+          }
 
-          tell(caller, "* Object '" + get_short(inventory[i]) + "' destroyed.\n");
-          inventory[i]->remove();
-          if(inventory[i]) inventory[i]->remove() ;
+          ob->remove() ;
+          if(ob)
+               destruct(ob) ;
+
+          _ok(tp, "%s destroyed.", short);
+          ob = next;
      }
 
      return 1;
 }
 
-string help(object caller) {
+string help(object tp) {
      return
 "SYNTAX: clean <object>\n\n"
 "This command will destory all objects within another object (aka the objects "

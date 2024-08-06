@@ -89,6 +89,16 @@ int remove() {
     if(sizeof(all_inventory()))
         filter(all_inventory(), (: destruct :)) ;
 
+    if(mud_config("USE_MASS")) {
+        if(env && !env->ignore_mass()) {
+            int mass = query_mass() ;
+            printf("Removing %d mass from %O\n", mass, env) ;
+            printf("  Old capacity: %d\n", env->query_capacity()) ;
+            env->adjust_capacity(-mass) ;
+            printf("  New capacity: %d\n", env->query_capacity()) ;
+        }
+    }
+
     destruct() ;
     return 1 ;
 }

@@ -40,7 +40,7 @@ mixed main(object tp, string str) {
         return "That item cannot be worn." ;
 
     if(!tp->module("race", "query_equipment_slots", slot))
-        return "You cannot something of that type." ;
+        return "You cannot wear something of that type." ;
 
     if(tp->equipped_on(slot))
         return "You are already wearing something in that slot." ;

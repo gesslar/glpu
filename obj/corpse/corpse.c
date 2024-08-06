@@ -22,7 +22,7 @@ void setup_corpse(object dead, object killer) {
     dead_name = dead->query_name() ;
     set_id(({ "body", "dead body", "corpse" })) ;
     set_name(dead_name+"'s' body") ;
-    set_short("dead body of "+dead_name) ;
+    set_short("the dead body of "+dead_name) ;
     set_long("This is the dead body of "+dead_name+".") ;
     set_mass(1) ;
     set_max_capacity(1000) ;
@@ -36,15 +36,18 @@ void decay(int it) {
 
     switch(it) {
         case 0:
-            set_short("the decaying body of "+dead_name) ;
+            // don't do anything
             break ;
         case 1:
+            set_short("the decaying body of "+dead_name) ;
+            break ;
+        case 2:
             set_short("the rotting body of "+dead_name) ;
             break ;
         case 2:
             set_short("the putrid body of "+dead_name) ;
             break ;
-        case 3:
+        case 4:
             set_short("the skeletal remains of "+dead_name) ;
             break ;
         default:
@@ -55,3 +58,5 @@ void decay(int it) {
 
     call_out_walltime((: decay, ++it :), 10.0) ;
 }
+
+int is_corpse() { return 1 ; }

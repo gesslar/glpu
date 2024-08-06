@@ -30,7 +30,7 @@ string _a_short(mixed x) {
 
 string _the_short(mixed x) {
     if(objectp(x)) return x->query_short() ;
-// Check for "a"/"an" prefix - if missing, add it
+    // Check for "the" prefix - if missing, add it
     if(stringp(x)) return add_article(x,1) ;
     return x;
 }

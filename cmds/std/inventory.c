@@ -17,16 +17,22 @@ mixed main(object tp, string args) {
     int i;
     int cap, max_cap ;
     object *equipped = values(tp->query_equipped()) ;
+    object *wielded = values(tp->query_wielded()) ;
 
     inventory = all_inventory(tp);
     inventory = filter(inventory, (: $2->can_see($1) :), tp) ;
 
-    shorts = map(inventory, function(object ob, object *items) {
+    shorts = map(inventory, function(object ob, object *equipped, object *wielded) {
         if(!ob->query_short())
             return 0 ;
 
-        return sprintf("%s%s", get_short(ob), of(ob, items) ? " (worn)" : "") ;
-    }, equipped);
+        if(of(ob, equipped))
+            return sprintf("%s (worn)", get_short(ob)) ;
+        else if(of(ob, wielded))
+            return sprintf("%s (wielded)", get_short(ob)) ;
+        else
+            return get_short(ob) ;
+    }, equipped, wielded);
 
     shorts -= ({ 0 }) ;
 
@@ -41,9 +47,9 @@ mixed main(object tp, string args) {
 
     wealth = query_wealth(tp) ;
     if(sizeof(wealth))
-        shorts += ({ "Coin purse: " + wealth, "" }) ;
+        shorts += ({ "Your purse contains " + wealth + ".", "" }) ;
 
-    shorts += ({ sprintf("Capacity: %d/%d", cap, max_cap) }) ;
+    shorts += ({ sprintf("Capacity: %d/%d", max_cap-cap, max_cap) }) ;
 
     return shorts ;
 }
@@ -59,7 +65,7 @@ string query_wealth(object tp) {
     foreach(string currency in currencies) {
         int num = tp->query_wealth(currency) ;
         if(num > 0)
-            out += ({ sprintf("%s: %d", currency, tp->query_wealth(currency)) }) ;
+            out += ({ sprintf("%d %s", tp->query_wealth(currency), currency) }) ;
     }
 
     return implode(out, ", ") ;

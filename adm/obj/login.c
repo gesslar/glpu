@@ -542,7 +542,7 @@ void enter_world(int reconnecting) {
         return;
     }
 
-    body->enter_world();
+    body->enter_world(reconnecting);
 
     remove_call_out(call_out_id);
 

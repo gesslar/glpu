@@ -51,7 +51,7 @@ void setup_body(object user) {
     user->set_body_path(base_name()) ;
 }
 
-void enter_world() {
+void enter_world(int reconnecting) {
     string *cmds, *ch;
     int i;
     object news_client, mail_client;
@@ -70,6 +70,11 @@ void enter_world() {
     set("last_login", time());
     tell(this_object(), "\n") ;
     say(capitalize(query_name()) + " has entered.\n");
+
+    if(!reconnecting) {
+        restore_inventory() ;
+    }
+
 }
 
 void exit_world() {
@@ -254,12 +259,25 @@ void set_environ(mapping data) {
     }
 }
 
+void save_inventory() {
+    string save ;
+
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+
+    save = save_to_string(1) ;
+    write_file(user_inventory_data(query_privs(this_object())), save, 1) ;
+}
+
 void restore_user() {
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_body_data(query_proper_name()));
+}
+
+void restore_inventory() {
     string e ;
     string file, data ;
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_body_data(query_proper_name()));
 
     file = user_inventory_data(query_privs(this_object())) ;
 
@@ -270,15 +288,24 @@ void restore_user() {
         } ;
 
         if(e) {
-            write("Error [restore_user]: Unable to restore user data.\n") ;
+            write("Error [restore_inventory]: Unable to restore inventory data.\n") ;
         }
     }
+
+    wipe_inventory() ;
+}
+
+void wipe_inventory() {
+    string file ;
+
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+
+    file = user_inventory_data(query_proper_name()) ;
+    rm(file) ;
 }
 
 int save_user() {
     int result ;
-    string save ;
-    string e ;
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&
         this_body() != this_object() &&
@@ -286,8 +313,7 @@ int save_user() {
 
     catch(result = save_object(user_body_data(query_proper_name())));
 
-    e = catch(save = save_to_string(1));
-    write_file(user_inventory_data(query_privs(this_object())), save, 1) ;
+    save_inventory() ;
 
     return result;
 }

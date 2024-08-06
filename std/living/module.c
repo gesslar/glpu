@@ -84,8 +84,10 @@ mapping query_modules() {
 varargs mixed module(string module, string func, mixed args...) {
     object ob ;
 
-    if(!stringp(module) || module == "") error("Error [query_module]: Invalid module name.\n") ;
-    if(!stringp(func) || func == "") error("Error [query_module]: Invalid function name.\n") ;
+    if(!stringp(module) || module == "")
+        error("Error [query_module]: Invalid module name.\n") ;
+    if(!stringp(func) || func == "")
+        error("Error [query_module]: Invalid function name.\n") ;
 
     ob = modules[module] ;
 
