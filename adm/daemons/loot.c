@@ -27,7 +27,7 @@ void loot_drop(object tp, object ob) {
 
     foreach(loot in loot_table) {
         mixed item = loot[0] ;
-        chance = loot[<1] ;
+        chance = loot[1] ;
 
         if(random_float(100.0) < chance) {
             catch(drop(tp, item, ob))  ;
