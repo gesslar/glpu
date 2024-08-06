@@ -21,7 +21,7 @@ void loot_drop(object tp, object ob) {
     float chance ;
 
     loot_table = ob->query_loot_table();
-tell(tp, sprintf("Loot table: %O", loot_table));
+
     if(!sizeof(loot_table))
         return;
 
