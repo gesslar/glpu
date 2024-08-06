@@ -99,34 +99,3 @@ mixed process_loot_item(mixed item, object tp) {
 
     return 0;
 }
-#if 0
-void runit() {
-    object fake_player = this_player() ;
-    object fake_container = load_object("/std/modules/loot") ;
-
-    mixed *test_loot_tables = ({
-        ({ ({ "/obj/sword", 100.0 }) }),
-        ({ ({ ({ "/obj/sword", "/obj/shield" }), 100.0 }) }),
-        ({ ({ ({ "/obj/potion", ({ "healing", 50 }) }), 100.0 }) }),
-        ({ ({ ([ "/obj/gem" : 1, "/obj/coin" : 3 ]), 100.0 }) }),
-        ({ ({ "/obj/armor", 100.0 }), ({ "/obj/weapon", 100.0 }) }),
-        ({ ({ ({ "/obj/food", ({ "apple", 5 }) }), 100.0 }) }),
-        ({ ({ "/obj/key", 100.0 }), ({ "/obj/map", 100.0 }) }),
-        ({ ({ ([ "/obj/ring" : 1, "/obj/amulet" : 2, "/obj/bracelet" : 3 ]), 100.0 }) }),
-        ({ ({ ({ "/obj/scroll", ({ "fireball", 3 }) }), 100.0 }), ({ "/obj/wand", 100.0 }) }),
-        ({ ({ "/obj/trap", 100.0 }), ({ "/obj/chest", 100.0 }), ({ "/obj/gold", 100.0 }) })
-    });
-
-    printf("Starting loot drop test\n");
-    printf("----------------------\n");
-
-    foreach(mixed *table in test_loot_tables) {
-        printf("\nTesting loot table: %O\n", table);
-        fake_container->set_loot_table(table);
-        loot_drop(fake_player, fake_container);
-        printf("----------------------\n");
-    }
-
-    printf("Loot drop test complete\n");
-}
-#endif
