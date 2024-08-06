@@ -42,4 +42,13 @@ void virtual_setup(mixed args...) {
         set_weapon_type(data["weapon_type"]) ;
 
     set_race("pig") ;
+
+    add_loot(({
+        "/obj/armor/torso/leather_jerkin",
+        "/obj/clothing/black_leather_shoes",
+        "/obj/clothing/cream-coloured_linen_tunic",
+        "/obj/clothing/tan_leather_breeches",
+    }), 25.0) ;
+
+    add_loot("/obj/weapon/piercing/rusty_sword") ;
 }

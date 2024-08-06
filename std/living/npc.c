@@ -9,6 +9,7 @@
 #include <logs.h>
 
 inherit STD_BODY;
+inherit M_LOOT ;
 
 inherit __DIR__ "living" ;
 

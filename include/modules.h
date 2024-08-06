@@ -11,6 +11,7 @@
 #define M_GMCP          DIR_STD_MODULES "gmcp"
 #define M_HTTP          DIR_STD_MODULES "http"
 #define M_LOG           DIR_STD_MODULES "log"
+#define M_LOOT          DIR_STD_MODULES "loot"
 #define M_MESSAGING     DIR_STD_MODULES "messaging"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_SAVE          DIR_STD_MODULES "save"

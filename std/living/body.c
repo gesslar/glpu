@@ -97,6 +97,10 @@ void die() {
     emit(SIG_PLAYER_DIED, this_object(), killed_by()) ;
     corpse = new(OBJ_CORPSE) ;
     corpse->setup_corpse(this_object(), killed_by()) ;
+
+    if(function_exists("query_loot_table"))
+        LOOT_D->loot_drop(killed_by(), this_object()) ;
+
     ob = first_inventory(this_object()) ;
     while(ob) {
         next = next_inventory(ob) ;
