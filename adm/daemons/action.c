@@ -240,10 +240,10 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
                 }
                 /* hack for to be */
                 if(str == "is" || str == "am" || str == "are") {
-                    if(num >= sizeof(who) || who[num]==forwhom) bit = "are" ;
+                    if(num >= sizeof(who) || who[num]==forwhom || who[num]->query_gender() == "other") bit = "are" ;
                     else bit = "is" ;
                 } else {
-                    if(num >= sizeof(who) || who[num]!=forwhom) bit = pluralize(str);
+                    if(num >= sizeof(who) || who[num]!=forwhom || who[num]->query_gender() == "other") bit = pluralize(str);
                     else bit = str;
                 }
                 break;

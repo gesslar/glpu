@@ -13,6 +13,7 @@ inherit STD_NPC ;
 
 void virtual_setup(mixed args...) {
     mapping data ;
+    mixed d ;
 
     if(!args)
         return ;
@@ -24,6 +25,14 @@ void virtual_setup(mixed args...) {
     set_long(data["long"]) ;
     set_id(({ data["id"]..., "pig", })) ;
     set_level(data["level"]) ;
+    if(!nullp(data["gender"])) {
+        if(stringp(data))
+            set_gender(data["gender"]) ;
+        else if(pointerp(data["gender"]))
+            set_gender(element_of(data["gender"])) ;
+        else if(mapp(data["gender"]))
+            set_gender(element_of_weighted(data["gender"])) ;
+    }
 
     if(!nullp(data["damage"]))
         set_damage(data["damage"]) ;
@@ -32,5 +41,5 @@ void virtual_setup(mixed args...) {
     if(!nullp(data["weapon_type"]))
         set_weapon_type(data["weapon_type"]) ;
 
-    set_race("human") ;
+    set_race("pig") ;
 }

@@ -13,14 +13,15 @@
 #include <module.h>
 
 private nosave string racial_bodies = DIR_STD_MODULES_MOBILE "race/" ;
-private nomask race ;
+private nomask string _race ;
 
 public string set_race(string race) {
     object module ;
 
-    if(!file_exists(racial_bodies+"/"+race+".c"))
-        error("No such body module for race: " + race) ;
-
+    if(!file_exists(racial_bodies+"/"+race+".c")) {
+        _race = race ;
+        return _race ;
+    }
 
     if(get_module(race))
         error("Race body module has already been applied") ;
@@ -30,11 +31,11 @@ public string set_race(string race) {
     if(!objectp(module))
         error("Failed to add race module.") ;
 
-    race = module->query_race() ;
+    _race = module->query_race() ;
 
-    return race ;
+    return _race ;
 }
 
 public string query_race() {
-    return module("race", "query_race") ;
+    return _race || module("race", "query_race") ;
 }

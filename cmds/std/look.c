@@ -158,7 +158,6 @@ mixed render_object(object caller, object room, string target) {
     temp = get_long(ob);
     if(stringp(temp)) desc += "\n" + temp + "\n" ;
 
-
     if(strlen(desc)) {
         if(devp(caller) && caller->query_env("look_filename") == "all") {
             desc = "\e0032\e"+prepend(file_name(ob), "/") + "\eres\e\n" + desc ;
@@ -179,6 +178,7 @@ mixed render_living(object caller, object room, object target, int brief) {
     mapping equipment ;
     object ob ;
     string slot ;
+    string race, gender, hair, eyes ;
 
     temp = get_short(target);
     if(stringp(temp))
@@ -189,30 +189,61 @@ mixed render_living(object caller, object room, object target, int brief) {
             temp += "\n" ;
         result += temp ;
 
-    { // hair and eyes
-        string hair = target->query_hair_string() ;
-        string eyes = target->query_eyes_string() ;
+    race = target->query_race() ;
+    gender = target->query_gender() ;
+    hair = target->query_hair_string() ;
+    eyes = target->query_eyes_string() ;
 
-        if(hair && eyes)
-            temp = hair + " and " + eyes + "." ;
-        else if(hair)
-            temp = hair + "." ;
-        else if(eyes)
-            temp = eyes + "." ;
-        else
-            temp = "" ;
-
-        if(strlen(temp)) {
-            if(caller == target)
-                temp = "You have " + temp ;
-            else
-                temp = target->query_name() + " has " + temp ;
+    if(race) {
+        if(gender) {
+            if(gender == "male" || gender == "female") {
+                temp = " a "+gender+" " + race ;
+            } else {
+                temp = " "+add_article(race) ;
+            }
+        } else {
+            temp = " "+add_article(race) ;
         }
-
-        if(strlen(temp) && strlen(result))
-            result += "\n" ;
-        result += temp + "\n";
+    } else {
+        if(gender) {
+            temp = gender ;
+        } else {
+            temp = "" ;
+        }
     }
+
+    if(hair && eyes && hair != "no hair" && eyes != "no eyes") {
+        if(strlen(temp)) {
+            temp += ", with " + hair + " and " + eyes ;
+        } else {
+            temp = hair + " and " + eyes ;
+        }
+    } else if(hair && hair != "no hair") {
+        if(strlen(temp)) {
+            temp += ", with " + hair ;
+        } else {
+            temp = hair ;
+        }
+    } else if(eyes && eyes != "no eyes") {
+        if(strlen(temp)) {
+            temp += ", with " + eyes ;
+        } else {
+            temp = eyes ;
+        }
+    }
+
+    if(strlen(temp)) {
+        if(caller == target)
+            temp = "You are" + temp ;
+        else
+            temp = capitalize(subjective(target)) + " is" + temp ;
+    }
+
+    if(strlen(temp))
+        temp = append(temp, ".") ;
+
+    if(strlen(temp) && strlen(result))
+    result += temp + "\n";
 
     name = caller->query_name() ;
     if(target == caller) {

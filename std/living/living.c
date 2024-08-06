@@ -15,11 +15,21 @@
 #include <skills.h>
 #include <vitals.h>
 
+private string gender ;
+
 public nomask void init_living() {
     init_attributes();
     init_vitals();
     init_boon();
     init_skills();
+}
+
+public nomask void set_gender(string g) {
+    gender = g ;
+}
+
+public nomask string query_gender() {
+    return gender ;
 }
 
 public nomask void adjust_living() {
