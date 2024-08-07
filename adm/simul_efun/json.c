@@ -589,7 +589,7 @@ private mixed json_decode_parse_value(mixed* parse) {
         case 'n'        :
             if(json_decode_parse_at_token(parse, "null", 1)) {
                 json_decode_parse_next_chars(parse, 4);
-                return 0;
+                return ([])[0] ; // undefined
             } else {
                 json_decode_parse_error(parse, "Unexpected character", ch);
             }
