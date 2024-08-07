@@ -165,6 +165,7 @@ string stringify(mixed val) ;
 string add_commas(mixed number) ;
 string reverse_string(string str) ;
 string reverse_strsrch(string str, string sub, int start) ;
+int pcre_strsrch(string str, string pattern, int start) ;
 
 // File: system
 int port() ;

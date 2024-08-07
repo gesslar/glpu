@@ -191,6 +191,7 @@ title: simul_efun
 * [extract](string#extract)
 * [from_string](string#from_string)
 * [no_ansi](string#no_ansi)
+* [pcre_strsrch](string#pcre_strsrch)
 * [prepend](string#prepend)
 * [reverse_string](string#reverse_string)
 * [reverse_strsrch](string#reverse_strsrch)

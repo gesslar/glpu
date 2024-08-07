@@ -50,6 +50,29 @@ varargs string extract(string str, int from, int to)
 
 Extracts a substring from a string.
 
+## pcre_strsrch
+
+### Synopsis
+
+```c
+varargs int pcre_strsrch(string str, string substr, int reverse)
+```
+
+### Parameters
+
+* `string str` - The string to search in.
+* `string substr` - The regular expression to search for.
+* `int [reverse=0]` - If set, the search will start from the end of the string.
+
+### Returns
+
+`int` - The position of the substring in the string, or -1 if not found.
+
+### Description
+
+Searches for the position of a substring in a string using a
+regular expression.
+
 ## reverse_strsrch
 
 ### Synopsis

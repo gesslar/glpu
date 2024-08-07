@@ -480,3 +480,22 @@ varargs int reverse_strsrch(string str, string sub, int start) {
 
     return -1;
 }
+
+/**
+ * @simul_efun pcre_strsrch
+ * @description Searches for the position of a substring in a string using a
+ *              regular expression.
+ * @param {string} str - The string to search in.
+ * @param {string} substr - The regular expression to search for.
+ * @param {int} [reverse=0] - If set, the search will start from the end of the string.
+ * @returns {int} - The position of the substring in the string, or -1 if not found.
+ */
+varargs int pcre_strsrch(string str, string substr, int reverse) {
+    int pos;
+    string *matches;
+
+    matches = pcre_extract(str, substr);
+    if(sizeof(matches) == 0) return -1;
+    pos = strsrch(str, matches[0], reverse);
+    return pos;
+}
