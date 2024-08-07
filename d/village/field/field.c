@@ -9,6 +9,7 @@ inherit STD_ROOM ;
 
 void virtual_setup(mixed args...) {
     string file = args[0] ;
+    object ob ;
 
     set_zone("../olum") ;
 

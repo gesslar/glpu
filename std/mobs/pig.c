@@ -24,7 +24,16 @@ void virtual_setup(mixed args...) {
     set_short(data["short"]) ;
     set_long(data["long"]) ;
     set_id(({ data["id"]..., "pig", })) ;
-    set_level(data["level"]) ;
+    if(nullp(data["level"]))
+        set_level(1) ;
+    else {
+        if(intp(data["level"]))
+            set_level(data["level"]) ;
+        else if(pointerp(data["level"]))
+            set_level(to_float(random(data["level"][1] - data["level"][0]) + data["level"][0])) ;
+        else
+            set_level(1) ;
+    }
     if(!nullp(data["gender"])) {
         if(stringp(data))
             set_gender(data["gender"]) ;
