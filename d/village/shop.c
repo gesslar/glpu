@@ -34,6 +34,11 @@ void setup() {
     add_shop_inventory(
         "/obj/toycar",
         "/obj/weapon/piercing/rusty_sword",
-        "/obj/armour/torso/leather_jerkin"
+        "/obj/armour/torso/leather_jerkin",
+        "/obj/food/muffin",
+        "/obj/food/muffin",
+        "/obj/food/muffin",
+        "/obj/drink/strawberry_juice",
+        "/obj/drink/strawberry_juice",
     ) ;
 }
