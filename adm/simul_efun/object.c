@@ -279,6 +279,26 @@ object top_environment(object ob) {
 }
 
 /**
+ * @simul_efun all_environment
+ * @description Retrieves all environments of the specified object, traversing
+ *              up through nested environments.
+ * @param {object} ob - The object to get the environments of.
+ * @returns {object[]} - An array of environments of the object.
+ */
+object *all_environment(object ob) {
+    object *envs = ({});
+
+    while(ob = environment(ob)) {
+        if(ob->is_room())
+            break ;
+
+        envs += ({ ob });
+    }
+
+    return envs;
+}
+
+/**
  * @simul_efun present_livings
  * @description Retrieves all living objects present in the specified room.
  * @param {object} room - The room to search for living objects in.

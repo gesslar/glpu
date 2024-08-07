@@ -25,7 +25,7 @@ void setup_corpse(object dead, object killer) {
     set_short("the dead body of "+dead_name) ;
     set_long("This is the dead body of "+dead_name+".") ;
     set_mass(1) ;
-    set_max_capacity(1000) ;
+    set_capacity(1000) ;
 
     call_out_walltime((: decay, 0 :), 1.0) ;
 }

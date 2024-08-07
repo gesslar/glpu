@@ -39,7 +39,7 @@ void setup_body(object user) {
     if(!query_env("biff")) set_env("biff", "on");
     if(!query_env("prompt")) set_env("prompt", ">");
     init_living() ;
-    rehash_contents() ;
+    rehash_capacity() ;
     update_regen_interval() ;
 
 

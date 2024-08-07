@@ -73,11 +73,11 @@ string *query_all_commands() {
     return commands() ;
 }
 
-void rehash_contents() {
-    if(mud_config("USE_MASS") && !query_max_capacity())
-        set_max_capacity(1000) ;
+void rehash_capacity() {
+    if(mud_config("USE_MASS") && !query_capacity())
+        set_capacity(1000) ;
 
-    ::rehash_contents() ;
+    ::rehash_capacity() ;
 }
 
 void die() {

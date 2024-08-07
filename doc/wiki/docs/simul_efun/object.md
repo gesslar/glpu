@@ -51,6 +51,27 @@ object with the specified file name.
 other functions in the simul_efun object, as previous_object()
 does not count the object itself in its call list.
 
+## all_environment
+
+### Synopsis
+
+```c
+object *all_environment(object ob)
+```
+
+### Parameters
+
+* `object ob` - The object to get the environments of.
+
+### Returns
+
+`object*` - An array of environments of the object.
+
+### Description
+
+Retrieves all environments of the specified object, traversing
+up through nested environments.
+
 ## get_objects
 
 ### Synopsis

@@ -24,5 +24,6 @@ int query_roomType() {
 }
 
 int ignore_mass() { return 1; }
+int ignore_capacity() { return 1; }
 int no_renew() { return 1 ; }
 int is_room() { return 1; }

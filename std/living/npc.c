@@ -26,7 +26,7 @@ void mudlib_setup() {
     init_living() ;
 
     if(clonep()) {
-        rehash_contents() ;
+        rehash_capacity() ;
         add_init("start_heart_beat") ;
         add_hb("stop_heart_beat") ;
         add_module("mob/combat_memory") ;

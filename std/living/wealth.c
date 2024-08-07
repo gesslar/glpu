@@ -65,7 +65,7 @@ int adjust_wealth(string currency, int amount) {
 
     wealth[currency] += amount ;
 
-    rehash_contents() ;
+    rehash_capacity() ;
 
     return wealth[currency] ;
 }
@@ -85,12 +85,12 @@ mapping set_wealth(mapping w) {
             w[c[0]] = 0 ;
     }
 
-    rehash_contents() ;
+    rehash_capacity() ;
 
     return wealth = w ;
 }
 
 void wipe_wealth() {
     wealth = ([]);
-    rehash_contents() ;
+    rehash_capacity() ;
 }

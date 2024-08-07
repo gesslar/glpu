@@ -46,8 +46,8 @@ int allow_move(mixed dest) {
         return MOVE_NOT_ALLOWED;
 
     if(mud_config("USE_MASS"))
-        if(!dest->ignore_mass())
-            if(dest->query_capacity() < query_mass())
+        if(!dest->ignore_capacity())
+            if(query_mass() + dest->query_fill() > dest->query_capacity())
                 return MOVE_TOO_HEAVY ;
 
     if(environment())
@@ -59,10 +59,11 @@ int allow_move(mixed dest) {
 
 int move(mixed dest) {
     int result;
-    object prev;
-    object env = environment();
+    object prev = environment();
     int use_mass = mud_config("USE_MASS");
-    int env_ignore_mass = env ? call_if(env, "ignore_mass") : 0 ;
+    int prev_ignore_capacity = prev ? call_if(prev, "ignore_capacity") : 0 ;
+    int dest_ignore_capacity = call_if(dest, "ignore_capacity") || 0 ;
+    int prev_ignore_mass = prev ? call_if(prev, "ignore_mass") : 0 ;
     int dest_ignore_mass = call_if(dest, "ignore_mass") || 0 ;
     int mass = query_mass();
 
@@ -82,34 +83,39 @@ int move(mixed dest) {
     if(!objectp(dest))
         return MOVE_NO_DEST;
 
-    if(env && env == dest)
+    if(prev && prev == dest)
         return MOVE_ALREADY_THERE;
 
-    if(use_mass) {
-        int cap, max_cap ;
+    move_object(dest);
 
-        cap = dest->query_capacity();
-        max_cap = dest->query_max_capacity();
+    if(use_mass) {
+        object env, *envs = ({ dest }) + all_environment(dest);
 
         // First do the checks
-        if(use_mass) {
-            if(!dest_ignore_mass) {
-                if(cap - mass < 0) {
-                    return MOVE_TOO_HEAVY ;
-                }
+        foreach(env in envs) {
+            int fill = env->query_fill();
+            int cap = env->query_capacity();
+            int env_ignore_capacity = env->ignore_capacity();
+
+            if(env_ignore_capacity)
+                break ;
+
+            if(mass + fill > cap) {
+                return MOVE_TOO_HEAVY ;
             }
         }
 
         // Now do the adjustements
-        if(use_mass) {
-            if(!dest_ignore_mass)
-                dest->adjust_capacity(-mass);
-            if(env && !env_ignore_mass)
-                env->adjust_capacity(mass);
-        }
+        if(prev && !prev_ignore_capacity)
+            prev->adjust_fill(-mass);
+        if(!dest_ignore_capacity)
+            dest->adjust_fill(mass);
+        if(prev && !prev_ignore_mass)
+            prev->adjust_mass(-mass);
+        if(!dest_ignore_mass)
+            dest->adjust_mass(mass);
     }
 
-    move_object(dest);
     event(this_object(), "moved", prev);
     if(prev && this_object()) event(prev, "released", environment());
     if(this_object()) event(environment(), "received", prev);

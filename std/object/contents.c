@@ -12,8 +12,8 @@
 
 #include "/std/living/include/wealth.h"
 
-private int max_capacity ;
-private nosave int capacity ;
+private int _capacity ;
+private nosave int _fill ;
 
 void clean_contents() {
     object *obs = deep_inventory() ;
@@ -22,81 +22,69 @@ void clean_contents() {
     obs->remove() ;
 }
 
-void set_max_capacity(int x) {
+void set_capacity(int x) {
     if(!mud_config("USE_MASS"))
         return ;
 
-    max_capacity = x ;
+    _capacity = x ;
 
     rehash_capacity() ;
 
     GMCP_D->send_gmcp(this_object(),
         GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
-            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity()
+            GMCP_LBL_CHAR_STATUS_FILL : query_fill(),
+            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity()
         ])
     ) ;
 }
 
-void adjust_max_capacity(int x) {
+void adjust_capacity(int x) {
     if(!mud_config("USE_MASS"))
         return ;
 
-    max_capacity += x ;
+    _capacity += x ;
 
     rehash_capacity() ;
 
     GMCP_D->send_gmcp(this_object(),
         GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
-            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity()
+            GMCP_LBL_CHAR_STATUS_FILL : query_fill(),
+            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity()
         ])
     ) ;
-}
-
-int query_max_capacity() {
-    if(!mud_config("USE_MASS"))
-        return null ;
-
-    return max_capacity ;
 }
 
 int query_capacity() {
     if(!mud_config("USE_MASS"))
         return null ;
 
-    return capacity ;
+    return _capacity ;
 }
 
-int adjust_capacity(int x) {
+int query_fill() {
     if(!mud_config("USE_MASS"))
         return null ;
 
-    if (capacity + x < 0 || capacity + x > max_capacity) {
-        return 0 ;
-    }
+    return _fill ;
+}
 
-    capacity += x ;
+int adjust_fill(int x) {
+    if(!mud_config("USE_MASS"))
+        return null ;
+
+    if(_fill + x < 0 || _fill + x > _capacity)
+        return 0 ;
+
+    _fill += x ;
 
     GMCP_D->send_gmcp(this_object(),
         GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
-            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity()
+            GMCP_LBL_CHAR_STATUS_FILL : query_fill(),
+            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity()
         ])
     ) ;
 
     return 1 ;
-}
-
-void rehash_contents() {
-    rehash_capacity() ;
-
-    GMCP_D->send_gmcp(this_object(),
-        GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity(),
-            GMCP_LBL_CHAR_STATUS_MAX_CAPACITY : query_max_capacity(),
-        ])
-    ) ;
 }
 
 int can_hold_object(object ob) {
@@ -110,7 +98,7 @@ int can_hold_object(object ob) {
 }
 
 int can_hold_mass(int mass) {
-    return capacity - mass >= 0 ;
+    return _fill + mass <= _capacity ;
 }
 
 void rehash_capacity() {
@@ -130,5 +118,5 @@ void rehash_capacity() {
     if(living())
         total += query_total_coins() ;
 
-    capacity = max_capacity - total ;
+    _fill = total ;
 }

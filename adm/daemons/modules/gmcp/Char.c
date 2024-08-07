@@ -24,8 +24,8 @@ void StatusVars(object who, mapping payload) {
 
     data = payload || ([
         GMCP_LBL_CHAR_STATUS_NAME        : GMCP_DIS_CHAR_STATUS_NAME,
+        GMCP_LBL_CHAR_STATUS_FILL        : GMCP_DIS_CHAR_STATUS_FILL,
         GMCP_LBL_CHAR_STATUS_CAPACITY    : GMCP_DIS_CHAR_STATUS_CAPACITY,
-        GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: GMCP_DIS_CHAR_STATUS_MAX_CAPACITY,
         GMCP_LBL_CHAR_STATUS_XP          : GMCP_DIS_CHAR_STATUS_XP,
         GMCP_LBL_CHAR_STATUS_TNL         : GMCP_DIS_CHAR_STATUS_TNL,
     ]);
@@ -38,8 +38,8 @@ void Status(object who, mapping payload) {
 
     data = payload || ([
         GMCP_LBL_CHAR_STATUS_NAME        : who->query_name(),
+        GMCP_LBL_CHAR_STATUS_FILL        : sprintf("%d", who->query_fill()),
         GMCP_LBL_CHAR_STATUS_CAPACITY    : sprintf("%d", who->query_capacity()),
-        GMCP_LBL_CHAR_STATUS_MAX_CAPACITY: sprintf("%d", who->query_max_capacity()),
         GMCP_LBL_CHAR_STATUS_XP          : sprintf("%d", who->query_xp()),
         GMCP_LBL_CHAR_STATUS_TNL         : sprintf("%d", who->query_tnl()),
     ]) ;

@@ -12,7 +12,6 @@
 
 inherit STD_OB_E;
 
-inherit __DIR__ "contents" ;
 inherit __DIR__ "description" ;
 inherit __DIR__ "heartbeat" ;
 inherit __DIR__ "id" ;
@@ -89,13 +88,6 @@ int remove() {
     if(sizeof(all_inventory()))
         filter(all_inventory(), (: destruct :)) ;
 
-    if(mud_config("USE_MASS")) {
-        if(env && !env->ignore_mass()) {
-            int mass = query_mass() ;
-            env->adjust_capacity(mass) ;
-        }
-    }
-
     destruct() ;
     return 1 ;
 }
@@ -152,8 +144,11 @@ string query_virtual_master() {
 void on_destruct() {
     object env = environment() ;
 
-    if(env && !env->is_room()) {
-        env->adjust_capacity(query_mass());
+    if(env) {
+        if(!env->ignore_capacity())
+            env->adjust_fill(-query_mass());
+        if(!env->ignore_mass())
+            env->adjust_mass(query_mass());
     }
 
     process_destruct() ;

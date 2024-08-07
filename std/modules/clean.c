@@ -10,6 +10,7 @@
 
 // Variables
 private nosave int no_clean_up = 0 ;
+private nosave int debug_clean = 0 ;
 
 // Functions
 int can_clean_up() ;
@@ -23,17 +24,21 @@ int is_daemon() ;
 int is_command() ;
 int remove() ;
 
+void set_debug_clean(int i) {
+    debug_clean = i ;
+}
+
 /*protected*/ int clean_up(int refs) {
     object *contents ;
     int check ;
 
-    // _debug("%O checking if we are to clean up.", this_object()) ;
+    if(debug_clean)  _debug("%O checking if we are to clean up.", this_object()) ;
 
     // If we have an environment, straight up don't ask again. We can never
     // lose our environment and only non-environmented things are cleaned up.
     // Things with an environment rely on their environment to clean them up.
     if(environment()) {
-        // _debug("   ❌ %O never cleaning again because it has an environment.", this_object()) ;
+        if(debug_clean) _debug("   ❌ %O never cleaning again because it has an environment.", this_object()) ;
         return CLEAN_NEVER_AGAIN ;
     }
 
@@ -44,14 +49,14 @@ int remove() ;
     check = clean_up_check(this_object()) ;
 
     if(check > 0) {
-        // _debug("   ❌ %O never cleaning again because it is a user, interactive, or is no_clean.", this_object()) ;
+        if(debug_clean)  _debug("   ❌ %O never cleaning again because it is a user, interactive, or is no_clean.", this_object()) ;
         return CLEAN_NEVER_AGAIN ;
     }
 
     // Now ask permission to clean up. If we answer false, we'll check again
     // later.
     if(request_clean_up() == 0) {
-        // _debug("   ⌛ %O cleaning up later because it requested not to clean up.", this_object()) ;
+        if(debug_clean)  _debug("   ⌛ %O cleaning up later because it requested not to clean up.", this_object()) ;
         return CLEAN_LATER ;
     }
 
@@ -60,9 +65,9 @@ int remove() ;
     // virtual items, because refs is weird with them.
     // if(clonep())
     if(refs > 1) {
-        // _debug("   ⌛ Number of references: %O", refs) ;
+        if(debug_clean)  _debug("   ⌛ Number of references: %O", refs) ;
         if(!virtualp()) {
-            // _debug("   ⌛ %O cleaning up later because it has more than one reference.", this_object()) ;
+            if(debug_clean)  _debug("   ⌛ %O cleaning up later because it has more than one reference.", this_object()) ;
             return CLEAN_LATER ;
         }
     }
@@ -76,7 +81,7 @@ int remove() ;
         calls = filter(calls, (: $1 == $2 :), this_object()) ;
 
         if(sizeof(calls)) {
-            // _debug("   ⌛ %O cleaning up later because it has pending call_outs.", this_object()) ;
+            if(debug_clean)  _debug("   ⌛ %O cleaning up later because it has pending call_outs.", this_object()) ;
             return CLEAN_LATER ;
         }
     }
@@ -85,13 +90,13 @@ int remove() ;
     // determine if we have any items in us that need to be cleaned up.
     contents = deep_inventory() ;
     if(clean_up_check(contents) > 0) {
-        // _debug("   ⌛ %O cleaning up later because it has users or interactives in it.", this_object()) ;
+        if(debug_clean)  _debug("   ⌛ %O cleaning up later because it has users or interactives in it.", this_object()) ;
         return CLEAN_LATER ;
     }
 
     contents = filter(contents, (: $1->request_clean_up() == 0 :)) ;
     if(sizeof(contents)) {
-        // _debug("   ⌛ %O cleaning up later because it has items that requested not to clean up.", this_object()) ;
+        if(debug_clean) _debug("   ⌛ %O cleaning up later because it has items that requested not to clean up.", this_object()) ;
         return CLEAN_LATER ;
     }
 
@@ -104,7 +109,7 @@ int remove() ;
     contents -= ({ 0 }) ;
     contents->move(VOID_ROOM) ;
 
-    // _debug("   ✔️ %O cleaning up now.", this_object()) ;
+    if(debug_clean)  _debug("   ✔️ %O cleaning up now.", this_object()) ;
 
     call_if(this_object(), "remove") ;
     if(this_object()) destruct() ;

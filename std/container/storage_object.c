@@ -23,7 +23,7 @@ private nomask void restore_contents() ;
 private nomask class StorageOptions storage_options ;
 
 void mudlib_setup(class StorageOptions storage) {
-    set_max_capacity(MAX_INT) ;
+    set_capacity(MAX_INT) ;
 
     storage_options = storage ;
 

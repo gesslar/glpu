@@ -2,7 +2,7 @@
 #define __BODY_H__
 
 string *query_all_commands();
-void rehash_contents();
+void rehash_capacity();
 void die();
 object query_user();
 int set_user(object ob);

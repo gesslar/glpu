@@ -22,3 +22,5 @@ int can_release(object ob) {
     return 1;
 }
 void release_effect(object ob) {}
+
+int is_container() { return 1 ; }

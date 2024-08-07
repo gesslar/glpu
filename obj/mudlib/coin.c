@@ -59,8 +59,9 @@ void event_moved(object prev, object previous_environment) {
     object env = environment() ;
 
     if(living(env)) {
-        int cap = env->query_capacity() ;
-        if(cap < coin_num) {
+        int cap = env->query_fill() ;
+        int max_cap = env->query_capacity() ;
+        if(cap + coin_num > max_cap) {
             tell(env, "You can't carry any more " + coin_type + " coins.") ;
             if(previous_environment) {
                 move(previous_environment) ;
@@ -68,7 +69,6 @@ void event_moved(object prev, object previous_environment) {
                 remove() ;
             }
         } else {
-            adjust_mass(-coin_num) ;
             env->adjust_wealth(coin_type, coin_num) ;
             printf("You pick up %d %s coins.\n", coin_num, coin_type) ;
             remove() ;

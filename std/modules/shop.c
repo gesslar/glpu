@@ -40,7 +40,6 @@ void init_shop() {
 
     add_reset((:reset_shop:)) ;
     add_destruct((:remove_shop:)) ;
-
 }
 
 protected void remove_shop() {

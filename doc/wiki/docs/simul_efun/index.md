@@ -113,6 +113,7 @@ title: simul_efun
 
 ## [object](object)
 
+* [all_environment](object#all_environment)
 * [caller_is](object#caller_is)
 * [find_ob](object#find_ob)
 * [get_living](object#get_living)

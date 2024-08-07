@@ -6,6 +6,8 @@
 //
 // 2024/02/03: Gesslar - Created
 
+void send_ga() { if(interactive()) telnet_ga(); }
+
 // Functions
 void do_receive(string message, int message_type) ;
 
@@ -183,10 +185,6 @@ void do_receive(string message, int message_type) {
 
     // Handle telnet go-ahead if it's a prompt.
     if(message_type & MSG_PROMPT) {
-        telnet_ga();
+        send_ga();
     }
-}
-
-void send_ga() {
-    telnet_ga();
 }

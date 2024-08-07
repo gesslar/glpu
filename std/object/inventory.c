@@ -153,7 +153,8 @@ void reset_objects() {
     object ob ;
     string e;
 
-    if(!inventory) return ;
+    if(!inventory)
+        return ;
 
     foreach(uuid, element in inventory) {
         object *clones = present_clones(element["object"], this_object()) ;
@@ -167,6 +168,8 @@ void reset_objects() {
                 ob = add_inventory(element["object"], element["args"]) ;
                 if(ob) {
                     ob->add_spawn_info("belongs_to", file_name()) ;
+                    ob->add_spawn_info("object_uuid", uuid) ;
+                    event(this_object(), "object_spawned", ob) ;
                 }
             }
         }

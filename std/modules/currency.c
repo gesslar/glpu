@@ -138,13 +138,13 @@ mixed complex_transaction(object tp, int cost, string currency) {
         int use_mass = mud_config("USE_MASS");
 
         if(use_mass) {
-            int max_capacity = tp->query_max_capacity();
+            int capacity = tp->query_capacity();
             int subtract_mass = sum(values(to_subtract));
             int adjust_mass = sum(values(change));
-            int current_capacity = tp->query_capacity();
+            int current_fill = tp->query_fill();
             int net = adjust_mass - subtract_mass;
 
-            if(current_capacity - net < 0) {
+            if(current_fill + net > capacity) {
                 return "You can't carry that much currency.";
             }
         }
@@ -240,10 +240,11 @@ private mixed check_funds(object tp, string currency, int amount) {
 
 // Check if the player can handle the change in capacity
 private mixed check_capacity(object tp, string currency, int amount) {
-    int current_capacity = tp->query_capacity();
+    int current_fill = tp->query_fill();
+    int capacity = tp->query_capacity();
     int coin_difference = amount - tp->query_wealth(currency);
 
-    if (current_capacity < coin_difference) {
+    if (current_fill + coin_difference > capacity) {
         return "You can't carry that much currency.";
     }
     return 1;

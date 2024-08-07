@@ -17,35 +17,44 @@ int set_mass(int x) {
         return 1 ;
 
     if(environment()) {
-        int _capacity = environment()->query_capacity();
-        if(_capacity < x) {
+        int capacity = environment()->query_capacity();
+        if(x > capacity)
             return 0;
-        }
-        environment()->adjust_capacity(-x);
+        if(x < 0)
+            return 0;
+
+        environment()->adjust_fill(x);
     }
     mass = x;
     return 1;
 }
 
 int adjust_mass(int x) {
+    int new_mass = mass + x;
+
     if(x == 0)
         return 1;
 
     if(environment()) {
-        if(x < 0) {
-            int _max_capacity = environment()->query_max_capacity();
-            if(_max_capacity < mass + x) {
-                return 0;
+        int ignore_cap = environment()->ignore_capacity();
+        int ignore_mass = environment()->ignore_mass();
+        int cap = environment()->query_capacity();
+
+        if(!ignore_cap && !ignore_mass) {
+            if(!ignore_cap) {
+                if(new_mass > cap || new_mass < 0)
+                    return 0;
             }
-        } else {
-            int _capacity = environment()->query_capacity();
-            if(_capacity < mass + x) {
-                return 0;
+            if(!ignore_mass) {
+                if(!environment()->adjust_mass(x))
+                    return 0;
             }
+
+            environment()->adjust_fill(x);
         }
-        environment()->adjust_capacity(-(mass+x));
+
     }
-    mass += x;
+    mass = new_mass;
 
     return 1;
 }
