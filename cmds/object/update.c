@@ -160,14 +160,14 @@ string *collect_inherits(object obj, int depth) {
     seen = ([ fname: 1 ]);
     files = ({});
 
-    if (depth == 0) {
+    if(depth == 0) {
         // Directly return the file name of the object for depth 0
         return ({ fname });
-    } else if (depth >= 1) {
+    } else if(depth >= 1) {
         // Collect inherits according to depth
         files = deep_collect_inherits(obj, seen, depth);
         // Ensure the object itself is included last for depths 1 and 2
-        if (!sizeof(files) || files[<1] != fname) {
+        if(!sizeof(files) || files[<1] != fname) {
             files += ({ fname });
         }
     }
@@ -179,14 +179,14 @@ string *collect_inherits(object obj, int depth) {
 string *deep_collect_inherits(object obj, mapping seen, int depth) {
     string *files = ({});
 
-    if (depth > 0) {
-        foreach (string file in inherit_list(obj)) {
-            if (!seen[file]) {
+    if(depth > 0) {
+        foreach(string file in inherit_list(obj)) {
+            if(!seen[file]) {
                 object inherit_obj = find_object(file) || load_object(file);
                 seen[file] = 1; // Mark as seen to avoid duplicates
 
                 // For depth 2, recursively collect inherits; add directly for depth 1
-                if (depth == 2 && inherit_obj) {
+                if(depth == 2 && inherit_obj) {
                     files += deep_collect_inherits(inherit_obj, seen, depth);
                 }
                 files += ({ file });

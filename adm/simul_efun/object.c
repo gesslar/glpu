@@ -46,39 +46,39 @@ int getoid(object ob) {
  *                            searching.
  * @returns {object} - The located object, or 0 if not found.
  */
-varargs object get_object( string str, object player ) {
+varargs object get_object(string str, object player) {
     object what;
     mixed tmp;
 
-    if( !str ) return 0;
-    if( !player || !living( player ) ) player = this_body();
-    if( sscanf( str, "@%s", tmp ) &&
-        ( tmp = get_object( tmp, player ) ) &&
-        ( what = environment( tmp ) )) {
+    if(!str) return 0;
+    if(!player || !living(player)) player = this_body();
+    if(sscanf(str, "@%s", tmp) &&
+        (tmp = get_object(tmp, player)) &&
+        (what = environment(tmp))) {
             return what;
     }
-    if( player ) {   //  Check existance of this_body()
-        if( str == "me" ) return player;
-        if( what = present( str, player ) ) return what;  // Inventory check
-        if( what = environment( player ) ) {              // Environment check
+    if(player) {   //  Check existance of this_body()
+        if(str == "me") return player;
+        if(what = present(str, player)) return what;  // Inventory check
+        if(what = environment(player)) {              // Environment check
             if(str == "here" || str == "env" || str == "environment")
                 return what;
-            if( what = present( str, what ) ) return what;
+            if(what = present(str, what)) return what;
         }
     }
 
     // Call might be made by a room so make a previous_object() check
     // first just to be sure
-    if( what = present( str, previous_object() ) ) return what;
+    if(what = present(str, previous_object())) return what;
 
     //  Check to see if a living object matches the name
-    if( what = find_player( str ) ) return what;
-    if( what = find_living( str ) ) return what;
+    if(what = find_player(str)) return what;
+    if(what = find_living(str)) return what;
 
     // Search for a matching file_name, completing path with
     // user's present path
-    if( player ) {
-        str = resolve_path( (string)player-> query_env("cwd"), str );
+    if(player) {
+        str = resolve_path((string)player-> query_env("cwd"), str);
     }
 
     what = find_object(str);
@@ -119,7 +119,7 @@ varargs object get_object( string str, object player ) {
  *                         returned.
  * @returns {mixed} - The located object(s), or 0 if not found.
  */
-varargs mixed get_objects( string str, object player, int no_arr ) {
+varargs mixed get_objects(string str, object player, int no_arr) {
     mixed base, tmp, ret;
     object what;
     int i, s;
@@ -128,75 +128,75 @@ varargs mixed get_objects( string str, object player, int no_arr ) {
     // variables (with longer names) for each job.
     // Is it worth slowing the function (using more memory) to do this?
 
-    if( !str ) return 0;
-    s = strlen( str );
+    if(!str) return 0;
+    s = strlen(str);
     i = s;
-    while( i-- && ( str[i..i] != ":" ) ); // a reverse sscanf
-    if( ( i > 0 ) && ( i < ( s - 1 ) ) ) { // of form "%s:%s"
-        base = get_objects( str[0..(i-1)], player );
+    while(i-- && (str[i..i] != ":")); // a reverse sscanf
+    if((i > 0) && (i < (s - 1))) { // of form "%s:%s"
+        base = get_objects(str[0..(i-1)], player);
         str = str[(i+1)..s];
-        if( !base ) return 0;
-        if( !pointerp( base ) ) base = ({ base });
-        s = sizeof( base );
+        if(!base) return 0;
+        if(!pointerp(base)) base = ({ base });
+        s = sizeof(base);
         ret = ({ });
-        if( str == "e" ) {
-            while( s-- )
-                if( tmp = environment( base[s] ) )
+        if(str == "e") {
+            while(s--)
+                if(tmp = environment(base[s]))
                     ret += ({ tmp });
-        } else if( str == "i" ) {
-            while( s-- )
-                if( tmp = all_inventory( base[s] ) )
-                    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
-        } else if( str == "d" ) {
-            while( s-- )
-                if( tmp = deep_inventory( base[s] ) )
-                    ret += ( pointerp( tmp ) ? tmp : ({ tmp }) );
-        } else if( sscanf( str, "%d", i ) ) {
-            if( ( i > -1 ) && ( i < s ) ) return base[i];
+        } else if(str == "i") {
+            while(s--)
+                if(tmp = all_inventory(base[s]))
+                    ret += (pointerp(tmp) ? tmp : ({ tmp }));
+        } else if(str == "d") {
+            while(s--)
+                if(tmp = deep_inventory(base[s]))
+                    ret += (pointerp(tmp) ? tmp : ({ tmp }));
+        } else if(sscanf(str, "%d", i)) {
+            if((i > -1) && (i < s)) return base[i];
             else return 0;
-        } else if( str == "c" ) {
-            while( s-- )
+        } else if(str == "c") {
+            while(s--)
                 if(tmp = children(base_name(base[s])))
                     ret += tmp;
-        } else if( str == "s" ) {
-            while( s-- )
+        } else if(str == "s") {
+            while(s--)
                 for(tmp=shadow(base[s],0);tmp;tmp=shadow(tmp,0))
                     ret += ({ tmp });
-        } else if( strlen(str) && str[0] == '>' ) {
+        } else if(strlen(str) && str[0] == '>') {
             str=extract(str,1);
-            while( s-- )
+            while(s--)
                 if(objectp(tmp=(mixed)call_other(base[s],str)))
                     ret += ({ tmp });
-                else if( pointerp(tmp) && sizeof(tmp) && objectp(tmp[0]) )
+                else if(pointerp(tmp) && sizeof(tmp) && objectp(tmp[0]))
                     ret += tmp;
         } else {
             // This is the location to add more syntax options if wanted such as
             // ith item in jth base object, all such items in all base objects, etc
-            while( s-- )
-                if( what = present( str, base[s] ) )
+            while(s--)
+                if(what = present(str, base[s]))
                     return what;
             return 0;
         }
-        switch( sizeof( ret ) ) {
+        switch(sizeof(ret)) {
             case 0: return 0;
             case 1: return ret[0];
         }
-        return( no_arr ? ret[0] : ret );
+        return(no_arr ? ret[0] : ret);
     }
-    if( str == "users" ) {
+    if(str == "users") {
         ret = users();
-        if( !no_arr ) return ret;
-        if( sizeof( ret ) ) return ret[0];
+        if(!no_arr) return ret;
+        if(sizeof(ret)) return ret[0];
         return 0;
     }
-    return get_object( str, player );
+    return get_object(str, player);
 }
 
 /*
   NB
 
   It would be fairly simple to combine these two functions into one
-  varargs object get_object( string str, object player, int arr_poss )
+  varargs object get_object(string str, object player, int arr_poss)
   which will only return a single object unless the array_possible flag
   is passed.
 

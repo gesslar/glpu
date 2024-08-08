@@ -5,19 +5,18 @@
  Std Command
 */
 
-mixed main(object caller, string user)
-{
+mixed main(object caller, string user) {
     string who, where;
 
-    if(!user) return(notify_fail("Syntax: finger <user>\n"));
+    if(!user)
+        return(notify_fail("Syntax: finger <user>\n"));
 
     write(FINGER_D->finger_user(user));
 
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     string ret =
     " SYNTAX: finger <user>\n\n"
     "This command will display information regarding an\n"

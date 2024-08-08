@@ -149,7 +149,7 @@ mixed cmd_buy(object tp, string str) {
     if(!allow_npcs && !userp(tp))
         return 0 ;
 
-    if (!shop_open)
+    if(!shop_open)
         return "The shop is closed.";
 
     if(!userp(tp))
@@ -206,7 +206,7 @@ mixed cmd_sell(object tp, string str) {
     if(!allow_npcs && !userp(tp))
         return 0 ;
 
-    if (!shop_open)
+    if(!shop_open)
         return "The shop is closed.";
 
     if(!userp(tp))

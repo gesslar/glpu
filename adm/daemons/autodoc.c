@@ -433,7 +433,7 @@ private nomask mixed *consolidate_function(string function_name, mapping func) {
                 line = implode(currs[sz], " ") ;
                 if(sscanf(line, "{%s} %s - %s", type, var, desc) == 3) {
                     while(pcre_match(type, jsdoc_array_regex)) {
-                        type = pcre_replace(type, jsdoc_array_regex, ({ "*" }) ) ;
+                        type = pcre_replace(type, jsdoc_array_regex, ({ "*" })) ;
                     }
                     result[2][sz] = sprintf("* `%s %s` - %s", type, var, desc) ;
                 } else {
@@ -454,7 +454,7 @@ private nomask mixed *consolidate_function(string function_name, mapping func) {
 
             if(sizeof(parts = pcre_extract(line, "^\\{(.*)\\} - (.*)$")) == 2) {
                 if(pcre_match(parts[0], jsdoc_array_regex)) {
-                    parts[0] = pcre_replace(parts[0], jsdoc_array_regex, ({ "*" }) ) ;
+                    parts[0] = pcre_replace(parts[0], jsdoc_array_regex, ({ "*" })) ;
                 }
                 result[3] = sprintf("`%s` - %s", parts[0], parts[1]) ;
             } else {

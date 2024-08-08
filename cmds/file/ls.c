@@ -234,7 +234,7 @@ mixed main(object caller, string arg) {
             int largest_file_name=0, screen_width, files_per_line;
 
             foreach(output_file in output_files)
-                if( largest_file_name<i=strlen(output_file[0]) )
+                if(largest_file_name<i=strlen(output_file[0]))
                     largest_file_name=i;
                 screen_width=SCREEN_WIDTH;
                 if(largest_file_name>=screen_width)

@@ -29,8 +29,7 @@ mixed main(object tp, string arg) {
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return(" SYNTAX: what\n\n"
       "This command allows you to view the last command executed by\n"
       "all users logged in. It is recommended that you review any\n"

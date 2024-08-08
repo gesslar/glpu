@@ -69,7 +69,7 @@ varargs mixed *getopt (string str, string opts, int flags) {
   into    = 0;
   list    = explode(str, " ");
 
-  for (i = 0; i < sizeof(list); i++) {
+  for(i = 0; i < sizeof(list); i++) {
     elem    = list[i];
     elemlen = strlen(elem);
 
@@ -79,7 +79,7 @@ varargs mixed *getopt (string str, string opts, int flags) {
         continue;
       }
 
-      for (j = 1; j < elemlen; j++) {
+      for(j = 1; j < elemlen; j++) {
         if(elem[j] == ':' || (k = strsrch(opts, elem[j])) < 0) {
           opt["?"] = 1;
           return ret + list[i..];
@@ -170,7 +170,7 @@ varargs string *glob_array (string *paths, string cwd) {
 
   paths = map(paths - ({ "" }), (: resolve_path($2, $1) :), cwd);
 
-  for (i = 0; i < sizeof(paths); i++) {
+  for(i = 0; i < sizeof(paths); i++) {
     if(sizeof(path = explode(paths[i], "/") - ({ "" })) < 1) {
       paths[i] = "/";
       continue;
@@ -213,7 +213,7 @@ private string grep_file (mapping opt, string pat, string file) {
   if(lines[<1] == "")
     lines = lines[0..<2];
 
-  for (i = 0; i < sizeof(lines); i++) {
+  for(i = 0; i < sizeof(lines); i++) {
     line = lines[i];
 
     if(opt["i"])
@@ -233,7 +233,7 @@ private string grep_file (mapping opt, string pat, string file) {
       continue;
 
     if(opt["a"]) {
-      for (j = (i + 1); j <= (i + opt["a"]); j++) {
+      for(j = (i + 1); j <= (i + opt["a"]); j++) {
         if(j >= sizeof(lines))
           break;
         if(matches[j])
@@ -244,7 +244,7 @@ private string grep_file (mapping opt, string pat, string file) {
     }
 
     if(opt["b"]) {
-      for (j = (i - opt["b"]); j < i; j++) {
+      for(j = (i - opt["b"]); j < i; j++) {
         if(j < 0)
           continue;
         if(matches[j])
@@ -259,7 +259,7 @@ private string grep_file (mapping opt, string pat, string file) {
       } else {
         assoc = reg_assoc(lines[i], ({ pat }), ({ 1 }), 0);
 
-        for (j = 0; j < sizeof(assoc[0]); j++) {
+        for(j = 0; j < sizeof(assoc[0]); j++) {
           if(assoc[1][j])
             assoc[0][j] = assoc[0][j];
         }
@@ -285,7 +285,7 @@ private string grep_file (mapping opt, string pat, string file) {
 
     lines = sort_array(keys(matches), 0);
 
-    for (i = 0; i < sizeof(lines); i++) {
+    for(i = 0; i < sizeof(lines); i++) {
       line = matches[lines[i]];
 
       if(opt["n"])
@@ -342,7 +342,7 @@ mixed main(object caller, string str) {
     files = filter(glob_array(opt[2..], caller->query_env("cwd")),
       (: file_size($1) == -2 :));
 
-    while (sizeof(files) > 0) {
+    while(sizeof(files) > 0) {
       dir   = files[0];
       files = files[1..];
 
@@ -373,7 +373,7 @@ mixed main(object caller, string str) {
 
   out = "";
 
-  for (i = 0; i < sizeof(files); i++) {
+  for(i = 0; i < sizeof(files); i++) {
     str = grep_file(opt[0], opt[1], files[i]);
 
     if(str != "") {

@@ -164,20 +164,20 @@ int query_gmcp_supported(string fullname) {
     gmcp = GMCP_D->convert_message(fullname) ;
 
     // Check if the package is supported
-    if (!supports[package]) return 0; // Package not found
+    if(!supports[package]) return 0; // Package not found
 
     // If a module is specified, check for its support
-    if (module && supports[package]["modules"]) {
-        if (!supports[package]["modules"][module]) return 0; // Module not found
+    if(module && supports[package]["modules"]) {
+        if(!supports[package]["modules"][module]) return 0; // Module not found
 
         // If a submodule is specified, check for its support
-        if (submodule && supports[package]["modules"][module]["submodules"]) {
-            if (!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
-        } else if (submodule) {
+        if(submodule && supports[package]["modules"][module]["submodules"]) {
+            if(!supports[package]["modules"][module]["submodules"][submodule]) return 0; // Submodule not found
+        } else if(submodule) {
             // Submodule specified but no submodules are supported under the module
             return 0;
         }
-    } else if (module) {
+    } else if(module) {
         // Module specified but no modules are supported under the package
         return 0;
     }

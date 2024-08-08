@@ -55,7 +55,7 @@ mixed create_ghost(object user) {
 
     name = query_privs(user) ;
     err = catch(ghost = load_object(sprintf("/ghost/%s", query_privs(user)))) ;
-    if (err) {
+    if(err) {
         log_file("ghost", err) ;
         return err ;
     }

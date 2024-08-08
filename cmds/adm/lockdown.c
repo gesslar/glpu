@@ -12,8 +12,7 @@ inherit STD_CMD ;
 
 #define LOCKDOWN_TOOL "/obj/mudlib/lockdown_admin/lockdown_client.c"
 
-mixed main(object caller, string arg)
-{
+mixed main(object caller, string arg) {
     object lockdown_client;
 
     if(!adminp(previous_object())) return(notify_fail("Error [access]: Access denied.\n"));
@@ -24,8 +23,7 @@ mixed main(object caller, string arg)
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return(
       " SYNTAX: access\n\n"+
       "This command allows you as the admin to control whether or not\n"+

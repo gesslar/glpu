@@ -43,11 +43,11 @@ void set_up(string type, int num) {
     value = num * conversion ;
 
     if(num == 1) {
-        set_id( ({ "coin", type }) ) ;
+        set_id(({ "coin", type })) ;
         set_short(type + " coin") ;
         set_long("A " + type + " coin.") ;
     } else {
-        set_id( ({ "coins", type + " coins" }) ) ;
+        set_id(({ "coins", type + " coins" })) ;
         set_short(num + " " + type + " coins") ;
         set_long("A pile of " + num + " " + type + " coins.") ;
     }

@@ -46,7 +46,7 @@ void setup() {
     if(!sizeof(arr))
         return ;
 
-    for (i = 0; i < sizeof(arr); i++) {
+    for(i = 0; i < sizeof(arr); i++) {
         string out = "" ;
         if(ob = find_object(arr[i]))
             ob->remove() ;

@@ -19,7 +19,7 @@ void setup() {
       "Claude is positioned at the podium wearing his\n"
       "black tuxedo. His brown shaggy hair sways back and\n"
       "forth as he goes about seating guests.\n");
-    set_id( ({"butler", "claude", "Claude", "john", "John" }) );
+    set_id(({"butler", "claude", "Claude", "john", "John" }));
 
     if(clonep())
         set_heart_beat(1);

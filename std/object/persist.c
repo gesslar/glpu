@@ -41,7 +41,7 @@ varargs string save_to_string(int recursep) {
     mapping map = ([]);
     mapping tmp ;
 
-    event( ({ this_object() }), "saving") ;
+    event(({ this_object() }), "saving") ;
 
 //### setting a property based on a function arg?  Gross.
     set_save_recurse(recursep);
@@ -92,7 +92,7 @@ void load_from_string(mixed value, int recurse) {
             mixed result ;
 
             val = restore_variable(obj);
-            result = catch( ob = new(val["#base_name#"]) ) ;
+            result = catch(ob = new(val["#base_name#"])) ;
             if(intp(result) && result == 0) ob->load_from_string(val, recurse + 1) ;
             else throw(result) ;
         }
@@ -114,5 +114,5 @@ void load_from_string(mixed value, int recurse) {
         }
     }
 
-    event( ({ this_object() }), "restored") ;
+    event(({ this_object() }), "restored") ;
 }

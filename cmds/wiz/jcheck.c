@@ -18,8 +18,7 @@ inherit STD_CMD ;
 #define TPN this_body()->query_proper_name()
 #define JPATH "/doc/journals/"
 
-int main()
-{
+int main() {
     string *journarr;
     mapping oldjrnl;
     mapping newjrnl;
@@ -28,49 +27,40 @@ int main()
     int ctr;
     int nomaas = 0;
 
-    mypath = resolve_path( TPC,"~/");
+    mypath = resolve_path(TPC,"~/");
     mypath = mypath + ".jlo";
 
     journarr = get_dir("/doc/journals/");
 
     newjrnl = ([]);
 
-    if(file_exists(mypath)) oldjrnl = restore_variable( read_file(mypath));
+    if(file_exists(mypath)) oldjrnl = restore_variable(read_file(mypath));
     else oldjrnl = ([]);
 
     if(sizeof(oldjrnl) == 0) oldjrnl = ([]);
 
     //  Check file size diffs.
-    for(ctr = 0; ctr<sizeof(journarr);ctr++)
-    {
+    for(ctr = 0; ctr<sizeof(journarr);ctr++) {
         sscanf(journarr[ctr],"journal.%s",name);
 
-        if( file_size( JPATH+journarr[ctr] ) !=
-          oldjrnl[ name ] )
-
-        {
+        if(file_size(JPATH+journarr[ctr]) != oldjrnl[ name ]) {
             write(journarr[ctr]+"\n");
             nomaas = 1;
         }
     }
 
     if(nomaas == 0)
-    write("No journals have been updated since the last time you checked.\n");
+        write("No journals have been updated since the last time you checked.\n");
 
     // Check for deleted files
-    for(ctr = 0; ctr < sizeof(oldjrnl); ctr++)
-    {
-        if(member_array(sprintf("journal.%s",keys(oldjrnl)[ctr]), journarr)
-                ==-1)
-        {
+    for(ctr = 0; ctr < sizeof(oldjrnl); ctr++) {
+        if(member_array(sprintf("journal.%s",keys(oldjrnl)[ctr]), journarr) ==-1) {
             write ("Journal for "+keys(oldjrnl)[ctr]+" has been deleted\n");
         }
     }
 
     // saves updated journal sizes
-
-    for(ctr = 0; ctr < sizeof(journarr); ctr++)
-    {
+    for(ctr = 0; ctr < sizeof(journarr); ctr++) {
         sscanf(journarr[ctr],"journal.%s",name);
         newjrnl[name] = file_size(JPATH+journarr[ctr]);
     }
@@ -78,8 +68,7 @@ int main()
 
     return 1;
 }
-string help(object caller)
-{
+string help(object caller) {
     return " SYNTAX: jcheck\n\n"
     "This cmd will check the /doc/journal directory for any \n"
     "file that has been changed since the last time you've \n"

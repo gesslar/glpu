@@ -8,54 +8,46 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string args)
-{
+mixed main(object caller, string args) {
     string *command_path = this_body()->query_path();
     mixed *actions = previous_object()->query_commands();
     mapping aliases = this_body()->get_aliases(1);
     int i, is_located = 0;
 
-    if(!args) return notify_fail("Error: Syntax: which <verb/command>\n");
+    if(!args)
+        return notify_fail("Error: Syntax: which <verb/command>\n");
 
-    for(i = 0; i < sizeof(command_path); i ++)
-    {
-        if(file_exists(command_path[i] + args + ".c"))
-        {
+    for(i = 0; i < sizeof(command_path); i ++) {
+        if(file_exists(command_path[i] + args + ".c")) {
             is_located = 1;
             write(command_path[i] + args + "\n");
         }
     }
 
-    for(i = 0; i < sizeof(actions); i++)
-    {
-        if(actions[i][0] == args)
-        {
+    for(i = 0; i < sizeof(actions); i++) {
+        if(actions[i][0] == args) {
             is_located = 1;
             write("Local:  " + actions[i][2] + "\n");
         }
     }
 
-    if(mapp(aliases) && aliases[args])
-    {
+    if(mapp(aliases) && aliases[args]) {
         is_located = 1;
         write("Alias: " + args + " -> " + aliases[args] + "\n");
     }
 
-    if(member_array(args, SOUL_D->query_emotes()) != -1)
-    {
+    if(member_array(args, SOUL_D->query_emotes()) != -1) {
         is_located = 1;
         write("Soul: " + args + "\n");
     }
 
 
-    if(member_array(args + "/t", SOUL_D->query_emotes()) != -1)
-    {
+    if(member_array(args + "/t", SOUL_D->query_emotes()) != -1) {
         is_located = 1;
         write("Targetted Soul: " + args + "\n");
     }
 
-    if(environment(previous_object())->valid_exit(args))
-    {
+    if(environment(previous_object())->valid_exit(args)) {
         is_located = 1;
         write("Local Exit: " +
             environment(this_body())->query_exit(args) + "\n");
@@ -69,8 +61,7 @@ mixed main(object caller, string args)
     return 1;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return " SYNTAX: which <verb/command>\n\n"
     "This command will search through your command path, local\n"
     "and global aliases, through local verbs added via add_action,\n"

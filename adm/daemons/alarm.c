@@ -118,7 +118,7 @@ void poll_alarms() {
     cid = call_out_walltime("poll_alarms", until_next_poll);
 
     // We need to run sizeof alarms times, because we might remove an alarm
-    for (i = 0; i < sizeof(alarms); i++) {
+    for(i = 0; i < sizeof(alarms); i++) {
         class Alarm alarm = alarms[i];
         // Initially check for the current or immediate next occurrence (not forced future)
         int next_current = calculate_alarm_time(alarm, 0);
@@ -126,7 +126,7 @@ void poll_alarms() {
         int next_future = calculate_alarm_time(alarm, 1);
 
         // Decide to trigger based on the immediate next occurrence time
-        if (now >= next_current && (now <= next_current + 59) && alarm.last_run < next_current) {
+        if(now >= next_current && (now <= next_current + 59) && alarm.last_run < next_current) {
             // Execute the alarm, considering the grace period and ensuring it hasn't been executed for this occurrence.
             alarm.last_run = now; // Update last_run to mark this execution.
             call_out("execute_alarm", 0.01, alarm); // Schedule the alarm execution.
@@ -162,12 +162,12 @@ void execute_alarm(class Alarm alarm) {
         return;
     }
 
-    if (!ob) {
+    if(!ob) {
         log_file("system/alarm", "[%s] Unable to load file %s\n", ctime(), alarm.file);
         return;
     }
     err = catch(call_other(ob, alarm.func, alarm));
-    if (err) {
+    if(err) {
         log_file("system/alarm", "[%s] Error executing alarm %s: %O\n", ctime(), alarm.func, err);
     }
 
@@ -201,17 +201,17 @@ string *parse_line(string line) {
     string arg = "";
     string *args = ({});
 
-    for (i = 0; i < len; i++) {
-        if (line[i] == '"') { // Toggle in_quote status on quote character
+    for(i = 0; i < len; i++) {
+        if(line[i] == '"') { // Toggle in_quote status on quote character
             in_quote = !in_quote;
             if(in_quote)
                 arg += "\""; // Add quote to argument for later parsing as string
-            if (!in_quote && arg != "") { // End of quoted argument
+            if(!in_quote && arg != "") { // End of quoted argument
                 args += ({ arg + "\"" });
                 arg = "";
             }
-        } else if (line[i] == ' ' && !in_quote) { // Argument separator outside quotes
-            if (arg != "") {
+        } else if(line[i] == ' ' && !in_quote) { // Argument separator outside quotes
+            if(arg != "") {
                 args += ({ arg });
                 arg = "";
             }
@@ -219,7 +219,7 @@ string *parse_line(string line) {
             arg += line[i..i]; // Build argument character by character
         }
     }
-    if (arg != "") { // Add last argument if exists
+    if(arg != "") { // Add last argument if exists
         args += ({ arg });
     }
     return args;
@@ -248,8 +248,7 @@ class Alarm create_alarm(string *parts, int silent) {
     } ;
     if(err) {
         log_file("system/alarm", "[%s] Error in create_alarm: %O",
-            ctime(), err
-        ) ;
+            ctime(), err) ;
         return null ;
     }
 
@@ -286,7 +285,7 @@ int calculate_alarm_time(class Alarm alarm, int next) {
 
                 // Construct the next alarm time
                 string next_alarm_str;
-                if (alarm_minute > current_minute || (alarm_minute == current_minute && next == 0)) {
+                if(alarm_minute > current_minute || (alarm_minute == current_minute && next == 0)) {
                     // If the alarm minute is in the future of the current hour, or exactly now and next == 0
                     next_alarm_str = strftime("%Y-%m-%d ", current_time) + sprintf("%02d:%02d", current_hour, alarm_minute);
                 } else {
@@ -302,7 +301,7 @@ int calculate_alarm_time(class Alarm alarm, int next) {
                 // Daily alarms should run at the specified hour and minute every day
                 alarm_time_str = strftime("%Y-%m-%d ", current_time) + alarm.pattern; // Combine current date with alarm's time
                 alarm_time = strptime("%Y-%m-%d %H:%M", alarm_time_str);
-                if (alarm_time <= current_time && next == 1) {
+                if(alarm_time <= current_time && next == 1) {
                     alarm_time += 86400; // Add one day in seconds for the next day's same time
                 }
                 break;
@@ -315,7 +314,7 @@ int calculate_alarm_time(class Alarm alarm, int next) {
                 int current_wday = to_int(strftime("%w", current_time)); // Day of the week, Sunday as 0
                 sscanf(alarm.pattern, "%d@%d:%d", alarm_wday, hours, minutes); // Extract target day and time
                 day_diff = (alarm_wday - current_wday + 7) % 7;
-                if (day_diff == 0 && next == 1) { // If today is the target day but we need the next occurrence
+                if(day_diff == 0 && next == 1) { // If today is the target day but we need the next occurrence
                     day_diff = 7;
                 }
                 alarm_time = current_time + (day_diff * 86400); // Move to the correct day
@@ -343,10 +342,10 @@ int calculate_alarm_time(class Alarm alarm, int next) {
                 alarm_date_time = sprintf("%04d-%02d-%02d %02d:%02d", year, month, alarm_wday, hours, minutes);
                 alarm_time = strptime("%Y-%m-%d %H:%M", alarm_date_time);
 
-                if (alarm_time <= current_time && next == 1) {
+                if(alarm_time <= current_time && next == 1) {
                     // Logic to adjust the month for the next occurrence
                     month += 1;
-                    if (month > 12) {
+                    if(month > 12) {
                         month = 1; // Reset month to January
                         year += 1; // Increment the year
                     }
@@ -362,7 +361,7 @@ int calculate_alarm_time(class Alarm alarm, int next) {
                 // Yearly alarms run on a specific month, day, and time each year
                 string next_alarm_str = strftime("%Y-", current_time) + alarm.pattern; // Current year with alarm's month, day, and time
                 alarm_time = strptime("%Y-%m-%d@%H:%M", next_alarm_str);
-                if (alarm_time <= current_time && next == 1) {
+                if(alarm_time <= current_time && next == 1) {
                     // Construct for the next year if the time for this year has passed
                     next_alarm_str = sprintf("%d-", to_int(strftime("%Y", current_time)) + 1) + alarm.pattern;
                     alarm_time = strptime("%Y-%m-%d@%H:%M", next_alarm_str);
@@ -383,8 +382,7 @@ int calculate_alarm_time(class Alarm alarm, int next) {
 
     if(err) {
         log_file("system/alarm", "[%s] Error in calculate_alarm_time: %O",
-            ctime(), err
-        ) ;
+            ctime(), err) ;
         return -1 ;
     }
 

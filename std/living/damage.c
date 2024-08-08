@@ -39,10 +39,10 @@ float deliver_damage(object victim, float damage, string type) {
 float receive_damage(object attacker, float damage, string type) {
     float def, red, mod, level, alevel, level_difference;
 
-    if (!attacker)
+    if(!attacker)
         return 0.0;
 
-    if (damage < 0.0)
+    if(damage < 0.0)
         return 0.0;
 
     def = query_defense_amount(type);

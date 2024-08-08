@@ -69,19 +69,19 @@ protected nomask void start_server() {
 
     fd = socket_create(get_option("tls") ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_close");
 
-    if (fd < 0) {
+    if(fd < 0) {
         _log(0, "Unable to create socket: %s", socket_error(fd));
         return;
     }
 
     status = socket_bind(fd, LISTEN_PORT);
-    if (status != EESUCCESS) {
+    if(status != EESUCCESS) {
         _log(0, "Unable to bind to port %d: %s", LISTEN_PORT, socket_error(status));
         return;
     }
 
     status = socket_listen(fd, "socket_listen");
-    if (status != EESUCCESS) {
+    if(status != EESUCCESS) {
         _log(0, "Unable to listen on socket: %s", socket_error(status));
         return;
     }
@@ -245,7 +245,7 @@ protected nomask void send_http_response(int fd, mapping client) {
         }
     }
 
-    if (!body) {
+    if(!body) {
         switch(status) {
             case HTTP_STATUS_OK:
             case HTTP_STATUS_CREATED:

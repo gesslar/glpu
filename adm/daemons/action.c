@@ -54,8 +54,7 @@ mixed *handle_obs(mixed *obs, string res, mapping has) {
         }
         obs = keys(items);
 
-        if(res[<2..<1]=="a ")
-        {
+        if(res[<2..<1]=="a ") {
             res = res[0..<3];
             foreach(mixed ob in obs) {
                 if(items[ob]>1) ret += ({ items[ob] + " " + pluralize(SHORT(ob)) });
@@ -63,8 +62,7 @@ mixed *handle_obs(mixed *obs, string res, mapping has) {
             }
         } else if(res[<4..<1] == "the ") {
             res = res[0..<5];
-            foreach(mixed ob in obs)
-            {
+            foreach(mixed ob in obs) {
                 if(items[ob]>1) ret += ({ "the " + items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ _the_short(ob) });
             }
@@ -81,8 +79,7 @@ mixed *handle_obs(mixed *obs, string res, mapping has) {
                 else ret += ({ capitalize(_the_short(ob)) });
             }
         } else {
-            foreach(mixed ob in obs)
-            {
+            foreach(mixed ob in obs) {
                 if(items[ob]>1) ret += ({ items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ SHORT(ob) });
             }
@@ -138,7 +135,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
     mapping has = ([]);
     mixed tmp;
 
-    fmt = reg_assoc(msg, ({ "\\$[NnVvTtPpOoRrBb][a-z0-9]*" }), ({ 1 }) );
+    fmt = reg_assoc(msg, ({ "\\$[NnVvTtPpOoRrBb][a-z0-9]*" }), ({ 1 }));
     fmt = fmt[0]; // ignore the token info for now
 
     res = fmt[0];
@@ -172,7 +169,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
                         bit = simple_list(ob);
                     } else {
                         tmp = ({ res });
-                        for (int z = 0; z < sizeof(ob); z++) {
+                        for(int z = 0; z < sizeof(ob); z++) {
                             tmp = handle_ob(ob[z], res, has);
                             ob[z] = tmp[1];
                         }
@@ -204,8 +201,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
                             }
                             // subjective: You prove you are stupid,
                             // Beek proves he is stupid.
-                            if(str == "s")
-                            {
+                            if(str == "s") {
                                 if(forwhom == who[subj]) bit = "you";
                                 else bit = subjective(who[subj]) ;
                             }
@@ -300,7 +296,6 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
         res += bit + fmt[i+1];
         i+=2;
     }
-    // if( strlen(res) > 0 && res[<1] != '\n' ) res += "\n";
     return append(res, "\n");
 }
 
@@ -312,8 +307,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
 //participant, being careful not to deliver a message twice.
 //The last arg is either a room, in which that room is told the 'other'
 //message, or an array of people to recieve the 'other' message.
-void inform(object *who, string *msgs, mixed others)
-{
+void inform(object *who, string *msgs, mixed others) {
     int i;
     mapping done = ([]);
 
@@ -339,7 +333,7 @@ varargs string *action(object *who, mixed msg, mixed *obs...) {
 
     if(pointerp(msg)) msg = element_of(msg);
     res = allocate(sizeof(who)+1);
-    for (i=0; i<sizeof(who); i++) res[i] = compose_message(who[i], msg, who, obs...);
+    for(i=0; i<sizeof(who); i++) res[i] = compose_message(who[i], msg, who, obs...);
     res[sizeof(who)]=compose_message(0, msg, who, obs...);
     return res;
 }
@@ -352,7 +346,7 @@ varargs void simple_action(mixed msg, mixed *obs...) {
     string others;
     object *who;
 
-    if( !sizeof( msg )) return;
+    if(!sizeof(msg)) return;
     /* faster to only make who once */
     who = ({ previous_object() });
     if(pointerp(msg)) msg = msg[random(sizeof(msg))];
@@ -373,7 +367,7 @@ varargs void my_action(mixed msg, mixed *obs...) {
     string us;
     object *who;
 
-    if(!sizeof( msg )) return;
+    if(!sizeof(msg)) return;
     who = ({ previous_object() });
     if(pointerp(msg)) msg = msg[random(sizeof(msg))];
     us = compose_message(previous_object(), msg, who, obs...);
@@ -414,7 +408,7 @@ varargs void other_action(mixed msg, mixed *obs...) {
     string others;
     object *who;
 
-    if( !sizeof(msg)) return;
+    if(!sizeof(msg)) return;
     who = ({ previous_object() });
     if(pointerp(msg)) msg = msg[random(sizeof(msg))];
     others = compose_message(0, msg, who, obs...);
@@ -431,7 +425,7 @@ varargs void targetted_action(mixed msg, object target, mixed *obs...) {
     string us, them, others;
     object *who;
 
-    if( !sizeof(msg)) return;
+    if(!sizeof(msg)) return;
     who = ({ previous_object(), target });
     if(pointerp(msg)) msg = msg[random(sizeof(msg))];
     us = compose_message(previous_object(), msg, who, obs...);

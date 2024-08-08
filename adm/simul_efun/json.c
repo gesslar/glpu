@@ -697,18 +697,18 @@ varargs string json_encode(mixed value, mixed* pointers) {
             buffer utf8_buf = string_encode(char_to_replace, "UTF-8");
 
             // Get the codepoint from the UTF-8 bytes
-            if (sizeof(utf8_buf) == 1) {
+            if(sizeof(utf8_buf) == 1) {
                 codepoint = utf8_buf[0];
-            } else if (sizeof(utf8_buf) == 2) {
+            } else if(sizeof(utf8_buf) == 2) {
                 codepoint = ((utf8_buf[0] & 0x1F) << 6) | (utf8_buf[1] & 0x3F);
-            } else if (sizeof(utf8_buf) == 3) {
+            } else if(sizeof(utf8_buf) == 3) {
                 codepoint = ((utf8_buf[0] & 0x0F) << 12) | ((utf8_buf[1] & 0x3F) << 6) | (utf8_buf[2] & 0x3F);
-            } else if (sizeof(utf8_buf) == 4) {
+            } else if(sizeof(utf8_buf) == 4) {
                 codepoint = ((utf8_buf[0] & 0x07) << 18) | ((utf8_buf[1] & 0x3F) << 12) |
                             ((utf8_buf[2] & 0x3F) << 6) | (utf8_buf[3] & 0x3F);
             }
 
-            if (codepoint <= 0xFFFF) {
+            if(codepoint <= 0xFFFF) {
                 value = pcre_replace(value, unicode_pattern, ({ sprintf("\\u%04X", codepoint) }));
             } else {
                 // Encode as surrogate pair
@@ -747,8 +747,7 @@ varargs string json_encode(mixed value, mixed* pointers) {
             return "{}";
         return sprintf("{%s}", out);
     }
-    if(arrayp(value))
-    {
+    if(pointerp(value)) {
         if(sizeof(value)) {
             string out;
             int ix = 0;

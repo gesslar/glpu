@@ -108,7 +108,7 @@ varargs private nomask void http_connect(mapping request) {
 
     fd = socket_create(secure ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed");
 
-    if (fd < 0) {
+    if(fd < 0) {
         _log(0, "Unable to create socket: %s", socket_error(fd));
         return;
     }
@@ -128,7 +128,7 @@ varargs private nomask void http_connect(mapping request) {
 
     servers[fd] = server ;
 
-    key = resolve(host, (: socket_resolve :) ) ;
+    key = resolve(host, (: socket_resolve :)) ;
     resolve_keys[key] = fd ;
 
     _log(2, "Resolving host: %s", host) ;
@@ -246,7 +246,7 @@ nomask void shutdown_socket(int fd) {
     now = time_frac() ;
     started = server["request"]["start_time"] ;
 
-    duration = (now - started ) ;
+    duration = (now - started) ;
 
     received_total = to_float(server["received_total"]) ;
     speed = received_total / duration ;
@@ -273,7 +273,7 @@ nomask void socket_read(int fd, buffer incoming) {
     int status_code ;
     buffer buf ;
 
-    if (!server)
+    if(!server)
         return;
 
     _log(4, "First 10 bytes: %O", incoming[0..10]) ;
@@ -295,7 +295,7 @@ nomask void socket_read(int fd, buffer incoming) {
     _log(4, "Server[response]: %O", server["response"]);
 
     _log(3, "Starting to process status") ;
-    if (sizeof(buf) && !server["response"]["status"]) {
+    if(sizeof(buf) && !server["response"]["status"]) {
         mapping status ;
 
         status = parse_response_status(buf, 1) ;
@@ -317,12 +317,12 @@ nomask void socket_read(int fd, buffer incoming) {
     }
 
     _log(3, "Starting to process headers") ;
-    if (sizeof(buf) && !server["response"]["headers"]) {
+    if(sizeof(buf) && !server["response"]["headers"]) {
         mapping headers;
 
         headers = parse_headers(buf, 1);
 
-        if (!headers) {
+        if(!headers) {
             server["buffer"] = buf;
             servers[fd] = server;
             return;

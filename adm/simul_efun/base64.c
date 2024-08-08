@@ -22,15 +22,15 @@ string base64_encode(mixed source_str) {
     int slen, plen;
     buffer source;
 
-    if (stringp(source_str)) {
+    if(stringp(source_str)) {
         source = string_encode(source_str, "UTF-8");
-    } else if (bufferp(source_str)) {
+    } else if(bufferp(source_str)) {
         source = source_str;
     } else {
         error("Invalid argument 1 to base64encode");
     }
 
-    if (nullp(source_str) || !sizeof(source_str)) {
+    if(nullp(source_str) || !sizeof(source_str)) {
         error("Missing argument 1 to base64encode");
     }
 
@@ -38,13 +38,13 @@ string base64_encode(mixed source_str) {
     plen = slen % 3;
     b = explode(b64chars, "");
 
-    for (i = 0; i < slen; i += 3) {
+    for(i = 0; i < slen; i += 3) {
         n = source[i] << 16;
 
-        if ((i + 1) < slen)
+        if((i + 1) < slen)
             n += source[i + 1] << 8;
 
-        if ((i + 2) < slen)
+        if((i + 2) < slen)
             n += source[i + 2];
 
         n1 = (n >> 18) & 63;
@@ -54,15 +54,15 @@ string base64_encode(mixed source_str) {
 
         r += b[n1] + b[n2];
 
-        if ((i + 1) < slen)
+        if((i + 1) < slen)
             r += b[n3];
 
-        if ((i + 2) < slen)
+        if((i + 2) < slen)
             r += b[n4];
     }
 
-    if (plen > 0)
-        for (; plen < 3; plen++) r += "=";
+    if(plen > 0)
+        for(; plen < 3; plen++) r += "=";
 
     return r;
 }
@@ -73,8 +73,7 @@ string base64_encode(mixed source_str) {
  * @param {string} source - The Base64 encoded string to be decoded.
  * @returns {string} - The decoded string.
  */
-string base64_decode(string source)
-{
+string base64_decode(string source) {
     string *b ;
     string f = "";
     int i, j;
@@ -83,18 +82,17 @@ string base64_decode(string source)
     int plen = 0;
     buffer result;
 
-    if( nullp( source ) || !strlen( source ) )
-    {
+    if(nullp(source) || !strlen(source)) {
         error("Missing argument 1 to base64decode") ;
     }
 
-    b = explode( b64chars, "" );
+    b = explode(b64chars, "");
 
-    for (i = 0; i < sizeof(source); i++) {
+    for(i = 0; i < sizeof(source); i++) {
         c = strsrch(b64chars, source[i]);
-        if (c == -1) {
+        if(c == -1) {
             // not found
-            if (source[i] == 61) {
+            if(source[i] == 61) {
                 // We found an "=", meaning we hit the padding.
                 // For decoding purposes, "A" is a zero pad value here.
                 f += "A";
@@ -112,13 +110,12 @@ string base64_decode(string source)
         }
     }
 
-    if (sizeof(f) % 4)
+    if(sizeof(f) % 4)
         return "Invalid input.";
 
     result = allocate_buffer(sizeof(f) / 4 * 3);
     j = 0;
-    for (i = 0; i < sizeof(f); i += 4)
-    {
+    for(i = 0; i < sizeof(f); i += 4) {
         c = strsrch(b64chars, f[i]);
         n = c << 18;
         c = strsrch(b64chars, f[i+1]);

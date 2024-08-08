@@ -20,7 +20,7 @@ mixed main(object caller, string arg) {
     if(!directory_exists(user_path(caller->query_proper_name())))
         return _error("You must have a home directory to use eval.") ;
 
-    _info(caller, "Evaluating: %s", arg );
+    _info(caller, "Evaluating: %s", arg);
     file = user_path(caller->query_proper_name()) + "tmp_eval_file.c" ;
     if(file_size(file) != -1)
         rm(file) ;

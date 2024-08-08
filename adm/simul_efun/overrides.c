@@ -46,9 +46,8 @@ void shutdown(int how) {
     object po = previous_object() ;
     string f = base_name(po) ;
 
-    if(   po != master()
-       && po != load_object(SHUTDOWN_D)
-    ) return ;
+    if(po != master() && po != load_object(SHUTDOWN_D))
+        return ;
 
     emit(SIG_SYS_SHUTDOWN) ;
     PERSIST_D->persist_objects() ;
@@ -229,70 +228,3 @@ varargs string ctime(int x) {
 object this_user() {
     return this_body()->query_user();
 }
-
-#if 0
-private nosave string _empty_buffer = null ;
-private mixed _fix_array(mixed *arr) ;
-private mapping _fix_mapping(mapping m) ;
-private mixed _fix_buffer(mixed args...) ;
-
-private mixed _fix_array(mixed *arr) {
-    for (int i = 0; i < sizeof(arr); i++) {
-        if (bufferp(arr[i]) && !sizeof(arr[i])) {
-            arr[i] = _empty_buffer;
-        } else if (arrayp(arr[i])) {
-            arr[i] = _fix_array(arr[i]);
-        } else if (mapp(arr[i])) {
-            arr[i] = _fix_mapping(arr[i]);
-        }
-    }
-    return arr;
-}
-
-private mapping _fix_mapping(mapping m) {
-    mapping new_map = ([]);
-    foreach (mixed key, mixed val in m) {
-        if (bufferp(key) && !sizeof(key)) {
-            error("Mapping key is an empty buffer");
-        }
-        if (bufferp(val) && !sizeof(val)) {
-            new_map[key] = _empty_buffer;
-        } else if (arrayp(val)) {
-            new_map[key] = _fix_array(val);
-        } else if (mapp(val)) {
-            new_map[key] = _fix_mapping(val);
-        } else {
-            new_map[key] = val;
-        }
-    }
-    return new_map;
-}
-
-private nomask mixed _fix_buffer(mixed args...) {
-    int sz = sizeof(args);
-
-    for (int i = 0; i < sz; i++) {
-        if (bufferp(args[i]) && !sizeof(args[i])) {
-            args[i] = _empty_buffer;
-        } else if (arrayp(args[i])) {
-            args[i] = _fix_array(args[i]);
-        } else if (mapp(args[i])) {
-            args[i] = _fix_mapping(args[i]);
-        }
-    }
-
-    return args;
-}
-
-string sprintf(string fmt, mixed args...) {
-    args = _fix_buffer(args...) ;
-
-    return efun::sprintf(fmt, args...);
-}
-
-void printf(string fmt, mixed args...) {
-    args = _fix_buffer(args...) ;
-
-    efun::printf(fmt, args...);
-}
-#endif

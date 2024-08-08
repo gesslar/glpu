@@ -48,7 +48,7 @@ string query_save_file() {
 }
 
 private string get_base_path(string path) {
-    int pos = strsrch( path, "/", -1 ) ;
+    int pos = strsrch(path, "/", -1) ;
 
     return path[ 0 .. pos - 1 ] ;
 }

@@ -138,12 +138,12 @@ mixed render_object(object tp, object room, string target) {
     int here_flag = 0;
 
     // Check if the target includes the "here" argument
-    if (sscanf(target, "%s here", target)) {
+    if(sscanf(target, "%s here", target)) {
         here_flag = 1;
     }
 
     // Check for a room item first
-    if (stringp(room->query_item(target))) {
+    if(stringp(room->query_item(target))) {
         string result = highlight_view(tp, room->query_item(target), keys(room->query_items()));
         result = append(result, "\n");
         tell(tp, result);
@@ -152,22 +152,22 @@ mixed render_object(object tp, object room, string target) {
     }
 
     // Determine the object to look at
-    if (target == "me") {
+    if(target == "me") {
         ob = tp;
     } else {
-        if (here_flag) {
+        if(here_flag) {
             // Look for the object in the room first if "here" is specified
             ob = find_target(tp, target, room);
-            if (!ob) {
+            if(!ob) {
                 return "You do not see " + target + " here.\n";
             }
         } else {
             // Look for the object in the player's inventory first
             ob = find_target(tp, target, tp);
-            if (!ob) {
+            if(!ob) {
                 // If not found in the inventory, look in the room
                 ob = find_target(tp, target, room);
-                if (!ob) {
+                if(!ob) {
                     return "You do not see " + target + ".\n";
                 }
             }
@@ -175,17 +175,17 @@ mixed render_object(object tp, object room, string target) {
     }
 
     // Render living objects
-    if (living(ob))
+    if(living(ob))
         return render_living(tp, room, ob, 0);
 
     // Render non-living objects
     temp = get_short(ob);
-    if (stringp(temp)) desc += temp + "\n";
+    if(stringp(temp)) desc += temp + "\n";
     temp = get_long(ob);
-    if (stringp(temp)) desc += "\n" + temp + "\n";
+    if(stringp(temp)) desc += "\n" + temp + "\n";
 
-    if (strlen(desc)) {
-        if (devp(tp) && tp->query_env("look_filename") == "all") {
+    if(strlen(desc)) {
+        if(devp(tp) && tp->query_env("look_filename") == "all") {
             desc = "\e0032\e" + prepend(file_name(ob), "/") + "\eres\e\n" + desc;
         }
     }
@@ -275,11 +275,11 @@ mixed render_living(object tp, object room, object target, int brief) {
     name = tp->query_name() ;
     if(target == tp) {
         string refl = reflexive(tp) ;
-        tell_down(room, name + " looks at "+refl+".\n", null, ({ tp }) );
+        tell_down(room, name + " looks at "+refl+".\n", null, ({ tp }));
     } else {
         string vname = target->query_name() ;
         tell(target, name + " looks at you.\n") ;
-        tell_down(room, name + " looks at " + vname + ".\n", null, ({ tp, target }) );
+        tell_down(room, name + " looks at " + vname + ".\n", null, ({ tp, target }));
     }
 
     if(strlen(result)) {

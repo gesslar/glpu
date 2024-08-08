@@ -10,24 +10,24 @@
  */
 string ordinal (int n) {
     int x;
-    if (undefinedp(n) || !intp(n)) error("Bad argument 1 to english->ordinal");
-    if (n < 0) error("Bad argument 1 to english->ordinal");
-    if (n < 10) {
-        if (n == 9) return "ninth";
-        if (n == 8) return "eighth";
-        if (n == 7) return "seventh";
-        if (n == 6) return "sixth";
-        if (n == 5) return "fifth";
-        if (n == 4) return "fourth";
-        if (n == 3) return "third";
-        if (n == 2) return "second";
-        if (n == 1) return "first";
-        if (n == 0) return "zeroth";
+    if(undefinedp(n) || !intp(n)) error("Bad argument 1 to english->ordinal");
+    if(n < 0) error("Bad argument 1 to english->ordinal");
+    if(n < 10) {
+        if(n == 9) return "ninth";
+        if(n == 8) return "eighth";
+        if(n == 7) return "seventh";
+        if(n == 6) return "sixth";
+        if(n == 5) return "fifth";
+        if(n == 4) return "fourth";
+        if(n == 3) return "third";
+        if(n == 2) return "second";
+        if(n == 1) return "first";
+        if(n == 0) return "zeroth";
     } else {
         x = (n < 14 && n > 10) ? 4 : n % 10;
-        if (x == 1) return n + "st";
-        else if (x == 2) return n + "nd";
-        else if (x == 3) return n + "rd";
+        if(x == 1) return n + "st";
+        else if(x == 2) return n + "nd";
+        else if(x == 3) return n + "rd";
         else return n + "th";
     }
 }
@@ -48,14 +48,14 @@ string int_string (int num) {
     string str;
     int temp;
 
-    if (num==2147483647) return "too much";
+    if(num==2147483647) return "too much";
     str = "";
-    if (num < 0) {
+    if(num < 0) {
         num = -num;
         str += "minus ";
     }
-    if (num==2147483647) return "too much";
-    if (num < 20) {
+    if(num==2147483647) return "too much";
+    if(num < 20) {
         switch (num) {
             case 0:  return "zero";
             case 1:  str += "one"; break;
@@ -81,7 +81,7 @@ string int_string (int num) {
         }
         return str;
     }
-    if (num < 100) {
+    if(num < 100) {
         temp = num/10;
         num -= temp*10;
         switch (temp) {
@@ -95,26 +95,26 @@ string int_string (int num) {
             case 9: str += "ninety"; break;
             default: break;
         }
-        if (num>0) {
+        if(num>0) {
             str += "-"+int_string(num);
         }
         return str;
     }
-    if (num < 1000) {
+    if(num < 1000) {
         temp = num/100;
         num -= temp*100;
         str += int_string(temp)+" hundred";
-        if (num>0) {
+        if(num>0) {
             str += " and "+int_string(num);
         }
         return str;
     }
-    if (num < 1000000) {
+    if(num < 1000000) {
         temp = num/1000;
         num -= temp*1000;
         str += int_string(temp)+" thousand";
-        if (num>0) {
-            if (num<100) str += " and";
+        if(num>0) {
+            if(num<100) str += " and";
             str += " "+int_string(num);
         }
         return str;
@@ -122,8 +122,8 @@ string int_string (int num) {
     temp = num/1000000;
     num -= temp*1000000;
     str += int_string(temp)+" million";
-    if (num>0) {
-        if (num<100) str += " and";
+    if(num>0) {
+        if(num<100) str += " and";
         str += " "+int_string(num);
     }
     return str;
@@ -141,16 +141,16 @@ string consolidate(int x, string str) {
     string* words;
     string tmp;
 
-    if( x == 1 || !sizeof(str) ) return str;
+    if(x == 1 || !sizeof(str)) return str;
     words = explode(str, " ");
-    if( sscanf(words[<1], "(%s)", tmp) ) {
-        if( sizeof(words) == 1 )
+    if(sscanf(words[<1], "(%s)", tmp)) {
+        if(sizeof(words) == 1)
             return "(" + consolidate(x, tmp) + ")";
         else return consolidate(x, implode(words[0..<2], " ")) +
             " (" + tmp + ")";
     }
-    if( sscanf(words[<1], "[%s]", tmp) ) {
-        if( sizeof(words) == 1 )
+    if(sscanf(words[<1], "[%s]", tmp)) {
+        if(sizeof(words) == 1)
             return "[" + consolidate(x, tmp) + "]";
         else return consolidate(x, implode(words[0..<2], " ")) +
             " [" + tmp + "]";
@@ -158,23 +158,23 @@ string consolidate(int x, string str) {
 #if 0
     // TODO: Accommodate for new colour style
     /*
-    if( words[0][0..1] == "%^" ) {
+    if(words[0][0..1] == "%^") {
         string* parts;
         string part, colour = "";
         int i = 0;
 
         parts = explode(words[0], "%^");
-        if( sizeof(parts) == 1 ) {
-            if( sizeof(words) == 1 ) return words[0];
+        if(sizeof(parts) == 1) {
+            if(sizeof(words) == 1) return words[0];
             else return words[0] + consolidate(x, implode(words[1..], " "));
         }
 
         foreach(part in parts) {
-            if( sizeof(part) && !sizeof(strip_colours("%^" + part + "%^")) )
+            if(sizeof(part) && !sizeof(strip_colours("%^" + part + "%^")))
                 colour += ("%^" + part + "%^");
             else return colour + consolidate(x,
                     (implode(parts[i..], "%^")) + " " +
-                    (implode(words[1..], " ")) );
+                    (implode(words[1..], " ")));
             i++;
         }
         return words[0] + " " + consolidate(x, implode(words[1..], " "));
@@ -182,6 +182,6 @@ string consolidate(int x, string str) {
     }
     */
 #endif
-    if( member_array(lower_case(no_ansi(words[0])), ({"a", "an", "the", "one"}) ) > -1 ) words = words[1..];
+    if(member_array(lower_case(no_ansi(words[0])), ({"a", "an", "the", "one"})) > -1) words = words[1..];
     return (query_num(x) + " " + pluralize(implode(words, " ")));
 }

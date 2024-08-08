@@ -26,285 +26,233 @@ nosave address;
 nosave function read_callback, close_callback;
 
 varargs int create_socket(int socket_type, mixed p1, function read_func, function close_func) {
-     int err;
+    int err;
 
-     if(valid_function(read_func)) read_callback = read_func;
-     if(valid_function(close_func)) close_callback = close_func;
+    if(valid_function(read_func))
+        read_callback = read_func;
 
-     address = p1;
+    if(valid_function(close_func))
+        close_callback = close_func;
 
-     switch(socket_type) {
-          case SOCKET_STREAM :
-          {
-               s = socket_create(STREAM, "read_callback", "close_callback");
+    address = p1;
 
-               if(s < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+    switch(socket_type) {
+        case SOCKET_STREAM :
+            s = socket_create(STREAM, "read_callback", "close_callback");
 
-               err = socket_connect(s, p1, "read_callback", "write_callback");
+            if(s < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            err = socket_connect(s, p1, "read_callback", "write_callback");
 
-               break;
-          }
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-          case SOCKET_STREAM_LISTEN :
-          {
-               s = socket_create(STREAM, "read_callback", "close_callback" );
+            break;
 
-               if(s < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+        case SOCKET_STREAM_LISTEN :
+            s = socket_create(STREAM, "read_callback", "close_callback");
 
-               err = socket_bind(s, p1);
+            if(s < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            err = socket_bind(s, p1);
 
-               err = socket_listen(s, "listen_callback");
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            err = socket_listen(s, "listen_callback");
 
-               break;
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-          }
+            break;
 
-          case SOCKET_DATAGRAM :
-          {
-               s = socket_create(DATAGRAM, "udp_read_callback");
+        case SOCKET_DATAGRAM :
+            s = socket_create(DATAGRAM, "udp_read_callback");
 
-               if(s < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            if(s < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               err = socket_bind(s, p1);
+            err = socket_bind(s, p1);
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               break;
-          }
+            break;
 
-          case SOCKET_MUD :
-          {
-               s = socket_create(MUD, "read_callback", "close_callback" );
+        case SOCKET_MUD :
+            s = socket_create(MUD, "read_callback", "close_callback");
 
-               if(s < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            if(s < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               err = socket_connect(s, p1, "read_callback", "write_callback");
+            err = socket_connect(s, p1, "read_callback", "write_callback");
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               break;
+            break;
 
-          }
+        case SOCKET_MUD_LISTEN :
+            s = socket_create(MUD, "read_callback", "close_callback");
 
-          case SOCKET_MUD_LISTEN :
-          {
-               s = socket_create(MUD, "read_callback", "close_callback" );
+            if(s < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(s < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            err = socket_bind(s, p1);
 
-               err = socket_bind(s, p1);
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            err = socket_listen(s, "listen_callback");
 
-               err = socket_listen(s, "listen_callback");
+            if(err < 0) {
+                socket_close(s);
+                remove() ;
+                return error("Error [socket_ob]: " + socket_error(s) + "\n");
+            }
 
-               if(err < 0)
-               {
-                    socket_close(s);
-                    remove() ;
-                    return error("Error [socket_ob]: " + socket_error(s) + "\n");
-               }
+            break;
 
-               break;
+        case SOCKET_ACQUIRE :
+            break;
 
-          }
-
-          case SOCKET_ACQUIRE :
-          {
-               break;
-          }
-
-          default :
-          {
-               error("Error [socket_ob]: Unknown socket type " + socket_type + ".\n");
-          }
-     }
+        default :
+            error("Error [socket_ob]: Unknown socket type " + socket_type + ".\n");
+    }
 }
 
 private nomask void listen_callback(int fd) {
-     object new_socket;
-     int err;
+    object new_socket;
+    int err;
 
-     fd = socket_accept(fd, "read_callback", "write_callback");
-     new_socket = new(base_name(this_object()) + ".c", SOCKET_ACQUIRE,  read_callback,  close_callback);
-     err = socket_release(fd, new_socket, "release_callback");
-     if(err < 0)  error("Error [socket_ob]: " + socket_error(err) + "\n");
+    fd = socket_accept(fd, "read_callback", "write_callback");
+    new_socket = new(base_name(this_object()) + ".c", SOCKET_ACQUIRE,  read_callback,  close_callback);
+    err = socket_release(fd, new_socket, "release_callback");
+    if(err < 0)
+        error("Error [socket_ob]: " + socket_error(err) + "\n");
 }
 
 private nomask void release_callback(int fd) {
-     int err;
+    int err;
 
-     s = fd;
-     err = socket_acquire(s, "read_callback", "write_callback", "close_callback");
-     if(err < 0) error("Error [socket_ob]: " + socket_error(err) + "\n");
+    s = fd;
+    err = socket_acquire(s, "read_callback", "write_callback", "close_callback");
+    if(err < 0)
+        error("Error [socket_ob]: " + socket_error(err) + "\n");
 
-     catch(evaluate(read_callback, this_object(), 0));
+    catch(evaluate(read_callback, this_object(), 0));
 }
 
-private nomask void read_callback(int fd, mixed message)
-{
-     catch(evaluate(read_callback, this_object(), message));
+private nomask void read_callback(int fd, mixed message) {
+    catch(evaluate(read_callback, this_object(), message));
 }
 
-private nomask void udp_read_callback(int fd, mixed message, string address)
-{
-     catch(evaluate(read_callback, this_object(), message, address));
+private nomask void udp_read_callback(int fd, mixed message, string address) {
+    catch(evaluate(read_callback, this_object(), message, address));
 }
 
-private nomask void close_callback(int fd)
-{
-     if(valid_function(close_callback)) catch(evaluate(close_callback, this_object()));
-     remove();
+private nomask void close_callback(int fd) {
+    if(valid_function(close_callback)) catch(evaluate(close_callback, this_object()));
+    remove();
 }
 
-private nomask void write_callback(int fd)
-{
-     int error;
-     is_blocked = 0;
+private nomask void write_callback(int fd) {
+    int error;
+    is_blocked = 0;
 
-     while(sizeof(queue) > 0)
-     {
-          error = socket_write(s, queue[0]);
+    while(sizeof(queue) > 0) {
+        error = socket_write(s, queue[0]);
 
-          switch(error)
-          {
-               case EESUCCESS :
-               {
-                    queue = queue[1..];
-                    continue;
-               }
+        switch(error) {
+            case EESUCCESS :
+                queue = queue[1..];
+                continue;
 
-               case EEWOULDBLOCK :
-               {
-                    is_blocked = 1;
-                    call_out((: write_callback, s :), 1);
-                    return;
-               }
+            case EEWOULDBLOCK :
+                is_blocked = 1;
+                call_out((: write_callback, s :), 1);
+                return;
 
-               case EECALLBACK :
-               {
-                    is_blocked = 1;
-                    return;
-               }
+            case EECALLBACK :
+                is_blocked = 1;
+                return;
 
-               default :
-               {
-                    return;
-               }
-          }
-     }
+            default :
+                return;
+        }
+    }
 }
 
-void send_packet(mixed *packet)
-{
-     int error;
+void send_packet(mixed *packet) {
+    int error;
 
-     error = socket_write(s, packet);
+    error = socket_write(s, packet);
 
-     if(is_blocked)
-     {
-          queue += ({ packet });
-          return;
-     }
+    if(is_blocked) {
+        queue += ({ packet });
+        return;
+    }
 
-     switch(error)
-     {
-          case EESUCCESS :
-          {
-               return;
-          }
+    switch(error) {
+        case EESUCCESS :
+            return;
 
-          case EEALREADY :
-          {
-               is_blocked = 1;
-               queue += ({ packet });
-               return;
-          }
+        case EEALREADY :
+            is_blocked = 1;
+            queue += ({ packet });
+            return;
 
-          case EEWOULDBLOCK :
-          {
-               is_blocked = 1;
-               queue += ({ packet });
-               call_out((: write_callback, s :), 1);
-               return;
-          }
+        case EEWOULDBLOCK :
+            is_blocked = 1;
+            queue += ({ packet });
+            call_out((: write_callback, s :), 1);
+            return;
 
-          case EECALLBACK :
-          {
-               is_blocked = 1;
-               return;
-          }
+        case EECALLBACK :
+            is_blocked = 1;
+            return;
 
-          default :
-          {
-               return;
-          }
-     }
+        default :
+            return;
+    }
 }
 
-nomask mixed *get_address()
-{
+nomask mixed *get_address() {
     string tmp;
     string host;
     int port;
@@ -314,48 +262,49 @@ nomask mixed *get_address()
     return ({ host, port });
 }
 
-int status()
-{
-     switch (type)
-     {
-          case SOCKET_STREAM:
+int status() {
+    switch (type) {
+        case SOCKET_STREAM:
           printf("%O: listening at %O\n", this_object(), address);
           printf("    read_func=%O  close_func=%O\n", read_callback, close_callback);
           break;
 
-          case SOCKET_STREAM_LISTEN:
+        case SOCKET_STREAM_LISTEN:
           printf("%O: connected to %O\n", this_object(), address);
           printf("    read_func=%O  close_func=%O\n", read_callback, close_callback);
           break;
 
-          case SOCKET_DATAGRAM:
+        case SOCKET_DATAGRAM:
           printf("%O: UDP at %O\n", this_object(), address);
           printf("    read_func=%O\n", read_callback);
           break;
 
-          case SOCKET_MUD_LISTEN:
+        case SOCKET_MUD_LISTEN:
           printf("%O: (mud) listening at %O\n", this_object(), address);
           printf("    read_func=%O  close_func=%O\n", read_callback, close_callback);
           break;
 
-          case SOCKET_MUD:
+        case SOCKET_MUD:
           printf("%O: (mud) connected to %O\n", this_object(), address);
           printf("    read_func=%O  close_func=%O\n", read_callback, close_callback);
           break;
 
-          case SOCKET_ACQUIRE:
+        case SOCKET_ACQUIRE:
           printf("%O: Accepted connection from %s\n", this_object(),
           socket_address(s));
           printf("    read_func=%O  close_func=%O\n", read_callback, close_callback);
           break;
-     }
+    }
 
-     if(sizeof(queue)) printf("Queue: %O\n", queue);
+    if(sizeof(queue))
+        printf("Queue: %O\n", queue);
 
-     return 1;
+    return 1;
 }
 
 int remove() {
-     if( s >= 0 ) socket_close(s);
-     return 1 ;
+    if(s >= 0)
+        socket_close(s);
+
+    return 1 ;
 }

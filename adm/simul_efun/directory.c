@@ -25,7 +25,7 @@ mixed assure_dir(string path) {
 
     parts = explode(path, "/");
     dir = "";
-    for (j = 0; j < sizeof(parts); j++) {
+    for(j = 0; j < sizeof(parts); j++) {
         dir += parts[j];
         mkdir(dir);
         dir += "/";

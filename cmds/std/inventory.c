@@ -64,7 +64,7 @@ string query_wealth(object tp) {
     string *currencies = CURRENCY_D->currency_list() ;
     string *out = ({ }) ;
 
-    if (!sizeof(currencies))
+    if(!sizeof(currencies))
         return "No currency is currently in use." ;
 
     currencies = reverse_array(currencies) ;

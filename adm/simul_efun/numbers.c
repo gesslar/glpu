@@ -74,7 +74,7 @@ private int evaluate_simple_condition(int number, string condition) {
     string operator;
     int value;
 
-    if (sscanf(condition, "%([<>=!]+)%d", operator, value) == 2) {
+    if(sscanf(condition, "%([<>=!]+)%d", operator, value) == 2) {
         switch(operator) {
             case "=":
             case "==": return number == value;
@@ -95,19 +95,19 @@ private int evaluate_compound_condition(int number, string condition) {
     int or_result, i, j;
 
     parts = explode(lower_case(condition), "and");
-    for (i = 0; i < sizeof(parts); i++) {
+    for(i = 0; i < sizeof(parts); i++) {
         part = parts[i];
         or_parts = explode(part, "or");
         or_result = 0;
-        for (j = 0; j < sizeof(or_parts); j++) {
+        for(j = 0; j < sizeof(or_parts); j++) {
             or_part = trim(or_parts[j]);
-            if (or_part[0] == '(') or_part = or_part[1..<2]; // Remove parentheses
-            if (evaluate_simple_condition(number, or_part)) {
+            if(or_part[0] == '(') or_part = or_part[1..<2]; // Remove parentheses
+            if(evaluate_simple_condition(number, or_part)) {
                 or_result = 1;
                 break;
             }
         }
-        if (!or_result) return 0; // If any AND condition fails, return false
+        if(!or_result) return 0; // If any AND condition fails, return false
     }
     return 1; // All AND conditions passed
 }

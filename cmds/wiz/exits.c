@@ -16,7 +16,7 @@ mixed main(object tp, string args) {
     object room = environment(tp);
 
     exits = keys(room->query_exits());
-    if (!sizeof(exits))
+    if(!sizeof(exits))
         return "There are no exits from this room.";
 
     x = allocate_mapping(exits, (:
@@ -24,7 +24,7 @@ mixed main(object tp, string args) {
     :));
 
     str = "Exits:\n";
-    for (i = 0; i < sizeof(exits); i++) {
+    for(i = 0; i < sizeof(exits); i++) {
         str += exits[i] + " = " + x[exits[i]] + "\n";
     }
 

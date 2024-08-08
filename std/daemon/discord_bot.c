@@ -270,7 +270,7 @@ void websocket_handle_text_frame(mapping payload) {
     } else
         _log(3, "No sequence") ;
 
-    if (mapp(payload)) {
+    if(mapp(payload)) {
         switch(payload["op"]) {
             case DISCORD_DISPATCH:
                 discord_handle_event(payload);

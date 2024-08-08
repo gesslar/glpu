@@ -79,8 +79,7 @@ int default_user_width() {
 //: FUNCTION use_colour
 // Returns the colour in the colour array, cols, to use given the position
 // out of the width (typically screen width).
-string use_colour(string *cols, int position, int width)
-{
+string use_colour(string *cols, int position, int width) {
    int col_index = floor(sizeof(cols) * ((0.0 + position) / (width || 1)));
 
    col_index = range(col_index, 0, sizeof(cols) - 1);
@@ -94,7 +93,7 @@ string use_colour(string *cols, int position, int width)
 string gradient_string(string str, string *cols) {
     int i = 0;
     string *exstr = explode(str, "");
-    while (i < strlen(str)) {
+    while(i < strlen(str)) {
         exstr[i] = use_colour(cols, i, strlen(str)) + exstr[i];
         i++;
     }
@@ -156,7 +155,7 @@ string green_bar(int value, int max, int width) {
     if(body->has_screenreader())
         return value + "/" + max;
 
-    if (value > max)
+    if(value > max)
         value = max;
 
     green = (value * 1.00 / max) * (width)-1;
@@ -224,7 +223,7 @@ string reverse_critical_bar(int value, int max, int width) {
         bar_colour = _c["green"] ;
     if(p < 0.60)
         bar_colour = _c["gold"] ;
-    else if (p < 0.80)
+    else if(p < 0.80)
         bar_colour = _c["yellow"] ;
 
     if(value > max)
@@ -300,9 +299,9 @@ string slider_colours_sum(int value, mapping colours, int width) {
     width = width - 3; // [ and ]
     marker = width * (1.0 * value / max);
 
-    if (marker == 0)
+    if(marker == 0)
         return_string = x_char + repeat_string(line_char, width - 1);
-    else if (marker == (width - 1))
+    else if(marker == (width - 1))
         return_string = repeat_string(line_char, width) + x_char;
     else
         return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
@@ -316,7 +315,7 @@ string slider_colours_sum(int value, mapping colours, int width) {
                             return_string[((next_pos + colour_add) + 1)..];
         colour_add += strlen(col) ; // TODO: Check this is correct
         next_pos = width * (1.0 * val / max);
-        if (next_pos > marker && !colour_after_marker)
+        if(next_pos > marker && !colour_after_marker)
             colour_after_marker = col;
     }
 

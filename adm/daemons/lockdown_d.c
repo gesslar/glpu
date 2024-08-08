@@ -73,8 +73,7 @@ void post_setup_1() {
 /* QUERY FUNCTIONS */
 /*******************/
 
-int is_user_banned(string user)
-{
+int is_user_banned(string user) {
     int i;
     string *banned_users;
 
@@ -83,8 +82,7 @@ int is_user_banned(string user)
     if(!banned_users || sizeof(banned_users) < 1)
     return 0;
 
-    for(i = 0; i < sizeof(banned_users); i++)
-    {
+    for(i = 0; i < sizeof(banned_users); i++) {
     if(user == banned_users[i] || regexp(user, banned_users[i]) == 1)
         return 1;
     }
@@ -92,8 +90,7 @@ int is_user_banned(string user)
     return 0;
 }
 
-int is_ip_banned(string ip)
-{
+int is_ip_banned(string ip) {
     int i;
     string *banned_ips, curr_ip, new_ip, first, second, third, fourth;
 
@@ -102,8 +99,7 @@ int is_ip_banned(string ip)
     if(!banned_ips || sizeof(banned_ips) < 1)
     return 0;
 
-    for(i = 0; i < sizeof(banned_ips); i++)
-    {
+    for(i = 0; i < sizeof(banned_ips); i++) {
     curr_ip = banned_ips[i];
 
     sscanf(curr_ip, "%s.%s.%s.%s", first, second, third, fourth);

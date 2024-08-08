@@ -18,7 +18,7 @@ mixed main(object tp, string str) {
     int done ;
     int it ;
 
-    if (!str || str == "") {
+    if(!str || str == "") {
         return "Syntax: do cmd,cmd,cmd,...\n";
     }
 

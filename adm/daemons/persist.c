@@ -25,20 +25,20 @@ void find_persistent_objects() {
 }
 
 void register_peristent(object ob) {
-    if (member_array(ob, _persistents) == -1) {
+    if(member_array(ob, _persistents) == -1) {
         _persistents += ({ ob });
     }
 }
 
 void unregister_persistent(object ob) {
-    if (member_array(ob, _persistents) != -1) {
+    if(member_array(ob, _persistents) != -1) {
         _persistents -= ({ ob });
     }
 }
 
 void persist_objects() {
     _persistents -= ({ 0 });
-    catch( filter(_persistents, (: $1->save_data() :)) ) ;
+    catch(filter(_persistents, (: $1->save_data() :))) ;
 }
 
 void heart_beat() {

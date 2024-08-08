@@ -22,7 +22,7 @@ void setup() {
     set_exits(([
         "east" : "square",
         "west" : "tavern",
-    ]) ) ;
+    ])) ;
     set_items(([
         ({ "village square", "square" }) :
             "The bustling epicenter from which this path begins, fading into "

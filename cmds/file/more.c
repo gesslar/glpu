@@ -26,13 +26,12 @@ mixed main(object tp, string file) {
     return 1;
 }
 
-string help(object tp)
-{
+string help(object tp) {
     return("SYNTAX: more <file>\n\n" +
-      "This command will allow you to page files to your terminal,\n"
-      "a screen at a time. For more information about using this\n"
-      "application and it's feature, type 'help' within the pager.\n\n"
-      "Note: Colour is not parsed for any file ending with the\n"
-      "'.c' extension. All other files, however, will render with\n"
-      "colour.\n");
+    "This command will allow you to page files to your terminal,\n"
+    "a screen at a time. For more information about using this\n"
+    "application and it's feature, type 'help' within the pager.\n\n"
+    "Note: Colour is not parsed for any file ending with the\n"
+    "'.c' extension. All other files, however, will render with\n"
+    "colour.\n");
 }

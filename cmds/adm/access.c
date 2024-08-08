@@ -455,7 +455,7 @@ string *parse(string str) {
 
      arr = explode(str, "\n");
 
-     for (i = 0; i < sizeof(arr); i++) {
+     for(i = 0; i < sizeof(arr); i++) {
           if(arr[i][0] == '#') {
                arr[i] = 0;
                continue;

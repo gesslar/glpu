@@ -21,11 +21,11 @@ void create() {
         "chairs" : "The chairs are cushioned with red material.",
         "railing" : "The railing is stained a deep brown.",
         "staircase" : "It appears that the staircases lead to an area that is under construction.",
-    ]) );
+    ]));
     set_exits(([
       "west" : __DIR__ + "bathroom",
       "south": __DIR__ + "cafe",
-    ]) );
+    ]));
 
     set_light(1);
 }

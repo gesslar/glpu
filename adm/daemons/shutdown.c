@@ -128,5 +128,5 @@ string get_status() {
     if(find_call_out(running) == -1)
         return null ;
 
-    return sprintf("%s will be %s in %d minutes and %d seconds.\n", mud_name(), type == SYS_SHUTDOWN ? "shutting down" : "rebooting", (end_time - time()) / 60, (end_time - time()) % 60  );
+    return sprintf("%s will be %s in %d minutes and %d seconds.\n", mud_name(), type == SYS_SHUTDOWN ? "shutting down" : "rebooting", (end_time - time()) / 60, (end_time - time()) % 60);
 }

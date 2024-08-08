@@ -147,7 +147,7 @@ protected nomask mapping parse_http_request_line(string request_line) {
     parts = pcre_extract(request_line, pattern);
 
     // Ensure parts were extracted correctly
-    if (sizeof(parts) == 3) {
+    if(sizeof(parts) == 3) {
         result["method"] = parts[0];
         result["path"] = parts[1];
         result["version"] = parts[2];
@@ -169,9 +169,9 @@ protected nomask mapping parse_route(string route) {
     parts = pcre_extract(route, pattern);
 
     // Ensure parts were extracted correctly
-    if (sizeof(parts) >= 1) { // parts[0] is the path, parts[1] is the query if present
+    if(sizeof(parts) >= 1) { // parts[0] is the path, parts[1] is the query if present
         result["route"] = parts[0];
-        if (sizeof(parts) == 2) {
+        if(sizeof(parts) == 2) {
             mapping query = parse_query(parts[1]);
             result["query"] = query;
         } else {
@@ -232,16 +232,16 @@ protected nomask mapping parse_headers(mixed str, int keep_remainder) {
     if(bufferp(str))
         str = to_string(str) ;
 
-    while (pcre_match(str, search_pat)) {
+    while(pcre_match(str, search_pat)) {
         match = pcre_extract(str, extract_pat);
 
-        if (sizeof(match) >= 2) {
+        if(sizeof(match) >= 2) {
             string header_name = lower_case(match[0]);
             string header_value = match[1];
 
-            if (pcre_match(header_value, "^\\d+$")) {
+            if(pcre_match(header_value, "^\\d+$")) {
                 headers[header_name] = to_int(header_value);
-            } else if (pcre_match(header_value, "^\\d+\\.\\d+$")) {
+            } else if(pcre_match(header_value, "^\\d+\\.\\d+$")) {
                 headers[header_name] = to_float(header_value);
             } else {
                 switch (header_name) {
@@ -261,7 +261,7 @@ protected nomask mapping parse_headers(mixed str, int keep_remainder) {
         }
     }
 
-    if (keep_remainder) {
+    if(keep_remainder) {
         headers["buffer"] = to_binary(str)[2..];
     }
 
@@ -296,7 +296,7 @@ protected nomask mixed parse_body(mixed body, string content_type) {
 
     _log(2, "Beginning parse_body") ;
 
-    if (!body || body == "")
+    if(!body || body == "")
         return 0;
 
     if(bufferp(body))
@@ -335,12 +335,12 @@ protected nomask mixed parse_body(mixed body, string content_type) {
             // Decode URL-encoded form data
             string *args;
             args = explode(body, "&");
-            if (sizeof(args)) {
+            if(sizeof(args)) {
                 payload = ([]);
-                foreach (string arg in args) {
+                foreach(string arg in args) {
                     string *parts;
                     parts = explode(arg, "=");
-                    if (sizeof(parts) == 2) {
+                    if(sizeof(parts) == 2) {
                         payload[url_decode(parts[0])] = url_decode(parts[1]);
                     }
                 }
@@ -384,8 +384,8 @@ protected nomask string url_encode(string str) {
     int sz, i;
 
     sz = sizeof(str);
-    for (i = 0; i < sz; i++) {
-        if (pcre_match(str[i..i], "^[a-zA-Z0-9" + allowed + "]$") == 0) {
+    for(i = 0; i < sz; i++) {
+        if(pcre_match(str[i..i], "^[a-zA-Z0-9" + allowed + "]$") == 0) {
             result += sprintf("%%%02X", str[i]);
         } else {
             result += str[i..i];
@@ -408,8 +408,8 @@ protected nomask string url_decode(string str) {
     matches = arrs[1];
 
     sz = sizeof(parts);
-    for (i = 0; i < sz; i++) {
-        if (matches[i] == 1) {
+    for(i = 0; i < sz; i++) {
+        if(matches[i] == 1) {
             int char;
             sscanf(parts[i], "%%%x", char);
             parts[i] = sprintf("%c", char);
@@ -427,7 +427,7 @@ protected nomask mapping parse_url(string str) {
 
     // Use regex to parse the URL and determine the protoco
     matches = pcre_extract(str, "^(http|ws)(s?)://([^:/]+):?(\\d+)?(/.*)?$");
-    if (!sizeof(matches))
+    if(!sizeof(matches))
         return 0 ;
 
     protocol = matches[0];
@@ -484,19 +484,19 @@ protected nomask varargs int bufsrch(buffer buf, mixed str) {
     sub_buf_sz = sizeof(sub_buf);
     start = 0;
 
-    if (sub_buf_sz > buf_sz || start < 0)
+    if(sub_buf_sz > buf_sz || start < 0)
         return -1;
 
-    for (int i = start; i <= buf_sz - sub_buf_sz; i++) {
+    for(int i = start; i <= buf_sz - sub_buf_sz; i++) {
         int match = 1;
-        for (int j = 0; j < sub_buf_sz; j++) {
-            if (buf[i+j] != sub_buf[j]) {
+        for(int j = 0; j < sub_buf_sz; j++) {
+            if(buf[i+j] != sub_buf[j]) {
                 match = 0;
                 break;
             }
         }
         printf("Debug: Checking at index %d, match = %d\n", i, match);
-        if (match) {
+        if(match) {
             return i;
         }
     }
@@ -508,12 +508,12 @@ protected nomask string binary_to_hex(buffer buf) {
     string hex = "";
     int len = sizeof(buf);
 
-    for (int i = 0; i < len; i++) {
+    for(int i = 0; i < len; i++) {
         hex += sprintf("0x%02x ", buf[i]);
     }
 
     // Remove the trailing and space
-    if (len > 0) {
+    if(len > 0) {
         hex = trim(hex) ;
     }
 
@@ -523,7 +523,7 @@ protected nomask string binary_to_hex(buffer buf) {
 protected nomask buffer hex_to_binary(string hex) {
     buffer binary = allocate_buffer(strlen(hex) / 2);
     int byte;
-    for (int i = 0; i < strlen(hex); i += 2) {
+    for(int i = 0; i < strlen(hex); i += 2) {
         sscanf(hex[i..i+1], "%x", byte);
         binary[i / 2] = byte;
     }
@@ -569,20 +569,20 @@ protected nomask mixed read_cache(string file) {
     string input;
     int bytes_to_read;
 
-    if (sz < 1) {
+    if(sz < 1) {
         return response;
     }
 
-    if (sz > max) {
+    if(sz > max) {
         return 0;
     }
 
-    while (curr < sz) {  // This condition is correct
+    while(curr < sz) {  // This condition is correct
         bytes_to_read = min(({sz - curr, chunk_size}));
 
         input = read_bytes(file, curr, bytes_to_read);
 
-        if (!input) {
+        if(!input) {
             break; // Exit loop if read_bytes fails
         }
 

@@ -8,27 +8,23 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str)
-{
-     string source, dest;
-     if(!str || !sscanf(str, "%s %s", source, dest)) return notify_fail("Syntax: mv <source> <dest>\n");
-     source = resolve_path(caller->query_env("cwd"), source);
-     dest = resolve_path(caller->query_env("cwd"), dest);
-     if(!(int)master()->valid_write(source, caller, "mv") || !(int)master()->valid_write(dest, caller, "mv"))
-     {
-          write("Error [mv]: Permission denied.\n");
-          return 1;
-     }
+mixed main(object caller, string str) {
+    string source, dest;
+    if(!str || !sscanf(str, "%s %s", source, dest))
+        return notify_fail("Syntax: mv <source> <dest>\n");
+    source = resolve_path(caller->query_env("cwd"), source);
+    dest = resolve_path(caller->query_env("cwd"), dest);
+    if(!(int)master()->valid_write(source, caller, "mv") || !(int)master()->valid_write(dest, caller, "mv")) {
+        write("Error [mv]: Permission denied.\n");
+        return 1;
+    }
 
-     if(rename(source, dest) < 0)
-     {
-          write("Error [mv]: Move failed.\n");
-     }
-     else
-     {
-          write("Successful [mv]: " + source + " moved to " + dest + "\n");
-     }
-     return 1;
+    if(rename(source, dest) < 0) {
+        write("Error [mv]: Move failed.\n");
+    } else {
+        write("Successful [mv]: " + source + " moved to " + dest + "\n");
+    }
+    return 1;
 }
 string help(object caller) {
     return (" SYNTAX: mv <source> <destination>\n\n" +

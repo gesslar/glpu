@@ -23,5 +23,5 @@ void setup() {
         "west" : "village_path2",
         "east" : "village_path3",
         "south" : "village_path4",
-    ]) ) ;
+    ])) ;
 }

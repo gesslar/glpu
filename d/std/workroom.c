@@ -34,15 +34,15 @@ void create() {
           "have one of their own. To see the source code for this workroom, "
           "you can type 'more here'. There is a sign on the wall."
      );
-     set_exits( ([
+     set_exits(([
         "square": "/d/village/virtual_area/square",
         "void"  : "/d/std/void"
-     ]) );
-     set_items( ([
+     ]));
+     set_items(([
           "sign" : "The sign reads:\n"
           "'You are never given a wish without also being given the "
           "power to make it come true. You may, however, have to work for"
           "it.'",
-     ]) );
+     ]));
      set_light(1);
 }

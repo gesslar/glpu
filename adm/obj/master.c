@@ -27,7 +27,7 @@ void create() {
     parse_access();
 
     // Set privs to master
-    call_out_walltime( (: set_privs, this_object(), "[master]" :), 0.01);
+    call_out_walltime((: set_privs, this_object(), "[master]" :), 0.01);
     // Tune into error channel
     // call_out_walltime("tune_into_error", 0.02) ;
 }
@@ -67,7 +67,7 @@ protected void epilog(int load_empty) {
 
     if(!sizeof(lines)) return;
 
-    for (i = 0; i < sizeof(lines); i++) {
+    for(i = 0; i < sizeof(lines); i++) {
         out = "" ;
         out += "Preloading : " + lines[i] + "..." ;
         time = time_frac() ;
@@ -145,7 +145,7 @@ varargs string standard_trace(mapping mp, int flag) {
 
     n = sizeof(trace);
 
-    for (i = 0; i < n; i++) {
+    for(i = 0; i < n; i++) {
         if(flag) ret += sprintf("#%d: ", i);
         ret += sprintf("'%s' at %s",
             trace[i]["function"],

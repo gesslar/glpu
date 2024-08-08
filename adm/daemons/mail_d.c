@@ -22,21 +22,18 @@ nosave object s_editor;
 
 string *get_all_members(string *parent_users);
 
-string get_mail_box_file(string user)
-{
+string get_mail_box_file(string user) {
     return MAIL_DIR + user[0..0] + "/" + user + "/" + user + ".mail.o";
 }//END get_mail_box_file
 
-mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
-{
+mixed send_message(mapping mail, string owner, int in_msg, int out_msg) {
     int i, num, index;
     string *recipients, *cc, *tmp_recipients = ({}), *tmp_cc = ({});
     string *to_be_notified = ({});
     mapping inbox_tmp = ([]);
     mapping outbox_tmp = ([]);
 
-    if(clonep(previous_object()))
-    {
+    if(clonep(previous_object())) {
         index = strsrch(file_name(previous_object()), "#", -1);
 
         if(file_name(previous_object())[0..index-1] != OBJ_MAIL_CLIENT[0..<3])
@@ -59,8 +56,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     recipients = mail["TO"];
 
-    for(i = 0; i < sizeof(recipients); i++)
-    {
+    for(i = 0; i < sizeof(recipients); i++) {
         if(recipients[i][0] == '(' && recipients[i][<1] == ')' && member_array(recipients[i][1..<2], s_editor->list_groups()) != -1)
             tmp_recipients += filter(get_all_members(master()->query_group(recipients[i])), (: $1[0] != '[' :));
         else
@@ -69,11 +65,8 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     recipients = tmp_recipients;
 
-    for(i = 0; i < sizeof(recipients); i++ )
-    {
-
-        if(file_exists(get_mail_box_file(recipients[i])))
-        {
+    for(i = 0; i < sizeof(recipients); i++) {
+        if(file_exists(get_mail_box_file(recipients[i]))) {
             restore_object(get_mail_box_file(recipients[i]));
 
             if(member_array(recipients[i], to_be_notified) == -1)
@@ -90,8 +83,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     cc = mail["CC"];
 
-    for(i = 0; i < sizeof(cc); i++)
-    {
+    for(i = 0; i < sizeof(cc); i++) {
         if(cc[i][0] == '(' && cc[i][<1] == ')' && member_array(cc[i][1..<2], s_editor->list_groups()) != -1)
             tmp_cc += filter(get_all_members(master()->query_group(cc[i])), (: $1[0] != '[' :));
         else
@@ -100,10 +92,8 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
 
     cc = tmp_cc;
 
-    for(i = 0; i < sizeof(cc); i++ )
-    {
-        if(file_exists(get_mail_box_file(cc[i])))
-        {
+    for(i = 0; i < sizeof(cc); i++) {
+        if(file_exists(get_mail_box_file(cc[i]))) {
             if(member_array(cc[i], to_be_notified) == -1)
                 to_be_notified += ({ cc[i] });
 
@@ -144,13 +134,11 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg)
     return 1;
 }
 
-string *get_all_members(string *parent_users)
-{
+string *get_all_members(string *parent_users) {
     string *users = ({});
     int i;
 
-    for(i = 0; i < sizeof(parent_users); i++)
-    {
+    for(i = 0; i < sizeof(parent_users); i++) {
         if(parent_users[i][0] == '(' && parent_users[i][<1] == ')' && member_array(parent_users[i][1..<2], s_editor->list_groups()) != -1)
             users += get_all_members(master()->query_group(parent_users[i]));
         else
@@ -160,14 +148,12 @@ string *get_all_members(string *parent_users)
     return users;
 }
 
-varargs mixed delete_message(string owner, int num1, int num2, int flag, int curr_msg)
-{
+varargs mixed delete_message(string owner, int num1, int num2, int flag, int curr_msg) {
     int i, index;
     mapping tmp_box = ([]);
     mapping tmp_box2 = ([]);
 
-    if(clonep(previous_object()))
-    {
+    if(clonep(previous_object())) {
         index = strsrch(file_name(previous_object()), "#", -1);
 
         if(file_name(previous_object())[0..index-1] != OBJ_MAIL_CLIENT[0..<3])
@@ -193,27 +179,19 @@ varargs mixed delete_message(string owner, int num1, int num2, int flag, int cur
     if(num2 && (num1 > num2))
         return "invalid range selected";
 
-    if(num2)
-    {
-        for(i = 1; i <= sizeof(tmp_box); i++)
-        {
+    if(num2) {
+        for(i = 1; i <= sizeof(tmp_box); i++) {
             if(i < num1)
                 tmp_box2[i] = tmp_box[i];
             else if(i > num2)
                 tmp_box2[i-(num2-num1+1)] = tmp_box[i];
         }
-    }
-    else
-    {
-        if(num1 == sizeof(tmp_box))
-        {
+    } else {
+        if(num1 == sizeof(tmp_box)) {
             map_delete(tmp_box, num1);
             tmp_box2 = tmp_box;
-        }
-        else
-        {
-            for(i = 1; i <= sizeof(tmp_box); i++)
-            {
+        } else {
+            for(i = 1; i <= sizeof(tmp_box); i++) {
                 if(i > num1)
                     tmp_box2[i-1] = tmp_box[i];
                 else
@@ -227,13 +205,10 @@ varargs mixed delete_message(string owner, int num1, int num2, int flag, int cur
     else
         inbox = tmp_box2;
 
-    if(flag)
-    {
+    if(flag) {
         if(curr_msg > sizeof(outbox))
             curr_out_msg = sizeof(outbox);
-    }
-    else
-    {
+    } else {
         if(curr_msg > sizeof(inbox))
             curr_in_msg = sizeof(inbox);
     }
@@ -243,8 +218,7 @@ varargs mixed delete_message(string owner, int num1, int num2, int flag, int cur
     return 1;
 }
 
-mapping restore(string user)
-{
+mapping restore(string user) {
     mapping rtn = ([]);
 
     if(file_exists(get_mail_box_file(user)))
@@ -262,8 +236,7 @@ mapping restore(string user)
     return rtn;
 }//END restore
 
-void save(string user, mapping in_box, mapping out_box, int *indices)
-{
+void save(string user, mapping in_box, mapping out_box, int *indices) {
     inbox = in_box;
     outbox = out_box;
     curr_in_msg = indices[0];

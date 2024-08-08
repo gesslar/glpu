@@ -258,17 +258,17 @@ int query_skill_progress(string skill) {
     int x, sz;
     float level, fractional_part;
 
-    if (!stringp(skill))
+    if(!stringp(skill))
         return null; // Return null for invalid input
 
     path = explode(skill, ".");
     sz = sizeof(path);
 
-    for (x = 0; x < sz; x++) {
-        if (!mapp(current[path[x]]))
+    for(x = 0; x < sz; x++) {
+        if(!mapp(current[path[x]]))
             return null; // Return null if the skill path doesn't exist
 
-        if (x == sz - 1) {
+        if(x == sz - 1) {
             level = current[path[x]]["level"];
             fractional_part = level - floor(level);
             return to_int(fractional_part * 100.0); // Convert fractional part to percentage
@@ -308,7 +308,7 @@ int modify_skill_level(string skill, int level) {
  * @returns {int} 1 if adjustments were made, 0 otherwise.
  */
 public int adjust_skills_by_npc_level(float level) {
-    if (nullp(skills) || !mapp(skills)) {
+    if(nullp(skills) || !mapp(skills)) {
         return 0; // No skills to adjust
     }
 
@@ -329,8 +329,8 @@ private nomask mapping adjust_skill_levels(mapping current_skills) {
     if(userp())
         error("This function is only intended for NPCs.");
 
-    foreach (skill, skill_data in current_skills) {
-        if (mapp(skill_data) && mapp(skill_data["subskills"])) {
+    foreach(skill, skill_data in current_skills) {
+        if(mapp(skill_data) && mapp(skill_data["subskills"])) {
             // If there are subskills, recurse into them
             adjust_skill_levels(skill_data["subskills"]);
         }

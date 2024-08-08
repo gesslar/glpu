@@ -67,11 +67,11 @@ varargs mixed *query_full_date(int t) {
     year += year_start;
 
     // Calculate month and day within the year
-    for (month = 0; month < months_in_year; month++) {
+    for(month = 0; month < months_in_year; month++) {
         int days_in_this_month = months[month][1];
         int seconds_in_this_month = days_in_this_month * hours_in_day * hour_length;
 
-        if (elapsed < seconds_in_this_month) {
+        if(elapsed < seconds_in_this_month) {
             break;
         }
 

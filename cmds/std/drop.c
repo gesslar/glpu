@@ -27,41 +27,41 @@ void setup() {
 mixed main(object tp, string arg) {
     object room = environment(tp);
 
-    if (!arg)
+    if(!arg)
         return notify_fail("SYNTAX: drop <object>\n");
 
-    if (arg == "all") {
+    if(arg == "all") {
         object *inv = find_targets(tp, 0, tp);
 
-        if (!sizeof(inv))
+        if(!sizeof(inv))
             return "You don't have anything in your inventory.\n";
 
-        foreach (object item in inv) {
-            if (item->prevent_drop()) {
+        foreach(object item in inv) {
+            if(item->prevent_drop()) {
                 tell(tp, "You cannot drop " + get_short(item) + ".\n");
                 continue;
             }
 
-            if (item->move(room)) {
+            if(item->move(room)) {
                 tell(tp, "You could not drop " + get_short(item) + ".\n");
                 continue;
             }
 
             tp->simple_action("$N $vdrop $p $o.", get_short(item));
         }
-    } else if (sscanf(arg, "all %s", arg)) {
+    } else if(sscanf(arg, "all %s", arg)) {
         object *inv = find_targets(tp, arg, tp);
 
-        if (!sizeof(inv))
+        if(!sizeof(inv))
             return "You don't have any '" + arg + "' in your inventory.\n";
 
-        foreach (object item in inv) {
-            if (item->prevent_drop()) {
+        foreach(object item in inv) {
+            if(item->prevent_drop()) {
                 tell(tp, "You cannot drop " + get_short(item) + ".\n");
                 continue;
             }
 
-            if (item->move(room)) {
+            if(item->move(room)) {
                 tp->simple_action("$N $vdrop $p $o.", get_short(item));
             } else {
                 tell(tp, "You could not drop " + get_short(item) + ".\n");
@@ -70,13 +70,13 @@ mixed main(object tp, string arg) {
     } else {
         object ob = find_target(tp, arg, tp);
 
-        if (!ob)
+        if(!ob)
             return "You don't have a '" + arg + "' in your inventory.\n";
 
-        if (ob->prevent_drop())
+        if(ob->prevent_drop())
             return "You cannot drop " + get_short(ob) + ".\n";
 
-        if (ob->move(room))
+        if(ob->move(room))
             return "You could not drop " + get_short(ob) + ".\n";
 
         tp->simple_action("$N $vdrop $p $o.", get_short(ob));

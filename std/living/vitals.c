@@ -110,7 +110,7 @@ void set_max_mp(float x) {
 
 float adjust_hp(float x) {
     hp += to_float(x) ;
-    if (hp > max_hp)
+    if(hp > max_hp)
         hp = max_hp ;
 
     if(hp <= 0.0) {
@@ -127,7 +127,7 @@ float adjust_hp(float x) {
 float adjust_max_hp(float x) {
     max_hp += to_float(x) ;
 
-    if (max_hp < 0.0)
+    if(max_hp < 0.0)
         max_hp = 0.0 ;
 
     if(hp > max_hp) {
@@ -144,7 +144,7 @@ float adjust_max_hp(float x) {
 
 float adjust_sp(float x) {
     sp += to_float(x) ;
-    if (sp > max_sp)
+    if(sp > max_sp)
         sp = max_sp ;
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
@@ -157,10 +157,10 @@ float adjust_sp(float x) {
 float adjust_max_sp(float x) {
     max_sp += to_float(x);
 
-    if (max_sp < 0.0)
+    if(max_sp < 0.0)
         max_sp = 0.0;
 
-    if (sp > max_sp) {
+    if(sp > max_sp) {
         sp = max_sp;
     }
 
@@ -174,7 +174,7 @@ float adjust_max_sp(float x) {
 
 float adjust_mp(float x) {
     mp += to_float(x) ;
-    if (mp > max_mp)
+    if(mp > max_mp)
         mp = max_mp ;
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
@@ -186,10 +186,10 @@ float adjust_mp(float x) {
 float adjust_max_mp(float x) {
     max_mp += to_float(x);
 
-    if (max_mp < 0.0)
+    if(max_mp < 0.0)
         max_mp = 0.0;
 
-    if (mp > max_mp) {
+    if(mp > max_mp) {
         mp = max_mp;
     }
 
@@ -282,61 +282,61 @@ string *query_condition_string() {
     float *ratio = query_condition();
 
     // HP Condition
-    if (ratio[0] <= 0.0)
+    if(ratio[0] <= 0.0)
         result[0] = "dead";
-    else if (ratio[0] <= 10.0)
+    else if(ratio[0] <= 10.0)
         result[0] = "critical";
-    else if (ratio[0] <= 30.0)
+    else if(ratio[0] <= 30.0)
         result[0] = "severely injured";
-    else if (ratio[0] <= 45.0)
+    else if(ratio[0] <= 45.0)
         result[0] = "moderately injured";
-    else if (ratio[0] <= 60.0)
+    else if(ratio[0] <= 60.0)
         result[0] = "injured";
-    else if (ratio[0] <= 75.0)
+    else if(ratio[0] <= 75.0)
         result[0] = "hurt";
-    else if (ratio[0] <= 90.0)
+    else if(ratio[0] <= 90.0)
         result[0] = "wounded";
-    else if (ratio[0] < 100.0)
+    else if(ratio[0] < 100.0)
         result[0] = "bruised and nicked";
     else
         result[0] = "healthy";
 
     // SP Condition
-    if (ratio[1] <= 5.0)
+    if(ratio[1] <= 5.0)
         result[1] = "brain dead";
-    else if (ratio[1] <= 15.5)
+    else if(ratio[1] <= 15.5)
         result[1] = "depleted";
-    else if (ratio[1] <= 30.0)
+    else if(ratio[1] <= 30.0)
         result[1] = "unfocused";
-    else if (ratio[1] <= 45.0)
+    else if(ratio[1] <= 45.0)
         result[1] = "mentally fuzzy";
-    else if (ratio[1] <= 60.0)
+    else if(ratio[1] <= 60.0)
         result[1] = "losing focus";
-    else if (ratio[1] <= 75.0)
+    else if(ratio[1] <= 75.0)
         result[1] = "clear-headed";
-    else if (ratio[1] <= 90.0)
+    else if(ratio[1] <= 90.0)
         result[1] = "sharp";
-    else if (ratio[1] < 100.0)
+    else if(ratio[1] < 100.0)
         result[1] = "focused";
     else
         result[1] = "fully charged";
 
     // MP Condition
-    if (ratio[2] <= 5.0)
+    if(ratio[2] <= 5.0)
         result[2] = "exhausted";
-    else if (ratio[2] <= 15.5)
+    else if(ratio[2] <= 15.5)
         result[2] = "sluggish";
-    else if (ratio[2] <= 30.0)
+    else if(ratio[2] <= 30.0)
         result[2] = "fatigued";
-    else if (ratio[2] <= 45.0)
+    else if(ratio[2] <= 45.0)
         result[2] = "tired";
-    else if (ratio[2] <= 60.0)
+    else if(ratio[2] <= 60.0)
         result[2] = "somewhat tired";
-    else if (ratio[2] <= 75.0)
+    else if(ratio[2] <= 75.0)
         result[2] = "lively";
-    else if (ratio[2] <= 90.0)
+    else if(ratio[2] <= 90.0)
         result[2] = "energetic";
-    else if (ratio[2] < 100.0)
+    else if(ratio[2] < 100.0)
         result[2] = "very lively";
     else
         result[2] = "full of stamina";

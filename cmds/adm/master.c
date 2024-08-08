@@ -35,7 +35,7 @@ mixed main(object caller, string arguments) {
      foreach(action in actions) {
           mixed result ;
 
-          result = catch( (*action)() ) ;
+          result = catch((*action)()) ;
           if(result)
                err += result ;
      }

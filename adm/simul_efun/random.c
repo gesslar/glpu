@@ -11,7 +11,7 @@
 int *prandom(int seed, int max) {
     int new_seed, result;
 
-    if (max <= 0) return ({ seed, 0 });
+    if(max <= 0) return ({ seed, 0 });
 
     new_seed = (seed * 1103515245 + 12345) & MAX_INT;
     result = new_seed % max;
@@ -48,7 +48,7 @@ mixed *prandom_float(int seed) {
 int *prandom_range(int seed, int min, int max) {
     int *result;
 
-    if (min >= max) return ({ seed, min });
+    if(min >= max) return ({ seed, min });
 
     result = prandom(seed, max - min + 1);
     return ({ result[0], result[1] + min });
@@ -65,7 +65,7 @@ int *prandom_range(int seed, int min, int max) {
 mixed *pelement_of(int seed, mixed *arr) {
     int *result;
 
-    if (!sizeof(arr)) return ({ seed, 0 });
+    if(!sizeof(arr)) return ({ seed, 0 });
 
     result = prandom(seed, sizeof(arr));
     return ({ result[0], arr[result[1]] });
@@ -85,9 +85,9 @@ mixed *pelement_of_weighted(int seed, mapping weights) {
     mixed *float_result;
     float roll;
 
-    if (!sizeof(items)) return ({ seed, 0 });
+    if(!sizeof(items)) return ({ seed, 0 });
 
-    foreach (mixed item, int weight in weights) {
+    foreach(mixed item, int weight in weights) {
         total += weight;
     }
 
@@ -95,8 +95,8 @@ mixed *pelement_of_weighted(int seed, mapping weights) {
     seed = float_result[0];
     roll = float_result[1] * total;
 
-    foreach (mixed item, int weight in weights) {
-        if (roll < weight) return ({ seed, item });
+    foreach(mixed item, int weight in weights) {
+        if(roll < weight) return ({ seed, item });
         roll -= weight;
     }
 

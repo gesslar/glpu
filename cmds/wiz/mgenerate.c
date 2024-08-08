@@ -74,7 +74,7 @@ string generate_area(string area_name, string area_type, int width, int height) 
     string cell;
     int *elevation_map;
 
-    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+    if(width > MAX_WIDTH || height > MAX_HEIGHT) {
         error("Area dimensions exceed maximum allowed size.");
     }
 
@@ -86,9 +86,9 @@ string generate_area(string area_name, string area_type, int width, int height) 
     generate_elevation_map(width, height, seed, ref elevation_map);
     smooth_elevation_map(width, height, ref elevation_map);
 
-    for (y = 0; y < height; y++) {
+    for(y = 0; y < height; y++) {
         line = "";
-        for (x = 0; x < width; x++) {
+        for(x = 0; x < width; x++) {
             cell = generate_cell(area_type, x, y, width, ref elevation_map, ref terrain_seed);
             line += cell + " ";
         }
@@ -115,8 +115,8 @@ private void generate_elevation_map(int width, int height, int seed, int ref *el
     int y, x;
     int *result;
 
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width; x++) {
+    for(y = 0; y < height; y++) {
+        for(x = 0; x < width; x++) {
             result = prandom_range(seed, 0, 4);
             seed = result[0];
             elevation_map[y * width + x] = result[1];
@@ -129,14 +129,14 @@ private void smooth_elevation_map(int width, int height, int ref *elevation_map)
     int *new_map;
 
     new_map = allocate(height * width);
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width; x++) {
+    for(y = 0; y < height; y++) {
+        for(x = 0; x < width; x++) {
             sum = elevation_map[y * width + x];
             count = 1;
-            for (ny = y-1; ny <= y+1; ny++) {
-                for (nx = x-1; nx <= x+1; nx++) {
-                    if (ny >= 0 && ny < height && nx >= 0 && nx < width && (ny != y || nx != x)) {
-                        if (abs(elevation_map[ny * width + nx] - elevation_map[y * width + x]) <= 1) {
+            for(ny = y-1; ny <= y+1; ny++) {
+                for(nx = x-1; nx <= x+1; nx++) {
+                    if(ny >= 0 && ny < height && nx >= 0 && nx < width && (ny != y || nx != x)) {
+                        if(abs(elevation_map[ny * width + nx] - elevation_map[y * width + x]) <= 1) {
                             sum += elevation_map[ny * width + nx];
                             count++;
                         } else {

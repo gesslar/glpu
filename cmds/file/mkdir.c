@@ -8,22 +8,18 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str)
-{
-     if(!str) return notify_fail("Syntax: mkdir <directory name>\n");
-     str = resolve_path(caller->query_env("cwd"), str);
-     if(file_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a file.\n");
-     if(directory_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a directory.\n");
-     if(!(int)master()->valid_write(str, caller, "mkdir"))
-     {
-          write("Error [mkdir]: Permission denied.\n");
-          return 1;
-     }
-     write(mkdir(str) ? "Successful [mkdir]: " + str + " created.\n" : "Error [mkdir]: Failed to create " + str + ".\n");
-     return 1;
+mixed main(object caller, string str) {
+    if(!str) return notify_fail("Syntax: mkdir <directory name>\n");
+    str = resolve_path(caller->query_env("cwd"), str);
+    if(file_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a file.\n");
+    if(directory_exists(str)) return notify_fail("Error [mkdir]: " + str + " already a directory.\n");
+    if(!(int)master()->valid_write(str, caller, "mkdir")) {
+        write("Error [mkdir]: Permission denied.\n");
+        return 1;
+    }
+    write(mkdir(str) ? "Successful [mkdir]: " + str + " created.\n" : "Error [mkdir]: Failed to create " + str + ".\n");
+    return 1;
 }
-
-
 
 string help(object caller) {
     return (" SYNTAX: mkdir <new directory>\n\n" +

@@ -83,28 +83,28 @@ varargs string tail(string path, int line_count) {
     end = file_size;
 
     // Ensure we don't start reading beyond the start of the file
-    if (end < 0) return "File does not exist or is empty.";
+    if(end < 0) return "File does not exist or is empty.";
 
-    while (total_lines < line_count && end > 0) {
+    while(total_lines < line_count && end > 0) {
         string chunk; // Variable to hold the data read in each chunk
         start = end - chunk_size;
-        if (start < 0) start = 0; // Adjust start to not go below file beginning
+        if(start < 0) start = 0; // Adjust start to not go below file beginning
 
         // Read the chunk from the file
         chunk = read_bytes(path, start, end - start);
 
-        if (!strlen(chunk)) break; // Break if no data was read
+        if(!strlen(chunk)) break; // Break if no data was read
 
         // Iterate through the chunk to count newlines
-        for (int i = strlen(chunk) - 1; i >= 0; i--) {
-            if (chunk[i] == '\n') {
+        for(int i = strlen(chunk) - 1; i >= 0; i--) {
+            if(chunk[i] == '\n') {
                 newlines_found++;
-                if (newlines_found >= line_count) break; // Stop if we have enough lines
+                if(newlines_found >= line_count) break; // Stop if we have enough lines
             }
             read_chars++;
 
             // Check if we've read too many characters without a newline
-            if (read_chars > 2000) break;
+            if(read_chars > 2000) break;
         }
 
         // Prepend the current chunk to the result
@@ -119,15 +119,15 @@ varargs string tail(string path, int line_count) {
         newlines_found = 0;
 
         // Break early if we've read too many characters without finding a newline
-        if (read_chars > 2000) break;
+        if(read_chars > 2000) break;
     }
 
     // Trim the result if we've collected more lines than needed
-    if (total_lines > line_count) {
+    if(total_lines > line_count) {
         int lines_to_trim = total_lines - line_count;
         int pos = 0;
-        for (int i = 0; i < strlen(result) && lines_to_trim > 0; i++) {
-            if (result[i] == '\n') {
+        for(int i = 0; i < strlen(result) && lines_to_trim > 0; i++) {
+            if(result[i] == '\n') {
                 lines_to_trim--;
                 pos = i + 1;
             }

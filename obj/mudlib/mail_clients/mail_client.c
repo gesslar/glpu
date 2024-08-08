@@ -45,7 +45,7 @@ void setup() {
     inbox = ([ ]);
     outbox = ([ ]);
     s_editor = new(OBJ_SECURITY_EDITOR);
-    add_init( (: client :)) ;
+    add_init((: client :)) ;
 }//END create
 
 void client(object tp) {
@@ -330,7 +330,7 @@ protected varargs void parse_mailcmd(string arg) {
         else num2 = sizeof(inbox);
     }
 
-    sscanf(arg, "%s %d,%*( *)%d", arg, num1, num2);
+    sscanf(arg, "%s %d,%*(*)%d", arg, num1, num2);
 
     if(!num1) num1 = curr_msg;
 

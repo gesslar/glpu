@@ -136,7 +136,7 @@ void http_handle_shutdown(mapping response) {
 
     // _log(2, "Body:\n%O", body) ;
 
-    err = catch ( call_back(request["callback"], response["response"]["status"]) ) ;
+    err = catch (call_back(request["callback"], response["response"]["status"])) ;
     if(err)
         _log(2, "Error calling callback: %O", err) ;
 }
@@ -286,7 +286,7 @@ private nomask int parse_time(string datetime) {
     }
 
     // If strptime returns -1, it means the date-time string is invalid
-    if (!epoch_time) {
+    if(!epoch_time) {
         error("Invalid date-time string");
     }
 

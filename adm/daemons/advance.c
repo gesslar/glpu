@@ -31,7 +31,7 @@ void setup() {
 
 int tnl(float level) {
     // Ensure level is at least 1.0
-    if (level < 1.0) {
+    if(level < 1.0) {
         level = 1.0;
     }
 
@@ -79,7 +79,7 @@ int kill_xp(object killer, object killed) {
     float adjustment_factor;
     int killer_level, killed_level, level_difference;
 
-    if (nullp(killer) || nullp(killed))
+    if(nullp(killer) || nullp(killed))
         return 0;
 
     killer_level = killer->query_effective_level();
@@ -97,11 +97,11 @@ int kill_xp(object killer, object killed) {
     adjustment_factor = 1.0;
 
     // Apply punishments if the player is higher level by more than the monster
-    if (level_difference > overlevel_threshold) {
+    if(level_difference > overlevel_threshold) {
         adjustment_factor -= overlevel_xp_punish * (level_difference - overlevel_threshold);
     }
     // Apply bonuses if the player is lower level by more than the monster
-    else if (level_difference < underlevel_threshold) {
+    else if(level_difference < underlevel_threshold) {
         adjustment_factor += underlevel_xp_bonus * (-level_difference);
     }
 

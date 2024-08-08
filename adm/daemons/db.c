@@ -33,23 +33,23 @@ void setup() {
     databases = ([ ]);
     table_definitions = ([ ]);
 
-    if (strlen(db_path) > 0) {
+    if(strlen(db_path) > 0) {
         // Find all table definition files first
         string *table_files = get_dir(db_path + "*" + table_suffix);
 
-        foreach (string table_file in table_files) {
+        foreach(string table_file in table_files) {
             string db_name = chop(table_file, table_suffix, -1) ;
             string table_file_name = db_path + table_file;
 
-            if (file_size(table_file_name) > 0) {
+            if(file_size(table_file_name) > 0) {
                 string line, *lines = explode_file(table_file_name);
                 table_definitions[db_name] = ([]);
 
-                foreach (line in lines) {
+                foreach(line in lines) {
                     int pos;
                     string table_name, table_definition;
 
-                    if (sscanf(line, "%s=%s", table_name, table_definition) == 2) {
+                    if(sscanf(line, "%s=%s", table_name, table_definition) == 2) {
                         table_definitions[db_name][table_name] = table_definition;
                     }
                 }
@@ -57,7 +57,7 @@ void setup() {
         }
 
         // Now, create databases and tables based on the table definitions
-        foreach (string db_name, mapping tables in table_definitions) {
+        foreach(string db_name, mapping tables in table_definitions) {
             string database_file = db_path + db_name + db_suffix;
             int con = -1 ;
 
@@ -76,23 +76,23 @@ void setup() {
                             return;
                     }
 
-                    foreach (string table_name, string table_definition in tables) {
+                    foreach(string table_name, string table_definition in tables) {
                         current = table_name ;
                         result = db_exec(fd, "CREATE TABLE IF NOT EXISTS " + table_name + " (" + table_definition + ")");
 
-                        if (stringp(result)) {
+                        if(stringp(result)) {
                             log_file("system/db", "Error creating table " + table_name + " in " + db_name + ": " + result + "\n");
                             return;
                         }
                     }
 
                     close_result = db_close(fd);
-                    if (close_result == 0) {
+                    if(close_result == 0) {
                         log_file("system/db", "Error closing connection to " + db_name + " at " + database_file + "\n");
                         return;
                     }
                 } ;
-                if (err) {
+                if(err) {
                     log_file("system/db", "Error creating tables in " + db_name + ": " + err + "\n");
                     continue ;
                 }
@@ -122,7 +122,7 @@ mixed query(string db, string q) {
 
     rows = db_exec(fd, q);
 
-    if (stringp(rows)) {
+    if(stringp(rows)) {
         log_file("system/db", "Error querying " + db + ": " + rows + "\n");
         return "Error querying " + db + ": " + rows + "\n";
     }
@@ -143,7 +143,7 @@ mixed query(string db, string q) {
     } ;
 
     close_result = db_close(fd);
-    if (close_result == 0) {
+    if(close_result == 0) {
         log_file("system/db", "Error closing connection to " + db + " at " + database_file + "\n");
         return "Error closing connection to " + db + " at " + database_file + "\n";
     }

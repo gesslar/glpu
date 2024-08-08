@@ -30,8 +30,7 @@ void i_Return(string arg, object caller) {
     return;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return
     " SYNTAX: afk [<message>]\n\n" +
     "This command allows you to set an away message. While away\n"+

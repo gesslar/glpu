@@ -26,11 +26,11 @@ void create() {
           "sink" : "To wash up with.",
           "toilet" : "To use to...",
           "door" : "@@query_door",
-     ]) );
+     ]));
 
      set_exits(([
           "east" : __DIR__ + "backr",
-     ]) );
+     ]));
 
      add_command("lock", "lock_door");
      add_command("unlock", "unlock_door");

@@ -23,7 +23,7 @@ void setup() {
     set_exits(([
         "east" : "financier",
         "west" : "square",
-    ]) ) ;
+    ])) ;
     set_items(([
         ({ "village square", "square" }) :
             "The bustling heart from which the path departs, leaving behind "

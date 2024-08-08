@@ -27,7 +27,7 @@ mixed main(object tp, string str) {
     }
 
     // Try to locate the requested object
-    target = get_object( str );
+    target = get_object(str);
 
     // Oh well, couldn't find the object
     if(!target)
@@ -41,7 +41,7 @@ mixed main(object tp, string str) {
         hold += "\n";
 
     // Try to locate all copies of the object
-    clones = children( file_name(target) );
+    clones = children(file_name(target));
 
     // Its either the Master object or has no other copies around
     if(sizeof(clones) == 1) {
@@ -66,7 +66,7 @@ mixed main(object tp, string str) {
     else clones -= ({ target });
 
     // Get original number of clones of designated object
-    original = sizeof( clones );
+    original = sizeof(clones);
 
     if(!(dest && !view)) {
         hold += "\n   There are " + sizeof(clones) + " copies active.\n\n";
@@ -81,7 +81,7 @@ mixed main(object tp, string str) {
             hold += file_name(clones[loop]) ;
 
             //    If the object has an environment, display it...
-            if(environment( clones[loop] ))
+            if(environment(clones[loop]))
                 hold += "\tin " + sprintf("%O\n", environment(clones[loop]));
             else
                 hold += "\n";
@@ -99,15 +99,15 @@ mixed main(object tp, string str) {
 
         //    Try to remove all clone copies
         clones->remove();
-        clones = children( file_name(target) );
+        clones = children(file_name(target));
         clones -= ({ target });
 
         // If there are any copies left...this should get rid of them
 
         for(loop=0; loop<sizeof(clones); loop++)
-            destruct( clones[loop] );
+            destruct(clones[loop]);
 
-        clones = children( file_name(target) );
+        clones = children(file_name(target));
         clones -= ({ target });
 
         hold += "All " + original + " copies of " + file_name(target) + " have been removed and destroyed";

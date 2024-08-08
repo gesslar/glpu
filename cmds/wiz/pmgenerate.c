@@ -64,9 +64,9 @@ private string generate_area(string area_name, string area_type, int width, int 
 
     map = allocate(height);
 
-    for (y = 0; y < height; y++) {
+    for(y = 0; y < height; y++) {
         line = "";
-        for (x = 0; x < width; x++) {
+        for(x = 0; x < width; x++) {
             noise_value = PERLIN_D->perlin(x / 10.0, y / 10.0, 0.0);
             elevation_value = PERLIN_D->perlin(x / 5.0, y / 5.0, 1.0);
             cell = generate_cell(area_type, noise_value, elevation_value);

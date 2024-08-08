@@ -107,9 +107,9 @@ object get_living(string name, object room) ;
 object get_player(string name, object room) ;
 object this_body() ;
 object top_environment(object ob) ;
-varargs mixed get_objects( string str, object player, int no_arr ) ;
+varargs mixed get_objects(string str, object player, int no_arr) ;
 varargs object find_ob(mixed ob, mixed cont) ;
-varargs object get_object( string str, object player ) ;
+varargs object get_object(string str, object player) ;
 varargs object find_targets(object tp, string str, object env, function f) ;
 varargs object find_target(object tp, string str, object env, function f) ;
 

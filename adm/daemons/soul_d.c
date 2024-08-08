@@ -65,7 +65,7 @@ nomask varargs int request_emote(string emote, string arg) {
         emote = emote+"/t";
     } else if(member_array(emote, keys(emotes)) == -1)    return 0;
 
-    if( (target && (sizeof(tmp_array) > 1)) || (!target && (sizeof(tmp_array) > 0)) ) {
+    if((target && (sizeof(tmp_array) > 1)) || (!target && (sizeof(tmp_array) > 0))) {
         for((target ? i = 1 : i = 0); i < sizeof(tmp_array); i++) {
             if(!mods_array) mods_array = ({ tmp_array[i] });
             else mods_array += ({ tmp_array[i] });
@@ -96,7 +96,7 @@ nomask varargs void do_emote(string emote, string mods, object target) {
              + "\n", this_body());
     } else {
         tell_object(this_body(), build_emote(msgs[0], emote, mods, target, 0, 1) + "\n");
-        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_body(), target }) );
+        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_body(), target }));
 
         if(target != this_body()) tell_object(target, build_emote(msgs[2], emote, mods, target, 1, 2) + "\n");
     }//END ELSE
@@ -129,7 +129,7 @@ nomask varargs string build_emote(string msg, string emote, string mods, object 
         msg = replace_string(msg, "$OI", "him/her");
 
         if(to_player == 2) msg = replace_string(msg, "$T", "you");
-        else msg = replace_string(msg, "$T", capitalize(target->query_name()) );
+        else msg = replace_string(msg, "$T", capitalize(target->query_name()));
 
         if(to_player == 2) msg = replace_string(msg, "$PT", "your");
         else msg = replace_string(msg, "$PT", "his/her");

@@ -23,7 +23,7 @@ void setup() {
     set_exits(([
         "south" : "manor",
         "north" : "square",
-    ]) ) ;
+    ])) ;
     set_items(([
         ({ "village square", "square" }) :
             "The starting point of many journeys within the village, the "

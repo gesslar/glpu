@@ -41,7 +41,7 @@ mixed main(object tp, string args) {
             }
         } else if(target == "npcs") {
             obs = present_livings(room);
-            obs = filter(obs, (: !interactive($1) :) );
+            obs = filter(obs, (: !interactive($1) :));
         } else {
             return _error("Unsupported argument to force.");
         }
@@ -50,14 +50,14 @@ mixed main(object tp, string args) {
             obs = users();
         } else {
             obs = present_livings(room);
-            obs = filter(obs, (: !interactive($1) :) );
+            obs = filter(obs, (: !interactive($1) :));
         }
     } else if(sscanf(args, "all here to %s", target, cmd) == 1) {
         if(admin) {
             obs = all_inventory(room);
         } else {
             obs = all_inventory(room);
-            obs = filter_array(obs, (: !interactive($1) :) );
+            obs = filter_array(obs, (: !interactive($1) :));
         }
     } else if(sscanf(args, "all %s to %s", target, cmd) == 2) {
         if(target == "users") {
@@ -94,7 +94,7 @@ mixed main(object tp, string args) {
         return _error("Syntax: force <living> to <cmd>");
     }
 
-    obs = filter_array(obs, (: living($1) && !devp($1) :) );
+    obs = filter_array(obs, (: living($1) && !devp($1) :));
 
     if(!sizeof(obs)) {
         return _info("No valid targets found.");

@@ -26,15 +26,15 @@ public nomask object compile_object(string file) {
     module = sprintf("%smodules/virtual/%s.c", __DIR__, vclass);
 
     // Check if the module exists and handle accordingly
-    if (file_exists(module)) {
+    if(file_exists(module)) {
         e = catch(load_object(module));
-        if (e) {
+        if(e) {
             log_file("VIRTUAL", e);
             return 0;
         }
 
         e = catch(result = call_other(module, "compile_object", file));
-        if (e) {
+        if(e) {
             log_file("VIRTUAL", e);
             return 0;
         }
@@ -43,19 +43,19 @@ public nomask object compile_object(string file) {
     }
 
     // If complex structure handling fails, try the top-level directory
-    if (sizeof(dir_parts) > 0) {
+    if(sizeof(dir_parts) > 0) {
         vclass = dir_parts[0];
         module = sprintf("%smodules/virtual/%s.c", __DIR__, vclass);
 
-        if (file_exists(module)) {
+        if(file_exists(module)) {
             e = catch(load_object(module));
-            if (e) {
+            if(e) {
                 log_file("VIRTUAL", e);
                 return 0;
             }
 
             e = catch(result = call_other(module, "compile_object", file));
-            if (e) {
+            if(e) {
                 log_file("VIRTUAL", e);
                 return 0;
             }

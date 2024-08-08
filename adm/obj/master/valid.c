@@ -242,8 +242,8 @@ int valid_read(string file, object user, string func) {
     else name = query_privs(user);
     if(!name) name = "noname";
 
-    if( strlen(file) > strlen(user_data_directory(name)) ) {
-        if( file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name) )
+    if(strlen(file) > strlen(user_data_directory(name))) {
+        if(file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name))
             return 1;
     }
 
@@ -275,7 +275,7 @@ int valid_write(string file, object user, string func) {
     if(user == this_object() || user == master()) return 1;
 
     if(strlen(file) > strlen(user_data_directory(name))) {
-        if( file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name) ) return 1;
+        if(file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name)) return 1;
     }
 
 
@@ -492,7 +492,7 @@ int is_member(string user, string group) {
     else return 0;
 }
 
-mixed valid_database( object caller, string fun, mixed *info ) {
+mixed valid_database(object caller, string fun, mixed *info) {
     // We are using SQLITE3, so just return 1.
     return 1 ;
 }

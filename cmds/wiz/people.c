@@ -33,9 +33,9 @@ mixed main(object tp, string arg) {
             OUserArr += ({ user });
     }
 
-    OAdminArr = sort_array(OAdminArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :) );
-    ODevArr = sort_array(ODevArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :) );
-    OUserArr = sort_array(OUserArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :) );
+    OAdminArr = sort_array(OAdminArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
+    ODevArr = sort_array(ODevArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
+    OUserArr = sort_array(OUserArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
 
     OUser = OAdminArr + ODevArr + OUserArr;
 

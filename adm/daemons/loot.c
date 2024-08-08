@@ -43,23 +43,23 @@ void drop(object tp, mixed item, object ob) {
 
     processed_item = process_loot_item(item, tp);
 
-    if (pointerp(processed_item) && sizeof(processed_item) == 2) {
+    if(pointerp(processed_item) && sizeof(processed_item) == 2) {
         file = processed_item[0];
         args = processed_item[1];
-        if (pointerp(args))
+        if(pointerp(args))
             loot_ob = new(file, args...);
         else
             loot_ob = new(file, args);
-    } else if (stringp(processed_item)) {
+    } else if(stringp(processed_item)) {
         file = processed_item;
         loot_ob = new(file);
     } else {
         return;
     }
 
-    if (loot_ob) {
+    if(loot_ob) {
         // Move returns 0 on success, anything else is a failure
-        if (loot_ob->move(ob))
+        if(loot_ob->move(ob))
             loot_ob->remove();
     }
 }
@@ -68,32 +68,32 @@ mixed process_loot_item(mixed item, object tp) {
     int size, index;
     mixed selected;
 
-    if (valid_function(item)) {
+    if(valid_function(item)) {
         return process_loot_item((*item)(tp), tp);
     }
-    if (pointerp(item)) {
+    if(pointerp(item)) {
         size = sizeof(item);
-        if (size == 0) return 0;
+        if(size == 0) return 0;
 
         index = random(size);
         selected = item[index];
 
-        if (stringp(selected)) {
-            if (index < size - 1 && pointerp(item[index + 1])) {
+        if(stringp(selected)) {
+            if(index < size - 1 && pointerp(item[index + 1])) {
                 return ({ selected, item[index + 1] });
             } else {
                 return selected;
             }
-        } else if (pointerp(selected) && index > 0 && stringp(item[index - 1])) {
+        } else if(pointerp(selected) && index > 0 && stringp(item[index - 1])) {
             return ({ item[index - 1], selected });
         }
 
         return 0;
     }
-    if (mapp(item)) {
+    if(mapp(item)) {
         return process_loot_item(element_of_weighted(item), tp);
     }
-    if (stringp(item)) {
+    if(stringp(item)) {
         return item;
     }
 

@@ -20,11 +20,11 @@ private mixed *format_return_currency(mapping m) ;
 
 // Main transaction function
 varargs mixed handle_transaction(object tp, int cost, string currency) {
-    if (!tp || !objectp(tp)) {
+    if(!tp || !objectp(tp)) {
         return "Invalid player object.";
     }
 
-    if (!currency) {
+    if(!currency) {
         currency = CURRENCY_D->lowest_currency();
     }
 
@@ -51,9 +51,9 @@ mixed complex_transaction(object tp, int cost, string currency) {
     change = ([]);
 
     // Sanity checks
-    if (member_array(currency, currencies) == -1) return "Invalid currency type.";
-    if (cost <= 0) return "Transaction amount must be positive.";
-    if (total_wealth < remaining_cost) return "You cannot afford this transaction.";
+    if(member_array(currency, currencies) == -1) return "Invalid currency type.";
+    if(cost <= 0) return "Transaction amount must be positive.";
+    if(total_wealth < remaining_cost) return "You cannot afford this transaction.";
 
     // Find the index of the transaction currency
     currency_index = member_array(currency, currencies);
@@ -73,7 +73,7 @@ mixed complex_transaction(object tp, int cost, string currency) {
     //    You buy toy car for 3 gold, 4 silver and receive 9 silver in change.
 
     // Process currencies starting from the transaction currency, then higher, then lower
-    for (i = currency_index; i >= 0; i--) {
+    for(i = currency_index; i >= 0; i--) {
         curr = currencies[i];
         curr_value = CURRENCY_D->currency_value(curr);
         available = wealth[curr];
@@ -84,19 +84,19 @@ mixed complex_transaction(object tp, int cost, string currency) {
         to_use = min(({available, (remaining_cost + curr_value - 1) / curr_value}));
         used_value = to_use * curr_value;
 
-        if (to_use > 0) {
+        if(to_use > 0) {
             to_subtract[curr] = (to_subtract[curr] || 0) + to_use;
             remaining_cost -= used_value;
             // printf("DEBUG: Using %d units of %s (value: %d copper)\n", to_use, curr, used_value);
             // printf("DEBUG: Subtracted %d units of %s, New remaining cost: %d copper\n", to_use, curr, remaining_cost);
         }
 
-        if (remaining_cost <= 0) break;
+        if(remaining_cost <= 0) break;
     }
 
     // If still not enough, go for lower denominations
-    if (remaining_cost > 0) {
-        for (i = currency_index + 1; i < sizeof(currencies); i++) {
+    if(remaining_cost > 0) {
+        for(i = currency_index + 1; i < sizeof(currencies); i++) {
             curr = currencies[i];
             curr_value = CURRENCY_D->currency_value(curr);
             available = wealth[curr];
@@ -104,32 +104,32 @@ mixed complex_transaction(object tp, int cost, string currency) {
             to_use = min(({available, (remaining_cost + curr_value - 1) / curr_value}));
             used_value = to_use * curr_value;
 
-            if (to_use > 0) {
+            if(to_use > 0) {
                 to_subtract[curr] = (to_subtract[curr] || 0) + to_use;
                 remaining_cost -= used_value;
                 // printf("DEBUG: Using %d units of %s (value: %d copper)\n", to_use, curr, used_value);
                 // printf("DEBUG: Subtracted %d units of %s, New remaining cost: %d copper\n", to_use, curr, remaining_cost);
             }
 
-            if (remaining_cost <= 0) break;
+            if(remaining_cost <= 0) break;
         }
     }
 
-    if (remaining_cost > 0) return "You don't have the right combination of coins for this transaction.";
+    if(remaining_cost > 0) return "You don't have the right combination of coins for this transaction.";
 
     // Calculate change
-    if (remaining_cost < 0) {
+    if(remaining_cost < 0) {
         change_amount = -remaining_cost;
-        for (i = 0; i < sizeof(currencies); i++) {
+        for(i = 0; i < sizeof(currencies); i++) {
             int change_in_curr ;
             curr = currencies[i];
             curr_value = CURRENCY_D->currency_value(curr);
             change_in_curr = change_amount / curr_value;
-            if (change_in_curr > 0) {
+            if(change_in_curr > 0) {
                 change[curr] = change_in_curr;
                 change_amount %= curr_value;
             }
-            if (change_amount == 0) break;
+            if(change_amount == 0) break;
         }
     }
 
@@ -151,8 +151,8 @@ mixed complex_transaction(object tp, int cost, string currency) {
     }
 
     // Apply the transaction
-    foreach (curr, amount in to_subtract) tp->adjust_wealth(curr, -amount);
-    foreach (curr, amount in change) tp->adjust_wealth(curr, amount);
+    foreach(curr, amount in to_subtract) tp->adjust_wealth(curr, -amount);
+    foreach(curr, amount in change) tp->adjust_wealth(curr, amount);
 
     return ({ format_return_currency(to_subtract), format_return_currency(change) });
 }
@@ -178,7 +178,7 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
     string currency;
     int amount;
 
-    if (!arrayp(transaction_result) || sizeof(transaction_result) != 2) {
+    if(!arrayp(transaction_result) || sizeof(transaction_result) != 2) {
         return "Invalid transaction result";
     }
 
@@ -188,10 +188,10 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
     to_subtract = ([]);
 
     // First, subtract the change
-    foreach (mixed *currency_info in change) {
+    foreach(mixed *currency_info in change) {
         currency = currency_info[0];
         amount = currency_info[1];
-        if (tp->query_wealth(currency) < amount) {
+        if(tp->query_wealth(currency) < amount) {
             return "Not enough " + currency + " to reverse the transaction";
         }
         tp->adjust_wealth(currency, -amount);
@@ -199,7 +199,7 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
     }
 
     // Then, add back the subtracted coins
-    foreach (mixed *currency_info in subtracted) {
+    foreach(mixed *currency_info in subtracted) {
         currency = currency_info[0];
         amount = currency_info[1];
         tp->adjust_wealth(currency, amount);
@@ -213,15 +213,15 @@ mixed reverse_transaction(object tp, mixed transaction_result) {
 string format_return_currency_string(mixed *currency_array) {
     string result = "";
 
-    if (!sizeof(currency_array)) {
+    if(!sizeof(currency_array)) {
         return "None";
     }
 
-    foreach (mixed *currency_info in currency_array) {
+    foreach(mixed *currency_info in currency_array) {
         string currency = currency_info[0];
         int amount = currency_info[1];
 
-        if (result != "") {
+        if(result != "") {
             result += ", ";
         }
 
@@ -232,7 +232,7 @@ string format_return_currency_string(mixed *currency_array) {
 }
 // Check if the player has enough funds
 private mixed check_funds(object tp, string currency, int amount) {
-    if (tp->query_wealth(currency) < amount) {
+    if(tp->query_wealth(currency) < amount) {
         return "You don't have enough " + currency + " for this transaction.";
     }
     return 1;
@@ -244,7 +244,7 @@ private mixed check_capacity(object tp, string currency, int amount) {
     int capacity = tp->query_capacity();
     int coin_difference = amount - tp->query_wealth(currency);
 
-    if (current_fill + coin_difference > capacity) {
+    if(current_fill + coin_difference > capacity) {
         return "You can't carry that much currency.";
     }
     return 1;
@@ -255,12 +255,12 @@ private mixed transfer_funds(object from, object to, string currency, int amount
     int from_result, to_result;
 
     from_result = from->adjust_wealth(currency, -amount);
-    if (from_result < 0) {
+    if(from_result < 0) {
         return "Failed to remove funds from the source.";
     }
 
     to_result = to->adjust_wealth(currency, amount);
-    if (to_result < 0) {
+    if(to_result < 0) {
         // Revert the transaction if adding to the destination fails
         from->adjust_wealth(currency, amount);
         return "Failed to add funds to the destination.";
@@ -274,7 +274,7 @@ mixed convert_for_transaction(object tp, int cost, string from_currency, string 
     int converted_amount;
     mixed result;
 
-    if (!CURRENCY_D->valid_currency_type(from_currency) ||
+    if(!CURRENCY_D->valid_currency_type(from_currency) ||
         !CURRENCY_D->valid_currency_type(to_currency)) {
         return "Invalid currency type.";
     }
@@ -282,12 +282,12 @@ mixed convert_for_transaction(object tp, int cost, string from_currency, string 
     converted_amount = CURRENCY_D->convert_currency(cost, from_currency, to_currency);
 
     result = check_funds(tp, from_currency, cost);
-    if (stringp(result)) return result;
+    if(stringp(result)) return result;
 
     result = check_capacity(tp, to_currency, converted_amount);
-    if (stringp(result)) return result;
+    if(stringp(result)) return result;
 
-    if (tp->convert_wealth(from_currency, to_currency, cost)) {
+    if(tp->convert_wealth(from_currency, to_currency, cost)) {
         return converted_amount;
     }
 
@@ -296,11 +296,11 @@ mixed convert_for_transaction(object tp, int cost, string from_currency, string 
 
 // Function to check if an object can afford a transaction
 mixed can_afford(object ob, int cost, string currency) {
-    if (!ob || !objectp(ob)) {
+    if(!ob || !objectp(ob)) {
         return "Invalid object.";
     }
 
-    if (ob->query_wealth(currency) >= cost) {
+    if(ob->query_wealth(currency) >= cost) {
         return 1;
     }
 

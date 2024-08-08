@@ -23,7 +23,7 @@ void setup() {
         "west" : "baker",
         "east" : "shop",
         "north": "field/field1",
-    ]) ) ;
+    ])) ;
     set_items(([
         ({ "village square", "square" }) :
             "The village square lies to the south, a bustling hub of activity "

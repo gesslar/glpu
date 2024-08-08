@@ -135,7 +135,7 @@ void get_name(string str) {
 
     str = lower_case(str);
 
-    for (i = 0; i < strlen(str); i++) {
+    for(i = 0; i < strlen(str); i++) {
         if(str[i] < 'a' || str[i] > 'z') {
             tell(this_object(),"Sorry, your name can only have letters. (a-z)\n"
                 "Please enter a new name: ");
@@ -383,8 +383,7 @@ void idle_email(string str) {
 #endif
 }
 
-void email_verified(string address, string resolved, int key)
-{
+void email_verified(string address, string resolved, int key) {
 #ifdef EMAIL_MUST_RESOLVE
     if(!resolved) {
         tell(this_object(),"Unable to verify e-mail.\n");
@@ -610,7 +609,7 @@ string parse_tokens(string text) {
         text = replace_string(text, "%users", implode(
             filter(users()->query_name(), (: $1 != "login" :))[0..<2], ", ") +
             ", and " + filter(users()->query_name(),
-            (: $1 != "login" :) )[<1]);
+            (: $1 != "login" :))[<1]);
         text = replace_string(text, "%user_count", "" + sizeof(users()));
         text = replace_string(text, "%date", ctime(time()));
         text = replace_string(text, "%open_status", open_status()) ;

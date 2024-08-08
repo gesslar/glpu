@@ -22,17 +22,17 @@ private int *init_perlin() {
     int *p = allocate(512);
     int *permutation = allocate(256);
 
-    for (i = 0; i < 256; i++)
+    for(i = 0; i < 256; i++)
         permutation[i] = i;
 
-    for (i = 0; i < 256; i++) {
+    for(i = 0; i < 256; i++) {
         j = random(256 - i) + i;
         k = permutation[i];
         permutation[i] = permutation[j];
         permutation[j] = k;
     }
 
-    for (i = 0; i < 256; i++)
+    for(i = 0; i < 256; i++)
         p[256 + i] = p[i] = permutation[i];
 
     return p;
@@ -97,7 +97,7 @@ public float perlin(float x, float y, float z) {
     amplitude = 1;
     maxValue = 0;
 
-    for (i = 0; i < OCTAVES; i++) {
+    for(i = 0; i < OCTAVES; i++) {
         total += noise(x * frequency, y * frequency, z * frequency, p) * amplitude;
         maxValue += amplitude;
         amplitude *= PERSISTENCE;

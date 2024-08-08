@@ -361,7 +361,7 @@ int i_GetIpAddress(string arg, int state) {
     if((!regexp(first, ip_item) && first != "*") ||
       (!regexp(second, ip_item) && second != "*") ||
       (!regexp(third, ip_item) && third != "*") ||
-      (!regexp(fourth, ip_item) && fourth != "*") ) {
+      (!regexp(fourth, ip_item) && fourth != "*")) {
         write("\n Error [lockdown]: invalid IP address\n");
         i_MainMenu("2");
         return 1;

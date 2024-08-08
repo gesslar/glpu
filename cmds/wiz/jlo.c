@@ -32,10 +32,9 @@ mixed main(object caller, string name) {
     return out;
 }
 
-string help(object caller)
-{
+string help(object caller) {
     return " SYNTAX: jlo [<username>]\n\n"
-       "This command will return the last ten lines \n"
-       "from the wizard's journal entry.  If no argument \n"
-       "is given, the current user's name will be used.\n";
+    "This command will return the last ten lines \n"
+    "from the wizard's journal entry.  If no argument \n"
+    "is given, the current user's name will be used.\n";
 }

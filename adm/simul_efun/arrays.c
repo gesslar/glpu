@@ -28,8 +28,8 @@ mixed *distinct_array(mixed *arr) {
  * @returns {mixed[]} - A new array with specified elements removed.
  */
 varargs mixed *remove_array_element(mixed *arr, int start, int end) {
-    if (!end) end = start;
-    if (start > end) return arr;
+    if(!end) end = start;
+    if(start > end) return arr;
     return arr[0..start-1] + arr[end+1..];
 }
 
@@ -53,7 +53,7 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) {
  */
 varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add) {
     mixed *before, *after;
-    if (!pointerp(items_to_add)) {
+    if(!pointerp(items_to_add)) {
         items_to_add = ({});
     }
 

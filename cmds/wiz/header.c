@@ -43,7 +43,7 @@ mixed main(object tp, string str) {
     string *files, file ;
     int sz ;
 
-    if (!str) {
+    if(!str) {
         return _error(usage_text);
     }
 
@@ -131,46 +131,46 @@ string parse_file(string file) {
 
     foreach(string line in lines) {
         // Skip empty lines and full-line comments
-        if (trim(line) == "" || pcre_match(trim(line), "^//")) continue;
+        if(trim(line) == "" || pcre_match(trim(line), "^//")) continue;
 
         // Handle start/end of multi-line comments
-        if (pcre_match(line, "/\\*")) in_comment = 1;
-        if (pcre_match(line, "\\*/")) {
+        if(pcre_match(line, "/\\*")) in_comment = 1;
+        if(pcre_match(line, "\\*/")) {
             in_comment = 0;
             continue;
         }
-        if (in_comment) continue;
+        if(in_comment) continue;
 
         // Handle #if 0 blocks
-        if (pcre_match(trim(line), "^#if 0")) in_if_0_block = 1;
-        if (pcre_match(trim(line), "^#endif") && in_if_0_block) {
+        if(pcre_match(trim(line), "^#if 0")) in_if_0_block = 1;
+        if(pcre_match(trim(line), "^#endif") && in_if_0_block) {
             in_if_0_block = 0;
             continue;
         }
-        if (in_if_0_block) continue;
+        if(in_if_0_block) continue;
 
-        if (!in_function) {
-            if (potential_function_start) {
+        if(!in_function) {
+            if(potential_function_start) {
                 potential_function += " " + trim(line);
-                if (pcre_match(potential_function, ".*\\)\\s*(\\{|;)")) {
+                if(pcre_match(potential_function, ".*\\)\\s*(\\{|;)")) {
                     current_function = potential_function;
                     func_name = extract_function_name(current_function);
-                    if (func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
+                    if(func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
                         _info("Including multi-line function: %s", func_name);
                         file_header += format_function(current_function) + "\n";
                         processed_functions[func_name] = 1;
                     }
                     potential_function_start = 0;
                     potential_function = "";
-                    if (strsrch(line, "{") != -1) {
+                    if(strsrch(line, "{") != -1) {
                         in_function = 1;
                         brace_count = 1;
                     }
                 }
-            } else if (is_potential_function_start(line)) {
+            } else if(is_potential_function_start(line)) {
                 potential_function_start = 1;
                 potential_function = line;
-            } else if (is_function_declaration(line)) {
+            } else if(is_function_declaration(line)) {
                 // ... (existing code for single-line function declarations)
             }
         } else {
@@ -178,9 +178,9 @@ string parse_file(string file) {
             open_braces = pcre_match_all(line, "\\{");
             close_braces = pcre_match_all(line, "\\}");
             brace_count += sizeof(open_braces) - sizeof(close_braces);
-            if (brace_count == 0) {
+            if(brace_count == 0) {
                 in_function = 0;
-                if (func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
+                if(func_name != "" && should_include_function(func_name) && !processed_functions[func_name]) {
                     _info("Including multi-line function: %s", func_name);
                     file_header += format_function(current_function) + "\n";
                     processed_functions[func_name] = 1;
@@ -195,7 +195,7 @@ string parse_file(string file) {
 int is_function_declaration(string line) {
     int result = pcre_match(line, function_detect_regex);
     _info("pcre_match result for is_function_declaration: %d", result);
-    if (!result) {
+    if(!result) {
         // Check for potential start of multi-line declaration
         result = is_potential_function_start(line);
     }
@@ -220,15 +220,15 @@ string extract_function_name(string line) {
 }
 
 int should_include_function(string func_name) {
-    if (member_array(func_name, applies) != -1) {
+    if(member_array(func_name, applies) != -1) {
         _info("Excluding %s (in applies)", func_name);
         return 0;
     }
-    if (member_array(func_name, excluded_functions) != -1) {
+    if(member_array(func_name, excluded_functions) != -1) {
         _info("Excluding %s (in excluded_functions)", func_name);
         return 0;
     }
-    if (pcre_match(func_name, excluded_pattern)) {
+    if(pcre_match(func_name, excluded_pattern)) {
         _info("Excluding %s (matches excluded_pattern)", func_name);
         return 0;
     }
@@ -245,7 +245,7 @@ string format_function(string line) {
 
     // Remove everything after and including the opening brace
     brace_index = strsrch(line, "{");
-    if (brace_index != -1) {
+    if(brace_index != -1) {
         formatted_line = line[0..brace_index-1];
     } else {
         formatted_line = line;
@@ -263,9 +263,9 @@ string format_function(string line) {
 
     // Preserve inline comments
     comments = "";
-    while (pcre_match(formatted_line, "/\\*.*?\\*/")) {
+    while(pcre_match(formatted_line, "/\\*.*?\\*/")) {
         string *parts = pcre_extract(formatted_line, "(.*?)(/\\*.*?\\*/)(.*)");
-        if (sizeof(parts) > 3) {
+        if(sizeof(parts) > 3) {
             formatted_line = parts[1] + parts[3];
             comments += " " + parts[2];
         }
@@ -273,7 +273,7 @@ string format_function(string line) {
 
     // Ensure there's a semicolon at the end
     formatted_line = trim(formatted_line);
-    if (formatted_line[<1] != ';') {
+    if(formatted_line[<1] != ';') {
         formatted_line += ";";
     }
 
@@ -281,10 +281,10 @@ string format_function(string line) {
     formatted_line += comments;
 
     // Only add 'varargs' if there's a default parameter or variadic argument
-    if ((strsrch(line, ":(") != -1 || strsrch(line, "...") != -1) &&
+    if((strsrch(line, ":(") != -1 || strsrch(line, "...") != -1) &&
         strsrch(formatted_line, "varargs") == -1) {
         string visibility = "";
-        if (pcre_match(formatted_line, "^(public|protected|private)")) {
+        if(pcre_match(formatted_line, "^(public|protected|private)")) {
             sscanf(formatted_line, "%s %s", visibility, formatted_line);
             formatted_line = visibility + " varargs " + formatted_line;
         } else {

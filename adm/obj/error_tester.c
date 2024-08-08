@@ -84,8 +84,7 @@ void check_dir() {
     dirs_to_check += dirs ;
     files_to_check += files ;
 
-    if((file_call_out == 0 || find_call_out(file_call_out) == -1) && sizeof(files_to_check) > 0)
-    {
+    if((file_call_out == 0 || find_call_out(file_call_out) == -1) && sizeof(files_to_check) > 0) {
         file_call_out = call_out_walltime("check_file", file_delay) ;
     }
 }

@@ -93,8 +93,7 @@ mixed main(object tp, string str) {
     }
 }
 
-string help(object tp)
-{
+string help(object tp) {
     return("SYNTAX: workroom [<user>]\n\n"
       "This command will move you to ~/workroom.c if it\n"
       "exists. You can also provide the name of another\n"
