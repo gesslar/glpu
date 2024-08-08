@@ -10,14 +10,14 @@
 #include <daemons.h>
 #include "/std/object/include/contents.h"
 
-private nomask mapping wealth = ([]) ;
+private nomask mapping _wealth = ([]) ;
 
 int query_total_coins() {
     int total ;
 
     total = 0 ;
 
-    foreach(int c in values(wealth)) {
+    foreach(int c in values(_wealth)) {
         total += c ;
     }
 
@@ -29,45 +29,44 @@ int query_total_wealth() {
     mixed *config = mud_config("CURRENCY") ;
 
     foreach(mixed *c in config) {
-        total += wealth[c[0]] * c[1] ;
+        total += _wealth[c[0]] * c[1] ;
     }
     return total ;
 }
 
 mapping query_all_wealth() {
-    return copy(wealth) ;
+    return copy(_wealth) ;
 }
 
 int query_wealth(string currency) {
-    return wealth[currency] ;
+    return _wealth[currency] ;
 }
 
 int adjust_wealth(string currency, int amount) {
     int mass ;
 
-    if(nullp(wealth))
-        wealth = ([]);
+    if(nullp(_wealth))
+        _wealth = ([]);
 
     if(!CURRENCY_D->valid_currency_type(currency))
         return null ;
 
     if(amount < 0)
-        if(wealth[currency] - amount < 0)
+        if(_wealth[currency] - amount < 0)
             return null ;
 
     if(mud_config("USE_MASS")) {
         mass = amount ;
         if(!can_hold_mass(mass)) {
-            printf("Failed mass check\n") ;
             return null ;
         }
     }
 
-    wealth[currency] += amount ;
+    _wealth[currency] += amount ;
 
     rehash_capacity() ;
 
-    return wealth[currency] ;
+    return _wealth[currency] ;
 }
 
 mapping set_wealth(mapping w) {
@@ -87,10 +86,10 @@ mapping set_wealth(mapping w) {
 
     rehash_capacity() ;
 
-    return wealth = w ;
+    return _wealth = w ;
 }
 
 void wipe_wealth() {
-    wealth = ([]);
+    _wealth = ([]);
     rehash_capacity() ;
 }

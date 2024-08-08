@@ -13,8 +13,9 @@
 
 inherit STD_DAEMON ;
 
-void drop(object tp, mixed item, object ob) ;
+void drop_items(object tp, mixed item, object ob) ;
 mixed process_loot_item(mixed item, object tp) ;
+void drop_coins(object tp, mixed item, object ob) ;
 
 void loot_drop(object tp, object ob) {
     mixed *loot_table, *loot;
@@ -22,20 +23,35 @@ void loot_drop(object tp, object ob) {
 
     loot_table = ob->query_loot_table();
 
-    if(!sizeof(loot_table))
-        return;
+    if(sizeof(loot_table)) {
+        foreach(loot in loot_table) {
+            mixed item = loot[0] ;
+            chance = loot[1] ;
 
-    foreach(loot in loot_table) {
-        mixed item = loot[0] ;
-        chance = loot[1] ;
-
-        if(random_float(100.0) < chance) {
-            catch(drop(tp, item, ob))  ;
+            if(random_float(100.0) < chance) {
+                catch(drop_items(tp, item, ob))  ;
+            }
         }
     }
 }
 
-void drop(object tp, mixed item, object ob) {
+void coin_drop(object tp, object ob) {
+    mixed *coin_table, *loot;
+    float chance ;
+
+    coin_table = ob->query_coin_table();
+    if(sizeof(coin_table)) {
+        foreach(loot in coin_table) {
+            mixed item = loot[0..1] ;
+            chance = loot[2] ;
+
+            if(random_float(100.0) < chance)
+                catch(drop_coins(tp, item, ob)) ;
+        }
+    }
+}
+
+void drop_items(object tp, mixed item, object ob) {
     mixed processed_item;
     object loot_ob;
     string file;
@@ -98,4 +114,21 @@ mixed process_loot_item(mixed item, object tp) {
     }
 
     return 0;
+}
+
+void drop_coins(object tp, mixed item, object ob) {
+    string type;
+    int num;
+    object coin_ob ;
+    int result ;
+
+    if(sizeof(item) == 2) {
+        type = item[0];
+        num = item[1];
+    } else
+        return;
+
+    coin_ob = new(OBJ_COIN, type, num);
+    if(coin_ob->move(ob))
+        coin_ob->remove();
 }

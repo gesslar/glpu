@@ -84,38 +84,46 @@ mixed main(object tp, string arg) {
             return "There is nothing to get.\n";
 
         foreach(object item in obs) {
-            if(item->move(tp)) {
-                tell(tp, "You were unable to pick up " + get_short(item) + ".\n");
+            int result ;
+            int is_coin = item->is_coin();
+            string short = get_short(item);
+
+            result = item->move(tp);
+            if(result != MOVE_OK) {
+                tell(tp, "You were unable to pick up " + short + ".\n");
                 continue;
             }
 
             if(source == room)
-                tp->simple_action("$N $vpick up a $o.", get_short(item));
+                tp->simple_action("$N $vpick up a $o.", short) ;
             else
-                tp->simple_action("$N $vtake a $o from a $o1.", get_short(item), get_short(source));
+                tp->simple_action("$N $vtake a $o from a $o1.", short, get_short(source));
 
             got = 1;
         }
         if(!got)
             return "You picked up nothing.\n";
     } else {
+        string short ;
         ob = find_target(tp, target, source);
         if(!ob)
             return "You see no '" + target + "' here.\n";
+
+        short = get_short(ob);
 
         if(living(ob))
             return "You cannot pick up living things.\n";
 
         if(ob->prevent_get())
-            return get_short(ob) + " cannot be picked up.\n";
+            return short + " cannot be picked up.\n";
 
         if(ob->move(tp))
-            return "You were unable to pick up " + get_short(ob) + ".\n";
+            return "You were unable to pick up " + short + ".\n";
 
         if(source == room)
-            tp->simple_action("$N $vpick up a $o.", get_short(ob));
+            tp->simple_action("$N $vpick up a $o.", short);
         else
-            tp->simple_action("$N $vtake a $o from a $o1.", get_short(ob), get_short(source));
+            tp->simple_action("$N $vtake a $o from a $o1.", short, get_short(source));
     }
 
     return 1;

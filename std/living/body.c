@@ -101,6 +101,8 @@ void die() {
 
     if(function_exists("query_loot_table"))
         LOOT_D->loot_drop(killed_by(), this_object()) ;
+    if(function_exists("query_coin_table"))
+        LOOT_D->coin_drop(killed_by(), this_object()) ;
 
     ob = first_inventory(this_object()) ;
     while(ob) {
@@ -108,6 +110,18 @@ void die() {
         if(ob->move(corpse))
             ob->remove() ;
         ob = next ;
+    }
+
+    // Now move coin objects to the corpse
+    if(query_total_wealth()) {
+        mapping wealth = query_all_wealth() ;
+        foreach(string currency, int amount in wealth) {
+            object coin = new(OBJ_COIN) ;
+            coin->set_up(currency, amount) ;
+            if(coin->move(corpse))
+                if(coin)
+                    coin->remove() ;
+        }
     }
 
     if(corpse->move(environment()))

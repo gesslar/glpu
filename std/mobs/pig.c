@@ -60,4 +60,7 @@ void virtual_setup(mixed args...) {
     }), 25.0) ;
 
     add_loot("/obj/weapon/piercing/rusty_sword") ;
+
+    add_coin("copper", 1, 100.0) ;
+    add_coin("silver", 1, 50.0) ;
 }
