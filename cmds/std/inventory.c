@@ -19,20 +19,26 @@ mixed main(object tp, string args) {
     object *equipped = values(tp->query_equipped()) ;
     object *wielded = values(tp->query_wielded()) ;
 
-    inventory = all_inventory(tp);
-    inventory = filter(inventory, (: $2->can_see($1) :), tp) ;
+    inventory = find_targets(tp, args, tp) ;
 
-    shorts = map(inventory, function(object ob, object *equipped, object *wielded) {
+    shorts = map(inventory, function(object ob, object tp, object *equipped, object *wielded) {
+        string result ;
+
         if(!ob->query_short())
             return 0 ;
 
+        result = get_short(ob) ;
+
         if(of(ob, equipped))
-            return sprintf("%s (worn)", get_short(ob)) ;
+            result += " (equipped)" ;
         else if(of(ob, wielded))
-            return sprintf("%s (wielded)", get_short(ob)) ;
-        else
-            return get_short(ob) ;
-    }, equipped, wielded);
+            result += " (wielded)" ;
+
+        if(devp(tp))
+            result += " (" + file_name(ob) + ")" ;
+
+        return result ;
+    }, tp, equipped, wielded);
 
     shorts -= ({ 0 }) ;
 

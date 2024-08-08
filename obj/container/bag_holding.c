@@ -21,4 +21,7 @@ void setup() {
     set_mass(5);
     set_capacity(200);
     set_ignore_mass(1);
+
+    set_closeable(1);
+    set_closed(1);
 }

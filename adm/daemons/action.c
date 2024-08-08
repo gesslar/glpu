@@ -17,9 +17,13 @@ inherit STD_DAEMON ;
 /* More simul conversion fall out */
 private nosave string vowels = "aeiouAEIOU";
 
-#define A_SHORT(x) (objectp(x) ? x->query_name() || x->query_short() : add_article(x))
-#define THE_SHORT(x) (objectp(x) ? x->query_name() || x->query_short() : add_article(x,1))
-#define SHORT(x) (objectp(x) ? x->query_name() || x->query_short() : x)
+private string SHORT(mixed x) {
+    if(objectp(x)) {
+        if(living(x)) return x->query_name();
+        else return x->query_short() || x->query_name() ;
+    }
+    return x;
+}
 
 string _a_short(mixed x) {
     if(objectp(x)) return x->query_short() ;

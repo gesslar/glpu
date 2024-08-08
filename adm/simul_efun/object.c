@@ -598,7 +598,7 @@ varargs object *find_targets(object tp, string arg, object source, function f) {
 varargs object find_target(object tp, string arg, object source, function f) {
     object *obs;
     string base_arg;
-    int num = -1;
+    int num, sz ;
 
     // Parse the argument for a numeric index
     if(sscanf(arg, "%s %d", base_arg, num) != 2)
@@ -606,8 +606,15 @@ varargs object find_target(object tp, string arg, object source, function f) {
 
     obs = find_targets(tp, base_arg, source, f);
 
-    if(num > 0 && num <= sizeof(obs))
-        return obs[num - 1];
-    else
-        return sizeof(obs) > 0 ? obs[0] : 0;
+    sz = sizeof(obs);
+    if(!sz)
+        return 0;
+
+    if(!num)
+        return obs[0];
+
+    if(num < 1 || num > sz)
+        return 0;
+
+    return obs[num - 1];
 }

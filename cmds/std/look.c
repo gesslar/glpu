@@ -68,7 +68,8 @@ string highlight_view(object tp, string str, string *keys) {
 }
 
 mixed render_room(object tp, object room, int brief) {
-    string *exits, *users, *objects;
+    string *exits ;
+    object *users, *objects;
     string result = "" ;
     mixed data, datum ;
 
@@ -106,16 +107,22 @@ mixed render_room(object tp, object room, int brief) {
     }
     if(data) result += "\n" + data + "\n" ;
 
-    users = filter(all_inventory(room), (: living($1) && $1 != $2 :), tp);
-    objects = filter(all_inventory(room), (: !living($1) :));
+    users = find_targets(tp, null, room, (: living($1) && $1 != $(tp) :));
+    objects = find_targets(tp, null, room, (: !living($1) :));
 
     if(sizeof(users) > 0) {
-        data = implode(map(users, (: get_short :)), "\n") ;
+        if(devp(tp))
+            data = implode(map(users, (: get_short($1) + " (" + file_name($1) + ")" :)), "\n") ;
+        else
+            data = implode(map(users, (: get_short :)), "\n") ;
         result += data + "\n" ;
     }
 
     if(sizeof(objects) > 0) {
-        data = implode(map(objects, (: get_short :)), "\n") ;
+        if(devp(tp))
+            data = implode(map(objects, (: get_short($1) + " (" + file_name($1) + ")" :)), "\n") ;
+        else
+            data = implode(map(objects, (: get_short :)), "\n") ;
         result += data + "\n" ;
     }
 
@@ -124,53 +131,73 @@ mixed render_room(object tp, object room, int brief) {
 }
 
 mixed render_object(object tp, object room, string target) {
-    object ob, user;
-    string subtarget;
-    string desc = "" ;
-    string temp ;
-    string name ;
+    object ob;
+    string name = tp->query_name();
+    string desc = "";
+    string temp;
+    int here_flag = 0;
 
-    name = tp->query_name();
+    // Check if the target includes the "here" argument
+    if (sscanf(target, "%s here", target)) {
+        here_flag = 1;
+    }
 
-    if(stringp(room->query_item(target))) {
-        string result = highlight_view(tp, room->query_item(target), keys(room->query_items())) ;
+    // Check for a room item first
+    if (stringp(room->query_item(target))) {
+        string result = highlight_view(tp, room->query_item(target), keys(room->query_items()));
         result = append(result, "\n");
         tell(tp, result);
-        tell_direct(room, name + " looks at " + target + ".\n", null, ({ tp }) );
+        tell_direct(room, name + " looks at " + target + ".\n", null, ({ tp }));
         return 1;
     }
 
-    if(target == "me") {
+    // Determine the object to look at
+    if (target == "me") {
         ob = tp;
     } else {
-        if(!ob = find_target(tp, target, tp)) {
-            if(!ob = find_target(tp, target, room)) {
-                return "You do not see " + target + ".\n" ;
+        if (here_flag) {
+            // Look for the object in the room first if "here" is specified
+            ob = find_target(tp, target, room);
+            if (!ob) {
+                return "You do not see " + target + " here.\n";
+            }
+        } else {
+            // Look for the object in the player's inventory first
+            ob = find_target(tp, target, tp);
+            if (!ob) {
+                // If not found in the inventory, look in the room
+                ob = find_target(tp, target, room);
+                if (!ob) {
+                    return "You do not see " + target + ".\n";
+                }
             }
         }
     }
 
-    if(living(ob))
-        return render_living(tp, room, ob, 0) ;
+    // Render living objects
+    if (living(ob))
+        return render_living(tp, room, ob, 0);
 
+    // Render non-living objects
     temp = get_short(ob);
-    if(stringp(temp)) desc += temp + "\n" ;
+    if (stringp(temp)) desc += temp + "\n";
     temp = get_long(ob);
-    if(stringp(temp)) desc += "\n" + temp + "\n" ;
+    if (stringp(temp)) desc += "\n" + temp + "\n";
 
-    if(strlen(desc)) {
-        if(devp(tp) && tp->query_env("look_filename") == "all") {
-            desc = "\e0032\e"+prepend(file_name(ob), "/") + "\eres\e\n" + desc ;
+    if (strlen(desc)) {
+        if (devp(tp) && tp->query_env("look_filename") == "all") {
+            desc = "\e0032\e" + prepend(file_name(ob), "/") + "\eres\e\n" + desc;
         }
     }
 
-    tell(ob, name + " looks at you.") ;
-    tell_down(room, name + " looks at " + get_short(ob) + ".\n", null, ({ tp, ob }) );
+    tell(ob, name + " looks at you.");
+    tell_down(room, name + " looks at " + get_short(ob) + ".\n", null, ({ tp, ob }));
 
-    tell(tp, desc) ;
+    tell(tp, desc);
 
-    return 1 ;
+    return 1;
 }
+
 
 mixed render_living(object tp, object room, object target, int brief) {
     string temp, result = "" ;
@@ -276,8 +303,48 @@ mixed render_living(object tp, object room, object target, int brief) {
     return 1 ;
 }
 
-mixed render_container(object tp, object room, string target) {
-    return "Error: Containers are not implemented yet.\n" ;
+mixed render_container(object tp, object room, string arg) {
+    object ob ;
+    string target ;
+    int here_flag ;
+    string desc = "" ;
+
+    if(sscanf(arg, "%s here", target) == 1)
+        here_flag = 1 ;
+    else
+        target = arg ;
+
+    if(here_flag) {
+        if(!ob = find_target(tp, target))
+            return "You do not see that here." ;
+    } else {
+        if(!ob = find_target(tp, target, tp))
+            if(!ob = find_target(tp, target))
+                return "You do not see " + target + " anywhere." ;
+    }
+
+    if(ob->is_locked())
+        desc += ob->query_short()+" is locked.\n" ;
+    else if(ob->is_closed())
+        desc += ob->query_short()+" is closed.\n" ;
+
+    if(!ob->is_closed() || (ob->is_closed() && !ob->is_opaque())) {
+        object *contents = find_targets(tp, null, ob) ;
+
+        if(sizeof(contents) > 0) {
+            desc += ob->query_short()+" contains:\n" ;
+            desc += implode(map(contents, (: get_short :)), "\n") + "\n" ;
+        } else {
+            desc += ob->query_short()+" is empty.\n" ;
+        }
+    }
+
+    if(present(ob, tp))
+        tp->simple_action("$N $vlook inside $p $o.", ob) ;
+    else
+        tp->simple_action("$N $vlook inside a $o.", ob) ;
+
+    return desc ;
 }
 
 string query_help(object tp) {
