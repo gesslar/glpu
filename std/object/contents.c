@@ -9,6 +9,7 @@
 #include <contents.h>
 #include <gmcp_defines.h>
 #include <daemons.h>
+#include <container.h>
 
 #include "/std/living/include/wealth.h"
 
@@ -108,6 +109,9 @@ void rehash_capacity() {
     if(!mud_config("USE_MASS"))
         return ;
 
+    if(ignore_capacity())
+        return ;
+
     total = 0 ;
     obs = all_inventory() ;
     foreach(ob in obs) {
@@ -119,4 +123,13 @@ void rehash_capacity() {
         total += query_total_coins() ;
 
     _fill = total ;
+
+    if(userp()) {
+        GMCP_D->send_gmcp(this_object(),
+            GMCP_PKG_CHAR_STATUS, ([
+                GMCP_LBL_CHAR_STATUS_FILL : query_fill(),
+                GMCP_LBL_CHAR_STATUS_CAPACITY : query_capacity()
+            ])
+        ) ;
+    }
 }

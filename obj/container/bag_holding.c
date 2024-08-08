@@ -19,5 +19,6 @@ void setup() {
     set_short("a small bag");
     set_long("A bag for carrying items.");
     set_mass(5);
-    set_capacity(150);
+    set_capacity(200);
+    set_ignore_mass(1);
 }

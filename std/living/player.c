@@ -73,8 +73,8 @@ void enter_world(int reconnecting) {
 
     if(!reconnecting) {
         restore_inventory() ;
+        rehash_capacity() ;
     }
-
 }
 
 void exit_world() {

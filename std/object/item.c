@@ -89,7 +89,7 @@ int move(mixed dest) {
     move_object(dest);
 
     if(use_mass) {
-        object env, *envs = ({ dest }) + all_environment(dest);
+        object env, *envs = all_environment(dest);
 
         // First do the checks
         foreach(env in envs) {

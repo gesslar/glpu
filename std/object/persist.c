@@ -13,6 +13,9 @@
 //:MODULE
 //This module implements persistence
 
+#include <item.h>
+#include <object.h>
+
 private nosave int save_recurse;
 private nosave mixed *saved_vars = ({ }) ;
 
@@ -99,7 +102,16 @@ void load_from_string(mixed value, int recurse) {
     // previous_object() (happens at the end)...  When you restored the body,
     // the body moved into the user object, but couldn't move out! -- Rust
     if(recurse > 1) {
-        move_object(previous_object());
+        if(move(previous_object())) {
+            object env = environment(previous_object()) ;
+            if(env) {
+                if(move(env)) {
+                    remove() ;
+                }
+            } else {
+                remove() ;
+            }
+        }
     }
 
     event( ({ this_object() }), "restored") ;
