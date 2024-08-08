@@ -548,34 +548,31 @@ varargs object *find_targets(object tp, string arg, object source, function f) {
     object *obs = ({});
     object env;
 
-    if (nullp(tp))
+    if(nullp(tp))
         error("Missing argument 1 for find_targets");
 
     // Determine the environment to search in
-    if (objectp(source)) {
+    if(objectp(source))
         env = source;
-    } else {
+    else
         env = environment(tp);
-    }
 
-    if (!env)
+    if(!env)
         return 0 ;
 
     // Get all inventory objects from the determined environment
     obs = get_all_inventory(env);
 
     // Filter objects by ID if argument is provided
-    if (arg) {
+    if(arg)
         obs = filter_by_id(obs, arg);
-    }
 
     // Filter objects by visibility
     obs = filter_by_visibility(tp, obs);
 
     // Apply the additional custom filter function if provided
-    if (valid_function(f)) {
+    if(valid_function(f))
         obs = apply_custom_filter(obs, f, tp);
-    }
 
     return obs;
 }
@@ -604,14 +601,13 @@ varargs object find_target(object tp, string arg, object source, function f) {
     int num = -1;
 
     // Parse the argument for a numeric index
-    if (sscanf(arg, "%s %d", base_arg, num) != 2)
+    if(sscanf(arg, "%s %d", base_arg, num) != 2)
         base_arg = arg;
 
     obs = find_targets(tp, base_arg, source, f);
 
-    if (num > 0 && num <= sizeof(obs)) {
+    if(num > 0 && num <= sizeof(obs))
         return obs[num - 1];
-    } else {
+    else
         return sizeof(obs) > 0 ? obs[0] : 0;
-    }
 }
