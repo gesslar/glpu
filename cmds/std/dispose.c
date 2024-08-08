@@ -12,16 +12,12 @@
 inherit STD_ACT ;
 
 mixed main(object tp, string str) {
-    object ob, room ;
+    object ob ;
 
     if(!str)
         return "Dispose of what?" ;
 
-    if(!ob = find_local_target(tp, str))
-        return 1 ;
-
-    room = environment(tp) ;
-    if(!present(ob, room))
+    if(!ob = find_target(tp, str))
         return "You do not see that here." ;
 
     if(!ob->is_corpse())

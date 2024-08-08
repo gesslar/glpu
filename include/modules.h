@@ -18,7 +18,6 @@
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_SAVE          DIR_STD_MODULES "save"
 #define M_SHOP          DIR_STD_MODULES "shop"
-#define M_TARGETING     DIR_STD_MODULES "targeting"
 #define M_UNICODE       DIR_STD_MODULES "unicode"
 #define M_USES          DIR_STD_MODULES "uses"
 

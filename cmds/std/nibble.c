@@ -15,7 +15,7 @@ mixed main(object tp, string str) {
     object ob ;
     int uses ;
 
-    if(!ob = find_carried_object(tp, str))
+    if(!ob = find_target(tp, str, tp))
         return "You don't have that." ;
 
     if(!ob->is_food())

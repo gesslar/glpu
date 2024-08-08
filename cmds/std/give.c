@@ -37,14 +37,13 @@ mixed main(object tp, string arg) {
      if(!room)
           return "You are nowhere." ;
 
-     target = find_local_target(tp, targetname);
-     if(!target)
+     if(!target = find_target(tp, targetname))
           return "You don't see " + targetname + " here.";
 
      if(!living(target))
           return "You can't give anything to that.";
 
-     ob = find_carried_object(tp, obname);
+     ob = find_target(tp, obname, tp);
      if(!objectp(ob))
           return "You don't see "+add_article(obname)+" here.";
 

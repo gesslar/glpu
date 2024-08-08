@@ -21,7 +21,6 @@
 #include <objects.h>
 #include <runtime_config.h>
 #include <signal.h>
-#include <targeting.h>
 
 #define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"

@@ -29,7 +29,7 @@ mixed main(object tp, string str) {
     mixed result ;
     int i ;
 
-    if(!ob = find_carried_object(tp, str))
+    if(!ob = find_target(tp, str, tp))
         return "You do not have that item." ;
 
     if(!ob->is_armour() && !ob->is_clothing())

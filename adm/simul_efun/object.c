@@ -507,3 +507,73 @@ varargs int same_env_check(object one, object two, int top_env) {
 
     return env1 == env2 ;
 }
+
+private object *filter_by_id(object *obs, string arg) {
+    return filter(obs, (: $1->id($(arg)) :));
+}
+
+private object *filter_by_visibility(object tp, object *obs) {
+    return filter(obs, (: $(tp)->can_see($1) :));
+}
+
+private object *apply_custom_filter(object *obs, function f, object tp) {
+    return filter(obs, (: (*$(f))($1, $(tp)) :));
+}
+
+private object *get_all_inventory(object env) {
+    return all_inventory(env);
+}
+
+varargs object *find_targets(object tp, string arg, object source, function f) {
+    object *obs = ({});
+    object env;
+
+    if (nullp(tp))
+        error("Missing argument 1 for find_targets");
+
+    // Determine the environment to search in
+    if (objectp(source)) {
+        env = source;
+    } else {
+        env = environment(tp);
+    }
+
+    if (!env)
+        return 0 ;
+
+    // Get all inventory objects from the determined environment
+    obs = get_all_inventory(env);
+
+    // Filter objects by ID if argument is provided
+    if (arg) {
+        obs = filter_by_id(obs, arg);
+    }
+
+    // Filter objects by visibility
+    obs = filter_by_visibility(tp, obs);
+
+    // Apply the additional custom filter function if provided
+    if (valid_function(f)) {
+        obs = apply_custom_filter(obs, f, tp);
+    }
+
+    return obs;
+}
+
+varargs object find_target(object tp, string arg, object source, function f) {
+    object *obs;
+    string base_arg;
+    int num = -1;
+
+    // Parse the argument for a numeric index
+    if (sscanf(arg, "%s %d", base_arg, num) != 2)
+        base_arg = arg;
+
+    obs = find_targets(tp, base_arg, source, f);
+
+    if (num > 0 && num <= sizeof(obs)) {
+        return obs[num - 1];
+    } else {
+        return sizeof(obs) > 0 ? obs[0] : 0;
+    }
+}

@@ -212,7 +212,7 @@ mixed cmd_sell(object tp, string str) {
     if(!userp(tp))
         return "Only players can sell to the shop.";
 
-    if(!ob = present(str, tp))
+    if(!ob = find_target(tp, str, tp))
         return "You don't have that item.";
 
     cost = query_cost(tp, ob, "sell") ;

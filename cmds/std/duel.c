@@ -8,10 +8,6 @@
 
 inherit STD_ACT ;
 
-void setup() {
-    target(TARGET_LIVING) ;
-}
-
 mixed main(object tp, string arg) {
     object victim ;
     string name, vname ;
@@ -26,8 +22,8 @@ mixed main(object tp, string arg) {
     if(tp->is_ghost())
         return "You can't duel while a ghost." ;
 
-    if(!victim = find_local_target(tp, arg))
-        return 1 ;
+    if(!victim = find_target(tp, arg))
+        return "You don't see that here." ;
 
     if(victim->is_dead())
         return "You can't duel a dead person." ;

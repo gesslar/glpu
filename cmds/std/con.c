@@ -32,8 +32,8 @@ mixed main(object tp, string str) {
         ob = tp;
     } else {
         object room = environment(tp);
-        if(!ob = find_local_target(tp, str))
-            return 1 ;
+        if(!ob = find_target(tp, str))
+            return "You don't see that here.\n" ;
     }
 
     if(!living(ob))

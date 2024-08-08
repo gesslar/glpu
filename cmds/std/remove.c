@@ -27,7 +27,7 @@ mixed main(object tp, string str) {
     int i ;
     mixed result ;
 
-    if(!ob = find_carried_object(tp, str))
+    if(!ob = find_target(tp, str, tp))
         return "You do not have that item." ;
 
     slot = ob->query_slot() ;

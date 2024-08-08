@@ -11,4 +11,3 @@
 inherit STD_CMD ;
 
 inherit M_CHECKS ;
-inherit M_TARGETING ;

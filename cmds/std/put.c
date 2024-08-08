@@ -11,6 +11,20 @@
 
 inherit STD_ACT ;
 
+void setup() {
+    usage_text =
+"put <object> in <container>\n"
+"put all <object> in <container>\n"
+"put <object> in <container> here\n"
+"put all <object> in <container> here\n";
+    help_text =
+"This command allows you to put an object into a container. You can specify a "
+"specific object to put into a container, or you can put all objects of a "
+"specific type into a container. You can also specify whether the container "
+"is in your inventory or in the room you are in.\n\n"
+"See also: get, drop\n";
+}
+
 mixed main(object tp, string str) {
     string dest, target;
     object env, ob, container;
@@ -35,11 +49,11 @@ mixed main(object tp, string str) {
 
     // Find the container
     if (here_flag) {
-        container = present(dest, env);
+        container = find_target(tp, dest, env);
     } else {
-        container = present(dest, tp);
+        container = find_target(tp, dest, tp);
         if (!container) {
-            container = present(dest, env);
+            container = find_target(tp, dest, env);
         }
     }
 
@@ -51,11 +65,10 @@ mixed main(object tp, string str) {
 
     // Handle 'put all' scenarios
     if (all_flag) {
-        object *obs = filter(all_inventory(tp), (: $1->id($2) :), target);
-        int sz = sizeof(obs);
+        object *obs = find_targets(tp, target, tp, (: $1->id($(target)) :));
         int put_count = 0;
 
-        if (!sz)
+        if (sizeof(obs) < 1)
             return "You do not have any " + target + ".";
 
         foreach (object item in obs) {
@@ -82,7 +95,7 @@ mixed main(object tp, string str) {
 
     } else {
         // Handle 'put <object>' scenarios
-        if (!(ob = find_carried_object(tp, target)))
+        if (!(ob = find_target(tp, target, tp)))
             return "You do not have " + add_article(target) + ".";
 
         if (ob == container)
