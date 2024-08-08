@@ -524,6 +524,26 @@ private object *get_all_inventory(object env) {
     return all_inventory(env);
 }
 
+/**
+ * @simul_efun find_targets
+ * @description This simul_efun will find all objects in a container, such as
+ *              a room, chest, player's inventory, that match the specified
+ *              argument. The argument can be a name, ID, or other identifier
+ *              that can be used to match objects.
+ *
+ *              The simul_efun will then filter the objects based on the
+ *              visibility of the calling object, and apply an additional
+ *              custom filter function if provided.
+ *
+ * @param {object} tp - The body object of the player or NPC searching
+ * @param {string} arg - The argument to match objects against
+ * @param {object} source - The object to search within, such as a room or
+ *                          container. If not provided, the environment of the
+ *                          calling object will be used.
+ * @param {function} f - An optional custom filter function to further filter
+ *                       the objects.
+ * @returns {object[]} - An array of located objects or 0 if none are found.
+ */
 varargs object *find_targets(object tp, string arg, object source, function f) {
     object *obs = ({});
     object env;
@@ -560,6 +580,24 @@ varargs object *find_targets(object tp, string arg, object source, function f) {
     return obs;
 }
 
+/**
+ * @simul_efun find_target
+ * @description This simul_efun will find a single object in a container, such
+ *              as a room, chest, player's inventory, that matches the specified
+ *              argument. The argument can be a name, ID, or other identifier
+ *              that can be used to match objects.
+ *
+ *              The simul_efun will then filter the objects based on the
+ *              visibility of the calling object, and apply an additional
+ *              custom filter function if provided.
+ * @param {object} tp - The body object of the player or NPC searching
+ * @param {string} arg - The argument to match objects against
+ * @param {object} source - The object to search within, such as a room or
+ *                          container. If not provided, the environment of the
+ *                          calling object will be used.
+ * @param {function} f - An optional custom filter function to further filter
+ * @returns {object} - The located object, or 0 if not found.
+ */
 varargs object find_target(object tp, string arg, object source, function f) {
     object *obs;
     string base_arg;

@@ -284,6 +284,36 @@ object *get_livings(mixed names, object room)
 Locates living objects by the specified names within the
 specified room.
 
+## find_target
+
+### Synopsis
+
+```c
+varargs object find_target(object tp, string arg, object source, function f)
+```
+
+### Parameters
+
+* `object tp` - The body object of the player or NPC searching
+* `string arg` - The argument to match objects against
+* `object source` - The object to search within, such as a room or container. If not provided, the environment of the calling object will be used.
+* `function f` - An optional custom filter function to further filter
+
+### Returns
+
+`object` - The located object, or 0 if not found.
+
+### Description
+
+This simul_efun will find a single object in a container, such
+as a room, chest, player's inventory, that matches the specified
+argument. The argument can be a name, ID, or other identifier
+that can be used to match objects.
+
+The simul_efun will then filter the objects based on the
+visibility of the calling object, and apply an additional
+custom filter function if provided.
+
 ## this_caller
 
 ### Synopsis
@@ -305,6 +335,37 @@ For example, a wizard using the force command.
 
 Be careful with this one, you don't want to accidentally
 perform operations on the wrong object.
+
+## find_targets
+
+### Synopsis
+
+```c
+varargs object *find_targets(object tp, string arg, object source, function f)
+```
+
+### Parameters
+
+* `object tp` - The body object of the player or NPC searching
+* `string arg` - The argument to match objects against
+* `object source` - The object to search within, such as a room or container. If not provided, the environment of the calling object will be used.
+* `function f` - An optional custom filter function to further filter the objects.
+
+### Returns
+
+`object*` - An array of located objects or 0 if none are found.
+
+### Description
+
+This simul_efun will find all objects in a container, such as
+a room, chest, player's inventory, that match the specified
+argument. The argument can be a name, ID, or other identifier
+that can be used to match objects.
+
+The simul_efun will then filter the objects based on the
+visibility of the calling object, and apply an additional
+custom filter function if provided.
+
 
 ## getoid
 
