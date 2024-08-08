@@ -70,7 +70,7 @@ mixed main(object tp, string arg) {
         }
     }
 
-    if(!source->is_room() && source->is_closed())
+    if(source != room && source->is_closed())
         return get_short(source) + " is closed.\n";
 
     // Handle 'get all' cases
