@@ -51,6 +51,12 @@ void continue_page(string input, string *text, mixed *cb, int no_colour, int mor
     string mess;
     string *this_page;
 
+    if(input == "q") {
+        if(!nullp(cb))
+            call_back(cb);
+        return;
+    }
+
     // Calculate the end index for this page
     end = min(({curr + more_lines - 1, sizeof(text) - 1}));
 
