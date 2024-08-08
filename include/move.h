@@ -8,4 +8,13 @@
 #define MOVE_DESTRUCTED     5
 #define MOVE_ALREADY_THERE  6
 
+#define MOVE_REASON ([ \
+    MOVE_OK: "Ok", \
+    MOVE_TOO_HEAVY: "Too heavy", \
+    MOVE_NO_DEST: "No destination", \
+    MOVE_NOT_ALLOWED: "Not allowed", \
+    MOVE_DESTRUCTED: "Destructed", \
+    MOVE_ALREADY_THERE: "Already there" \
+])
+
 #endif // __MOVE_H__

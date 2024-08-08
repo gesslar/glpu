@@ -26,6 +26,7 @@ void mudlib_setup(class StorageOptions storage) {
     set_capacity(MAX_INT) ;
 
     storage_options = storage ;
+    set_ignore_capacity(1) ;
 
     restore_contents() ;
 }
@@ -132,5 +133,4 @@ int request_clean_up() {
     return 0 ;
 }
 
-int ignore_capacity() { return 1 ; }
 int query_storage_object() { return 1 ; }

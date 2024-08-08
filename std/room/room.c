@@ -19,11 +19,14 @@ int query_roomType();
 string query_short();
 string query_long();
 
+void mudlib_setup(mixed args...) {
+    set_ignore_capacity(1) ;
+    set_ignore_mass(1) ;
+}
+
 int query_roomType() {
     return 1;
 }
 
-int ignore_mass() { return 1; }
-int ignore_capacity() { return 1; }
 int no_renew() { return 1 ; }
 int is_room() { return 1; }

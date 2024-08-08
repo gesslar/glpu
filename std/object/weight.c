@@ -13,8 +13,9 @@ int query_mass() {
 }
 
 int set_mass(int x) {
-    if(x < 1)
-        return 1 ;
+_debug("%O set_mass: %O\n", this_object(), x);
+    if(x < 0)
+        return 0 ;
 
     if(environment()) {
         int capacity = environment()->query_capacity();
@@ -31,7 +32,7 @@ int set_mass(int x) {
 
 int adjust_mass(int x) {
     int new_mass = mass + x;
-
+_debug("%O mass: %O new_mass: %O\n", this_object(), x, new_mass);
     if(x == 0)
         return 1;
 

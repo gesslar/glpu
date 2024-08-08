@@ -10,11 +10,12 @@
 
 /* Last edited on October 6th, 2006 by Tacitus */
 
-#include <logs.h>
 #include <daemons.h>
+#include <gmcp_defines.h>
+#include <logs.h>
+#include <move.h>
 #include <origin.h>
 #include <rooms.h>
-#include <gmcp_defines.h>
 
 inherit STD_ITEM ;
 
@@ -308,21 +309,21 @@ void get_email(string input) {
     string host;
 
     if(!input) {
-        tell(this_object(),"Error [login]: You must provide an e-mail address.\n");
+        tell(this_object(),"You must provide an e-mail address.\n");
         tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
     if(!sscanf(input, "%*s@%s", host)) {
-        tell(this_object(),"Error [login]: You must provide a valid e-mail address.\n");
+        tell(this_object(),"You must provide a valid e-mail address.\n");
         tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
     }
 
     if(host == "localhost") {
-        tell(this_object(),"Error [login]: Please provide a different e-mail address.\n");
+        tell(this_object(),"Please provide a different e-mail address.\n");
         tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
@@ -340,7 +341,7 @@ void idle_email(string str) {
 
 #ifdef EMAIL_MUST_RESOLVE
     if(!is_connected) {
-        tell(this_object(),"Error [login]: Unable to verify e-mail. Press press any key to try again.\n");
+        tell(this_object(),"Unable to verify e-mail. Press press any key to try again.\n");
         input_to("idle_email");
         return;
     } else {
@@ -386,7 +387,7 @@ void email_verified(string address, string resolved, int key)
 {
 #ifdef EMAIL_MUST_RESOLVE
     if(!resolved) {
-        tell(this_object()," Error [login]: Unable to verify e-mail.\n");
+        tell(this_object(),"Unable to verify e-mail.\n");
         tell(this_object(),"Please input your e-mail address: ");
         input_to("get_email");
         return;
@@ -467,6 +468,7 @@ void enter_world(int reconnecting) {
     string loc ;
     string e ;
     object room ;
+    int result ;
 
     if(!objectp(body))
         body = BODY_D->create_body(user) ;
@@ -493,45 +495,48 @@ void enter_world(int reconnecting) {
     if(body->gmcp_enabled())
         GMCP_D->init_gmcp(body) ;
 
-    // Now let's figure out where to put them
-    if(devp(user)) {
-        loc = body->query_env("start_location") ;
-        if(loc == "last_location")
-            loc = body->query("last_location") ;
-        else
-            loc = user_path(body) + "workroom" ;
-    } else {
-        loc = ROOM_START ;
-    }
-
-    loc = append(loc, ".c") ;
-
-    if(!file_exists(loc)) {
-        tell(this_object(),"Error [login]: Unable to find your start location.\n");
-        tell(this_object(),"Please contact an admin for assistance.\n");
-    }
-
-    if(e = catch(room = load_object(loc))) {
-        tell(this_object(),"Error [login]: Unable to load your start location\n");
-        tell(this_object(),"Please contact an admin for assistance.\n");
-    }
-
-    if(e = catch(body->move_living(room, null, null, "SILENT"))) {
-        tell(this_object(),"Error [login]: Unable to move you to your start location.\n");
-        tell(this_object(),"Please contact an admin for assistance.\n");
-    }
-
-    if(devp(user) && !environment(body)) {
-        // Try one more time to put them in the start location
-        loc = ROOM_START ;
-        if(e = catch(room = load_object(loc))) {
-            tell(this_object(),"Error [login]: Unable to load your start location\n");
-            tell(this_object(),"Please contact an admin for assistance.\n");
+    // If they are not reconnecting, figure out where to put them
+    if(!reconnecting) {
+        if(devp(user)) {
+            loc = body->query_env("start_location") ;
+            if(loc == "last_location")
+                loc = body->query("last_location") ;
+            else
+                loc = user_path(body) + "workroom" ;
+        } else {
+            loc = ROOM_START ;
         }
 
-        if(e = catch(body->move_living(room, null, null, "SILENT"))) {
-            tell(this_object(),"Error [login]: Unable to move you to your start location.\n");
-            tell(this_object(),"Please contact an admin for assistance.\n");
+        if(e = catch(room = load_object(loc))) {
+            tell(body,"Unable to load your start location\n");
+            tell(body,"Please contact an admin for assistance.\n");
+        }
+
+        if(e = catch(result = body->move_living(room, null, null, "SILENT"))) {
+            tell(body,"Unable to move you to your start location.\n");
+            tell(body,"Please contact an admin for assistance.\n");
+        }
+        if(result) {
+            tell(body,"Unable to move you to your start location: " + MOVE_REASON[result] + "\n");
+            tell(body,"Please contact an admin for assistance.\n");
+        }
+
+        if(devp(user) && !environment(body)) {
+            // Try one more time to put them in the start location
+            loc = ROOM_START ;
+            if(e = catch(room = load_object(loc))) {
+                tell(body,"Unable to load your start location\n");
+                tell(body,"Please contact an admin for assistance.\n");
+            }
+
+            if(e = catch(result = body->move_living(room, null, null, "SILENT"))) {
+                tell(body,"Unable to move you to your start location.\n");
+                tell(body,"Please contact an admin for assistance.\n");
+            }
+            if(result) {
+                tell(body,"Unable to move you to your start location: " + MOVE_REASON[result] + "\n");
+                tell(body,"Please contact an admin for assistance.\n");
+            }
         }
     }
 
@@ -585,7 +590,7 @@ object create_user(string name) {
     err = catch(user = load_object(sprintf("/link/%s", name))) ;
 
     if(err) {
-        tell(this_object(),"Error [login]: Unable to create user object.\n");
+        tell(this_object(),"Unable to create user object.\n");
         tell(this_object(),"It appears that the login object is dysfunctional. Try again later.\n");
         tell(this_object(),"Error: " + err + "\n");
         remove() ;

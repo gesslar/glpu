@@ -51,6 +51,7 @@ void mudlib_setup() {
     set_log_level(0) ;
     set("prevent_get", 1);
     add_action("command_hook", "", 1);
+    set_ignore_mass(1) ;
 }
 
 private nosave string *body_slots = ({
