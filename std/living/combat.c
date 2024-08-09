@@ -13,7 +13,6 @@
 #include <action.h>
 #include <advancement.h>
 #include <body.h>
-#include <damage.h>
 #include <equipment.h>
 #include <gmcp_defines.h>
 #include <module.h>
