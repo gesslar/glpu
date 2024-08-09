@@ -1,5 +1,5 @@
 /**
- * @file /std/user/module.c
+ * @file /std/living/module.c
  * @description Module management for user objects
  *
  * @created 2024/07/29 - Gesslar
@@ -17,18 +17,19 @@ varargs object add_module(string module, mixed args...) {
     object ob ;
     string path ;
     string name ;
+    string e ;
 
-    if(!module || module == "") error("Error [add_module]: Invalid module name.\n") ;
-    if(modules[module]) error("Error [add_module]: Module " + module + " already exists.\n") ;
+    if(!module || module == "") error("Invalid module name.\n") ;
+    if(modules[module]) error("Module " + module + " already exists.\n") ;
 
     path = "/std/modules/mobile/" + module + ".c" ;
     path = replace_string(path, " ", "_") ;
     if(!file_exists(path))
-        error("Error [add_module]: Module " + module + " does not exist.\n") ;
+        error("Module " + module + " does not exist.\n") ;
 
-    catch(ob = new(path)) ;
-    if(!ob)
-        error("Error [add_module]: Module " + module + " failed to load.\n") ;
+    e = catch(ob = new(path)) ;
+    if(e)
+        error("Module " + module + " failed to load with error: " + e + "\n") ;
 
     if(ob->attach(this_object(), args...) == 0) {
         ob->remove() ;
@@ -44,7 +45,7 @@ varargs object add_module(string module, mixed args...) {
 
 object query_module(string module) {
     if(!module || module == "")
-        error("Error [query_module]: Invalid module name. " + module) ;
+        error("Invalid module name. " + module) ;
     if(!modules[module])
         return 0 ;
 
@@ -54,8 +55,8 @@ object query_module(string module) {
 void remove_module(string module) {
     object ob ;
 
-    if(!module || module == "") error("Error [remove_module]: Invalid module name.\n") ;
-    if(!modules[module]) error("Error [remove_module]: Module " + module + " does not exist.\n") ;
+    if(!module || module == "") error("Invalid module name.\n") ;
+    if(!modules[module]) error("Module " + module + " does not exist.\n") ;
 
     ob = modules[module] ;
     if(!objectp(ob))
@@ -68,7 +69,7 @@ void remove_module(string module) {
 object get_module(string module) {
     object ob ;
 
-    if(!module || module == "") error("Error [get_module]: Invalid module name.\n") ;
+    if(!module || module == "") error("Invalid module name.\n") ;
     ob = modules[module] ;
 
     if(!objectp(ob))
@@ -85,9 +86,9 @@ varargs mixed module(string module, string func, mixed args...) {
     object ob ;
 
     if(!stringp(module) || module == "")
-        error("Error [query_module]: Invalid module name.\n") ;
+        error("Invalid module name.\n") ;
     if(!stringp(func) || func == "")
-        error("Error [query_module]: Invalid function name.\n") ;
+        error("Invalid function name.\n") ;
 
     ob = modules[module] ;
 
