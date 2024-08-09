@@ -10,16 +10,15 @@
  */
 
 #include <combat.h>
-#include <damage.h>
-#include <body.h>
-#include <gmcp_defines.h>
-#include <vitals.h>
 #include <action.h>
-#include <module.h>
-#include <equipment.h>
-#include <skills.h>
 #include <advancement.h>
+#include <body.h>
+#include <damage.h>
 #include <equipment.h>
+#include <gmcp_defines.h>
+#include <module.h>
+#include <skills.h>
+#include <vitals.h>
 
 inherit __DIR__ "damage" ;
 
