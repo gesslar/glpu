@@ -16,13 +16,14 @@ inherit DIR_STD_MODULES_MOBILE "module" ;
 void attack_on_sight(object target) ;
 
 private nomask nosave string *combat_memory = ({}) ;
+public function attack_on_sight = (: attack_on_sight :) ;
 
 void setup() {
     module_name = query_file_name() ;
 }
 
 int start_module(object ob, mixed args...) {
-    ob->add_init((: attack_on_sight :)) ;
+    ob->add_init(attack_on_sight) ;
 
     return 1 ;
 }
@@ -52,7 +53,7 @@ void add_to_memory(object target) {
 
 void unsetup(object prev) {
     if(query_owner() && prev != query_owner()) {
-        query_owner()->remove_init((: attack_on_sight :)) ;
+        query_owner()->remove_init(attack_on_sight) ;
         query_owner()->remove_module(module_name) ;
     }
 }
