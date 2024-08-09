@@ -23,6 +23,28 @@ varargs string call_trace(int colour)
 
 Returns a formatted string of the current call stack trace.
 
+## delay_act
+
+### Synopsis
+
+```c
+varargs int delay_act(string act, float delay, mixed *cb)
+```
+
+### Parameters
+
+* `string action` - The action to delay.
+* `float delay` - The amount of time to delay the action.
+* `mixed* cb` - The callback to execute after the delay.
+
+### Returns
+
+`int` - The ID of the delayed action.
+
+### Description
+
+Delays an action for a specified amount of time.
+
 ## assemble_call_back
 
 ### Synopsis

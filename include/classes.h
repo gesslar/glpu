@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define CLASS_ACT            DIR_CLASSES "act.c"
 #define CLASS_ALARM          DIR_CLASSES "alarm.c"
 #define CLASS_GMCP           DIR_CLASSES "gmcp.c"
 #define CLASS_STORAGE        DIR_CLASSES "storage.c"

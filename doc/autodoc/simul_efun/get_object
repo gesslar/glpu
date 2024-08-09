@@ -1,4 +1,4 @@
-varargs object get_object( string str, object player )
+varargs object get_object(string str, object player)
 
 Parameters:
 

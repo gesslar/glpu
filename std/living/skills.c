@@ -201,11 +201,36 @@ void set_skills(mapping s) {
 }
 
 /**
+ * @description Use a skill with a chance to improve it
+ * @param {string} skill - The name of the skill
+ * @param {object} target - The target of the skill
+ * @return {int} - 1 if the skill was improved, 0 otherwise
+ */
+int use_skill(string skill) {
+    float chance_to_improve = 20.0 ;
+
+    if(random_float(100.0) < chance_to_improve) {
+        improve_skill(skill);
+        return 1 ;
+    }
+
+    return 0 ;
+}
+
+/**
+ * @description Get the path of a skill
+ * @param {string} skill - The name of the skill
+ * @returns {string*} The path of the skill
+ */
+string *query_skill_path(string skill) {
+    return explode(skill, ".");
+}
+
+/**
  * @description Train a skill
  * @param {string} skill - The name of the skill
  * @param {float} progress - The fractional progress to add to the skill level
  */
-
 varargs float improve_skill(string skill, float progress) {
     string *path = explode(skill, ".");
     mapping current = skills;

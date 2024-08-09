@@ -1,4 +1,4 @@
-varargs mixed get_objects( string str, object player, int no_arr )
+varargs mixed get_objects(string str, object player, int no_arr)
 
 Parameters:
 

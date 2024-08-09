@@ -8,7 +8,7 @@ title: identify
 ### Synopsis
 
 ```c
-varargs string identify( mixed a, string indent )
+varargs string identify(mixed a, string indent)
 ```
 
 ### Parameters

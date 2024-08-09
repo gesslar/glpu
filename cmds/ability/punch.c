@@ -1,0 +1,70 @@
+/**
+ * @file /cmds/ability/punch.c
+ * @description Punch command
+ *
+ * @created 2024/08/08 - Gesslar
+ * @last_modified 2024/08/08 - Gesslar
+ *
+ * @history
+ * 2024/08/08 - Gesslar - Created
+ */
+
+inherit STD_ABILITY;
+
+void setup() {
+    set_name("punch");
+
+    aggressive = true ;
+    mp_cost = 5.0 ;
+    cooldown = 10.0 ;
+
+    usage_text = "punch <target>" ;
+    help_text = sprintf(
+"Use your fist to punch a target. This ability costs %.1f MP and has a "
+"cooldown of %.1f seconds.",
+        evaluate(mp_cost), evaluate(cooldown)
+    ) ;
+}
+
+void finish_punch(object tp, object victim) ;
+
+mixed use(object tp, string arg) {
+    object victim ;
+    mixed result ;
+
+    if(!arg)
+        return "Punch whom?" ;
+
+    if(!victim = local_target(tp, arg, (: living($1) && $1 != $(tp) :)))
+        return 1 ;
+
+    if(!result = delay_act("punch", 2.0, assemble_call_back(
+        (: finish_punch :),
+        tp, victim
+    ))) {
+        return "You are already doing something." ;
+    }
+
+    tp->simple_action("$N $vpull back a fist...") ;
+
+    return 1 ;
+}
+
+void finish_punch(int status, object tp, object victim) {
+    if(!status)
+        return ;
+
+    if(!same_env_check(tp, victim))
+        return ;
+
+    if(tp->can_strike(victim)) {
+        float damage = percent_of(25.0, tp->query_damage()) ;
+
+        tp->targetted_action("$N $vpunch $t!", victim);
+        tp->deliver_damage(victim, damage, "bludgeoning") ;
+        tp->use_skill("combat.melee.unarmed") ;
+    } else {
+        tp->targetted_action("$N $vtry to punch $t, but $vmiss.", victim) ;
+        victim->use_skill("combat.defense.dodge") ;
+    }
+}

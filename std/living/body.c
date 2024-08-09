@@ -16,6 +16,7 @@
 inherit STD_CONTAINER ;
 inherit STD_ITEM;
 
+inherit __DIR__ "act" ;
 inherit __DIR__ "advancement" ;
 inherit __DIR__ "alias" ;
 inherit __DIR__ "appearance" ;
@@ -44,7 +45,7 @@ private nosave object link;
 
 void mudlib_setup() {
     enable_commands() ;
-    path = ({"/cmds/std/"});
+    path = ({"/cmds/std/","/cmds/ability/", "/cmds/spell/"}) ;
     if(!query("env_settings"))
         set("env_settings", ([])) ;
     if(!query_env("prompt")) set_env("prompt", ">");
@@ -395,6 +396,11 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     result = move(dest);
     if(result)
         return result ;
+
+    if(is_acting()) {
+        tell(this_object(), "You stop what you are doing.\n") ;
+        cancel_acts() ;
+    }
 
     if(curr) {
         if(depart_message != "SILENT") {

@@ -77,7 +77,7 @@ up through nested environments.
 ### Synopsis
 
 ```c
-varargs mixed get_objects( string str, object player, int no_arr )
+varargs mixed get_objects(string str, object player, int no_arr)
 ```
 
 ### Parameters
@@ -414,7 +414,7 @@ specified room.
 ### Synopsis
 
 ```c
-varargs object get_object( string str, object player )
+varargs object get_object(string str, object player)
 ```
 
 ### Parameters

@@ -36,6 +36,7 @@ private nosave float _ac = 0.0;
 private nosave object last_damager ;
 private nosave object killed_by_ob ;
 private nosave string *combat_memory = ({ }) ;
+private nosave int no_combat = 0 ;
 
 void combat_round() {
     object enemy ;
@@ -138,6 +139,9 @@ void swing(int count, int multi) {
 
     if(can_strike(enemy, weapon)) {
         strike_enemy(enemy, weapon) ;
+    } else {
+        enemy->use_skill("combat.defense.dodge") ;
+        fail_strike(enemy, weapon) ;
     }
 
     swing(count - 1, multi) ;
@@ -153,7 +157,7 @@ int next_round() {
     return next_combat_round;
 }
 
-private int can_strike(object enemy, object weapon) {
+public int can_strike(object enemy, object weapon) {
     float ac = enemy->query_ac() ;
     float chance = mud_config("DEFAULT_HIT_CHANCE") ;
     float lvl = query_effective_level() ;
@@ -183,28 +187,30 @@ private int can_strike(object enemy, object weapon) {
            - enemy->query_skill_level("combat.defense.dodge")
            ;
 
-    // tell(this_object(), "Chance: " + chance + "\n") ;
-
     result = random_float(100.0) ;
 
-    if(result < chance) {
-        enemy->improve_skill("combat.defense.dodge") ;
-        return 1;
-    }
+    return result < chance ;
+}
 
-    name = query_name() ;
-    vname = enemy->query_name() ;
+private fail_strike(object enemy, object weapon) {
+    string wname, wtype ;
+    string *messes, mess ;
+    string skill_name ;
+    float skill ;
+    mapping weapon_info = query_weapon_info(weapon) ;
 
-    env = environment() ;
+    skill_name = sprintf("combat.melee.%s", weapon_info["skill"]) ;
+    skill = query_skill_level(skill_name) ;
+
+    wname = weapon_info["name"] ;
+    wtype = weapon_info["type"] ;
 
     mess = MESS_D->get_message("combat", wtype, 0) ;
     messes = ACTION_D->action(({ this_object(), enemy }), mess, ({wname})) ;
 
     tell(this_object(), messes[0], MSG_COMBAT_MISS) ;
     tell(enemy, messes[1], MSG_COMBAT_MISS) ;
-    tell_down(env, messes[2], MSG_COMBAT_MISS, ({ this_object(), enemy })) ;
-
-    return 0;
+    tell_down(environment(), messes[2], MSG_COMBAT_MISS, ({ this_object(), enemy })) ;
 }
 
 void strike_enemy(object enemy, object weapon) {
@@ -252,7 +258,7 @@ void strike_enemy(object enemy, object weapon) {
     //     base, skill, query_effective_level(), enemy->query_effective_level(), enemy->query_defense_amount(wtype), enemy->query_skill_level("combat.defense"))) ;
     // tell(enemy, "Damage: " + dam + "\n") ;
 
-    improve_skill(skill_name) ;
+    use_skill(skill_name) ;
 
     if(dam < 0.0)
         dam = 1.0 ;
@@ -629,4 +635,25 @@ string set_weapon_type(string str) {
 
 string query_weapon_type() {
     return weapon_type;
+}
+
+mixed prevent_combat(object victim) {
+    if(victim->query_peaceful(this_object()))
+        return "You cannot attack a peaceful creature.\n";
+
+    if(victim->query_no_combat(this_object()))
+        return "You cannot attack that.\n";
+
+    if(environment()->query_no_combat(this_object()))
+        return "You cannot attack here.\n";
+
+    return 1 ;
+}
+
+void set_no_combat(int x) {
+    no_combat = !!x ;
+}
+
+int query_no_combat() {
+    return no_combat ;
 }

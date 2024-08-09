@@ -219,3 +219,27 @@ varargs mixed call_if(mixed ob, string func, mixed arg...) {
 
     return null ;
 }
+
+/**
+ * @simul_efun delay_act
+ * @description Delays an action for a specified amount of time.
+ * @param {string} action - The action to delay.
+ * @param {float} delay - The amount of time to delay the action.
+ * @param {mixed*} cb - The callback to execute after the delay.
+ * @returns {int} - The ID of the delayed action.
+ */
+varargs int delay_act(string act, float delay, mixed *cb) {
+    int id ;
+    object tp = this_body() ;
+
+    if(!tp)
+        return null ;
+
+    if(!act || !delay || !cb)
+        return null ;
+
+    if(tp->is_acting())
+        return 0 ;
+
+    return tp->act(act, delay, cb) ;
+}

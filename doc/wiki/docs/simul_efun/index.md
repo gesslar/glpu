@@ -73,6 +73,7 @@ title: simul_efun
 * [call_back](function#call_back)
 * [call_if](function#call_if)
 * [call_trace](function#call_trace)
+* [delay_act](function#delay_act)
 * [valid_function](function#valid_function)
 
 ## [grammar](grammar)
