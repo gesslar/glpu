@@ -3,14 +3,17 @@
  * @description Handles the value of an object.
  *
  * @created 2024/08/01 - Gesslar
- * @last_modified 2024/08/01 - Gesslar
+ * @last_modified 2024/08/08 - Gesslar
  *
  * @history
  * 2024/08/01 - Gesslar - Created
+ * 2024/08/08 - Gesslar - Added save_var()
  */
 
-private nosave int _amount = 1;
-private nosave string _currency = "copper";
+#include <persist.h>
+
+private nosave int _amount = null;
+private nosave string _currency = null ;
 
 /**
  * @destription Set the value of the object.
@@ -19,6 +22,8 @@ private nosave string _currency = "copper";
  */
 
 void set_value(int value, string currency) {
+    save_var("_amount", "_currency");
+
     _amount = value;
     _currency = currency;
 }

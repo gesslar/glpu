@@ -15,6 +15,7 @@
 
 #include <item.h>
 #include <object.h>
+#include <persist.h>
 
 private nosave int save_recurse;
 private nosave mixed *saved_vars = ({ }) ;
