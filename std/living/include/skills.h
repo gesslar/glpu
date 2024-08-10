@@ -1,7 +1,6 @@
 #ifndef __SKILLS_H__
 #define __SKILLS_H__
 
-void init_skills();
 void wipe_skills();
 varargs void initialize_missing_skills(mapping skill_set, string curr_path);
 varargs int add_skill(string skill, float level);
@@ -18,5 +17,6 @@ int adjust_skills_by_npc_level(float level) ;
 private nomask mapping adjust_skill_levels(mapping current_skills) ;
 string *query_skill_path(string skill) ;
 int use_skill(string skill) ;
+int assure_skill(string skill) ;
 
 #endif // __SKILLS_H__

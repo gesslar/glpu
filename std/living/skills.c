@@ -10,14 +10,11 @@
  */
 
 #include <skills.h>
+#include <advancement.h>
 #include <boon.h>
+#include <npc.h>
 
 private nomask mapping skills = ([]);
-
-void init_skills() {
-    skills = skills || ([]);
-    initialize_missing_skills(mud_config("SKILLS"));
-}
 
 void wipe_skills() {
     skills = ([]);
@@ -86,25 +83,27 @@ varargs int add_skill(string skill, float level) {
 }
 
 int remove_skill(string skill) {
-    string *path = explode(skill, ".");
-    mapping current = skills, parent = skills;
+    string *path;
+    mapping current = skills;
     int x, sz;
 
-    if(!stringp(skill))
-        return null ;
+    if (!stringp(skill))
+        return null;
 
+    path = explode(skill, ".");
     sz = sizeof(path);
-    for(x = 0; x < sz; x++) {
-        if(!mapp(current[path[x]])) return 0;
-        if(x == sz - 1) {
-            map_delete(parent, path[x]);
-            return 1;
-        }
-        parent = current;
+
+    for (x = 0; x < sz - 1; x++) {
+        if (!mapp(current) || !current[path[x]] || !mapp(current[path[x]]["subskills"]))
+            return 0;  // Unable to find
         current = current[path[x]]["subskills"];
     }
 
-    return null ;
+    if (!mapp(current) || !current[path[sz-1]])
+        return 0;  // Unable to find
+
+    map_delete(current, path[sz-1]);
+    return 1;  // Success
 }
 
 /**
@@ -112,20 +111,26 @@ int remove_skill(string skill) {
  * @param {string} skill - The name of the skill
  * @returns {float} The level of the skill as an integer
  */
-
 float query_skill(string skill) {
     string *path = explode(skill, ".");
     mapping current = skills;
     int x, sz;
 
-    if(!stringp(skill)) return 0.0;
+    if(!stringp(skill))
+        return null ;
+
+    if(function_exists("is_npc") && is_npc())
+        return query_level() * 3.0 ;
 
     sz = sizeof(path);
     for(x = 0; x < sz; x++) {
-        if(!mapp(current[path[x]])) return 0.0;
-        if(x == sz - 1) return current[path[x]]["level"];
+        if(!mapp(current[path[x]]))
+            return null ;
+        if(x == sz - 1)
+            return current[path[x]]["level"];
         current = current[path[x]]["subskills"];
     }
+
     return null ;
 }
 
@@ -160,7 +165,6 @@ varargs float query_skill_level(string skill, int raw) {
  * @param {string} skill - The name of the skill
  * @param {float} level - The level of the skill with fractional progress
  */
-
 int set_skill_level(string skill, float level) {
     string *path = explode(skill, ".");
     mapping current = skills;
@@ -209,9 +213,16 @@ void set_skills(mapping s) {
 int use_skill(string skill) {
     float chance_to_improve = 20.0 ;
 
-    if(random_float(100.0) < chance_to_improve) {
-        improve_skill(skill);
-        return 1 ;
+    if(!stringp(skill))
+        return null ;
+
+    if(query_skill(skill)) {
+        if(random_float(100.0) < chance_to_improve) {
+            improve_skill(skill);
+            return 1 ;
+        }
+    } else {
+        assure_skill(skill);
     }
 
     return 0 ;
@@ -365,4 +376,22 @@ private nomask mapping adjust_skill_levels(mapping current_skills) {
     }
 
     return current_skills;
+}
+
+/**
+ * @description Assure that an entire skill path exists. If not, create it and
+ * set the level to 1.0.
+ * @param {string} skill - The name of the skill
+ * @returns {int} - 1 if the skill was assured, 0 otherwise
+ */
+int assure_skill(string skill) {
+    if(nullp(query_skill(skill))) {
+        if(add_skill(skill, 1.0)) {
+            tell(this_object(), "You have gained a new skill: " + skill + ".\n");
+            return 1 ;
+        } else
+            return 0 ;
+    }
+
+    return 1 ;
 }

@@ -15,6 +15,7 @@ void setup() {
     set_name("punch");
 
     aggressive = true ;
+    target_current = true ;
     mp_cost = 5.0 ;
     cooldown = 10.0 ;
 
@@ -31,9 +32,6 @@ void finish_punch(object tp, object victim) ;
 mixed use(object tp, string arg) {
     object victim ;
     mixed result ;
-
-    if(!arg)
-        return "Punch whom?" ;
 
     if(!victim = local_target(tp, arg, (: living($1) && $1 != $(tp) :)))
         return 1 ;
@@ -67,4 +65,6 @@ void finish_punch(int status, object tp, object victim) {
         tp->targetted_action("$N $vtry to punch $t, but $vmiss.", victim) ;
         victim->use_skill("combat.defense.dodge") ;
     }
+
+    victim->start_attack(tp) ;
 }

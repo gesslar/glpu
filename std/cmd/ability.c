@@ -20,6 +20,10 @@ object local_target(object tp, string arg, function f) ;
 protected nomask nosave string ability_type ;
 protected nomask nosave int aggressive ;
 
+// Targetting
+protected nomask nosave int target_current ;
+
+// Conditions
 protected nomask nosave float hp_cost, sp_cost, mp_cost ;
 protected nomask nosave float cooldown ;
 
@@ -67,8 +71,19 @@ varargs object local_target(object tp, string arg, function f) {
     if(!objectp(tp))
         error("Bad argument 1 to local_target().\n");
 
-    if(!stringp(arg))
-        error("Bad argument 2 to local_target().\n");
+    if(nullp(arg)) {
+        if(target_current) {
+            if(t = tp->highest_threat()) {
+                return t ;
+            } else {
+                tell(tp, "You need to specify a target.\n") ;
+                return 0 ;
+            }
+        } else {
+            tell(tp, "You need to specify a target.\n") ;
+            return 0 ;
+        }
+    }
 
     source = environment(tp) ;
 

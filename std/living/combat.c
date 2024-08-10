@@ -155,25 +155,37 @@ int next_round() {
     return next_combat_round;
 }
 
-public int can_strike(object enemy, object weapon) {
-    float ac = enemy->query_ac() ;
+public int can_strike(object enemy, mixed weapon) {
+    float ac ;
     float chance = mud_config("DEFAULT_HIT_CHANCE") ;
     float lvl = query_effective_level() ;
     float vlvl = enemy->query_effective_level() ;
     float result ;
     string name, vname ;
     object env ;
-    string wname, wtype ;
     string *messes, mess ;
     string skill_name, *skill_parts ;
+    string defense_skill ;
     float skill ;
-    mapping weapon_info = query_weapon_info(weapon) ;
+    mapping weapon_info ;
 
-    skill_name = "combat.melee" ;
+    if(nullp(weapon) || objectp(weapon)) {
+        weapon_info = query_weapon_info(weapon) ;
+        skill_name = weapon_info["skill"] ;
+        ac = enemy->query_ac() ;
+        defense_skill = "combat.defense.dodge" ;
+    } else if(stringp(weapon)) {
+        skill_name = weapon ;
+        ac = enemy->query_spell_ac() ;
+        if(strsrch(weapon, ".spell.") != -1)
+            defense_skill = "combat.defense.evade" ;
+        else
+            defense_skill = "combat.defense.dodge" ;
+    } else {
+        return 0 ;
+    }
+
     skill = query_skill_level(skill_name) ;
-
-    wname = weapon_info["name"] ;
-    wtype = weapon_info["type"] ;
 
     if(enemy->query_mp() < 0.0)
         chance += 25.0 ;
@@ -182,10 +194,12 @@ public int can_strike(object enemy, object weapon) {
            + (lvl - vlvl)
            + skill
            - (ac * 2.0)
-           - enemy->query_skill_level("combat.defense.dodge")
+           - enemy->query_skill_level(defense_skill)
            ;
 
     result = random_float(100.0) ;
+
+    enemy->use_skill(defense_skill) ;
 
     return result < chance ;
 }
@@ -193,12 +207,8 @@ public int can_strike(object enemy, object weapon) {
 private fail_strike(object enemy, object weapon) {
     string wname, wtype ;
     string *messes, mess ;
-    string skill_name ;
     float skill ;
     mapping weapon_info = query_weapon_info(weapon) ;
-
-    skill_name = sprintf("combat.melee.%s", weapon_info["skill"]) ;
-    skill = query_skill_level(skill_name) ;
 
     wname = weapon_info["name"] ;
     wtype = weapon_info["type"] ;
@@ -228,7 +238,7 @@ void strike_enemy(object enemy, object weapon) {
 
     weapon_info = query_weapon_info(weapon) ;
 
-    skill_name = sprintf("combat.melee.%s", weapon_info["skill"]) ;
+    skill_name = sprintf(weapon_info["skill"]) ;
     skill = query_skill_level(skill_name) ;
     base = percent_of(5.0, enemy->query_max_hp()) ;
     variance = percent_of(25.0, base) ;
@@ -282,19 +292,19 @@ mapping query_weapon_info(object weapon) {
     if(weapon) {
         wname = weapon->query_name() ;
         wtype = weapon->query_damage_type() ;
-        skill_name = wtype ;
+        skill_name = sprintf("combat.melee.%s", wtype) ;
         base = weapon->query_dc() ;
     } else {
         if(userp()) {
             wname = "fist" ;
             wtype = "bludgeoning" ;
-            skill_name = "unarmed" ;
+            skill_name = "combat.melee.unarmed" ;
         } else {
             wname = query_weapon_name() ;
             wtype = query_weapon_type() ;
-            skill_name = "unarmed" ;
+            skill_name = "combat.melee.unarmed" ;
         }
-        base = query_level() * 0.5 ;
+        base = query_damage() ;
     }
 
     return ([
@@ -381,9 +391,15 @@ mapping current_enemies() {
 }
 
 object highest_threat() {
-    object *enemies = keys(_current_enemies);
-    object highest = enemies[0];
+    object *enemies;
+    object highest ;
     int highest_threat = 0;
+
+    if(!sizeof(_current_enemies))
+        return 0;
+
+    enemies = keys(_current_enemies);
+    highest = enemies[0];
 
     foreach(object enemy in enemies) {
         if(_current_enemies[enemy] > highest_threat) {
@@ -612,7 +628,7 @@ float set_damage(float x) {
 float query_damage() {
     if(damage <= 0.0)
         return random_float(query_level() * 2.0);
-    return random(damage) ;
+    return random_float(damage) ;
 }
 
 string set_weapon_name(string str) {

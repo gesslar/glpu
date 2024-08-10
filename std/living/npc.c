@@ -6,14 +6,13 @@
 
 */
 
+#include <npc.h>
 #include <logs.h>
 
 inherit STD_BODY;
 inherit M_LOOT ;
 
 inherit __DIR__ "living" ;
-
-void setup_body() ;
 
 void mudlib_setup() {
     ::mudlib_setup() ;

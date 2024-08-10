@@ -21,5 +21,4 @@ public nomask void init_living() {
     init_attributes();
     init_vitals();
     init_boon();
-    init_skills();
 }

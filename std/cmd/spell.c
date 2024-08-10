@@ -9,5 +9,5 @@
 inherit STD_ABILITY ;
 
 void mudlib_setup() {
-    skill_type = "spell" ;
+    ability_type = "spell" ;
 }
