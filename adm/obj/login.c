@@ -90,7 +90,7 @@ void gmcp_authenticated(string name) {
 
     if(old_body = find_player(name)) {
         tell_object(old_body, "Warning: Your body has been displaced by another user.\n");
-        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->query_proper_name()) + " ("+getoid(old_body)+") reconnected from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->query_real_name()) + " ("+getoid(old_body)+") reconnected from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
 
         if(interactive(old_body))
@@ -181,7 +181,7 @@ void get_name(string str) {
         user->set_name("guest");
         set_privs(user, "guest");
         body = create_body("guest");
-        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_real_name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
@@ -250,14 +250,14 @@ void get_password(string str, int i) {
             return;
         } else {
             is_connected = 1;
-            if(find_player(user->query_proper_name())) {
+            if(find_player(user->query_real_name())) {
                 tell(this_object(),"\nReconnect to currently logged in body? ");
                 input_to("reconnect");
                 return;
             }
             if(!body)
                 body = create_body(query_privs(user));
-            write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged in from " +
+            write_file(log_dir() + "/" + LOG_LOGIN, capitalize(user->query_real_name()) + " ("+getoid(body)+") logged in from " +
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
                 tell(this_object(), motd + "\n");
@@ -346,18 +346,18 @@ void idle_email(string str) {
         return;
     } else {
 #endif
-        set_privs(user, user->query_proper_name());
+        set_privs(user, user->query_real_name());
         if(!body)
             body = create_body(query_privs(user));
 
         if(!file_exists(mud_config("FIRST_USER"))) {
-            if(!directory_exists("/home/" + user->query_proper_name()[0..0])) mkdir ("/home/" + user->query_proper_name()[0..0]);
-            mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name());
-            mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/public");
-            mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private");
-            catch(cp("/d/std/workroom.c", user_path(user->query_proper_name())));
-            write_file("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private/journal." + user->query_proper_name(), capitalize(user->query_proper_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
-            catch(link("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private/journal." + user->query_proper_name(), "/doc/journals/journal." + user->query_proper_name()));
+            if(!directory_exists("/home/" + user->query_real_name()[0..0])) mkdir ("/home/" + user->query_real_name()[0..0]);
+            mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name());
+            mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/public");
+            mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private");
+            catch(cp("/d/std/workroom.c", user_path(user->query_real_name())));
+            write_file("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal." + user->query_real_name(), capitalize(user->query_real_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
+            catch(link("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal." + user->query_real_name(), "/doc/journals/journal." + user->query_real_name()));
             body->add_path("/cmds/wiz/");
             body->add_path("/cmds/object/");
             body->add_path("/cmds/file/");
@@ -366,14 +366,14 @@ void idle_email(string str) {
             security_editor->enable_membership(query_privs(user), "developer");
             security_editor->enable_membership(query_privs(user), "admin");
             security_editor->write_state(0);
-            write_file(mud_config("FIRST_USER"), user->query_proper_name(), 1) ;
+            write_file(mud_config("FIRST_USER"), user->query_real_name(), 1) ;
             tell(this_object(),"Success [login]: You are now an admin.\n\n");
         }
 
         user->set("email", email);
-        write_file(log_dir() + LOG_NEWUSER, capitalize(user->query_proper_name()) + " created a new account from "
+        write_file(log_dir() + LOG_NEWUSER, capitalize(user->query_real_name()) + " created a new account from "
           + query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
-        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_real_name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
         tell(this_object(),"\n" + parse_tokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
         tell(this_object()," [Hit enter to continue] ");
@@ -409,8 +409,8 @@ void new_user(string str, string name) {
 }
 
 void setup_new() {
-    if(!directory_exists(user_data_directory(user->query_proper_name())))
-        mkdir(user_data_directory(user->query_proper_name()));
+    if(!directory_exists(user_data_directory(user->query_real_name())))
+        mkdir(user_data_directory(user->query_real_name()));
     user->save_user();
     if(objectp(body)) body->save_user();
     if(mud_config("DISPLAY_NEWS")) {
@@ -424,11 +424,11 @@ void setup_new() {
 }
 
 void reconnect(string str) {
-    object old_body = find_player(user->query_proper_name());
+    object old_body = find_player(user->query_real_name());
 
     if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
         tell_object(old_body, "Warning: Your body has been displaced by another user.\n");
-        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->query_proper_name()) + " ("+getoid(old_body)+") reconnected from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(old_body->query_real_name()) + " ("+getoid(old_body)+") reconnected from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(interactive(old_body)) remove_interactive(old_body);
         old_body->reconnect();
@@ -444,7 +444,7 @@ void reconnect(string str) {
     } else {
         body->remove() ;
         tell(this_object(), "You have chosen not to reconnect to your old body.\n");
-        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_proper_name()) + " ("+getoid(body)+") logged in from " +
+        write_file(log_dir() + LOG_LOGIN, capitalize(user->query_real_name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
@@ -574,7 +574,7 @@ object create_body(string name) {
 
     body->set_name(query_privs(user));
     user->set_body(body);
-    set_privs(body, body->query_proper_name());
+    set_privs(body, body->query_real_name());
     body->restore_user();
 
     return body;
@@ -599,7 +599,7 @@ object create_user(string name) {
     return user;
 }
 
-string query_proper_name() {
+string query_real_name() {
     return "login";
 }
 

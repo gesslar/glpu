@@ -36,20 +36,20 @@ mixed main(object caller, string args) {
         return 1;
     }
 
-    write("Setting up developer access for '" + capitalize(user->query_proper_name()) + "'.\n");
+    write("Setting up developer access for '" + capitalize(user->query_real_name()) + "'.\n");
 
     tell_object(user, "\nSetting up developer account...\n");
-    if(!directory_exists("/home/" + user->query_proper_name()[0..0]))
-        mkdir ("/home/"+ user->query_proper_name()[0..0]);
-    mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name());
-    mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/public");
-    mkdir("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private");
-    cp("/d/std/workroom.c", user_path(user->query_proper_name()));
-    write_file("/doc/journals/journal." + user->query_proper_name(),
-        capitalize(user->query_proper_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
-    catch(link("/doc/journals/journal." + user->query_proper_name(),
-        "/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/private/journal."
-        + user->query_proper_name()));
+    if(!directory_exists("/home/" + user->query_real_name()[0..0]))
+        mkdir ("/home/"+ user->query_real_name()[0..0]);
+    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name());
+    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/public");
+    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private");
+    cp("/d/std/workroom.c", user_path(user->query_real_name()));
+    write_file("/doc/journals/journal." + user->query_real_name(),
+        capitalize(user->query_real_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
+    catch(link("/doc/journals/journal." + user->query_real_name(),
+        "/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal."
+        + user->query_real_name()));
     user->add_path("/cmds/wiz/");
     user->add_path("/cmds/object/");
     user->add_path("/cmds/file/");
@@ -59,7 +59,7 @@ mixed main(object caller, string args) {
     tell_object(user, "\n... Success!\n\n");
     tell_object(user, "Developer Access Granted.\n");
 
-    write("Success [makedev]: User '" + capitalize(user->query_proper_name()) + "' now has developer status.\n");
+    write("Success [makedev]: User '" + capitalize(user->query_real_name()) + "' now has developer status.\n");
     log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " promotes "
         + user->query_name() + " to developer status on " + ctime(time())
         + "\n");

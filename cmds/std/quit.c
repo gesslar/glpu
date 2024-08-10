@@ -33,7 +33,7 @@ mixed main(object caller, string arg) {
 
      tell(caller, "Thank you for visiting " + mud_name() + ".\n");
      caller->exit_world();
-     log_file(LOG_LOGIN, capitalize(caller->query_proper_name()) + " logged out from " +
+     log_file(LOG_LOGIN, capitalize(caller->query_real_name()) + " logged out from " +
      query_ip_number(caller) + " on " + ctime(time()) + "\n");
      destruct(caller);
      return 1;

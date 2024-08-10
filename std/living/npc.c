@@ -78,7 +78,7 @@ void heart_beat() {
             if((time() - query("last_login")) > 3600) {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
-                log_file(LOG_LOGIN, query_proper_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 destruct(this_object());
             }
         } else {

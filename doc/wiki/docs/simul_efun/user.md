@@ -64,6 +64,26 @@ string user_path(mixed name)
 
 Returns the home directory path for the user.
 
+## valid_user
+
+### Synopsis
+
+```c
+varargs int valid_user(mixed ob)
+```
+
+### Parameters
+
+* `mixed ob` - The object to check.
+
+### Returns
+
+`int` - 1 if the object is a valid user, otherwise 0.
+
+### Description
+
+Returns 1 if the object is a valid user, 0 if not.
+
 ## linkp
 
 ### Synopsis
@@ -75,6 +95,10 @@ int linkp(object ob)
 ### Parameters
 
 * `object ob` - The object to check.
+
+### Returns
+
+`int` - 1 if the object is a user object, otherwise 0.
 
 ### Description
 

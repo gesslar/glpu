@@ -25,7 +25,7 @@ mixed main(object tp, string arg) {
     OUser = filter(users(), (: environment($1) && interactive($1) :)) ;
 
     foreach(object user in OUser) {
-        if(adminp(user) && user->query_proper_name() != "login")
+        if(adminp(user) && user->query_real_name() != "login")
             OAdminArr += ({ user });
         else if(devp(user))
             ODevArr += ({ user });
@@ -33,9 +33,9 @@ mixed main(object tp, string arg) {
             OUserArr += ({ user });
     }
 
-    OAdminArr = sort_array(OAdminArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
-    ODevArr = sort_array(ODevArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
-    OUserArr = sort_array(OUserArr, (: strcmp($1->query_proper_name(), $2->query_proper_name()) :));
+    OAdminArr = sort_array(OAdminArr, (: strcmp($1->query_real_name(), $2->query_real_name()) :));
+    ODevArr = sort_array(ODevArr, (: strcmp($1->query_real_name(), $2->query_real_name()) :));
+    OUserArr = sort_array(OUserArr, (: strcmp($1->query_real_name(), $2->query_real_name()) :));
 
     OUser = OAdminArr + ODevArr + OUserArr;
 
@@ -53,7 +53,7 @@ mixed main(object tp, string arg) {
         this_idle = query_idle(user)/60;
         this_ip = query_ip_number(user);
 
-        name = capitalize(user->query_proper_name());
+        name = capitalize(user->query_real_name());
         printf("%-15s%-10s%-20s%5d %-30s\n", name, this_rank, this_ip, this_idle, this_env);
     }
 

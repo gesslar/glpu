@@ -252,8 +252,12 @@ private nomask object create_storage() {
     if(objectp(store))
         return store ;
 
-    return store = new(
+    store = new(
         STD_STORAGE_OBJECT,
         new(class StorageOptions, clean_on_empty: 1)
     ) ;
+
+    store->set_no_clean(1) ;
+
+    return store ;
 }

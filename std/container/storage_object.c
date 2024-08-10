@@ -29,6 +29,7 @@ void mudlib_setup(class StorageOptions storage) {
     set_ignore_capacity(1) ;
 
     restore_contents() ;
+    set_debug_clean(1) ;
 }
 
 void mudlib_unsetup() {

@@ -15,7 +15,7 @@ mixed main(object tp, string str) {
     string result ;
 
     result = sprintf("You are %s, a level %d %s.\n",
-        capitalize(tp->query_proper_name()),
+        capitalize(tp->query_real_name()),
         to_int(tp->query_level()),
         tp->query_race()) ;
 

@@ -104,12 +104,12 @@ varargs string finger_user(string username) {
         else if(devp(user)) rank = "Developer";
         else rank = "User";
 
-        plan = read_file("/home/" + user->query_proper_name()[0..0] + "/" + user->query_proper_name() + "/.plan");
+        plan = read_file("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/.plan");
         if(!plan) plan = " This user has no plan.\n";
             ret = sprintf("\n"
                 "Username: %-10s \tRank: %-10s\n" + (away && away != "" ? "Away: " + away + "\n" : away == "" ? "This user is away.\n" : "") +
                 "E-mail: %-10s\n"
-                "%s: %-10s %s\nPlan:\n%s", capitalize(user->query_proper_name()) + "", rank, user->query("email"), last_t, last, idle, plan);
+                "%s: %-10s %s\nPlan:\n%s", capitalize(user->query_real_name()) + "", rank, user->query("email"), last_t, last, idle, plan);
         if(!interactive(user)) user->remove();
     }
     return ret;
@@ -146,7 +146,7 @@ mixed get_body(object user) {
     if(!ofile_exists(user_body_data(query_privs(user)))) return -2;
 
     set_privs(body, query_privs(user));
-    body->set_name(user->query_proper_name());
+    body->set_name(user->query_real_name());
     body->restore_user();
 
     return body;

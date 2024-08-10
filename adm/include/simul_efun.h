@@ -37,6 +37,7 @@ string objective(mixed ob) ;
 string subjective(mixed ob) ;
 varargs string article(string str, int definite) ;
 varargs string add_article(string str, int definite) ;
+string remove_article(string str) ;
 
 // File: exists
 int directory_exists(string dirname) ;
@@ -168,7 +169,7 @@ string stringify(mixed val) ;
 string add_commas(mixed number) ;
 string reverse_string(string str) ;
 string reverse_strsrch(string str, string sub, int start) ;
-int pcre_strsrch(string str, string pattern, int start) ;
+varargs int pcre_strsrch(string str, string pattern, int start) ;
 
 // File: system
 int port() ;

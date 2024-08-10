@@ -29,7 +29,7 @@ mixed main(object caller, string args) {
     if(!devp(query_privs(user)))
         return(notify_fail("Error [makedev]: That user is not a developer.\n"));
 
-    write("Revoking developer access for '" + capitalize(user->query_proper_name()) + "'.\n");
+    write("Revoking developer access for '" + capitalize(user->query_real_name()) + "'.\n");
     tell_object(user, "\nDeveloper Access Revoked.\n");
     user->rem_path("/cmds/wiz/");
     user->rem_path("/cmds/object/");
@@ -41,9 +41,9 @@ mixed main(object caller, string args) {
     security_editor->remove() ;
     user->save_user();
 
-    write("Success [revdev]: User '" + capitalize(user->query_proper_name()) + "' is no longer a developer.\n");
+    write("Success [revdev]: User '" + capitalize(user->query_real_name()) + "' is no longer a developer.\n");
     log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " revoked "
-        + user->query_proper_name() + "'s developer status on " + ctime(time())
+        + user->query_real_name() + "'s developer status on " + ctime(time())
         + "\n");
     return 1;
 }

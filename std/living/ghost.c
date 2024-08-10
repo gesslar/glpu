@@ -31,8 +31,8 @@ void mudlib_setup() {
 void setup_body() {
     add_action("command_hook", "", 1);
     add_action("revive", "revive") ;
-    set_living_name(query_proper_name());
-    set_id(({query_proper_name()}));
+    set_living_name(query_real_name());
+    set_id(({query_real_name()}));
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     set_race("ghost") ;
     set_level(1.0) ;
@@ -89,7 +89,7 @@ void net_dead() {
         tell_all(environment(), query_name()+ " begins to fade.\n");
 
     set("extra_short/link_dead", "[fading]") ;
-    log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
+    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
 
 }
 
@@ -106,7 +106,7 @@ void heart_beat() {
             if((time() - query("last_login")) > 3600) {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
-                log_file(LOG_LOGIN, query_proper_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 destruct(this_object());
             }
         } else {

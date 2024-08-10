@@ -99,8 +99,27 @@ int ghostp(object ob) {
  * @simul_efun linkp
  * @description Returns 1 if the object is a user object, 0 if not.
  * @param {object} ob - The object to check.
- * @return {int} - 1 if the object is a user object, otherwise 0.
+ * @returns {int} - 1 if the object is a user object, otherwise 0.
  */
 int linkp(object ob) {
     return ob->is_user() ;
+}
+
+/**
+ * @simul_efun valid_user
+ * @description Returns 1 if the object is a valid user, 0 if not.
+ * @param {mixed} ob - The object to check.
+ * @returns {int} - 1 if the object is a valid user, otherwise 0.
+ */
+varargs int valid_user(mixed ob) {
+    if(nullp(ob))
+        ob = previous_object() ;
+
+    if(objectp(ob))
+        ob = query_privs(ob);
+
+    if(!stringp(ob))
+        return 0;
+
+    return file_exists(user_data_file(lower_case(ob)) + __SAVE_EXTENSION__) ;
 }

@@ -4,4 +4,8 @@ Parameters:
 
 * `object ob` - The object to check.
 
+Returns
+
+`int` - 1 if the object is a user object, otherwise 0.
+
 Returns 1 if the object is a user object, 0 if not.

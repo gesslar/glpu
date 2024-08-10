@@ -211,3 +211,22 @@ varargs string add_article(string str, int definite) {
 
     return art + " " + str ;
 }
+
+/**
+ * @simul_efun remove_article
+ * @description Removes an article from a string. If the string begins with
+ *              "the ", "a ", or "an ", removes the article.
+ * @param {string} str - The string to remove the article from.
+ * @returns {string} - The string with the article removed.
+ */
+string remove_article(string str) {
+    int pos ;
+
+    if(!stringp(str))
+        return "" ;
+
+    if(pcre_match(lower_case(str), "^(the|a|an) "))
+        return str[strsrch(str, " ") + 1..] ;
+
+    return str ;
+}

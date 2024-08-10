@@ -44,6 +44,7 @@ title: simul_efun
 * [possessive_pronoun](english#possessive_pronoun)
 * [possessive_proper_noun](english#possessive_proper_noun)
 * [reflexive](english#reflexive)
+* [remove_article](english#remove_article)
 * [subjective](english#subjective)
 
 ## [exists](exists)
@@ -243,6 +244,7 @@ title: simul_efun
 * [user_data_file](user#user_data_file)
 * [user_inventory_data](user#user_inventory_data)
 * [user_path](user#user_path)
+* [valid_user](user#valid_user)
 
 ## [util](util)
 

@@ -10,9 +10,9 @@
 #include <id.h>
 #include <object.h>
 
-private string *_ids = ({});
-private string *_plural_ids = ({});
-private string *_adj = ({});
+private nosave string *_ids = ({});
+private nosave string *_plural_ids = ({});
+private nosave string *_adj = ({});
 
 void set_id(mixed str) {
     if(stringp(str))

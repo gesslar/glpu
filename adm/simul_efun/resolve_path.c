@@ -28,7 +28,7 @@ string resolve_path(string base_dir, string path) {
 
     if(path[0] == '~') {
         if((path[1] == '/') || (sizeof(path) == 1))
-            path = user_path(this_body()->query_proper_name()) + path[1..];
+            path = user_path(this_body()->query_real_name()) + path[1..];
         else {
             index = strsrch(path, "/");
             if(index == -1) return user_path(path[1..]);

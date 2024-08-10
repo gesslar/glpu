@@ -26,7 +26,7 @@ inherit M_MESSAGING ;
 
 private nomask nosave function *destruct_functions = ({}) ;
 private nomask nosave function *reset_functions = ({}) ;
-private string proper_name, short, long;
+private string real_name, short, long;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
 private nosave string virtual_master = 0;
@@ -37,9 +37,9 @@ private varargs void create(mixed args...) {
     init_ob() ;
 
     create_args = args ;
-    if(!proper_name) {
-            if(name)
-            set_proper_name(name) ;
+    if(!real_name) {
+        if(name)
+            set_real_name(name) ;
         else
             name = null ;
     }
@@ -92,20 +92,20 @@ int remove() {
     return 1 ;
 }
 
-string set_proper_name(string str) {
+string set_real_name(string str) {
     if(interactive(this_object()) && !is_member(query_privs(previous_object()), "admin")
         && previous_object() != this_object()) return 0;
 
-    proper_name = lower_case(str);
+    real_name = lower_case(str);
 
     if(living())
-        set_living_name(proper_name);
+        set_living_name(real_name);
 
-    return proper_name ;
+    return real_name ;
 }
 
-string query_proper_name() {
-    return proper_name ;
+string query_real_name() {
+    return real_name ;
 }
 
 string set_name(string str) {
@@ -114,15 +114,21 @@ string set_name(string str) {
     if(!str)
         return 0;
 
-    name = capitalize(lower_case(str)) ;
+    if(valid_user(lower_case(str)))
+        name = capitalize(lower_case(str)) ;
+    else
+        name = str ;
 
-    result = set_proper_name(name) ;
-    if(!result)
-        return 0;
+    if(!real_name) {
+        result = set_real_name(name) ;
+
+        if(!result)
+            return 0;
+    }
 
     rehash_ids() ;
 
-    return result ;
+    return name ;
 }
 
 string query_name() {

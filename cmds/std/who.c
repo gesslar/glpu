@@ -34,7 +34,7 @@ mixed main(object caller, string arg) {
     list = users();
 
     foreach(object name in list) {
-        if(adminp(name) && name->query_proper_name() != "login")
+        if(adminp(name) && name->query_real_name() != "login")
             admin_arr += ({ name });
         else if(devp(name))
             dev_arr += ({ name });
@@ -57,7 +57,7 @@ mixed main(object caller, string arg) {
         if(!(string)list[i]->query_name())
             continue;
 
-        if(list[i]->query_proper_name() == "login")
+        if(list[i]->query_real_name() == "login")
             tag = "[ LOGIN ]";
         else if(adminp(list[i]))
             tag = "[ Admin ]";

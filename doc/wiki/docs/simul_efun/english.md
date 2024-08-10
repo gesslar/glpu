@@ -40,6 +40,27 @@ string possessive_proper_noun(mixed ob)
 Returns the possessive form of a proper noun. Applies 's to the
 end of the noun.
 
+## remove_article
+
+### Synopsis
+
+```c
+string remove_article(string str)
+```
+
+### Parameters
+
+* `string str` - The string to remove the article from.
+
+### Returns
+
+`string` - The string with the article removed.
+
+### Description
+
+Removes an article from a string. If the string begins with
+"the ", "a ", or "an ", removes the article.
+
 ## add_article
 
 ### Synopsis

@@ -89,6 +89,11 @@ mapping set_wealth(mapping w) {
     return _wealth = w ;
 }
 
+void init_wealth() {
+    if(nullp(_wealth))
+        _wealth = ([]);
+}
+
 void wipe_wealth() {
     _wealth = ([]);
     rehash_capacity() ;

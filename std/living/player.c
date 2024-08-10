@@ -25,9 +25,9 @@ private nosave mapping environ_data = ([]) ;
 
 /* Connection functions */
 void setup_body(object user) {
-    set_living_name(query_proper_name());
-    set_id(({query_proper_name()}));
-    // set_proper_name(name());
+    set_living_name(query_real_name());
+    set_id(({query_real_name()}));
+    // set_real_name(name());
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
     if(!query_level()) set_level(1.0) ;
@@ -83,8 +83,8 @@ void exit_world() {
 
     if(this_body() != this_object()) return;
 
-    if(file_size(user_path(query_proper_name()) + ".quit") > 0) {
-        cmds = explode(read_file(user_path(query_proper_name()) + ".quit"), "\n");
+    if(file_size(user_path(query_real_name()) + ".quit") > 0) {
+        cmds = explode(read_file(user_path(query_real_name()) + ".quit"), "\n");
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
@@ -109,7 +109,7 @@ void net_dead() {
     if(environment())
         tell_all(environment(), query_name()+ " falls into stupour.\n");
     set("extra_short/link_dead", "[stupour]") ;
-    log_file(LOG_LOGIN, query_proper_name() + " went link-dead on " + ctime(time()) + "\n");
+    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
 
     if(interactive(this_object()))
         emit(SIG_USER_LINKDEAD, this_object()) ;
@@ -133,7 +133,7 @@ void heart_beat() {
             if((time() - query("last_login")) > 3600) {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
-                log_file(LOG_LOGIN, query_proper_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 destruct(this_object());
             }
         } else {
@@ -270,7 +270,7 @@ void save_inventory() {
 
 void restore_user() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_proper_name()) restore_object(user_body_data(query_proper_name()));
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_real_name()) restore_object(user_body_data(query_real_name()));
 }
 
 void restore_inventory() {
@@ -300,7 +300,7 @@ void wipe_inventory() {
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
 
-    file = user_inventory_data(query_proper_name()) ;
+    file = user_inventory_data(query_real_name()) ;
     rm(file) ;
 }
 
@@ -311,7 +311,7 @@ int save_user() {
         this_body() != this_object() &&
         base_name(previous_object()) != CMD_QUIT) return 0;
 
-    catch(result = save_object(user_body_data(query_proper_name())));
+    catch(result = save_object(user_body_data(query_real_name())));
 
     save_inventory() ;
 

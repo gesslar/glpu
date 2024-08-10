@@ -757,7 +757,7 @@ private nomask void grapevine_send_event_heartbeat() {
 
     payload = ([
         "game" : get_config(__MUD_NAME__),
-        "players" : map(u, (: $1->query_proper_name() :)),
+        "players" : map(u, (: $1->query_real_name() :)),
     ]) ;
 
     _log(2, "Sending heartbeat") ;
@@ -786,7 +786,7 @@ public nomask void grapevine_send_event_channels_send(object who, string chan, s
     mapping payload = ([
         "channel" : chan,
         "message" : msg,
-        "name" : who->query_proper_name(),
+        "name" : who->query_real_name(),
     ]) ;
 
     send_outgoing_message(GR_EVENT_CHANNELS_SEND, generate_uuid(), payload, cb) ;
@@ -796,7 +796,7 @@ public nomask void grapevine_send_event_channels_send(object who, string chan, s
 
 public nomask void grapevine_send_event_players_sign_in(object who) {
     mapping payload = ([
-        "name" : who->query_proper_name(),
+        "name" : who->query_real_name(),
         "game" : get_config(__MUD_NAME__)
     ]) ;
 
@@ -806,7 +806,7 @@ public nomask void grapevine_send_event_players_sign_in(object who) {
 // TODO: Ask why this event does not take a game, but sign-in does
 public nomask void grapevine_send_event_players_sign_out(object who) {
     mapping payload = ([
-        "name" : who->query_proper_name(),
+        "name" : who->query_real_name(),
     ]) ;
 
     send_outgoing_message(GR_EVENT_PLAYERS_SIGN_OUT, generate_uuid(), payload) ;
@@ -828,7 +828,7 @@ public nomask void grapevine_send_event_players_status(string game, mixed *cb) {
 
 public nomask void grapevine_send_event_tells_send(object who, string to, string game, string msg, mixed *cb) {
     mapping payload = ([
-        "from_name" : who->query_proper_name(),
+        "from_name" : who->query_real_name(),
         "to_name" : to,
         "to_game" : game,
         "message" : msg,

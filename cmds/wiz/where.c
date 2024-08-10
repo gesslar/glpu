@@ -15,15 +15,15 @@ inherit STD_CMD ;
 mixed main(object caller, string str) {
     object ob;
 
-    if(!str) str = this_body()->query_proper_name();
+    if(!str) str = this_body()->query_real_name();
 
     if(find_player(str)) {
         ob = find_player(str);
         if(environment(ob))
-            write(capitalize(ob->query_proper_name()) + " is in " +
+            write(capitalize(ob->query_real_name()) + " is in " +
                 file_name(environment(ob)) + " (" + environment(ob)->query_short() + ").\n");
         else
-            write(capitalize(ob->query_proper_name()) + " does not currently have an environment.\n");
+            write(capitalize(ob->query_real_name()) + " does not currently have an environment.\n");
         return 1;
     }
 

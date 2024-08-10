@@ -14,13 +14,10 @@ inherit STD_DAEMON ;
 // To users is using this module, as it will automatically get the grammar
 // right for each person involved.
 
-/* More simul conversion fall out */
-private nosave string vowels = "aeiouAEIOU";
-
 private string SHORT(mixed x) {
     if(objectp(x)) {
         if(living(x)) return x->query_name();
-        else return x->query_short() || x->query_name() ;
+        else return x->query_name() || x->query_short() ;
     }
     return x;
 }
@@ -28,14 +25,14 @@ private string SHORT(mixed x) {
 string _a_short(mixed x) {
     if(objectp(x)) return x->query_short() ;
 // Check for "a"/"an" prefix - if missing, add it
-    if(stringp(x)) return add_article(x) ;
+    if(stringp(x)) return add_article(remove_article(x)) ;
     return x;
 }
 
 string _the_short(mixed x) {
     if(objectp(x)) return x->query_short() ;
     // Check for "the" prefix - if missing, add it
-    if(stringp(x)) return add_article(x,1) ;
+    if(stringp(x)) return add_article(remove_article(x), 1) ;
     return x;
 }
 
