@@ -16,7 +16,7 @@ private nosave int _amount = null;
 private nosave string _currency = null ;
 
 /**
- * @destription Set the value of the object.
+ * @description Set the value of the object.
  * @param {int} value - The value to set.
  * @param {string} currency - The currency to set.
  */
