@@ -220,7 +220,7 @@ mixed main(object caller, string arg) {
                 file_detail_str=arrange_string(file_detail_str, DATE_STOP);
                 file_detail_str+=ctime(output_file[2]);
 
-                this_dir+=sprintf("%s%s%s\eres\e%s",
+                this_dir+=sprintf("%s%s%s{{res}}%s",
                     arrange_string(file_detail_str, NAME_STOP),
                     filename_prefix(output_file),output_file[0],
                     /*Note that suffix is printed after RESET*/
@@ -247,7 +247,7 @@ mixed main(object caller, string arg) {
                 foreach(output_file in output_files) {
                     if(++i==files_per_line) {
                         i=0;
-                        output_str=sprintf("%s%s%s\eres\e%s\n",
+                        output_str=sprintf("%s%s%s{{res}}%s\n",
                             output_str,
                             filename_prefix(output_file),
                             output_file[0],
@@ -258,7 +258,7 @@ mixed main(object caller, string arg) {
                             output_str,
                             filename_prefix(output_file),
                             arrange_string(
-                                sprintf("%s\eres\e%s",
+                                sprintf("%s{{res}}%s",
                                 output_file[0],
                                 filename_suffix(output_file, classify)),
                                 largest_file_name
@@ -303,19 +303,19 @@ BODY;
 string filename_prefix(mixed* file_details) {
     switch(file_details[1]) {
         case -2:
-            return "\e0026\e ";
+            return "{{0026}} ";
         default:
             switch(file_details[0][<2..<1]) { //Will hit default if size>2
                 case ".c":
                     if(stat(__Path+file_details[0])[2])
-                        return "\e0010\e*";
-                    return "\e0002\e ";
+                        return "{{0010}}*";
+                    return "{{0002}} ";
                 case ".h":
-                    return "\e0124\e ";
+                    return "{{0124}} ";
                 case __SAVE_EXTENSION__:
-                    return "\e0030\e ";
+                    return "{{0030}} ";
                 default:
-                   return "\e0243\e ";
+                   return "{{0243}} ";
             }
             break ;
     }

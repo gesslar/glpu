@@ -54,7 +54,7 @@ varargs string call_trace(int colour) {
     // We don't want to include the call_trace() function itself
     while(n-- > 1) {
         i = n ;
-        res += sprintf("[\e0039\e%O\eres\e] \e0119\e%s\eres\e:\e0206\e%s\eres\e::\e0208\e%s\eres\e() (\e0172\e%s\eres\e)\n",
+        res += sprintf("[{{0039}}%O{{res}}] {{0119}}%s{{res}}:{{0206}}%s{{res}}::{{0208}}%s{{res}}() ({{0172}}%s{{res}})\n",
             objects[i],
             programs[i],
             lines[i],

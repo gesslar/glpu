@@ -168,11 +168,11 @@ varargs void _debug(mixed str, mixed args...) {
 }
 
 private nosave mapping _symbols = ([
-    "ok"      : ({ ({ "\e0036\e", "" }), ({ "\u2022 ", "o ", "" }) }),
-    "error"   : ({ ({ "\e0160\e", "" }), ({ "\u25CF ", "o ", "" }) }),
-    "warn"    : ({ ({ "\e0214\e", "" }), ({ "\u25B2 ", "o ", "" }) }),
-    "info"    : ({ ({ "\e0228\e", "" }), ({ "\u25A0 ", "o ", "" }) }),
-    "question": ({ ({ "\e0033\e", "" }), ({ "\u25C6 ", "o ", "" }) }),
+    "ok"      : ({ ({ "{{0036}}", "" }), ({ "\u2022 ", "o ", "" }) }),
+    "error"   : ({ ({ "{{0160}}", "" }), ({ "\u25CF ", "o ", "" }) }),
+    "warn"    : ({ ({ "{{0214}}", "" }), ({ "\u25B2 ", "o ", "" }) }),
+    "info"    : ({ ({ "{{0228}}", "" }), ({ "\u25A0 ", "o ", "" }) }),
+    "question": ({ ({ "{{0033}}", "" }), ({ "\u25C6 ", "o ", "" }) }),
 ]) ;
 
 /**
@@ -209,7 +209,7 @@ private string _format_message(string type, string str, mixed args...) {
         tag_index = 2 ;
     }
 
-    final = symbol[0][colour_index] + symbol[1][tag_index] + "\eres\e" ;
+    final = symbol[0][colour_index] + symbol[1][tag_index] + "{{res}}" ;
     str = final + str ;
     str = sprintf(str, args...) ;
 

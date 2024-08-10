@@ -139,7 +139,7 @@ public string substitute_colour(string text, string mode) {
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e%s\e", sub) == 1) {
+                if(sscanf(parts[sz], "{{%s}}", sub) == 1) {
                     if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
@@ -155,7 +155,7 @@ public string substitute_colour(string text, string mode) {
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e%s\e", sub) == 1) {
+                if(sscanf(parts[sz], "{{%s}}", sub) == 1) {
                     if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
@@ -163,8 +163,8 @@ public string substitute_colour(string text, string mode) {
                 }
 
                 // Now, we have to be one of the colour codes!
-                if(sscanf(parts[sz], "\e0%d\e", num) == 1) parts[sz] = fg_codes[num] ;
-                else if(sscanf(parts[sz], "\e1%d\e", num) == 1) parts[sz] = bg_codes[num] ;
+                if(sscanf(parts[sz], "{{0%d}}", num) == 1) parts[sz] = fg_codes[num] ;
+                else if(sscanf(parts[sz], "{{1%d}}", num) == 1) parts[sz] = bg_codes[num] ;
 
             }
             break ;
@@ -174,7 +174,7 @@ public string substitute_colour(string text, string mode) {
                 if(matched[sz] == 0) continue ;
 
                 // First, are we an alt code
-                if(sscanf(parts[sz], "\e%s\e", sub) == 1) {
+                if(sscanf(parts[sz], "{{%s}}", sub) == 1) {
                     if(!nullp(sub = alt_codes[sub])) {
                         parts[sz] = sub ;
                         continue ;
@@ -182,8 +182,8 @@ public string substitute_colour(string text, string mode) {
                 }
 
                 // Now, we have to be one of the colour codes!
-                if(sscanf(parts[sz], "\e0%d\e", num) == 1) parts[sz] = high_to_low_fg[low_codes[num]] ;
-                else if(sscanf(parts[sz], "\e<1%d\e", num) == 1) parts[sz] = high_to_low_bg[low_codes[num]] ;
+                if(sscanf(parts[sz], "{{0%d}}", num) == 1) parts[sz] = high_to_low_fg[low_codes[num]] ;
+                else if(sscanf(parts[sz], "{{1%d}}", num) == 1) parts[sz] = high_to_low_bg[low_codes[num]] ;
                 else parts[sz] = "" ;
             }
             break ;
@@ -325,8 +325,8 @@ string get_colour_list() {
             for(int k = 0; k < 12; k++) {
                 int colour = i*(6*12) + j + k*6 ;
 
-                output += sprintf("  %s%'0'3d\eres\e",
-                    sprintf("\e%'0'4d\e", colours[colour]),
+                output += sprintf("  %s%'0'3d{{res}}",
+                    sprintf("{{%'0'4d}}", colours[colour]),
                     colours[colour]
                 ) ;
             }
@@ -341,8 +341,8 @@ string get_colour_list() {
         for(int j = 0; j < 12; j++) {
             int colour = i*12 + j;
 
-            output += sprintf("  %s%'0'3d\eres\e",
-                sprintf("\e%'0'4d\e", colours_greyscale[colour]),
+            output += sprintf("  %s%'0'3d{{res}}",
+                sprintf("{{%'0'4d}}", colours_greyscale[colour]),
                 colours_greyscale[colour]
             ) ;
         }
@@ -356,8 +356,8 @@ string get_colour_list() {
         for(int j = 0; j < 8; j++) {
             int colour = i*8 + j;
 
-            output += sprintf("  %s%'0'3d\eres\e",
-                sprintf("\e%'0'4d\e", colours_low[colour]),
+            output += sprintf("  %s%'0'3d{{res}}",
+                sprintf("{{%'0'4d}}", colours_low[colour]),
                 colours_low[colour]
             );
         }
@@ -432,7 +432,7 @@ public string body_colour_replace(object body, string text, int message_type) {
         return text;
 
     colour = sprintf("%:4d", col);
-    text = "\e" + colour + "\e" + text + "\eres\e";
+    text = "{{" + colour + "}}" + text + "{{res}}";
 
     return text;
 }

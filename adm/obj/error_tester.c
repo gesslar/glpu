@@ -70,7 +70,7 @@ void check_dir() {
 
     current = dirs_to_check[0] ;
 
-    message("info", "\e0178\e+ CHECKING: " + current + "\eres\e\n", notify) ;
+    message("info", "{{0178}}+ CHECKING: " + current + "{{res}}\n", notify) ;
 
     current = append(current, "/") ;
     dirs_to_check = dirs_to_check[1..] ;
@@ -102,7 +102,7 @@ void check_file() {
     file_call_out = call_out_walltime("check_file", file_delay) ;
 
     file = files_to_check[0] ;
-    message("info", "\e0032\e- CHECKING: " + file + "\eres\e\n", notify) ;
+    message("info", "{{0032}}- CHECKING: " + file + "{{res}}\n", notify) ;
 
     files_to_check = files_to_check[1..] ;
 

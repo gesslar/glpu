@@ -47,11 +47,11 @@ mixed main(object caller, string str) {
                 return 1;
             }
 
-            fg = "\e"+sprintf("0%'0'3d", num)+"\e" ;
+            fg = "{{"+sprintf("0%'0'3d", num)+"}}" ;
 
             return _info(caller, "\n"
-                "%s\'%'0'3d\' will appear like this in the foreground.\eres\e\n"
-                "\ere1\e%s\'%'0'3d\' will appear like this in the background.\eres\e",
+                "%s\'%'0'3d\' will appear like this in the foreground.{{res}}\n"
+                "{{re1}}%s\'%'0'3d\' will appear like this in the background.{{res}}",
                 fg, num, fg, num) ;
         }
         default :
@@ -67,12 +67,12 @@ string query_help(object caller) {
 "SYNTAX: colour [<on>|<off>|list|show [#]]\n\n"
 "With no arguments, this command will tell you if you currently have "
 "colour enabled or disabled. You can also toggle colour by providing the "
-"arguments \eul1\eon\eul0\e to enable or \eul1\eoff\eul0\e to "
+"arguments {{ul1}}on{{ul0}} to enable or {{ul1}}off{{ul0}} to "
 "disable.\n"
 "\n"
-"Use the \eul1\elist\eul0\e argument to list all the available colours.\n"
+"Use the {{ul1}}list{{ul0}} argument to list all the available colours.\n"
 "\n"
-"Use the \eul1\eshow\eul0\e argument to see how a specific colour code "
+"Use the {{ul1}}show{{ul0}} argument to see how a specific colour code "
 "will appear in the foreground and background. The argument must be a "
 "number between 0 and 255.\n"
 "\n"

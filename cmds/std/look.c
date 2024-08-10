@@ -51,17 +51,17 @@ string highlight_view(object tp, string str, string *keys) {
     }
 
     colour = COLOUR_D->substitute_too_dark(colour);
-    colour = "\e" + colour + "\e";
+    colour = "{{" + colour + "}}";
 
     for(i = 0; i < sizeof(keys); i++) {
-        str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "\eres\e ");
-        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + colour+capitalize(keys[i]) + "\eres\e ");
-        str = replace_string(str , " " + keys[i] + ",", " " + colour+keys[i] + "\eres\e,");
-        str = replace_string(str , " " + keys[i] + ".", " " + colour+keys[i] + "\eres\e.");
-        str = replace_string(str , " " + keys[i] + "!", " " + colour+keys[i] + "\eres\e!");
-        str = replace_string(str , " " + keys[i] + ";", " " + colour+keys[i] + "\eres\e;");
-        str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "\eres\e'");
-        str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "\eres\e:");
+        str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "{{res}} ");
+        str = replace_string(str , " " + capitalize(keys[i]) + " ", " " + colour+capitalize(keys[i]) + "{{res}} ");
+        str = replace_string(str , " " + keys[i] + ",", " " + colour+keys[i] + "{{res}},");
+        str = replace_string(str , " " + keys[i] + ".", " " + colour+keys[i] + "{{res}}.");
+        str = replace_string(str , " " + keys[i] + "!", " " + colour+keys[i] + "{{res}}!");
+        str = replace_string(str , " " + keys[i] + ";", " " + colour+keys[i] + "{{res}};");
+        str = replace_string(str , " " + keys[i] + "'", " " + colour+keys[i] + "{{res}}'");
+        str = replace_string(str , " " + keys[i] + ":", " " + colour+keys[i] + "{{res}}:");
     }
 
     return str;
@@ -77,9 +77,9 @@ mixed render_room(object tp, object room, int brief) {
         return "You see nothing because you have no environment!\n" ;
 
     if(devp(tp) && of(tp->query_env("look_filename"), ({ "on", "all" }))) {
-        result += "\e0032\e"+room+"\eres\e" ;
+        result += "{{0032}}"+room+"{{res}}" ;
         if(virtualp(room))
-            result += " \e0068\e(vm: " + room->query_virtual_master() + ")\eres\e" ;
+            result += " {{0068}}(vm: " + room->query_virtual_master() + "){{res}}" ;
 
         result += "\n" ;
     }
@@ -186,7 +186,7 @@ mixed render_object(object tp, object room, string target) {
 
     if(strlen(desc)) {
         if(devp(tp) && tp->query_env("look_filename") == "all") {
-            desc = "\e0032\e" + prepend(file_name(ob), "/") + "\eres\e\n" + desc;
+            desc = "{{0032}}" + prepend(file_name(ob), "/") + "{{res}}\n" + desc;
         }
     }
 
@@ -284,7 +284,7 @@ mixed render_living(object tp, object room, object target, int brief) {
 
     if(strlen(result)) {
         if(devp(tp) && tp->query_env("look_filename") == "all") {
-            result = "\e0032\e"+prepend(file_name(target), "/") + "\eres\e\n" + result ;
+            result = "{{0032}}"+prepend(file_name(target), "/") + "{{res}}\n" + result ;
         }
     }
 

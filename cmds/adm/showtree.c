@@ -82,7 +82,7 @@ string dig (string file, string func, int indent) {
 
     str = sprintf("%*-' 's%s", indent*4, "", file);
     if(func && (function_exists(func, ob) == file)) {
-        str += " (\e0220\e" + func + "\eres\e defined)\n";
+        str += " ({{0220}}" + func + "{{res}} defined)\n";
     } else {
         str += "\n";
     }

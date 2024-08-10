@@ -82,23 +82,23 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) {
     mess += "\n" ;
 
     mess +=
-        "\e0000\eblack\e\eres\e\t\t"
-        "\e0001\ered\e\eres\e\t\t"
-        "\e0002\egreen\e\eres\e\t\t"
-        "\e0003\eorange\eres\e\n"
-        "\e0004\eblue\e\eres\e\t\t"
-        "\e0005\emagenta\e\eres\e\t\t"
-        "\e0006\ecyan\eres\e\t\t"
-        "\e0007\ewhite\e\eres\e\n"
+        "{{0000}}black{{res}}\t\t"
+        "{{0001}}red{{res}}\t\t"
+        "{{0002}}green{{res}}\t\t"
+        "{{0003}}oran{{ges}}\n"
+        "{{0004}}blue{{res}}\t\t"
+        "{{0005}}magenta{{res}}\t\t"
+        "{{0006}}cy{{ans}}\t\t"
+        "{{0007}}white{{res}}\n"
         "\n"
-        "\e0008\ebright black\e\eres\e\t"
-        "\e0009\ebright red\e\eres\e\t"
-        "\e0010\ebright green\eres\e\t"
-        "\e0011\ebright orange\e\eres\e\n"
-        "\e0012\ebright blue\e\eres\e\t"
-        "\e0013\ebright magenta\eres\e\t"
-        "\e0014\ebright cyan\e\eres\e\t"
-        "\e0015\ebright white\e\eres\e\n" ;
+        "{{0008}}bright black{{res}}\t"
+        "{{0009}}bright red{{res}}\t"
+        "{{0010}}bright green{{res}}"
+        "{{0011}}bright orange{{res}}\n"
+        "{{0012}}bright blue{{res}}\t"
+        "{{0013}}bright magenta{{res}}"
+        "{{0014}}bright cyan{{res}}\t"
+        "{{0015}}bright white{{res}}\n" ;
 
     mess += "\n" ;
 

@@ -38,7 +38,7 @@ mixed main(object tp, string str) {
 string query_help(object tp) {
     return
 "Syntax: autodoc scan\n\n"
-"Scans the mudlib for all objects in the \ebl1\eAUTODOC_SOURCE_DIRS\ebl0\e mud_config "
+"Scans the mudlib for all objects in the {{bl1}}AUTODOC_SOURCE_DIRS{{bl0}} mud_config "
 "and generates documentation for them.\n"
 ;
 }

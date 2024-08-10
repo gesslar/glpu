@@ -24,26 +24,26 @@ Original Lima header:
 */
 
 private nomask nosave mapping _c = ([
-    "green" : "\e0036\e",
-    "blue"  : "\e0027\e",
-    "purple": "\e0127\e",
-    "yellow": "\e0185\e",
-    "gold"  : "\e0220\e",
-    "black" : "\e0238\e",
-    "white" : "\e0015\e",
+    "green" : "{{0036}}",
+    "blue"  : "{{0027}}",
+    "purple": "{{0127}}",
+    "yellow": "{{0185}}",
+    "gold"  : "{{0220}}",
+    "black" : "{{0238}}",
+    "white" : "{{0015}}",
 ]) ;
 
 private nomask nosave string *slider_colours = ({
-    "\e0009\e", // red
-    "\e0202\e", // dark orange
-    "\e0208\e", // orange
-    "\e0214\e", // light orange
-    "\e0220\e", // gold
-    "\e0226\e", // yellow
-    "\e0190\e", // light yellow
-    "\e0154\e", // light green
-    "\e0118\e", // green
-    "\e0047\e", // bright green
+    "{{0009}}", // red
+    "{{0202}}", // dark orange
+    "{{0208}}", // orange
+    "{{0214}}", // light orange
+    "{{0220}}", // gold
+    "{{0226}}", // yellow
+    "{{0190}}", // light yellow
+    "{{0154}}", // light green
+    "{{0118}}", // green
+    "{{0047}}", // bright green
 });
 
 /**
@@ -97,7 +97,7 @@ string gradient_string(string str, string *cols) {
         exstr[i] = use_colour(cols, i, strlen(str)) + exstr[i];
         i++;
     }
-    return implode(exstr, "") + "\eres\e" ;
+    return implode(exstr, "") + "{{res}}" ;
 }
 
 //: FUNCTION on_off_widget
@@ -109,9 +109,9 @@ string on_off_widget(int on) {
     if(body->has_screenreader())
         return on ? "On " : "Off ";
     if(on)
-        return supports_unicode() ? "[ \e0036\e✓\eres\e ]" : sprintf("[\e0036\eOn\eres\e ]");
+        return supports_unicode() ? "[ {{0036}}✓{{res}} ]" : sprintf("[{{0036}}On{{res}} ]");
     else
-        return supports_unicode() ? "[ \e0243\e✕\eres\e ]" : sprintf("[\e0243\eOff\eres\e]");
+        return supports_unicode() ? "[ {{0243}}✕{{res}} ]" : sprintf("[{{0243}}Off{{res}}]");
 }
 
 //: FUNCTION simple_divider
@@ -162,7 +162,7 @@ string green_bar(int value, int max, int width) {
     white = width - 2 - green;
 
     return sprintf(
-        "[" + (value >= max ? _c["green"] : _c["blue"]) + "%s\eres\e"+_c["black"]+"`%s\eres\e]",
+        "[" + (value >= max ? _c["green"] : _c["blue"]) + "%s{{res}}"+_c["black"]+"`%s{{res}}]",
             repeat_string(barchar, green), repeat_string(nobarchar, white));
 }
 
@@ -174,7 +174,7 @@ string critical_bar(int value, int max, int width) {
     float p;
     string barchar = supports_unicode() ? "▅" : "=";
     string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_colour = "\e0036\e";
+    string bar_colour = "{{0036}}";
 
     if(body->has_screenreader())
         return value + "/" + max;
@@ -197,7 +197,7 @@ string critical_bar(int value, int max, int width) {
     white = width - 1 - green;
 
     return sprintf(
-        "[" + bar_colour + "%s\eres\e"+_c["black"]+"%s\eres\e]",
+        "[" + bar_colour + "%s{{res}}"+_c["black"]+"%s{{res}}]",
             repeat_string(barchar, green), repeat_string(nobarchar, white));
 }
 
@@ -209,7 +209,7 @@ string reverse_critical_bar(int value, int max, int width) {
     float p;
     string barchar = supports_unicode() ? "▅" : "=";
     string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_colour = "\e0036\e";
+    string bar_colour = "{{0036}}";
 
     if(!max)
         return "";
@@ -234,7 +234,7 @@ string reverse_critical_bar(int value, int max, int width) {
         green = 0;
     white = width - 1 - green;
 
-    return sprintf("[" + bar_colour + "%s\eres\e"+_c["black"]+"%s\eres\e]",
+    return sprintf("[" + bar_colour + "%s{{res}}"+_c["black"]+"%s{{res}}]",
         repeat_string(barchar, green), repeat_string(nobarchar, white));
 }
 
@@ -266,8 +266,8 @@ string slider_red_green(int value, int max, int width) {
     return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
     return_string = return_string[0..(width / 2)] + return_string[(width / 2 + 1)..];
     return_string = gradient_string(return_string, slider_colours);
-    return_string = replace_string(return_string, x_char, _c["white"]+ x_char + "\eres\e");
-    return "[" + return_string + "\eres\e] ";
+    return_string = replace_string(return_string, x_char, _c["white"]+ x_char + "{{res}}");
+    return "[" + return_string + "{{res}}] ";
 }
 
 //: FUNCTION slider_colours_sum
@@ -321,5 +321,5 @@ string slider_colours_sum(int value, mapping colours, int width) {
 
     return_string = replace_string(return_string, x_char, _c["white"] + x_char + colour_after_marker);
 
-    return "[" + return_string + "\eres\e] ";
+    return "[" + return_string + "{{res}}] ";
 }

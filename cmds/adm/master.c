@@ -43,7 +43,7 @@ mixed main(object caller, string arguments) {
      if(sizeof(err))
           return _error("Error when reloading system objects:\n\n"
                "%s\n"
-               "Refer to \ebl1\e\eul1\e%scatch\eres\e",
+               "Refer to {{bl1}}{{ul1}}%scatch{{res}}",
                err,
                log_dir()
           ) ;

@@ -81,9 +81,9 @@ void prompt_colour_result(string result, object tp, string variable) {
             string colour ;
 
             result = COLOUR_D->substitute_too_dark(result);
-            colour = sprintf("\e0%s\e", result) ;
+            colour = sprintf("{{0%s}}", result) ;
             tp->set_env(variable, result);
-            _ok(tp, "You have selected %s%s\eres\e for `%s`.",
+            _ok(tp, "You have selected %s%s{{res}} for `%s`.",
                 colour,
                 result,
                 variable

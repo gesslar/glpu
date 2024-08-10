@@ -59,7 +59,7 @@ void finish_motes(int status, object tp, object victim) {
         float damage = percent_of(50.0, tp->query_damage()) ;
 
         tp->targetted_action(
-            "\e0197\eMotes of light strike $t!\eres\e", victim) ;
+            "{{0197}}Motes of light strike $t!{{res}}", victim) ;
         tp->deliver_damage(victim, damage, "light") ;
         tp->use_skill("combat.spell.light") ;
     } else {

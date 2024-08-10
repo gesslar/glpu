@@ -37,7 +37,7 @@ void attack_on_sight(object target) {
     name = target->query_name() ;
     if(of(name, combat_memory)) {
         query_owner()->targetted_action(
-            "\e0197\eRaging, $N $vattack $t with a vengeance!\eres\e\n\n", target) ;
+            "{{0197}}Raging, $N $vattack $t with a vengeance!{{res}}\n\n", target) ;
         query_owner()->start_attack(target) ;
         query_owner()->strike_enemy(target) ;
         query_owner()->strike_enemy(target) ;
