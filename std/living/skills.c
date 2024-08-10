@@ -208,7 +208,7 @@ void set_skills(mapping s) {
  * @description Use a skill with a chance to improve it
  * @param {string} skill - The name of the skill
  * @param {object} target - The target of the skill
- * @return {int} - 1 if the skill was improved, 0 otherwise
+ * @returns {int} - 1 if the skill was improved, 0 otherwise
  */
 int use_skill(string skill) {
     float chance_to_improve = 20.0 ;

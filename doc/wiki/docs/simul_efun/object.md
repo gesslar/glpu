@@ -13,9 +13,13 @@ varargs int same_env_check(object one, object two, int top_env)
 
 ### Parameters
 
-{object} one
-{object} two
-{int} top_env
+* `object one` - The first object to compare.
+* `object two` - The second object to compare.
+* `int top_env` - Whether to check the top-level environment.
+
+### Returns
+
+`int` - 1 if the objects are in the same environment, 0 otherwise.
 
 ### Description
 

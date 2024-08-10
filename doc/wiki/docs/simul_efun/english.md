@@ -35,6 +35,10 @@ string possessive_proper_noun(mixed ob)
 
 * `mixed ob` - The object or string to convert to possessive form.
 
+### Returns
+
+`string` - The possessive form of the proper noun.
+
 ### Description
 
 Returns the possessive form of a proper noun. Applies 's to the

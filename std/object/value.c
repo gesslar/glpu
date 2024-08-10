@@ -30,7 +30,7 @@ void set_value(int value, string currency) {
 
 /**
  * @description Query the value of the object.
- * @return {mixed} - The value of the object. First element is the amount,
+ * @returns {mixed} - The value of the object. First element is the amount,
  *                   second element is the currency.
  */
 mixed *query_value() {

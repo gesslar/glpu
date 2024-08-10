@@ -232,7 +232,7 @@ int query_body_part_vitalness_modifier(string part) {
  * will force the function to forgo the check for membership in the body_parts
  * @param {string} part - the body part to check
  * @param {[int=0]} force - optional, default 0
- * @return {int} - 1 if the body part is valid, 0 otherwise
+ * @returns {int} - 1 if the body part is valid, 0 otherwise
  */
 int valid_body_part(string part, int force: (: 0 :)) {
     if(!stringp(part))

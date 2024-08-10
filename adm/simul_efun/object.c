@@ -483,10 +483,10 @@ int caller_is(mixed ob) {
  *
  *              If top_env is set to 1, the simul_efun will check if the two
  *              objects share the same top-level environment.
- * @param {object} one
- * @param {object} two
- * @param {int} top_env
- * @return {int}
+ * @param {object} one - The first object to compare.
+ * @param {object} two - The second object to compare.
+ * @param {int} top_env - Whether to check the top-level environment.
+ * @returns {int} - 1 if the objects are in the same environment, 0 otherwise.
  */
 varargs int same_env_check(object one, object two, int top_env) {
     object env1, env2 ;

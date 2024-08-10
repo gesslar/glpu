@@ -62,7 +62,7 @@ string possessive_noun(mixed ob) {
  * @description Returns the possessive form of a proper noun. Applies 's to the
  *              end of the noun.
  * @param {mixed} ob - The object or string to convert to possessive form.
- * @return {string} - The possessive form of the proper noun.
+ * @returns {string} - The possessive form of the proper noun.
  */
 string possessive_proper_noun(mixed ob) {
     if(objectp(ob)) ob = ob->query_name() ;
