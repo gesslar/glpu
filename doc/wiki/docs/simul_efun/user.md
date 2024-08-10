@@ -23,26 +23,65 @@ int ghostp(object ob)
 
 Returns 1 if the object is a ghost, 0 if not.
 
-## user_core_data_directory
+## account_path
 
 ### Synopsis
 
 ```c
-string user_core_data_directory(string name)
+string account_path(string name)
 ```
 
 ### Parameters
 
-* `string name` - The user's name.
+* `string name` - The name of the account.
 
 ### Returns
 
-`string` - The directory path for the user's core data directory, or 0 if the input is invalid.
+`string` - The path for the account file, or 0 if the input is invalid.
 
 ### Description
 
-Returns the directory path for the user's core data directory based
-on their name.
+Returns the path for the account file.
+
+## valid_account
+
+### Synopsis
+
+```c
+int valid_account(string name)
+```
+
+### Parameters
+
+* `string name` - The name of the account.
+
+### Returns
+
+`int` - 1 if the account is valid, otherwise 0.
+
+### Description
+
+Returns 1 if the account is valid, 0 if not.
+
+## account_file
+
+### Synopsis
+
+```c
+string account_file(string name)
+```
+
+### Parameters
+
+* `string name` - The name of the account.
+
+### Returns
+
+`string` - The file path for the account file, or 0 if the input is invalid.
+
+### Description
+
+Returns the file path for the account file.
 
 ## user_path
 

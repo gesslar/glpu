@@ -193,6 +193,7 @@ title: simul_efun
 * [add_commas](string#add_commas)
 * [append](string#append)
 * [chop](string#chop)
+* [colourp](string#colourp)
 * [extract](string#extract)
 * [from_string](string#from_string)
 * [no_ansi](string#no_ansi)
@@ -236,14 +237,16 @@ title: simul_efun
 
 ## [user](user)
 
+* [account_file](user#account_file)
+* [account_path](user#account_path)
 * [ghostp](user#ghostp)
 * [linkp](user#linkp)
 * [user_body_data](user#user_body_data)
-* [user_core_data_directory](user#user_core_data_directory)
 * [user_data_directory](user#user_data_directory)
 * [user_data_file](user#user_data_file)
 * [user_inventory_data](user#user_inventory_data)
 * [user_path](user#user_path)
+* [valid_account](user#valid_account)
 * [valid_user](user#valid_user)
 
 ## [util](util)

@@ -3,6 +3,7 @@
 
 #include <dirs.h>
 
+#define ACCOUNT_D       DIR_DAEMONS "account"
 #define ACTION_D        DIR_DAEMONS "action"
 #define ADVANCE_D       DIR_DAEMONS "advance"
 #define ALARM_D         DIR_DAEMONS "alarm"

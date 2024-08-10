@@ -59,20 +59,6 @@ string user_data_directory(string name) {
 }
 
 /**
- * @simul_efun user_core_data_directory
- * @description Returns the directory path for the user's core data directory based
- *              on their name.
- * @param {string} name - The user's name.
- * @returns {string} - The directory path for the user's core data directory, or 0 if
- *                     the input is invalid.
- */
-string user_core_data_directory(string name) {
-    if(!name || !stringp(name)) return 0;
-    name = lower_case(name);
-    return "/data/users/" + name[0..0] + "/" + name + "/" ;
-}
-
-/**
  * @simul_efun user_path
  * @description Returns the home directory path for the user.
  * @param {string|object} name - The user's name, or the body of the user.
@@ -83,6 +69,38 @@ string user_path(mixed name) {
     if(!stringp(name)) return null ;
 
     return "/home/" + name[0..0] + "/" + name + "/" ;
+}
+
+/**
+ * @simul_efun account_path
+ * @description Returns the path for the account file.
+ * @param {string} name - The name of the account.
+ * @returns {string} - The path for the account file, or 0 if the input is invalid.
+ */
+string account_path(string name) {
+    if(!name ||!stringp(name)) return 0;
+    name = lower_case((string)name);
+    return("/data/accounts/" + name[0..0] + "/");
+}
+
+/**
+ * @simul_efun account_file
+ * @description Returns the file path for the account file.
+ * @param {string} name - The name of the account.
+ * @returns {string} - The file path for the account file, or 0 if the input is invalid.
+ */
+string account_file(string name) {
+    return account_path(name) + name + ".txt" ;
+}
+
+/**
+ * @simul_efun valid_account
+ * @description Returns 1 if the account is valid, 0 if not.
+ * @param {string} name - The name of the account.
+ * @returns {int} - 1 if the account is valid, otherwise 0.
+ */
+int valid_account(string name) {
+    return file_exists(account_file(name)) ;
 }
 
 /**

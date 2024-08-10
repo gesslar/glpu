@@ -96,6 +96,26 @@ varargs int reverse_strsrch(string str, string sub, int start)
 Searches for a substring in a string starting from a given position
 and moving backwards.
 
+## colourp
+
+### Synopsis
+
+```c
+int colourp(string str)
+```
+
+### Parameters
+
+* `string str` - The string to check.
+
+### Returns
+
+`int` - 1 if the string contains colour codes, otherwise 0.
+
+### Description
+
+Returns 1 if the string contains colour codes, 0 if not.
+
 ## append
 
 ### Synopsis

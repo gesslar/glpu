@@ -170,6 +170,7 @@ string add_commas(mixed number) ;
 string reverse_string(string str) ;
 string reverse_strsrch(string str, string sub, int start) ;
 varargs int pcre_strsrch(string str, string pattern, int start) ;
+int colourp(string str) ;
 
 // File: system
 int port() ;
@@ -204,9 +205,13 @@ float time_frac(int nanoseconds) ;
 string user_data_file(string name) ;
 string user_mob_data(string name) ;
 string user_data_directory(string priv) ;
-string user_core_data_directory(string priv) ;
 string user_path(string name) ;
+string account_path(string name) ;
+string account_file(string name) ;
+int valid_account(string name) ;
+int ghostp(object user) ;
 int linkp(object user) ;
+varargs int valid_user(mixed user) ;
 
 // File: util
 string generate_uuid() ;

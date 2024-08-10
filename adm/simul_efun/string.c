@@ -479,7 +479,7 @@ varargs int reverse_strsrch(string str, string sub, int start) {
 
     return -1;
 }
-
+#include <colour.h>
 /**
  * @simul_efun pcre_strsrch
  * @description Searches for the position of a substring in a string using a
@@ -497,4 +497,14 @@ varargs int pcre_strsrch(string str, string substr, int reverse) {
     if(sizeof(matches) == 0) return -1;
     pos = strsrch(str, matches[0], reverse);
     return pos;
+}
+
+/**
+ * @simul_efun colourp
+ * @description Returns 1 if the string contains colour codes, 0 if not.
+ * @param {string} str - The string to check.
+ * @returns {int} - 1 if the string contains colour codes, otherwise 0.
+ */
+int colourp(string str) {
+    return pcre_match(str, COLOUR_REGEX) ;
 }

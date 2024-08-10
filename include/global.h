@@ -6,6 +6,7 @@
 
 //Last updated: October 9th, 2006 by Tacitus
 // Last Change: 2024/02/03: Gesslar
+// Last Change: 2024/08/09: Gesslar
 
 #ifndef __GLOBAL_H__
 #define __GLOBAL_H__
@@ -22,11 +23,9 @@
 #include <runtime_config.h>
 #include <signal.h>
 
-#define SIMUL_DIR  "/adm/simul_efun/"
 #define SIMUL_OB   "/adm/obj/simul_efun"
 #define LOGIN_OB   "/adm/obj/login"
 #define VOID_ROOM  "/d/std/void"
-#define SAFE_ROOM  "/d/std/safe_room"
 
 #define true 1
 #define false 0

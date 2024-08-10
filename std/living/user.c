@@ -14,7 +14,7 @@
 inherit STD_OBJECT;
 inherit M_LOG ;
 
-private string password, body_path;
+private string account, body_path;
 
 private nosave object body;
 private nosave object su_body ;
@@ -54,25 +54,27 @@ nomask void save_user() {
 }
 
 nomask int set_password(string str) {
-    if(adminp(query_privs(previous_object())) || this_body() == body) {
-        password = crypt(str, 0);
-    } else {
-        return 0;
-    }
-
-    if(ofile_exists(user_data_file(query_privs())))
-        save_user() ;
+    if(!valid_account(query_privs()))
+        ACCOUNT_D->create_account(query_privs(), crypt(str, 0));
+    else
+        ACCOUNT_D->write_account(query_privs(), "password", crypt(str, 0));
 
     return 1;
 }
 
 nomask mixed query_password() {
-    if(adminp(query_privs(previous_object())) ||
-       this_body() == body ||
-       base_name(previous_object()) == "/std/modules/gmcp/Char")
-       return password;
+    return ACCOUNT_D->read_account(query_privs(), "password");
+}
 
-    else return "Error [user]: Permission Denied.\n";
+string set_account(string str) {
+    if(!valid_account(str)) return 0;
+    account = str;
+    save_user();
+    return account;
+}
+
+string query_account() {
+    return account;
 }
 
 nomask int set_body_path(string file) {

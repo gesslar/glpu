@@ -128,6 +128,7 @@ string int_string (int num) {
     }
     return str;
 }
+#include <colour.h>
 
 /**
  * @simul_efun consolidate
