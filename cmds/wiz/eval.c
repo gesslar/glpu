@@ -17,11 +17,11 @@ mixed main(object caller, string arg) {
     mixed result ;
     int limit = max_eval_cost(), cost ;
 
-    if(!directory_exists(user_path(caller->query_real_name())))
+    if(!directory_exists(home_path(caller->query_real_name())))
         return _error("You must have a home directory to use eval.") ;
 
     _info(caller, "Evaluating: %s", arg);
-    file = user_path(caller->query_real_name()) + "tmp_eval_file.c" ;
+    file = home_path(caller->query_real_name()) + "tmp_eval_file.c" ;
     if(file_size(file) != -1)
         rm(file) ;
 

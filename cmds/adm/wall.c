@@ -10,10 +10,11 @@ mixed main(object caller, string str) {
     int i;
     object *users;
 
-    if(!adminp(previous_object())) return notify_fail("Error [wall]: Access denied.\n");
+    if(!adminp(previous_object()))
+        return _error("Error [wall]: Access denied.");
 
     if(!stringp(str)) {
-        write("Error [wall]: You must supply an argument. Syntax: wall <msg>\n");
+        _error("You must supply an argument. Syntax: wall <msg>");
         return 1;
     }
 

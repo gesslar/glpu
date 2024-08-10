@@ -48,7 +48,7 @@ mixed main(object tp, string str) {
 
     result = generate_area(aname, atype, width, height);
 
-    path = user_path(tp) + aname + ".map";
+    path = home_path(tp) + aname + ".map";
 
     write_file(path, result, 1);
 

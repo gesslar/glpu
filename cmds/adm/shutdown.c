@@ -17,24 +17,34 @@ mixed main(object caller, string arg) {
      int time;
      status = shutdown_d()->get_status();
 
-     if(!adminp(previous_object())) return notify_fail("Error [shutdown]: Access denied.\n");
+     if(!adminp(previous_object()))
+          return _error("Access denied.");
 
      if(!arg) {
-          if(status) write("Shutdown: " + status);
-          else write("There is no shutdown or reboot currently in progress.\n");
+          if(status)
+               _info("Shutdown: " + status);
+          else
+               _info("There is no shutdown or reboot currently in progress.");
           return 1;
      }
 
      if(arg == "stop") {
-          if(!status) return notify_fail("Error: There is no shutdown or reboot currently in progress.\n");
+          if(!status)
+               return _error("There is no shutdown or reboot currently in progress.");
           else shutdown_d()->stop();
-          log_file(LOG_SHUTDOWN, capitalize(caller->query_real_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
+               log_file(LOG_SHUTDOWN, capitalize(caller->query_real_name()) + " canceled the sequence (" + time + "m) on " + ctime(time()) + "\n");
           return 1;
      } else {
-          if(arg == "now") time = 0;
-          else time = to_int(arg);
-          if(time == 0 && arg != "now" && arg != "0") return notify_fail("SYNTAX: shutdown [<stop>||<time>/now]\n");
+          if(arg == "now")
+               time = 0;
+          else
+               time = to_int(arg);
+
+          if(time == 0 && arg != "now" && arg != "0")
+               return _info("SYNTAX: shutdown [<stop>||<time>/now]");
+
           log_file(LOG_SHUTDOWN, capitalize(caller->query_real_name()) + " started shutdown sequence (" + time + "m) on " + ctime(time()) + "\n");
+
           shutdown_d()->start(time, SYS_SHUTDOWN);
           return 1;
      }

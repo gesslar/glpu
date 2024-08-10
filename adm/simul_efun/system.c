@@ -170,7 +170,7 @@ varargs void _debug(mixed str, mixed args...) {
 private nosave mapping _symbols = ([
     "ok"      : ({ ({ "\e0036\e", "" }), ({ "\u2022 ", "o ", "" }) }),
     "error"   : ({ ({ "\e0160\e", "" }), ({ "\u25CF ", "o ", "" }) }),
-    "warning" : ({ ({ "\e0214\e", "" }), ({ "\u25B2 ", "o ", "" }) }),
+    "warn"    : ({ ({ "\e0214\e", "" }), ({ "\u25B2 ", "o ", "" }) }),
     "info"    : ({ ({ "\e0228\e", "" }), ({ "\u25A0 ", "o ", "" }) }),
     "question": ({ ({ "\e0033\e", "" }), ({ "\u25C6 ", "o ", "" }) }),
 ]) ;

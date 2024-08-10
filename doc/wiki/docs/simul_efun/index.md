@@ -240,12 +240,12 @@ title: simul_efun
 * [account_file](user#account_file)
 * [account_path](user#account_path)
 * [ghostp](user#ghostp)
+* [home_path](user#home_path)
 * [linkp](user#linkp)
 * [user_body_data](user#user_body_data)
 * [user_data_directory](user#user_data_directory)
 * [user_data_file](user#user_data_file)
 * [user_inventory_data](user#user_inventory_data)
-* [user_path](user#user_path)
 * [valid_account](user#valid_account)
 * [valid_user](user#valid_user)
 

@@ -23,6 +23,26 @@ int ghostp(object ob)
 
 Returns 1 if the object is a ghost, 0 if not.
 
+## home_path
+
+### Synopsis
+
+```c
+string home_path(mixed name)
+```
+
+### Parameters
+
+* `string|object name` - The user's name, or the body of the user.
+
+### Returns
+
+`string` - The home directory path for the user.
+
+### Description
+
+Returns the home directory path for the user.
+
 ## account_path
 
 ### Synopsis
@@ -82,26 +102,6 @@ string account_file(string name)
 ### Description
 
 Returns the file path for the account file.
-
-## user_path
-
-### Synopsis
-
-```c
-string user_path(mixed name)
-```
-
-### Parameters
-
-* `string|object name` - The user's name, or the body of the user.
-
-### Returns
-
-`string` - The home directory path for the user.
-
-### Description
-
-Returns the home directory path for the user.
 
 ## valid_user
 

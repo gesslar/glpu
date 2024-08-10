@@ -219,33 +219,32 @@ string *query_path() {
     return copy(path);
 }
 
-void add_path(string str) {
-    if(!adminp(previous_object()) && this_body() != this_object()) return;
+int add_path(string str) {
+    if(!adminp(previous_object()) && this_body() != this_object())
+        return 0;
 
-    if(member_array(str, path) != -1) {
-        write("Error [path]: Directory '" + str + "' is already in your path.\n");
-        return;
-    }
+    if(member_array(str, path) != -1)
+        return 0;
 
-    if(str[<1] != '/') str += "/";
+    str = append(str, "/");
 
-    if(!directory_exists(str)) {
-        write("Error [path]: Directory '" + str + "' does not exist.\n");
-        return;
-    }
+    if(!directory_exists(str))
+        return 0;
 
     path += ({str});
+
+    return 1;
 }
 
-void rem_path(string str) {
-    if(!adminp(previous_object()) && this_body() != this_object()) return;
+int rem_path(string str) {
+    if(!adminp(previous_object()) && this_body() != this_object())
+        return 0;
 
-    if(member_array(str, path) == -1) {
-        write("Error [path]: Directory '" + str + "' is not in your path.\n");
-        return;
-    }
+    if(member_array(str, path) == -1)
+        return 0;
 
     path -= ({str});
+    return 1;
 }
 
 void receive_message(string type, string msg) {

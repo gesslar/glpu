@@ -205,7 +205,7 @@ float time_frac(int nanoseconds) ;
 string user_data_file(string name) ;
 string user_mob_data(string name) ;
 string user_data_directory(string priv) ;
-string user_path(string name) ;
+string home_path(string name) ;
 string account_path(string name) ;
 string account_file(string name) ;
 int valid_account(string name) ;

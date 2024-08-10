@@ -185,7 +185,7 @@ void get_name(string str) {
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
-            tell(this_object()," [Hit enter to continue] ");
+            tell(this_object(),"[Hit enter to continue]");
             input_to("enter_world", 0);
         } else {
             enter_world(0);
@@ -261,7 +261,7 @@ void get_password(string str, int i) {
               query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
             if(mud_config("DISPLAY_NEWS")) {
                 tell(this_object(), motd + "\n");
-                tell(this_object()," [Hit enter to continue] ");
+                tell(this_object(),"[Hit enter to continue]");
                 input_to("enter_world", 0);
             } else {
                 enter_world(0);
@@ -355,9 +355,7 @@ void idle_email(string str) {
             mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name());
             mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/public");
             mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private");
-            catch(cp("/d/std/workroom.c", user_path(user->query_real_name())));
-            write_file("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal." + user->query_real_name(), capitalize(user->query_real_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
-            catch(link("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal." + user->query_real_name(), "/doc/journals/journal." + user->query_real_name()));
+            catch(cp("/d/std/workroom.c", home_path(user->query_real_name())));
             body->add_path("/cmds/wiz/");
             body->add_path("/cmds/object/");
             body->add_path("/cmds/file/");
@@ -376,7 +374,7 @@ void idle_email(string str) {
         write_file(log_dir() + LOG_LOGIN, capitalize(user->query_real_name()) + " ("+getoid(body)+") logged in from " +
           query_ip_number(this_object()) + " on " + ctime(time()) + " for the first time.\n");
         tell(this_object(),"\n" + parse_tokens(read_file(mud_config("FLOGIN_NEWS"))) + "\n");
-        tell(this_object()," [Hit enter to continue] ");
+        tell(this_object(),"[Hit enter to continue]");
         input_to("setup_new");
 #ifdef EMAIL_MUST_RESOLVE
     }
@@ -416,7 +414,7 @@ void setup_new() {
     if(mud_config("DISPLAY_NEWS")) {
         tell(this_object(), motd + "\n");
         tell(this_object(),"\n");
-        tell(this_object()," [Hit enter to continue] ");
+        tell(this_object(),"[Hit enter to continue]");
         input_to("enter_world", 0);
     } else {
         enter_world(0);
@@ -435,7 +433,7 @@ void reconnect(string str) {
         body = old_body;
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
-            tell(this_object()," [Hit enter to continue] ");
+            tell(this_object(),"[Hit enter to continue]");
             input_to("enter_world", 1);
         } else {
             enter_world(1);
@@ -448,7 +446,7 @@ void reconnect(string str) {
           query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
         if(mud_config("DISPLAY_NEWS")) {
             tell(this_object(), motd + "\n");
-            tell(this_object()," [Hit enter to continue] ");
+            tell(this_object(),"[Hit enter to continue]");
             input_to("enter_world", 0);
         } else {
             enter_world(0);
@@ -501,7 +499,7 @@ void enter_world(int reconnecting) {
             if(loc == "last_location")
                 loc = body->query("last_location") ;
             else
-                loc = user_path(body) + "workroom" ;
+                loc = home_path(body) + "workroom" ;
         } else {
             loc = ROOM_START ;
         }

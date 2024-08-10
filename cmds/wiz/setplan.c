@@ -29,7 +29,7 @@ mixed main(object tp, string arg) {
     if(arg && (arg == "-d" || sscanf(arg, "-d %*s")))
         return delete_plan(tp);
 
-    file = user_path(user) + ".plan";
+    file = home_path(user) + ".plan";
 
     if(arg && (arg == "-o" || sscanf(arg, "-o %*s"))) {
         overwrite = true;
@@ -52,7 +52,7 @@ mixed main(object tp, string arg) {
 }
 
 public void finish_edit(int status, string file, string temp_file, object tp, int overwrite) {
-    string planfile = user_path(query_privs(tp)) + ".plan" ;
+    string planfile = home_path(query_privs(tp)) + ".plan" ;
 
     if(status == ED_STATUS_ABORTED)
         return tell(tp, "Aborted.\n") ;
@@ -65,7 +65,7 @@ public void finish_edit(int status, string file, string temp_file, object tp, in
 
 int delete_plan(object tp) {
     string name = query_privs(tp);
-    string file = user_path(name) + ".plan";
+    string file = home_path(name) + ".plan";
 
     if(!file_exists(file))
         return _error("No such file %s", file);

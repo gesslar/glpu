@@ -1,4 +1,4 @@
-string user_path(mixed name)
+string home_path(mixed name)
 
 Parameters:
 

@@ -13,37 +13,40 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string args) {
-    object user;
+    object body;
     object security_editor;
 
     if(!adminp(previous_object()))
-        return notify_fail("Error [redev]: Access denied.\n");
+        return _error("Access denied.");
      if(!args)
-        return(notify_fail("Syntax: revdev <user>\n"));
+        return(_error("revdev <user>"));
 
     args = lower_case(args);
-    user = find_player(args);
+    body = find_player(args);
 
-    if(!user)
-        return(notify_fail("Error [makedev]: User '" + args + "' is not online.\n"));
-    if(!devp(query_privs(user)))
-        return(notify_fail("Error [makedev]: That user is not a developer.\n"));
+    if(!body)
+        return _error("User '%s' not online.", args);
 
-    write("Revoking developer access for '" + capitalize(user->query_real_name()) + "'.\n");
-    tell_object(user, "\nDeveloper Access Revoked.\n");
-    user->rem_path("/cmds/wiz/");
-    user->rem_path("/cmds/object/");
-    user->rem_path("/cmds/file/");
-    user->rem_path("/cmds/adm/");
+    if(!devp(query_privs(body)))
+        return _error("That user is not a developer.") ;
+
+    _info("Revoking developer access for '%s'.", capitalize(body->query_real_name()));
+
+    _ok(body, "Developer Access Revoked.");
+    body->rem_path("/cmds/wiz/");
+    body->rem_path("/cmds/object/");
+    body->rem_path("/cmds/file/");
+    body->rem_path("/cmds/adm/");
     security_editor = new(OBJ_SECURITY_EDITOR);
-    security_editor->disable_membership(query_privs(user), "developer");
+    security_editor->disable_membership(query_privs(body), "developer");
     security_editor->write_state(0);
     security_editor->remove() ;
-    user->save_user();
+    body->save_user();
 
-    write("Success [revdev]: User '" + capitalize(user->query_real_name()) + "' is no longer a developer.\n");
+    _ok("User '%s' is no longer a developer.", capitalize(body->query_real_name()));
+
     log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " revoked "
-        + user->query_real_name() + "'s developer status on " + ctime(time())
+        + body->query_real_name() + "'s developer status on " + ctime(time())
         + "\n");
     return 1;
 }

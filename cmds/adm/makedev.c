@@ -12,61 +12,58 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string args) {
-    object user;
+mixed main(object tp, string args) {
+    object body;
     object security_editor;
+    string path ;
 
-    if(!adminp(previous_object())) return notify_fail("Error [makedev]: Access denied.\n");
+    if(!adminp(previous_object()))
+        return _error("Access denied.");
 
     if(!args)
-        return(notify_fail("Syntax: makedev <user>\n"));
+        return _info("Syntax: makedev <user>");
 
     args = lower_case(args);
-    user = find_player(args);
+    body = find_player(args);
 
-    if(!user)
-        return(notify_fail("Error [makedev]: User '" + args + "' is not online.\n"));
+    if(!body)
+        return _error("User '%s' is not online.", args);
 
-    if(devp(query_privs(user))) {
-        write("Error [makedev]: That user is already a developer.\n");
-        write("Setting up command path for '" + user->query_name() + "'.\n");
-        user->add_path("/cmds/wiz/");
-        user->add_path("/cmds/object/");
-        user->add_path("/cmds/file/");
+    if(devp(query_privs(body))) {
+        _info("That user is already a developer.");
+        _info("Setting up command path for '%s'.", capitalize(body->query_real_name()));
+        body->add_path("/cmds/wiz/");
+        body->add_path("/cmds/object/");
+        body->add_path("/cmds/file/");
         return 1;
     }
 
-    write("Setting up developer access for '" + capitalize(user->query_real_name()) + "'.\n");
+    _info("Setting up developer access for '%s'.", capitalize(body->query_real_name()));
 
-    tell_object(user, "\nSetting up developer account...\n");
-    if(!directory_exists("/home/" + user->query_real_name()[0..0]))
-        mkdir ("/home/"+ user->query_real_name()[0..0]);
-    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name());
-    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/public");
-    mkdir("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private");
-    cp("/d/std/workroom.c", user_path(user->query_real_name()));
-    write_file("/doc/journals/journal." + user->query_real_name(),
-        capitalize(user->query_real_name()) + "'s dev journal (Created: " + ctime(time()) + ")\n\n");
-    catch(link("/doc/journals/journal." + user->query_real_name(),
-        "/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/private/journal."
-        + user->query_real_name()));
-    user->add_path("/cmds/wiz/");
-    user->add_path("/cmds/object/");
-    user->add_path("/cmds/file/");
+    _info(body, "Setting up developer account...");
+
+    path = home_path(body->query_real_name());
+    assure_dir(path);
+    assure_dir(path + "public");
+    assure_dir(path + "private");
+    cp("/d/std/workroom.c", path + "workroom.c");
+    body->add_path("/cmds/wiz/");
+    body->add_path("/cmds/object/");
+    body->add_path("/cmds/file/");
     security_editor = new(OBJ_SECURITY_EDITOR);
-    security_editor->enable_membership(query_privs(user), "developer");
+    security_editor->enable_membership(query_privs(body), "developer");
     security_editor->write_state(0);
-    tell_object(user, "\n... Success!\n\n");
-    tell_object(user, "Developer Access Granted.\n");
+    _ok(body, "Success.");
+    _ok(body, "Developer Access Granted.");
 
-    write("Success [makedev]: User '" + capitalize(user->query_real_name()) + "' now has developer status.\n");
-    log_file(LOG_PROMOTE, capitalize(query_privs(caller)) + " promotes "
-        + user->query_name() + " to developer status on " + ctime(time())
+    _ok("User '%s' is now a developer.", capitalize(body->query_real_name()));
+    log_file(LOG_PROMOTE, capitalize(query_privs(tp)) + " promotes "
+        + body->query_name() + " to developer status on " + ctime(time())
         + "\n");
     return 1;
 }
 
-string help(object caller) {
+string help(object tp) {
     return(" SYNTAX: makedev <user>\n"
     "This command will set up a user with developer access to\n"
     "the mud by adding the user to the 'developer' group, creating\n"

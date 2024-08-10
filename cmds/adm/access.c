@@ -304,7 +304,7 @@ int i_DisMenu(string str, object tp) {
                write_gFile(1);
                write("\nRaw access data:\n\n");
                write_aFile(1);
-               write("\n [Hit enter to continue] ");
+               write("\n[Hit enter to continue]");
                input_to("i_cnDisMenu", tp);
                return 1;
           }
@@ -314,7 +314,7 @@ int i_DisMenu(string str, object tp) {
                if(!sizeof(arr)) arr = ({ "[None]" });
                write("\nThere is a total of " + sizeof(arr) + " groups on " + mud_name() + "\n\n");
                write(simple_list(arr));
-               write("\n [Hit enter to continue] ");
+               write("\n[Hit enter to continue]");
                input_to("i_cnDisMenu", tp);
                return 1;
           }
@@ -351,7 +351,7 @@ int i_qDirectory(string str, object tp) {
 
      if(!mapp(access[str])) {
           write("\nError: No specific access settings have been set for directory '" + str +"'\n");
-          write("\n [Hit enter to continue] ");
+          write("\n[Hit enter to continue]");
           input_to("i_cnDisMenu", tp);
           return 1;
      }
@@ -365,7 +365,7 @@ int i_qDirectory(string str, object tp) {
      if(sizeof(arr) > 1) output += sprintf("%s%s\n",implode(arr[0..(sizeof(arr)-2)], ":"), ":" + arr[sizeof(arr)-1]);
      else output += arr[0] + "\n";
      write("\n" + output);
-     write("\n [Hit enter to continue] ");
+     write("\n[Hit enter to continue]");
      input_to("i_cnDisMenu", tp);
      return 1;
 }
@@ -381,7 +381,7 @@ int i_qGroup(string str, object tp) {
 
      if(!sizeof(groups[str])) {
           write("\nError: Group '" + str + "' doesn't exist.\n");
-          write("\n [Hit enter to continue] ");
+          write("\n[Hit enter to continue]");
           input_to("i_cnDisMenu", tp);
           return 1;
      }
@@ -389,7 +389,7 @@ int i_qGroup(string str, object tp) {
      arr = groups[str];
      if(sizeof(arr) > 1) printf("\nThe following users are a member of the group '" + str + "':\n\t%s, and %s\n", implode(arr[0..(sizeof(arr)-2)], ", "), arr[sizeof(arr)-1]);
      else printf("\nThe following user is a member of the group '" + str + "':\n\t%s\n", arr[0]);
-     write("\n [Hit enter to continue] ");
+     write("\n[Hit enter to continue]");
      input_to("i_cnDisMenu", tp);
      return 1;
 

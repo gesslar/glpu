@@ -94,7 +94,7 @@ protected void log_error(string file, string message) {
     else username = "(none)";
 
     if(stringp(username)) {
-        string path = user_path(username);
+        string path = home_path(username);
         if(directory_exists(path)) {
             write_file(path + "log", "\n" + message);
         }

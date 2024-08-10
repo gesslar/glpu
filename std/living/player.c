@@ -83,8 +83,8 @@ void exit_world() {
 
     if(this_body() != this_object()) return;
 
-    if(file_size(user_path(query_real_name()) + ".quit") > 0) {
-        cmds = explode(read_file(user_path(query_real_name()) + ".quit"), "\n");
+    if(file_size(home_path(query_real_name()) + ".quit") > 0) {
+        cmds = explode(read_file(home_path(query_real_name()) + ".quit"), "\n");
         if(sizeof(cmds) <= 0) return;
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }

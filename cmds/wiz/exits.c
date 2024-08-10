@@ -1,12 +1,21 @@
-// /cmds/wiz/exits.c
-// Command to show all exits in the current room
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /cmds/wiz/exits.c
+ * @description Shows all the exits in the current room and where they lead.
+ *
+ * @created 2024/02/04 - Gesslar
+ * @last_modified 2024/02/04 - Gesslar
+ *
+ * @history
+ * 2024/02/04 - Gesslar - Created
+ */
 
 inherit STD_CMD ;
+
+void setup() {
+    usage_text = "exits";
+    help_text =
+"Shows all the exits in the current room and where they lead.";
+}
 
 mixed main(object tp, string args) {
     string *exits;
@@ -29,10 +38,4 @@ mixed main(object tp, string args) {
     }
 
     return str;
-}
-
-string help(object caller) {
-    return "Syntax: exits\n\n"
-"This command will show all the exits in the current room and where they "
-"lead.";
 }

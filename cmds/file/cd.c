@@ -14,8 +14,8 @@ mixed main(object tp, string str) {
      test = str ;
 
      if(!stringp(test)) {
-          test = user_path(tp);
-          if(!directory_exists(test = user_path(tp)))
+          test = home_path(tp);
+          if(!directory_exists(test = home_path(tp)))
               return _error("Syntax: cd <directory>");
      }
 

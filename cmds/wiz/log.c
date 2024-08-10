@@ -19,8 +19,8 @@ mixed main(object caller, string arg) {
     if(!arg) {
         if(file_exists("/log/compile"))
             logfile = "/log/compile";
-        if(file_exists(user_path(query_privs(this_body())) + "log"))
-            logfile = user_path(query_privs(this_body())) + "log";
+        if(file_exists(home_path(query_privs(this_body())) + "log"))
+            logfile = home_path(query_privs(this_body())) + "log";
     } else {
         if(file_exists("/log/" + arg))
             logfile = "/log/" + arg;

@@ -15,12 +15,12 @@ private nosave nomask function *actions ;
 
 void setup() {
      actions = ({
+          (: destruct(find_object(SIMUL_OB)) :),
+          (: load_object(SIMUL_OB) :),
           (: destruct(master()) :),
           (: destruct(find_object("/adm/obj/master/valid")) :),
           (: load_object("/adm/obj/master/valid") :),
           (: load_object("/adm/obj/master") :),
-          (: destruct(find_object(SIMUL_OB)) :),
-          (: load_object(SIMUL_OB) :),
           (: CONFIG_D->rehash_config() :),
      }) ;
 }

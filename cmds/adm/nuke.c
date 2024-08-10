@@ -12,40 +12,41 @@ Standard nuke command V2
 
 inherit STD_CMD ;
 
-mixed main(object caller, string user) {
+mixed main(object tp, string user) {
     if(!adminp(previous_object()))
-        return "Error [nuke]: Access denied.\n" ;
+        return _error("Access denied.") ;
 
     if(!user)
-        return "Usage: nuke <player>\n";
+        return _info("Usage: nuke <player>") ;
 
     user = lower_case(user);
 
     if(!user_exists(user))
-        return "Error [nuke]: User '" + user + "' does not exist.\n";
+        return _error("User '%s' does not exist.", user) ;
 
-    tell(caller, "Are you sure you want to delete " + user + "? [y/n] ", MSG_PROMPT) ;
-    input_to("confirm_nuke", 0, caller, user);
+    _question(tp, "Are you sure you want to delete " + user + "? [y/n] ", MSG_PROMPT) ;
+    input_to("confirm_nuke", 0, tp, user);
 
     return 1;
 }
 
-void confirm_nuke(string str, object caller, string user) {
+void confirm_nuke(string str, object tp, string user) {
     object security_editor;
     object body, link;
     string *dir;
 
     if(str != "y" && str != "yes") {
-        tell(caller, "Abort [nuke]: Aborting nuke.\n");
+        _info(tp, "Abort [nuke]: Aborting nuke.");
         return;
     }
 
-    tell(caller, "Warning [nuke]: Now stripping user of system group memberships.\n");
+    _info(tp, "Stripping user of system group memberships.");
 
     security_editor = new(OBJ_SECURITY_EDITOR);
 
     foreach(mixed group in security_editor->list_groups()) {
-        if(is_member(user, group)) write("\t* " + group + " membership revoked.\n");
+        if(is_member(user, group))
+            _info(tp, "* Removing from group: %s.", group);
         security_editor->disable_membership(user, group);
     }
 
@@ -53,8 +54,8 @@ void confirm_nuke(string str, object caller, string user) {
     security_editor->remove();
 
     if(body = find_player(user)) {
-        tell(caller, "Warning [nuke]: Now disconnecting user '" + user + "'.\n");
-        tell(body, "You watch as your body dematerializes.\n");
+        _info(tp, "Disconnecting user '" + user + "'.");
+        _ok(body, "You watch as your body dematerializes.");
 
         if(environment(body)) {
             tell_down(environment(body), "You watch as " + capitalize(user) + " dematerializes before your eyes.\n",
@@ -65,23 +66,23 @@ void confirm_nuke(string str, object caller, string user) {
         }
     }
 
-    tell(caller, "Warning [nuke]: Now deleting pfile for user '" + user + "'.\n");
+    _info(tp, "Deleting pfile for user '%s'.", capitalize(user));
 
     dir = get_dir(user_data_directory(user));
     foreach(string file in dir) {
-        tell(caller, "\t* " + file + " deleted.\n");
+        _info(tp, "* Deleting file: %s.", file);
         if(!rm(user_data_directory(user) + file)) {
-            tell(caller, "Error [nuke]: Error while deleting " + file + " in user's data directory.\n");
+            _error(tp, "Error while deleting %s in user directory.", file);
             return ;
         }
     }
     rmdir(user_data_directory(user));
 
-    tell(caller, "\nSuccess [nuke]: User '" + capitalize(user) + "' has been removed.\n");
-    log_file(LOG_NUKE, capitalize(query_privs(caller)) + " nukes " + capitalize(user) + " on " + ctime(time()) + "\n");
+    _ok(tp, "User '%s' has been removed.", capitalize(user));
+    log_file(LOG_NUKE, capitalize(query_privs(tp)) + " nukes " + capitalize(user) + " on " + ctime(time()) + "\n");
 }
 
-string help(object caller) {
+string help(object tp) {
     return (
 " SYNTAX: nuke <username>\n\n" +
 "This command will delete the target user's pfile, thus removing their account "
