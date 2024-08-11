@@ -324,7 +324,8 @@ string *dir_file(mixed path) {
 int touch(string file) {
     string old_privs ;
 
-    if(!file) return 0 ;
+    if(!file)
+        return 0 ;
 
     old_privs = query_privs() ;
     set_privs(this_object(), query_privs(previous_object())) ;

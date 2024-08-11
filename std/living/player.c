@@ -14,6 +14,7 @@
 #include <gmcp_defines.h>
 #include <logs.h>
 #include <rooms.h>
+#include <player.h>
 
 inherit STD_BODY ;
 
@@ -24,7 +25,7 @@ inherit M_GMCP ;
 private nosave mapping environ_data = ([]) ;
 
 /* Connection functions */
-void setup_body(object user) {
+void setup_body() {
     set_living_name(query_real_name());
     set_id(({query_real_name()}));
     // set_real_name(name());
@@ -42,13 +43,10 @@ void setup_body(object user) {
     rehash_capacity() ;
     update_regen_interval() ;
 
-
     set_log_prefix(sprintf("(%O)", this_object())) ;
 
     slot(SIG_SYS_CRASH, "on_crash") ;
     slot(SIG_PLAYER_ADVANCED, "on_advance") ;
-
-    user->set_body_path(base_name()) ;
 }
 
 void enter_world(int reconnecting) {
@@ -94,7 +92,7 @@ void exit_world() {
     if(environment())
         say(query_name()+ " leaves " + mud_name() + ".\n");
 
-    save_user();
+    save_body();
 }
 
 void net_dead() {
@@ -104,7 +102,7 @@ void net_dead() {
     abort_edit() ;
 
     set("last_login", time());
-    save_user();
+    save_body();
 
     if(environment())
         tell_all(environment(), query_name()+ " falls into stupour.\n");
@@ -116,7 +114,7 @@ void net_dead() {
 }
 
 void reconnect() {
-    restore_user();
+    restore_body();
     set("last_login", time());
     tell(this_object(), "You have reconnected to your body.\n");
     if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
@@ -132,9 +130,10 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query("last_login")) > 3600) {
                 if(environment())
-                    tell_room(environment(), query_name() + " fades out of existance.\n");
+                    simple_action("$N $vfade out of existance.");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
-                destruct(this_object());
+                remove() ;
+                return ;
             }
         } else {
             /* Prevent link-dead from idle */
@@ -170,7 +169,7 @@ void on_crash(mixed arg...) {
     if(previous_object() != signal_d())
         return ;
 
-    catch(result = save_user()) ;
+    catch(result = save_body()) ;
 }
 
 void mudlib_unsetup() {
@@ -268,7 +267,7 @@ void save_inventory() {
     write_file(user_inventory_data(query_privs(this_object())), save, 1) ;
 }
 
-void restore_user() {
+void restore_body() {
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
     if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_real_name()) restore_object(user_body_data(query_real_name()));
 }
@@ -304,7 +303,7 @@ void wipe_inventory() {
     rm(file) ;
 }
 
-int save_user() {
+int save_body() {
     int result ;
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&

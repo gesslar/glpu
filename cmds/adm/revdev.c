@@ -41,7 +41,7 @@ mixed main(object caller, string args) {
     security_editor->disable_membership(query_privs(body), "developer");
     security_editor->write_state(0);
     security_editor->remove() ;
-    body->save_user();
+    body->save_body();
 
     _ok("User '%s' is no longer a developer.", capitalize(body->query_real_name()));
 

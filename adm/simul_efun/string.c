@@ -181,7 +181,16 @@ varargs mixed from_string(string str, int flag) {
         switch(str[1]) {
             case '{':
                 ret[0] = ({});
-                str = str[2..];
+                str = ltrim(str[2..]);
+                if(str[0] == '}') {
+                    // Empty array case
+                    str = str[1..];
+                    str = ltrim(str);
+                    if(str[0] != ')')
+                        error("Illegal array terminator.\n");
+                    ret[1] = str[1..];
+                    return flag ? ret : ret[0];
+                }
                 while(str[0] != '}') {
                     mixed *tmp;
 

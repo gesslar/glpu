@@ -16,11 +16,11 @@ mapping query_all_environ();
 void set_environ_option(string key, mixed value);
 void receive_environ(string var, mixed value);
 void set_environ(mapping data);
-void restore_user();
+void restore_body();
 void save_inventory();
 void restore_inventory();
 void wipe_inventory() ;
-int save_user();
+int save_body();
 int has_screenreader();
 int is_pc();
 

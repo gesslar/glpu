@@ -4,8 +4,6 @@
 string *query_all_commands();
 void rehash_capacity();
 void die();
-object query_user();
-int set_user(object ob);
 int set_env(string var_name, string var_value);
 varargs mixed query_env(string var_name, mixed def);
 mapping list_env();
@@ -21,5 +19,8 @@ int force_me(string cmd);
 int query_log_level();
 string *query_body_slots() ;
 string *query_weapon_slots() ;
+void set_su_body(object source) ;
+object query_su_body() ;
+void clear_su_body() ;
 
 #endif // __BODY_H__

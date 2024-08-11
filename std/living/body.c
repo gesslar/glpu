@@ -1,5 +1,5 @@
 /**
- * @file /std/user/body.c
+ * @file /std/living/body.c
  * @description Body object that is shared by players and NPCs.
  *
  * @created 2024/07/29 - Gesslar
@@ -40,6 +40,7 @@ inherit M_LOG ;
 string *path;
 nosave string *command_history = ({});
 private nosave object link;
+object su_body ;
 
 /* Prototypes */
 
@@ -93,9 +94,16 @@ void die() {
         return ;
 
     stop_all_attacks() ;
-    simple_action("$N $vhave perished.") ;
 
-    save_user() ;
+    if(objectp(su_body)) {
+        exec(su_body, this_object()) ;
+        su_body->move(environment()) ;
+        su_body->simple_action("$N $vis violently ejected from the body of $o.", this_object()) ;
+        clear_su_body() ;
+    }
+
+    simple_action("$N $vhave perished.") ;
+    save_body() ;
     emit(SIG_PLAYER_DIED, this_object(), killed_by()) ;
     corpse = new(OBJ_CORPSE) ;
     corpse->setup_corpse(this_object(), killed_by()) ;
@@ -129,9 +137,8 @@ void die() {
         corpse->remove() ;
 
     if(userp())  {
-        object ghost = BODY_D->create_ghost(query_user(), this_object()) ;
+        object ghost = BODY_D->create_ghost(query_privs()) ;
         exec(ghost, this_object()) ;
-        query_user()->set_body(ghost) ;
         ghost->setup_body() ;
         ghost->set_hp(-1.0) ;
         ghost->set_sp(-1.0) ;
@@ -158,9 +165,6 @@ varargs int move(mixed ob, int flag) {
 void event_remove(object prev) {
     object *all ;
 
-    if(objectp(query_user()))
-        destruct(query_user());
-
     all = all_inventory() ;
     foreach(object ob in all) {
         if(ob->prevent_drop()) {
@@ -176,21 +180,6 @@ void event_remove(object prev) {
             }
         }
     }
-}
-
-object query_user() {
-    return link;
-}
-
-int set_user(object ob) {
-    if(query_privs(previous_object()) != query_privs() &&
-       !adminp(previous_object()) &&
-       base_name(previous_object(1)) != CMD_SU
-    )
-        return 0;
-
-    link = ob;
-    return 1;
 }
 
 /* Environmental Settings */
@@ -458,4 +447,16 @@ int query_log_level() {
     if(!query_env("log_level")) return 0 ;
 
     return to_int(query_env("log_level")) ;
+}
+
+void set_su_body(object source) {
+    su_body = source ;
+}
+
+object query_su_body() {
+    return su_body ;
+}
+
+void clear_su_body() {
+    su_body = null ;
 }

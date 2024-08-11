@@ -17,11 +17,9 @@ inherit __DIR__ "living" ;
 void mudlib_setup() {
     ::mudlib_setup() ;
 
-    set_name("Generic NPC");
-    set_id(({lower_case(query_name()), query_name(), "npc", "generic npc", "NPC" }));
-    set_long(capitalize(query_name()) + " is a generic NPC.");
-    set_short(query_name());
-    if(!query("env_settings")) set("env_settings", ([]));
+    if(!query("env_settings"))
+        set("env_settings", ([]));
+
     init_living() ;
 
     if(clonep()) {
@@ -32,8 +30,25 @@ void mudlib_setup() {
     }
 }
 
-void restore_user() {}
-void save_user() {}
+void restore_body() {}
+void save_body() {}
+
+string set_name(string name) {
+    string result ;
+
+    if(!name || !stringp(name))
+        return ;
+
+    result = ::set_name(name) ;
+
+    if(!result)
+        return result ;
+
+    name = lower_case(name) ;
+    set_living_name(name) ;
+
+    return result ;
+}
 
 float set_level(float level) {
     if(!::set_level(level))

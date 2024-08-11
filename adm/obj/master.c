@@ -287,7 +287,9 @@ string privs_file(string filename) {
 }
 
 string object_name(object ob) {
-    if(ob->query_real_name()) return ob->query_real_name();
+    if(ob->query_real_name())
+        return ob->query_real_name();
+
     return 0 ;
 }
 

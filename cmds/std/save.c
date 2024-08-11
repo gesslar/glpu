@@ -9,7 +9,7 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string args) {
-    caller->save_user();
+    caller->save_body();
     write("Successful [save]: User saved.\n");
     return 1;
 }

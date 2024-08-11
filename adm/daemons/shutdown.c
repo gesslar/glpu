@@ -93,7 +93,7 @@ private nomask void do_shutdown() {
     int i;
     object *users = users();
 
-    filter(users, (: $1->save_user() :));
+    filter(users, (: $1->save_body() :));
     log_file(LOG_LOGIN, sprintf("Driver %s on " + ctime(time()) + ". All users forced to quit.\n", type == SYS_SHUTDOWN ? "shut down" : "rebooted"));
 
     filter(users, (: _warn($1, "The mud is shutting down now.") :));

@@ -4,6 +4,8 @@
 inherit __DIR__ "gmcp_module" ;
 
 void setup() {
+    set_privs("gmcp") ;
+
     cooldown_limits = ([
         GMCP_PKG_CHAR_STATUS : 0,
         GMCP_PKG_CHAR_STATUSVARS: 0,
@@ -37,22 +39,26 @@ void Login(string submodule, mapping data) {
 
     switch(submodule) {
         case "Credentials" : {
-            string account, password, curr, test ;
-            object link ;
+            string username, account_name, password, character, curr, test ;
+            mapping account ;
 
-            account = lower_case(data["account"]) ;
+            username = lower_case(data["account"]) ;
+            sscanf(username, "%s@%s", character, account_name) ;
+
+            account = ACCOUNT_D->load_account(account_name) ;
             password = data["password"] ;
-            if(!objectp(link = FINGER_D->get_user(account))) {
+
+            if(!account || !account["password"]) {
                 GMCP_D->send_gmcp(prev,
                     GMCP_PKG_CHAR_LOGIN_RESULT,
-                    ([ "success" : "false", "message": "Invalid username."])
+                    ([ "success" : "false", "message": "Invalid account name."])
                 ) ;
-                tell(prev, "Invalid username.\n") ;
+                tell(prev, "Invalid account name.\n") ;
                 prev->remove() ;
                 return ;
             }
 
-            curr = link->query_password() ;
+            curr = account["password"] ;
             test = crypt(password, curr) ;
             if(test != curr) {
                 GMCP_D->send_gmcp(prev,
@@ -60,17 +66,15 @@ void Login(string submodule, mapping data) {
                     ([ "success" : "false", "message": "Invalid password."])
                 ) ;
                 tell(prev, "Invalid password.\n") ;
-                link->remove() ;
                 prev->remove() ;
                 return ;
             }
 
-            link->remove() ;
             GMCP_D->send_gmcp(prev,
                 GMCP_PKG_CHAR_LOGIN_RESULT,
                 ([ "success" : "true", "message": "Login successful."])
             ) ;
-            prev->gmcp_authenticated(account) ;
+            prev->gmcp_authenticated(username, character) ;
         }
     }
 }

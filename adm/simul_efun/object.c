@@ -106,7 +106,6 @@ varargs object get_object(string str, object player) {
 //   "users:e:guard" - searches the environments of all users for a guard.
 //   "/std/ghost:c" - all the children of /std/ghost
 //   "users:s" - all the shadows of users
-//   "users:>query_user" - all the connection objects in the game
 /**
  * @simul_efun get_objects
  * @description Locates objects based on the specified search string, which can

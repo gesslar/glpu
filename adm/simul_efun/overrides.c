@@ -218,13 +218,3 @@ varargs string ctime(int x) {
     fmt = "%Y-%m-%d %H:%M:%S" ;
     return strftime(fmt, x) ;
 }
-
-/**
- * @efun_override this_user
- * @description This is an override of the efun this_user(). It will return
- *              the this_body()->query_user().
- * @returns {object} - The this_body()->query_user().
- */
-object this_user() {
-    return this_body()->query_user();
-}

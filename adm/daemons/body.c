@@ -16,45 +16,51 @@ object create_body(object user) ;
 mixed create_ghost(object user) ;
 mixed revive(object ghost, object user) ;
 
-object create_body(object user) {
+object create_body(string name) {
     object body ;
     string err;
     string type ;
     string dest ;
 
-    if(adminp(user))
+    if(!name)
+        return 0 ;
+
+    name = lower_case(name) ;
+
+    if(adminp(name))
         type = "admin" ;
-    else if(devp(user))
+    else if(devp(name))
         type = "dev" ;
     else
         type = "player" ;
 
-    dest = sprintf("/%s/%s", type, query_privs(user)) ;
+    dest = sprintf("/%s/%s", type, name) ;
 
     err = catch(body = load_object(dest)) ;
 
-    if(err) {
-        error("Error [login]: There was an error creating your mobile.\n" +
-          "\tBody: " + user->query_body_path() + "\n" + err);
-
+    if(err)
         return 0 ;
-    }
 
-    body->set_name(query_privs(user));
-    user->set_body(body);
-    set_privs(body, query_privs(user)) ;
-    body->restore_user();
+    if(!body)
+        return 0 ;
+
+    body->set_name(name) ;
+    set_privs(body, name) ;
+    body->restore_body();
 
     return body;
 }
 
-mixed create_ghost(object user) {
+mixed create_ghost(string name) {
     string err ;
     object ghost ;
-    string name ;
 
-    name = query_privs(user) ;
-    err = catch(ghost = load_object(sprintf("/ghost/%s", query_privs(user)))) ;
+    if(!name)
+        return 0 ;
+
+    name = lower_case(name) ;
+
+    err = catch(ghost = load_object(sprintf("/ghost/%s", name))) ;
     if(err) {
         log_file("ghost", err) ;
         return err ;
@@ -62,7 +68,6 @@ mixed create_ghost(object user) {
 
     ghost->set_name(name) ;
     set_privs(ghost, name) ;
-    user->set_body(ghost) ;
 
     return ghost ;
 }

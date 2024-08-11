@@ -14,7 +14,7 @@
  */
 string user_data_file(string name) {
     if(!name ||!stringp(name)) return 0;
-    name = lower_case((string)name);
+    name = lower_case(name);
     return("/data/users/" + name[0..0] + "/" + name + "/" + name);
 }
 
@@ -27,8 +27,8 @@ string user_data_file(string name) {
  */
 string user_body_data(string name) {
     if(!name ||!stringp(name)) return 0;
-    name = lower_case((string)name);
-    return("/data/users/" + name[0..0] + "/" + name + "/" + name + "_body");
+    name = lower_case(name);
+    return("/data/users/" + name[0..0] + "/" + name + "/" + name);
 }
 
 /**
@@ -40,7 +40,7 @@ string user_body_data(string name) {
  */
 string user_inventory_data(string name) {
     if(!name ||!stringp(name)) return 0;
-    name = lower_case((string)name);
+    name = lower_case(name);
     return user_data_directory(name) + name + "_inv.txt" ;
 }
 
@@ -79,7 +79,7 @@ string home_path(mixed name) {
  */
 string account_path(string name) {
     if(!name ||!stringp(name)) return 0;
-    name = lower_case((string)name);
+    name = lower_case(name);
     return("/data/accounts/" + name[0..0] + "/");
 }
 
@@ -100,7 +100,7 @@ string account_file(string name) {
  * @returns {int} - 1 if the account is valid, otherwise 0.
  */
 int valid_account(string name) {
-    return file_exists(account_file(name)) ;
+    return mapp(ACCOUNT_D->load_account(name)) ;
 }
 
 /**

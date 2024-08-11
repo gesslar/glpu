@@ -1,5 +1,5 @@
 /**
- * @file /std/user/ghost.c
+ * @file /std/living/ghost.c
  * @description You're a ghost OooOoOOOOoOOoOooooOOo
  *
  * @created 2024/07/28 - Gesslar
@@ -48,21 +48,20 @@ void setup_body() {
     update_regen_interval() ;
     init_vitals() ;
     set_log_prefix(sprintf("(%O)", this_object())) ;
-    this_user()->set_body_path(base_name()) ;
 }
 
 int revive(string str) {
     object body ;
-    object user = query_user() ;
+    string name = query_privs() ;
 
     if(this_body() != this_object())
         return 0;
 
-    body = BODY_D->create_body(user) ;
+    body = BODY_D->create_body(name) ;
 
     exec(body, this_object()) ;
-    user->set_body(body) ;
-    body->setup_body(user) ;
+
+    body->setup_body(name) ;
     body->set_dead(0) ;
     body->set_hp(1.0) ;
     body->set_sp(1.0) ;
@@ -107,7 +106,8 @@ void heart_beat() {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
-                destruct(this_object());
+                remove() ;
+                return ;
             }
         } else {
             /* Prevent link-dead from idle */

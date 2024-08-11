@@ -24,8 +24,9 @@
 #include <signal.h>
 
 #define SIMUL_OB   "/adm/obj/simul_efun"
-#define LOGIN_OB   "/adm/obj/login"
+#define LOGIN_OB   "/adm/obj/login2"
 #define VOID_ROOM  "/d/std/void"
+#define FREEZER_ROOM "/d/std/freezer"
 
 #define true 1
 #define false 0

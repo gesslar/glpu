@@ -59,5 +59,5 @@ int ofile_exists(string file) {
  * @returns {int} - 1 if the user data file exists, otherwise 0.
  */
 int user_exists(string user) {
-    return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + ".o"));
+    return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + __SAVE_EXTENSION__));
 }
