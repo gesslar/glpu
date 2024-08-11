@@ -172,22 +172,18 @@ int add_character(string account_name, string str) {
     mapping account ;
     string *characters ;
 
-_debug("add_character: account_name: " + account_name + ", str: " + str) ;
     if(!account_name || !stringp(account_name))
         return null ;
-_debug("have account_name") ;
+
     if(!valid_manip(account_name))
         return null ;
-_debug("valid_manip") ;
-_debug("account_name: %s", account_name) ;
-_debug("accounts[%s]: %O", account_name, accounts[account_name]) ;
 
     if(!accounts[account_name])
         return null ;
-_debug("valid_account") ;
+
     if(!str || !stringp(str))
         return null ;
-_debug("have character name") ;
+
     str = lower_case(str) ;
 
     // if(user_exists(str))
@@ -197,7 +193,7 @@ _debug("have character name") ;
 
     if(!account)
         return 0 ;
-_debug("load_account") ;
+
     characters = account["characters"] || ({}) ;
     characters += ({ str }) ;
     account["characters"] = distinct_array(characters) ;
