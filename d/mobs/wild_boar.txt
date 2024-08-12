@@ -6,6 +6,6 @@
     "id" : ({ "wild boar", "boar" }),
     "weapon_name" : "tusks",
     "weapon_type" : "piercing",
-    "level" : ({ 1, 6 }),
+    "level" : ({ 1, 2 }),
     "gender" : ({ "male", "female" }),
 ])

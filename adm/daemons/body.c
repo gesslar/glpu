@@ -27,6 +27,9 @@ object create_body(string name) {
 
     name = lower_case(name) ;
 
+    if(!user_exists(name))
+        return 0 ;
+
     if(adminp(name))
         type = "admin" ;
     else if(devp(name))

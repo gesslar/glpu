@@ -45,6 +45,9 @@ protected object connect(int port) {
     object login_ob;
     mixed err;
 
+    // For some reason, we keep losing privs, so we'll set them again
+    set_privs(this_object(), "[master]");
+
     err = catch(login_ob = new(LOGIN_OB));
 
     if(err) {
@@ -269,7 +272,6 @@ public string get_save_file_name(string file, object who) {
 
 string privs_file(string filename) {
     string temp;
-
     if(sscanf(filename, "/adm/daemons/%s", temp)) return "[daemon]";
     if(sscanf(filename, "/adm/obj/%s", temp)) return "[adm_obj]";
     if(sscanf(filename, "/adm/%s", temp)) return "[admin]";

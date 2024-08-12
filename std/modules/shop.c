@@ -18,7 +18,7 @@ inherit M_CURRENCY ;
 inherit CLASS_STORAGE ;
 
 void add_shop_inventory(mixed args) ;
-mixed query_cost(object tp, object ob, string transaction) ;
+mixed *query_cost(object tp, object ob, string transaction) ;
 protected void remove_shop() ;
 protected void reset_shop() ;
 private nomask object create_storage() ;
@@ -193,13 +193,9 @@ mixed cmd_buy(object tp, string str) {
 }
 
 mixed cmd_sell(object tp, string str) {
-    object ob ;
-    mixed result ;
-    string action ;
-    mixed cost ;
-    string short ;
-    mixed *paid, *change ;
-    int coin_mass ;
+    object ob, *obs ;
+    int sz ;
+    int use_mass = mud_config("USE_MASS") ;
 
     create_storage() ;
 
@@ -212,24 +208,70 @@ mixed cmd_sell(object tp, string str) {
     if(!userp(tp))
         return "Only players can sell to the shop.";
 
-    if(!ob = find_target(tp, str, tp))
-        return "You don't have that item.";
+    if(!str)
+        return "Sell what?" ;
 
-    cost = query_cost(tp, ob, "sell") ;
-    coin_mass = cost[0] ;
-
-    if(ob->move(store))
-        return "The shop refuses your item." ;
-
-    if(nullp(tp->adjust_wealth(cost[1], cost[0]))) {
-        ob->move(tp) ;
-        return "You are overburdened and cannot carry the coins." ;
+    if(sscanf(str, "all %s", str))
+        obs = find_targets(tp, str, tp) ;
+    else if(str == "all")
+        obs = find_targets(tp, 0, tp) ;
+    else {
+        if(ob = find_target(tp, str, tp))
+            obs = ({ ob }) ;
+        else
+            return "You don't have that item." ;
     }
 
-    tp->other_action("$N $vsell %o.", get_short(ob)) ;
-    tp->my_action("$N $vsell $o for $o1.\n",
-        get_short(ob),
-        format_currency(cost[0], cost[1])) ;
+    if(!sz = sizeof(obs))
+        return "You don't have any such items to sell." ;
+
+    foreach(ob in obs) {
+        mixed *cost = query_cost(tp, ob, "sell") ;
+        int coin_number = cost[0] ;
+        string coin_type = cost[1] ;
+        string short = get_short(ob) ;
+        int item_mass = ob->query_mass() ;
+
+        if(nullp(coin_number) || nullp(coin_type)) {
+            tell(tp, "The shop refuses to buy your " + short + ".\n") ;
+            continue ;
+        }
+
+        if(ob->equipped())
+            continue ;
+
+        if(use_mass) {
+            int fill = tp->query_fill() ;
+            int cap = tp->query_capacity() ;
+
+            if(fill - item_mass + coin_number > cap) {
+                tp->tell("You are overburdened and cannot carry the coins.\n") ;
+                continue ;
+            }
+        }
+
+        if(ob->move(store)) {
+            tp->tell("The shop refuses to buy your " + short + ".\n") ;
+            tp->adjust_wealth(coin_type, -coin_number) ;
+            continue ;
+        }
+
+        if(nullp(tp->adjust_wealth(coin_type, coin_number))) {
+            ob->move(tp) ;
+            tp->tell("You you were unable to be compensated for your " + short + ".\n") ;
+            continue ;
+        }
+
+        tp->other_action("$N $vsell %o.", short) ;
+        tp->my_action("$N $vsell $o for $o1.\n",
+            short,
+            format_currency(coin_number, coin_type)) ;
+    }
+
+    obs = filter(obs, (: objectp($1) && present($1, $(tp)) :)) ;
+
+    if(sz == sizeof(obs))
+        return "You didn't sell anything." ;
 
     return 1 ;
 }

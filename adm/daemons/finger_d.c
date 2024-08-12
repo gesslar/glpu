@@ -22,8 +22,7 @@ inherit STD_DAEMON ;
 
 #define BORDER1 "=+=--=+=--=+=--=+=--=+=--=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=\n"
 
-mixed get_user(string username);
-mixed get_body(object user);
+mixed get_body(string name);
 
 varargs string finger_user(string username) {
     string ret, group, *users;
@@ -54,7 +53,8 @@ varargs string finger_user(string username) {
                     body = find_player(username);
                     last = ctime(body->query("last_login"));
                 } else {
-                    if(!objectp(body = get_body(get_user(username)))) continue;
+                    if(!objectp(body = get_body(username)))
+                        continue;
                     else {
                         last_t = "Last on";
                         last =  ctime(body->query("last_login"));
@@ -74,7 +74,6 @@ varargs string finger_user(string username) {
         if(find_player(username)) {
             last_t = "On since";
             body = find_player(username);
-            user = get_user(username);
             if(!interactive(body))
                 idle = "(Link-Dead)";
             else {
@@ -92,62 +91,40 @@ varargs string finger_user(string username) {
         } else {
             last_t = "Last on";
             idle = "(Offline)";
-            if(!objectp(user = get_user(username)) || !objectp(body = get_body(user))) {
-                if(user == -2) return "Error [finger]: That user doesn't exist.\n";
-                else return "Error [finger]: User data unavailable.\n";
+            if(!objectp(body = get_body(username))) {
+                return "Error [finger]: User data unavailable.\n";
             }
         }
 
         last = ctime(body->query("last_login"));
 
-        if(adminp(user)) rank = "Admin";
-        else if(devp(user)) rank = "Developer";
+        if(adminp(username)) rank = "Admin";
+        else if(devp(username)) rank = "Developer";
         else rank = "User";
 
-        plan = read_file("/home/" + user->query_real_name()[0..0] + "/" + user->query_real_name() + "/.plan");
-        if(!plan) plan = " This user has no plan.\n";
-            ret = sprintf("\n"
+        plan = home_path(username) + ".plan" ;
+        if(!file_exists(plan))
+            plan = "This user has no plan.\n";
+        else
+            plan = read_file(plan);
+
+        ret = sprintf("\n"
                 "Username: %-10s \tRank: %-10s\n" + (away && away != "" ? "Away: " + away + "\n" : away == "" ? "This user is away.\n" : "") +
                 "E-mail: %-10s\n"
-                "%s: %-10s %s\nPlan:\n%s", capitalize(user->query_real_name()) + "", rank, user->query("email"), last_t, last, idle, plan);
-        if(!interactive(user)) user->remove();
+                "%s: %-10s %s\nPlan:\n%s", capitalize(username) + "", rank, "user@user.com", last_t, last, idle, plan);
     }
     return ret;
 }
 
-mixed get_user(string username) {
-    object user;
-    string error;
-
-    if(origin() != ORIGIN_LOCAL &&
-      !adminp(query_privs(previous_object())) &&
-      base_name(previous_object()) != "/std/modules/gmcp/Char"
-    ) return 0;
-
-    error = catch(user = load_object(sprintf("/link/%s", username)));
-    if(error) return -1;
-    if(!ofile_exists(user_data_file(username))) return -2;
-
-    set_privs(user, username);
-    user->set_name(username);
-    user->restore_user();
-
-    return user;
-}
-
-mixed get_body(object user) {
+mixed get_body(string name) {
     object body;
     string error;
 
     if(origin() != ORIGIN_LOCAL && !adminp(query_privs(previous_object()))) return 0;
 
-    error = catch(body = new(user->query_body_path()));
-    if(error) return -1;
-    if(!ofile_exists(user_body_data(query_privs(user)))) return -2;
-
-    set_privs(body, query_privs(user));
-    body->set_name(user->query_real_name());
-    body->restore_user();
+    error = catch(body = BODY_D->create_body(name));
+    if(error) return -1 ;
+    if(!body) return -2 ;
 
     return body;
 }

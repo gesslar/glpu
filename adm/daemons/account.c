@@ -204,3 +204,67 @@ int add_character(string account_name, string str) {
 
     return 1 ;
 }
+
+int remove_character(string account_name, string str) {
+    mapping account ;
+    string *characters ;
+
+    if(!account_name || !stringp(account_name))
+        return null ;
+
+    if(!valid_manip(account_name))
+        return null ;
+
+    if(!accounts[account_name])
+        return null ;
+
+    if(!str || !stringp(str))
+        return null ;
+
+    str = lower_case(str) ;
+
+    account = load_account(account_name) ;
+
+    if(!account)
+        return 0 ;
+
+    characters = account["characters"] || ({}) ;
+    characters -= ({ str }) ;
+    account["characters"] = characters ;
+    accounts[account_name] = account ;
+    map_delete(reverse, str) ;
+
+    save_data() ;
+
+    return 1 ;
+}
+
+string character_account(string str) {
+    if(!str || !stringp(str))
+        return null ;
+
+    if(!reverse[str])
+        return null ;
+
+    return reverse[str] ;
+}
+
+string *account_characters(string account_name) {
+    mapping account ;
+
+    if(!account_name || !stringp(account_name))
+        return null ;
+
+    if(!valid_manip(account_name))
+        return null ;
+
+    if(!accounts[account_name])
+        return null ;
+
+    account = load_account(account_name) ;
+
+    if(!account)
+        return 0 ;
+
+    return account["characters"] || ({}) ;
+}
