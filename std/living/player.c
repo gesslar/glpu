@@ -52,7 +52,7 @@ void setup_body() {
 void enter_world(int reconnecting) {
     string *cmds, *ch;
     int i;
-    object news_client, mail_client;
+    object mail_client;
 
     if(!is_member(query_privs(previous_object()), "admin"))
         return;

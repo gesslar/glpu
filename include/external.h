@@ -12,6 +12,4 @@
 #ifndef __EXTERNAL_H__
 #define __EXTERNAL_H__
 
-#define EXTERNAL_ENV 1
-
 #endif // __EXTERNAL_H__
