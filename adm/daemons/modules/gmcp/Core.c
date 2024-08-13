@@ -2,11 +2,11 @@
  * @file /adm/daemons/modules/gmcp/Core.c
  * @description GMCP module to handle Core.* packages
  *
- * @created 2024/07/08 - Gesslar
- * @last_modified 2024/07/08 - Gesslar
+ * @created 2024-07-08 - Gesslar
+ * @last_modified 2024-07-08 - Gesslar
  *
  * @history
- * 2024/07/08 - Gesslar - Created
+ * 2024-07-08 - Gesslar - Created
  */
 
 

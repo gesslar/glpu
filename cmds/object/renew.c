@@ -3,11 +3,11 @@
  * @description Command for renewing objects. Destructing them, and recloning
  *              them.
  *
- * @created 2024/07/23 - Gesslar
- * @last_modified 2024/07/23 - Gesslar
+ * @created 2024-07-23 - Gesslar
+ * @last_modified 2024-07-23 - Gesslar
  *
  * @history
- * 2024/07/23 - Gesslar - Created
+ * 2024-07-23 - Gesslar - Created
  */
 
 #include <move.h>

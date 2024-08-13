@@ -2,11 +2,11 @@
  * @file /std/modules/potable.c
  * @description This module is inherited in order to make something potable.
  *
- * @created 2024/08/06 - Gesslar
- * @last_modified 2024/08/06 - Gesslar
+ * @created 2024-08-06 - Gesslar
+ * @last_modified 2024-08-06 - Gesslar
  *
  * @history
- * 2024/08/06 - Gesslar - Created
+ * 2024-08-06 - Gesslar - Created
  */
 
 inherit M_USES ;

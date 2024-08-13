@@ -2,11 +2,11 @@
  * @file /obj/food/muffin.c
  * @description A muffin food
  *
- * @created 2024/08/06 - Gesslar
- * @last_modified 2024/08/06 - Gesslar
+ * @created 2024-08-06 - Gesslar
+ * @last_modified 2024-08-06 - Gesslar
  *
  * @history
- * 2024/08/06 - Gesslar - Created
+ * 2024-08-06 - Gesslar - Created
  */
 
 inherit STD_FOOD ;

@@ -2,11 +2,11 @@
  * @file /cmds/std/attr.c
  * @description Attribute command
  *
- * @created 2024/07/31 - Gesslar
- * @last_modified 2024/07/31 - Gesslar
+ * @created 2024-07-31 - Gesslar
+ * @last_modified 2024-07-31 - Gesslar
  *
  * @history
- * 2024/07/31 - Gesslar - Created
+ * 2024-07-31 - Gesslar - Created
  */
 
 inherit STD_CMD ;

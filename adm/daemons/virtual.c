@@ -2,12 +2,12 @@
  * @file /adm/daemons/virtual.c
  * @description Daemon for virtual objects
  *
- * @created 2024/02/04 - Gesslar
- * @last_modified 2024/07/29 - Gesslar
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-07-29 - Gesslar
  *
  * @history
- * 2024/02/04 - Gesslar - Created
- * 2024/07/29 - Gesslar - Refactored to handle complex and top-level structures
+ * 2024-02-04 - Gesslar - Created
+ * 2024-07-29 - Gesslar - Refactored to handle complex and top-level structures
  */
 
 inherit STD_DAEMON;

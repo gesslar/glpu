@@ -2,11 +2,11 @@
  * @file /adm/daemons/advance.c
  * @description Daemon to handle XP and leveling
  *
- * @created 2024/07/28 - Gesslar
- * @last_modified 2024/07/28 - Gesslar
+ * @created 2024-07-28 - Gesslar
+ * @last_modified 2024-07-28 - Gesslar
  *
  * @history
- * 2024/07/28 - Gesslar - Created
+ * 2024-07-28 - Gesslar - Created
  */
 
 inherit STD_DAEMON;

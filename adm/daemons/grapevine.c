@@ -2,11 +2,11 @@
  * @file /adm/daemons/grapevine.c
  * @description Grapevine WebSockets client
  *
- * @created 2024/07/17 - Gesslar
- * @last_modified 2024/07/17 - Gesslar
+ * @created 2024-07-17 - Gesslar
+ * @last_modified 2024-07-17 - Gesslar
  *
  * @history
- * 2024/07/17 - Gesslar - Created
+ * 2024-07-17 - Gesslar - Created
  */
 
 #include <grapevine.h>

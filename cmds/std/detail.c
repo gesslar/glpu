@@ -3,11 +3,11 @@
  * @description This command is used for detailing your description and other
  *              features of your character.
  *
- * @created 2024/07/30 - Gesslar
- * @last_modified 2024/07/30 - Gesslar
+ * @created 2024-07-30 - Gesslar
+ * @last_modified 2024-07-30 - Gesslar
  *
  * @history
- * 2024/07/30 - Gesslar - Created
+ * 2024-07-30 - Gesslar - Created
  */
 
 #include <ed.h>

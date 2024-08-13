@@ -2,11 +2,11 @@
  * @file /std/room/room.c
  * @description A generic room object that can be inherited by any room.
  *
- * @created 2024/08/11 - Gesslar
- * @last_modified 2024/08/11 - Gesslar
+ * @created 2024-08-11 - Gesslar
+ * @last_modified 2024-08-11 - Gesslar
  *
  * @history
- * 2024/08/11 - Gesslar - Created
+ * 2024-08-11 - Gesslar - Created
  */
 
 

@@ -2,11 +2,11 @@
  * @file /cmds/wiz/exits.c
  * @description Shows all the exits in the current room and where they lead.
  *
- * @created 2024/02/04 - Gesslar
- * @last_modified 2024/02/04 - Gesslar
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
  *
  * @history
- * 2024/02/04 - Gesslar - Created
+ * 2024-02-04 - Gesslar - Created
  */
 
 inherit STD_CMD ;

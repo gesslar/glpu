@@ -2,11 +2,11 @@
  * @file /std/living/living.c
  * @description Setup and adjustments for living values of living beings.
  *
- * @created 2024/07/30 - Gesslar
- * @last_modified 2024/07/30 - Gesslar
+ * @created 2024-07-30 - Gesslar
+ * @last_modified 2024-07-30 - Gesslar
  *
  * @history
- * 2024/07/30 - Gesslar - Created
+ * 2024-07-30 - Gesslar - Created
  */
 
 #include <living.h>

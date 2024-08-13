@@ -2,11 +2,11 @@
  * @file /cmds/std/skills.c
  * @description Command for players to check their skill progress.
  *
- * @created 2024/07/31 - Gesslar
- * @last_modified 2024/07/31 - Gesslar
+ * @created 2024-07-31 - Gesslar
+ * @last_modified 2024-07-31 - Gesslar
  *
  * @history
- * 2024/07/31 - Gesslar - Created
+ * 2024-07-31 - Gesslar - Created
  */
 
 inherit STD_CMD ;

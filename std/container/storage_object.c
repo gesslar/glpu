@@ -3,11 +3,11 @@
  * @description Object for permanent or temporary storage, like shops or
  *              armouries.
  *
- * @created 2024/08/01 - Gesslar
- * @last_modified 2024/08/01 - Gesslar
+ * @created 2024-08-01 - Gesslar
+ * @last_modified 2024-08-01 - Gesslar
  *
  * @history
- * 2024/08/01 - Gesslar - Created
+ * 2024-08-01 - Gesslar - Created
  */
 
 #include <classes.h>
@@ -29,7 +29,6 @@ void mudlib_setup(class StorageOptions storage) {
     set_ignore_capacity(1) ;
 
     restore_contents() ;
-    set_debug_clean(1) ;
 }
 
 void mudlib_unsetup() {
@@ -122,16 +121,14 @@ void set_storage_directory(string dir) {
 }
 
 string query_storage_directory() {
-    storage_options.storage_directory ;
+    return storage_options.storage_directory;
 }
 
 int request_clean_up() {
-    if(sizeof(all_inventory()) > 0) {
-        if(storage_options.clean_on_empty)
-            return 1 ;
+    if(sizeof(all_inventory()) == 0 && storage_options.clean_on_empty) {
+        return 1;
     }
-
-    return 0 ;
+    return 0;
 }
 
 int query_storage_object() { return 1 ; }

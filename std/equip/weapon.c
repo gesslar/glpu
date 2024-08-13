@@ -2,11 +2,11 @@
  * @file /std/equip/weapon.c
  * @description Standard weapong inherits
  *
- * @created 2024/08/04 - Gesslar
- * @last_modified 2024/08/04 - Gesslar
+ * @created 2024-08-04 - Gesslar
+ * @last_modified 2024-08-04 - Gesslar
  *
  * @history
- * 2024/08/04 - Gesslar - Created
+ * 2024-08-04 - Gesslar - Created
  */
 
 #include <weapon.h>

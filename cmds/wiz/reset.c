@@ -2,11 +2,11 @@
  * @file /cmds/wiz/reset.c
  * @description Resets a target object
  *
- * @created 2024/07/23 - Gesslar
- * @last_modified 2024/07/23 - Gesslar
+ * @created 2024-07-23 - Gesslar
+ * @last_modified 2024-07-23 - Gesslar
  *
  * @history
- * 2024/07/23 - Gesslar - Created
+ * 2024-07-23 - Gesslar - Created
  */
 
 mixed main(object tp, string arg) {

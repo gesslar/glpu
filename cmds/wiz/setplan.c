@@ -3,12 +3,12 @@
  * @description Command to manage one's .plan file
  *
  * @created 2006/07/22 - Parthenon
- * @last_modified 2024/07/20 - Gesslar
+ * @last_modified 2024-07-20 - Gesslar
  *
  * @history
  * 2006/07/22 - Parthenon - Created
  * 2006/07/23 - Parthenon - Updated - Gesslar has no idea what they updated
- * 2024/07/20 - Gesslar - Entirely rewrote the command and added support
+ * 2024-07-20 - Gesslar - Entirely rewrote the command and added support
  *                        for the new editor object.
  */
 

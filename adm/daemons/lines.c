@@ -9,11 +9,11 @@
  * It is somewhat reminiscent of LP Terminal mappings, inasmuch as it's kind
  * of exactly the same thing.
  *
- * @created 2024/07/13 - Gesslar
- * @last_modified 2024/07/13 - Gesslar
+ * @created 2024-07-13 - Gesslar
+ * @last_modified 2024-07-13 - Gesslar
  *
  * @history
- * 2024/07/13 - Gesslar - Created
+ * 2024-07-13 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;

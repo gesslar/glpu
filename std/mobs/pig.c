@@ -2,11 +2,11 @@
  * @file /std/mobiles/pig.c
  * @description Virtual pigs
  *
- * @created 2024/07/27 - Gesslar
- * @last_modified 2024/07/27 - Gesslar
+ * @created 2024-07-27 - Gesslar
+ * @last_modified 2024-07-27 - Gesslar
  *
  * @history
- * 2024/07/27 - Gesslar - Created
+ * 2024-07-27 - Gesslar - Created
  */
 
 inherit STD_NPC ;

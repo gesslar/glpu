@@ -2,11 +2,11 @@
  * @file /adm/daemons/modules/colour/css.c
  * @description CSS colour codes for colour, forward and reverse
  *
- * @created 2024/07/14 - Gesslar
- * @last_modified 2024/07/14 - Gesslar
+ * @created 2024-07-14 - Gesslar
+ * @last_modified 2024-07-14 - Gesslar
  *
  * @history
- * 2024/07/14 - Gesslar - Created
+ * 2024-07-14 - Gesslar - Created
  */
 
 mapping colour_to_hex = ([

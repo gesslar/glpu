@@ -2,11 +2,11 @@
  * @file /cmds/std/idea.c
  * @description Command for reporting ideas.
  *
- * @created 2024/07/13 - Gesslar
- * @last_modified 2024/07/13 - Gesslar
+ * @created 2024-07-13 - Gesslar
+ * @last_modified 2024-07-13 - Gesslar
  *
  * @history
- * 2024/07/13 - Gesslar - Created
+ * 2024-07-13 - Gesslar - Created
  */
 
 

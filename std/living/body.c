@@ -2,11 +2,11 @@
  * @file /std/living/body.c
  * @description Body object that is shared by players and NPCs.
  *
- * @created 2024/07/29 - Gesslar
- * @last_modified 2024/07/29 - Gesslar
+ * @created 2024-07-29 - Gesslar
+ * @last_modified 2024-07-29 - Gesslar
  *
  * @history
- * 2024/07/29 - Gesslar - Created
+ * 2024-07-29 - Gesslar - Created
  */
 
 #include <body.h>

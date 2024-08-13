@@ -2,11 +2,11 @@
  * @file /adm/daemons/loot.c
  * @description This daemon is responsible for handling the loot system.
  *
- * @created 2024/08/05 - Gesslar
- * @last_modified 2024/08/05 - Gesslar
+ * @created 2024-08-05 - Gesslar
+ * @last_modified 2024-08-05 - Gesslar
  *
  * @history
- * 2024/08/05 - Gesslar - Created
+ * 2024-08-05 - Gesslar - Created
  */
 
 #include <type.h>

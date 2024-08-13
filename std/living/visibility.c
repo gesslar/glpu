@@ -2,11 +2,11 @@
  * @file /std/user/visibility.c
  * @description Object for determining whether a living can see things
  *
- * @created 2024/07/23 - Gesslar
- * @last_modified 2024/07/23 - Gesslar
+ * @created 2024-07-23 - Gesslar
+ * @last_modified 2024-07-23 - Gesslar
  *
  * @history
- * 2024/07/23 - Gesslar - Created
+ * 2024-07-23 - Gesslar - Created
  */
 
 int can_see(object target) {

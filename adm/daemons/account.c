@@ -2,11 +2,11 @@
  * @file /adm/daemons/account.c
  * @description The account daemon is responsible for managing player accounts.
  *
- * @created 2024/08/09 - Gesslar
- * @last_modified 2024/08/09 - Gesslar
+ * @created 2024-08-09 - Gesslar
+ * @last_modified 2024-08-09 - Gesslar
  *
  * @history
- * 2024/08/09 - Gesslar - Created
+ * 2024-08-09 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;

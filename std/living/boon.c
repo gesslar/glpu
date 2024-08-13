@@ -2,11 +2,11 @@
  * @file /std/living/boon.c
  * @description Buffs/debuffs and other boon for living objects.
  *
- * @created 2024/07/30 - Gesslar
- * @last_modified 2024/07/30 - Gesslar
+ * @created 2024-07-30 - Gesslar
+ * @last_modified 2024-07-30 - Gesslar
  *
  * @history
- * 2024/07/30 - Gesslar - Created
+ * 2024-07-30 - Gesslar - Created
  */
 
 #include <boon.h>

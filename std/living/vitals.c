@@ -2,11 +2,11 @@
  * @file /std/user/vitals.c
  * @description Vitals for livings
  *
- * @created 2024/07/24 - Gesslar
- * @last_modified 2024/07/24 - Gesslar
+ * @created 2024-07-24 - Gesslar
+ * @last_modified 2024-07-24 - Gesslar
  *
  * @history
- * 2024/07/24 - Gesslar - Created
+ * 2024-07-24 - Gesslar - Created
  */
 
 #include <gmcp_defines.h>

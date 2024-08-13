@@ -2,11 +2,11 @@
  * @file /cmds/wiz/touch.c
  * @description This command allows a wizard to create a new empty file.
  *
- * @created 2024/08/10 - Gesslar
- * @last_modified 2024/08/10 - Gesslar
+ * @created 2024-08-10 - Gesslar
+ * @last_modified 2024-08-10 - Gesslar
  *
  * @history
- * 2024/08/10 - Gesslar - Created
+ * 2024-08-10 - Gesslar - Created
  */
 
 inherit STD_CMD ;

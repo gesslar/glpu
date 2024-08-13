@@ -2,11 +2,11 @@
  * @file /std/user/ed.c
  * @description Object to handle interacting with basic or advanced editor.
  *
- * @created 2024/07/20 - Gesslar
- * @last_modified 2024/07/20 - Gesslar
+ * @created 2024-07-20 - Gesslar
+ * @last_modified 2024-07-20 - Gesslar
  *
  * @history
- * 2024/07/20 - Gesslar - Created
+ * 2024-07-20 - Gesslar - Created
  */
 
 

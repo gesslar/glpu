@@ -2,11 +2,11 @@
  * @file /cmds/wiz/autodoc.c
  * @description Command to interface with the autodoc system.
  *
- * @created 2024/07/14 - Gesslar
- * @last_modified 2024/07/14 - Gesslar
+ * @created 2024-07-14 - Gesslar
+ * @last_modified 2024-07-14 - Gesslar
  *
  * @history
- * 2024/07/14 - Gesslar - Created
+ * 2024-07-14 - Gesslar - Created
  */
 
 #include <daemons.h>

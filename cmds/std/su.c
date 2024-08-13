@@ -4,11 +4,11 @@
  *              it can be used by all living objects, except only if
  *              the user is a developer.
  *
- * @created 2024/07/29 - Gesslar
- * @last_modified 2024/07/29 - Gesslar
+ * @created 2024-07-29 - Gesslar
+ * @last_modified 2024-07-29 - Gesslar
  *
  * @history
- * 2024/07/29 - Gesslar - Created
+ * 2024-07-29 - Gesslar - Created
  */
 
 inherit STD_CMD ;

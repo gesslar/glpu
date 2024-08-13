@@ -2,11 +2,11 @@
  * @file /adm/daemons/modules/chatter.c
  * @description Chatter Discord Bot Example
  *
- * @created 2024/07/08 - Gesslar
- * @last_modified 2024/07/08 - Gesslar
+ * @created 2024-07-08 - Gesslar
+ * @last_modified 2024-07-08 - Gesslar
  *
  * @history
- * 2024/07/08 - Gesslar - Created
+ * 2024-07-08 - Gesslar - Created
  */
 
 #include <discord_bot.h>

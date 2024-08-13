@@ -2,11 +2,11 @@
  * @file /std/modules/uses.c
  * @description This module is inherited in order to provide consumabling.
  *
- * @created 2024/08/06 - Gesslar
- * @last_modified 2024/08/06 - Gesslar
+ * @created 2024-08-06 - Gesslar
+ * @last_modified 2024-08-06 - Gesslar
  *
  * @history
- * 2024/08/06 - Gesslar - Created
+ * 2024-08-06 - Gesslar - Created
  */
 
 private nomask int _max_uses = null ;

@@ -2,11 +2,11 @@
  * @file /cmds/adm/master.c
  * @description Command to reload core system files.
  *
- * @created 2024/07/17 - Gesslar
- * @last_modified 2024/07/17 - Gesslar
+ * @created 2024-07-17 - Gesslar
+ * @last_modified 2024-07-17 - Gesslar
  *
  * @history
- * 2024/07/17 - Gesslar - Created
+ * 2024-07-17 - Gesslar - Created
  */
 
 inherit STD_CMD ;

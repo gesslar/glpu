@@ -2,11 +2,11 @@
  * @file /std/living/ghost.c
  * @description You're a ghost OooOoOOOOoOOoOooooOOo
  *
- * @created 2024/07/28 - Gesslar
- * @last_modified 2024/07/28 - Gesslar
+ * @created 2024-07-28 - Gesslar
+ * @last_modified 2024-07-28 - Gesslar
  *
  * @history
- * 2024/07/28 - Gesslar - Created
+ * 2024-07-28 - Gesslar - Created
  */
 
 #include <logs.h>

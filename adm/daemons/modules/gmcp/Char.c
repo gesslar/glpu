@@ -2,11 +2,11 @@
  * @file /adm/daemons/modules/gmcp/Char.c
  * @description Module to handle Char.* GMCP packages
  *
- * @created 2024/02/23 - Gesslar
- * @last_modified 2024/02/23 - Gesslar
+ * @created 2024-02-23 - Gesslar
+ * @last_modified 2024-02-23 - Gesslar
  *
  * @history
- * 2024/02/23 - Gesslar - Created
+ * 2024-02-23 - Gesslar - Created
  */
 
 #include <gmcp_defines.h>

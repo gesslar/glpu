@@ -2,11 +2,11 @@
  * @file /std/living/appearance.c
  * @description Handles the appearance of living objects
  *
- * @created 2024/07/30 - Gesslar
- * @last_modified 2024/07/30 - Gesslar
+ * @created 2024-07-30 - Gesslar
+ * @last_modified 2024-07-30 - Gesslar
  *
  * @history
- * 2024/07/30 - Gesslar - Created
+ * 2024-07-30 - Gesslar - Created
  */
 
 string hair, hair_colour, eyes, eye_colour ;

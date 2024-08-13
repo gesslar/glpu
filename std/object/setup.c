@@ -2,11 +2,11 @@
  * @file /std/modules/setup.c
  * @description This is the setup chain for objects.
  *
- * @created 2024/01/29 - Gesslar
- * @last_modified 2024/01/29 - Gesslar
+ * @created 2024-01-29 - Gesslar
+ * @last_modified 2024-01-29 - Gesslar
  *
  * @history
- * 2024/01/29 - Gesslar - Created
+ * 2024-01-29 - Gesslar - Created
  */
 
 varargs void setup_chain(mixed args...) {

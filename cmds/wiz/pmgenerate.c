@@ -2,11 +2,11 @@
  * @file /Untitled-1
  * @description Generate an area map with Perlin noise
  *
- * @created 2024/07/24 - Gesslar
- * @last_modified 2024/07/24 - Gesslar
+ * @created 2024-07-24 - Gesslar
+ * @last_modified 2024-07-24 - Gesslar
  *
  * @history
- * 2024/07/24 - Gesslar - Created
+ * 2024-07-24 - Gesslar - Created
  */
 
 // File: /cmds/wiz/pmgenerate.c

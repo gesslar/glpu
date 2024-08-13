@@ -2,11 +2,11 @@
  * @file /std/object/item.c
  * @description Real objects, whereas object is the base of everything
  *
- * @created 2024/07/27 - Gesslar
- * @last_modified 2024/07/27 - Gesslar
+ * @created 2024-07-27 - Gesslar
+ * @last_modified 2024-07-27 - Gesslar
  *
  * @history
- * 2024/07/27 - Gesslar - Created
+ * 2024-07-27 - Gesslar - Created
  */
 
 inherit STD_OBJECT ;

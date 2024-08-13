@@ -2,11 +2,11 @@
  * @file /cmds/std/remove.c
  * @description Command to remove worn items
  *
- * @created 2024/07/26 - Gesslar
- * @last_modified 2024/07/26 - Gesslar
+ * @created 2024-07-26 - Gesslar
+ * @last_modified 2024-07-26 - Gesslar
  *
  * @history
- * 2024/07/26 - Gesslar - Created
+ * 2024-07-26 - Gesslar - Created
  */
 
 inherit STD_ACT ;

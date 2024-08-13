@@ -3,11 +3,11 @@
  * @description Command to manage your own password or the password of another
  *              user.
  *
- * @created 2024/07/14 - Gesslar
- * @last_modified 2024/07/14 - Gesslar
+ * @created 2024-07-14 - Gesslar
+ * @last_modified 2024-07-14 - Gesslar
  *
  * @history
- * 2024/07/14 - Gesslar - Created
+ * 2024-07-14 - Gesslar - Created
  */
 
 

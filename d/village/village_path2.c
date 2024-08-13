@@ -1,4 +1,4 @@
-// /d/village/village_path1.c
+// /d/village/village_path2.c
 //
 // Created:     2024/02/04: Gesslar
 // Last Change: 2024/02/04: Gesslar
@@ -21,7 +21,8 @@ void setup() {
 "shared with equal generosity.") ;
     set_exits(([
         "east" : "square",
-        "west" : "tavern",
+        "south": "tavern",
+        "west" : "village_path5",
     ])) ;
     set_items(([
         ({ "village square", "square" }) :

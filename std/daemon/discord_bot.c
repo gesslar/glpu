@@ -2,11 +2,11 @@
  * @file /std/daemon/discord_bot.c
  * @description Discord server daemon
  *
- * @created 2024/07/06 - Gesslar
- * @last_modified 2024/07/06 - Gesslar
+ * @created 2024-07-06 - Gesslar
+ * @last_modified 2024-07-06 - Gesslar
  *
  * @history
- * 2024/07/06 - Gesslar - Created
+ * 2024-07-06 - Gesslar - Created
  */
 
 #include <discord_bot.h>

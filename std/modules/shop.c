@@ -2,11 +2,11 @@
  * @file /std/modules/shop.c
  * @description Module to be inherited by shops
  *
- * @created 2024/08/01 - Gesslar
- * @last_modified 2024/08/01 - Gesslar
+ * @created 2024-08-01 - Gesslar
+ * @last_modified 2024-08-01 - Gesslar
  *
  * @history
- * 2024/08/01 - Gesslar - Created
+ * 2024-08-01 - Gesslar - Created
  */
 
 #include <classes.h>

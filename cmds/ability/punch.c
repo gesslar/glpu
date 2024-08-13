@@ -2,11 +2,11 @@
  * @file /cmds/ability/punch.c
  * @description Punch command
  *
- * @created 2024/08/08 - Gesslar
- * @last_modified 2024/08/08 - Gesslar
+ * @created 2024-08-08 - Gesslar
+ * @last_modified 2024-08-08 - Gesslar
  *
  * @history
- * 2024/08/08 - Gesslar - Created
+ * 2024-08-08 - Gesslar - Created
  */
 
 inherit STD_ABILITY;

@@ -2,11 +2,11 @@
  * @file /cmds/std/drink.c
  * @description Drink command
  *
- * @created 2024/08/06 - Gesslar
- * @last_modified 2024/08/06 - Gesslar
+ * @created 2024-08-06 - Gesslar
+ * @last_modified 2024-08-06 - Gesslar
  *
  * @history
- * 2024/08/06 - Gesslar - Created
+ * 2024-08-06 - Gesslar - Created
  */
 
 

@@ -2,11 +2,11 @@
  * @file /std/area/equip/armour.c
  * @description More protective clothing!
  *
- * @created 2024/07/25 - Gesslar
- * @last_modified 2024/07/25 - Gesslar
+ * @created 2024-07-25 - Gesslar
+ * @last_modified 2024-07-25 - Gesslar
  *
  * @history
- * 2024/07/25 - Gesslar - Created
+ * 2024-07-25 - Gesslar - Created
  */
 
 #include <armour.h>

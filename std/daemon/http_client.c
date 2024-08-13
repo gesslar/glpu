@@ -5,11 +5,11 @@
  *              provides the ability to send HTTP requests to a server and
  *              receive responses.
  *
- * @created 2024/07/05 - Gesslar
- * @last_modified 2024/07/05 - Gesslar
+ * @created 2024-07-05 - Gesslar
+ * @last_modified 2024-07-05 - Gesslar
  *
  * @history
- * 2024/07/05 - Gesslar - Created
+ * 2024-07-05 - Gesslar - Created
  */
 
 // This is a base HTTP client daemon that is intended to be inherited by other

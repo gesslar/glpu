@@ -6,11 +6,11 @@
  *              upgrade to a WebSocket connection to then send/receive
  *              messages.
  *
- * @created 2024/07/05 - Gesslar
- * @last_modified 2024/07/05 - Gesslar
+ * @created 2024-07-05 - Gesslar
+ * @last_modified 2024-07-05 - Gesslar
  *
  * @history
- * 2024/07/05 - Gesslar - Created
+ * 2024-07-05 - Gesslar - Created
  */
 
 #include <daemons.h>

@@ -4,11 +4,11 @@
  * track of the game's time and date. It also provides functions for converting
  * the game's time to real time and vice versa.
  *
- * @created 2024/08/05 - Gesslar
- * @last_modified 2024/08/05 - Gesslar
+ * @created 2024-08-05 - Gesslar
+ * @last_modified 2024-08-05 - Gesslar
  *
  * @history
- * 2024/08/05 - Gesslar - Created
+ * 2024-08-05 - Gesslar - Created
  */
 
 #include "include/time.h"

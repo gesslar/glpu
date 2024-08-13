@@ -2,11 +2,11 @@
  * @file /d/village/field_daemon.c
  * @description Daemon for handling the field stuff
  *
- * @created 2024/07/24 - Gesslar
- * @last_modified 2024/07/24 - Gesslar
+ * @created 2024-07-24 - Gesslar
+ * @last_modified 2024-07-24 - Gesslar
  *
  * @history
- * 2024/07/24 - Gesslar - Created
+ * 2024-07-24 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;

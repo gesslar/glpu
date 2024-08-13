@@ -2,11 +2,11 @@
  * @file /adm/daemons/modules/channel/grapevine.c
  * @description Grapevine chat channels module
  *
- * @created 2024/07/18 - Gesslar
- * @last_modified 2024/07/18 - Gesslar
+ * @created 2024-07-18 - Gesslar
+ * @last_modified 2024-07-18 - Gesslar
  *
  * @history
- * 2024/07/18 - Gesslar - Created
+ * 2024-07-18 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;

@@ -2,11 +2,11 @@
  * @file /cmds/wiz/gr
  * @description Grapevine command
  *
- * @created 2024/07/18 - Gesslar
- * @last_modified 2024/07/18 - Gesslar
+ * @created 2024-07-18 - Gesslar
+ * @last_modified 2024-07-18 - Gesslar
  *
  * @history
- * 2024/07/18 - Gesslar - Created
+ * 2024-07-18 - Gesslar - Created
  */
 
 #include <daemons.h>

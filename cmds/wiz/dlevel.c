@@ -2,11 +2,11 @@
  * @file /cmds/wiz/dlevel.c
  * @description Manages debug levels
  *
- * @created 2024/07/20 - Gesslar
- * @last_modified 2024/07/20 - Gesslar
+ * @created 2024-07-20 - Gesslar
+ * @last_modified 2024-07-20 - Gesslar
  *
  * @history
- * 2024/07/20 - Gesslar - Created
+ * 2024-07-20 - Gesslar - Created
  */
 
 inherit STD_CMD ;

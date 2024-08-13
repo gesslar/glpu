@@ -2,12 +2,12 @@
  * @file /obj/mudlib/coin.c
  * @description A coin object
  *
- * @created 2024/02/19 - Gesslar
- * @last_modified 2024/08/08 - Gesslar
+ * @created 2024-02-19 - Gesslar
+ * @last_modified 2024-08-08 - Gesslar
  *
  * @history
- * 2024/02/19 - Gesslar - Created
- * 2024/08/08 - Gesslar - Nearly completely rewritten and move logic added
+ * 2024-02-19 - Gesslar - Created
+ * 2024-08-08 - Gesslar - Nearly completely rewritten and move logic added
  */
 
 inherit STD_ITEM ;

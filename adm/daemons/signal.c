@@ -2,11 +2,11 @@
  * @file /adm/daemons/signal.c
  * @description Signal daemon for handling system-wide event notifications
  *
- * @created 2024/07/21 - Gesslar
- * @last_modified 2024/07/21 - Gesslar
+ * @created 2024-07-21 - Gesslar
+ * @last_modified 2024-07-21 - Gesslar
  *
  * @history
- * 2024/07/21 - Gesslar - Created
+ * 2024-07-21 - Gesslar - Created
  */
 
 inherit STD_DAEMON ;

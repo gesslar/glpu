@@ -4,13 +4,13 @@
  *              LPC source files and generates documentation in a structured
  *              format.
  *
- * @created 2024/02/18 - Gesslar
- * @last_modified 2024/07/19 - Gesslar
+ * @created 2024-02-18 - Gesslar
+ * @last_modified 2024-07-19 - Gesslar
  *
  * @history
- * 2024/02/18 - Gesslar - Created
- * 2024/07/11 - Gesslar - Entirely rewritten from Lima-style parsing to JSDoc
- * 2024/07/19 - Gesslar - Added new tags to parse @def and now writes help files
+ * 2024-02-18 - Gesslar - Created
+ * 2024-07-11 - Gesslar - Entirely rewritten from Lima-style parsing to JSDoc
+ * 2024-07-19 - Gesslar - Added new tags to parse @def and now writes help files
  */
 
 inherit STD_DAEMON ;

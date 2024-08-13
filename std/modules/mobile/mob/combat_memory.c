@@ -2,11 +2,11 @@
  * @file /std/modules/mobile/mob/combat_memory.c
  * @description NPC combat memory module
  *
- * @created 2024/07/29 - Gesslar
- * @last_modified 2024/07/29 - Gesslar
+ * @created 2024-07-29 - Gesslar
+ * @last_modified 2024-07-29 - Gesslar
  *
  * @history
- * 2024/07/29 - Gesslar - Created
+ * 2024-07-29 - Gesslar - Created
  */
 
 #include <origin.h>

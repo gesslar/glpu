@@ -2,11 +2,11 @@
  * @file /std/modules/http.c
  * @description HTTP module with shared functions for use in HTTP operations
  *
- * @created 2024/07/05 - Gesslar
- * @last_modified 2024/07/05 - Gesslar
+ * @created 2024-07-05 - Gesslar
+ * @last_modified 2024-07-05 - Gesslar
  *
  * @history
- * 2024/07/05 - Gesslar - Created
+ * 2024-07-05 - Gesslar - Created
  */
 
 inherit M_LOG ;

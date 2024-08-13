@@ -4,11 +4,11 @@
  * @details This daemon is used to handle GitHub issues for the mud. It uses
  * the GitHub Issues API to create issues in the mud's GitHub repository.
  *
- * @created 2024/07/07 - Gesslar
- * @last_modified 2024/07/07 - Gesslar
+ * @created 2024-07-07 - Gesslar
+ * @last_modified 2024-07-07 - Gesslar
  *
  * @history
- * 2024/07/07 - Gesslar - Created
+ * 2024-07-07 - Gesslar - Created
  */
 
 #include <daemons.h>

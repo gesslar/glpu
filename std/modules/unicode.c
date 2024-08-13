@@ -5,11 +5,11 @@
  * Portions of this were delightfully and unabashedly stolen from the Lima base
  * library.
  *
- * @created 2024/07/18 - Gesslar
- * @last_modified 2024/07/18 - Gesslar
+ * @created 2024-07-18 - Gesslar
+ * @last_modified 2024-07-18 - Gesslar
  *
  * @history
- * 2024/07/18 - Gesslar - Created
+ * 2024-07-18 - Gesslar - Created
  */
 
 /**

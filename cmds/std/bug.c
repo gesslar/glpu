@@ -2,11 +2,11 @@
  * @file /cmds/std/bug.c
  * @description Bug command for reporting bugs.
  *
- * @created 2024/07/07 - Gesslar
- * @last_modified 2024/07/07 - Gesslar
+ * @created 2024-07-07 - Gesslar
+ * @last_modified 2024-07-07 - Gesslar
  *
  * @history
- * 2024/07/07 - Gesslar - Created
+ * 2024-07-07 - Gesslar - Created
  */
 
 #include <daemons.h>

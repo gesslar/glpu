@@ -2,11 +2,11 @@
  * @file /cmds/wiz/gimme.c
  * @description Command to give coins to the wizard
  *
- * @created 2024/08/01 - Gesslar
- * @last_modified 2024/08/01 - Gesslar
+ * @created 2024-08-01 - Gesslar
+ * @last_modified 2024-08-01 - Gesslar
  *
  * @history
- * 2024/08/01 - Gesslar - Created
+ * 2024-08-01 - Gesslar - Created
  */
 
 inherit STD_CMD ;

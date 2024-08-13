@@ -2,11 +2,11 @@
  * @file /std/modules/currency.c
  * @description Currency module that can be inherited for money handling
  *
- * @created 2024/08/01 - Gesslar
- * @last_modified 2024/08/01 - Gesslar
+ * @created 2024-08-01 - Gesslar
+ * @last_modified 2024-08-01 - Gesslar
  *
  * @history
- * 2024/08/01 - Gesslar - Created
+ * 2024-08-01 - Gesslar - Created
  */
 
 #include <daemons.h>

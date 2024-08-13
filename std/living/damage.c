@@ -2,11 +2,11 @@
  * @file /std/user/damage.c
  * @description Damage object for livings
  *
- * @created 2024/07/25 - Gesslar
- * @last_modified 2024/07/25 - Gesslar
+ * @created 2024-07-25 - Gesslar
+ * @last_modified 2024-07-25 - Gesslar
  *
  * @history
- * 2024/07/25 - Gesslar - Created
+ * 2024-07-25 - Gesslar - Created
  */
 
 #include <damage.h>
