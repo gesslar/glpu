@@ -17,6 +17,7 @@
 
 /* Standard Inheritables */
 
+#define STD_ABILITY         DIR_STD "cmd/ability"
 #define STD_ACT             DIR_STD "cmd/act"
 #define STD_ARMOUR          DIR_STD "equip/armour"
 #define STD_BODY            DIR_STD_LIVING "body"
@@ -38,10 +39,9 @@
 #define STD_PLAYER          DIR_STD_LIVING "player"
 #define STD_REPORTER        DIR_STD "cmd/reporter"
 #define STD_ROOM            DIR_STD "room/room"
-#define STD_ABILITY         DIR_STD "cmd/ability"
 #define STD_SPELL           DIR_STD "cmd/spell"
-#define STD_STORAGE_CONTAINER DIR_STD "container/storage_container"
 #define STD_STORAGE_OBJECT  DIR_STD "container/storage_object"
+#define STD_STORAGE_ROOM    DIR_STD "room/storage"
 #define STD_USER            DIR_STD_LIVING "user"
 #define STD_VALUE           DIR_STD "object/value"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"

@@ -122,3 +122,40 @@ string resolve_dir(string base_dir, string path) {
     string resolved = resolve_path(base_dir, path);
     return (resolved[<1] == '/') ? resolved : resolved + "/";
 }
+
+/**
+ * @simul_efun get_files
+ * @description Resolves a path and returns an array of matching files, supporting * wildcard pattern.
+ * @param {string} base_dir - The base directory to resolve relative paths from.
+ * @param {string} path - The path or pattern to resolve and search for files.
+ * @returns {string[]} - An array of matching file paths, or ({}) if invalid.
+ */
+string *get_files(string base_dir, string path) {
+    string resolved_path = resolve_path(base_dir, path) ;
+    string *parts, *files ;
+    string dir, pattern;
+
+    // Use valid_dir_file to split the path and check if it's valid
+    parts = valid_dir_file(resolved_path);
+    if (!parts)
+        return ({}) ;
+
+    dir = parts[0];
+    pattern = parts[1];
+
+    // If pattern doesn't contain "*", append it
+    if(strsrch(pattern, "*") == -1)
+        pattern += "*";
+
+    // Use get_dir() with the pattern
+    files = get_dir(dir + pattern);
+    files -= ({ ".", ".." }) ;
+
+    // Construct full paths for the results
+    if(files && sizeof(files) > 0)
+        files = map(files, (: $(dir) + $1 :)) ;
+
+    files = map(files, (: directory_exists($1) ? append($1, "/") : $1 :)) ;
+
+    return files ;
+}

@@ -252,20 +252,3 @@ This function is an override of the userp() efun. Unlike the
 efun, this function accepts a null argument and will check
 if the previous object is a user if no argument is provided.
 
-## this_user
-
-### Synopsis
-
-```c
-object this_user()
-```
-
-### Returns
-
-`object` - The this_body()->query_user().
-
-### Description
-
-This is an override of the efun this_user(). It will return
-the this_body()->query_user().
-

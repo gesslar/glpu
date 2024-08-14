@@ -1,10 +1,13 @@
-// /d/village/village_inherit.c
-// General inherit for the village area
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/village_inherit.c
+ * @description General inherit for the village area
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
 
 inherit STD_ROOM ;
 

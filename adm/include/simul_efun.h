@@ -57,6 +57,7 @@ varargs string tail(string path, int line_count) ;
 void assure_file(string file) ;
 varargs string temp_file(mixed arg) ;
 string *dir_file(string path) ;
+varargs string *valid_dir_file(string path, int file_too) ;
 int touch(string file) ;
 
 // File: function

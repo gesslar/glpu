@@ -44,6 +44,28 @@ string *dir_file(mixed path)
 Given a path, returns an array containing the directory and file
 name components.
 
+## valid_dir_file
+
+### Synopsis
+
+```c
+varargs string *valid_dir_file(string path, int file_too)
+```
+
+### Parameters
+
+* `string path` - The path to check.
+* `int file_too` - Whether the file should exist.
+
+### Returns
+
+`string*` - An array containing the directory and file name components.
+
+### Description
+
+Given a path, returns an array containing the directory and file
+name components. It ensures that the directory exists.
+
 ## touch
 
 ### Synopsis

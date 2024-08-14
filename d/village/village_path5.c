@@ -1,9 +1,13 @@
-// /d/village/village_path5.c
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/village_path5.c
+ * @description Path through the village
+ *
+ * @created 2024-08-12 - Gesslar
+ * @last_modified 2024-08-12 - Gesslar
+ *
+ * @history
+ * 2024-08-12 - Gesslar - Created
+ */
 
 inherit __DIR__ "village_inherit" ;
 
@@ -19,9 +23,12 @@ void setup() {
 "significance. The air carries scents of old wood, fresh ink, and excitement, "
 "hinting at the building's role as a gathering place for newcomers to the "
 "village and beyond.") ;
+
     set_exits(([
+        "north" : "centre",
         "east" : "village_path2",
     ])) ;
+
     set_items(([
         ({ "village square", "square" }) :
             "The bustling center of the village, now fading into the distance "

@@ -1,9 +1,13 @@
-// /d/village/village_path3.c
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/village_path3.c
+ * @description Path through the village
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
 
 inherit __DIR__ "village_inherit" ;
 

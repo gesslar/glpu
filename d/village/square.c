@@ -1,10 +1,13 @@
-// /d/village/square.c
-// Short description of this file and its purpose.
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/square.c
+ * @description Square of the village of Olum
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
 
 inherit __DIR__ "village_inherit" ;
 

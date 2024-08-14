@@ -57,26 +57,33 @@ private string get_base_path(string path) {
 int save_data() {
     string base;
 
-    if(!persistent) return 0;
-    if(!save_file) set_save_file();
-    if(!save_file) return 0;
+    if(!persistent)
+        return 0;
+
+    if(!save_file)
+        set_save_file();
+
+    if(!save_file)
+        return 0;
 
     base = get_base_path(save_file);
-    if(!directory_exists(base)) {
-        if(strsrch(save_file, "/data/") == 0) {
+    if(!directory_exists(base))
+        if(strsrch(save_file, "/data/") == 0)
             if(!assure_dir(base))
                 return 0;
-        }
-    }
 
     return save_object(save_file);
 }
 
 int restore_data() {
-    if(!persistent) return 0;
+    if(!persistent)
+        return 0;
 
-    if(!save_file) save_file = object_save_file(this_object());
+    if(!save_file)
+        save_file = object_save_file(this_object());
 
-    if(!ofile_exists(save_file)) return 0;
+    if(!ofile_exists(save_file))
+        return 0;
+
     return restore_object(save_file);
 }

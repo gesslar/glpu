@@ -1,10 +1,13 @@
-// /d/village/virtual_area/financier.c
-// Bank
-//
-// Created:     2024/02/29: Gesslar
-// Last Change: 2024/02/29: Gesslar
-//
-// 2024/02/29: Gesslar - Created
+/**
+ * @file /d/village/financier.c
+ * @description Financier's office
+ *
+ * @created 2024-02-29 - Gesslar
+ * @last_modified 2024-02-29 - Gesslar
+ *
+ * @history
+ * 2024-02-29 - Gesslar - Created
+ */
 
 inherit __DIR__ "village_inherit" ;
 inherit M_BANK ;

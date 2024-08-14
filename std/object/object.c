@@ -59,37 +59,39 @@ varargs void reset() {
 }
 
 int remove() {
-    object ob, next, env = environment() ;
+    object *obs, ob, next, env = environment();
 
-    catch(call_if(this_object(), "on_remove", environment())) ;
+    catch(call_if(this_object(), "removing", env));
 
-    if(!env) {
-        ob = first_inventory() ;
-        while(ob) {
-            next = next_inventory(ob) ;
-            ob->remove() ;
-            if(objectp(ob))
-                destruct(ob) ;
-            ob = next ;
-        }
-    } else {
-        ob = first_inventory() ;
-        while(ob) {
-            next = next_inventory(ob) ;
-            if(ob->move(env)) {
-                ob->remove() ;
-                if(objectp(ob))
-                    destruct(ob) ;
+    ob = first_inventory(this_object()) ;
+    while(ob) {
+        next = next_inventory(ob);
+
+        if(env) {
+            if(!ob->move(env)) {
+                ob = next;
+                continue;
             }
-            ob = next ;
         }
+
+        if(!userp(ob)) {
+            ob->remove();
+            if(objectp(ob))
+                destruct(ob);
+        }
+
+        ob = next;
     }
 
-    if(sizeof(all_inventory()))
-        filter(all_inventory(), (: destruct :)) ;
+    obs = all_inventory(this_object()) ;
+    obs = filter(obs, (: !userp($1) :)) ;
 
-    destruct() ;
-    return 1 ;
+    if(sizeof(obs))
+        filter(obs, (: destruct :));
+
+    destruct();
+
+    return 1;
 }
 
 string set_real_name(string str) {

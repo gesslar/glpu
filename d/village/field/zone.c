@@ -1,10 +1,14 @@
-// /d/village/virtual_area/virtual_server.c
-// Virtual server for the Olum zone
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/field/zone.c
+ * @description Zone for the field
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
+
 
 inherit STD_VIRTUAL_SERVER ;
 

@@ -291,14 +291,17 @@ mixed *query_cost(object tp, object ob, int transaction) {
 }
 
 private nomask object create_storage() {
+    class StorageOptions storage_options ;
     if(objectp(store))
         return store ;
 
-    store = new(
-        STD_STORAGE_OBJECT,
-        new(class StorageOptions, clean_on_empty: 1)
+    storage_options = new(class StorageOptions,
+        storage_type: "public",
+        storage_org: "olum_general_store"
     ) ;
 
+    store = load_object(sprintf("storage/%s", storage_options.storage_org)) ;
+    store->set_storage_options(storage_options) ;
     store->set_no_clean(1) ;
 
     return store ;

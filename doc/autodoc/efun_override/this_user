@@ -1,8 +1,0 @@
-object this_user()
-
-Returns
-
-`object` - The this_body()->query_user().
-
-This is an override of the efun this_user(). It will return
-the this_body()->query_user().

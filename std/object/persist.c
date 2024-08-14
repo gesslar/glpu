@@ -49,13 +49,18 @@ varargs string save_to_string(int recursep) {
 
     if(sizeof(elements = distinct_array(copy(saved_vars)) - ({ 0 }))) {
         tmp = ([ ]) ;
-        foreach(element in elements) tmp[element] = fetch_variable(element);
-        if(sizeof(tmp)) map["#vars#"] = tmp ;
+
+        foreach(element in elements)
+            tmp[element] = fetch_variable(element);
+
+        if(sizeof(tmp))
+            map["#vars#"] = tmp ;
     }
 
     map["#base_name#"] = base_name();
 
-    if(save_recurse) map["#inventory#"] = all_inventory()->save_to_string(1) - ({ 0 });
+    if(save_recurse)
+        map["#inventory#"] = all_inventory()->save_to_string(1) - ({ 0 });
 
     return save_variable(map);
 }

@@ -315,6 +315,47 @@ string *dir_file(mixed path) {
 }
 
 /**
+ * @simul_efun valid_dir_file
+ * @description Given a path, returns an array containing the directory and file
+ *              name components. It ensures that the directory exists.
+ * @param {string} path - The path to check.
+ * @param {int} file_too - Whether the file should exist.
+ * @returns {string[]} - An array containing the directory and file name
+ *                      components.
+ */
+varargs string *valid_dir_file(string path, int file_too) {
+    string *parts ;
+    int sz, i ;
+    string dir = "/" ;
+
+    if(nullp(path))
+        return null ;
+
+    if(directory_exists(path)) {
+        if(file_too)
+            return null ;
+        return ({ prepend(append(path, "/"), "/"), "" }) ;
+    }
+
+    parts = explode(path, "/") ;
+    while(sizeof(parts) > 1) {
+        if(directory_exists(dir + parts[0]))
+            dir += append(parts[0], "/") ;
+        else
+            break ;
+        parts = parts[1..] ;
+    }
+
+    if(file_too) {
+        if(file_exists(dir + parts[0]))
+            return ({ dir, parts[0] }) ;
+        else
+            return null ;
+    }
+    return ({ dir, parts[0] }) ;
+}
+
+/**
  * @simul_efun touch
  * @description Creates an empty file at the specified path. If the path does
  *              not exist, the function will create the necessary directories.

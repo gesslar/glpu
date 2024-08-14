@@ -1,9 +1,14 @@
-// /d/village/field/field.c
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/field/field.c
+ * @description Short description of this file and its purpose.
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
+
 
 inherit STD_ROOM ;
 

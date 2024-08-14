@@ -67,6 +67,7 @@ title: simul_efun
 * [tail](file#tail)
 * [temp_file](file#temp_file)
 * [touch](file#touch)
+* [valid_dir_file](file#valid_dir_file)
 
 ## [function](function)
 
@@ -157,6 +158,7 @@ title: simul_efun
 
 ## [resolve_path](resolve_path)
 
+* [get_files](resolve_path#get_files)
 * [resolve_dir](resolve_path#resolve_dir)
 * [resolve_file](resolve_path#resolve_file)
 * [resolve_path](resolve_path#resolve_path)

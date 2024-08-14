@@ -1,9 +1,12 @@
-// /d/village/olum.c
-// Zone file for the village of Olum
-//
-// Created:     2024/02/04: Gesslar
-// Last Change: 2024/02/04: Gesslar
-//
-// 2024/02/04: Gesslar - Created
+/**
+ * @file /d/village/olum.c
+ * @description Zone file for the village of Olum
+ *
+ * @created 2024-02-04 - Gesslar
+ * @last_modified 2024-02-04 - Gesslar
+ *
+ * @history
+ * 2024-02-04 - Gesslar - Created
+ */
 
 inherit STD_ZONE ;

@@ -46,6 +46,27 @@ string valid_file(string base_dir, string path)
 Resolves and validates a file path, checking if it exists as a
 file.
 
+## get_files
+
+### Synopsis
+
+```c
+string *get_files(string base_dir, string path)
+```
+
+### Parameters
+
+* `string base_dir` - The base directory to resolve relative paths from.
+* `string path` - The path or pattern to resolve and search for files.
+
+### Returns
+
+`string*` - An array of matching file paths, or ({}) if invalid.
+
+### Description
+
+Resolves a path and returns an array of matching files, supporting * wildcard pattern.
+
 ## resolve_dir
 
 ### Synopsis
