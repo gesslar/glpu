@@ -1,0 +1,11 @@
+private mapping *collate_data(mixed *result)
+
+Parameters:
+
+* `mixed* result` - The raw query result.
+
+Returns
+
+`mapping*` - An array of mappings representing the collated data.
+
+Collates query result data into a more usable format.

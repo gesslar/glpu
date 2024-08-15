@@ -1,15 +1,22 @@
-// /adm/daemons/bank.c
-// This daemon handles banking activity using SQLITE3 and the DB_D daemon.
-//
-// Created:     2024/02/28: Gesslar
-// Last Change: 2024/02/28: Gesslar
-//
-// 2024/02/28: Gesslar - Created
+/**
+ * @file /adm/daemons/bank.c
+ * @description Bank daemon
+ *
+ * @created 2024-02-28 - Gesslar
+ * @last_modified 2024-02-28 - Gesslar
+ *
+ * @history
+ * 2024-02-28 - Gesslar - Created
+ */
 
 inherit STD_DAEMON ;
 
-mixed new_account(string name) ;
-int query_balance(string name) ;
+// Forward declarations
+void setup();
+mixed new_account(string name);
+mixed query_balance(string name);
+mixed add_balance(string name, int amount);
+varargs mixed query_activity(string name, int limit);
 
 private nosave string db = "bank" ;
 // These statements are in sprintf format
@@ -29,104 +36,134 @@ void setup() {
     ]) ;
 }
 
+/**
+ * @daemon_function new_account
+ * @description Creates a new bank account for the given name.
+ * @param {string} name - The name of the account holder.
+ * @returns {mixed} - 1 if the account was created successfully, an error message
+ *                    if the account already exists or if there was a database error.
+ */
 mixed new_account(string name) {
-    string query ;
-    mixed result ;
+    string query;
+    mixed result;
 
-    // Check if the account already exists
-    name = capitalize(lower_case(name)) ;
-    result = query_balance(name) ;
-// _debug("new_account: result: %O", result) ;
-// _debug("new_account: typeof result: %O", typeof(result)) ;
-// _debug("new_account: nullp(result): %O", nullp(result)) ;
-    if(stringp(result))
-        return result ;
+    name = capitalize(lower_case(name));
+    result = query_balance(name);
 
     if(!nullp(result))
-        return "Account already exists." ;
+        return "Account already exists.";
 
-    // Create the account
-    query = sprintf(balance_statements["add"], name, 0, time()) ;
-    result = DB_D->query(db, query) ;
+    query = sprintf(
+        "INSERT INTO balance (name, amount, time) VALUES ('%s', 0, %d); " +
+        "INSERT INTO activity (time, name, amount) VALUES (%d, '%s', 0);",
+        name, time(), time(), name
+    );
 
-    // add activity
-    query = sprintf(activity_statements["add"], time(), name, 0) ;
-    result = DB_D->query(db, query) ;
+    result = DB_D->query(db, query);
 
-    return 1 ;
+    return stringp(result) ? result : 1;
 }
 
+/**
+ * @daemon_function query_balance
+ * @description Retrieves the current balance for the given account name.
+ * @param {string} name - The name of the account holder.
+ * @returns {mixed} - The current balance as an integer if the account exists,
+ *                    null if the account doesn't exist, or an error message
+ *                    if there was a database error.
+ */
 mixed query_balance(string name) {
-    string query ;
-    mixed result ;
+    string query;
+    mixed result;
 
-    name = capitalize(lower_case(name)) ;
-    query = sprintf(balance_statements["select"], name) ;
+    name = capitalize(lower_case(name));
+    query = sprintf(balance_statements["select"], name);
 
-    result = DB_D->query(db, query) ;
-// _debug("query_balance: result: %O", result) ;
-// _debug("query_balance: typeof result: %O", typeof(result)) ;
-// _debug("nullp(result): %O", nullp(result)) ;
+    result = DB_D->query(db, query);
+
     if(stringp(result)) {
-        // _debug("query_balance: stringp(result): %O", result) ;
-        return result ;
+        return result;
     }
 
     if(sizeof(result) == 0) {
-// _debug("query_balance: sizeof(result) == 0") ;
-        return null ;
+        return null;
     }
-// _debug("query_balance: result[0]: %O", result[0]) ;
-    return result[0]["amount"] ;
+
+    return result[0]["amount"];
 }
 
+/**
+ * @daemon_function add_balance
+ * @description Adds (or subtracts) the specified amount from the given account.
+ * @param {string} name - The name of the account holder.
+ * @param {int} amount - The amount to add (positive) or subtract (negative).
+ * @returns {mixed} - A success message if the transaction was completed,
+ *                    an error message if the account doesn't exist,
+ *                    there are insufficient funds, or if there was a database error.
+ */
 mixed add_balance(string name, int amount) {
-    string query ;
-    mixed result ;
+    string query;
+    mixed result, current_balance;
+    int new_balance;
 
-    name = capitalize(lower_case(name)) ;
-    result = query_balance(name) ;
+    name = capitalize(lower_case(name));
+    current_balance = query_balance(name);
+
+    if(stringp(current_balance))
+        return current_balance;
+
+    if(nullp(current_balance))
+        return "Account does not exist.";
+
+    new_balance = current_balance + amount;
+    if(new_balance < 0)
+        return "Insufficient funds.";
+
+    query = sprintf(
+        "UPDATE balance SET amount = %d, time = %d WHERE name = '%s'; " +
+        "INSERT INTO activity (time, name, amount) VALUES (%d, '%s', %d);",
+        new_balance, time(), name, time(), name, amount
+    );
+
+    result = DB_D->query(db, query);
 
     if(stringp(result))
-        return result ;
+        return "Database error: " + result;
 
-    if(nullp(result))
-        return "Account does not exist." ;
-
-    result += amount ;
-    if(result < 0)
-        return "Insufficient funds." ;
-
-    query = sprintf(balance_statements["update"], result, time(), name) ;
-    result = DB_D->query(db, query) ;
-
-    // add activity
-    query = sprintf(activity_statements["add"], time(), name, amount) ;
-    result = DB_D->query(db, query) ;
-
-    if(stringp(result))
-        return result ;
-
-    return 1 ;
+    if(amount > 0)
+        return "Successfully deposited " + amount + " coins.";
+    else if(amount < 0)
+        return "Successfully withdrew " + (-amount) + " coins.";
+    else
+        return "No transaction performed.";
 }
 
+/**
+ * @daemon_function query_activity
+ * @description Retrieves the recent activity for the given account.
+ * @param {string} name - The name of the account holder.
+ * @param {int} [limit=10] - The maximum number of recent activities to retrieve.
+ * @returns {mixed} - An array of recent activities if successful,
+ *                    null if there are no activities,
+ *                    or an error message if there was a database error.
+ */
 varargs mixed query_activity(string name, int limit: (: 10 :)) {
-    string query ;
-    mixed result ;
+    string query;
+    mixed result;
 
-    name = capitalize(lower_case(name)) ;
+    name = capitalize(lower_case(name));
     if(limit > 0)
-        query = sprintf(activity_statements["select_limited"], name, limit) ;
+        query = sprintf(activity_statements["select_limited"], name, limit);
     else
-        query = sprintf(activity_statements["select"], name) ;
+        query = sprintf(activity_statements["select"], name);
 
-    result = DB_D->query(db, query) ;
+    result = DB_D->query(db, query);
 
     if(stringp(result))
-        return result ;
+        return result;
 
     if(sizeof(result) == 0)
-        return null ;
+        return null;
 
-    return result ;
+    return result;
 }

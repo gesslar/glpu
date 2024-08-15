@@ -1,0 +1,11 @@
+private void execute_query(string db, string q, int offset, string query_id, mixed *callback)
+
+Parameters:
+
+* `string db` - The name of the database to query.
+* `string q` - The SQL query to execute.
+* `int offset` - The current offset for chunked queries.
+* `string query_id` - A unique identifier for this query execution.
+* `mixed* callback` - Callback function to handle the result.
+
+Executes a query in chunks, handling large result sets efficiently.
