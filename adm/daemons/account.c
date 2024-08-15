@@ -11,12 +11,17 @@
 
 inherit STD_DAEMON ;
 
-// Functions
-int create_account(string name, string password) ;
-mapping load_account(string name) ;
-string write_account(string name, string key, mixed data) ;
-mixed read_account(string name, string key) ;
-int valid_manip(string name) ;
+// Forward declarations
+int create_account(string name, string password);
+mapping load_account(string name);
+string write_account(string name, string key, mixed data);
+mixed read_account(string name, string key);
+int valid_manip(string name);
+int remove_account(string name);
+int add_character(string account_name, string str);
+int remove_character(string account_name, string str);
+string character_account(string str);
+string *account_characters(string account_name);
 
 private nomask mapping accounts = ([ ]) ;
 private nomask mapping reverse = ([ ]) ;
@@ -26,6 +31,13 @@ void setup() {
     set_persistent(1) ;
 }
 
+/**
+ * @daemon_function create_account
+ * @description Creates a new account with the given name and password.
+ * @param {string} name - The name for the new account.
+ * @param {string} password - The password for the new account.
+ * @returns {int} 1 if the account was created successfully, 0 otherwise.
+ */
 int create_account(string name, string password) {
     mapping account ;
 
@@ -58,6 +70,12 @@ int create_account(string name, string password) {
     return 1 ;
 }
 
+/**
+ * @daemon_function load_account
+ * @description Loads an account from the database or memory.
+ * @param {string} name - The name of the account to load.
+ * @returns {mapping} The account data if found, null otherwise.
+ */
 mapping load_account(string name) {
     string file ;
 
@@ -82,6 +100,14 @@ mapping load_account(string name) {
     return accounts[name] ;
 }
 
+/**
+ * @daemon_function write_account
+ * @description Writes a specific key-value pair to an account.
+ * @param {string} name - The name of the account to modify.
+ * @param {string} key - The key to write.
+ * @param {mixed} data - The data to write.
+ * @returns {string} The written data if successful, 0 otherwise.
+ */
 string write_account(string name, string key, mixed data) {
     mapping account ;
 
@@ -111,6 +137,13 @@ string write_account(string name, string key, mixed data) {
     return account[key] ;
 }
 
+/**
+ * @daemon_function read_account
+ * @description Reads a specific key from an account.
+ * @param {string} name - The name of the account to read from.
+ * @param {string} key - The key to read.
+ * @returns {mixed} The value of the key if found, 0 otherwise.
+ */
 mixed read_account(string name, string key) {
     mapping account ;
 
@@ -131,6 +164,12 @@ mixed read_account(string name, string key) {
     return account[key] ;
 }
 
+/**
+ * @daemon_function valid_manip
+ * @description Checks if the current object has permission to manipulate the account.
+ * @param {string} name - The name of the account to check.
+ * @returns {int} 1 if manipulation is allowed, 0 otherwise.
+ */
 int valid_manip(string name) {
     object prev = previous_object() ;
     object caller = this_caller() ;
@@ -147,6 +186,12 @@ int valid_manip(string name) {
     return 1 ;
 }
 
+/**
+ * @daemon_function remove_account
+ * @description Removes an account from the database.
+ * @param {string} name - The name of the account to remove.
+ * @returns {int} 1 if the account was removed successfully, 0 otherwise.
+ */
 int remove_account(string name) {
     if(!valid_manip(name))
         return 0 ;
@@ -168,6 +213,13 @@ int remove_account(string name) {
     return 1 ;
 }
 
+/**
+ * @daemon_function add_character
+ * @description Adds a character to an account.
+ * @param {string} account_name - The name of the account to add the character to.
+ * @param {string} str - The name of the character to add.
+ * @returns {int} 1 if the character was added successfully, null otherwise.
+ */
 int add_character(string account_name, string str) {
     mapping account ;
     string *characters ;
@@ -205,6 +257,13 @@ int add_character(string account_name, string str) {
     return 1 ;
 }
 
+/**
+ * @daemon_function remove_character
+ * @description Removes a character from an account.
+ * @param {string} account_name - The name of the account to remove the character from.
+ * @param {string} str - The name of the character to remove.
+ * @returns {int} 1 if the character was removed successfully, null otherwise.
+ */
 int remove_character(string account_name, string str) {
     mapping account ;
     string *characters ;
@@ -239,6 +298,12 @@ int remove_character(string account_name, string str) {
     return 1 ;
 }
 
+/**
+ * @daemon_function character_account
+ * @description Retrieves the account name associated with a character.
+ * @param {string} str - The name of the character.
+ * @returns {string} The account name if found, null otherwise.
+ */
 string character_account(string str) {
     if(!str || !stringp(str))
         return null ;
@@ -249,6 +314,12 @@ string character_account(string str) {
     return reverse[str] ;
 }
 
+/**
+ * @daemon_function account_characters
+ * @description Retrieves the characters associated with an account.
+ * @param {string} account_name - The name of the account.
+ * @returns {string *} An array of character names if found, null otherwise.
+ */
 string *account_characters(string account_name) {
     mapping account ;
 

@@ -64,22 +64,6 @@ int valid_db(string db)
 
 Checks if a given database is valid and exists in the system.
 
-## query_databases
-
-### Synopsis
-
-```c
-mapping query_databases()
-```
-
-### Returns
-
-`mapping` - A mapping of database names to their file paths.
-
-### Description
-
-Retrieves a list of all available databases.
-
 ## lazy_query
 
 ### Synopsis
@@ -97,6 +81,22 @@ void lazy_query(string db, string q, mixed *callback)
 ### Description
 
 Initiates a lazy (chunked) query execution.
+
+## query_databases
+
+### Synopsis
+
+```c
+mapping query_databases()
+```
+
+### Returns
+
+`mapping` - A mapping of database names to their file paths.
+
+### Description
+
+Retrieves a list of all available databases.
 
 ## sqlite_version
 

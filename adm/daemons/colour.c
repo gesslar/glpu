@@ -1,15 +1,32 @@
-// /adm/daemons/colour.c
-// Colour Parser
-//
-// Created:     2022/08/22: Gesslar
-// Last Change: 2022/08/22: Gesslar
-//
-// 2022/08/22: Gesslar - Created
+/**
+ * @file /adm/daemons/colour.c
+ * @description Colour Parser for handling and converting colour codes in text.
+ *
+ * @created 2022-08-22 - Gesslar
+ * @last_modified 2022-08-22 - Gesslar
+ *
+ * @history
+ * 2022-08-22 - Gesslar - Created
+ */
 
 #include <colour.h>
 
 inherit STD_DAEMON ;
 inherit DM_CSS ;
+
+// Forward declarations
+string substitute_colour(string text, string mode);
+string wrap(string str, int wrap_at, int indent_at);
+void resync();
+int colourp(string text);
+string token_to_colour(string token);
+string get_colour_list();
+int is_too_dark(string colour);
+string substitute_too_dark(string text);
+int colour_to_greyscale(int colour_code);
+string body_colour_replace(object body, string text, int message_type);
+private int too_dark_check();
+private mapping too_dark_map();
 
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
@@ -19,19 +36,17 @@ private nosave mapping high_to_low_fg = ([ ]) ;
 private nosave mapping high_to_low_bg = ([ ]) ;
 
 private void load_all_colours() ;
-public string wrap(string str, int wrap_at, int indent_at) ;
-void resync() ;
 
 void setup() {
     set_no_clean() ;
     load_all_colours() ;
 }
 
-int too_dark_check() {
+private int too_dark_check() {
     return mud_config("COLOUR_TOO_DARK") == "on" ;
 }
 
-mapping too_dark_map() {
+private mapping too_dark_map() {
     return mud_config("COLOUR_TOO_DARK_SUB") ;
 }
 
@@ -100,15 +115,13 @@ private void load_all_colours() {
     }
 }
 
-//:FUNCTION substitute_colour
-// substitute_colour takes a string with tokenized xterm256 colour
-// codes and a mode, parses the tokens and substitutes with
-// xterm colour codes suitable for printing.
-// available modes are:
-// plain - strip all colour and style codes
-// vt100 - strip only colour codes
-// high - replace all tokens with 256 colour codes
-// low  - fall back to lower 16 colour codes
+/**
+ * @daemon_function substitute_colour
+ * @description Substitutes colour tokens in text with appropriate colour codes.
+ * @param {string} text - The text containing colour tokens.
+ * @param {string} mode - The mode for colour substitution (plain, vt100, high, low).
+ * @returns {string} The text with colour tokens replaced by appropriate codes.
+ */
 public string substitute_colour(string text, string mode) {
     mixed *assoc ;
     string *parts, sub ;
@@ -196,6 +209,14 @@ public string substitute_colour(string text, string mode) {
     return result ;
 }
 
+/**
+ * @daemon_function wrap
+ * @description Wraps text to a specified width, preserving colour codes.
+ * @param {string} str - The text to wrap.
+ * @param {int} wrap_at - The column at which to wrap the text.
+ * @param {int} indent_at - The number of spaces to indent wrapped lines.
+ * @returns {string} The wrapped text.
+ */
 public string wrap(string str, int wrap_at, int indent_at) {
     string *sections ;
 
@@ -237,14 +258,30 @@ public string wrap(string str, int wrap_at, int indent_at) {
     return implode(sections, "\n") ;
 }
 
+/**
+ * @daemon_function colourp
+ * @description Checks if a string contains colour codes.
+ * @param {string} text - The text to check for colour codes.
+ * @returns {int} 1 if colour codes are present, 0 otherwise.
+ */
 int colourp(string text) {
     return pcre_match(text, COLOUR_REGEX) ;
 }
 
+/**
+ * @daemon_function resync
+ * @description Reloads all colour definitions.
+ */
 void resync() {
     load_all_colours() ;
 }
 
+/**
+ * @daemon_function token_to_colour
+ * @description Converts a colour token to its corresponding colour code.
+ * @param {string} token - The colour token to convert.
+ * @returns {string} The corresponding colour code.
+ */
 string token_to_colour(string token) {
     if(pcre_match(token, "\\d{3}")) {
         int num ;
@@ -282,6 +319,11 @@ string token_to_colour(string token) {
     return "" ;
 }
 
+/**
+ * @daemon_function get_colour_list
+ * @description Generates a formatted list of all available colours.
+ * @returns {string} A formatted string containing all colour codes and their visual representation.
+ */
 string get_colour_list() {
     string output = "" ;
     int base ;
@@ -367,6 +409,12 @@ string get_colour_list() {
     return output ;
 }
 
+/**
+ * @daemon_function is_too_dark
+ * @description Checks if a given colour is considered too dark.
+ * @param {string} colour - The colour code to check.
+ * @returns {int} 1 if the colour is too dark, 0 otherwise.
+ */
 int is_too_dark(string colour) {
     string *matches ;
 
@@ -381,6 +429,12 @@ int is_too_dark(string colour) {
     if(too_dark_map()[colour]) return 1 ;
 }
 
+/**
+ * @daemon_function substitute_too_dark
+ * @description Substitutes a colour if it's considered too dark.
+ * @param {string} text - The colour code to potentially substitute.
+ * @returns {string} The substituted colour code if too dark, or the original if not.
+ */
 string substitute_too_dark(string text) {
     string *matches ;
     string result ;
@@ -396,6 +450,12 @@ string substitute_too_dark(string text) {
     else return text ;
 }
 
+/**
+ * @daemon_function colour_to_greyscale
+ * @description Converts a colour code to its greyscale equivalent.
+ * @param {int} colour_code - The colour code to convert.
+ * @returns {int} The greyscale equivalent of the colour code.
+ */
 int colour_to_greyscale(int colour_code) {
     float normalized ;
     int greyscale_code ;
@@ -407,6 +467,14 @@ int colour_to_greyscale(int colour_code) {
     return greyscale_code;
 }
 
+/**
+ * @daemon_function body_colour_replace
+ * @description Replaces colour codes in text based on body preferences and message type.
+ * @param {object} body - The body object with colour preferences.
+ * @param {string} text - The text to process.
+ * @param {int} message_type - The type of message being processed.
+ * @returns {string} The text with colours replaced according to preferences.
+ */
 public string body_colour_replace(object body, string text, int message_type) {
     int col ;
     string pref, colour ;

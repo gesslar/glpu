@@ -1,0 +1,3 @@
+void resync()
+
+Reloads all colour definitions.
