@@ -1,6 +1,6 @@
 /**
  * @file /d/village/field/field.c
- * @description Short description of this file and its purpose.
+ * @description This is the inheritable for the virtual field rooms.
  *
  * @created 2024-02-04 - Gesslar
  * @last_modified 2024-02-04 - Gesslar

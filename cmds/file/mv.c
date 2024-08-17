@@ -1,33 +1,45 @@
-//mv.c
-
-//Tacitus @ LPUniversity
-//08-APR-05
-//File system management
-
-//Last edited on July 1st, 2005 by Tacitus
+/**
+ * @file /cmds/file/mv.c
+ * @description Move a file or directory
+ *
+ * @created 2024-08-16 - Gesslar
+ * @last_modified 2024-08-16 - Gesslar
+ *
+ * @history
+ * 2024-08-16 - Gesslar - Created
+ */
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str) {
-    string source, dest;
-    if(!str || !sscanf(str, "%s %s", source, dest))
-        return notify_fail("Syntax: mv <source> <dest>\n");
-    source = resolve_path(caller->query_env("cwd"), source);
-    dest = resolve_path(caller->query_env("cwd"), dest);
-    if(!(int)master()->valid_write(source, caller, "mv") || !(int)master()->valid_write(dest, caller, "mv")) {
-        write("Error [mv]: Permission denied.\n");
-        return 1;
-    }
-
-    if(rename(source, dest) < 0) {
-        write("Error [mv]: Move failed.\n");
-    } else {
-        write("Successful [mv]: " + source + " moved to " + dest + "\n");
-    }
-    return 1;
+void setup() {
+    usage_text = "mv <origin> <dest>" ;
+    help_text =
+"Moves a file or directory from origin to destination. The origin and "
+"destination can be either absolute or relative paths.\n"
+"* If the destination is a directory, the origin will be moved inside the directory.\n"
+"* If the destination does not exist, it will be created.\n"
+"* If the source does not exist, an error will be returned.\n"
+"* If the source is a directory, the destination must be a directory as well.\n"
+"* If the destination is a file, an error will be returned." ;
 }
-string help(object caller) {
-    return (" SYNTAX: mv <source> <destination>\n\n" +
-    "This command moves a file to a destination you specify. The first argument\n"
-    "is the file you wish to move and the second argument is the destination.\n");
+
+mixed main(object tp, string str) {
+    string origin, dest;
+    int result ;
+
+    if(!str || !sscanf(str, "%s %s", origin, dest))
+        return _usage(tp) ;
+
+    origin = resolve_path(tp->query_env("cwd"), origin);
+    dest = resolve_path(tp->query_env("cwd"), dest);
+
+    if(!master()->valid_write(origin, tp, "mv") || !master()->valid_write(dest, tp, "mv"))
+        return _error(tp, "Permission denied.") ;
+
+    result = rename(origin, dest) ;
+
+    if(result < 0)
+        return _error(tp, "Move failed.") ;
+
+    return _ok(tp, "Moved %s to %s", origin, dest) ;
 }

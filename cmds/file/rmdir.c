@@ -1,34 +1,42 @@
-//rmdir.c
-
-//Tacitus @ LPUniversity
-//07-APR-05
-//File system management
+/**
+ * @file /cmds/file/rmdir.c
+ * @description Command to remove a directory.
+ *
+ * @created 2024-08-16 - Gesslar
+ * @last_modified 2024-08-16 - Gesslar
+ *
+ * @history
+ * 2024-08-16 - Gesslar - Created
+ */
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str) {
-    if(!str)
-        return notify_fail("Syntax: rmdir <directory name>\n");
-
-    str = resolve_path(caller->query_env("cwd"), str);
-    if(!directory_exists(str) || file_exists(str))
-        return notify_fail("Error [rmdir]: " + str + " is not a directory.\n");
-
-    if(sizeof(get_dir(str + "/")))
-        return notify_fail("Error [rmdir]: " + str + " is not empty.\n");
-
-    if(!(int)master()->valid_write(str, caller, "rmdir")) {
-        write("Error [rmdir]: Permission denied.\n");
-        return 1;
-    }
-
-    write(rmdir(str) ? "Successful [rmdir]: Directory removed.\n" : "Error [rmdir]: Could not remove directory.\n");
-    return 1;
+void setup() {
+    usage_text = "rmdir <directory name>";
+    help_text =
+"This command permanantly removes a specified directory. It will not "
+"currently delete a directory that has content (ie. The directory "
+"you wish to remove must be empty before it can be deleted.)";
 }
 
-string help(object caller) {
-    return (" SYNTAX: rmdir <directory name>" + "\n\n" +
-    "This command permanantly removes a specified directory. It will not\n"
-    "currently delete a directory that has content (ie. The directory\n"
-    "you wish to remove must be empty before it can be deleted.)\n");
+mixed main(object tp, string str) {
+    if(!str)
+        return _usage(tp) ;
+
+    str = resolve_path(tp->query_env("cwd"), str);
+
+    if(!directory_exists(str) || file_exists(str))
+        return _error("%s is not a directory.", str) ;
+
+    if(sizeof(get_dir(str + "/")))
+        return _error("%s is not empty.", str) ;
+
+    if(!master()->valid_write(str, tp, "rmdir"))
+        return _error("Permission denied.") ;
+
+    rmdir(str)
+        ? _ok("Directory removed: %s", str)
+        : _error("Could not remove directory: %s", str) ;
+
+    return 1 ;
 }

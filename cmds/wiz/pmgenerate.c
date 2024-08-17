@@ -20,6 +20,8 @@ inherit M_LOG;
 private string generate_area(string area_name, string area_type, int width, int height);
 private string generate_cell(string area_type, float noise_value, float elevation_value);
 private string generate_terrain(string area_type, float noise_value);
+private int *generate_mask(int width, int height) ;
+private int count_neighbors(int *mask, int x, int y, int width, int height) ;
 
 private nosave int MAX_WIDTH = 100;
 private nosave int MAX_HEIGHT = 100;
@@ -61,16 +63,21 @@ private string generate_area(string area_name, string area_type, int width, int 
     string line;
     string cell;
     float noise_value, elevation_value;
+    int *mask;
 
     map = allocate(height);
-
-    for(y = 0; y < height; y++) {
+    mask = generate_mask(width, height);
+    for (y = 0; y < height; y++) {
         line = "";
-        for(x = 0; x < width; x++) {
-            noise_value = PERLIN_D->perlin(x / 10.0, y / 10.0, 0.0);
-            elevation_value = PERLIN_D->perlin(x / 5.0, y / 5.0, 1.0);
-            cell = generate_cell(area_type, noise_value, elevation_value);
-            line += cell + " ";
+        for (x = 0; x < width; x++) {
+            if (mask[y * width + x] == 0) {
+                line += "XXX ";  // Impassable terrain with space
+            } else {
+                noise_value = PERLIN_D->perlin(x / 15.0, y / 15.0, 0.0);  // Adjusted scale
+                elevation_value = PERLIN_D->perlin(x / 7.0, y / 7.0, 1.0);  // Adjusted scale
+                cell = generate_cell(area_type, noise_value, elevation_value);
+                line += cell;  // Cell already includes the space
+            }
         }
         map[y] = line[0..<2];  // Remove trailing space
     }
@@ -79,23 +86,72 @@ private string generate_area(string area_name, string area_type, int width, int 
 }
 
 private string generate_cell(string area_type, float noise_value, float elevation_value) {
-    string terrain, elevation;
+    string terrain, elevation, feature;
 
     terrain = generate_terrain(area_type, noise_value);
-    elevation = sprintf("%d", to_int(elevation_value * 4));  // 0-4 elevation
+    elevation = sprintf("%d", to_int((elevation_value + 1.0) * 1.5) % 4);  // 0-3 elevation
+    feature = " ";  // Placeholder for future feature implementation
 
-    return terrain + elevation + " ";  // Note the blank space for the feature column
+    return terrain + elevation + feature + " ";  // Three characters plus a space
 }
 
 private string generate_terrain(string area_type, float noise_value) {
     switch(area_type) {
         case "forest":
-            return (noise_value < 0.8) ? "F" : "C"; // 80% forest, 20% clearing
+            return (noise_value < 0.9) ? "F" : "C"; // 90% forest, 10% clearing
         case "mountain":
-            return (noise_value < 0.7) ? "M" : "H"; // 70% mountain, 30% hill
+            return (noise_value < 0.8) ? "M" : "H"; // 80% mountain, 20% hill
         case "desert":
-            return (noise_value < 0.9) ? "S" : "O"; // 90% sand, 10% oasis
+            return (noise_value < 0.95) ? "S" : "O"; // 95% sand, 5% oasis
         default:
             return "P"; // Plain as default
     }
+}
+
+private int *generate_mask(int width, int height) {
+    int *mask;
+    int x, y;
+    float noise_value;
+    float center_x, center_y;
+    float dx, dy, distance;
+
+    mask = allocate(width * height);
+    center_x = to_float(width) / 2.0;
+    center_y = to_float(height) / 2.0;
+
+    for(y = 0; y < height; y++) {
+        for(x = 0; x < width; x++) {
+            // Create an irregular shape using Perlin noise
+            noise_value = PERLIN_D->perlin(to_float(x) / 15.0, to_float(y) / 15.0, 2.0);
+
+            // Calculate distance from center
+            dx = (to_float(x) - center_x) / center_x;
+            dy = (to_float(y) - center_y) / center_y;
+            distance = sqrt(dx*dx + dy*dy);
+
+            // Determine if the point is inside the irregular shape
+            if (noise_value > 0.3 || distance < 0.8) {
+                mask[y * width + x] = 1;  // Inside the area
+            } else {
+                mask[y * width + x] = 0;  // Outside the area (impassable)
+            }
+        }
+    }
+
+    return mask;
+}
+
+private int count_neighbors(int *mask, int x, int y, int width, int height) {
+    int count = 0;
+    int dx, dy, nx, ny;
+    for(dy = -1; dy <= 1; dy++) {
+        for(dx = -1; dx <= 1; dx++) {
+            if(dx == 0 && dy == 0) continue;
+            nx = x + dx;
+            ny = y + dy;
+            if(nx >= 0 && nx < width && ny >= 0 && ny < height)
+                count += mask[ny * width + nx];
+        }
+    }
+    return count;
 }

@@ -7,7 +7,7 @@ inherit STD_DAEMON;
 
 // Function declarations
 private int *init_perlin();
-private float noise(float x, float y, float z, int *p);
+private float noise(float x, float y, float z);
 private float fade(float t);
 private float lerp(float t, float a, float b);
 private float grad(int hash, float x, float y, float z);
@@ -38,19 +38,26 @@ private int *init_perlin() {
     return p;
 }
 
-private float noise(float x, float y, float z, int *p) {
-    int X, Y, Z, A, AA, AB, B, BA, BB;
+float noise(float x, float y, float z) {
+    int X, Y, Z;
     float u, v, w;
+    int A, AA, AB, B, BA, BB;
+    int *p;
 
-    X = (int)x & 255;
-    Y = (int)y & 255;
-    Z = (int)z & 255;
-    x -= (int)x;
-    y -= (int)y;
-    z -= (int)z;
+    p = init_perlin();
+
+    X = to_int(floor(x)) & 255;
+    Y = to_int(floor(y)) & 255;
+    Z = to_int(floor(z)) & 255;
+
+    x -= floor(x);
+    y -= floor(y);
+    z -= floor(z);
+
     u = fade(x);
     v = fade(y);
     w = fade(z);
+
     A = p[X] + Y;
     AA = p[A] + Z;
     AB = p[A + 1] + Z;
@@ -86,19 +93,17 @@ private float grad(int hash, float x, float y, float z) {
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-public float perlin(float x, float y, float z) {
+float perlin(float x, float y, float z) {
     float total, frequency, amplitude, maxValue;
     int i;
-    int *p;
 
-    p = init_perlin();
     total = 0;
     frequency = 1;
     amplitude = 1;
     maxValue = 0;
 
     for(i = 0; i < OCTAVES; i++) {
-        total += noise(x * frequency, y * frequency, z * frequency, p) * amplitude;
+        total += noise(x * frequency, y * frequency, z * frequency) * amplitude;
         maxValue += amplitude;
         amplitude *= PERSISTENCE;
         frequency *= 2;

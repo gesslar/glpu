@@ -69,13 +69,14 @@ varargs string tail(string path, int line_count) {
     int chunk_size = 80 * 5; // Chunk size for each read operation
     string result = ""; // Accumulator for the result
     int total_lines = 0; // Counter for total lines found
-    int file_size ; // Total size of the file
+    int file_size; // Total size of the file
     int start, end; // Variables to define the read range
-    int read_chars = 0; // Counter for characters read without finding a newline
-    int newlines_found = 0; // Counter for newlines found in the current chunk
+    string chunk; // Variable to hold the data read in each chunk
+    string *lines; // Array to hold split lines
+    int start_index; // Index for trimming lines
 
     if(nullp(path)) error("No file specified for tail(). [" + previous_object() + "]");
-    if(nullp(line_count)) line_count = 25 ; // Default to 25 lines if not specified
+    if(nullp(line_count)) line_count = 25; // Default to 25 lines if not specified
 
     // Get the total size of the file
     file_size = file_size(path);
@@ -85,8 +86,7 @@ varargs string tail(string path, int line_count) {
     // Ensure we don't start reading beyond the start of the file
     if(end < 0) return "File does not exist or is empty.";
 
-    while(total_lines < line_count && end > 0) {
-        string chunk; // Variable to hold the data read in each chunk
+    while(end > 0) {
         start = end - chunk_size;
         if(start < 0) start = 0; // Adjust start to not go below file beginning
 
@@ -95,44 +95,31 @@ varargs string tail(string path, int line_count) {
 
         if(!strlen(chunk)) break; // Break if no data was read
 
-        // Iterate through the chunk to count newlines
-        for(int i = strlen(chunk) - 1; i >= 0; i--) {
-            if(chunk[i] == '\n') {
-                newlines_found++;
-                if(newlines_found >= line_count) break; // Stop if we have enough lines
-            }
-            read_chars++;
-
-            // Check if we've read too many characters without a newline
-            if(read_chars > 2000) break;
-        }
-
         // Prepend the current chunk to the result
         result = chunk + result;
 
-        // Adjust counters based on what was found
-        total_lines += newlines_found;
+        // Count the number of newlines in the current result
+        total_lines = sizeof(explode(result, "\n")) - 1;
+
+        // If we have enough lines, break the loop
+        if(total_lines >= line_count) break;
+
         end = start; // Move the end position for the next read
-
-        // Reset counters for the next iteration
-        read_chars = 0;
-        newlines_found = 0;
-
-        // Break early if we've read too many characters without finding a newline
-        if(read_chars > 2000) break;
     }
 
-    // Trim the result if we've collected more lines than needed
-    if(total_lines > line_count) {
-        int lines_to_trim = total_lines - line_count;
-        int pos = 0;
-        for(int i = 0; i < strlen(result) && lines_to_trim > 0; i++) {
-            if(result[i] == '\n') {
-                lines_to_trim--;
-                pos = i + 1;
-            }
-        }
-        result = result[pos..]; // Keep only the required number of lines from the end
+    // Trim the result to exactly the number of lines requested
+    lines = explode(result, "\n");
+    start_index = (sizeof(lines) > line_count) ? sizeof(lines) - line_count : 0;
+    result = implode(lines[start_index..], "\n");
+
+    // Add a newline at the beginning if we trimmed lines
+    if (start_index > 0) {
+        result = "\n" + result;
+    }
+
+    // Pad with empty lines if we have fewer lines than requested
+    if (sizeof(lines) < line_count) {
+        result = implode(allocate(line_count - sizeof(lines), ""), "\n") + result;
     }
 
     return result;

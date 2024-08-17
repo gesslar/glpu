@@ -237,14 +237,8 @@ int rem_path(string str) {
 }
 
 void receive_message(string type, string msg) {
-    tell(this_object(), msg) ;
+    do_receive(msg, DIRECT_MSG) ;
 }
-
-/* Communication & Interaction functions */
-void catch_tell(string message) {
-    receive_message("tell", message);
-}
-
 
 string process_input(string arg) {
     return arg ;
@@ -440,7 +434,7 @@ int force_me(string cmd) {
 void write_prompt() {
     string prompt = query_env("prompt");
 
-    tell(this_object(), prompt + " ") ;
+    receive(prompt + " ") ;
 }
 
 int query_log_level() {

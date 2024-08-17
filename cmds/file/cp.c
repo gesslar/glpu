@@ -1,47 +1,59 @@
-//cp.c
+/**
+ * @file /cmds/file/cp.c
+ * @description Copy command
+ *
+ * @created 2024-08-17 - Gesslar
+ * @last_modified 2024-08-17 - Gesslar
+ *
+ * @history
+ * 2024-08-17 - Gesslar - Created
+ */
 
-//Tacitus @ LPUniversity
-//08-APR-05
-//File system management
+inherit STD_CMD ;
 
-//Last edited on January 25th, 2006 by Tacitus
-
-mixed main(object tp, string str) {
-     string source, dest;
-
-     if(!str || !sscanf(str, "%s %s", source, dest))
-          return _error(tp, "Syntax: cp <source> <dest>");
-
-     source = resolve_path(tp->query_env("cwd"), source);
-     dest = resolve_path(tp->query_env("cwd"), dest);
-
-     if(!file_exists(source))
-          return _error("No such source file: %s", source);
-
-     if(directory_exists(dest) || dest[<1..<1] == "/") {
-          if(dest[<1..<1] != "/") dest += "/";
-
-          if(strsrch(source, "/", -1) != -1) {
-             dest += source[(strsrch(source, "/", -1) + 1)..<1];
-          }
-
-          else dest += source;
-     }
-
-     if(source == dest)
-          return(_error("Destination may not match source."));
-
-     if(!(int)master()->valid_write(dest, this_object(), "cp"))
-          return _error("Permission Denied.");
-
-     if(cp(source, dest) < 0)
-          return _error(("Error [cp]: Copy failed."));
-     else
-          return _ok("%s copied to %s", source, dest);
+void setup() {
+     usage_text = "cp <original> <destination>" ;
+     help_text =
+"This command copies a file from its original location to a new one. The "
+"original file will remain in its original location.\n\n"
+"If the destination is a directory, the file will be copied into that "
+"directory. If the destination is a file, it will be overwritten.\n\n"
+"You may use absolute or relative paths for the source and/or destination.";
 }
 
-string query_help(object tp) {
-    return
-"SYNTAX: cp <source> <destination>\n\n" +
-"This command copies a file from it's current destination to a specified one.";
+mixed main(object tp, string str) {
+     string original, destination;
+
+     if(!str || sscanf(str, "%s %s", original, destination) != 2)
+          return _usage(tp) ;
+
+     original = resolve_path(tp->query_env("cwd"), original);
+     destination = resolve_path(tp->query_env("cwd"), destination);
+
+     if(!file_exists(original))
+          return _error("No such file: %s", original);
+
+     if(directory_exists(destination) || destination[<1] == '/') {
+          int pos ;
+
+          destination = append(destination, "/");
+
+          pos = strsrch(original, "/", -1) ;
+          if(pos != -1)
+               destination += original[(pos + 1)..];
+          else
+               destination += original;
+     }
+
+     if(original == destination)
+          return _error("Original and destination are the same.");
+
+     if(!master()->valid_write(destination, this_object(), "cp"))
+          return _error("Permission denied.");
+
+     cp(original, destination) < 0
+          ? _error("Unable to copy %s to %s.", original, destination)
+          : _ok("%s copied to %s", original, destination) ;
+
+     return 1 ;
 }

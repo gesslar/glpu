@@ -14,11 +14,22 @@ string dir;
 void start_delete();
 void handle_delete(string contents);
 
+void setup() {
+    usage_text = "rm [-r] <file name>";
+    help_text =
+"This command permanantly removes a file. Please note that there is no "
+"'Recycle Bin'. You must be extra careful when dealing with important files."
+"You may also use the -r option to recursively remove all files and folders "
+"within <dir name>. It will ask you for a confirmation just to be safe." ;
+}
+
 mixed main(object tp, string str) {
+    int result ;
+
     dir_tree = ({});
 
     if(!str)
-       return _info("Syntax: rm [-r] <file name>");
+       return _usage(tp) ;
 
     if(sscanf(str, "-r %s", dir) == 1) {
         dir = resolve_path(tp->query_env("cwd"), dir) + "/";
@@ -26,10 +37,8 @@ mixed main(object tp, string str) {
         if(!directory_exists(dir))
             return _error("%s: No such directory.", dir);
 
-        if(!(int)master()->valid_write(dir, tp, "rmdir")) {
+        if(!master()->valid_write(dir, tp, "rmdir"))
             return _error("Permission denied.");
-            return 1;
-        }
 
         dir_tree += ({ dir });
 
@@ -40,7 +49,7 @@ mixed main(object tp, string str) {
     }
 
     // Now check if there are any glob patterns
-    if(of("*", str) || of("?", str)) {
+    if(of("*", str)) {
         string *files ;
         string *failed = ({});
         string path, *parts ;
@@ -82,18 +91,20 @@ mixed main(object tp, string str) {
     if(directory_exists(str) || !file_exists(str))
         return _error("%s: No such file.", str);
 
-    if(!(int)master()->valid_write(str, tp, "rm")) {
+    if(!master()->valid_write(str, tp, "rm"))
         return _error("Permission denied.");
-    }
 
-    return(rm(str) ? _ok("File removed: %s", str) : _error("Could not remove file: %s", str));
+    result = rm(str) ;
+
+    if(result)
+        return _ok("File removed: %s", str) ;
+    else
+        return _error("Could not remove file: %s", str) ;
 }
 
 int confirm_recursive_delete(string arg, object tp) {
-    if(!arg || arg == "" || member_array(lower_case(arg), ({ "y", "yes"})) == -1) {
+    if(!arg || arg == "" || member_array(lower_case(arg), ({ "y", "yes"})) == -1)
         return _info("Deletion cancelled.");
-        return;
-    }
 
     start_delete();
 }
@@ -110,8 +121,8 @@ void start_delete() {
     } while(sizeof(contents) > 0);
 
     rmdir(dir)
-        ? _ok("Success: [rm]: All files and folders deleted successfully.")
-        : _error("All files and folders could not be deleted.")
+        ? _ok("All files and directories deleted successfully.")
+        : _error("All files and directories could not be deleted.")
     ;
 }
 
@@ -133,13 +144,4 @@ void handle_delete(string contents) {
         dir_tree -= ({ contents + "/" });
     else
         rm(implode(dir_tree, "") + contents);
-}
-
-string query_help(object tp) {
-    return
-"SYNTAX: rm <file name | -r dir name>\n\n"
-"This command permanantly removes a file. Please note that there is no "
-"'Recycle Bin'. You must be extra careful when dealing with important files."
-"You may also use the -r option to recursively remove all files and folders "
-"within <dir name>. It will ask you for a confirmation just to be safe." ;
 }

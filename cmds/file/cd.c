@@ -9,17 +9,19 @@
 inherit STD_CMD ;
 
 mixed main(object tp, string str) {
-     string test, *exp;
+     string test ;
+     string *parts ;
 
      test = str ;
 
      if(!stringp(test)) {
           test = home_path(tp);
           if(!directory_exists(test = home_path(tp)))
-              return _error("Syntax: cd <directory>");
+              return _usage(tp) ;
      }
 
-     test = resolve_path(tp->query_env("cwd"), test);
+     test = resolve_dir(tp, test) ;
+
      if(!directory_exists(test))
           test = str ;
 

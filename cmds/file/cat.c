@@ -6,14 +6,20 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string str) {
+void setup() {
+     usage_text = "cat <file>" ;
+     help_text =
+"This command pages through an entire file at once." ;
+}
+
+mixed main(object tp, string str) {
      string *lines;
      int i, max_lines ;
 
      if(!str)
-          return _error("No file specified.") ;
+          return _usage(tp) ;
 
-     str = resolve_path(caller->query_env("cwd"),str);
+     str = resolve_file(tp, str) ;
 
      if(!file_exists(str))
           return _error("No such file: %s", str);
@@ -24,15 +30,12 @@ mixed main(object caller, string str) {
 
      max_lines = file_length(str);
 
+     tell(tp, "=== " + str + " ===\n") ;
+
      i = 0;
+
      while(++i <= max_lines)
-          tell(caller, append(read_file(str, i, 1), "\n"));
+          tell(tp, append(read_file(str, i, 1), "\n"));
 
      return 1;
-}
-
-string help(object caller) {
-     return (" SYNTAX: cat <file>\n\n" +
-    "This command pages through an entire file at once.\n");
-
 }

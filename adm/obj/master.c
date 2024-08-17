@@ -158,6 +158,26 @@ varargs string standard_trace(mapping mp, int flag) {
     return ret;
 }
 
+private nosave string catch_log = "/log/catch" ;
+private nosave string runtime_log = "/log/runtime" ;
+
+void error_handler(mapping mp, int caught) {
+    string logfile = caught ? catch_log : runtime_log ;
+    string what = mp["error"];
+    string userid;
+    string ret;
+
+    ret = "---\n" + standard_trace(mp, 1);
+    write_file(logfile, ret);
+
+    // TODO: Temporary notifications, undo when above fixed
+    message("error", sprintf("(%s) Error logged %s\n%s\n",
+        logfile,
+        ret,
+        trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
+    ), filter(users(), (: devp :))) ;
+}
+#if 0
 void error_handler(mapping mp, int caught) {
     string ret;
     string logfile = caught ? mud_config("LOG_CATCH") : mud_config("LOG_RUNTIME") ;
@@ -165,8 +185,6 @@ void error_handler(mapping mp, int caught) {
     string userid;
 
     ret = "---\n" + standard_trace(mp, 1);
-debug_message(sprintf("ret = %s\n", ret)) ;
-    // debug_message(ret) ;
     write_file(logfile, ret);
 
     // If an object didn't load, they get compile errors. Don't spam
@@ -203,14 +221,14 @@ debug_message(sprintf("ret = %s\n", ret)) ;
     );
 #endif
     // TODO: Temporary notifications, undo when above fixed
-    message("error", sprintf("(%s) Error logged %s\n%s\n",
-        logfile,
-        ret,
-        trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
-    ), filter(users(), (: devp :))) ;
+    // message("error", sprintf("(%s) Error logged %s\n%s\n",
+    //     logfile,
+    //     ret,
+    //     trace_line(mp["object"], mp["program"], mp["file"], mp["line"])
+    // ), filter(users(), (: devp :))) ;
 
 }
-
+#endif
 private void crash(string crash_message, object command_giver, object current_object) {
     emit(SIG_SYS_CRASH) ;
 
