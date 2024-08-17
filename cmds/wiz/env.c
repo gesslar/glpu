@@ -9,7 +9,6 @@
  * 2024-08-17 - Gesslar - Created
  */
 
-
 inherit STD_CMD ;
 
 void setup() {
