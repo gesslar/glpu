@@ -30,7 +30,8 @@
 #define SIG_PLAYER_DIED             300
 #define SIG_PLAYER_REVIVED          301
 #define SIG_PLAYER_ADVANCED         302
-#define SIG_USER_ENV_VAR_CHANGED    303
+#define SIG_USER_ENV_CHANGED        303
+#define SIG_USER_PREF_CHANGED       304
 
 // Game Signals
 #define SIG_GAME_MIDNIGHT           400

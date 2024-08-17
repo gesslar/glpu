@@ -23,5 +23,7 @@ void wipe_inventory() ;
 int save_body();
 int has_screenreader();
 int is_pc();
+int query_last_login();
+void set_last_login(int time);
 
 #endif // __PLAYER_H__

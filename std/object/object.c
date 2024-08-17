@@ -10,8 +10,6 @@
 
 #include <object.h>
 
-inherit STD_OB_E;
-
 inherit __DIR__ "description" ;
 inherit __DIR__ "heartbeat" ;
 inherit __DIR__ "id" ;
@@ -30,11 +28,13 @@ private string real_name, short, long;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
 private nosave string virtual_master = 0;
+private nosave object _last_location = 0 ;
+private string _last_location_string = "" ;
+private nosave mixed _prevent_get = 0 ;
 
 // Private so only driver can call it.
 private varargs void create(mixed args...) {
     set_notify_destruct(1) ;
-    init_ob() ;
 
     create_args = args ;
     if(!real_name) {
@@ -199,8 +199,36 @@ int remove_destruct(function f) {
     return 0 ;
 }
 
+void set_last_location(object ob) {
+    _last_location = ob ;
+    _last_location_string = file_name(ob) ;
+}
+
+object last_location() {
+    return _last_location ;
+}
+
+string query_last_location() {
+    return _last_location_string ;
+}
+
 void process_destruct() {
     foreach(function f in destruct_functions) {
         catch(evaluate(f)) ;
     }
+}
+
+void set_prevent_get(mixed val) {
+    _prevent_get = val ;
+}
+
+int query_prevent_get() {
+    int result ;
+
+    if(valid_function(_prevent_get))
+        result = (*_prevent_get)(this_object()) ;
+    else
+        result = _prevent_get ;
+
+    return result ;
 }

@@ -20,8 +20,6 @@ inherit M_GMCP ;
 void mudlib_setup() {
     // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
     path = ({"/cmds/ghost/"});
-    if(!query("env_settings"))
-        set("env_settings", ([])) ;
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
@@ -43,8 +41,9 @@ void setup_body() {
     set_env("move_in", "$N drifts into the area.") ;
     enable_commands();
     if(!query_short()) set_short(query_name());
-    if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "off"]));
-    if(!query_env("prompt")) set_env("prompt", ">");
+    if(!query_pref("colour")) set_pref("colour", "off") ;
+    if(!query_pref("prompt")) set_pref("prompt", ">");
+    if(!query_pref("biff")) set_pref("biff", "off") ;
     update_regen_interval() ;
     init_vitals() ;
     set_log_prefix(sprintf("(%O)", this_object())) ;
@@ -87,7 +86,7 @@ void net_dead() {
     if(environment())
         tell_all(environment(), query_name()+ " begins to fade.\n");
 
-    set("extra_short/link_dead", "[fading]") ;
+    add_extra_short("link_dead", "[fading]") ;
     log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
 
 }
@@ -95,14 +94,14 @@ void net_dead() {
 void reconnect() {
     tell(this_object(), "Success: Reconnected.\n");
     if(environment()) tell_room(environment(), query_name() + " brigtens.\n", this_body());
-    delete("extra_short/link_dead") ;
+    remove_extra_short("link_dead") ;
 }
 
 /* Body Object Functions */
 void heart_beat() {
     if(userp()) {
         if(!interactive(this_object())) {
-            if((time() - query("last_login")) > 3600) {
+            if((time() - query_last_login()) > 3600) {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
@@ -112,7 +111,7 @@ void heart_beat() {
         } else {
             /* Prevent link-dead from idle */
             if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
-                    && query_env("keepalive") && query_env("keepalive") != "off") {
+                    && query_pref("keepalive") && query_pref("keepalive") != "off") {
                 telnet_nop() ;
             }
         }

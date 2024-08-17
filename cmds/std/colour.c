@@ -36,12 +36,11 @@ mixed main(object caller, string str) {
             if(!arg)
                 return _error(caller, "Invalid colour code.") ;
 
-            if(caller->query_env("colour") != "on")
+            if(caller->query_pref("colour") != "on")
                 return _error(caller, "Colour is currently disabled.") ;
 
             if(sscanf(arg, "%d", num) != 1)
                 return _error(caller, "Invalid colour code.") ;
-
             if(num < 0 || num > 255) {
                 _error(caller, "Invalid colour code.") ;
                 return 1;
@@ -55,7 +54,7 @@ mixed main(object caller, string str) {
                 fg, num, fg, num) ;
         }
         default :
-            if(caller->query_env("colour") == "on")
+            if(caller->query_pref("colour") == "on")
                 return _info(caller, "Colour is currently enabled.") ;
             else
                 return _info(caller, "Colour is currently disabled.") ;

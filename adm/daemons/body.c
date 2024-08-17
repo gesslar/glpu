@@ -22,30 +22,44 @@ object create_body(string name) {
     string type ;
     string dest ;
 
-    if(!name)
+    if(!name) {
+        _debug("create_body: No name provided") ;
         return 0 ;
+    }
 
     name = lower_case(name) ;
 
-    if(!user_exists(name))
+    if(!user_exists(name)) {
+        _debug("create_body: User does not exist") ;
         return 0 ;
+    }
 
-    if(adminp(name))
+    if(adminp(name)) {
+        _debug("create_body: User is admin") ;
         type = "admin" ;
-    else if(devp(name))
+    }
+    else if(devp(name)) {
+        _debug("create_body: User is dev") ;
         type = "dev" ;
-    else
+    }
+    else {
+        _debug("create_body: User is player") ;
         type = "player" ;
+    }
 
     dest = sprintf("/%s/%s", type, name) ;
 
     err = catch(body = load_object(dest)) ;
 
-    if(err)
+    if(err) {
+        _debug("create_body: Error loading object") ;
         return 0 ;
+    }
 
-    if(!body)
+    if(!body) {
+        _debug("create_body: Body does not exist") ;
         return 0 ;
+    }
 
     body->set_name(name) ;
     set_privs(body, name) ;

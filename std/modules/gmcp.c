@@ -10,11 +10,9 @@
 #include <classes.h>
 #include <type.h>
 
-inherit CLASS_GMCP ;
+#include "/std/living/include/env.h"
 
-// Functions from other objects
-mixed query_env(string var_name);
-int set_env(string var_name, string var_value) ;
+inherit CLASS_GMCP ;
 
 // Functions
 public int gmcp_enabled() ;
@@ -194,5 +192,5 @@ public int gmcp_enabled() {
     if(base_name() == LOGIN_OB)
         return 1 ;
 
-    return query_env("gmcp") != "off";
+    return query_pref("gmcp") != "off";
 }

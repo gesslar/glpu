@@ -11,9 +11,7 @@
  */
 
 #include <type.h>
-
-// Functions from other objects
-mixed query_env(string var);
+#include <env.h>
 
 // Functions
 void continue_page(string input, string *text, mixed *cb, int no_colour, int lines, string display, int num, int curr) ;
@@ -34,8 +32,8 @@ varargs void page(mixed text, mixed *cb, int no_colour) {
     if(!uniform_array(T_STRING, text))
         return 0 ;
 
-    more_lines = to_int(query_env("morelines")) || mud_config("MORELINES") ;
-    page_display = query_env("page_display") || mud_config("PAGE_DISPLAY") ;
+    more_lines = to_int(query_pref("morelines")) || mud_config("MORELINES") ;
+    page_display = query_pref("page_display") || mud_config("PAGE_DISPLAY") ;
 
     if(no_colour == 1)
         no_colour = MSG_PROMPT | NO_COLOUR ;

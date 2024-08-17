@@ -10,8 +10,9 @@
  */
 
 #include <body.h>
-#include <player.h>
 #include <commands.h>
+#include "/std/living/include/env.h"
+#include <player.h>
 
 inherit STD_CONTAINER ;
 inherit STD_ITEM;
@@ -23,7 +24,9 @@ inherit __DIR__ "appearance" ;
 inherit __DIR__ "attributes" ;
 inherit __DIR__ "boon" ;
 inherit __DIR__ "combat" ;
+inherit __DIR__ "communication" ;
 inherit __DIR__ "ed" ;
+inherit __DIR__ "env" ;
 inherit __DIR__ "equipment" ;
 inherit __DIR__ "module" ;
 inherit __DIR__ "pager" ;
@@ -39,7 +42,6 @@ inherit M_LOG ;
 /* Global Variables */
 string *path;
 nosave string *command_history = ({});
-private nosave object link;
 object su_body ;
 
 /* Prototypes */
@@ -47,11 +49,9 @@ object su_body ;
 void mudlib_setup() {
     enable_commands() ;
     path = ({"/cmds/std/","/cmds/ability/", "/cmds/spell/"}) ;
-    if(!query("env_settings"))
-        set("env_settings", ([])) ;
-    if(!query_env("prompt")) set_env("prompt", ">");
+    if(!query_pref("prompt")) set_pref("prompt", ">");
     set_log_level(0) ;
-    set("prevent_get", 1);
+    set_prevent_get(1) ;
     add_action("command_hook", "", 1);
     set_ignore_mass(1) ;
 }
@@ -157,7 +157,7 @@ varargs int move(mixed ob, int flag) {
     if(result)
         return result ;
 
-    set("last_location", base_name(ob));
+    set_last_location(ob) ;
 
     return result ;
 }
@@ -180,26 +180,6 @@ void event_remove(object prev) {
             }
         }
     }
-}
-
-/* Environmental Settings */
-int set_env(string var_name, string var_value) {
-    mapping data = query("env_settings");
-    if(!var_value) map_delete(data, var_name);
-    else data += ([var_name : var_value]);
-    set("env_settings", data);
-    return 1;
-}
-
-varargs mixed query_env(string var_name, mixed def) {
-    mapping data = query("env_settings") ;
-    if(data[var_name]) return data[var_name] ;
-    else return def ;
-}
-
-mapping list_env() {
-    mapping data = query("env_settings");
-    return data;
 }
 
 /* User path functions */
@@ -432,15 +412,15 @@ int force_me(string cmd) {
 
 //Misc functions
 void write_prompt() {
-    string prompt = query_env("prompt");
+    string prompt = query_pref("prompt");
 
     receive(prompt + " ") ;
 }
 
 int query_log_level() {
-    if(!query_env("log_level")) return 0 ;
+    if(!query_pref("log_level")) return 0 ;
 
-    return to_int(query_env("log_level")) ;
+    return to_int(query_pref("log_level")) ;
 }
 
 void set_su_body(object source) {

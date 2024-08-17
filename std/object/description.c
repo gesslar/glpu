@@ -1,24 +1,15 @@
-// /std/object/description.c
-// Description-related functions and variables for objects.
-//
-// Created:     2024/01/31: Gesslar
-// Last Change: 2024/01/31: Gesslar
-//
-// 2024/01/31: Gesslar - Created
+/**
+ * @file /std/object/description.c
+ * @description Functions and variables for object descriptions
+ *
+ * @created 2024-01-31 - Gesslar
+ * @last_modified 2024-01-31 - Gesslar
+ *
+ * @history
+ * 2024-01-31 - Gesslar - Created
+ */
 
-// Functions
-int set_long(mixed str) ;
-int set_short(mixed str) ;
-string *query_extra_longs() ;
-string *query_extra_shorts() ;
-string query_extra_long(string id) ;
-string query_extra_short(string id) ;
-string query_long() ;
-string query_short() ;
-void add_extra_long(string id, mixed str) ;
-void add_extra_short(string id, mixed str) ;
-void remove_extra_long(string id) ;
-void remove_extra_short(string id) ;
+#include <description.h>
 
 // Variables
 private mixed short, long ;

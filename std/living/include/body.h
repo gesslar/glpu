@@ -4,9 +4,6 @@
 string *query_all_commands();
 void rehash_capacity();
 void die();
-int set_env(string var_name, string var_value);
-varargs mixed query_env(string var_name, mixed def);
-mapping list_env();
 string *query_path();
 void add_path(string str);
 void rem_path(string str);

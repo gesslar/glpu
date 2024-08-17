@@ -51,13 +51,13 @@ varargs string finger_user(string username) {
                 if(find_player(username)) {
                     last_t = "On Since";
                     body = find_player(username);
-                    last = ctime(body->query("last_login"));
+                    last = ctime(body->query_last_login());
                 } else {
                     if(!objectp(body = get_body(username)))
                         continue;
                     else {
                         last_t = "Last on";
-                        last =  ctime(body->query("last_login"));
+                        last =  ctime(body->query_last_login());
                         body->remove() ;
                     }
                 }
@@ -96,7 +96,7 @@ varargs string finger_user(string username) {
             }
         }
 
-        last = ctime(body->query("last_login"));
+        last = ctime(body->query_last_login());
 
         if(adminp(username)) rank = "Admin";
         else if(devp(username)) rank = "Developer";

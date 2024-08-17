@@ -102,7 +102,7 @@ protected void log_error(string file, string message) {
             write_file(path + "log", "\n" + message);
         }
         if(devp(this_body())) {
-            if(this_body()->query_env("error_output") != "disabled")
+            if(this_body()->query_pref("error_output") != "off")
             tell_object(this_body(), message);
         }
     }
@@ -364,13 +364,13 @@ varargs void log_file(string file, string msg, mixed arg...) {
     write_file(source, msg);
 }
 
-int save_ed_setup(object user, mixed config) {
-    user->set("ed_setup", config);
+int save_ed_setup(object user, int config) {
+    user->set_ed_setup(config);
     return 1;
 }
 
 int retrieve_ed_setup(object user) {
-    return user->query("ed_setup");
+    return user->query_ed_setup();
 }
 
 mapping get_mud_stats() {

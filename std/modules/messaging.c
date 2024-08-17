@@ -6,6 +6,8 @@
 //
 // 2024/02/03: Gesslar - Created
 
+#include "/std/living/include/env.h"
+
 void send_ga() { if(interactive()) telnet_ga(); }
 
 // Functions
@@ -13,7 +15,6 @@ void do_receive(string message, int message_type) ;
 
 // Functions from other objects
 mixed query_environ(string key) ;
-varargs mixed query_env(string var_name, mixed def) ;
 
 // Variables
 private nosave int _contents_can_hear = 1, _environment_can_hear = 1;
@@ -126,7 +127,7 @@ void do_receive(string message, int message_type) {
     string term ;
 
     if(userp()) {
-        term = this_object()->query_env("colour");
+        term = this_object()->query_pref("colour");
         // If colour is not explicitly enabled, set NO_COLOUR to disable
         // coloured messages.
         switch(term) {

@@ -12,45 +12,54 @@
 
 inherit STD_CMD ;
 
-mixed main(object caller, string message) {
-    object user;
-    string d_user, d_mud;
-    string who = caller->query("reply");
+void setup() {
+    usage_text = "reply <message>" ;
+    help_text =
+"This command will send a tell to the last person who sent you a tell. If "
+"they are online, they will receive the message." ;
+}
+
+mixed main(object tp, string message) {
+    object target ;
+    string who = tp->query_tell_reply() ;
+    string name, away, tname ;
+
+    if(!who || !strlen(who))
+        return "Nobody to reply to." ;
 
     if(!message)
-        return(notify_fail("Error [tell]: You must provide an argument. Syntax: reply <message>\n"));
+        return "Reply with what?" ;
 
-    user = find_player(who);
+    target = find_player(who) ;
 
-    if(!objectp(user))
-        return notify_fail("Error [tell]: User " + who + " is not found.\n");
+    if(!objectp(target)) {
+        tp->set_tell_reply("") ;
+        return "You cannot seem to find " + capitalize(who) + ".";
+    }
 
-    if(user == caller) {
-        if(message[0] == ':')
-            message = message[1..];
-
-        write("You reply to yourself: " + message + "\n");
-        tell_room(environment(caller), caller->query_name() + " starts talking to themselves.\n", caller);
-
+    if(target == tp) {
+        tp->simple_action("$N $vstart talking to $r.") ;
         return 1;
     }
 
-    if(message[0] == ':') {
-        tell_object(user, caller->query_name() + " " + message[1..] + "\n");
-        write("You reply to " + capitalize(who) + ": " + caller->query_name() + " " + message[1..] + "\n");
-    } else {
-        tell_object(user, caller->query_name() + " tells you: " + message + "\n");
-        write("You reply to " + capitalize(who) + ": " + message + "\n");
+    away = target->query_env("away") ;
+    if(away) {
+        return "That user is currently away" + (away != "" ?
+            ": (" + away + ")\n" : ".\n") ;
     }
 
-    user->set("reply", query_privs(caller));
+    name = tp->query_name() ;
+    tname = target->query_name() ;
+
+    if(message[0] == ':') {
+        tell(tp, sprintf("From afar, you %s\n", message[1..])) ;
+        tell(target, sprintf("From afar, %s %s\n", tname, message[1..])) ;
+    } else {
+        tell(tp, sprintf("You tell %s: %s\n", tname, message)) ;
+        tell(target, sprintf("%s tells you: %s\n", name, message)) ;
+    }
+
+    target->set_tell_reply(query_privs(tp));
 
     return 1;
-}
-
-string help(object caller) {
-    return(" SYNTAX:" + " reply <message>\n\n"
-    "This command will send a message to the last user that sent\n"
-    "you a message if they are still online.\n\n"
-    "See also: " + "say, channel\n");
 }

@@ -38,7 +38,7 @@ mixed main(object tp, string arg) {
           string short = get_short(ob);
 
           next = next_inventory(ob);
-          if(ob->query("no_clean") || ob->can_clean_up()) {
+          if(ob->query_no_clean() || ob->can_clean_up()) {
                ob = next;
                continue;
           }

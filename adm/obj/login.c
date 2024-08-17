@@ -361,10 +361,8 @@ void character_menu_input(string str, string prompt) {
 
     body = create_body(characters[i]) ;
 
-    if(!body) {
-        _error("There was a problem creating your body.");
-        return dest_me() ;
-    }
+    if(!body)
+        return ;
 
     write_file(log_dir() + LOG_LOGIN, capitalize(characters[i]) + " ("+getoid(body)+") logged in from " +
       query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
@@ -401,10 +399,8 @@ void new_character(string str) {
 
     body = create_body(str) ;
 
-    if(!body) {
-        _error("There was a problem creating your body.");
-        return dest_me() ;
-    }
+    if(!body)
+        return ;
 
     write_file(log_dir() + LOG_LOGIN, capitalize(str) + " ("+getoid(body)+") logged in from " +
       query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
@@ -501,7 +497,7 @@ void enter_world(string name, int reconnecting) {
         if(devp(body)) {
             loc = body->query_env("start_location") ;
             if(loc == "last_location")
-                loc = body->query("last_location") ;
+                loc = body->query_last_location() ;
             else
                 loc = home_path(body) + "workroom" ;
         } else {
@@ -559,7 +555,8 @@ void enter_world(string name, int reconnecting) {
 object create_body(string name) {
     string err;
 
-    if(origin() != ORIGIN_LOCAL) return 0;
+    if(origin() != ORIGIN_LOCAL)
+        return 0;
 
     err = catch(body = BODY_D->create_body(name));
     if(err || !body) {

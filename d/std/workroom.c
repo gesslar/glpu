@@ -11,15 +11,6 @@ personalized workroom, then please refer to the mudlib,
 lpc, and education documentation or contact a more senior
 developer.
 
-Regarding the room inheritable, it is compatable with
-the two most common used methods used in today's mudlib.
- a) set_<prop>(<value);
- b) set(<prop>, <value>);
-
-The recommended and supported method is set_<prop>(<value>);
-if there is one available. The second method is ment for
-non-standard values and backwards area support.
-
 */
 
 /* Last edited on July 11th, 2006 by Tacitus */

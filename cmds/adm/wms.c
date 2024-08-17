@@ -152,7 +152,7 @@ void add_user2(string str) {
     data += (["flags" : ({}) ]);
     data += (["profile" : ""]);
     data += (["added" : time() ]);
-    data += (["email" : user->query("email") ]);
+    data += (["email" : user->query_pref("email") ]);
     users += ([str : data]);
     current = str;
     write("Data structure created for user " + capitalize(str) + ".\n");
@@ -211,7 +211,7 @@ int auto_add(string str) {
     data += (["flags" : ({}) ]);
     data += (["profile" : ""]);
     data += (["added" : time() ]);
-    data += (["email" : user->query("email") ]);
+    data += (["email" : user->query_pref("email") ]);
     users += ([str : data]);
     write("WMS: Data structure created for user " + capitalize(str) + ".\n");
     log_file(WMS_LOG, capitalize(str) + " was added to the WMS database automaticaly on " + ctime(time()) + "\n");

@@ -94,7 +94,7 @@ mixed main(object tp, string a) {
         case 1: rets = rets[0];
     }
 
-    set_ref("default", rets);
+    tp->set_ref("default", rets);
 
     return 1;
 }

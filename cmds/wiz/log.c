@@ -31,10 +31,10 @@ mixed main(object caller, string arg) {
     if(!logfile)
         return(notify_fail("Syntax: log <logfile>\n"));
 
-    if(!caller->query_env("morelines"))
-        caller->set_env("morelines", "20");
+    if(!caller->query_pref("morelines"))
+        caller->set_pref("morelines", "20");
 
-    morelines = to_int(caller->query_env("morelines"));
+    morelines = to_int(caller->query_pref("morelines"));
     out = explode(tail(logfile, morelines-2), "\n");
     out = ({ logfile + ":" }) + out;
 

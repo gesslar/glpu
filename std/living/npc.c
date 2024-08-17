@@ -17,9 +17,6 @@ inherit __DIR__ "living" ;
 void mudlib_setup() {
     ::mudlib_setup() ;
 
-    if(!query("env_settings"))
-        set("env_settings", ([]));
-
     init_living() ;
 
     if(clonep()) {
@@ -90,7 +87,7 @@ void heart_beat() {
 
     if(userp()) {
         if(!interactive(this_object())) {
-            if((time() - query("last_login")) > 3600) {
+            if((time() - query_last_login()) > 3600) {
                 if(environment())
                     tell_room(environment(), query_name() + " fades out of existance.\n");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
@@ -99,7 +96,7 @@ void heart_beat() {
         } else {
             /* Prevent link-dead from idle */
             if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
-                    && query_env("keepalive") && query_env("keepalive") != "off") {
+                    && query_pref("keepalive") && query_pref("keepalive") != "off") {
                 telnet_nop() ;
             }
         }

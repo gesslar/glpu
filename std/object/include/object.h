@@ -19,5 +19,9 @@ void process_destruct() ;
 void add_reset(function f) ;
 void remove_reset(function f) ;
 void process_reset() ;
+void set_prevent_get(mixed val) ;
+int query_prevent_get() ;
+string query_last_location() ;
+object last_location() ;
 
 #endif // __OBJECT_H__

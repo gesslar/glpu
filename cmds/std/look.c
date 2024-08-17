@@ -33,10 +33,10 @@ string highlight_view(object tp, string str, string *keys) {
 
     if(look_hightlight_enabled != "on") return str;
 
-    if(tp->query_env("highlight") != "on") return str;
+    if(tp->query_pref("highlight") != "on") return str;
 
     if(sizeof(keys) <= 0) return str;
-    if(!colour = tp->query_env("highlight_colour"))
+    if(!colour = tp->query_pref("highlight_colour"))
         colour = default_highlight_colour;
 
     // need to determine if number is from 0-256 with a leading 0
@@ -76,7 +76,7 @@ mixed render_room(object tp, object room, int brief) {
     if(!objectp(room))
         return "You see nothing because you have no environment!\n" ;
 
-    if(devp(tp) && of(tp->query_env("look_filename"), ({ "on", "all" }))) {
+    if(devp(tp) && of(tp->query_pref("look_filename"), ({ "on", "all" }))) {
         result += "{{0032}}"+room+"{{res}}" ;
         if(virtualp(room))
             result += " {{0068}}(vm: " + room->query_virtual_master() + "){{res}}" ;
@@ -185,7 +185,7 @@ mixed render_object(object tp, object room, string target) {
     if(stringp(temp)) desc += "\n" + temp + "\n";
 
     if(strlen(desc)) {
-        if(devp(tp) && tp->query_env("look_filename") == "all") {
+        if(devp(tp) && tp->query_pref("look_filename") == "all") {
             desc = "{{0032}}" + prepend(file_name(ob), "/") + "{{res}}\n" + desc;
         }
     }
@@ -283,7 +283,7 @@ mixed render_living(object tp, object room, object target, int brief) {
     }
 
     if(strlen(result)) {
-        if(devp(tp) && tp->query_env("look_filename") == "all") {
+        if(devp(tp) && tp->query_pref("look_filename") == "all") {
             result = "{{0032}}"+prepend(file_name(target), "/") + "{{res}}\n" + result ;
         }
     }

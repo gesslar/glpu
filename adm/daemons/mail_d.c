@@ -110,7 +110,7 @@ mixed send_message(mapping mail, string owner, int in_msg, int out_msg) {
     }
 
     for(i = 0; i < sizeof(to_be_notified); i++)
-        if(find_player(to_be_notified[i]) && find_player(to_be_notified[i])->query_env("biff") != "off")
+        if(find_player(to_be_notified[i]) && find_player(to_be_notified[i])->query_pref("biff") != "off")
                 tell_object(find_player(to_be_notified[i]),
 
                 "\n >>> New mail has arrived from: " + mail["FROM"] +

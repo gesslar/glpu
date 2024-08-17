@@ -23,6 +23,8 @@ inherit __DIR__ "living" ;
 inherit M_GMCP ;
 
 private nosave mapping environ_data = ([]) ;
+private int _last_login = 0 ;
+private int ed_setup = 0 ;
 
 /* Connection functions */
 void setup_body() {
@@ -35,10 +37,10 @@ void setup_body() {
     set_level_mod(0.0) ;
     if(!query_env("cwd")) set_env("cwd", "/doc");
     if(!query_short()) set_short(query_name());
-    if(!mapp(query("env_settings"))) set("env_settings", (["colour" : "on"]));
-    if(!query_env("auto_tune")) set_env("auto_tune", "all");
-    if(!query_env("biff")) set_env("biff", "on");
-    if(!query_env("prompt")) set_env("prompt", ">");
+    if(!query_pref("colour")) set_pref("colour", "on") ;
+    if(!query_pref("auto_tune")) set_pref("auto_tune", "all");
+    if(!query_pref("biff")) set_pref("biff", "on");
+    if(!query_pref("prompt")) set_pref("prompt", ">");
     init_living() ;
     rehash_capacity() ;
     update_regen_interval() ;
@@ -58,14 +60,14 @@ void enter_world(int reconnecting) {
         return;
 
     catch {
-        ch = explode(query_env("auto_tune"), " ");
+        ch = explode(query_pref("auto_tune"), " ");
         if(sizeof(ch) > 0)
             foreach(string channel in ch) {
                 CMD_CHANNEL->tune(channel, query_privs(this_object()), 1, 1) ;
             }
     };
 
-    set("last_login", time());
+    set_last_login(time());
     tell(this_object(), "\n") ;
     say(capitalize(query_name()) + " has entered.\n");
 
@@ -87,12 +89,20 @@ void exit_world() {
         for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
     }
 
-    set("last_login", time());
+    set_last_login(time());
 
     if(environment())
         say(query_name()+ " leaves " + mud_name() + ".\n");
 
     save_body();
+}
+
+void set_last_login(int time) {
+    _last_login = time ;
+}
+
+int query_last_login() {
+    return _last_login ;
 }
 
 void net_dead() {
@@ -101,12 +111,13 @@ void net_dead() {
 
     abort_edit() ;
 
-    set("last_login", time());
+    set_last_login(time());
     save_body();
 
     if(environment())
         tell_all(environment(), query_name()+ " falls into stupour.\n");
-    set("extra_short/link_dead", "[stupour]") ;
+
+    add_extra_short("link_dead", "[stupour]") ;
     log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
 
     if(interactive(this_object()))
@@ -115,10 +126,10 @@ void net_dead() {
 
 void reconnect() {
     restore_body();
-    set("last_login", time());
+    set_last_login(time());
     tell(this_object(), "You have reconnected to your body.\n");
     if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
-    delete("extra_short/link_dead") ;
+    remove_extra_short("link_dead") ;
     /* reconnection logged in login object */
 }
 
@@ -128,7 +139,7 @@ void heart_beat() {
 
     if(userp()) {
         if(!interactive(this_object())) {
-            if((time() - query("last_login")) > 3600) {
+            if((time() - query_last_login()) > 3600) {
                 if(environment())
                     simple_action("$N $vfade out of existance.");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
@@ -138,7 +149,7 @@ void heart_beat() {
         } else {
             /* Prevent link-dead from idle */
             if(query_idle(this_object()) % 60 == 0 && query_idle(this_object()) > 300
-                    && query_env("keepalive") && query_env("keepalive") != "off") {
+                    && query_pref("keepalive") && query_pref("keepalive") != "off") {
                 telnet_nop() ;
             }
         }
@@ -160,7 +171,7 @@ void heart_beat() {
 
 int supports_unicode() {
     if(has_screenreader()) return 0 ;
-    return query_env("unicode") == "on" ;
+    return query_pref("unicode") == "on" ;
 }
 
 void on_crash(mixed arg...) {
@@ -321,10 +332,17 @@ int has_screenreader() {
     if(query_environ("SCREEN_READER") == true)
         return true ;
 
-    if(query_env("screenreader") == "on")
+    if(query_pref("screenreader") == "on")
         return true ;
 
     return false ;
 }
+
+int set_ed_setup(int value) {
+    ed_setup = value ;
+    return 1 ;
+}
+
+int query_ed_setup() { return ed_setup ; }
 
 int is_pc() { return 1 ; }

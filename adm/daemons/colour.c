@@ -485,9 +485,9 @@ public string body_colour_replace(object body, string text, int message_type) {
     if(message_type & NO_COLOUR)
         return text ;
     else if(message_type & MSG_COMBAT_HIT)
-        pref = body->query_env("combat_hit_colour") ;
+        pref = body->query_pref("combat_hit_colour") ;
     else if(message_type & MSG_COMBAT_MISS)
-        pref = body->query_env("combat_miss_colour") ;
+        pref = body->query_pref("combat_miss_colour") ;
     else
         return text ;
 

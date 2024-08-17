@@ -5,14 +5,19 @@ Purpose  : inherited by commands wanting to use refs (qv help refs)
 93-08-23 : Pallando changed /cmds/refs/ref_funcs.c to a daemon
 93-12-27 : Inspiral added support for floats.
 */
+
+#include "/std/living/include/env.h"
+
+private nomask nosave mapping _ref = ([]);
+
 mixed resolv_ref(mixed a) {
     mixed ret;
     string Ref;
 
     if(!stringp(a)) return a;
     if(!sscanf(a, "#%s", Ref)) return a;
-    if(Ref == "#") return this_body()-> query("cwf");
-    ret = this_body()-> query("ref");
+    if(Ref == "#") return query_env("cwf");
+    ret = _ref[Ref];
     if(!mapp(ret)) return a;
     ret = ret[Ref];
     if(nullp(ret)) return a;
@@ -20,7 +25,7 @@ mixed resolv_ref(mixed a) {
 }
 
 void set_ref(string ref_name, mixed ref_contents) {
-    this_body()-> set("ref/" + ref_name, ref_contents);
+    _ref[ref_name] = ref_contents ;
 }
 
 // NB arrays or mappings containing arrays, mappings or
