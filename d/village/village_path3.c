@@ -15,8 +15,8 @@ void setup() {
     set_short("A Path Through the Village");
     set_long(
 "Eastward from the lively center of the village square, the path becomes more "
-"refined, with well-placed stones and borders of flowering shrubs indicating a "
-"transition to a more affluent section of the village. Here, among well-"
+"refined, with well-placed stones and borders of flowering shrubs indicating "
+"a transition to a more affluent section of the village. Here, among well-"
 "tended gardens and impressive facades, stands a discreet yet elegant "
 "building known to house the village financier. A polished brass plaque "
 "beside the door gleams in the sunlight, marking the entrance with a level of "
@@ -24,10 +24,12 @@ void setup() {
 "This path, often traversed by those seeking counsel or investment, leads "
 "directly to the financier's door, promising discretion and expertise for "
 "those navigating the complexities of wealth and commerce.") ;
+
     set_exits(([
         "east" : "financier",
         "west" : "square",
     ])) ;
+
     set_items(([
         ({ "village square", "square" }) :
             "The bustling heart from which the path departs, leaving behind "

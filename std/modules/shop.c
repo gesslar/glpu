@@ -10,8 +10,8 @@
  */
 
 #include <classes.h>
-#include "/std/object/include/object.h"
 #include "/std/object/include/command.h"
+#include "/std/object/include/object.h"
 
 inherit M_CURRENCY ;
 
@@ -172,16 +172,16 @@ mixed cmd_buy(object tp, string str) {
     }
 
     short = get_short(ob) ;
-    tp->other_action("$N $vbuy %o.", short) ;
+    tp->other_action("$N $vbuy a $o.", short) ;
 
     paid = result[0] ;
     change = result[1] ;
 
-    action = "$N $vbuy $o for $o1" ;
+    action = "$N $vbuy a $o for $o1" ;
     if(sizeof(change))
         action += " and receive $o2 in change" ;
 
-    action += ".\n" ;
+    action += "." ;
 
     tp->my_action(action,
         short,

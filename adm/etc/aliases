@@ -44,7 +44,6 @@ mkdev makedev $*
 link ln $*
 netstat sockinfo $*
 man help $*
-summon trans $*
 
 # Aliases for soul writers
 

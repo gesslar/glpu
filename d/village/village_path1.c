@@ -15,19 +15,22 @@ void setup() {
     set_short("A Path Through the Village");
     set_long(
 "Just north of the village square, a cobblestone path stretches out, leading "
-"past a series of quaint village establishments. Along this path, the unassuming "
-"facade of the local baker's shop stands out, marked by a simple sign featuring "
-"a painted loaf of bread. The aroma of fresh baking subtly infuses the air "
-"around this stretch, guiding locals and travelers alike towards the promise of "
-"wholesome, everyday fare. The path itself, worn by the footsteps of countless "
-"patrons, speaks to the steady rhythm of village life, where the baker's humble "
-"offerings are a staple of daily existence.") ;
+"past a series of quaint village establishments. Along this path, the "
+"unassuming facade of the local baker's shop stands out, marked by a simple "
+"sign featuring a painted loaf of bread. The aroma of fresh baking subtly "
+"infuses the air around this stretch, guiding locals and travelers alike "
+"towards the promise of wholesome, everyday fare. The path itself, worn "
+"by the footsteps of countless patrons, speaks to the steady rhythm of "
+"village life, where the baker's humble offerings are a staple of daily "
+"existence.") ;
+
     set_exits(([
         "south": "square",
-        "west" : "baker",
+        "west" : "bakery",
         "east" : "shop",
         "north": "field/field1",
     ])) ;
+
     set_items(([
         ({ "village square", "square" }) :
             "The village square lies to the south, a bustling hub of activity "
