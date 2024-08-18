@@ -26,7 +26,7 @@ mixed get_body(string name);
 
 varargs string finger_user(string username) {
     string ret, group, *users;
-    string rank, last_t, last, idle, plan, away;
+    string rank, last_t, last, idle, plan ;
     int idle_time;
     mixed user, body;
     mixed *packet;
@@ -77,8 +77,6 @@ varargs string finger_user(string username) {
             if(!interactive(body))
                 idle = "(Link-Dead)";
             else {
-                away = find_player(username)->query_env("away");
-
                 if(query_idle(body)) {
                     idle_time = query_idle(body)/60;
                     if(idle_time > 0)
@@ -109,9 +107,9 @@ varargs string finger_user(string username) {
             plan = read_file(plan);
 
         ret = sprintf("\n"
-                "Username: %-10s \tRank: %-10s\n" + (away && away != "" ? "Away: " + away + "\n" : away == "" ? "This user is away.\n" : "") +
-                "E-mail: %-10s\n"
-                "%s: %-10s %s\nPlan:\n%s", capitalize(username) + "", rank, "user@user.com", last_t, last, idle, plan);
+            "Username: %-10s \tRank: %-10s\n" +
+            "E-mail: %-10s\n"
+            "%s: %-10s %s\nPlan:\n%s", capitalize(username) + "", rank, "user@user.com", last_t, last, idle, plan);
     }
     return ret;
 }

@@ -22,7 +22,7 @@ void setup() {
 mixed main(object tp, string str) {
     string who, message ;
     object target ;
-    string away, name, tname ;
+    string name, tname ;
 
     if(!str)
         return _usage(tp) ;
@@ -37,12 +37,6 @@ mixed main(object tp, string str) {
 
     if(!objectp(target))
         return "You cannot seem to find " + capitalize(who) + ".\n" ;
-
-    away = target->query_env("away") ;
-    if(away) {
-        return "That user is currently away" + (away != "" ?
-            ": (" + away + ")\n" : ".\n") ;
-    }
 
     if(target == tp) {
         tp->simple_action("$N $vstart talking to $r.") ;

@@ -245,12 +245,6 @@ int command_hook(string arg) {
         if(caller != this_object())
             return 0;
 
-    if(query_env("away")) {
-        write("You return from away\n");
-        set_env("away", 0);
-        return 1;
-    }
-
     verb = query_verb();
 
     if(sscanf(alias_parse(verb, arg), "%s %s", verb, arg) != 2)

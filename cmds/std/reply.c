@@ -22,7 +22,7 @@ void setup() {
 mixed main(object tp, string message) {
     object target ;
     string who = tp->query_tell_reply() ;
-    string name, away, tname ;
+    string name, tname ;
 
     if(!who || !strlen(who))
         return "Nobody to reply to." ;
@@ -40,12 +40,6 @@ mixed main(object tp, string message) {
     if(target == tp) {
         tp->simple_action("$N $vstart talking to $r.") ;
         return 1;
-    }
-
-    away = target->query_env("away") ;
-    if(away) {
-        return "That user is currently away" + (away != "" ?
-            ": (" + away + ")\n" : ".\n") ;
     }
 
     name = tp->query_name() ;

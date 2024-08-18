@@ -68,9 +68,8 @@ mixed main(object caller, string arg) {
 
         ret += sprintf(" %-s   %-15s %15s\n", tag,
           list[i]->query_name() +
-          (list[i]->query_env("away") ? " (afk)" : "") +
           (in_edit(list[i]) ? "*" : "") +
-          (in_input(list[i]) && !list[i]->query_env("away") ? "+" : ""),
+          (in_input(list[i]) ? "+" : ""),
           query_idle(list[i]) / 60 + "m");
     }
 
