@@ -68,12 +68,6 @@ void setup() {
             "fruits, sit alongside delicate pastries glistening with sugar or "
             "filled with colorful jams. The variety is impressive, catering "
             "to every taste and occasion.",
-        "air" :
-            "The air in the bakery is a symphony of delightful scents. The "
-            "yeasty aroma of rising bread mingles with the sweet smell of "
-            "baking pastries and the comforting scent of warm flour. It's an "
-            "irresistible atmosphere that makes one's mouth water and stomach "
-            "rumble in anticipation.",
     ])) ;
 
     init_shop() ;
