@@ -1,10 +1,13 @@
-// /cmds/std/go.c
-// Command for moving around in the game.
-//
-// Created:     2024/02/03: Gesslar
-// Last Change: 2024/02/03: Gesslar
-//
-// 2024/02/03: Gesslar - Created
+/**
+ * @file /cmds/std/go.c
+ * @description The go command.
+ *
+ * @created 2024-02-03 - Gesslar
+ * @last_modified 2024-02-03 - Gesslar
+ *
+ * @history
+ * 2024-02-03 - Gesslar - Created
+ */
 
 inherit STD_CMD ;
 

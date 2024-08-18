@@ -1,28 +1,27 @@
-//say.c
+/**
+ * @file /cmds/std/say.c
+ * @description A command to say something to the room.
+ *
+ * @created 2024-08-18 - Gesslar
+ * @last_modified 2024-08-18 - Gesslar
+ *
+ * @history
+ * 2024-08-18 - Gesslar - Created
+ */
 
-//Tacitus @ LPUniversity
-//01-JULY-05
-//Simple communication command
+inherit STD_ACT ;
 
-inherit STD_CMD ;
-
-mixed main(object caller, string arg) {
-    if(!arg) {
-        write("You mumble to your self.\n");
-        say(capitalize((string)previous_object()->query_name()) + " mumbles to themself.\n");
-        return 1;
-    } else {
-        write("You say: " + arg + "\n");
-        say(capitalize((string)previous_object()->query_name())
-            + " says: " +  arg + "\n");
-        return 1;
-    }
+void setup() {
+    usage_text = "say <message>";
+    help_text =
+"This command enables you to speak to the room.";
 }
 
-string help(object caller) {
-    return(" SYNTAX: say <argument>\n\n" +
-      "This command will send a message to everyone in the room.\n" +
-      "Example, if you type 'say Hello!' then the others in the\n" +
-      "room will see '" + capitalize(caller->query_name()) + " says: Hello!'\n\n" +
-      "See also: tell, tune\n");
+mixed main(object tp, string str) {
+    if(!str)
+        return "Say what?";
+
+    tp->simple_action("$N $vsay, \"$o\"", str);
+
+    return 1;
 }
