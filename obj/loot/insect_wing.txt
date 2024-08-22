@@ -1,0 +1,12 @@
+([
+    "id" : "wing",
+    "adj" : ({ "insect", "delicate" }),
+    "name" : "insect wing",
+    "short" : "a delicate insect wing",
+    "long" : "This is a thin, transparent wing from an insect. It's very fragile but might be useful in certain alchemical recipes.",
+    "mass" : 1,
+    "value" : ({ 10, "copper" }),
+    "material" : "insect",
+    "properties" : ([ "alchemy_ingredient" : 1 ]),
+    "additional_ids" : ({ "bug wing", "fly wing" })
+])

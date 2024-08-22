@@ -79,4 +79,6 @@ void setup() {
     )) ;
 
     init_storage_room() ;
+    set_terrain("indoor") ;
+    set_room_type("inn") ;
 }

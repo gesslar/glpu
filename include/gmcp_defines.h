@@ -63,4 +63,14 @@
 #define GMCP_LBL_GMCP_CLIENT_GUI_URL        "url"
 #define GMCP_LBL_GMCP_CLIENT_GUI_VERSION    "version"
 
+#define GMCP_PKG_ROOM                       "Room"
+#define GMCP_PKG_ROOM_INFO                  GMCP_PKG_ROOM".Info"
+#define GMCP_PKG_ROOM_TRAVEL                GMCP_PKG_ROOM".Travel"
+
+#define GMCP_PKG_ITEM                       "Item"
+#define GMCP_PKG_ITEM_LIST                 GMCP_PKG_ITEM".List"
+#define GMCP_PKG_ITEM_ADD                  GMCP_PKG_ITEM".Add"
+#define GMCP_PKG_ITEM_REMOVE               GMCP_PKG_ITEM".Remove"
+#define GMCP_PKG_ITEM_UPDATE               GMCP_PKG_ITEM".Update"
+
 #endif // __GMCP_DEFINES_H__

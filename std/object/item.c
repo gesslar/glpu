@@ -9,6 +9,9 @@
  * 2024-07-27 - Gesslar - Created
  */
 
+
+#include <gmcp_defines.h>
+
 inherit STD_OBJECT ;
 inherit STD_VALUE ;
 
@@ -117,8 +120,18 @@ int move(mixed dest) {
     }
 
     event(this_object(), "moved", prev);
-    if(prev && this_object()) event(prev, "released", environment());
-    if(this_object()) event(environment(), "received", prev);
+    if(prev && this_object()) {
+        event(prev, "released", environment());
+        event(prev, "gmcp_item_remove", prev) ;
+    }
+
+    if(this_object()) {
+        event(environment(), "received", prev);
+        event(environment(), "gmcp_item_add", environment()) ;
+    }
+
+    if(userp())
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_ITEM_LIST, environment()) ;
 
     if(this_object()) return MOVE_OK;
     else return MOVE_DESTRUCTED;

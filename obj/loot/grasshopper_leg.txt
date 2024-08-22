@@ -1,0 +1,12 @@
+([
+    "id" : "leg",
+    "adj" : ({ "grasshopper", "spindly" }),
+    "name" : "grasshopper leg",
+    "short" : "a grasshopper's leg",
+    "long" : "This is a long, spindly leg from a grasshopper. It might be useful as bait for fishing.",
+    "mass" : 1,
+    "value" : ({ 5, "copper" }),
+    "material" : "insect",
+    "properties" : ([ "bait" : 1 ]),
+    "additional_ids" : ({ "insect leg", "hopper leg" })
+])

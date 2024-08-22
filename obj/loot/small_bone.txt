@@ -1,0 +1,11 @@
+([
+    "name" : "small bone",
+    "short" : "a small animal bone",
+    "long" : "This is a small bone from a tiny animal, possibly a mouse or a bird. It might be useful for crafting small tools or jewelry.",
+    "id" : ({ "bone", "small bone" }),
+    "mass" : 5,
+    "value" : ({ 15, "copper" }),
+    "material" : "bone",
+    "properties" : ([ "crafting_material" : 1 ]),
+    "additional_ids" : ({ "animal bone", "tiny bone" })
+])

@@ -51,7 +51,7 @@ void decay(int it) {
             set_short("the skeletal remains of "+dead_name) ;
             break ;
         default:
-            clean_contents() ;
+            // clean_contents() ;
             remove() ;
             return ;
     }

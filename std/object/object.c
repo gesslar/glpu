@@ -9,6 +9,7 @@
 /* Last updated July 14th, 2006 by Tacitus */
 
 #include <object.h>
+#include <gmcp_defines.h>
 
 inherit __DIR__ "description" ;
 inherit __DIR__ "heartbeat" ;
@@ -157,6 +158,8 @@ void on_destruct() {
             env->adjust_fill(-query_mass());
         if(!env->ignore_mass())
             env->adjust_mass(query_mass());
+
+        event(env, "gmcp_item_remove", env) ;
     }
 
     process_destruct() ;
@@ -177,8 +180,13 @@ void remove_reset(function f) {
 
 void process_reset() {
     foreach(function f in reset_functions) {
-        catch(evaluate(f)) ;
+        if(valid_function(f))
+            catch((*f)()) ;
     }
+}
+
+function *query_reset_functions() {
+    return reset_functions ;
 }
 
 int add_destruct(function f) {

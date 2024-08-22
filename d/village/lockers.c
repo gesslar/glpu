@@ -67,6 +67,9 @@ void setup() {
     ));
 
     init_storage_room() ;
+
+    set_terrain("indoor") ;
+    set_room_type("storage") ;
 }
 
 string storage_id() { return query_privs(this_body()) ; }

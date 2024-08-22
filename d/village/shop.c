@@ -66,4 +66,7 @@ void setup() {
         "/obj/weapon/piercing/rusty_sword",
         "/obj/armour/torso/leather_jerkin",
     ) ;
+
+    set_terrain("indoor") ;
+    set_room_type("shop") ;
 }

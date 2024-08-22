@@ -1,0 +1,12 @@
+([
+    "id" : "skin",
+    "adj" : ({ "boar", "rough" }),
+    "name" : "boar skin",
+    "short" : "a piece of boar skin",
+    "long" : "This is a rough piece of skin from a wild boar. It could be useful for crafting.",
+    "mass" : 50,
+    "value" : ({ 50, "copper" }),
+    "material" : "leather",
+    "properties" : ([ "crafting_material" : 1 ]),
+    "additional_ids" : ({ "hide", "piece" })
+])

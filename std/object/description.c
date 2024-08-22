@@ -17,8 +17,10 @@ private nosave mapping extra_short = ([ ]), extra_long = ([ ]) ;
 
 int set_short(mixed str) {
     short = str;
-}
 
+    if(environment())
+        event(environment(), "gmcp_item_update", environment()) ;
+}
 
 string query_short(object viewer: (: this_body() :)) {
     mixed result ;

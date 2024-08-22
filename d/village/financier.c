@@ -52,4 +52,7 @@ void setup() {
     add_exit("west", "village_path3") ;
 
     init_bank() ;
+
+    set_terrain("indoor") ;
+    set_room_type("bank") ;
 }

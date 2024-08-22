@@ -14,6 +14,7 @@
 #define CHAN_D          DIR_DAEMONS "chan_d"
 #define COLOUR_D        DIR_DAEMONS "colour"
 #define CONFIG_D        DIR_DAEMONS "config"
+#define COORD_D         DIR_DAEMONS "coord"
 #define CRASH_D         DIR_DAEMONS "crash"
 #define CURRENCY_D      DIR_DAEMONS "currency"
 #define DB_D            DIR_DAEMONS "db"

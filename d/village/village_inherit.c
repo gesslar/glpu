@@ -13,4 +13,5 @@ inherit STD_ROOM ;
 
 void pre_setup_1() {
     set_zone(__DIR__ "olum") ;
+    set_terrain("road") ;
 }

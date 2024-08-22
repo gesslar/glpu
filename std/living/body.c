@@ -13,6 +13,7 @@
 #include <commands.h>
 #include "/std/living/include/env.h"
 #include <player.h>
+#include <gmcp_defines.h>
 
 inherit STD_CONTAINER ;
 inherit STD_ITEM;
@@ -386,6 +387,8 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     }
 
     force_me("look") ;
+
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_ROOM_INFO) ;
 
     return result ;
 }

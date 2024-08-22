@@ -131,16 +131,15 @@ mixed can_equip(mixed ob, string slot) {
     if(objectp(ob)) {
         if(ob->is_weapon()) {
             int hands = ob->query_hands() ;
-            if(!of(slot, query_weapon_slots()))
+            string *all_weapon_slots = query_weapon_slots() ;
+            mapping w = filter(wielded, (: objectp($2) :)) ;
+            int remaining_slots = sizeof(all_weapon_slots) - sizeof(w) ;
+            if(!of(slot, all_weapon_slots))
                 return "You cannot wield that there." ;
             if(wielded[slot])
                 return "You are already wielding something in that hand." ;
-            if(hands > 1) {
-                string *all_weapon_slots = query_weapon_slots() ;
-                mapping w = filter(wielded, (: objectp($2) :)) ;
-                if(sizeof(w) < hands)
-                    return "You do not have enough hands to wield that." ;
-            }
+            if(remaining_slots < hands)
+                return "You do not have enough hands to wield that." ;
             return 1 ;
         }
     }

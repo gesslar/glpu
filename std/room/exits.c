@@ -1,6 +1,7 @@
 private nosave mapping exits = ([]) ;
 private nosave mapping _pre_exit_funcs = ([]) ;
 private nosave mapping _post_exit_funcs = ([]) ;
+private nosave int *room_size = ({1, 1, 1}) ;
 
 mapping set_exits(mapping exit);
 mapping remove_exit(string id);
@@ -17,6 +18,10 @@ mapping set_exits(mapping exit) {
 
 mapping query_exits() {
     return copy(exits) ;
+}
+
+string *query_exit_ids() {
+    return keys(exits) ;
 }
 
 string query_exit(string id) {
@@ -54,6 +59,7 @@ object query_exit_dest(string id) {
 
     return dest ;
 }
+
 int valid_exit(string exit) {
     return !nullp(exits[exit]) ;
 }
@@ -125,4 +131,12 @@ void evaluate_post_exit_func(string dir, object who) {
     } else if(valid_function(func)) {
         return catch((*func)(who)) ;
     }
+}
+
+int *query_room_size() {
+    return room_size ;
+}
+
+void set_room_size(int width, int height, int depth) {
+    room_size = ({width, height, depth}) ;
 }

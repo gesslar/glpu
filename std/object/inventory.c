@@ -169,6 +169,7 @@ void reset_objects() {
                 if(ob) {
                     ob->add_spawn_info("belongs_to", file_name()) ;
                     ob->add_spawn_info("object_uuid", uuid) ;
+                    ob->add_id(uuid) ;
                     event(this_object(), "object_spawned", ob) ;
                 }
             }
