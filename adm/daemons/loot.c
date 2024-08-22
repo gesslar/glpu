@@ -19,7 +19,7 @@ mixed process_loot_item(mixed item, object tp) ;
 void drop_coins(object tp, mixed item, object ob) ;
 
 void setup() {
-    set_log_level(1) ;
+    set_log_level(0) ;
 }
 
 void loot_drop(object tp, object ob) {
