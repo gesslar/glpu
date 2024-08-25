@@ -15,7 +15,7 @@ inherit STD_VIRTUAL_SERVER ;
 object generate_object(string file) {
     object result ;
 
-    if(pcre_match(file, "^field\\d+$")) {
+    if(pcre_match(file, "^\\d,\\d,\\d$")) {
         result = new(__DIR__ "field", file) ;
         return result ;
     }

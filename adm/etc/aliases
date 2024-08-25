@@ -8,7 +8,7 @@ w go west
 e go east
 s go south
 nw go northwest
-ne go noutheast
+ne go northeast
 se go southeast
 sw go southwest
 u go up

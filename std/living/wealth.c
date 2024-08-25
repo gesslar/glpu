@@ -8,6 +8,7 @@
 
 #include <wealth.h>
 #include <daemons.h>
+#include <gmcp_defines.h>
 #include "/std/object/include/contents.h"
 
 private nomask mapping _wealth = ([]) ;
@@ -64,6 +65,10 @@ int adjust_wealth(string currency, int amount) {
 
     _wealth[currency] += amount ;
 
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+        GMCP_LBL_CHAR_STATUS_WEALTH : ([ currency : sprintf("%d", _wealth[currency]) ])
+    ])) ;
+
     rehash_capacity() ;
 
     return _wealth[currency] ;
@@ -96,5 +101,10 @@ void init_wealth() {
 
 void wipe_wealth() {
     _wealth = ([]);
+
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+        GMCP_LBL_CHAR_STATUS_WEALTH : ([ ])
+    ])) ;
+
     rehash_capacity() ;
 }

@@ -85,5 +85,3 @@ void virtual_setup(mixed args...) {
 
     call_if(this_object(), "monster_setup", data);
 }
-
-// Additional common monster functions can be added here

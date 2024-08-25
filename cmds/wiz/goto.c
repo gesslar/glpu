@@ -57,7 +57,7 @@ mixed main(object tp, string arg) {
 
         return 1;
     } else {
-        file = resolve_file(tp->query_env("cwd"), arg) ;
+        file = resolve_path(tp->query_env("cwd"), arg) ;
         e = catch(ob = load_object(file));
         if(e)
             return _error("Unable to move to %s.", file);

@@ -44,6 +44,7 @@
 #define STD_STORAGE_ROOM    DIR_STD "room/storage"
 #define STD_USER            DIR_STD_LIVING "user"
 #define STD_VALUE           DIR_STD "object/value"
+#define STD_VIRTUAL_MAP     DIR_STD "daemon/virtual_map"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
 #define STD_WEAPON          DIR_STD "equip/weapon"
 #define STD_WS_CLIENT       DIR_STD "daemon/websocket_client"

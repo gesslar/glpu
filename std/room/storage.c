@@ -67,6 +67,7 @@ object store() {
 
     store = load_object(file);
     store->set_storage_options(storage_options);
+    store->set_link(file_name()) ;
     return store;
 }
 
@@ -181,8 +182,8 @@ mixed cmd_take(object tp, string arg) {
 }
 
 void destructing() {
-    if(store()) {
-        if(store()->is_storage_object())
-            store()->remove() ;
-    }
+    object *obs = clones(STD_STORAGE_OBJECT) ;
+
+    obs = filter(obs, (: $1->query_link() == file_name() :)) ;
+    filter(obs, (: $1->remove() :)) ;
 }

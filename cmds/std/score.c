@@ -24,7 +24,7 @@ mixed main(object tp, string str) {
         tp->query_sp(),
         tp->query_mp()) ;
 
-    result += sprintf("Your have %s experience points and require %s "
+    result += sprintf("You have %s experience points and require %s "
         "to advance.\n",
         add_commas(tp->query_xp()),
         add_commas(tp->query_tnl())) ;

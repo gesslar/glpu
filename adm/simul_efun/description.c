@@ -24,7 +24,7 @@ varargs string get_short(object ob, int extras) {
 
     extras = !!extras ;
     if(extras == 1) {
-        extra_shorts = ob->query_extra_short() || ({ }) ;
+        extra_shorts = ob->query_extra_shorts() || ({ }) ;
         extra_shorts = filter(extra_shorts, (: stringp :)) ;
         extra_shorts = filter(extra_shorts, (: $1 != "" :)) ;
         extra_shorts -= ({ 0 }) ;
@@ -69,7 +69,7 @@ string get_long(object ob, int extras) {
 
     extras = !!extras ;
     if(extras == 1) {
-        extra_longs = ob->query_extra_long() || ({ }) ;
+        extra_longs = ob->query_extra_longs() || ({ }) ;
         extra_longs = filter(extra_longs, (: stringp :)) ;
         extra_longs = filter(extra_longs, (: $1 != "" :)) ;
         extra_longs -= ({ 0 }) ;
@@ -82,6 +82,9 @@ string get_long(object ob, int extras) {
             result += "\n" + implode(extra_longs, "\n") ;
         }
     }
+
+    while(result[<1] == '\n')
+        result = result[0..<2] ;
 
     return result ;
 }

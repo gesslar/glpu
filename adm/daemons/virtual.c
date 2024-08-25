@@ -73,7 +73,6 @@ public nomask object compile_object(string file) {
     if(sizeof(dir_parts) > 0) {
         vclass = dir_parts[0];
         module = sprintf("%smodules/virtual/%s.c", __DIR__, vclass);
-
         if(file_exists(module)) {
             e = catch(load_object(module));
             if(e) {

@@ -27,6 +27,7 @@ void setup() {
     set_exits(([
         "north" : "centre",
         "east" : "village_path2",
+        "south" : "forest/2,0,0",
     ])) ;
 
     set_items(([

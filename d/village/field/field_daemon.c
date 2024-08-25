@@ -12,7 +12,6 @@
 inherit STD_DAEMON ;
 
 // Functions
-private void setup_field_exits() ;
 private void setup_field_shorts() ;
 private void setup_field_longs() ;
 
@@ -20,66 +19,32 @@ private void setup_field_longs() ;
 private nosave mapping field_exits = ([]) ;
 
 void setup() {
-    setup_field_exits() ;
     setup_field_shorts() ;
     setup_field_longs() ;
 }
 
-void setup_exits(object room, string file) {
-    mapping exits ;
+void setup_exits(object room) {
+    int x, y, z;
+    mapping exits = ([]);
+    string file;
 
-    if(!(exits = field_exits[file]))
-        return ;
+    file = query_file_name(room);
+    if (sscanf(file, "%d,%d,%d", x, y, z) != 3) {
+        return;
+    }
 
-    room->set_exits(exits) ;
-}
+    // Check and add exits for each direction
+    if (x > 0) exits["west"] = sprintf("%d,%d,%d", x-1, y, z);
+    if (x < 9) exits["east"] = sprintf("%d,%d,%d", x+1, y, z);
+    if (y < 9) exits["south"] = sprintf("%d,%d,%d", x, y+1, z);
+    if (y > 0) exits["north"] = sprintf("%d,%d,%d", x, y-1, z);
 
-void setup_field_exits() {
-    field_exits = ([
-        "field1" : ([
-            "north" : "field4",
-            "east" : "field2",
-            "south" : "../village_path1"
-        ]),
-        "field2" : ([
-            "west" : "field1",
-            "east" : "field3",
-            "north" : "field5",
-        ]),
-        "field3" : ([
-            "west" : "field2",
-            "north" : "field6",
-        ]),
-        "field4" : ([
-            "north" : "field7",
-            "south" : "field1",
-            "east" : "field5",
-        ]),
-        "field5" : ([
-            "west" : "field4",
-            "south" : "field2",
-            "east" : "field6",
-            "north" : "field8",
-        ]),
-        "field6" : ([
-            "west" : "field5",
-            "south" : "field3",
-            "north" : "field9",
-        ]),
-        "field7" : ([
-            "south" : "field4",
-            "east" : "field8",
-        ]),
-        "field8" : ([
-            "west" : "field7",
-            "south" : "field5",
-            "east" : "field9",
-        ]),
-        "field9" : ([
-            "west" : "field8",
-            "south" : "field6",
-        ]),
-    ]) ;
+    // Special case for the bottom-left corner (0,9,0)
+    if (file == "0,9,0") {
+        exits["south"] = "../village_path1";
+    }
+
+    room->set_exits(exits);
 }
 
 private nosave string *field_shorts ;
@@ -136,7 +101,6 @@ string setup_field_longs() {
         "solitude and a connection with nature.",
     }) ;
 }
-
 void setup_long(object room, string file) {
     room->set_long(field_longs[rot]) ;
     if(++rot == sizeof(field_longs))

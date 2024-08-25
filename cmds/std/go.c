@@ -39,5 +39,7 @@ mixed main(object tp, string arg) {
     MOVE_D->pre_walk_direction(tp, room, arg) ;
     MOVE_D->post_walk_direction(tp, dest, arg) ;
 
+    tp->adjust_mp(-2) ;
+
     return 1 ;
 }

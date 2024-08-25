@@ -76,5 +76,5 @@ void setup() {
     add_menu_item("drink", "/obj/drink/strawberry_juice") ;
 
     set_terrain("indoor") ;
-    _debug("set_room_type: %O", set_room_type("food")) ;
+    set_room_type("food") ;
 }

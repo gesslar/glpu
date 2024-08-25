@@ -344,15 +344,15 @@ int set_ed_setup(int value) {
 }
 
 void event_gmcp_item_remove(object item, object prev) {
-    GMCP_D->send_gmcp(this_object(), GMCP_PKG_ITEM_REMOVE, ({ item, prev })) ;
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_ITEMS_REMOVE, ({ item, prev })) ;
 }
 
 void event_gmcp_item_add(object item, object dest) {
-    GMCP_D->send_gmcp(this_object(), GMCP_PKG_ITEM_ADD, ({ item, dest })) ;
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_ITEMS_ADD, ({ item, dest })) ;
 }
 
 void event_gmcp_item_update(object item, object dest) {
-    GMCP_D->send_gmcp(this_object(), GMCP_PKG_ITEM_UPDATE, ({ item, dest })) ;
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_ITEMS_UPDATE, ({ item, dest })) ;
 }
 
 int query_ed_setup() { return ed_setup ; }

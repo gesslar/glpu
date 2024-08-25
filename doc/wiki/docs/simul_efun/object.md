@@ -201,6 +201,30 @@ object this_body()
 This is a simul_efun that will return the body of the current
 interactive user. It is used as a replacement for this_player().
 
+## clones
+
+### Synopsis
+
+```c
+varargs object *clones(mixed file, int env_only)
+```
+
+### Parameters
+
+* `mixed file` - The file or object to find clones of.
+* `int env_only` - Whether to only return clones that have an environment.
+
+### Returns
+
+`object*` - An array of objects that are clones of the specified file.
+
+### Description
+
+Retrieves all clones of the specified file in the game. If
+the file is an object, it will retrieve all clones using the
+object's base name. If env_only is set to 1, the simul_efun
+will only return clones that have an environment.
+
 ## present_clones
 
 ### Synopsis

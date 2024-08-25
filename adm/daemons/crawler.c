@@ -1,18 +1,18 @@
 /**
- * @file /adm/obj/crawler.c
- * @description This object crawls the mud to get room exit information.
+ * @file /adm/daemons/crawler.c
+ * @description This daemon will crawl the game and setup coordinates in the
+ *              coordinates daemon.
  *
- * @created 2024-08-18 - Gesslar
- * @last_modified 2024-08-18 - Gesslar
+ * @created 2024-08-21 - Gesslar
+ * @last_modified 2024-08-21 - Gesslar
  *
  * @history
- * 2024-08-18 - Gesslar - Created
+ * 2024-08-21 - Gesslar - Created
  */
-
 
 #include <classes.h>
 
-inherit STD_ITEM ;
+inherit STD_DAEMON;
 
 inherit CLASS_ROOMINFO ;
 
@@ -20,36 +20,30 @@ void crawl_next_room() ;
 void process_room(object room) ;
 int *update_coordinates(int *coords, string exit, int *current_size, int *next_size) ;
 
-private nosave float crawl_speed = 0.15 ;
+private nosave float crawl_speed = 0.01 ;
 private mapping done = ([]) ;
 private mapping todo = ([]) ;
 private int x, y, z ;
 
-void setup() {
-    set_name("crawler") ;
-    set_short("crawler") ;
-    set_long("This is a crawler.") ;
-    add_extra_long("crawl", "To start crawling, type 'crawl'.") ;
+private nosave string crawl_start_room ;
 
-    add_command("crawl", "cmd_crawl") ;
+void setup() {
+    crawl_start_room = "/d/village/square" ;
 }
 
-mixed cmd_crawl(object tp, string arg) {
-    object room = environment(tp) ;
-    if(!room) {
-        return "You need to be in a room to start crawling.\n" ;
-    }
+void crawl() {
+    object room = load_object(crawl_start_room) ;
 
+    if(!room)
+        return ;
     todo[file_name(room)] = new(class RoomInfo,
         short: room->query_short(),
         todo: room->query_exit_ids(),
         done: ({}),
         coords: ({0, 0, 0}),
-        size: ({1, 1, 1})  // Default size to 1x1x1
+        size: ({1, 1, 1})
     ) ;
     call_out_walltime("crawl_next_room", crawl_speed) ;
-
-    return "You begin crawling from " + room->query_short() + ".\n" ;
 }
 
 void crawl_next_room() {
@@ -57,8 +51,8 @@ void crawl_next_room() {
     object room ;
 
     if(!sizeof(todo)) {
-        tell_room(environment(this_object()), "Crawling complete. All rooms processed.\n") ;
-        tell_room(environment(this_object()), sprintf("Total rooms discovered: %d\n", sizeof(done))) ;
+        _debug("Crawling complete. All rooms processed.") ;
+        _debug("Total rooms discovered: %d", sizeof(done)) ;
         COORD_D->set_coordinate_data(done) ;
         done = ([ ]) ;
         todo = ([ ]) ;
@@ -84,9 +78,9 @@ void process_room(object room) {
     string dest ;
 
     if(!room_data->done) {
-        tell_room(environment(this_object()), sprintf("Processing %s at (%d,%d,%d), size (%d,%d,%d).\n",
+        _debug("Processing %s at (%d,%d,%d), size (%d,%d,%d).",
             room_data->short, room_data->coords[0], room_data->coords[1], room_data->coords[2],
-            room_data->size[0], room_data->size[1], room_data->size[2])) ;
+            room_data->size[0], room_data->size[1], room_data->size[2]) ;
     }
 
     while(sizeof(room_data->todo)) {
@@ -105,9 +99,9 @@ void process_room(object room) {
                     coords: new_coords,
                     size: next_size
                 ) ;
-                tell_room(environment(this_object()), sprintf("Discovered %s at (%d,%d,%d), size (%d,%d,%d) via %s.\n",
+                _debug("Discovered %s at (%d,%d,%d), size (%d,%d,%d) via %s.",
                     todo[dest]->short, new_coords[0], new_coords[1], new_coords[2],
-                    next_size[0], next_size[1], next_size[2], exit)) ;
+                    next_size[0], next_size[1], next_size[2], exit) ;
             }
         }
 

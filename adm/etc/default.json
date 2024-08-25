@@ -127,5 +127,14 @@
         "charisma"
     ],
     "STORAGE_DATA_DIR" : "/data/storage/",
-    "GUI" : true
+    "GUI" : true,
+    "TRAVEL_DESTINATIONS" : {
+        "bank"   : "/d/village/financier",
+        "bakery" : "/d/village/bakery",
+        "lockers": "/d/village/lockers",
+        "square" : "/d/village/square",
+        "shop"   : "/d/village/shop",
+        "tavern" : "/d/village/tavern",
+        "centre" : "/d/village/centre"
+    }
 }

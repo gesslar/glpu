@@ -8,25 +8,26 @@
 
 #include <clothing.h>
 #include <armour.h>
+#include <gmcp_defines.h>
 
 inherit STD_ITEM ;
 
 void set_slot(string str) ;
 string query_slot() ;
-private mapping slots = ([ ]) ;
-private nosave string slot ;
-private nosave int equipped = 0 ;
+private mapping _slots = ([ ]) ;
+private nosave string _slot ;
+private nosave int _equipped = 0 ;
 
 mixed can_equip(string slot, object tp) {
     return call_if(this_object(), "equip_check", slot, tp) || 1 ;
 }
 
 void set_slot(string str) {
-    slot = str ;
+    _slot = str ;
 }
 
 string query_slot() {
-    return slot ;
+    return _slot ;
 }
 
 mixed equip(object tp, string slot) {
@@ -36,7 +37,7 @@ mixed equip(object tp, string slot) {
     if(env != tp)
         return 0 ;
 
-    if(equipped)
+    if(_equipped)
         return 0 ;
 
     if(tp->equipped_on(slot))
@@ -46,7 +47,10 @@ mixed equip(object tp, string slot) {
     if(result != 1)
         return result ;
 
-    equipped = 1 ;
+    _equipped = 1 ;
+
+    GMCP_D->send_gmcp(tp, GMCP_PKG_CHAR_ITEMS_UPDATE, ({ this_object(), tp })) ;
+
     return 1 ;
 }
 
@@ -57,7 +61,7 @@ mixed can_unequip(object tp) {
 varargs int unequip(object tp, int silent) {
     mixed result ;
 
-    if(!equipped)
+    if(!_equipped)
         return 0 ;
 
     if(!tp)
@@ -75,7 +79,9 @@ varargs int unequip(object tp, int silent) {
         }
     }
 
-    equipped = 0 ;
+    _equipped = 0 ;
+
+    GMCP_D->send_gmcp(tp, GMCP_PKG_CHAR_ITEMS_UPDATE, ({ this_object(), tp })) ;
 
     return 1 ;
 }
@@ -85,12 +91,14 @@ int move(mixed dest) {
     int ret = ::move(dest) ;
 
     if(env)
-        if(equipped)
+        if(_equipped)
             if(!ret)
                 unequip(env) ;
 
     return ret ;
 }
+
+int equipped() { return _equipped ; }
 
 void unsetup() {
     unequip(environment()) ;

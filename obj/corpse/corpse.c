@@ -17,6 +17,8 @@ private string dead_name ;
 
 void decay(int it) ;
 
+int pc_corpse, npc_corpse ;
+
 void setup_corpse(object dead, object killer) {
     killer_name = killer ? killer->query_name() : "unknown" ;
     dead_name = dead->query_name() ;
@@ -27,8 +29,14 @@ void setup_corpse(object dead, object killer) {
     set_mass(1) ;
     set_capacity(1000) ;
 
+    pc_corpse = dead->is_pc() ;
+    npc_corpse = dead->is_npc() ;
+
     call_out_walltime((: decay, 0 :), 1.0) ;
 }
+
+int is_pc_corpse() { return pc_corpse ; }
+int is_npc_corpse() { return npc_corpse ; }
 
 void decay(int it) {
     if(!environment())

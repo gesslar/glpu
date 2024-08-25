@@ -489,9 +489,6 @@ void enter_world(string name, int reconnecting) {
     body->clear_environ_data() ;
     body->set_environ_data(environ_data) ;
 
-    if(body->gmcp_enabled())
-        GMCP_D->init_gmcp(body) ;
-
     // If they are not reconnecting, figure out where to put them
     if(!reconnecting) {
         if(devp(body)) {
@@ -543,6 +540,10 @@ void enter_world(string name, int reconnecting) {
     }
 
     body->enter_world(reconnecting);
+
+    if(body->gmcp_enabled())
+        GMCP_D->init_gmcp(body) ;
+
 
     if(reconnecting)
         emit(SIG_USER_LINK_RESTORE, body) ;

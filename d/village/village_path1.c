@@ -28,7 +28,7 @@ void setup() {
         "south": "square",
         "west" : "bakery",
         "east" : "shop",
-        "north": "field/field1",
+        "north": "field/0,9,0",
     ])) ;
 
     set_items(([

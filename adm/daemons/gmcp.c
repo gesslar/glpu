@@ -132,6 +132,6 @@ void init_gmcp(object who) {
     GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_STATUS) ;
     GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_VITALS) ;
     GMCP_D->send_gmcp(who, GMCP_PKG_ROOM_INFO) ;
-    GMCP_D->send_gmcp(who, GMCP_PKG_ITEM_LIST, who) ;
-    GMCP_D->send_gmcp(who, GMCP_PKG_ITEM_LIST, environment(who)) ;
+    GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_ROOM) ;
+    GMCP_D->send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_INV) ;
 }

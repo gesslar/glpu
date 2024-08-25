@@ -1,8 +1,7 @@
 #include <daemons.h>
 #include <gmcp_defines.h>
 
-void Info(object who) {
-    object room = environment(who) ;
+void Info(object who, object room) {
     mapping data = ([ ]) ;
 
     if(!room)
@@ -13,10 +12,8 @@ void Info(object who) {
     who->do_gmcp(GMCP_PKG_ROOM_INFO, data, 1) ;
 }
 
-void Travel(object who, string file) {
-    mapping data = ([
-        "destination" : hash("md4", file),
-    ]) ;
+void Travel(object who, string *stops) {
+    stops = map(stops, (: hash("md4", $1) :)) ;
 
-    who->do_gmcp(GMCP_PKG_ROOM_TRAVEL, data, 1) ;
+    who->do_gmcp(GMCP_PKG_ROOM_TRAVEL, stops, 1) ;
 }

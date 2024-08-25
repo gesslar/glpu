@@ -21,6 +21,7 @@ public nomask void save_contents() ;
 private nomask void restore_contents() ;
 
 private nomask class StorageOptions storage_options ;
+private nosave string link ;
 
 void mudlib_setup() {
     set_ignore_capacity(1) ;
@@ -177,6 +178,14 @@ int id(string id) {
     }
 
     return ::id(id) ;
+}
+
+string set_link(string link) {
+    return link ;
+}
+
+string query_link() {
+    return link ;
 }
 
 int is_storage_object() { return 1 ; }

@@ -115,6 +115,7 @@ varargs object find_ob(mixed ob, mixed cont) ;
 varargs object get_object(string str, object player) ;
 varargs object find_targets(object tp, string str, object env, function f) ;
 varargs object find_target(object tp, string str, object env, function f) ;
+varargs object *clones(mixed file, int env_only) ;
 
 // File: prompt
 varargs void prompt_colour(object body, mixed *cb, string prompt) ;
@@ -139,9 +140,9 @@ string resolve_file(string base_dir, string path) ;
 string resolve_dir(string base_dir, string path) ;
 
 // File: save
-string object_save_directory(object ob) ;
-string object_save_file(object ob) ;
-string assure_object_save_dir(object ob) ;
+string object_data_directory(object ob) ;
+string object_data_file(object ob) ;
+string assure_object_data_dir(object ob) ;
 
 // File: security
 int is_member(string user, string group) ;

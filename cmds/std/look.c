@@ -84,9 +84,9 @@ mixed render_room(object tp, object room, int brief) {
         result += "\n" ;
     }
 
-    data = get_short(room);
+    data = get_short(room, 1);
     if(stringp(data) && strlen(data)) result += data + "\n" ;
-    data = get_long(room);
+    data = get_long(room, 1);
     if(stringp(data) && strlen(data)) result += "\n" + highlight_view(tp, data, keys(room->query_items())) + "\n" ;
 
     exits = keys(room->query_exits());
@@ -112,17 +112,17 @@ mixed render_room(object tp, object room, int brief) {
 
     if(sizeof(users) > 0) {
         if(devp(tp))
-            data = implode(map(users, (: get_short($1) + " (" + file_name($1) + ")" :)), "\n") ;
+            data = implode(map(users, (: get_short($1, 1) + " (" + file_name($1) + ")" :)), "\n") ;
         else
-            data = implode(map(users, (: get_short :)), "\n") ;
+            data = implode(map(users, (: get_short($1, 1) :)), "\n") ;
         result += data + "\n" ;
     }
 
     if(sizeof(objects) > 0) {
         if(devp(tp))
-            data = implode(map(objects, (: get_short($1) + " (" + file_name($1) + ")" :)), "\n") ;
+            data = implode(map(objects, (: get_short($1, 1) + " (" + file_name($1) + ")" :)), "\n") ;
         else
-            data = implode(map(objects, (: get_short :)), "\n") ;
+            data = implode(map(objects, (: get_short($1, 1) :)), "\n") ;
         result += data + "\n" ;
     }
 
@@ -179,9 +179,9 @@ mixed render_object(object tp, object room, string target) {
         return render_living(tp, room, ob, 0);
 
     // Render non-living objects
-    temp = get_short(ob);
+    temp = get_short(ob, 1);
     if(stringp(temp)) desc += temp + "\n";
-    temp = get_long(ob);
+    temp = get_long(ob, 1);
     if(stringp(temp)) desc += "\n" + temp + "\n";
 
     if(strlen(desc)) {
@@ -207,10 +207,10 @@ mixed render_living(object tp, object room, object target, int brief) {
     string slot ;
     string race, gender, hair, eyes ;
 
-    temp = get_short(target);
+    temp = get_short(target, 1);
     if(stringp(temp))
         result += temp + "\n" ;
-    temp = get_long(target);
+    temp = get_long(target, 1);
     if(stringp(temp))
         if(strlen(result) && strlen(temp))
             temp += "\n" ;
@@ -295,7 +295,7 @@ mixed render_living(object tp, object room, object target, int brief) {
 
         result += "\n" ;
         foreach(slot, ob in equipment) {
-            result += sprintf("%*s : %s\n", max, capitalize(slot), get_short(ob)) ;
+            result += sprintf("%*s : %s\n", max, capitalize(slot), get_short(ob, 1)) ;
         }
     }
 
@@ -333,7 +333,7 @@ mixed render_container(object tp, object room, string arg) {
 
         if(sizeof(contents) > 0) {
             desc += ob->query_short()+" contains:\n" ;
-            desc += implode(map(contents, (: get_short :)), "\n") + "\n" ;
+            desc += implode(map(contents, (: get_short($1, 1) :)), "\n") + "\n" ;
         } else {
             desc += ob->query_short()+" is empty.\n" ;
         }

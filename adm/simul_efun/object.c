@@ -617,3 +617,33 @@ varargs object find_target(object tp, string arg, object source, function f) {
 
     return obs[num - 1];
 }
+
+/**
+ * @simul_efun clones
+ * @description Retrieves all clones of the specified file in the game. If
+ *              the file is an object, it will retrieve all clones using the
+ *              object's base name. If env_only is set to 1, the simul_efun
+ *              will only return clones that have an environment.
+ * @param {mixed} file - The file or object to find clones of.
+ * @param {int} env_only - Whether to only return clones that have an
+ *                         environment.
+ * @returns {object[]} - An array of objects that are clones of the specified
+ *                       file.
+ */
+varargs object *clones(mixed file, int env_only) {
+    object *obs ;
+
+    if(objectp(file))
+        file = base_name(file) ;
+
+    if(!stringp(file))
+        return ({});
+
+    obs = children(file) ;
+    if(env_only)
+        obs = filter(obs, (: environment :));
+
+    obs = filter(obs, (: clonep :)) ;
+
+    return obs ;
+}

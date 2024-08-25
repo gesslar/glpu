@@ -1,12 +1,12 @@
 #include <simul_efun.h>
 
 /**
- * @simul_efun object_save_directory
- * @description Returns the save directory path for the specified object.
- * @param {object} ob - The object to get the save directory for.
- * @returns {string} - The save directory path for the object.
+ * @simul_efun object_data_directory
+ * @description Returns the data directory path for the specified object.
+ * @param {object} ob - The object to get the data directory for.
+ * @returns {string} - The data directory path for the object.
  */
-string object_save_directory(object ob) {
+string object_data_directory(object ob) {
     string source_dir = query_directory(ob) ;
     string save_dir ;
 
@@ -16,13 +16,13 @@ string object_save_directory(object ob) {
 }
 
 /**
- * @simul_efun object_save_file
- * @description Returns the save file path for the specified object.
- * @param {object} ob - The object to get the save file for.
- * @returns {string} - The save file path for the object.
+ * @simul_efun object_data_file
+ * @description Returns the data file path for the specified object.
+ * @param {object} ob - The object to get the data file for.
+ * @returns {string} - The data file path for the object.
  */
-string object_save_file(object ob) {
-    string source_dir = object_save_directory(ob) ;
+string object_data_file(object ob) {
+    string source_dir = object_data_directory(ob) ;
     string source_file = query_file_name(ob) ;
     string save_file ;
 
@@ -32,15 +32,15 @@ string object_save_file(object ob) {
 }
 
 /**
- * @simul_efun assure_object_save_dir
- * @description Ensures the save directory for the specified object exists,
+ * @simul_efun assure_object_data_dir
+ * @description Ensures the data directory for the specified object exists,
  *              creating it if necessary.
- * @param {object} ob - The object to ensure the save directory for.
- * @returns {string} - The save directory path for the object, or 0 if creation
+ * @param {object} ob - The object to ensure the data directory for.
+ * @returns {string} - The data directory path for the object, or 0 if creation
  *                     failed.
  */
-string assure_object_save_dir(object ob) {
-    string dir = object_save_directory(ob) ;
+string assure_object_data_dir(object ob) {
+    string dir = object_data_directory(ob) ;
 
     if(directory_exists(dir))
         return dir ;

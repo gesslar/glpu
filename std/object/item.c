@@ -131,7 +131,7 @@ int move(mixed dest) {
     }
 
     if(userp())
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_ITEM_LIST, environment()) ;
+        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_ROOM) ;
 
     if(this_object()) return MOVE_OK;
     else return MOVE_DESTRUCTED;
