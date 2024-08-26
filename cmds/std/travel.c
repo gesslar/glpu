@@ -59,7 +59,7 @@ mixed main(object tp, string str) {
     if(base_name(environment(tp)) == destinations[str])
         return "You are already at that destination." ;
 
-    tell(tp, "Running to " + str + "...\n") ;
+    tell(tp, "Traveling to " + str + "...\n") ;
 
     stops = ({ destinations[str] }) ;
 

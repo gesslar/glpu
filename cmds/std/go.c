@@ -15,6 +15,7 @@ mixed main(object tp, string arg) {
     mixed dest ;
     mixed result ;
     object room = environment(tp) ;
+    float cost, mp ;
 
     result = MOVE_D->allow_walk_direction(tp, room, arg) ;
     if(result != 1) {
@@ -23,6 +24,12 @@ mixed main(object tp, string arg) {
         else
             return "You may not move in that direction." ;
     }
+
+    cost = room->move_cost(arg) ;
+    mp = tp->query_mp() ;
+
+    if(mp < cost)
+        return "That location is too far away to travel to right now." ;
 
     dest = room->query_exit_dest(arg) ;
     result = MOVE_D->prevent_walk_direction(tp, room, dest) ;
@@ -39,7 +46,8 @@ mixed main(object tp, string arg) {
     MOVE_D->pre_walk_direction(tp, room, arg) ;
     MOVE_D->post_walk_direction(tp, dest, arg) ;
 
-    tp->adjust_mp(-2) ;
+
+    tp->adjust_mp(-cost) ;
 
     return 1 ;
 }

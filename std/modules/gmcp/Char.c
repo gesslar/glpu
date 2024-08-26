@@ -82,8 +82,6 @@ void Login(string submodule, mapping data) {
 void Items(string submodule, string target) {
     object prev = previous_object() ;
 
-    _debug("Char.Items.%s %s", submodule, target) ;
-
     switch(submodule) {
         case "Contents" :
             GMCP_D->send_gmcp(prev, GMCP_PKG_CHAR_ITEMS_LIST, target) ;

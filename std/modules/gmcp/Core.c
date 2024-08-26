@@ -30,7 +30,7 @@ void Hello(mapping data) {
 
 void Supports(string submodule, mixed data) {
     object prev = previous_object(1) || previous_object() ;
-    mapping supports ;
+    mapping supports = prev->query_gmcp_supports() ;
 
     switch(submodule) {
         case "Set": {
@@ -66,8 +66,8 @@ void Supports(string submodule, mixed data) {
             }
             break ;
         case "Add" : {
-                if(stringp(data))
-                    data = ({ data }) ;
+            if(stringp(data))
+                data = ({ data }) ;
 
                 foreach(string item in data) {
                     string *parts = explode(item, " ");

@@ -19,6 +19,8 @@ inherit __DIR__ "light" ;
 inherit __DIR__ "terrain" ;
 inherit __DIR__ "zone" ;
 
+private nosave int *_size = ({1, 1, 1}) ;
+
 void mudlib_setup(mixed args...) {
     set_ignore_capacity(1) ;
     set_ignore_mass(1) ;
@@ -43,15 +45,67 @@ mapping gmcp_room_info(object who) {
 
     return ([
         "area"       : "Olum",
-        "roomhash"   : hash("md4", base_name()),
+        "hash"       : hash("md4", base_name()),
         "name"       : no_ansi(query_short()),
         "exits"      : exits,
         "environment": query_terrain(),
         "coords"     : COORD_D->get_coordinates(base_name()),
+        "size"       : _size,
         "type"       : room_type,
         "subtype"    : room_subtype,
         "icon"       : room_icon,
     ]) ;
+}
+
+void set_room_size(int *size) {
+    _size = size ;
+}
+
+int *query_room_size() { return _size ; }
+
+private nosave float _base_move_cost = 2.0 ;
+
+float move_cost(string dir) {
+    int *size = query_room_size() ;
+    float cost ;
+
+    switch(dir) {
+        case "north":
+            cost = to_float(size[0]) ;
+            break ;
+        case "south":
+            cost = to_float(size[0]) ;
+            break ;
+        case "east":
+            cost = to_float(size[1]) ;
+            break ;
+        case "west":
+            cost = to_float(size[1]) ;
+            break ;
+        case "northeast":
+            cost = (to_float(size[0]) + to_float(size[1])) / 2.0 ;
+            break ;
+        case "northwest":
+            cost = (to_float(size[0]) + to_float(size[1])) / 2.0 ;
+            break ;
+        case "southeast":
+            cost = (to_float(size[0]) + to_float(size[1])) / 2.0 ;
+            break ;
+        case "southwest":
+            cost = (to_float(size[0]) + to_float(size[1])) / 2.0 ;
+            break ;
+        case "up":
+            cost = to_float(size[2]) ;
+            break ;
+        case "down":
+            cost = to_float(size[2]) ;
+            break ;
+        default:
+            cost = 1.0 ;
+            break ;
+    }
+
+    return cost * _base_move_cost ;
 }
 
 string set_room_type(string type) { room_type = type ; }

@@ -37,3 +37,11 @@ int *get_coordinates(string room) {
 
     return null ;
 }
+
+int *get_size(string room) {
+    if(classp(rooms[room])) {
+        return rooms[room].size ;
+    }
+
+    return null ;
+}
