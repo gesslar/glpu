@@ -30,7 +30,7 @@ jobs:
 
       - name: Install MkDocs and dependencies
         run: |
-          pip install mkdocs mkdocs-material
+          pip install mkdocs mkdocs-material mkdocs-bootstrap4
 
       - name: Build MkDocs site
         run: cd doc/mkdocs && mkdocs build --site-dir site
