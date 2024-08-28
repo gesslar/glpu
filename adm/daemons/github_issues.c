@@ -100,7 +100,6 @@ varargs mixed create_issue(string type, string title, string body, mixed *callba
  * @function http_handle_shutdown
  * @description Handle the response from the GitHub API
  * @param {mapping} response - The response from the GitHub API
- * @returns {void}
 */
 void http_handle_shutdown(mapping response) {
     mapping request ;
@@ -146,7 +145,6 @@ void http_handle_shutdown(mapping response) {
  * @description Execute the callback function
  * @param {mapping} request - The request containing the callback function
  * @param {mapping} response - The response from the GitHub API
- * @returns {void}
 */
 void execute_callback(mapping request, mapping response) {
     mixed err ;
@@ -177,7 +175,6 @@ void execute_callback(mapping request, mapping response) {
  * @details This function processes the backlog of requests in the
  *          /data/github/issues/pending directory. It passes a list of files to
  *          process_next() to process each request.
- * @returns {void}
 */
 public nomask void process_backlog() {
     string *files ;
@@ -193,7 +190,6 @@ public nomask void process_backlog() {
  * @function process_next
  * @description Process the next request in the backlog
  * @param {string[]} files - The list of files remaining in the backlog to process
- * @returns {void}
 */
 private nomask void process_next(string *files) {
     string file ;

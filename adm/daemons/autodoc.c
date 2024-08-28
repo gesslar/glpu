@@ -620,7 +620,8 @@ private nomask string generate_index_markdown(string type, string source_file, m
             parts = dir_file(func["source_file"]) ;
             file = parts[1] ;
 
-            line = sprintf("* [%s](%s#%s)\n",
+            // Update link generation to include .md extension
+            line = sprintf("* [%s](%s.md#%s)\n",
                 function_name,
                 chop(file, ".c", -1),
                 function_name
@@ -636,7 +637,6 @@ private nomask string generate_index_markdown(string type, string source_file, m
         log_file("system/autodoc", "Error generating markdown: " + err + "\n") ;
 
     return null ;
-
 }
 
 private nomask void generate_wiki() {
@@ -689,7 +689,8 @@ private nomask void generate_wiki() {
             source_file_name = chop(parts[1], ".c", -1) ;
 
             index_md = generate_index_markdown(function_type, source_file, funcs) ;
-            index_content += sprintf("## [%s](%s)\n\n", source_file_name, source_file_name) ;
+            // Update link generation to include .md extension
+            index_content += sprintf("## [%s](%s.md)\n\n", source_file_name, source_file_name) ;
             index_content += index_md + "\n" ;
 
             dest_file = sprintf("%s%s/%s.md", wiki_doc_root, function_type, source_file_name) ;

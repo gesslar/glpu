@@ -1,7 +1,3 @@
 public nomask void process_backlog()
 
-Returns
-
-{void}
-
 Process the backlog of requests

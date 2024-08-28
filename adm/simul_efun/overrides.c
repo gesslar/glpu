@@ -39,8 +39,8 @@ int exec(object to, object from) {
  *              if the object calling the function has admin privs. If it does,
  *              it will execute the function as normal. If it does not, it will
  *              return 0.
- * @param {int} how - The type of shutdown to perform.
- * @returns {void}
+ * @param {int} how - The type of shutdown to perform. -1 for a reboot, 0 for a
+ *                   normal shutdown.
  */
 void shutdown(int how) {
     object po = previous_object() ;
@@ -70,7 +70,6 @@ object shutdown_d() {
  *              it will execute the function as normal. If it does not, it will
  *              return 0.
  * @param {object} ob - The object to destruct.
- * @returns {void}
  */
 void set_privs(object ob, string privs) {
     string name;
@@ -87,7 +86,6 @@ void set_privs(object ob, string privs) {
  *              if this_body(), otherwise it will use the debug_message()
  *              efun.
  * @param {string} msg - The message to write.
- * @returns {void}
  */
 void write(string msg) {
     if(this_body()) message("write", msg + "", this_body());
@@ -101,7 +99,6 @@ void write(string msg) {
  * @param {string} msg - The message to write.
  * @param {mixed} exclude - The object or array of objects to exclude from
  *                          the message.
- * @returns {void}
  */
 varargs void say(string msg, mixed exclude) {
     object me;
@@ -122,7 +119,6 @@ varargs void say(string msg, mixed exclude) {
  * @param {string} msg - The message to write.
  * @param {mixed} exclude - The object or array of objects to exclude from
  *                          the message.
- * @returns {void}
  */
 varargs void shout(string msg, mixed exclude) {
     if(objectp(exclude))
@@ -141,7 +137,6 @@ varargs void shout(string msg, mixed exclude) {
  * @param {object} ob - The object to write the message to.
  * @param {string} msg - The message to write.
  * @param {string} type - The message class of message to write.
- * @returns {void}
  */
 varargs void tell_object(mixed ob, mixed msg, mixed type) {
     if(!type) type = "tell_object" ;
@@ -156,7 +151,6 @@ varargs void tell_object(mixed ob, mixed msg, mixed type) {
  * @param {string} msg - The message to write.
  * @param {mixed} exclude - The object or array of objects to exclude from
  *                          the message.
- * @returns {void}
  */
 varargs void tell_room(mixed room, string msg, mixed exclude) {
     if(!exclude || exclude==0) {

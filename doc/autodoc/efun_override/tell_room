@@ -6,9 +6,5 @@ Parameters:
 * `string msg` - The message to write.
 * `mixed exclude` - The object or array of objects to exclude from the message.
 
-Returns
-
-{void}
-
 This function is an override of the tell_room() efun. It will
 write a message to the room using the message() efun.

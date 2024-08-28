@@ -4,10 +4,6 @@ Parameters:
 
 * `string msg` - The message to write.
 
-Returns
-
-{void}
-
 This function is an override of the write() efun. It will
 write a message to the player using the message() efun
 if this_body(), otherwise it will use the debug_message()

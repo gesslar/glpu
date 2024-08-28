@@ -5,9 +5,5 @@ Parameters:
 * `string msg` - The message to write.
 * `mixed exclude` - The object or array of objects to exclude from the message.
 
-Returns
-
-{void}
-
 This function is an override of the shout() efun. It will
 write a message to all users using the message() efun.

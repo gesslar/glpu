@@ -1,0 +1,32 @@
+site_name: gLPU
+site_description: Documentation repository for the gLPU project
+site_url: https://glpu.gesslar.dev
+nav:
+  - Home: index.md
+  - FluffOS: https://fluffos.info
+theme:
+  name: bootstrap4
+  # icon:
+  #   logo: assets/glpu.png
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/gesslar/glpu
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/wzUbBgs3AQ
+nav:
+  - Home: index.md
+  - Contributing: contributing.md
+  - Help:
+      - Environment Variables: environment_variables/index.md
+  - Systems:
+      - Daemons: systems/daemons/index.md
+  - Functions:
+      - Simul Efuns: simul_efun/index.md
+      - Overridden Efuns: efun_override/index.md
+      - Daemon Functions: daemon_function/index.md
+markdown_extensions:
+    codehilite:
+        use_pygments: False

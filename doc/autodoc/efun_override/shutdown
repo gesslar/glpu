@@ -2,11 +2,7 @@ void shutdown(int how)
 
 Parameters:
 
-* `int how` - The type of shutdown to perform.
-
-Returns
-
-{void}
+* `int how` - The type of shutdown to perform. -1 for a reboot, 0 for a normal shutdown.
 
 This function is an override for the efun shutdown(). It checks
 if the object calling the function has admin privs. If it does,

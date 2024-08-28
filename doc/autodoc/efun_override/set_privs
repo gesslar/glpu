@@ -4,10 +4,6 @@ Parameters:
 
 * `object ob` - The object to destruct.
 
-Returns
-
-{void}
-
 This function is an override for the efun destruct(). It checks
 if the object calling the function has admin privs. If it does,
 it will execute the function as normal. If it does not, it will

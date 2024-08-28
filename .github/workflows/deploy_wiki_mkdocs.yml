@@ -1,4 +1,4 @@
-name: Deploy VitePress to GitHub Pages
+name: Deploy MkDocs to GitHub Pages
 
 on:
   push:
@@ -23,25 +23,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '21'
+          python-version: '3.x'
 
-      - name: Install dependencies
+      - name: Install MkDocs and dependencies
         run: |
-          cd doc/wiki
-          npm install
+          pip install mkdocs mkdocs-material
 
-      - name: Build VitePress site
-        run: |
-          cd doc/wiki
-          npm run build
+      - name: Build MkDocs site
+        run: cd doc/mkdocs && mkdocs build --site-dir site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: doc/wiki/docs/.vitepress/dist
+          path: site
 
   deploy:
     environment:
