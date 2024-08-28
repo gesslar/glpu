@@ -33,12 +33,14 @@ jobs:
           pip install mkdocs mkdocs-material mkdocs-bootstrap4
 
       - name: Build MkDocs site
-        run: cd doc/mkdocs && mkdocs build --site-dir site
+        run: |
+          cd doc/mkdocs
+          mkdocs build --site-dir site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: doc/mkdocs/site  # Ensure this matches where MkDocs outputs the files
 
   deploy:
     environment:
