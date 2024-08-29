@@ -30,7 +30,7 @@ jobs:
 
       - name: Install MkDocs and dependencies
         run: |
-          pip install mkdocs mkdocs-material mkdocs-bootstrap4 mkdocs-macros-plugin pymdownx
+          pip install mkdocs mkdocs-material mkdocs-bootstrap4 mkdocs-macros-plugin
 
       - name: Build MkDocs site
         run: |
