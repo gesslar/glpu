@@ -3,7 +3,7 @@ GMCP is a protocol for communication between the MUD server and the MUD client.
 It is used to send and receive information about the game world, such as room,
 chat, inventory, and other information.
 
-## Define macros
+## Defines
 
 All macros used for GMCP are located in `include/gmcp_defines.h` and should
 be included when you are sending messages to the client, or writing a module
@@ -11,10 +11,10 @@ to process GMCP messages.
 
 In {{ MUD_NAME }}, GMCP is implemented in two ways.
 
-* [Client-initiated communication](#client-initiated-communication)
-* [Server-initiated communication](#server-initiated-communication)
+* [Client-initiated](#client-initiated)
+* [Server-initiated](#server-initiated)
 
-## Client-initiated communication
+## Client-initiated
 
 Client-initiated communication is initiated by the MUD client and sent to the
 MUD server.
@@ -63,7 +63,7 @@ GMCP information is transferred from the temporary login object to the body.
 This process is repeated for each new connection to the MUD, including after
 reconecting from having gone linkdead.
 
-## Server-initiated communication
+## Server-initiated
 
 Server-initiated communication is initiated by the MUD server and sent to the
 MUD client.

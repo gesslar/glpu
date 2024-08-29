@@ -1,8 +1,8 @@
 # GitHub Issues - (GH_ISSUES_D)
 
-To integrate gLPU with GitHub issues, you need to setup a Personal Access Token
-(PAT) in your GitHub account. This token is used to authenticate the your game
-with GitHub.
+To integrate {{ MUD_NAME }} with GitHub issues, you need to setup a Personal
+Access Token (PAT) in your GitHub account. This token is used to authenticate
+the your game with GitHub.
 
 ## Create a Personal Access Token
 

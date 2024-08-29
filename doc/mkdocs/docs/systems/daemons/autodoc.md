@@ -1,18 +1,18 @@
 # Autodoc System (AUTODOC_D)
 
 ## Overview
-The autodoc system is a powerful documentation generator designed for gLPU. It
-parses JSDoc-style comments in LPC source files and generates structured
-documentation for both the mudlib and a wiki.
+The autodoc system is a powerful documentation generator designed for
+{{ MUD_NAME }}. It parses JSDoc-style comments in LPC source files and
+generates structured documentation for both the mudlib and a wiki.
 
-## Initialization
+### Initialization
 The system starts by loading configuration settings:
 
  * `AUTODOC_ROOT` - Directory for mudlib documentation
  * `WIKI_DOC_ROOT` - Directory for wiki documentation
  * `AUTODOC_SOURCE_DIRS` - Directories to scan for source files
 
-## Scanning Process
+### Scanning Process
 
 The scanning process is synchronous and occurs in two phases:
 
@@ -21,7 +21,7 @@ The scanning process is synchronous and occurs in two phases:
 2. File Parsing - Parses each collected file for JSDoc-style comments and
    extracts function definitions and associated documentation.
 
-## Parsing Logic
+### Parsing Logic
 The system recognizes the following JSDoc tags:
 
 * `@description`
@@ -32,7 +32,7 @@ The system recognizes the following JSDoc tags:
 
 It uses regular expressions to identify these tags and extract their content.
 
-# Documentation Generation
+## Documentation Generation
 
 After parsing, the system generates two types of documentation:
 
@@ -41,19 +41,21 @@ After parsing, the system generates two types of documentation:
 * Wiki Documentation - Markdown format for easy reading Includes an index and
   individual function pages.
 
-# Usage
+## Usage
 
 To start the autodoc process, user the `autodoc` command with the `scan` argument. You will see output that looks similar to this:
 
-    • Starting autodoc scan
-    • Autodoc has completed.
-    • Scan time: 0.72s
-    • Directories scanned: 2
-    • Files scanned: 60
+```
+• Starting autodoc scan
+• Autodoc has completed.
+• Scan time: 0.72s
+• Directories scanned: 2
+• Files scanned: 60
+```
 
 ### Writing Documentation
 To document your functions, use JSDoc-style comments above your function definitions:
-```
+``` C
 /**
  * @simul_efun add_numbers
  * @description Calculates the sum of two numbers
@@ -69,14 +71,14 @@ int add_numbers(int a, int b) {
 }
 ```
 
-## Output
+### Output
 
-### Mudlib Documentation
+#### Mudlib Documentation
 
 Mudlib documentation is generated in a structured format, organized by function
 type and name. This is useful for programmatic access to documentation.
 
-### Wiki Documentation
+#### Wiki Documentation
 
 Wiki documentation is generated in Markdown format, which includes:
 
@@ -88,15 +90,15 @@ Wiki documentation is generated in Markdown format, which includes:
   * Detailed descriptions
   * Examples (if provided)
 
-## Best Practices
+### Best Practices
 
 * Be consistent in your documentation style
-* Always include a @description for each function
-* Document all parameters using @param
-* Specify return values with @returns
-* Provide examples for complex functions using @example
+* Always include a `@description` for each function
+* Document all parameters using `@param`
+* Specify return values with `@returns`
+* Provide examples for complex functions using `@example`
 
-## Troubleshooting
+### Troubleshooting
 If you encounter issues:
 
 * Check the system log for error messages

@@ -31,11 +31,15 @@ any default behaviour.
     * Although the examples provided below may be shown on multiple lines,
       they are expected to have been sent as a single line JSON string.
 
+!!! note
+
+    Examples may include the same hash for multiple objects to simplify the
+    demonstration. In practice, each object will have a different hash id.
+
 ## Supported Packages and modules
 
 * [Core](#core) - Core functionality
 * [Char](#char) - Character information
-* [Comm](#comm) - Communication and channels
 * [Room](#room) - Room information
 
 ## Core
@@ -177,6 +181,43 @@ object with the following keys:
     Char.Login.Credentials { "account": "username", "password": "password" }
     ```
 
+#### Char.Items
+
+Sent by the client to request inventory information.
+
+##### Char.Items.Contents
+
+Request a list of all items within a specified container. The payload is a string
+reflecting the hash of the container to list items from. The container must be
+located in the room the character is in, or in the character's inventory.
+
+!!! example
+
+    ``` json
+    Char.Items.Contents "8351cdf67f1b439de383d0bda83318e2"
+    ```
+
+##### Char.Items.Inv
+
+Request a list of all items in the character's inventory. There is no payload.
+
+!!! example
+
+    ``` json
+    Char.Items.Inv
+    ```
+
+
+##### Char.Items.Room
+
+List items in the room the character is in. There is no payload.
+
+!!! example
+
+    ``` json
+    Char.Items.Room
+    ```
+
 ### Server
 
 #### Char.Login
@@ -198,7 +239,159 @@ The payload is a JSON object with the following keys:
     Char.Login.Result { "success": "false", "message": "Invalid account name." }
     ```
 
-##### Char.Vitals
+#### Char.Items
+
+##### Char.Items.List
+
+List items in a specific inventory or container. The payload is a JSON object
+as a string with the following keys:
+
+* `location` - The location of the container to list items from. Possible
+               values are:
+
+    * `"inv"` - The character's inventory,
+    * `"room"` - The room the character is in,
+    * `"hash"` - The object ID of a container in the room or the character's
+                 inventory
+* `items` - A JSON array of objects representing the items in the container.
+            Possible keys for each item are:
+    * `"hash"` - The object ID of the item
+    * `"name"` - The name of the item
+    * `"icon"` - The icon of the item
+    * `"id"` - The IDs of the item
+    * `"attributes"` - This is an undelimited string containing the attributes
+                      of the item.
+                      Possible attributes are:
+        * `w` - worn
+        * `W` - wearable, but not worn
+        * `l` - wielded
+        * `c` - container
+        * `t` - takeable
+        * `m` - monster
+        * `d` - dead monster
+
+!!! example
+
+    === "inv"
+
+        ``` json
+        Char.Items.List {
+            "location": "inv",
+            "items": [
+                {
+                    "hash": "8351cdf67f1b439de383d0bda83318e2",
+                    "name": "flaming cudgel",
+                    "icon": "weapon",
+                    "id": [ "cudgel", "flaming cudgel" ],
+                    "attributes": "Wt"
+                }
+            ]
+        }
+        ```
+
+    === "room"
+
+        ``` json
+        Char.Items.List {
+            "location": "room",
+            "items": [
+                {
+                    "hash": "8351cdf67f1b439de383d0bda83318e2",
+                    "name": "a menacing goblin",
+                    "icon": "monster",
+                    "id": [ "goblin", "menacing goblin" ],
+                    "attributes": "m"
+                }
+            ]
+        }
+        ```
+
+    === "hash"
+
+        ``` json
+        Char.Items.List {
+            "location": "8351cdf67f1b439de383d0bda83318e2",
+            "items": [
+                {
+                    "hash": "8351cdf67f1b439de383d0bda83318e2",
+                    "name": "potion of healing",
+                    "icon": "potion",
+                    "id": [ "potion", "potion of healing" ],
+                    "attributes": "t"
+                },
+                {
+                    "hash": "8351cdf67f1b439de383d0bda83318e2",
+                    "name": "loaf of bread",
+                    "icon": "food",
+                    "id": [ "bread", "loaf of bread" ],
+                    "attributes": "t"
+                }
+            ]
+        }
+        ```
+
+##### Char.Items.Add
+
+Add an item to either the character's inventory or the room the character is in.
+The payload is a JSON object in the same format as `Char.Items.List`, except
+that it is only one item, and therefore the key will be `item`.
+
+!!! example
+
+    ``` json
+    Char.Items.Add {
+        "location": "inv",
+        "item": {
+            "hash": "8351cdf67f1b439de383d0bda83318e2",
+            "name": "potion of healing",
+            "icon": "potion",
+            "id": [ "potion", "potion of healing" ],
+            "attributes": "t"
+        }
+    }
+    ```
+
+##### Char.Items.Remove
+
+Remove an item from either the character's inventory or the room the character
+is in. The payload is a JSON object in the same format as `Char.Items.Add`.
+
+!!! example
+
+    ``` json
+    Char.Items.Remove {
+        "location": "room",
+        "item": {
+            "hash": "8351cdf67f1b439de383d0bda83318e2",
+            "name": "potion of healing",
+            "icon": "potion",
+            "id": [ "potion", "potion of healing" ],
+            "attributes": "t"
+        }
+    }
+    ```
+
+##### Char.Items.Update
+
+Update an item in either the character's inventory or the room the character
+is in. The payload is a JSON object in the same format as `Char.Items.Add`.
+
+!!! example
+
+    ``` json
+    Char.Items.Update {
+        "location": "8351cdf67f1b439de383d0bda83318e2",
+        "item": {
+            "hash": "8351cdf67f1b439de383d0bda83318e2",
+            "name": "potion of healing",
+            "icon": "potion",
+            "id": [ "potion", "potion of healing" ],
+            "attributes": "t"
+        }
+    }
+    ```
+
+#### Char.Vitals
 
 Sent by the server to the client to provide the character's vital statistics.
 The payload is a JSON object with the following keys:
@@ -228,7 +421,7 @@ The payload is a JSON object with the following keys:
     }
     ```
 
-##### Char.Status
+#### Char.Status
 
 Sent by the server to the client to provide the character's status information.
 The payload is a JSON object with the following keys:
@@ -269,7 +462,7 @@ The payload is a JSON object with the following keys:
     }
     ```
 
-##### Char.StatusVars
+#### Char.StatusVars
 
 Sent by the server to the client to provide the character's status variables.
 These correspond to the variables listed in the `Char.Status` payload and are
@@ -296,4 +489,63 @@ the status variable and the value is the friendly name of the status variable.
         "seen_enemies": "Seen Enemies",
         "wealth": "Wealth"
     }
+    ```
+
+## Room
+
+### Server
+
+#### Room.Info
+
+Sent by the server to the client to provide the room's information. The payload
+is a JSON object with the following keys:
+
+* `hash` - The hash of the room
+* `area` - The name of the area
+* `coords` - The coordinates of the room, as an array of 3 numbers representing
+             x, y, and z respectively
+* `environment` - The environment of the room
+* `exits` - An object containing key/value pairs of exit direction and hash
+            of the room to which the exit leads.
+* `icon` - The icon of the room
+* `size` - The size of the room, as an array of 3 numbers representing width,
+          height, and depth respectively
+* `type` - The type of the room
+* `subtype` - The subtype of the room
+
+!!! example
+
+    ``` json
+    Room.Info {
+        "area": "Olum",
+        "coords": { "-1", "0", "0" },
+        "environment": "road",
+        "exits": {
+            "east": "ce53e6d9d4757b0d7c04223755216865",
+            "south": "7ce32c91980d5d8cfbd25a6b36cc134c",
+            "west": "d91efff11de437aed3974b4428a320e0"
+        },
+        "hash": "61660eac2b962b70ab782ee6f697c592",
+        "icon": "",
+        "name": "A Path Through the Village",
+        "size": { "1", "1", "1" },
+        "subtype": "",
+        "type": "room"
+    }
+    ```
+
+#### Room.Travel
+
+Sent by the server in response to the `travel` command. The payload is an array
+of strings representing the hashes of the rooms to be traveled to.
+
+This can be used by the client to initiate a speedwalk to the target room.
+If the character is to be traveling to more than one location, the client
+should ensure that a pause is introduced betweeen each destination of at least
+2 seconds.
+
+!!! example
+
+    ``` json
+    Room.Travel [ "ce53e6d9d4757b0d7c04223755216865", "7ce32c91980d5d8cfbd25a6b36cc134c" ]
     ```

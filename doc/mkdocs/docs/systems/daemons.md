@@ -1,6 +1,6 @@
 # Systems / Daemons
 
-The following daemons are available in gLPU:
+The following daemons are available in {{ MUD_NAME }}:
 
 * [Alarm](daemons/alarm.md)
 * [Autodoc](daemons/autodoc.md)

@@ -16,16 +16,16 @@ theme:
 
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: brown
-      accent: amber
+      primary: purple
+      accent: pink
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
 
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: purple
+      accent: pink
       toggle:
         icon: material/weather-night
         name: Switch to light mode
@@ -72,6 +72,8 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 extra:
   constants:
     MUD_NAME: "gLPU"
@@ -82,3 +84,6 @@ extra:
       link: https://discord.gg/wzUbBgs3AQ
 
 copyright: Copyright &copy; Shmopyright
+
+extra_css:
+  - stylesheets/extra.css

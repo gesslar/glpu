@@ -1,11 +1,11 @@
-# gLPU (LPUniversity)
+# {{ MUD_NAME }}
 
-Thank you for your interest in gLPU (Gesslar's LPUniversity) which is a fork
+Thank you for your interest in {{ MUD_NAME }} which is a fork
 of LPUniversity.
 
 ## Introduction
 
-gLPU runs on [FluffOS](https://github.com/fluffos/fluffos) and is a derivative
+{{ MUD_NAME }} runs on [FluffOS](https://github.com/fluffos/fluffos) and is a derivative
 of the original LPUniversity mudlib and features a number of improvements and
 systems. It is a work in progress and is not yet feature complete. And honestly,
 it isn't really intended to be.
@@ -15,7 +15,7 @@ it isn't really intended to be.
 You can
 * download the latest release from the
   [releases page](https://github.com/gesslar/glpu/releases/latest), or
-* clone it from the [gLPU repository](https://github.com/gesslar/glpu).
+* clone it from the [{{ MUD_NAME }} repository](https://github.com/gesslar/glpu).
 
 However you obtain it, you will need to compile the FluffOS driver and
 configure your `config.mud` file as described below.
@@ -109,10 +109,10 @@ do what you want.)
 
 ## Contributing
 
-If you would like to contribute to gLPU, please feel free to fork the
-repository and submit a pull request. But, keep in mind that gLPU is an
+If you would like to contribute to {{ MUD_NAME }}, please feel free to fork the
+repository and submit a pull request. But, keep in mind that {{ MUD_NAME }} is an
 opinionated fork of LPUniversity and as such, pull requests are subject to
-review and may be rejected if they do not align with the goals of gLPU.
+review and may be rejected if they do not align with the goals of {{ MUD_NAME }}.
 
 ## License
 
