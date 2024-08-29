@@ -27,6 +27,10 @@ title: daemon_function
 * [query_activity](bank.md#query_activity)
 * [query_balance](bank.md#query_balance)
 
+## [boot](boot.md)
+
+* [query_boot_number](boot.md#query_boot_number)
+
 ## [colour](colour.md)
 
 * [body_colour_replace](colour.md#body_colour_replace)

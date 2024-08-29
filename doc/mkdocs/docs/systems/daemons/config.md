@@ -15,7 +15,7 @@ When the daemon is loaded, it reads from `default.json` first to gather the base
 
 ## Usage
 
-To use this daemon, simply ensure it is loaded and use the [mud_config()](/simul_efun/system.md#mud_config) simul_efun to retrieve configuration values.
+To use this daemon, simply ensure it is loaded and use the [mud_config()](../../simul_efun/system.md#mud_config) simul_efun to retrieve configuration values.
 
 ### Example
 

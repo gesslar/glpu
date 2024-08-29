@@ -40,7 +40,7 @@ void boot(mixed arg...) {
 }
 
 /**
- * @function query_boot_number
+ * @daemon_function query_boot_number
  * @description Get the current boot number.
  * @returns {int} - current boot number
  */

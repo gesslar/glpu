@@ -7,4 +7,4 @@ if you want to have certain things only happen or be available during a
 specific boot number, like the current one.
 
 There is no interaction required and the only available api is to
-[query the current boot number](/daemon_function/boot.md#query_boot_number).
+[query the current boot number](../../daemon_function/boot.md#query_boot_number).

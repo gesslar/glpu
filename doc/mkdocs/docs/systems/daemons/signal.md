@@ -7,7 +7,7 @@ messaging system that allows any object to subscribe to a signal and
 receive messages when that signal is sent. Any object can send a signal, and
 any object that is listening for that signal will receive it.
 
-All calls to the Signal daemon are done through [simul_efuns](/simul_efun/signal.md).
+All calls to the Signal daemon are done through [simul_efuns](../../simul_efun/signal.md).
 This ensures that the daemon is the only object that can listen for signal
 emissions, send out the signals, and manage the subscriptions.
 

@@ -17,7 +17,7 @@ int unslot(int sig)
 
 ### Returns
 
-`int` - SIG_SLOT_OK if the slot was unregistered successfully. See signal.h for other return values.
+`int` - `SIG_SLOT_OK` if the slot was unregistered successfully. See `include/signal.h` for other return values.
 
 ### Description
 
@@ -56,7 +56,7 @@ int slot(int sig, string func)
 
 ### Returns
 
-`int` - SIG_SLOT_OK if the slot was registered successfully. See signal.h for other return values.
+`int` - `SIG_SLOT_OK` if the slot was registered successfully. See `include/signal.h` for other return values.
 
 ### Description
 
