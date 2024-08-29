@@ -3,37 +3,6 @@
 
 inherit __DIR__ "gmcp_module" ;
 
-void setup() {
-    set_privs("gmcp") ;
-
-    cooldown_limits = ([
-        GMCP_PKG_CHAR_STATUS : 0,
-        GMCP_PKG_CHAR_STATUSVARS: 0,
-    ]) ;
-}
-
-void StatusVars() {
-    object prev = previous_object();
-
-    if(!cooldown_check(GMCP_PKG_CHAR_STATUSVARS, prev))
-        return;
-
-    apply_cooldown(GMCP_PKG_CHAR_STATUSVARS, prev);
-
-    GMCP_D->send_gmcp(prev, GMCP_PKG_CHAR_STATUSVARS) ;
-}
-
-void Status() {
-    object prev = previous_object();
-
-    if(!cooldown_check(GMCP_PKG_CHAR_STATUS, prev))
-        return;
-
-    apply_cooldown(GMCP_PKG_CHAR_STATUS, prev);
-
-    GMCP_D->send_gmcp(prev, GMCP_PKG_CHAR_STATUS) ;
-}
-
 void Login(string submodule, mapping data) {
     object prev = previous_object() ;
 
