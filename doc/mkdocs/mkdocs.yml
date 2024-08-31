@@ -12,34 +12,33 @@ theme:
     - media: "(prefers-color-scheme)"
       toggle:
         icon: material/brightness-auto
-        name: Switch to light mode
+        name: Switch to dark mode
 
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: purple
-      accent: pink
+      primary: black
+      accent: red
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
 
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: purple
-      accent: pink
+      primary: blue grey
+      accent: indigo
       toggle:
         icon: material/weather-night
-        name: Switch to light mode
+        name: Switch to automatic mode
 
   features:
     - content.code.copy
-    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
     - navigation.path
     - navigation.sections
     - navigation.tabs
-    - navigation.tabs.sticky
     - navigation.top
     - navigation.tracking
-    - toc.integrate
 
 plugins:
   - macros
@@ -47,20 +46,9 @@ plugins:
 
 extra_css:
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
-nav:
-  - Home: index.md
-  - Contributing: contributing.md
-  - Help:
-      - Environment Variables: environment_variables/index.md
-  - Systems:
-      - Daemons: systems/daemons.md
-      - GMCP: systems/gmcp.md
-      - GMCP Specification: systems/gmcp_specification.md
-  - Functions:
-      - Simul Efuns: simul_efun/index.md
-      - Overridden Efuns: efun_override/index.md
-      - Daemon Functions: daemon_function/index.md
+
 markdown_extensions:
+  - tables
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -74,6 +62,7 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
 extra:
   constants:
     MUD_NAME: "gLPU"
@@ -87,3 +76,40 @@ copyright: Copyright &copy; Shmopyright
 
 extra_css:
   - stylesheets/extra.css
+
+### This section is for the navigation
+nav:
+  - Home: index.md
+  - Contributing: contributing.md
+  - Features:
+    - Preferences:
+      - User: features/preferences/user.md
+      - Administrator: features/preferences/administrator.md
+    - GMCP:
+      - Overview: features/gmcp/gmcp.md
+      - Specification: features/gmcp/gmcp_specification.md
+  - Daemons:
+    - daemons/index.md
+    - Alarm: daemons/alarm.md
+    - Autodoc: daemons/autodoc.md
+    - Boot: daemons/boot.md
+    - Config: daemons/config.md
+    - Loot: daemons/loot.md
+    - GitHub Issues: daemons/github_issues.md
+    - Signal: daemons/signal.md
+  - Modules:
+    - modules/index.md
+    - Daemon:
+      - modules/daemon/index.md
+    - Standard:
+      - modules/std/index.md
+      - modules/std/currency.md
+      - modules/std/loot.md
+    - Living:
+      - modules/living/index.md
+      - modules/living/race.md
+  - Functions:
+    - functions/index.md
+    - Simulated Efuns: functions/simul_efun/index.md
+    - Efun Override: functions/efun_override/index.md
+    - Daemon Functions: functions/daemon_function/index.md

@@ -1,18 +1,18 @@
-# Environment Variables
+# Preferences
 
-The following categories of environment variables apply to whether you are
-an [administrator](administrator-environment-variables.md) or a player.
+The following categories of preferences apply to whether you are
+an [administrator](administrator.md) or a player.
 
-Generally, if an environment variable offers `on` or `off` as options, the
+Generally, if a preference offers `on` or `off` as options, the
 default is `off`, unless otherwise noted.
 
-To set an environment variable, use the `set` command. For example:
+To set a preference, use the `set` command. For example:
 
 ```
 set colour on
 ```
 
-To clear an environment variable, set the variable with no value. For example:
+To clear a preference, set the preference with no value. For example:
 
 ```
 set colour

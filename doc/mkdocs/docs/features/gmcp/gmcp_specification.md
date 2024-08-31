@@ -1,3 +1,5 @@
+# GMCP Specification
+
 The following outlines the GMCP specification for {{ MUD_NAME }}, including what is sent
 by the server and what is sent by the client, as well as expectations and
 any default behaviour.

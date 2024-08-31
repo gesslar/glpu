@@ -8,7 +8,6 @@ The `dev` branch is used for ongoing development. All feature branches should be
 
 1. **Create a Branch**: Branch off from the `dev` branch.
 
-        ::::bash
         git checkout dev
         git pull origin dev
         git checkout -b your-feature-branch

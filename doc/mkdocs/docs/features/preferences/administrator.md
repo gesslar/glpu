@@ -1,17 +1,16 @@
-# Administrator Environment Variables
+# Administrator Preferences
 
-All of the environment variables listed in the [User Environment
-Variables](index.md) section apply to administrators as well.
-In addition, the following environment variables are available to
-administrators:
+All of the preferences listed in the [User Preferences](user.md) section apply
+to administrators as well. In addition, the following preferences are available
+to administrators:
 
-To set an environment variable, use the `set` command. For example:
+To set a preference, use the `set` command. For example:
 
 ```
 set log_level 4
 ```
 
-To clear an environment variable, set the variable with no value. For example:
+To clear a preference, set the preference with no value. For example:
 
 ```
 set log_level

@@ -1,3 +1,5 @@
+# GMCP
+
 GMCP is a protocol for communication between the MUD server and the MUD client.
 
 It is used to send and receive information about the game world, such as room,
@@ -68,7 +70,7 @@ reconecting from having gone linkdead.
 Server-initiated communication is initiated by the MUD server and sent to the
 MUD client.
 
-It is handled by the [GMCP Daemon](daemons/gmcp.md), and controlled by daemon
+It is handled by the [GMCP Daemon](../../daemons/index.md), and controlled by daemon
 modules found in `adm/daemons/modules/gmcp`.
 
 These modules are not inherited by anything, but are called by the GMCP Daemon

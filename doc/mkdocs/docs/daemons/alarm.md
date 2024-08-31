@@ -1,6 +1,4 @@
-# Alarm Daemon (ALARM_D)
-
-The `ALARM` daemon is essential for scheduling and executing events at
+`ALARM_D` daemon is essential for scheduling and executing events at
 specified times. It reads alarm configurations from text files and manages the
 execution of these alarms.
 
@@ -50,9 +48,7 @@ alarms by running the `master` admin command.
 
 ## Alarm format
 
-The format for an alarm in an alarm text file is
-
-    TYPE MASTER PATTERN /FILE FUNCTION [ARGUMENTS]
+The format for an alarm in an alarm text file is `TYPE MASTER PATTERN /FILE FUNCTION [ARGUMENTS]`.
 
 The arguments are as follows:
 
@@ -63,10 +59,12 @@ The arguments are as follows:
 - **FUNCTION**: The function to be called.
 - **ARGUMENTS**: Optional arguments to be passed to the function.
 
-### Example
+!!! example "Example alarm"
 
+    ```
     Y 12-25@10:00 false /adm/daemons/holiday broadcast_message "Merry Christmas!"
     H 30 false /adm/daemons/config rehash_config
+    ```
 
 
 An example alarm confirmation text file is provided in `adm/etc/alarms/alarm.txt.example`.
@@ -77,7 +75,7 @@ You can add alarms programmatically, however, you should know that alarms added
 in this way are not persisted loads of the alarm daemon, which includes
 reboots.
 
-#### Adding a one-time alarm
+### Adding a one-time alarm
 
 To add a one-time alarm, use the `add_once` function with the following arguments:
 
@@ -87,11 +85,11 @@ To add a one-time alarm, use the `add_once` function with the following argument
 - **FUNCTION**: The function to be called.
 - **ARGUMENTS**: Optional arguments to be passed to the function.
 
-##### Example
+!!! example "Adding a one-time alarm"
 
-```c
-ALARM_D->add_once("false", "12-25@10:00", "/adm/daemons/holiday", "broadcast_message", "Merry Christmas!") ;
-```
+    ``` c
+    ALARM_D->add_once("false", "12-25@10:00", "/adm/daemons/holiday", "broadcast_message", "Merry Christmas!") ;
+    ```
 
 The alarm daemon will return an identifier which you can than use to remove the
 alarm, if necessary.

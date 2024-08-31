@@ -13,8 +13,10 @@ it isn't really intended to be.
 ## Installation
 
 You can
+
 * download the latest release from the
   [releases page](https://github.com/gesslar/glpu/releases/latest), or
+
 * clone it from the [{{ MUD_NAME }} repository](https://github.com/gesslar/glpu).
 
 However you obtain it, you will need to compile the FluffOS driver and
@@ -29,23 +31,23 @@ different to this, you can refer to the build instructions at
 
 * Install the dependencies required to build the FluffOS driver:
 
-```bash
-sudo apt update
-sudo apt install build-essential bison libmysqlclient-dev libpcre3-dev libpq-dev \
-libsqlite3-dev libssl-dev libz-dev libjemalloc-dev libicu-dev
-```
+   ``` bash
+   sudo apt update
+   sudo apt install build-essential bison libmysqlclient-dev libpcre3-dev libpq-dev \
+   libsqlite3-dev libssl-dev libz-dev libjemalloc-dev libicu-dev
+   ```
 
 * Ensure that you have pip installed. If you do not have pip installed, you can install it with the following command:
 
-```bash
-sudo apt install python3-pip
-```
+   ``` bash
+   sudo apt install python3-pip
+   ```
 
 * Then upgrade your cmake to the latest version:
 
-```bash
-sudo pip install --upgrade cmake
-```
+   ```bash
+   sudo pip install --upgrade cmake
+   ```
 
 ### Building the driver
 
@@ -106,13 +108,6 @@ game on the port that you specified in the `config.mud` file.
 The first person to login to the game will become an admin. So, you know, be
 careful with that. (You don't really have to be careful, it's your game now,
 do what you want.)
-
-## Contributing
-
-If you would like to contribute to {{ MUD_NAME }}, please feel free to fork the
-repository and submit a pull request. But, keep in mind that {{ MUD_NAME }} is an
-opinionated fork of LPUniversity and as such, pull requests are subject to
-review and may be rejected if they do not align with the goals of {{ MUD_NAME }}.
 
 ## License
 

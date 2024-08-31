@@ -1,5 +1,3 @@
-# GitHub Issues - (GH_ISSUES_D)
-
 To integrate {{ MUD_NAME }} with GitHub issues, you need to setup a Personal
 Access Token (PAT) in your GitHub account. This token is used to authenticate
 the your game with GitHub.
@@ -16,10 +14,12 @@ the your game with GitHub.
 
 ## Setting up the token in your game
 
-1. You can safely store your token in in `adm/etc/config.json`. You should
-   define the following objects in the `config.json` file:
+You can safely store your token in in `adm/etc/config.json`. You should
+define the following objects in the `config.json` file:
 
-```json
+!!! example
+
+    ``` json
     "GITHUB_REPORTER" : {
         "token": "github_pat_XXXXX",
         "owner": "gesslar",
@@ -31,13 +31,14 @@ the your game with GitHub.
             "todo"
         ]
     }
-```
+    ```
 
-* `token`: The Personal Access Token you generated.
-* `owner`: The owner of the repository. This is the username of the owner of
+
+* `token` - The Personal Access Token you generated.
+* `owner` - The owner of the repository. This is the username of the owner of
   the repository.
-* `repo`: The repository name.
-* `types`: The types of issues you want to report. This is an array of strings
+* `repo` - The repository name.
+* `types` - The types of issues you want to report. This is an array of strings
   that correspond to the labels you want to use in your repository.
 
 2. Once you've updated the `config.json`, execute the `master` command to

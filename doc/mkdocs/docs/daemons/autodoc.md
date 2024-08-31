@@ -1,9 +1,6 @@
-# Autodoc System (AUTODOC_D)
-
-## Overview
-The autodoc system is a powerful documentation generator designed for
-{{ MUD_NAME }}. It parses JSDoc-style comments in LPC source files and
-generates structured documentation for both the mudlib and a wiki.
+`AUTODOC_D` is a powerful documentation generator designed for {{ MUD_NAME }}.
+It parses JSDoc-style comments in LPC source files and generates structured
+documentation for both the mudlib and a wiki.
 
 ### Initialization
 The system starts by loading configuration settings:
@@ -54,22 +51,26 @@ To start the autodoc process, user the `autodoc` command with the `scan` argumen
 ```
 
 ### Writing Documentation
+
 To document your functions, use JSDoc-style comments above your function definitions:
-``` C
-/**
- * @simul_efun add_numbers
- * @description Calculates the sum of two numbers
- * @param {int} a - The first number
- * @param {int} b - The second number
- * @returns {int} The sum of a and b
- * @example
- * int result = add_numbers(5, 3);
- * // result is now 8
- */
-int add_numbers(int a, int b) {
-    return a + b;
-}
-```
+
+!!! example "Example documentation"
+
+    ``` c
+    /**
+     * @simul_efun add_numbers
+     * @description Calculates the sum of two numbers
+     * @param {int} a - The first number
+     * @param {int} b - The second number
+     * @returns {int} The sum of a and b
+     * @example
+     * int result = add_numbers(5, 3);
+     * // result is now 8
+     */
+    int add_numbers(int a, int b) {
+        return a + b;
+    }
+    ```
 
 ### Output
 
