@@ -86,25 +86,3 @@ int currency_value(string currency) {
 mapping get_currency_map() {
     return copy(currency_map);
 }
-
-void add_currency(string name, int value) {
-    if(valid_currency_type(name)) {
-        return; // Currency already exists
-    }
-
-    currency_map[name] = value;
-    currency_order = sort_array(keys(currency_map),
-        (: currency_map[$1] - currency_map[$2] :)
-    );
-}
-
-void remove_currency(string name) {
-    if(!valid_currency_type(name)) {
-        return; // Currency doesn't exist
-    }
-
-    map_delete(currency_map, name);
-    currency_order = sort_array(keys(currency_map),
-        (: currency_map[$1] - currency_map[$2] :)
-    );
-}

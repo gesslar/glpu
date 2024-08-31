@@ -1,13 +1,14 @@
 # Currency
 
-To use the currency system, you need to inherit `M_CURRENCY` in your mob or object.
-This will give you access to the API to manage currency transactions. Refer to
-the documentation on [`CURRENCY_D`](../../daemons/currency.md) for more details on how the
-system operates.
+To use the currency system, you need to inherit `M_CURRENCY` in your mob or
+object. This will give you access to the API to manage currency transactions.
+Refer to the documentation on [`CURRENCY_D`](../../daemons/currency.md) for
+more details on how the system operates.
 
 ## `handle_transaction`
 
-Processes the transaction, checking if the player can afford it and adjusting their balance accordingly.
+Processes the transaction, checking if the player can afford it and adjusting
+their balance accordingly.
 
 `#!C mixed handle_transaction(object tp, int cost, string currency)`
 
@@ -23,7 +24,8 @@ Processes the transaction, checking if the player can afford it and adjusting th
 
 ## `check_funds`
 
-Checks if the player has enough funds in the specified currency for a transaction.
+Checks if the player has enough funds in the specified currency for a
+transaction.
 
 `#!C mixed check_funds(object tp, string currency, int amount)`
 
@@ -61,7 +63,6 @@ Converts a specified amount of currency from one type to another.
 `#!C mixed convert_for_transaction(object tp, int cost, string from_currency, string to_currency)`
 
 * `tp (object)` - The player object.
-* `cost (int)` - The amount to convert.
 * `cost (int)` - The amount to convert.
 * `from_currency (string)` - The currency to convert from.
 * `to_currency (string)` - The currency to convert to.

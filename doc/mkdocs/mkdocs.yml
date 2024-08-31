@@ -94,6 +94,7 @@ nav:
     - Autodoc: daemons/autodoc.md
     - Boot: daemons/boot.md
     - Config: daemons/config.md
+    - Currency: daemons/currency.md
     - Loot: daemons/loot.md
     - GitHub Issues: daemons/github_issues.md
     - Signal: daemons/signal.md

@@ -23,11 +23,11 @@ This simul_efun does not return any result, due to the nature of signals. It
 is a fire-and-forget system; any number of objects could be listening, and
 a single return value is not feasible.
 
-### Example
+!!! example
 
-```c
-emit(SIG_SYS_BOOT);
-```
+    ```c
+    emit(SIG_SYS_BOOT) ;
+    ```
 
 ## Slots
 
@@ -47,17 +47,17 @@ calls to `slot` with the same signal will overwrite the previous function.
 The possible return values of `slot` are included in the `include/signal.h`
 file.
 
-### Example
+!!! example
 
-```c
-void setup() {
-    slot(SIG_SYS_BOOT, "on_boot");
-}
+    ```c
+    void setup() {
+        slot(SIG_SYS_BOOT, "on_boot");
+    }
 
-void on_boot(mixed args...) {
-    // Do something when the boot signal is received.
-}
-```
+    void on_boot(mixed args...) {
+        // Do something when the boot signal is received.
+    }
+    ```
 
 ## Unsubscribing
 
@@ -68,13 +68,13 @@ pass the function that you want to stop listening for.
 The possible return values of `unslot` are included in the `include/signal.h`
 file.
 
-### Example
+!!! example
 
-```c
-void clean_up() {
-    unslot(SIG_SYS_BOOT);
-}
-```
+    ```c
+    void clean_up() {
+        unslot(SIG_SYS_BOOT);
+    }
+    ```
 
 ## Signal Definitions
 

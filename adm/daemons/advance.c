@@ -48,8 +48,6 @@ int advance(object tp) {
     float level = tp->query_level();
     int tnl = tnl(level);
 
-printf("XP: %d, TNL: %d, Level: %f\n", xp, tnl, level);
-
     if(!can_advance(xp, level))
         return 0;
 
