@@ -9,7 +9,7 @@
  * 2024-02-29 - Gesslar - Created
  */
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 inherit M_BANK ;
 
 void setup() {

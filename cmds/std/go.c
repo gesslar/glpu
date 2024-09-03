@@ -47,7 +47,8 @@ mixed main(object tp, string arg) {
     MOVE_D->post_walk_direction(tp, dest, arg) ;
 
 
-    tp->adjust_mp(-cost) ;
+    if(!wizardp(tp))
+        tp->adjust_mp(-cost) ;
 
     return 1 ;
 }

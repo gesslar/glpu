@@ -9,7 +9,7 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 
 void setup() {
     set_short("Village Square of Olum");
@@ -27,8 +27,10 @@ void setup() {
         "west" : "village_path2",
         "east" : "village_path3",
         "south": "village_path4",
-        "down" : "tunnels/0,0,-1",
+        "down" : "../tunnels/0,0,-1",
     ])) ;
+
+    set_room_size(({2,2,1})) ;
 
     set_items(([
         ({ "timber-framed buildings", "buildings", "ancient buildings" }) :

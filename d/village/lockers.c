@@ -11,7 +11,7 @@
 
 #include <classes.h>
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 inherit STD_STORAGE_ROOM ;
 
 inherit CLASS_STORAGE ;

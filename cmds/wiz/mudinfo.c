@@ -13,6 +13,7 @@ mixed main(object tp, string arg) {
     string out = "" ;
 
     out += "Mud Name: " + mud_name() + "\n" ;
+    out += "Boot Number: " + BOOT_D->query_boot_number() + "\n" ;
     out += "Objects: " + sizeof(obs = objects()) + "\n" ;
 
     tmp = filter(obs, (: virtualp :)) ;

@@ -93,7 +93,7 @@ private float grad(int hash, float x, float y, float z) {
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-float perlin(float x, float y, float z) {
+public float perlin(float x, float y, float z) {
     float total, frequency, amplitude, maxValue;
     int i;
 
@@ -103,11 +103,14 @@ float perlin(float x, float y, float z) {
     maxValue = 0;
 
     for(i = 0; i < OCTAVES; i++) {
-        total += noise(x * frequency, y * frequency, z * frequency) * amplitude;
+        float noise_value = noise(x * frequency, y * frequency, z * frequency);
+
+        total += noise_value * amplitude;
         maxValue += amplitude;
         amplitude *= PERSISTENCE;
         frequency *= 2;
     }
 
-    return total / maxValue;
+    // Normalize the total to the range of 0 to 1
+    return (total + maxValue) / (2 * maxValue); // Adjusted line
 }

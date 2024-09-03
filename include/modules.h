@@ -14,6 +14,7 @@
 #define M_LOG           DIR_STD_MODULES "log"
 #define M_LOOT          DIR_STD_MODULES "loot"
 #define M_MESSAGING     DIR_STD_MODULES "messaging"
+#define M_NOISE         DIR_STD_MODULES "noise"
 #define M_POTABLE       DIR_STD_MODULES "potable"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_PERSIST_DATA  DIR_STD_MODULES "persist_data"

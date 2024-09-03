@@ -40,6 +40,12 @@ void setup() {
 
 mixed main(object tp, string str) {
     string *stops ;
+    string wp_file ;
+    mixed *wps ;
+    string *wp ;
+    int num ;
+    string destination_file, destination_name ;
+
 
     if(!get_config(__RC_ENABLE_GMCP__))
         return 0 ;
@@ -53,18 +59,41 @@ mixed main(object tp, string str) {
     if(str == "list")
         return "Valid destinations are: " + implode(dests, ", ") + "." ;
 
-    if(!of(str, destinations))
+    if(!of(str, destinations)) {
+        printf("Not in destinations\n") ;
+        printf("Nullp: %O\n", nullp(num = to_int(str))) ;
+        if(!nullp(num = to_int(str))) {
+            printf("Is int\n") ;
+            printf("Num: %O\n", num) ;
+            wp_file = user_data_directory(query_privs(tp)) + "waypoints.txt" ;
+            if(file_exists(wp_file)) {
+                printf("File exists\n") ;
+                wps = restore_variable(read_file(wp_file)) ;
+                if(num >= 1 && num <= sizeof(wps)) {
+                    printf("Num is valid\n") ;
+                    wp = wps[num-1] ;
+                    destination_name = wp[0] ;
+                    destination_file = wp[1] ;
+                }
+            }
+        } else {
+            destination_name = str ;
+            destination_file = destinations[str] ;
+        }
+    }
+
+    if(!destination_file)
         return "That is not a valid destination." ;
 
-    if(base_name(environment(tp)) == destinations[str])
+    if(base_name(environment(tp)) == destination_file)
         return "You are already at that destination." ;
 
-    tell(tp, "Traveling to " + str + "...\n") ;
+    tell(tp, "Traveling to " + destination_name + "...\n") ;
 
-    stops = ({ destinations[str] }) ;
+    stops = ({ destination_file }) ;
 
     if(str != "square")
-        stops = ({ destinations["square"], destinations[str] }) ;
+        stops = ({ destinations["square"], destination_file }) ;
 
     GMCP_D->send_gmcp(tp, GMCP_PKG_ROOM_TRAVEL, stops) ;
 

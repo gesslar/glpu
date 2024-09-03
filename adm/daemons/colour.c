@@ -27,6 +27,7 @@ int colour_to_greyscale(int colour_code);
 string body_colour_replace(object body, string text, int message_type);
 private int too_dark_check();
 private mapping too_dark_map();
+public int *colour_to_rgb(int color_code);
 
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
@@ -503,4 +504,37 @@ public string body_colour_replace(object body, string text, int message_type) {
     text = "{{" + colour + "}}" + text + "{{res}}";
 
     return text;
+}
+
+/**
+ * @daemon_function colour_to_rgb
+ * @description Converts a 256 colour code to an RGB tuple.
+ * @param {int} colour_code - The 256 colour code (0-255).
+ * @returns {int[]} An array containing the RGB values.
+ */
+public int *colour_to_rgb(int colour_code) {
+    int r, g, b;
+
+    if (colour_code < 0 || colour_code > 255) {
+        return ({ 0, 0, 0 }); // Return black for out of range
+    }
+
+    if (colour_code < 16) {
+        // Standard colors
+        r = (colour_code & 1) ? 255 : 0;
+        g = (colour_code & 2) ? 255 : 0;
+        b = (colour_code & 4) ? 255 : 0;
+        r += (colour_code & 8) ? 128 : 0;
+    } else if (colour_code < 232) {
+        // 6x6x6 color cube
+        colour_code -= 16;
+        r = (colour_code / 36) * 51;
+        g = ((colour_code % 36) / 6) * 51;
+        b = (colour_code % 6) * 51;
+    } else {
+        // Grayscale
+        r = g = b = (colour_code - 232) * 10 + 8; // 232-255 maps to 8-255
+    }
+
+    return ({ r, g, b });
 }

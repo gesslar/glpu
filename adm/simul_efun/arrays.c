@@ -98,3 +98,79 @@ int uniform_array(string type, mixed *arr) {
 
     return sizeof(filter(arr, (: typeof($1) == $2 :), type)) == sz;
 }
+
+/**
+ * @simul_efun array_fill
+ * @description Returns an array filled with the specified value. If no array
+ *              is provided, an empty array is created. If no value is
+ *              provided, 0 is used as the value to fill the array with. If no
+ *              start index is provided, the array is filled from the end.
+ * @param {mixed*} arr - The array to fill.
+ * @param {mixed} value - The value to fill the array with.
+ * @param {int} start_index - The index at which to start filling the array. (optional)
+ * @return {mixed}
+ */
+varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
+    mixed *work, *ret;
+    int i;
+    int len ;
+
+    if(!pointerp(arr))
+        arr = ({});
+
+    if(nullp(value))
+        value = 0;
+
+    if(nullp(size))
+        error("array_fill: size is required");
+
+    len = sizeof(arr);
+
+    if(nullp(start_index))
+        start_index = len;
+
+    work = allocate(size);
+
+    while(size--)
+        work[size] = value;
+
+    return arr[0..start_index-1] + work + arr[start_index..];
+}
+
+/**
+ * @simul_efun array_pad
+ * @description Returns a new array of the specified size, filled with the
+ *              specified value. If the array is larger than the specified size,
+ *              the array is truncated to the specified size.
+ * @param {mixed*} arr - The array to pad.
+ * @param {int} size - The size of the array to create.
+ * @param {mixed} value - The value to fill the array with.
+ * @param {int} beginning - Whether to fill the array from the beginning. (optional)
+ * @return {mixed}
+ */
+varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) {
+    mixed *work, *ret;
+    int i;
+    int len ;
+
+    if(!pointerp(arr))
+        arr = ({});
+
+    if(nullp(value))
+        value = 0;
+
+    len = sizeof(arr);
+
+    if(size <= len)
+        return arr[0..size-1];
+
+    work = allocate(size - len);
+
+    while(size--)
+        work[size] = value;
+
+    if(beginning)
+        return work + arr;
+    else
+        return arr + work;
+}

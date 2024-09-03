@@ -16,7 +16,7 @@ object generate_object(string file) {
     object result ;
 
     if(pcre_match(file, "^\\d,\\d,\\d$")) {
-        result = new(__DIR__ "field", file) ;
+        result = new(__DIR__ "field_base", file) ;
         return result ;
     }
 

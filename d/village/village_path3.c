@@ -9,7 +9,7 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 
 void setup() {
     set_short("A Path Through the Village");

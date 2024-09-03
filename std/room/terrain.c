@@ -20,6 +20,7 @@ private nosave string *_terrain_types = ({
     "plains",
     "swamp",
     "tunnels",
+    "wastes",
 }) ;
 
 private nosave string _terrain ;

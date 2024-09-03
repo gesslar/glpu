@@ -9,7 +9,7 @@
  * 2024-08-01 - Gesslar - Created
  */
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 
 inherit M_SHOP ;
 

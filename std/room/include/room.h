@@ -1,7 +1,6 @@
 #ifndef __ROOM_H__
 #define __ROOM_H__
 
-
 mapping gmcp_room_info(object who);
 void set_room_size(int *size);
 int *query_room_size();
@@ -11,6 +10,13 @@ string set_room_icon(string icon);
 string query_room_type();
 string query_room_subtype();
 string query_room_icon();
+string query_room_environment();
+string set_room_environment(string environment);
+int set_room_colour(int colour);
+int query_room_colour();
+void add_custom_gmcp(string key, mixed value);
+void remove_custom_gmcp(string key);
+mapping query_custom_gmcp();
 int no_renew();
 int is_room();
 

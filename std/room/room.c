@@ -9,6 +9,7 @@
  * 2024-08-11 - Gesslar - Created
  */
 
+#include <room.h>
 
 inherit STD_OBJECT ;
 inherit STD_CONTAINER ;
@@ -29,11 +30,16 @@ void mudlib_setup(mixed args...) {
 private nosave string room_type = "room" ;
 private nosave string room_subtype = "" ;
 private nosave string room_icon = "" ;
+private nosave string room_environment = null ;
+private nosave int room_colour = null ;
+private nosave mapping custom_gmcp = ([ ]) ;
 
 mapping gmcp_room_info(object who) {
     mapping info = ([ ]) ;
     string *exit_dirs = query_exit_ids() ;
     mapping exits ;
+    mapping result ;
+    mapping gmcp_info = ([ ]) ;
     // string *suppress ;
 
     exits = query_exits() ;
@@ -43,19 +49,34 @@ mapping gmcp_room_info(object who) {
     exits = map(exits, (: base_name($2) :));
     exits = map(exits, (: hash("md4", $2) :));
 
-    return ([
-        "area"       : "Olum",
+    result = ([
+        "area"       : query_zone_name(),
         "hash"       : hash("md4", base_name()),
         "name"       : no_ansi(query_short()),
         "exits"      : exits,
-        "environment": query_terrain(),
+        "environment": query_room_environment() || query_terrain(),
         "coords"     : COORD_D->get_coordinates(base_name()),
         "size"       : _size,
         "type"       : room_type,
         "subtype"    : room_subtype,
         "icon"       : room_icon,
     ]) ;
+
+    if(room_colour)
+        result["color"] = COLOUR_D->colour_to_rgb(room_colour) ;
+
+    gmcp_info = query_custom_gmcp() ;
+    if(sizeof(gmcp_info))
+        result["custom"] = gmcp_info ;
+
+    return result ;
 }
+
+string set_room_environment(string environment) { room_environment = environment ; }
+string query_room_environment() { return room_environment ; }
+
+int set_room_colour(int colour) { room_colour = colour ; }
+int query_room_colour() { return room_colour ; }
 
 void set_room_size(int *size) {
     _size = size ;
@@ -107,6 +128,16 @@ float move_cost(string dir) {
 
     return cost * _base_move_cost ;
 }
+
+void add_custom_gmcp(string key, mixed value) {
+    custom_gmcp[key] = value ;
+}
+
+void remove_custom_gmcp(string key) {
+    map_delete(custom_gmcp, key) ;
+}
+
+mapping query_custom_gmcp() { return custom_gmcp ; }
 
 string set_room_type(string type) { room_type = type ; }
 string set_room_subtype(string subtype) { room_subtype = subtype ; }

@@ -34,10 +34,22 @@ void setup_exits(object room) {
     }
 
     // Check and add exits for each direction
+    // west
     if (x > 0) exits["west"] = sprintf("%d,%d,%d", x-1, y, z);
+    // east
     if (x < 9) exits["east"] = sprintf("%d,%d,%d", x+1, y, z);
+    // south
     if (y < 9) exits["south"] = sprintf("%d,%d,%d", x, y+1, z);
+    // north
     if (y > 0) exits["north"] = sprintf("%d,%d,%d", x, y-1, z);
+    // northwest
+    if (x > 0 && y > 0) exits["northwest"] = sprintf("%d,%d,%d", x-1, y-1, z);
+    // northeast
+    if (x < 9 && y > 0) exits["northeast"] = sprintf("%d,%d,%d", x+1, y-1, z);
+    // southwest
+    if (x > 0 && y < 9) exits["southwest"] = sprintf("%d,%d,%d", x-1, y+1, z);
+    // southeast
+    if (x < 9 && y < 9) exits["southeast"] = sprintf("%d,%d,%d", x+1, y+1, z);
 
     // Special case for the bottom-left corner (0,9,0)
     if (file == "0,9,0") {

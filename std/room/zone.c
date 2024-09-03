@@ -28,6 +28,10 @@ void set_zone(mixed z) {
     zone->add_room(this_object()) ;
 }
 
+string query_zone_name() {
+    return zone->query_zone_name() ;
+}
+
 object query_zone() {
     return zone ;
 }

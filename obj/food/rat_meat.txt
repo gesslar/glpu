@@ -1,0 +1,12 @@
+([
+    "id" : "rat_meat",
+    "adj" : ({ "raw", "fresh" }),
+    "name" : "rat meat",
+    "short" : "a chunk of rat meat",
+    "long" : "This is a fresh chunk of rat meat. It needs to be cooked before eating.",
+    "mass" : 15,
+    "value" : ({ 20, "copper" }),
+    "uses" : 1,
+    "properties" : ([ "food" : 1, "raw" : 1 ]),
+    "additional_ids" : ({ "meat", "chunk", "raw meat" })
+])

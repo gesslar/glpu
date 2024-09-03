@@ -9,7 +9,7 @@
  * 2024-08-12 - Gesslar - Created
  */
 
-inherit __DIR__ "village_inherit" ;
+inherit __DIR__ "village_base" ;
 
 void setup() {
     set_short("A Path Through the Village");
@@ -27,7 +27,7 @@ void setup() {
     set_exits(([
         "north" : "centre",
         "east" : "village_path2",
-        "south" : "forest/2,0,0",
+        "south" : "../forest/2,0,0",
     ])) ;
 
     set_items(([

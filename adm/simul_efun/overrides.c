@@ -212,3 +212,19 @@ varargs string ctime(int x) {
     fmt = "%Y-%m-%d %H:%M:%S" ;
     return strftime(fmt, x) ;
 }
+
+mixed element_of(mixed *arr, int secure) {
+    if(!secure)
+        return efun::element_of(arr) ;
+
+    else {
+        if(pointerp(arr)) {
+            int sz = sizeof(arr) ;
+            int element = secure_random(sz) ;
+
+            return arr[element] ;
+        }
+    }
+
+    error("Invalid array passed to element_of()") ;
+}

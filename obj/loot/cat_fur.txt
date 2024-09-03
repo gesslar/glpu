@@ -1,0 +1,12 @@
+([
+    "id" : "fur",
+    "adj" : ({ "cat", "soft" }),
+    "name" : "cat fur",
+    "short" : "a piece of cat fur",
+    "long" : "This is a soft piece of fur from a wild cat. It could be useful for crafting.",
+    "mass" : 20,
+    "value" : ({ 40, "copper" }),
+    "material" : "fur",
+    "properties" : ([ "crafting_material" : 1 ]),
+    "additional_ids" : ({ "hide", "piece" })
+])

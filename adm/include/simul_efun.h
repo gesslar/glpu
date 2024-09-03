@@ -7,6 +7,8 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) ;
 varargs mixed *splice(mixed *arr, int start, int deleteCount, mixed *itemsToAdd) ;
 mixed *reverse_array(mixed *arr) ;
 int uniform_array(string type, mixed *arr) ;
+varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) ;
+varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) ;
 
 // File: base64
 string base64_encode(mixed source_str) ;

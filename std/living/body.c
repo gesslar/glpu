@@ -158,6 +158,7 @@ varargs int move(mixed ob, int flag) {
     if(result)
         return result ;
 
+    ob = environment() ;
     set_last_location(ob) ;
 
     return result ;
