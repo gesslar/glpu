@@ -35,6 +35,7 @@ title: daemon_function
 
 * [body_colour_replace](colour.md#body_colour_replace)
 * [colour_to_greyscale](colour.md#colour_to_greyscale)
+* [colour_to_rgb](colour.md#colour_to_rgb)
 * [colourp](colour.md#colourp)
 * [get_colour_list](colour.md#get_colour_list)
 * [is_too_dark](colour.md#is_too_dark)
@@ -60,6 +61,12 @@ title: daemon_function
 
 * [create_issue](github_issues.md#create_issue)
 * [process_backlog](github_issues.md#process_backlog)
+
+## [loot](loot.md)
+
+* [coin_drop](loot.md#coin_drop)
+* [determine_value_by_level](loot.md#determine_value_by_level)
+* [loot_drop](loot.md#loot_drop)
 
 ## [swap](swap.md)
 

@@ -18,7 +18,7 @@ inherit M_CURRENCY ;
 inherit CLASS_STORAGE ;
 
 void add_shop_inventory(mixed args) ;
-mixed *query_cost(object tp, object ob, string transaction) ;
+int query_cost(object tp, object ob, string transaction) ;
 protected void remove_shop() ;
 protected void reset_shop() ;
 private nomask object create_storage() ;
@@ -118,7 +118,7 @@ mixed cmd_list(object tp) {
     string line ;
     object ob ;
     string short ;
-    mixed *cost ;
+    int cost ;
 
     create_storage() ;
 
@@ -129,7 +129,7 @@ mixed cmd_list(object tp) {
     foreach(item in items) {
         cost = query_cost(tp, item, "list") ;
         short = get_short(item) ;
-        line = sprintf("%s (%d %s)", short, cost[0], cost[1]) ;
+        line = sprintf("%s (%d)", short, cost) ;
         lines += ({ line }) ;
     }
 
@@ -160,7 +160,7 @@ mixed cmd_buy(object tp, string str) {
 
     cost = query_cost(tp, ob, "buy") ;
 
-    result = handle_transaction(tp, cost[0], cost[1]) ;
+    result = handle_transaction(tp, cost) ;
 
     if(stringp(result))
         return result ;
@@ -226,13 +226,14 @@ mixed cmd_sell(object tp, string str) {
         return "You don't have any such items to sell." ;
 
     foreach(ob in obs) {
-        mixed *cost = query_cost(tp, ob, "sell") ;
-        int coin_number = cost[0] ;
-        string coin_type = cost[1] ;
+        int cost = query_cost(tp, ob, "sell") ;
         string short = get_short(ob) ;
         int item_mass = ob->query_mass() ;
+        mapping value = least_coins(cost) ;
+        int coins = sum(values(value)) ;
+        string mess, *list ;
 
-        if(nullp(coin_number) || nullp(coin_type)) {
+        if(nullp(cost)) {
             tell(tp, "The shop refuses to buy your " + short + ".\n") ;
             continue ;
         }
@@ -244,7 +245,7 @@ mixed cmd_sell(object tp, string str) {
             int fill = tp->query_fill() ;
             int cap = tp->query_capacity() ;
 
-            if(fill - item_mass + coin_number > cap) {
+            if(fill - item_mass + coins > cap) {
                 tp->tell("You are overburdened and cannot carry the coins.\n") ;
                 continue ;
             }
@@ -252,20 +253,18 @@ mixed cmd_sell(object tp, string str) {
 
         if(ob->move(store)) {
             tp->tell("The shop refuses to buy your " + short + ".\n") ;
-            tp->adjust_wealth(coin_type, -coin_number) ;
             continue ;
         }
 
-        if(nullp(tp->adjust_wealth(coin_type, coin_number))) {
-            ob->move(tp) ;
-            tp->tell("You you were unable to be compensated for your " + short + ".\n") ;
-            continue ;
+        list = ({ }) ;
+        foreach(string key, int val in value) {
+            list += ({ sprintf("%d %s", val, key) }) ;
+            tp->adjust_wealth(key, val) ;
         }
 
-        tp->other_action("$N $vsell %o.", short) ;
-        tp->my_action("$N $vsell $o for $o1.\n",
-            short,
-            format_currency(coin_number, coin_type)) ;
+        tp->other_action("$N $vsell $o.", short) ;
+        mess = "You $vsell $o for $o1.\n" ;
+        tp->my_action(mess, short, simple_list(list)) ;
     }
 
     obs = filter(obs, (: objectp($1) && present($1, $(tp)) :)) ;
@@ -276,14 +275,14 @@ mixed cmd_sell(object tp, string str) {
     return 1 ;
 }
 
-mixed *query_cost(object tp, object ob, int transaction) {
-    mixed *value = ob->query_value() ;
+int query_cost(object tp, object ob, int transaction) {
+    int value = ob->query_value() ;
 
     switch(transaction) {
         case "buy":
             return value ;
         case "sell":
-            return ({ to_int(to_float(value[0]) * sell_factor), value[1] }) ;
+            return to_int(to_float(value) * sell_factor) ;
         case "list":
             return value ;
     }

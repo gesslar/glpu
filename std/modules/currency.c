@@ -3,35 +3,34 @@
  * @description Currency module that can be inherited for money handling
  *
  * @created 2024-08-01 - Gesslar
- * @last_modified 2024-08-01 - Gesslar
+ * @last_modified 2024-09-03 - Gesslar
  *
  * @history
  * 2024-08-01 - Gesslar - Created
+ * 2024-09-03 - Gesslar - Converted currency to use an integer representing
+ *                          the lowest denomination.
  */
 
 #include <daemons.h>
 
 // Function prototypes
-private mixed check_funds(object tp, string currency, int amount);
+private mixed check_funds(object tp, int amount);
 private mixed transfer_funds(object from, object to, string currency, int amount);
 private mixed check_capacity(object tp, string currency, int amount);
-private mixed complex_transaction(object tp, int cost, string currency) ;
+private mixed complex_transaction(object tp, int cost) ;
 private mixed *format_return_currency(mapping m) ;
+public mapping least_coins(int total_amount);
 
 // Main transaction function
-varargs mixed handle_transaction(object tp, int cost, string currency) {
+varargs mixed handle_transaction(object tp, int cost) {
     if(!tp || !objectp(tp)) {
         return "Invalid player object.";
     }
 
-    if(!currency) {
-        currency = CURRENCY_D->lowest_currency();
-    }
-
-    return complex_transaction(tp, cost, currency);
+    return complex_transaction(tp, cost);
 }
 
-mixed complex_transaction(object tp, int cost, string currency) {
+mixed complex_transaction(object tp, int cost) {
     mapping wealth;
     string *currencies;
     int total_wealth, remaining_cost, change_amount, used_value;
@@ -43,20 +42,19 @@ mixed complex_transaction(object tp, int cost, string currency) {
 
     wealth = tp->query_all_wealth();
     currencies = reverse_array(CURRENCY_D->currency_list());
-    total_wealth = tp->query_total_wealth();
-    remaining_cost = CURRENCY_D->convert_currency(cost, currency, "copper");
+    total_wealth = tp->query_total_wealth(); // Total wealth in base currency
+    remaining_cost = cost; // Set remaining cost directly to cost
     change_amount = 0;
     used_value = 0;
     to_subtract = ([]);
     change = ([]);
 
     // Sanity checks
-    if(member_array(currency, currencies) == -1) return "Invalid currency type.";
     if(cost <= 0) return "Transaction amount must be positive.";
     if(total_wealth < remaining_cost) return "You cannot afford this transaction.";
 
     // Find the index of the transaction currency
-    currency_index = member_array(currency, currencies);
+    currency_index = 0; // Set to 0 as we're starting from the base currency
 
     // There is still a slight issue where sometimes it tries to grab an extra
     // coin from a higher denomination to cover the cost. This is only really
@@ -230,10 +228,12 @@ string format_return_currency_string(mixed *currency_array) {
 
     return result;
 }
+
 // Check if the player has enough funds
-private mixed check_funds(object tp, string currency, int amount) {
-    if(tp->query_wealth(currency) < amount) {
-        return "You don't have enough " + currency + " for this transaction.";
+private mixed check_funds(object tp, int amount) { // Remove currency parameter
+    int total_wealth = tp->query_total_wealth(); // Get total wealth in base currency
+    if(total_wealth < amount) {
+        return "You don't have enough funds for this transaction.";
     }
     return 1;
 }
@@ -281,7 +281,7 @@ mixed convert_for_transaction(object tp, int cost, string from_currency, string 
 
     converted_amount = CURRENCY_D->convert_currency(cost, from_currency, to_currency);
 
-    result = check_funds(tp, from_currency, cost);
+    result = check_funds(tp, cost);
     if(stringp(result)) return result;
 
     result = check_capacity(tp, to_currency, converted_amount);
@@ -310,4 +310,28 @@ mixed can_afford(object ob, int cost, string currency) {
 // Function to format currency for display
 string format_currency(int amount, string currency) {
     return amount + " " + currency;
+}
+
+public mapping least_coins(int total_amount) {
+    string *currencies;
+    mapping result = ([]);
+    string currency;
+    int value;
+    int amount;
+
+    currencies = CURRENCY_D->currency_list(); // Get the list of currencies
+    currencies = reverse_array(currencies); // Reverse the array for highest to lowest
+
+    foreach(currency in currencies) {
+        value = CURRENCY_D->currency_value(currency); // Get the value of the currency
+        if(value > 0) {
+            amount = total_amount / value; // Calculate how many of this currency
+            if(amount > 0) {
+                result[currency] = amount; // Store the amount in the result
+                total_amount %= value; // Update the remaining amount
+            }
+        }
+    }
+
+    return result;
 }

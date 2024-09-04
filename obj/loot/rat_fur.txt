@@ -5,8 +5,7 @@
     "short" : "a piece of rat fur",
     "long" : "This is a scrappy piece of fur from a waste rat. It could be useful for crafting.",
     "mass" : 10,
-    "value" : ({ 15, "copper" }),
     "material" : "fur",
-    "properties" : ([ "crafting_material" : 1 ]),
+    "properties" : ([ "autovalue" : 1, "crafting_material" : 1 ]),
     "additional_ids" : ({ "hide", "piece" })
 ])

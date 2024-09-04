@@ -1,0 +1,7 @@
+string open_status()
+
+Returns
+
+`string` - The open status of the MUD.
+
+Returns the open status of the MUD.

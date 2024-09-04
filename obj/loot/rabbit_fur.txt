@@ -4,8 +4,7 @@
     "long" : "This is a small patch of soft, fluffy fur from a rabbit. It could be used for crafting warm clothing.",
     "id" : ({ "fur", "rabbit fur" }),
     "mass" : 10,
-    "value" : ({ 25, "copper" }),
     "material" : "fur",
-    "properties" : ([ "crafting_material" : 1 ]),
+    "properties" : ([ "autovalue" : 1, "crafting_material" : 1 ]),
     "additional_ids" : ({ "patch", "rabbit patch" })
 ])

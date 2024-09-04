@@ -89,7 +89,7 @@ void setup() {
  *              WIKI_DOC_ROOT directory in a structured format for use in
  *              generating documentation for the wiki.
  * @returns {mixed} - 1 if the scan was started successfully, an error message
- *                   if the scan is already running.
+ *                    if the scan is already running.
  */
 public nomask mixed autodoc_scan() {
     mixed *config ;

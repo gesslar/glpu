@@ -5,8 +5,7 @@
     "short" : "a sharp boar tusk",
     "long" : "This is a curved, sharp tusk from a wild boar. It could be used for crafting or as a primitive weapon.",
     "mass" : 20,
-    "value" : ({ 30, "copper" }),
     "material" : "bone",
     "additional_ids" : ({ "tooth" }),
-    "properties" : ([ "crafting_material" : 1 ])
+    "properties" : ([ "autovalue" : 1, "crafting_material" : 1 ])
 ])

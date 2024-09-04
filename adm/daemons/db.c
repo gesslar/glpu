@@ -110,7 +110,7 @@ void setup() {
 }
 
 /**
- * @local_function collate_data
+ * @function collate_data
  * @description Collates query result data into a more usable format.
  * @param {mixed[]} result - The raw query result.
  * @returns {mapping[]} - An array of mappings representing the collated data.
@@ -206,7 +206,7 @@ void lazy_query(string db, string q, mixed *callback) {
 }
 
 /**
- * @local_function execute_query
+ * @function execute_query
  * @description Executes a query in chunks, handling large result sets efficiently.
  * @param {string} db - The name of the database to query.
  * @param {string} q - The SQL query to execute.

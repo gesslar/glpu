@@ -8,40 +8,43 @@
  * @history
  * 2024-08-01 - Gesslar - Created
  * 2024-08-08 - Gesslar - Added save_var()
+ * 2024-08-08 - Gesslar - Changed to singular value without currency type.
  */
 
 #include <persist.h>
 
-private nosave int _amount = null;
-private nosave string _currency = null ;
-
+protected nosave int _amount = null;
 /**
- * @description Set the value of the object.
+ * @object_function set_value
+ * @description Set the value of the object. The value is stored as an integer
+ *              representing the value in the lowest denomination of currency.
  * @param {int} value - The value to set.
- * @param {string} currency - The currency to set.
  */
 
-void set_value(int value, string currency) {
-    save_var("_amount", "_currency");
+void set_value(int value) {
+    save_var("_amount");
 
     _amount = value;
-    _currency = currency;
 }
 
 /**
- * @description Query the value of the object.
- * @returns {mixed[]} - The value of the object. First element is the amount,
- *                      second element is the currency.
+ * @object_function query_value
+ * @description Query the value of the object. The value is returned as an
+ *              integer representing the value in the lowest denomination of
+ *              currency.
+ * @returns {int} - The value of the object.
  */
-mixed *query_value() {
-    return ({ _amount, _currency });
+int query_value() {
+    return _amount;
 }
 
 /**
- * @description Add to the value of the object.
+ * @object_function adjust_value
+ * @description Add to the value of the object. The value is added as an
+ *              integer representing the value in the lowest denomination of
+ *              currency.
  * @param {int} value - The value to add.
  */
-
 void adjust_value(int value) {
     _amount += value;
 }

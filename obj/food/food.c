@@ -32,8 +32,8 @@ void virtual_setup(mixed args...) {
         set_long(data["long"]);
     if (!nullp(data["mass"]))
         set_mass(data["mass"]);
-    if (!nullp(data["value"]) && pointerp(data["value"]) && sizeof(data["value"]) == 2)
-        set_value(data["value"][0], data["value"][1]);
+    if (!nullp(data["value"]))
+        set_value(data["value"]);
     if (!nullp(data["uses"]))
         set_uses(data["uses"]);
 

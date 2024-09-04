@@ -5,7 +5,7 @@
     "short" : "a piece of raw rabbit meat",
     "long" : "This is a small piece of raw meat from a rabbit. It needs to be cooked before eating.",
     "mass" : 15,
-    "value" : ({ 20, "copper" }),
+    "value" : 20,
     "uses" : 1,
     "additional_ids" : ({ "food" }),
     "properties" : ([ "raw" : 1 ])

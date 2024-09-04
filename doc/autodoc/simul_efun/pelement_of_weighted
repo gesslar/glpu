@@ -1,0 +1,12 @@
+mixed *pelement_of_weighted(int seed, mapping weights)
+
+Parameters:
+
+* `int seed` - The seed for random number generation.
+* `mapping weights` - A mapping where keys are items and values are weights.
+
+Returns
+
+`mixed*` - An array where the first element is the new seed and the second element is the randomly selected item based on the weights.
+
+Selects a random element based on weighted probabilities, along with a new seed.

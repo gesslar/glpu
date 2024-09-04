@@ -1,0 +1,12 @@
+mixed read_account(string name, string key)
+
+Parameters:
+
+* `string name` - The name of the account to read from.
+* `string key` - The key to read.
+
+Returns
+
+{mixed} The value of the key if found, 0 otherwise.
+
+Reads a specific key from an account.

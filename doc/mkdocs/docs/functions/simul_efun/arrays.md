@@ -46,6 +46,27 @@ int uniform_array(string type, mixed *arr)
 Checks if all elements in the input array are of the specified
 type. If the array is of size 0, it is considered uniform.
 
+## array_fill
+
+### Synopsis
+
+```c
+varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index)
+```
+
+### Parameters
+
+* `mixed* arr` - The array to fill.
+* `mixed value` - The value to fill the array with.
+* `int start_index` - The index at which to start filling the array. (optional)
+
+### Description
+
+Returns an array filled with the specified value. If no array
+is provided, an empty array is created. If no value is
+provided, 0 is used as the value to fill the array with. If no
+start index is provided, the array is filled from the end.
+
 ## remove_array_element
 
 ### Synopsis
@@ -70,6 +91,27 @@ Returns a new array containing the elements of the input array
 from index 0 to start-1, and from end+1 to the end of the input
 array. If start is greater than end, the new array will contain
 all the elements of the input array.
+
+## array_pad
+
+### Synopsis
+
+```c
+varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning)
+```
+
+### Parameters
+
+* `mixed* arr` - The array to pad.
+* `int size` - The size of the array to create.
+* `mixed value` - The value to fill the array with.
+* `int beginning` - Whether to fill the array from the beginning. (optional)
+
+### Description
+
+Returns a new array of the specified size, filled with the
+specified value. If the array is larger than the specified size,
+the array is truncated to the specified size.
 
 ## distinct_array
 

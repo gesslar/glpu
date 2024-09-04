@@ -5,6 +5,8 @@ title: simul_efun
 
 ## [arrays](arrays.md)
 
+* [array_fill](arrays.md#array_fill)
+* [array_pad](arrays.md#array_pad)
 * [distinct_array](arrays.md#distinct_array)
 * [remove_array_element](arrays.md#remove_array_element)
 * [reverse_array](arrays.md#reverse_array)

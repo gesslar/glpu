@@ -33,7 +33,9 @@
     "USE_MASS" : true,
     "AUTODOC_SOURCE_DIRS" : [
         "/adm/simul_efun/",
-        "/adm/daemons/"
+        "/adm/daemons/",
+        "/std/modules/",
+        "/std/object/"
     ],
     "DOC_DIR": "/doc/",
     "AUTODOC_ROOT" : "/doc/autodoc/",
@@ -45,7 +47,9 @@
         "developer" : [
             "autodoc/daemon_function",
             "autodoc/efun_override",
-            "autodoc/simul_efun"
+            "autodoc/simul_efun",
+            "autodoc/module_function",
+            "autodoc/object_function"
         ]
     },
     "CURRENCY" : [
@@ -137,5 +141,7 @@
         "shop"   : "/d/village/shop",
         "tavern" : "/d/village/tavern",
         "centre" : "/d/village/centre"
-    }
+    },
+    "COIN_VALUE_PER_LEVEL" : 15,
+    "COIN_VARIANCE" : 0.25
 }

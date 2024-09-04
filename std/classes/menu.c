@@ -8,7 +8,7 @@ class Menu {
     string *id ;
     string *adj ;
     string description ;
-    mixed *cost ;
+    int cost ;
 }
 
 #endif // __CLASS_MENU_H__

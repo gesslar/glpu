@@ -18,6 +18,6 @@ void setup() {
     set_short("a strawberry juice");
     set_long("A delicious strawberry juice.");
     set_mass(5);
-    set_value(2, "copper") ;
+    set_value(2) ;
     set_uses(5) ;
 }

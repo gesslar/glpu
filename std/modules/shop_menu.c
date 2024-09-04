@@ -37,7 +37,7 @@ void init_shop() {
  * @param {string} file - The file to add to the menu.
  * @param {mixed*} cost - The cost of the item.
  */
-varargs void add_menu_item(string type, string file, mixed *cost) {
+varargs void add_menu_item(string type, string file, int cost) {
     class Menu item ;
     object ob ;
     string err ;
@@ -104,10 +104,9 @@ mixed cmd_menu(object tp, string str) {
         return out + "No items for sale." ;
 
     foreach(item in items) {
-        out += sprintf("%s (%d %s)\n",
+        out += sprintf("%s (%d)\n",
             item.short,
-            item.cost[0],
-            item.cost[1]
+            item.cost
         ) ;
     }
 
@@ -143,7 +142,7 @@ mixed cmd_buy(object tp, string str) {
     if(!found)
         return "No such item for sale." ;
 
-    result = handle_transaction(tp, item.cost[0], item.cost[1]) ;
+    result = handle_transaction(tp, item.cost) ;
     if(stringp(result))
         return result ;
 
@@ -166,7 +165,7 @@ mixed cmd_buy(object tp, string str) {
 
     action = "$N $vbuy a $o for $o1" ;
     if(sizeof(change))
-        action += " and receive $o2 in change." ;
+        action += " and receive $o2 in change" ;
 
     action += "." ;
 

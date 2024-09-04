@@ -5,7 +5,7 @@
     "short" : "a chunk of raw pork",
     "long" : "This is a fresh chunk of raw pork from a wild boar. It needs to be cooked before eating.",
     "mass" : 30,
-    "value" : ({ 40, "copper" }),
+    "value" : 40,
     "uses" : 1,
     "properties" : ([ "food" : 1, "raw" : 1 ]),
     "additional_ids" : ({ "meat", "chunk", "raw meat" })

@@ -142,6 +142,26 @@ public string wrap(string str, int wrap_at, int indent_at)
 
 Wraps text to a specified width, preserving colour codes.
 
+## colour_to_rgb
+
+### Synopsis
+
+```c
+public int *colour_to_rgb(int colour_code)
+```
+
+### Parameters
+
+* `int colour_code` - The 256 colour code (0-255).
+
+### Returns
+
+{int[]} An array containing the RGB values.
+
+### Description
+
+Converts a 256 colour code to an RGB tuple.
+
 ## body_colour_replace
 
 ### Synopsis

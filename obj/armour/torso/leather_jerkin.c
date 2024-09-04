@@ -32,5 +32,5 @@ void setup() {
         "bludgeoning" : 1.0,
     ])) ;
 
-    set_value(25, "copper") ;
+    set_value(25) ;
 }
