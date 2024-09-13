@@ -6,6 +6,7 @@ private void setup_shorts() ;
 private void setup_longs() ;
 private void generate_maze() ; // Added forward declaration
 protected mixed *generate_map() ;
+private void generate_layer(int z) ;
 private void display_maze() ;
 private void display_layer(int z) ;
 private void connect_layers() ;
@@ -33,8 +34,13 @@ public int get_room_count() ;
 
 // The short descriptions for the maze.
 private nosave string *short_descriptions ;
+// Default short description for the maze.
+private nosave string default_short_description ;
+
 // The long descriptions for the maze.
-private nosave string long_description ;
+private nosave string *long_descriptions ;
+// Default long description for the maze.
+private nosave string default_long_description ;
 
 // Dimension configuration for the maze.
 // The first element is the minimum size and is added to the result of the
@@ -450,6 +456,8 @@ private void setup_shorts() {
     "Dark Passage",
     "Endless Hallway",
   }) ;
+
+  default_short_description = short_descriptions[0] ;
 }
 
 // Setup the long descriptions for the maze.
@@ -461,7 +469,7 @@ private void setup_longs() {
     "The hallway seems to go on forever, with no end in sight.",
   }) ;
 
-  long_description = "You stand in a maze, surrounded by high walls that "
+  default_long_description = "You stand in a maze, surrounded by high walls that "
     "block your view of the outside.";
 }
 
