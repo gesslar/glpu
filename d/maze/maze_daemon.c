@@ -1,16 +1,20 @@
 inherit STD_VIRTUAL_MAP;
 
+private void init_maze() ; // Added forward declaration
+private void setup_dimensions() ;
 private void setup_shorts() ;
 private void setup_longs() ;
-private void setup_dimensions() ;
-private int oob(int z, int y, int x) ;
+private void generate_maze() ; // Added forward declaration
 protected mixed *generate_map() ;
-private void generate_maze() ;
-private void generate_layer(int z) ;
-private void connect_layers() ;
-private mixed *find_layer_connections(int z) ;
 private void display_maze() ;
 private void display_layer(int z) ;
+private void connect_layers() ;
+private mixed *find_layer_connections(int z) ;
+private void determine_exits_and_entrances() ;
+private void determine_centre_room(int z) ;
+private int *query_centre_room(int z) ;
+private mixed *query_centre_rooms() ;
+private int oob(int z, int y, int x) ;
 private string clear_wall(int z, int y, int x) ;
 private string set_wall(int z, int y, int x) ;
 public int is_wall(int z, int y, int x) ;
@@ -25,14 +29,11 @@ private string set_up(int z, int y, int x) ;
 public int is_up(int z, int y, int x) ;
 private int *find_neighbour_path(int z, int y, int x, int source) ;
 private void connect_to_neighbour_path(int *curr, mixed *neighbours) ;
-private void determine_exits_and_entrances() ;
-private void determine_centre_room(int z) ;
-private int *query_centre_room(int z) ;
-private mixed *query_centre_rooms() ;
-private void init_maze() ;
+public int get_room_count() ;
 
+// The short descriptions for the maze.
 private nosave string *short_descriptions ;
-private nosave string *long_descriptions ;
+// The long descriptions for the maze.
 private nosave string long_description ;
 
 // Dimension configuration for the maze.
