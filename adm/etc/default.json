@@ -132,7 +132,7 @@
     ],
     "STORAGE_DATA_DIR" : "/data/storage/",
     "GUI" : true,
-    "WAYPOINTS_MAX" : 5,
+    "WAYPOINTS_MAX" : 10,
     "TRAVEL_DESTINATIONS" : {
         "bank"   : "/d/village/financier",
         "bakery" : "/d/village/bakery",
