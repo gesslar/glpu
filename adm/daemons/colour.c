@@ -28,6 +28,7 @@ string body_colour_replace(object body, string text, int message_type);
 private int too_dark_check();
 private mapping too_dark_map();
 public int *colour_to_rgb(int color_code);
+public int rgb_to_colour(int r, int g, int b);
 
 private nosave string *fg_codes = ({ }) ;
 private nosave string *bg_codes = ({ }) ;
@@ -537,4 +538,31 @@ public int *colour_to_rgb(int colour_code) {
     }
 
     return ({ r, g, b });
+}
+
+/**
+ * @daemon_function rgb_to_colour
+ * @description Converts RGB values to a 256 colour code.
+ * @param {int} r - The red component (0-255).
+ * @param {int} g - The green component (0-255).
+ * @param {int} b - The blue component (0-255).
+ * @returns {int} The corresponding 256 colour code.
+ */
+public int rgb_to_colour(int r, int g, int b) {
+    if(r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+        error("Invalid RGB values: " + r + ", " + g + ", " + b);
+
+    if (r == g && g == b)
+        // Grayscale
+        return (r - 8) / 10 + 232; // 232-255 maps to 8-255
+    else if (r >= 0 && r < 128 && g >= 0 && g < 128 && b >= 0 && b < 128)
+        // Standard colors
+        return (r > 0 ? 1 : 0) + (g > 0 ? 2 : 0) + (b > 0 ? 4 : 0);
+    else {
+        // 6x6x6 color cube
+        int cube_r = r / 51;
+        int cube_g = g / 51;
+        int cube_b = b / 51;
+        return 16 + (cube_r * 36) + (cube_g * 6) + cube_b;
+    }
 }

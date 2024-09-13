@@ -99,6 +99,28 @@ string substitute_too_dark(string text)
 
 Substitutes a colour if it's considered too dark.
 
+## rgb_to_colour
+
+### Synopsis
+
+```c
+public int rgb_to_colour(int r, int g, int b)
+```
+
+### Parameters
+
+* `int r` - The red component (0-255).
+* `int g` - The green component (0-255).
+* `int b` - The blue component (0-255).
+
+### Returns
+
+{int} The corresponding 256 colour code.
+
+### Description
+
+Converts RGB values to a 256 colour code.
+
 ## substitute_colour
 
 ### Synopsis

@@ -10,7 +10,7 @@ protected nosave int *_seed = ({ 10, 20 }) ;
 
 void seed(mixed seed);
 
-void init_noise(int width, int height, int seed) {
+mixed *init_noise(int width, int height, int seed) {
   grad3 = ({
     ({1,1,0}) , ({-1,1,0}) , ({1,-1,0}) , ({-1,-1,0}),
     ({1,0,1}) , ({-1,0,1}) , ({1,0,-1}) , ({-1,0,-1}),
@@ -42,6 +42,8 @@ void init_noise(int width, int height, int seed) {
   _grid_size = ({width, height});
 
   seed(seed);
+
+  return _seed ;
 }
 
 int *get_seed() {

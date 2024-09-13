@@ -40,6 +40,7 @@ title: daemon_function
 * [get_colour_list](colour.md#get_colour_list)
 * [is_too_dark](colour.md#is_too_dark)
 * [resync](colour.md#resync)
+* [rgb_to_colour](colour.md#rgb_to_colour)
 * [substitute_colour](colour.md#substitute_colour)
 * [substitute_too_dark](colour.md#substitute_too_dark)
 * [token_to_colour](colour.md#token_to_colour)
