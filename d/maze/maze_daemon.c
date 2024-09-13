@@ -46,7 +46,7 @@ private nosave string default_long_description ;
 // The first element is the minimum size and is added to the result of the
 // prandom function applied to the second element to get the actual size.
 // It is in the order of z, y, x.
-private nosave mixed *dimension_config = ({ ({ 1, 1 }), ({ 10, 10 }), ({ 40, 10 }),  }) ;
+private nosave mixed *dimension_config = ({ ({ 2, 2 }), ({ 10, 10 }), ({ 40, 10 }),  }) ;
 private nosave int *dimensions ;
 
 // Some constants
@@ -84,8 +84,8 @@ private nosave mapping DIRECTIONS = ([
   "south" : (["dz":  0, "dy":  1, "dx":  0]),
   "east"  : (["dz":  0, "dy":  0, "dx":  1]),
   "west"  : (["dz":  0, "dy":  0, "dx": -1]),
-  "up"    : (["dz": -1, "dy":  0, "dx":  0]),
-  "down"  : (["dz":  1, "dy":  0, "dx":  0]),
+  "up"    : (["dz":  1, "dy":  0, "dx":  0]),
+  "down"  : (["dz": -1, "dy":  0, "dx":  0]),
 ]) ;
 
 void setup() {
@@ -533,7 +533,7 @@ public void setup_exits(object room) {
   }
 
   // Set the room icon for the centre of the room. Use the red X emoji.
-  if(x == query_centre_room(z)[2] && y == query_centre_room(z)[1] && z == query_centre_room(z)[0])
+  if(x == query_centre_room(layer)[2] && y == query_centre_room(layer)[1] && z == query_centre_room(layer)[0])
     room->set_room_icon("🧭") ;
 }
 
