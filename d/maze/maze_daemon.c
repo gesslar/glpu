@@ -35,25 +35,43 @@ private nosave string *short_descriptions ;
 private nosave string *long_descriptions ;
 private nosave string long_description ;
 
+// Dimension configuration for the maze.
+// The first element is the minimum size and is added to the result of the
+// prandom function applied to the second element to get the actual size.
+// It is in the order of z, y, x.
 private nosave mixed *dimension_config = ({ ({ 1, 1 }), ({ 10, 10 }), ({ 40, 10 }),  }) ;
 private nosave int *dimensions ;
+
+// Some constants
 private nosave int DEPTH = 0, HEIGHT = 1, WIDTH = 2;
 private nosave int FOREST = 0, WASTES = 1;
 private nosave int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
+
+// Exits out of the maze.
 private nosave mixed *exits_out = allocate(2) ; // north, east
+// External entrances to the maze.
 private nosave mixed *external_entrances = allocate(2) ; // forest, wastes
+// The centre rooms of the maze.
 private nosave mixed *centre_rooms ;
+// The seed for the random number generator.
 // private nosave mixed seed = BOOT_D->query_boot_number() ;
 private nosave mixed seed = 42 ;
+// The maze.
 private nosave mixed *maze ;
 
+// Bitwise flags for the maze.
 private nosave int WALL = (1<<1) ;
 private nosave int PATH = (1<<2) ;
 private nosave int UP   = (1<<3) ;
 private nosave int DOWN = (1<<4) ;
+
+// The number of rooms in the maze.
 private nosave int room_count = 0 ;
 
+// The minimum and maximum coordinates for the maze.
 private nosave int MIN_X, MIN_Y, MAX_X, MAX_Y, MIN_Z, MAX_Z;
+// The directions for the maze. Used to calculate the coordinates of the
+// neighbouring cells.
 private nosave mapping DIRECTIONS = ([
   "north" : (["dz":  0, "dy": -1, "dx":  0]),
   "south" : (["dz":  0, "dy":  1, "dx":  0]),
@@ -828,6 +846,11 @@ public void setup_short(object room, string file) {
 // Setup the long description for a room.
 public void setup_long(object room, string file) {
   room->set_long(element_of(long_descriptions)) ;
+}
+
+// Get the number of rooms in the maze.
+int get_room_count() {
+  return room_count ;
 }
 
 // Display the maze.
