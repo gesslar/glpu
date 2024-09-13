@@ -11,7 +11,6 @@ private void connect_layers() ;
 private mixed *find_layer_connections(int z) ;
 private void display_maze() ;
 private void display_layer(int z) ;
-private mixed *shuffle_array(mixed *arr) ;
 private string clear_wall(int z, int y, int x) ;
 private string set_wall(int z, int y, int x) ;
 public int is_wall(int z, int y, int x) ;
@@ -68,12 +67,18 @@ void setup() {
   if(dimensions)
     return ;
 
-  rm("/d/maze/debug.txt") ;
+  // Apply the map generator. This will generate the maze.
   apply_map_generator((: generate_map :)) ;
+
+  // Setup the short and long descriptions for use when the room is first
+  //created.
   setup_shorts() ;
   setup_longs() ;
 }
 
+/**
+ * Setup the dimensions of the maze. This will set the depth, height and width
+ */
 private void setup_dimensions() {
   mixed *result ;
 
@@ -100,9 +105,17 @@ private void setup_dimensions() {
   MIN_X = 0 ;
   MAX_X = dimensions[WIDTH] - 1 ;
 
+  // Allocate the centre rooms array.
   centre_rooms = allocate(dimensions[DEPTH]) ;
 }
 
+/**
+ * Generate the maze. This will generate the maze layer by layer. Once it has
+ * generated the maze, it will connect the layers together and determine the
+ * exits from and entrances to the maze from the forest and wastes.
+ *
+ * @return The maze.
+ */
 protected mixed *generate_map() {
   int z ;
 
@@ -120,12 +133,20 @@ protected mixed *generate_map() {
   return maze ;
 }
 
+/**
+ * Generate a layer of the maze. This will generate a layer of the maze. It
+ * uses a depth-first search algorithm to generate the maze.
+ *
+ * @param z The layer to generate.
+ */
 private void generate_layer(int z) {
   int start_x, start_y;
   mixed *stack = ({});
   mapping *directions = ({ }) ;
   mixed *result ;
 
+  // Setup the directions array. We are not using up and down as we will handle
+  // them later when we connect the layers.
   foreach(string dir, mapping info in DIRECTIONS)
     if(dir != "up" && dir != "down")
       directions += ({ ([ "dir" : dir, ]) + info }) ;
@@ -141,8 +162,11 @@ private void generate_layer(int z) {
   if(!set_path(z, start_y, start_x))
     return ;
 
+  // Add the starting point to the stack, so we will begin generating from
+  // here.
   stack += ({ (["x": start_x, "y": start_y]) }) ;
 
+  // While we still have points to process, keep generating the maze.
   while(sizeof(stack) > 0) {
     mapping current = stack[<1] ;
     mapping *shuffled_directions ;
@@ -152,7 +176,16 @@ private void generate_layer(int z) {
     seed = result[0] ;
     shuffled_directions = result[1] ;
 
+    // Try to find a neighbour to connect to. It does this because the map
+    // is all walls at the start, so we need to set a path. We iterate over
+    // the shuffled directions and try to find a room that is not on the
+    // boundary and is a wall. If we find one, we change the current cell
+    // to a path and the cell in the direction we are trying to set to a path.
+    // Then we add the target cell to the stack to be processed later.
     foreach(mapping dir in shuffled_directions) {
+      // Calculate the coordinates of the cell in the direction we are trying
+      // to set. We add the direction's dx and dy to the current cell's x and y
+      // to get the cell in the direction we are trying to set.
       int nx = current["x"] + (dir["dx"] * 2) ;
       int ny = current["y"] + (dir["dy"] * 2) ;
 
@@ -173,11 +206,15 @@ private void generate_layer(int z) {
       break;
     }
 
+    // If we don't find a neighbour, we remove the current cell from the stack.
     if(!found_neighbour)
       stack = stack[0..<2];  // Remove the last element
   }
 }
 
+// Connect the layers together. This will connect the layers together by
+// setting the down and up bits for the current layer and the layer below in
+// the connections returned by find_layer_connections.
 private void connect_layers() {
   int z ;
   int i, sz ;
@@ -195,6 +232,9 @@ private void connect_layers() {
   }
 }
 
+// Finds all paths on the current layer that have a corresponding path set
+// at the same x,y coordinates in the layer below. Returns an array of
+// 1-3 random connections.
 mixed *find_layer_connections(int z) {
   int *possible_down_exits ;
   int *possible_up_exits ;
@@ -232,31 +272,14 @@ mixed *find_layer_connections(int z) {
   return connections ;
 }
 
-private mixed *shuffle_array(mixed *arr) {
-  mixed *shuffled = allocate(sizeof(arr));
-  int i, j, temp;
-
-  for(i = 0; i < sizeof(arr); i++)
-    shuffled[i] = arr[i] ;
-
-  for(i = sizeof(shuffled) - 1; i > 0; i--) {
-    mixed *result = prandom(seed, i + 1) ;
-    seed = result[0] ;
-    j = result[1] ;
-    temp = shuffled[i] ;
-    shuffled[i] = shuffled[j] ;
-    shuffled[j] = temp ;
-  }
-
-  return shuffled ;
-}
-
+// Check if the coordinates are out of bounds.
 public int oob(int z, int y, int x) {
   return z < MIN_Z || z > MAX_Z ||
          y < MIN_Y || y > MAX_Y ||
          x < MIN_X || x > MAX_X ;
 }
 
+// Clear a wall at the given coordinates.
 private string clear_wall(int z, int y, int x) {
   string result;
 
@@ -280,6 +303,7 @@ private string set_wall(int z, int y, int x) {
   return result;
 }
 
+// Check if the coordinates are a wall.
 public int is_wall(int z, int y, int x) {
   if(oob(z, y, x))
     return 0;
@@ -287,6 +311,7 @@ public int is_wall(int z, int y, int x) {
   return test_bit(maze[z][y][x], WALL) ;
 }
 
+// Clear a path at the given coordinates.
 private string clear_path(int z, int y, int x) {
   string result ;
 
@@ -310,6 +335,7 @@ private string set_path(int z, int y, int x) {
   return result ;
 }
 
+// Check if the coordinates are a path.
 public int is_path(int z, int y, int x) {
   if(oob(z, y, x))
     return 0 ;
@@ -317,6 +343,7 @@ public int is_path(int z, int y, int x) {
   return test_bit(maze[z][y][x], PATH) ;
 }
 
+// Clear a down connection at the given coordinates.
 private string clear_down(int z, int y, int x) {
   string result ;
 
@@ -328,6 +355,7 @@ private string clear_down(int z, int y, int x) {
   return result ;
 }
 
+// Set a down connection at the given coordinates.
 private string set_down(int z, int y, int x) {
   string result ;
 
@@ -339,6 +367,7 @@ private string set_down(int z, int y, int x) {
   return result ;
 }
 
+// Check if the coordinates are a down connection.
 public int is_down(int z, int y, int x) {
   if(oob(z, y, x))
     return 0 ;
@@ -346,6 +375,7 @@ public int is_down(int z, int y, int x) {
   return test_bit(maze[z][y][x], DOWN) ;
 }
 
+// Clear an up connection at the given coordinates.
 private string clear_up(int z, int y, int x) {
   string result ;
 
@@ -357,6 +387,7 @@ private string clear_up(int z, int y, int x) {
   return result ;
 }
 
+// Set an up connection at the given coordinates.
 private string set_up(int z, int y, int x) {
   string result ;
 
@@ -368,6 +399,7 @@ private string set_up(int z, int y, int x) {
   return result ;
 }
 
+// Check if the coordinates are an up connection.
 public int is_up(int z, int y, int x) {
   if(oob(z, y, x))
     return 0 ;
@@ -375,6 +407,8 @@ public int is_up(int z, int y, int x) {
   return test_bit(maze[z][y][x], UP) ;
 }
 
+// Initialize the maze. This will initialize the maze by allocating the maze
+// array and setting all of the elements to a wall.
 private void init_maze() {
   mixed *arr ;
   int y, z ;
@@ -389,6 +423,7 @@ private void init_maze() {
   maze = arr ;
 }
 
+// Setup the short descriptions for the maze.
 private void setup_shorts() {
   short_descriptions = ({
     "Twisting Path",
@@ -398,6 +433,7 @@ private void setup_shorts() {
   }) ;
 }
 
+// Setup the long descriptions for the maze.
 private void setup_longs() {
   long_descriptions = ({
     "The maze twists and turns, with walls of stone looming on either side.",
@@ -410,6 +446,8 @@ private void setup_longs() {
     "block your view of the outside.";
 }
 
+// Setup the exits for the maze. This will setup the exits for the maze by
+// adding the exits to the room.
 public void setup_exits(object room) {
   int *coords = room->get_virtual_coordinates() ;
   int x, y, z, layer ;
@@ -473,6 +511,9 @@ public void setup_exits(object room) {
 }
 
 private nosave string wastes_daemon = "/d/wastes/wastes_daemon" ;
+// Determine the exits and entrances for the maze. This will determine the
+// exits and entrances for the maze by finding a valid entrance from the
+// forest and a valid entrance from the wastes.
 void determine_exits_and_entrances() {
   int *possible, steps, selected ;
   mixed *result ;
@@ -590,6 +631,10 @@ void determine_exits_and_entrances() {
   }
 }
 
+// Connect to a neighbour path. This will connect to a neighbour path by
+// carving out a path between the current coordinates and the destination
+// coordinates. This function is used to connect the maze to the forest and
+// the wastes.
 private void connect_to_neighbour_path(int *curr, mixed *neighbours) {
   int *mods = neighbours[0] ;
   int *dest = neighbours[1] ;
@@ -611,6 +656,9 @@ private void connect_to_neighbour_path(int *curr, mixed *neighbours) {
     new_x != dest[2]) ;
 }
 
+// Find a neighbour path. This will find a neighbour path by checking the
+// surrounding coordinates for a path. This function is used to find a path
+// to connect the maze to the forest and the wastes.
 mixed *find_neighbour_path(int z, int y, int x, int source) {
   int *neighbour ;
   int *current = ({ z, y, x }) ;
@@ -691,8 +739,8 @@ mixed *find_neighbour_path(int z, int y, int x, int source) {
   return null ;
 }
 
-// Determine the centre room of the maze. It is the room that is closest to
-// the centre of the maze that is a path room.
+// Determine the centre room of a layer of the maze. It is the room that is
+// closest to the centre of the maze that is a path room.
 private void determine_centre_room(int z) {
   // Initialise the centre room to the middle of the maze
   int *centre = ({ z, MAX_Y/2, MAX_X/2, }) ;
@@ -736,30 +784,40 @@ private void determine_centre_room(int z) {
   centre_rooms[z] = centre ;
 }
 
+// Query the centre rooms of the maze.
 mixed *query_centre_rooms() {
   return centre_rooms ;
 }
 
+// Query the centre room of a layer of the maze.
 int *query_centre_room(int z) {
+  if(z < 0 || z >= dimensions[DEPTH])
+    return 0 ;
+
   return centre_rooms[z] ;
 }
 
+// Query the north exit of the maze to the forest.
 int *query_north_exit() {
   return exits_out[FOREST] ;
 }
 
+// Query the east exit of the maze to the wastes.
 int *query_east_exit() {
   return exits_out[WASTES] ;
 }
 
+// Query the north entrance of the maze from the forest.
 int *query_north_entrance() {
   return external_entrances[FOREST] ;
 }
 
+// Query the east entrance of the maze from the wastes.
 int *query_east_entrance() {
   return external_entrances[WASTES] ;
 }
 
+// Setup the short description for a room.
 public void setup_short(object room, string file) {
   int x, y, z ;
 
@@ -767,10 +825,12 @@ public void setup_short(object room, string file) {
   room->set_short(element_of(short_descriptions) + " (Level "+(abs(z)+1)+")") ;
 }
 
+// Setup the long description for a room.
 public void setup_long(object room, string file) {
   room->set_long(element_of(long_descriptions)) ;
 }
 
+// Display the maze.
 void display_maze() {
   int x, y, z ;
   string out = "" ;
@@ -790,6 +850,7 @@ void display_maze() {
   }
 }
 
+// Display a layer of the maze.
 void display_layer(int z) {
   int x, y ;
   string out = "" ;
