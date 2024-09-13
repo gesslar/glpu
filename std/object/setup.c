@@ -15,13 +15,13 @@ varargs void setup_chain(mixed args...) {
     call_if(this_object(), "mudlib_setup", args...) ;
 
     x = 5 ;
-    while(x--)
+    for(x = 0; x < 5; x++)
         call_if(this_object(), "pre_setup_"+x, args...) ;
 
     call_if(this_object(), "setup", args...) ;
 
     x = 5 ;
-    while(x--)
+    for(x = 0; x < 5; x++)
         call_if(this_object(), "post_setup_"+x, args...) ;
 
     if(call_if(this_object(), "query_persistent")) {
@@ -41,14 +41,12 @@ void unsetup_chain() {
 
     call_if(this_object(), "mudlib_unsetup", previous_object(1)) ;
 
-    x = 5 ;
-    while(x--)
+    for(x = 0; x < 5; x++)
         call_if(this_object(), "pre_unsetup_"+x, previous_object(1)) ;
 
     call_if(this_object(), "unsetup", previous_object(1)) ;
 
-    x = 5 ;
-    while(x--)
+    for(x = 0; x < 5; x++)
         call_if(this_object(), "post_unsetup_"+x, previous_object(1)) ;
 
     if(call_if(this_object(), "query_persistent")) {
@@ -63,8 +61,7 @@ varargs void virtual_setup_chain(mixed args...) {
 
     call_if(this_object(), "virtual_mudlib_setup", args...);
 
-    x = 5;
-    while(x--)
+    for(x = 0; x < 5; x++)
         call_if(this_object(), "pre_virtual_setup_" + x, args...);
 
     call_if(this_object(), "virtual_setup", args...);

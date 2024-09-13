@@ -6,75 +6,98 @@
 
 */
 
-inherit STD_DAEMON ;
-
-string *history = ({});
-string module_name = query_file_name(this_object()) ;
+inherit __DIR__ "channel" ;
 
 void setup() {
-     set_no_clean(1) ;
+  channel_names = ({ "announce" });
 
-     CHAN_D->register_module(module_name, file_name());
-     CHAN_D->register_channel(module_name, "announce");
+  slot(SIG_USER_LOGIN, "announce_login") ;
+  slot(SIG_USER_LOGOUT, "announce_logoff") ;
+  slot(SIG_SYS_CRAWL_COMPLETE, "announce_crawl_complete") ;
+}
 
-     slot(SIG_USER_LOGIN, "announce_login") ;
-     slot(SIG_USER_LOGOUT, "announce_logoff") ;
+int is_allowed(string channel, string name) {
+  return 1;
 }
 
 int rec_msg(string chan, string usr, string msg) {
-     object ob;
+  object tp ;
 
-     switch(msg) { /* We could do some neat stuff here! */
-          case "/last" : {
-               ob = find_player(usr);
+  switch(msg) { /* We could do some neat stuff here! */
+    case "/last" : {
+      string *last_messages = last_messages(chan, 15);
 
-               if(!sizeof(history)) tell_object(ob, module_name + ": "
-                "Channel " + chan + " has no history yet.\n");
-               else tell_object(ob,
-                    implode(history[(sizeof(history) - 15)..(sizeof(history) - 1)], ""));
+      tp = find_player(usr);
 
-               return 1;
-          }
-     }
+      tell(tp, implode(last_messages, "\n"));
 
-    if(!adminp(usr)) return 0;
+      return 1;
+    }
+  }
 
-    CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n");
+  if(!adminp(usr))
+   return 0;
 
-    history += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " +
-            capitalize(usr) + ": " + msg + "\n" });
+  CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n");
 
-    return 1;
+  add_history("announce", sprintf("%s %s [%s] %s: %s\n",
+    ldate(time(),1),
+    ltime(),
+      capitalize(chan),
+      capitalize(usr),
+      msg
+  ));
+
+  return 1;
 }
 
 void announce_login(object user) {
-     string name = capitalize(query_privs(user));
+  string name = capitalize(query_privs(user));
 
-    CHAN_D->rec_msg("announce",
-          "[Announce] System: "
-          + name + " has logged into "
-          + mud_name() + ".\n");
-    history += ({ ldate(time(),1) +" "+ltime()
-          + " [Announce] System: "
-          + name + " has logged into "
-          + mud_name() + ".\n" }
-     );
+  CHAN_D->rec_msg("announce",
+    sprintf("[Announce] System: %s has logged into %s.\n", name, mud_name()));
+
+  add_history("announce",
+    sprintf("%s %s [%s] %s: %s\n",
+      ldate(time(),1),
+      ltime(),
+      capitalize(module_name),
+      capitalize(name),
+      "has logged into " + mud_name() + "."
+    )
+  );
 }
 
 void announce_logoff(object user) {
-     string name = capitalize(query_privs(user));
+  string name = capitalize(query_privs(user));
 
-     CHAN_D->rec_msg("announce",
-          "[Announce] System: "
-          + name + " has left "
-          + mud_name() + ".\n");
-     history += ({ ldate(time(),1) +" "+ltime()
-          + " [Announce] System: "
-          + name + " has left "
-          + mud_name() + ".\n" }
-     );
+  CHAN_D->rec_msg("announce",
+    sprintf("[Announce] System: %s has left %s.\n", name, mud_name()));
+
+  add_history("announce",
+    sprintf("%s %s [%s] %s: %s\n",
+      ldate(time(),1),
+      ltime(),
+      capitalize(module_name),
+      capitalize(name),
+      "has left " + mud_name() + "."
+    )
+  );
 }
 
-int is_allowed(string channel, string usr, int flag: (: 0 :)) {
-    return 1;
+void announce_crawl_complete(mixed arg...) {
+  string name = "System" ;
+
+  CHAN_D->rec_msg("announce",
+    sprintf("[Announce] System: Coordinate crawler has completed.\n"));
+
+  add_history("announce",
+    sprintf("%s %s [%s] %s: %s\n",
+      ldate(time(),1),
+      ltime(),
+      capitalize(module_name),
+      capitalize(name),
+      "Coordinate crawler has completed."
+    )
+  );
 }

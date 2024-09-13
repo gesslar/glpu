@@ -109,10 +109,10 @@ title: simul_efun
 
 ## [numbers](numbers.md)
 
+* [clamp](numbers.md#clamp)
 * [evaluate_number](numbers.md#evaluate_number)
 * [percent](numbers.md#percent)
 * [percent_of](numbers.md#percent_of)
-* [range](numbers.md#range)
 * [remainder](numbers.md#remainder)
 * [sum](numbers.md#sum)
 
@@ -154,10 +154,12 @@ title: simul_efun
 * [pelement_of](random.md#pelement_of)
 * [pelement_of_weighted](random.md#pelement_of_weighted)
 * [prandom](random.md#prandom)
+* [prandom_clamp](random.md#prandom_clamp)
 * [prandom_float](random.md#prandom_float)
-* [prandom_range](random.md#prandom_range)
+* [pshuffle](random.md#pshuffle)
+* [random_clamp](random.md#random_clamp)
 * [random_float](random.md#random_float)
-* [random_range](random.md#random_range)
+* [sanitize_seed](random.md#sanitize_seed)
 
 ## [resolve_path](resolve_path.md)
 

@@ -19,11 +19,11 @@ inherit M_LOG ;
 private nomask int boot_number ;
 
 void setup() {
-    int result ;
+  int result ;
 
-    set_log_level(0) ;
-    set_persistent(1) ;
-    result = slot(SIG_SYS_BOOT, "boot") ;
+  set_log_level(0) ;
+  set_persistent(1) ;
+  result = slot(SIG_SYS_BOOT, "boot") ;
 }
 
 /**
@@ -31,12 +31,12 @@ void setup() {
  * @description Called from the master object when the mud boots up.
  */
 void boot(mixed arg...) {
-    if(previous_object() != signal_d())
-        return ;
+  if(previous_object() != signal_d())
+    return ;
 
-    _log(1, "Boot #%d loaded.", ++boot_number) ;
+  _log(1, "Boot #%d loaded.", ++boot_number) ;
 
-    save_data() ;
+  save_data() ;
 }
 
 /**
@@ -45,5 +45,5 @@ void boot(mixed arg...) {
  * @returns {int} - current boot number
  */
 int query_boot_number() {
-    return boot_number ;
+  return boot_number ;
 }

@@ -19,6 +19,7 @@
 #define SIG_SYS_REBOOTING           105
 #define SIG_SYS_REBOOT_CANCEL       106
 #define SIG_SYS_PERSIST             107
+#define SIG_SYS_CRAWL_COMPLETE      108
 
 // Standard user signals
 #define SIG_USER_LOGIN              200

@@ -523,7 +523,7 @@ float add_seen_threat(object enemy, float amount) {
 float add_attack_speed(float amount) {
     attack_speed += amount;
 
-    attack_speed = range(0.5, 10.0, attack_speed);
+    attack_speed = clamp(0.5, 10.0, attack_speed);
 
     return attack_speed;
 }

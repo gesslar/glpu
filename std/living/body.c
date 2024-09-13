@@ -153,13 +153,17 @@ void die() {
 }
 
 varargs int move(mixed ob, int flag) {
-    int result = ::move(ob) ;
+    int result ;
+    object env ;
+
+    env = environment() ;
+    result = ::move(ob) ;
 
     if(result)
         return result ;
 
-    ob = environment() ;
-    set_last_location(ob) ;
+    if(env)
+        set_last_location(env) ;
 
     return result ;
 }

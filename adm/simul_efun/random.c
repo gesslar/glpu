@@ -1,198 +1,5 @@
 #include <simul_efun.h>
 
-private nosave int _system_seed = random(time()) ;
-
-// xorshift.h
-// Pseudo-random repeatable number generator
-// Kryssa@SWmud, August 2022
-// Taken from "Xorshift RNGs" by George Marsaglia at Florida State University
-
-//upper limit of 32-bit int
-#define XORSHIFT_32_MAX     0xFFFFFFFF
-
-//make sure the seed is within 1 to 4294967295
-private int _sanitize_seed(int seed) {
-  return (abs(seed) % XORSHIFT_32_MAX) || XORSHIFT_32_MAX;
-}
-
-//pseudo-random number via seed single step.
-//Minimum seed 1 enforced by override.
-//Maximum seed 4294967295 enforced by override.
-private int _step_xorshift32(int seed) {
-  //Force seed to stay between 1 and max uint32
-  int register = _sanitize_seed(seed);
-
-  //This seems dumb, but we're on 64 bit signed-only.
-  //So, we've gotta fake unsigned 32 bit.
-  register = (register ^ (register << 13)) & XORSHIFT_32_MAX;
-  register = (register ^ (register >> 17)) & XORSHIFT_32_MAX;
-  register = (register ^ (register <<  5)) & XORSHIFT_32_MAX;
-
-  return register;
-}
-
-//seed generator for within the range of the xorshift32
-//Just grab a random within 1 to 4294967295
-int seed_generator() {
-  return random( XORSHIFT_32_MAX ) + 1;
-}
-
-//get a psuedo-random number using a random number seed.
-//returns the seed_result class containing the next seed and the result
-int *prandom(int seed, int size) {
-  int *result = allocate(2) ;
-  int work ;
-
-  if(seed == -1) {
-    _system_seed = _step_xorshift32(_system_seed);
-    work = _system_seed ;
-    result[0] = -1 ;
-  } else {
-    seed = _sanitize_seed(seed);
-    result[0] = _step_xorshift32(seed);
-    work = result[0] ;
-  }
-
-  result[1] = work % size;
-
-  return result;
-}
-
-float *prandom_float(int seed, float size) {
-  mixed *result = allocate(2) ;
-  int work ;
-
-  if(seed == -1) {
-    _system_seed = _step_xorshift32(_system_seed);
-    work = _system_seed ;
-    result[0] = -1 ;
-  } else {
-    seed = _sanitize_seed(seed);
-    result[0] = _step_xorshift32(seed);
-    work = result[0] ;
-  }
-
-  // Update to generate a float between 0 and size
-  result[1] = (work % to_int(size)) * (size / to_int(size));
-
-  return result;
-}
-
-//shuffle an array using a random number seed.
-//returns the seed_result class containing the next seed and the result
-mixed *pshuffle(int seed, mixed *arr) {
-  mixed *new_arr ;
-  int index ;
-  mixed *result = allocate(2) ;
-  int work ;
-
-  //if null or not array return 0;
-  if(!arr || !arrayp(arr))
-    return 0;
-
-  if(seed == -1) {
-    _system_seed = _step_xorshift32(_system_seed);
-    work = _system_seed ;
-    result[0] = -1 ;
-  } else {
-    seed = _sanitize_seed(seed);
-    result[0] = _step_xorshift32(seed);
-    work = result[0] ;
-  }
-
-  index = sizeof(arr);
-  new_arr = copy(arr);
-
-  while(index--) {
-    int random_index = work % index;
-    mixed tmp;
-
-    tmp = new_arr[index];
-    new_arr[index] = new_arr[random_index];
-    new_arr[random_index] = tmp;
-    work = _step_xorshift32(work);
-  }
-
-  if(result[0] == -1)
-    _system_seed = work ;
-
-  result[1] = new_arr;
-
-  return result;
-}
-
-//gets an element from an array using a random number seed.
-//returns the seed_result class containing the next seed and the result
-mixed *pelement_of(int seed, mixed *arr) {
-  mixed *result = allocate(2) ;
-  int work ;
-
-  //if no items or not an array return 0;
-  if(!sizeof(arr) || !arrayp(arr))
-    return 0;
-
-  if(seed == -1) {
-    _system_seed = _step_xorshift32(_system_seed);
-    result[0] = -1 ;
-    work = _system_seed ;
-  } else {
-    seed = _sanitize_seed(seed);
-    result[0] = _step_xorshift32(seed);
-    work = result[0] ;
-  }
-
-  result[1] = arr[work % sizeof(arr)];
-
-  return result;
-}
-
-int *prandom_range(int seed, int min, int max) {
-  int *result ;
-
-  if(min >= max)
-    return ({ seed, min });
-
-  result = prandom(seed, max - min + 1);
-  result[1] += min;
-
-  return result;
-}
-
-/**
- * @simul_efun pelement_of_weighted
- * @description Selects a random element based on weighted probabilities, along with a new seed.
- * @param {int} seed - The seed for random number generation.
- * @param {mapping} weights - A mapping where keys are items and values are weights.
- * @returns {mixed[]} - An array where the first element is the new seed and
- *                      the second element is the randomly selected item based on the weights.
- */
-mixed *pelement_of_weighted(int seed, mapping weights) {
-  float total = 0.0;
-  mixed *items = keys(weights);
-  mixed *float_result;
-  float roll;
-  mixed *result = allocate(2) ;
-
-  if(!sizeof(items))
-    return 0 ;
-
-  total = sum(values(weights));
-
-  float_result = prandom_float(seed, total);
-  result[0] = float_result[0];
-  roll = float_result[1];
-
-  foreach(mixed item, int weight in weights) {
-    if(roll < weight) {
-      result[1] = item ;
-      break ;
-    }
-    roll -= weight;
-  }
-
-  return result;
-}
-
 /**
  * @simul_efun random_float
  * @description Generates a random float between 0 and upper_bound.
@@ -237,23 +44,255 @@ mixed element_of_weighted(mapping m) {
 }
 
 /**
- * @simul_efun random_range
+ * @simul_efun random_clamp
  * @description Generates a random integer within a specified range.
  * @param {int} min - The lower bound (inclusive) of the range.
  * @param {int} max - The upper bound (inclusive) of the range.
  * @returns {int} - A random number in the specified range.
  */
-int random_range(int min, int max) {
+int random_clamp(int min, int max) {
   if(min >= max)
     return min;
 
   return random(max - min+1) + min;
 }
 
-int system_seed() {
-  return _system_seed;
+/* PRANDOM 128 */
+/**
+ * @simul_efun sanitize_seed
+ * @description Sanitizes the seed for the random number generator. Ensuring
+ *              that the seed is a non-zero integer and within the range of
+ *              a 64-bit unsigned integer.
+ * @param {mixed} seed - The seed to sanitize.
+ * @returns {int[]} - The sanitized seed.
+ */
+public int *sanitize_seed(mixed seed) {
+  int s0, s1;
+
+  // If seed is a single integer, generate s0 and s1
+  if(intp(seed)) {
+    s0 = abs(seed) % 0xFFFFFFFFFFFFFFFF || 1;  // Ensure s0 is non-zero
+    s1 = (s0 + 0x9E3779B9) & 0xFFFFFFFFFFFFFFFF || 1;  // Generate s1 from s0
+  }
+  // If seed is an array, sanitize both s0 and s1
+  else if (arrayp(seed) && sizeof(seed) == 2) {
+    s0 = abs(seed[0]) % 0xFFFFFFFFFFFFFFFF || 1;
+    s1 = abs(seed[1]) % 0xFFFFFFFFFFFFFFFF || 1;
+  }
+  // Invalid input, return a default sanitized state
+  else {
+    s0 = time() % 0xFFFFFFFFFFFFFFFF || 1;
+    s1 = (s0 + 0x9E3779B9) & 0xFFFFFFFFFFFFFFFF || 1;
+  }
+
+  return ({ s0, s1 });
 }
 
-void set_system_seed(int seed) {
-  _system_seed = seed;
+/**
+ * @simul_efun prandom
+ * @description Generates a random number within a specified range using the
+ *              xorshift128+ algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {int} size - The upper bound for the random number.
+ * @returns {int[]} - A two element array where the first element is the
+ *                   updated seed and the second is the random number.
+ */
+int *prandom(mixed seed, int size) {
+  int *result = allocate(2);
+  int s0, s1;
+  int random_value;
+
+  if(intp(seed))
+    seed = ({ seed, seed + 0x9E3779B9 }) ;
+
+  // Sanitize the seed (single integer or array)
+  seed = sanitize_seed(seed);
+  s0 = seed[0];
+  s1 = seed[1];
+
+  // Perform xorshift128+ algorithm
+  s1 ^= (s1 << 23);
+  s1 ^= (s1 >> 18);
+  s1 ^= s0;
+  s1 ^= (s0 >> 5);
+
+  // Update state
+  seed = ({ s1, s0 });
+
+  // Ensure the result is non-negative using bitwise AND to convert to unsigned
+  random_value = (s1 + s0) & 0xFFFFFFFFFFFFFFFF;
+
+  // Return updated state and random result modulo size
+  result[0] = seed;
+  result[1] = random_value % size;
+
+  return result;
+}
+
+/**
+ * @simul_efun prandom_float
+ * @description Generates a random float within a specified range using the
+ *              xorshift128+ algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {float} size - The upper bound for the random float.
+ * @returns {mixed[]} - A two element array where the first element is the
+ *                      updated seed and the second is the random float.
+ */
+mixed *prandom_float(mixed seed, float size) {
+  mixed *result = allocate(2);
+  int s0, s1;
+
+  // Check if the seed is a single integer or an array
+  if(intp(seed)) {
+    // Single integer: generate s0 and s1
+    s0 = seed;
+    s1 = s0 + 0x9E3779B9;
+  } else if (arrayp(seed) && sizeof(seed) == 2) {
+    // Array of integers: use it as the state
+    s0 = seed[0];
+    s1 = seed[1];
+  } else
+    return 0;
+  // Perform xorshift128+ algorithm
+  s1 ^= (s1 << 23);
+  s1 ^= (s1 >> 18);
+  s1 ^= s0;
+  s1 ^= (s0 >> 5);
+
+  // Update state
+  seed = ({ s1, s0 });
+
+  // Return the updated state and random float result
+  result[0] = seed;
+  result[1] = (to_float((s1 + s0) % to_int(size)) * (size / to_int(size)));
+
+  return result;
+}
+
+/**
+ * @simul_efun pshuffle
+ * @description Shuffles an array using the xorshift128+ algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {mixed[]} arr - The array to shuffle.
+ * @returns {mixed[]} - A two element array where the first element is the
+ *                      updated seed and the second is the shuffled array.
+ */
+mixed *pshuffle(mixed seed, mixed *arr) {
+  mixed *new_arr;
+  int index;
+  mixed *result = allocate(2);
+
+  // If null, empty, or not an array, return 0
+  if(!arr || !arrayp(arr) || !sizeof(arr))
+    return 0;
+
+  // Copy the original array
+  index = sizeof(arr);
+  new_arr = copy(arr);
+
+  while(index--) {
+    int random_index;
+    mixed tmp ;
+
+    // Use prandom() to generate a new random index
+    result = prandom(seed, index + 1);
+    random_index = result[1];
+
+    // Swap elements
+    tmp = new_arr[index];
+    new_arr[index] = new_arr[random_index];
+    new_arr[random_index] = tmp;
+
+    // Update the seed with the new one from prandom
+    seed = result[0];
+  }
+
+  result[1] = new_arr;
+
+  return result;
+}
+
+/**
+ * @simul_efun pelement_of
+ * @description Selects an element from an array using the xorshift128+
+ *              algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {mixed[]} arr - The array to select an element from.
+ * @returns {mixed[]} - A two element array where the first element is the
+ *                      updated seed and the second is the selected element.
+ */
+mixed *pelement_of(mixed seed, mixed *arr) {
+  mixed *result = allocate(2);
+  int sz ;
+
+  // If the array is empty or not an array, return 0
+  if(!sizeof(arr) || !arrayp(arr))
+    return 0;
+
+  sz = sizeof(arr);
+  result = prandom(seed, sz);
+
+  result[1] = arr[result[1]];
+
+  return result;
+}
+
+/**
+ * @simul_efun prandom_clamp
+ * @description Generates a random number within a specified range using the
+ *              xorshift128+ algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {int} min - The lower bound (inclusive) of the range.
+ * @param {int} max - The upper bound (inclusive) of the range.
+ * @returns {mixed[]} - A two element array where the first element is the
+ *                      updated seed and the second is the random number.
+ */
+mixed *prandom_clamp(mixed seed, int min, int max) {
+  mixed *result;
+
+  if(min >= max)
+    return ({ seed, min });
+
+  result = prandom(seed, max - min + 1);
+  result[1] += min;
+
+  return result;
+}
+
+/**
+ * @simul_efun pelement_of_weighted
+ * @description Selects an element from a weighted mapping using the
+ *              xorshift128+ algorithm.
+ * @param {mixed} seed - The seed for the random number generator.
+ * @param {mapping} weights - The weighted mapping to select from, where keys
+ *                            are the elements and values are their weights.
+ * @returns {mixed[]} - A two element array where the first element is the
+ *                      updated seed and the second is the selected element.
+ */
+mixed *pelement_of_weighted(mixed seed, mapping weights) {
+  float total = 0.0;
+  mixed *items = keys(weights);
+  mixed *float_result;
+  float roll;
+  mixed *result = allocate(2);
+
+  // If the mapping is empty, return 0
+  if(!sizeof(items))
+    return 0;
+
+  total = sum(map(values(weights), (: to_float :))) ;
+
+  float_result = prandom_float(seed, total);
+  result[0] = float_result[0];  // New seed
+  roll = float_result[1];  // Random roll
+
+  foreach(mixed item, int weight in weights) {
+    if(roll < weight) {
+      result[1] = item ;
+      break ;
+    }
+    roll -= weight;
+  }
+
+  return result;
 }

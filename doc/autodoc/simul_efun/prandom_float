@@ -1,11 +1,13 @@
-mixed *prandom_float(int seed)
+mixed *prandom_float(mixed seed, float size)
 
 Parameters:
 
-* `int seed` - The seed for random number generation.
+* `mixed seed` - The seed for the random number generator.
+* `float size` - The upper bound for the random float.
 
 Returns
 
-`mixed*` - An array where the first element is the new seed and the second element is the random float.
+`mixed*` - A two element array where the first element is the updated seed and the second is the random float.
 
-Generates a random float between 0 and 1, along with a new seed.
+Generates a random float within a specified range using the
+xorshift128+ algorithm.

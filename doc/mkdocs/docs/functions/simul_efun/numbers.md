@@ -66,6 +66,28 @@ float percent(float a, float b)
 
 Calculates what percentage `a` is of `b`.
 
+## clamp
+
+### Synopsis
+
+```c
+float clamp(float min, float max, float val)
+```
+
+### Parameters
+
+* `float min` - The minimum value.
+* `float max` - The maximum value.
+* `float val` - The value to check.
+
+### Returns
+
+`float` - The value, constrained within the range of `min` to `max`.
+
+### Description
+
+Ensures a value is within a specified range.
+
 ## evaluate_number
 
 ### Synopsis
@@ -145,28 +167,6 @@ divisible by `3`, `OR` if it's `20`, `25`, or `30`.
 
 Invalid syntax will result in an error, ensuring strict
 adherence to these rules.
-
-## range
-
-### Synopsis
-
-```c
-float range(float min, float max, float val)
-```
-
-### Parameters
-
-* `float min` - The minimum value.
-* `float max` - The maximum value.
-* `float val` - The value to check.
-
-### Returns
-
-`float` - The value, constrained within the range of `min` to `max`.
-
-### Description
-
-Ensures a value is within a specified range.
 
 ## sum
 

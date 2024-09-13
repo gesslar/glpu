@@ -23,14 +23,14 @@ float percent(float a, float b) {
 }
 
 /**
- * @simul_efun range
+ * @simul_efun clamp
  * @description Ensures a value is within a specified range.
  * @param {float} min - The minimum value.
  * @param {float} max - The maximum value.
  * @param {float} val - The value to check.
  * @returns {float} - The value, constrained within the range of `min` to `max`.
  */
-float range(float min, float max, float val) {
+float clamp(float min, float max, float val) {
     if(val < min) return min;
     if(val > max) return max;
     return val;

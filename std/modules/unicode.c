@@ -82,7 +82,7 @@ int default_user_width() {
 string use_colour(string *cols, int position, int width) {
    int col_index = floor(sizeof(cols) * ((0.0 + position) / (width || 1)));
 
-   col_index = range(col_index, 0, sizeof(cols) - 1);
+   col_index = clamp(0, sizeof(cols) - 1, col_index);
    return cols[col_index] ;
 }
 

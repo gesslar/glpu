@@ -46,8 +46,8 @@ mixed main(object tp, string str) {
     return "Area map file generated: " + path + "\n";
 }
 
-private string generate_terrain(string area_type, int seed) {
-    int *result;
+private string generate_terrain(string area_type, mixed seed) {
+    mixed *result;
     int roll;
 
     result = prandom(seed, 100);
@@ -100,7 +100,7 @@ string generate_area(string area_name, string area_type, int width, int height) 
 
 private string generate_cell(string area_type, int x, int y, int width, int ref *elevation_map, int ref terrain_seed) {
     string terrain, elevation;
-    int *result;
+    mixed *result;
 
     result = prandom(terrain_seed, MAX_INT);
     terrain_seed = result[0];  // Update the terrain seed
@@ -117,7 +117,7 @@ private void generate_elevation_map(int width, int height, int seed, int ref *el
 
     for(y = 0; y < height; y++) {
         for(x = 0; x < width; x++) {
-            result = prandom_range(seed, 0, 4);
+            result = prandom_clamp(seed, 0, 4);
             seed = result[0];
             elevation_map[y * width + x] = result[1];
         }

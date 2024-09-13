@@ -17,7 +17,7 @@ int register_channel(string module_name, string channel_name);
 int remove_module(string module_name);
 int remove_channel(string channel_name);
 int tune(string channel, string user, int flag);
-int valid_ch(string channel_name);
+int valid_channel(string channel_name);
 int valid_module(string module_name);
 int chat(string channel, string user, string msg);
 void grapevine_chat(mapping data) ;
@@ -41,27 +41,23 @@ void setup() {
     channels = ([]);
     modules = ([]);
 
-    arr = explode_file("/adm/daemons/modules/channel/installed_modules");
+    arr = explode_file(__DIR__ "modules/channel/installed_modules");
 
     if(!sizeof(arr))
         return ;
 
     for(i = 0; i < sizeof(arr); i++) {
-        string out = "" ;
         if(ob = find_object(arr[i]))
             ob->remove() ;
 
-        out += "> Loading channel module: " + arr[i] + "...";
+        _debug("> Loading channel module: %s", arr[i]) ;
         time = time_frac() ;
         err = catch(load_object(arr[i]));
 
-        if(err != 0) {
-            out += "\t\nError " + err + " when loading " + arr[i] + "";
-        }
-
-        else {
-            out += sprintf(" Done (%.2fs)", time_frac() - time) ;
-        }
+        if(err != 0)
+            _debug("< Error %s when loading %s", err, arr[i]) ;
+        else
+            _debug("< Done (%.2fs)", time_frac() - time) ;
     }
 
     set_no_clean(1) ;
@@ -71,13 +67,22 @@ int register_module(string name, string path) {
     string *keys;
 
     keys = keys(modules);
-    if(!name || !path) return 0;
+    if(!name || !path)
+        return 0;
 
-     if(member_array(name, keys) != -1) {
-        if(modules[name] == path) return 1;
-        else return -1;
+    if(member_array(name, keys) != -1) {
+        if(modules[name] == path) {
+            _debug("  > Module %s already registered to path %s", name, path);
+            return 1;
+        } else {
+            _debug("  > Module %s already registered to path %s", name, modules[name]);
+            return -1;
+        }
     }
+
     modules[name] = path;
+
+    _debug("  > Module %s registered to path %s", name, path);
 
     return 1;
 }
@@ -100,6 +105,9 @@ int register_channel(string module_name, string channel_name) {
     string *keys;
     string new_name = channel_name;
 
+    if(!valid_module(module_name))
+        return -1;
+
     keys = keys(modules);
     if(member_array(module_name, keys) == -1) return -1;
     keys = keys(channels);
@@ -114,6 +122,8 @@ int register_channel(string module_name, string channel_name) {
         else new_name = module_name[0..3] + channel_name;
     }
     channels[new_name] = (["module" : module_name, "real_name" : channel_name, "listeners" : ({})]);
+
+    _debug("   > Channel %s registered to module %s", new_name, module_name);
 
     return 1;
 }
@@ -133,7 +143,8 @@ int tune(string channel, string user, int flag) {
     object mod_obj;
 
     keys = keys(channels);
-    if(member_array(channel, keys) == -1) return 0;
+    if(member_array(channel, keys) == -1)
+        return 0;
 
     if(!valid_module(channels[channel]["module"])) {
         map_delete(channels, channel);
@@ -142,7 +153,8 @@ int tune(string channel, string user, int flag) {
 
     mod_obj = find_object(modules[channels[channel]["module"]]);
 
-    if(!mod_obj->is_allowed(channels[channel]["real_name"], user, flag)) return 0;
+    if(!mod_obj->is_allowed(channels[channel]["real_name"], user, flag))
+        return 0;
     if(flag == 1 && member_array(user, channels[channel]["listeners"]) == -1)
         channels[channel]["listeners"] += ({user});
     if(flag == 0 && member_array(user, channels[channel]["listeners"]) != -1)
@@ -151,22 +163,12 @@ int tune(string channel, string user, int flag) {
     return 1;
 }
 
-int valid_ch(string channel_name) {
-    string *keys;
-
-    keys = keys(channels);
-    if(member_array(channel_name, keys) != -1) return 1;
-
-    return 0;
+int valid_channel(string channel_name) {
+    return !nullp(channels[channel_name]);
 }
 
 int valid_module(string module_name) {
-    string *keys;
-
-    keys = keys(modules);
-    if(member_array(module_name, keys) != -1) return 1;
-
-    return 0;
+    return !nullp(modules[module_name]);
 }
 
 int chat(string channel, string user, string msg) {
@@ -231,13 +233,19 @@ string *get_channels(string module_name, string name) {
 
 string *get_tuned(string argument) {
     string *ret = ({});
+// printf("All channels: %O\n", channels) ;
+    if(!argument)
+        return ret;
 
-    if(!argument) return ret;
-    if(sizeof(channels[argument]["listeners"]) <= 0) return ret;
+    if(sizeof(channels[argument]["listeners"]) <= 0)
+        return ret;
+
     ret = channels[argument]["listeners"];
+
     foreach(string name in ret)
         if(find_living(name))
             if(!interactive(find_living(name))) ret -= ({ name });
+
     return ret;
 }
 
@@ -255,8 +263,12 @@ varargs int filter_listing(string element, string name) {
     }
 
     catch(mod_obj = load_object(modules[channels[element]["module"]])) ;
-    if(!mod_obj) return 0;
-    if(mod_obj->is_allowed(element, name)) return 1;
+
+    if(!mod_obj)
+        return 0;
+    if(mod_obj->is_allowed(element, name))
+        return 1;
+
     return 0;
 }
 
@@ -273,7 +285,8 @@ void rec_msg(string channel, string msg) {
     object ob;
 
     keys = keys(channels);
-    if(member_array(channel, keys) == -1) return 0;
+    if(member_array(channel, keys) == -1)
+        return 0;
 
      if(!valid_module(channels[channel]["module"])) {
         map_delete(channels, channel);

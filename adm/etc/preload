@@ -21,7 +21,7 @@
 /adm/daemons/colour
 
 # Channel Daemon
-/adm/daemons/chan_d
+/adm/daemons/channel
 
 # Shutdown Daemon
 /adm/daemons/shutdown

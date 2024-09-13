@@ -129,6 +129,16 @@ float move_cost(string dir) {
     return cost * _base_move_cost ;
 }
 
+int *get_virtual_coordinates() {
+    string file = query_file_name() ;
+    int x, y, z ;
+
+    if(sscanf(file, "%d,%d,%d", x, y, z) != 3)
+        return null ;
+
+    return ({z, y, x}) ;
+}
+
 void add_custom_gmcp(string key, mixed value) {
     custom_gmcp[key] = value ;
 }

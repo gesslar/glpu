@@ -78,7 +78,7 @@ void set_debug_clean(int i) {
         mixed *calls ;
 
         calls = call_out_info() ;
-        calls = filter(calls, (: $1 == $2 :), this_object()) ;
+        calls = filter(calls, (: $1[0] == $2 :), this_object()) ;
 
         if(sizeof(calls)) {
             if(debug_clean) _debug("   ⌛ %O cleaning up later because it has pending call_outs.", this_object()) ;

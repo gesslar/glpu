@@ -93,7 +93,8 @@ mixed main(object tp, string str) {
     stops = ({ destination_file }) ;
 
     if(str != "square")
-        stops = ({ destinations["square"], destination_file }) ;
+        // stops = ({ destinations["square"], destination_file }) ;
+        stops = ({ destination_file }) ;
 
     GMCP_D->send_gmcp(tp, GMCP_PKG_ROOM_TRAVEL, stops) ;
 

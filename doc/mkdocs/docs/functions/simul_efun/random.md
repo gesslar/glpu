@@ -8,42 +8,65 @@ title: random
 ### Synopsis
 
 ```c
-mixed *pelement_of(int seed, mixed *arr)
+mixed *pelement_of(mixed seed, mixed *arr)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
-* `mixed* arr` - The array to select from.
+* `mixed seed` - The seed for the random number generator.
+* `mixed* arr` - The array to select an element from.
 
 ### Returns
 
-`mixed*` - An array where the first element is the new seed and the second element is the randomly selected array element.
+`mixed*` - A two element array where the first element is the updated seed and the second is the selected element.
 
 ### Description
 
-Selects a random element from an array, along with a new seed.
+Selects an element from an array using the xorshift128+
+algorithm.
+
+## pshuffle
+
+### Synopsis
+
+```c
+mixed *pshuffle(mixed seed, mixed *arr)
+```
+
+### Parameters
+
+* `mixed seed` - The seed for the random number generator.
+* `mixed* arr` - The array to shuffle.
+
+### Returns
+
+`mixed*` - A two element array where the first element is the updated seed and the second is the shuffled array.
+
+### Description
+
+Shuffles an array using the xorshift128+ algorithm.
 
 ## prandom
 
 ### Synopsis
 
 ```c
-int *prandom(int seed, int max)
+int *prandom(mixed seed, int size)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
-* `int max` - The upper bound (exclusive) for the random number.
+* `mixed seed` - The seed for the random number generator.
+* `int size` - The upper bound for the random number.
 
 ### Returns
 
-`int*` - An array where the first element is the new seed and the second element is the random number.
+`int*` - A two element array where the first element is the updated seed and the second is the random number.
 
 ### Description
 
-Generates a random integer between 0 and max-1, along with a new seed.
+Generates a random number within a specified range using the
+xorshift128+ algorithm.
 
 ## element_of_weighted
 
@@ -70,50 +93,52 @@ Selects an element from a weighted mapping based on their weights.
 ### Synopsis
 
 ```c
-mixed *pelement_of_weighted(int seed, mapping weights)
+mixed *pelement_of_weighted(mixed seed, mapping weights)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
-* `mapping weights` - A mapping where keys are items and values are weights.
+* `mixed seed` - The seed for the random number generator.
+* `mapping weights` - The weighted mapping to select from, where keys are the elements and values are their weights.
 
 ### Returns
 
-`mixed*` - An array where the first element is the new seed and the second element is the randomly selected item based on the weights.
+`mixed*` - A two element array where the first element is the updated seed and the second is the selected element.
 
 ### Description
 
-Selects a random element based on weighted probabilities, along with a new seed.
+Selects an element from a weighted mapping using the
+xorshift128+ algorithm.
 
-## prandom_range
+## prandom_clamp
 
 ### Synopsis
 
 ```c
-int *prandom_range(int seed, int min, int max)
+mixed *prandom_clamp(mixed seed, int min, int max)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
+* `mixed seed` - The seed for the random number generator.
 * `int min` - The lower bound (inclusive) of the range.
 * `int max` - The upper bound (inclusive) of the range.
 
 ### Returns
 
-`int*` - An array where the first element is the new seed and the second element is the random number in the specified range.
+`mixed*` - A two element array where the first element is the updated seed and the second is the random number.
 
 ### Description
 
-Generates a random integer within a specified range, along with a new seed.
+Generates a random number within a specified range using the
+xorshift128+ algorithm.
 
-## random_range
+## random_clamp
 
 ### Synopsis
 
 ```c
-int random_range(int min, int max)
+int random_clamp(int min, int max)
 ```
 
 ### Parameters
@@ -129,25 +154,49 @@ int random_range(int min, int max)
 
 Generates a random integer within a specified range.
 
+## sanitize_seed
+
+### Synopsis
+
+```c
+public int *sanitize_seed(mixed seed)
+```
+
+### Parameters
+
+* `mixed seed` - The seed to sanitize.
+
+### Returns
+
+`int*` - The sanitized seed.
+
+### Description
+
+Sanitizes the seed for the random number generator. Ensuring
+that the seed is a non-zero integer and within the range of
+a 64-bit unsigned integer.
+
 ## prandom_float
 
 ### Synopsis
 
 ```c
-mixed *prandom_float(int seed)
+mixed *prandom_float(mixed seed, float size)
 ```
 
 ### Parameters
 
-* `int seed` - The seed for random number generation.
+* `mixed seed` - The seed for the random number generator.
+* `float size` - The upper bound for the random float.
 
 ### Returns
 
-`mixed*` - An array where the first element is the new seed and the second element is the random float.
+`mixed*` - A two element array where the first element is the updated seed and the second is the random float.
 
 ### Description
 
-Generates a random float between 0 and 1, along with a new seed.
+Generates a random float within a specified range using the
+xorshift128+ algorithm.
 
 ## random_float
 

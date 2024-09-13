@@ -1,4 +1,4 @@
-float range(float min, float max, float val)
+float clamp(float min, float max, float val)
 
 Parameters:
 

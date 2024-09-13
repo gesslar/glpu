@@ -94,7 +94,7 @@ varargs void tell(object ob, string str, int msg_type, mixed exclude) ;
 // File: numbers
 float percent_of(float a, float b) ;
 float percent(float a, float b) ;
-float range(float min, float max, float val) ;
+float clamp(float min, float max, float val) ;
 varargs float remainder(mixed a, mixed b) ;
 int sum(mixed *arr) ;
 int evaluate_number(int number, string condition) ;
@@ -126,12 +126,13 @@ void prompt_password(object user, int attempts, mixed *cb) ;
 // File: random
 int *prandom(int seed, int max) ;
 mixed *prandom_float(int seed) ;
-int *prandom_range(int seed, int min, int max) ;
+int *prandom_clamp(int seed, int min, int max) ;
 mixed *pelement_of(int seed, mixed *arr) ;
 mixed *pelement_of_weighted(int seed, mapping weights) ;
 float random_float(mixed upper_bound) ;
 mixed element_of_weighted(mapping m) ;
-int random_range(int min, int max) ;
+int random_clamp(int min, int max) ;
+int *sanitize_seed(mixed seed) ;
 
 // File: resolve_path
 string resolve_path(string base_dir, string path) ;

@@ -1,4 +1,4 @@
-int random_range(int min, int max)
+int random_clamp(int min, int max)
 
 Parameters:
 

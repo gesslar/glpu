@@ -96,7 +96,7 @@ private void display_channels_by_module(object tp) {
 private void display_channel_members(object tp, string channel) {
     string *members;
 
-    if(!CHAN_D->valid_ch(channel))
+    if(!CHAN_D->valid_channel(channel))
         return tell(tp, "Channel: Channel " + channel + " does not exist.\n");
 
     members = CHAN_D->get_tuned(channel);
@@ -159,13 +159,16 @@ public varargs int tune(string channel, string name, int in_out, int silent) {
     }
 
     for(i = 0; i < sizeof(channels); i++) {
-        int tune_result = CHAN_D->tune(channels[i], name, in_out);
+        int tune_result ;
+
+        tune_result = CHAN_D->tune(channels[i], name, in_out);
         if(!silent) {
             if(tune_result)
-                tell(this_player(), sprintf("Tune: %s channel %s\n",
-                    in_out ? "Tuned into" : "Tuned out of", channels[i]));
+                tell(this_player(), sprintf("%s channel tuned %s.\n",
+                    capitalize(channels[i]),
+                    in_out ? "in" : "out"));
             else
-                tell(this_player(), sprintf("Tune: Channel %s does not exist.\n", channels[i]));
+                tell(this_player(), sprintf("Channel %s does not exist.\n", channels[i]));
         }
         result = result && tune_result;
     }
