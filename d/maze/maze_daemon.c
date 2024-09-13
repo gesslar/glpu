@@ -533,7 +533,7 @@ public void setup_exits(object room) {
   }
 
   // Set the room icon for the centre of the room. Use the red X emoji.
-  if(x == query_centre_room(layer)[2] && y == query_centre_room(layer)[1] && z == query_centre_room(layer)[0])
+  if(x == query_centre_room(layer)[2] && y == query_centre_room(layer)[1] && z == -query_centre_room(layer)[0])
     room->set_room_icon("🧭") ;
 }
 
