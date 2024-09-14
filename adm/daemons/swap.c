@@ -13,10 +13,10 @@
 inherit STD_DAEMON ;
 
 // Forward declarations
-void swap_in(string label, mixed value);
-mixed swap_out(string label);
+void swap_in(string label, mixed value) ;
+mixed swap_out(string label) ;
 
-private nosave mapping data = ([]);
+private nosave mapping data = ([]) ;
 
 /**
  * @daemon_function swap_in
@@ -25,7 +25,7 @@ private nosave mapping data = ([]);
  * @param {mixed} value - The value to be stored.
  */
 void swap_in(string label, mixed value) {
-    data[label] = value ;
+  data[label] = value ;
 }
 
 /**
@@ -35,14 +35,16 @@ void swap_in(string label, mixed value) {
  * @returns {mixed} The value associated with the given label, or 0 if not found.
  */
 mixed swap_out(string label) {
-    mixed value = data[label] ;
-    map_delete(data, label) ;
-    return value ;
+  mixed value = data[label] ;
+
+  map_delete(data, label) ;
+
+  return value ;
 }
 
 int clean_up(int refs) {
-    if(sizeof(data) > 0)
-        return CLEAN_LATER ;
+  if(sizeof(data) > 0)
+    return CLEAN_LATER ;
 
-    return ::clean_up(refs) ;
+  return ::clean_up(refs) ;
 }

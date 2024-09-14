@@ -12,7 +12,7 @@
 
 #include <classes.h>
 
-inherit STD_DAEMON;
+inherit STD_DAEMON ;
 
 inherit CLASS_ROOMINFO ;
 

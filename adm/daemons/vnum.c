@@ -35,7 +35,8 @@ nomask int get_vnum(mixed room) {
 
     fname = chop(fname, ".c", -1) ;
 
-    if(member(fname, vnums)) return vnums[fname] ;
+    if(of(fname, vnums))
+        return vnums[fname] ;
 
     vnums[fname] = next_number ;
     reverse_vnums[next_number] = fname ;

@@ -261,9 +261,9 @@ private void execute_query(string db, string q, int offset, string query_id, mix
 
     // Accumulate the results for this chunk
     if(!arrayp(handle[query_id])) {
-        handle[query_id] = ({ });
+        handle[query_id] = ({ }) ;
     }
-    handle[query_id] += result; // Append the results from this chunk
+    handle[query_id] += result ; // Append the results from this chunk
 
     close_result = db_close(fd) ;
     if(close_result == 0) {
@@ -275,7 +275,7 @@ private void execute_query(string db, string q, int offset, string query_id, mix
 
     // If the chunk returned exactly db_chunk_size rows, there might be more data to fetch
     if(sizeof(rows) == db_chunk_size) {
-        call_out("execute_query", 1, db, q, offset + db_chunk_size, query_id, callback);
+        call_out("execute_query", 1, db, q, offset + db_chunk_size, query_id, callback) ;
     } else {
         // Final chunk, process the accumulated result
         if(callback) call_back(callback, handle[query_id]) ;

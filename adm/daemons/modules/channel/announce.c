@@ -9,7 +9,7 @@
 inherit __DIR__ "channel" ;
 
 void setup() {
-  channel_names = ({ "announce" });
+  channel_names = ({ "announce" }) ;
 
   slot(SIG_USER_LOGIN, "announce_login") ;
   slot(SIG_USER_LOGOUT, "announce_logoff") ;
@@ -17,7 +17,7 @@ void setup() {
 }
 
 int is_allowed(string channel, string name) {
-  return 1;
+  return 1 ;
 }
 
 int rec_msg(string chan, string usr, string msg) {
@@ -25,37 +25,37 @@ int rec_msg(string chan, string usr, string msg) {
 
   switch(msg) { /* We could do some neat stuff here! */
     case "/last" : {
-      string *last_messages = last_messages(chan, 15);
+      string *last_messages = last_messages(chan, 15) ;
 
-      tp = find_player(usr);
+      tp = find_player(usr) ;
 
-      tell(tp, implode(last_messages, "\n"));
+      tell(tp, implode(last_messages, "\n")) ;
 
-      return 1;
+      return 1 ;
     }
   }
 
   if(!adminp(usr))
-   return 0;
+    return 0 ;
 
-  CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n");
+  CHAN_D->rec_msg(chan, sprintf("[%s] %s: %s\n", capitalize(chan), capitalize(usr), msg)) ;
 
   add_history("announce", sprintf("%s %s [%s] %s: %s\n",
-    ldate(time(),1),
+    ldate(time(), 1),
     ltime(),
-      capitalize(chan),
-      capitalize(usr),
-      msg
-  ));
+    capitalize(chan),
+    capitalize(usr),
+    msg
+  )) ;
 
-  return 1;
+  return 1 ;
 }
 
 void announce_login(object user) {
-  string name = capitalize(query_privs(user));
+  string name = capitalize(query_privs(user)) ;
 
   CHAN_D->rec_msg("announce",
-    sprintf("[Announce] System: %s has logged into %s.\n", name, mud_name()));
+    sprintf("[Announce] System: %s has logged into %s.\n", name, mud_name())) ;
 
   add_history("announce",
     sprintf("%s %s [%s] %s: %s\n",
@@ -65,14 +65,14 @@ void announce_login(object user) {
       capitalize(name),
       "has logged into " + mud_name() + "."
     )
-  );
+  ) ;
 }
 
 void announce_logoff(object user) {
-  string name = capitalize(query_privs(user));
+  string name = capitalize(query_privs(user)) ;
 
   CHAN_D->rec_msg("announce",
-    sprintf("[Announce] System: %s has left %s.\n", name, mud_name()));
+    sprintf("[Announce] System: %s has left %s.\n", name, mud_name())) ;
 
   add_history("announce",
     sprintf("%s %s [%s] %s: %s\n",
@@ -82,14 +82,14 @@ void announce_logoff(object user) {
       capitalize(name),
       "has left " + mud_name() + "."
     )
-  );
+  ) ;
 }
 
 void announce_crawl_complete(mixed arg...) {
   string name = "System" ;
 
   CHAN_D->rec_msg("announce",
-    sprintf("[Announce] System: Coordinate crawler has completed.\n"));
+    sprintf("[Announce] System: Coordinate crawler has completed.\n")) ;
 
   add_history("announce",
     sprintf("%s %s [%s] %s: %s\n",
@@ -99,5 +99,5 @@ void announce_crawl_complete(mixed arg...) {
       capitalize(name),
       "Coordinate crawler has completed."
     )
-  );
+  ) ;
 }

@@ -32,10 +32,10 @@ void setup() {
  * @param {object} source - The source of the loot.
  */
 void loot_drop(object tp, object source) {
-  mixed *loot_table, *loot;
+  mixed *loot_table, *loot ;
   float chance ;
 
-  loot_table = source->query_loot_table();
+  loot_table = source->query_loot_table() ;
 
   if(sizeof(loot_table)) {
     foreach(loot in loot_table) {
@@ -43,7 +43,7 @@ void loot_drop(object tp, object source) {
       float roll ;
       chance = loot[1] ;
 
-      roll = random_float(100.0);
+      roll = random_float(100.0) ;
 
       if(roll < chance) {
         catch(drop_items(tp, item, source))  ;
@@ -59,18 +59,18 @@ void loot_drop(object tp, object source) {
  * @param {object} source - The source of the coins.
  */
 void coin_drop(object tp, object source) {
-  mixed *coin_table, *loot;
+  mixed *coin_table, *loot ;
   float chance ;
   float roll ;
 
-  coin_table = source->query_coin_table();
+  coin_table = source->query_coin_table() ;
 
   if(sizeof(coin_table)) {
     foreach(loot in coin_table) {
       mixed item = loot[0..1] ;
       chance = loot[2] ;
 
-      roll = random_float(100.0);
+      roll = random_float(100.0) ;
 
       if(roll < chance)
         catch(drop_coins(tp, item, source)) ;
@@ -87,34 +87,34 @@ void coin_drop(object tp, object source) {
  * @param {object} source - The source to drop the items into.
  */
 private void drop_items(object tp, mixed item, object source) {
-  mixed processed_item;
-  object loot_ob;
-  string file;
-  mixed args;
+  mixed processed_item ;
+  object loot_ob ;
+  string file ;
+  mixed args ;
 
-  processed_item = process_loot_item(item, tp, source);
+  processed_item = process_loot_item(item, tp, source) ;
 
   if(pointerp(processed_item) && sizeof(processed_item) == 2) {
-    file = processed_item[0];
-    args = processed_item[1];
+    file = processed_item[0] ;
+    args = processed_item[1] ;
     if(pointerp(args))
-      loot_ob = new(file, args...);
+      loot_ob = new(file, args...) ;
     else
-      loot_ob = new(file, args);
+      loot_ob = new(file, args) ;
   } else if(stringp(processed_item)) {
-    file = processed_item;
-    loot_ob = new(file);
+    file = processed_item ;
+    loot_ob = new(file) ;
   } else
-    return;
+    return ;
 
   if(loot_ob) {
-    int move_result;
+    int move_result ;
 
-    autovalue_loot_item(loot_ob, tp, source);
+    autovalue_loot_item(loot_ob, tp, source) ;
 
-    move_result = loot_ob->move(source);
+    move_result = loot_ob->move(source) ;
     if(move_result)
-      loot_ob->remove();
+      loot_ob->remove() ;
   }
 }
 
@@ -127,38 +127,38 @@ private void drop_items(object tp, mixed item, object source) {
  * @returns {mixed} - The processed item.
  */
 private mixed process_loot_item(mixed item, object tp, object source) {
-  int size, index;
-  mixed selected;
+  int size, index ;
+  mixed selected ;
 
   if(valid_function(item))
-    return process_loot_item((*item)(tp, source), tp, source);
+    return process_loot_item((*item)(tp, source), tp, source) ;
 
   if(pointerp(item)) {
-    size = sizeof(item);
+    size = sizeof(item) ;
     if(size == 0)
-      return 0;
+      return 0 ;
 
-    index = random(size);
-    selected = item[index];
+    index = random(size) ;
+    selected = item[index] ;
 
     if(stringp(selected)) {
       if(index < size - 1 && pointerp(item[index + 1])) {
-        return ({ selected, item[index + 1] });
+        return ({ selected, item[index + 1] }) ;
       } else {
-        return selected;
+        return selected ;
       }
     } else if(pointerp(selected) && index > 0 && stringp(item[index - 1]))
-      return ({ item[index - 1], selected });
+      return ({ item[index - 1], selected }) ;
 
-    return 0;
+    return 0 ;
   }
 
   if(mapp(item))
-    return process_loot_item(element_of_weighted(item), tp, source);
+    return process_loot_item(element_of_weighted(item), tp, source) ;
   if(stringp(item))
-    return item;
+    return item ;
 
-  return 0;
+  return 0 ;
 }
 
 /**
@@ -171,12 +171,12 @@ private mixed process_loot_item(mixed item, object tp, object source) {
 private void autovalue_loot_item(mixed item, object tp, object source) {
   // Determine if we have autovalue on this item
   if(item->query_loot_property("autovalue") == true) {
-    int value = determine_value_by_level(source->query_level());
+    int value = determine_value_by_level(source->query_level()) ;
 
-    item->set_value(value);
+    item->set_value(value) ;
   }
 
-  _debug("Value of %s is %d", identify(item), item->query_value());
+  _debug("Value of %s is %d", identify(item), item->query_value()) ;
 }
 
 /**
@@ -187,22 +187,22 @@ private void autovalue_loot_item(mixed item, object tp, object source) {
  * @param {object} source - The source to drop the coins into.
  */
 private void drop_coins(object tp, mixed item, object source) {
-  string type;
-  int num;
+  string type ;
+  int num ;
   object coin_ob ;
-  int move_result;
+  int move_result ;
 
   if(sizeof(item) == 2) {
-    type = item[0];
-    num = item[1];
+    type = item[0] ;
+    num = item[1] ;
   } else
-    return;
+    return ;
 
-  coin_ob = new(OBJ_COIN, type, num);
+  coin_ob = new(OBJ_COIN, type, num) ;
 
-  move_result = coin_ob->move(source);
+  move_result = coin_ob->move(source) ;
   if(move_result)
-    coin_ob->remove();
+    coin_ob->remove() ;
 }
 
 /**

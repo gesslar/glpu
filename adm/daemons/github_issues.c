@@ -271,7 +271,7 @@ private nomask void process_next(string *files) {
  * @returns {int} - The epoch time
  */
 private nomask int parse_time(string datetime) {
-    int epoch_time;
+    int epoch_time ;
     mixed err ;
 
     // Convert the date-time string to a time structure using strptime
@@ -283,8 +283,8 @@ private nomask int parse_time(string datetime) {
 
     // If strptime returns -1, it means the date-time string is invalid
     if(!epoch_time) {
-        error("Invalid date-time string");
+        error("Invalid date-time string") ;
     }
 
-    return epoch_time;
+    return epoch_time ;
 }

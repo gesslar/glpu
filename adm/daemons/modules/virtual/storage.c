@@ -1,6 +1,6 @@
 /**
  * @file /adm/daemons/modules/virtual/storage.c
- * @description This virtual daemon is responsible for creating virtuals
+ * @description This virtual daemon is responsible for creating virtual
  *              storage objects. If the path passed is /storage/public/...
  *              then the object created will be a shared storage object.
  *              If the path passed is /storage/private/... then the object
@@ -22,21 +22,21 @@
 inherit STD_DAEMON;
 
 public nomask object compile_object(string file) {
-    string name ;
-    object ob ;
-    string e ;
+  string name ;
+  object ob ;
+  string e ;
 
-    e = catch(ob = new(STD_STORAGE_OBJECT)) ;
+  e = catch(ob = new(STD_STORAGE_OBJECT)) ;
 
-    if(e) {
-        log_file("VIRTUAL", e);
-        return 0;
-    }
+  if(e) {
+    log_file("VIRTUAL", e) ;
+    return 0 ;
+  }
 
-    if(!ob)
-        return 0 ;
+  if(!ob)
+    return 0 ;
 
-    ob->set_virtual_master(base_name(ob)) ;
+  ob->set_virtual_master(base_name(ob)) ;
 
-    return ob;
+  return ob ;
 }

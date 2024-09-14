@@ -12,16 +12,16 @@
 inherit STD_DAEMON ;
 
 // Forward declarations
-int create_account(string name, string password);
-mapping load_account(string name);
-string write_account(string name, string key, mixed data);
-mixed read_account(string name, string key);
-int valid_manip(string name);
-int remove_account(string name);
-int add_character(string account_name, string str);
-int remove_character(string account_name, string str);
-string character_account(string str);
-string *account_characters(string account_name);
+int create_account(string name, string password) ;
+mapping load_account(string name) ;
+string write_account(string name, string key, mixed data) ;
+mixed read_account(string name, string key) ;
+int valid_manip(string name) ;
+int remove_account(string name) ;
+int add_character(string account_name, string str) ;
+int remove_character(string account_name, string str) ;
+string character_account(string str) ;
+string *account_characters(string account_name) ;
 
 private nomask mapping accounts = ([ ]) ;
 private nomask mapping reverse = ([ ]) ;

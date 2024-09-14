@@ -12,12 +12,20 @@
 varargs void setup_chain(mixed args...) {
     int x ;
 
+    // Itended for objects at their very mudlib level
     call_if(this_object(), "mudlib_setup", args...) ;
+
+    // Intended for objects that that are base for things like rooms of
+    // a common zone, room-type, or anything else that needs to setup
+    // the base of its object, after the mudlib_setup has been called.
+    call_if(this_object(), "base_setup", args...) ;
 
     x = 5 ;
     for(x = 0; x < 5; x++)
         call_if(this_object(), "pre_setup_"+x, args...) ;
 
+    // The actual setup function that is ordinarily used by any object
+    // that isn't the master or a base object.
     call_if(this_object(), "setup", args...) ;
 
     x = 5 ;
@@ -39,11 +47,19 @@ varargs void setup_chain(mixed args...) {
 void unsetup_chain() {
     int x ;
 
+    // Itended for objects at their very mudlib level
     call_if(this_object(), "mudlib_unsetup", previous_object(1)) ;
+
+    // Intended for objects that that are base for things like rooms of
+    // a common zone, room-type, or anything else that needs to unsetup
+    // the base of its object, after the mudlib_unsetup has been called.
+    call_if(this_object(), "base_unsetup", previous_object(1)) ;
 
     for(x = 0; x < 5; x++)
         call_if(this_object(), "pre_unsetup_"+x, previous_object(1)) ;
 
+    // The actual unsetup function that is ordinarily used by any object
+    // that isn't the master or a base object.
     call_if(this_object(), "unsetup", previous_object(1)) ;
 
     for(x = 0; x < 5; x++)

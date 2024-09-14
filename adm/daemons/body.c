@@ -18,7 +18,7 @@ mixed revive(object ghost, object user) ;
 
 object create_body(string name) {
     object body ;
-    string err;
+    string err ;
     string type ;
     string dest ;
 
@@ -49,9 +49,9 @@ object create_body(string name) {
 
     body->set_name(name) ;
     set_privs(body, name) ;
-    body->restore_body();
+    body->restore_body() ;
 
-    return body;
+    return body ;
 }
 
 mixed create_ghost(string name) {

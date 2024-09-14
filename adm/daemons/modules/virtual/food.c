@@ -1,1 +1,1 @@
-inherit __DIR__ "ob";
+inherit __DIR__ "ob" ;

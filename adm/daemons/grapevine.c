@@ -30,7 +30,7 @@ private nosave mapping config, restart, reffs ;
 private nosave mapping games ;
 
 void setup() {
-    set_log_level(1);
+    set_log_level(1) ;
     set_log_prefix("(GRAPEVINE)") ;
 
     slot(SIG_USER_LOGIN, "grapevine_send_event_players_sign_in") ;

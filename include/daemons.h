@@ -33,7 +33,6 @@
 #define MOVE_D          DIR_DAEMONS "movement"
 #define MSSP_D          DIR_DAEMONS "mssp"
 #define MUDDY_D         DIR_DAEMONS "muddy"
-#define PERLIN_D        DIR_DAEMONS "perlin"
 #define PERSIST_D       DIR_DAEMONS "persist"
 #define RECURSE_RMDIR_D DIR_DAEMONS "recurse_rmdir"
 #define SHUTDOWN_D      DIR_DAEMONS "shutdown"

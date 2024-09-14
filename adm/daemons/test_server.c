@@ -8,38 +8,38 @@
 
 #include <http.h>
 
-inherit STD_HTTP_SERVER;
+inherit STD_HTTP_SERVER ;
 
 void setup() {
-    set_log_level(4) ;
-    set_log_prefix("(TEST SERVER)") ;
+  set_log_level(4) ;
+  set_log_prefix("(TEST SERVER)") ;
 
-    if(!set_listen_port(8081))
-        return;
+  if(!set_listen_port(8081))
+    return ;
 
-    set_option("deflate", 1) ;
-    // tls on a server will crash your driver. 2024-07-05
-    // https://github.com/fluffos/fluffos/issues/1072
-    set_option("tls", 0) ;
+  set_option("deflate", 1) ;
+  // tls on a server will crash your driver. 2024-07-05
+  // https://github.com/fluffos/fluffos/issues/1072
+  set_option("tls", 0) ;
 
-    start_server();
+  start_server() ;
 }
 
 void http_handle_request(int fd, mapping client) {
-    string body ;
+  string body ;
 
-    body = @text
+  body = @text
 Hi there, this is a text response! And uhm, we're going to make it
 compressed maybe? Who knows!
 
 Enjoy!
 text ;
 
-    client["http"]["response"] = ([
-        "status": HTTP_STATUS_OK,
-        "content-type": CONTENT_TYPE_TEXT_PLAIN,
-        "body": body,
-    ]) ;
+  client["http"]["response"] = ([
+    "status": HTTP_STATUS_OK,
+    "content-type": CONTENT_TYPE_TEXT_PLAIN,
+    "body": body,
+  ]) ;
 
-    send_http_response(fd, client) ;
+  send_http_response(fd, client) ;
 }
