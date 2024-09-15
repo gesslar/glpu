@@ -12,6 +12,7 @@
 #include <gmcp_defines.h>
 
 inherit __DIR__ "description" ;
+inherit __DIR__ "cooldown" ;
 inherit __DIR__ "heartbeat" ;
 inherit __DIR__ "id" ;
 inherit __DIR__ "init" ;

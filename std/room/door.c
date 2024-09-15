@@ -12,6 +12,7 @@
 #include <classes.h>
 #include <exits.h>
 #include <door.h>
+#include <gmcp_defines.h>
 
 inherit CLASS_DOOR ;
 
@@ -35,121 +36,257 @@ int add_door(class Door door) {
     door.id = ({door.id}) ;
   door.id = distinct_array(door.id) ;
 
-  if(nullp(door.open))
-    door.open = 0 ;
-  if(nullp(door.locked))
-    door.locked = 0 ;
+  if(!door.status)
+    door.status = "closed" ;
+  if(!door.type)
+    door.type = "door" ;
+  if(!door.name)
+    door.name = sprintf("%s %s", door.direction, door.type) ;
+
+  door.id += ({ door.name, door.type, lower_case(door.short) }) ;
 
   _doors[door.direction] = door ;
+
+  GMCP_D->broadcast_gmcp(this_object(), GMCP_PKG_ROOM_INFO, this_object()) ;
 
   return 1 ;
 }
 
 int valid_door(string direction) {
-  return !nullp(_doors[direction]) ;
-}
+  class Door door ;
 
-int remove_door(string direction) {
-  if(nullp(_doors[direction]))
+  if(nullp(door = _doors[direction]))
     return null ;
-
-  map_delete(_doors, direction) ;
 
   return 1 ;
 }
 
-int set_door_open(string direction, int bool) {
-  if(nullp(_doors[direction]))
+int remove_door(string direction) {
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
+    return null ;
+
+  map_delete(_doors, direction) ;
+
+  GMCP_D->broadcast_gmcp(this_object(), GMCP_PKG_ROOM_INFO, this_object()) ;
+
+  return 1 ;
+}
+
+varargs int set_door_open(string direction, int bool, int silent) {
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
+    return null ;
+  if(nullp(bool))
     return null ;
 
   bool = !!bool ;
-  _doors[direction].open = bool ;
+  door.status = bool ? "open" : "closed" ;
 
+  _doors[direction] = door ;
+
+  if(!silent)
+    tell_down(this_object(),
+      sprintf("The %s is now %s.\n", door.name, door.status)) ;
+
+  GMCP_D->broadcast_gmcp(this_object(), GMCP_PKG_ROOM_INFO, this_object()) ;
   return bool ;
 }
 
 int query_door_open(string direction) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  return _doors[direction].open ;
+  return door.status == "open" ;
 }
 
-int set_door_locked(string direction, int bool) {
-  if(nullp(_doors[direction]))
+int set_door_locked(string direction, int bool, int silent) {
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
+  if(nullp(bool))
+    return null ;
+  if(door.status == "open")
+    return 0 ;
+
+  if(nullp(silent))
+    silent = 0 ;
+  silent = !!silent ;
 
   bool = !!bool ;
-  _doors[direction].locked = bool ;
+  door.status = bool ? "locked" : "closed" ;
+
+  if(!silent)
+    tell_down(this_object(),
+      sprintf("There is a click from the %s.\n", door.name)) ;
+
+  _doors[direction] = door ;
+
+  GMCP_D->broadcast_gmcp(this_object(), GMCP_PKG_ROOM_INFO, this_object()) ;
 
   return bool ;
 }
 
 int query_door_locked(string direction) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  return _doors[direction].locked ;
+  return door.status == "locked" ;
 }
 
 int add_door_id(string direction, string id) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  _doors[direction].id += ({id}) ;
-  _doors[direction].id = distinct_array(_doors[direction].id) ;
+  door.id += ({id}) ;
+  door.id = distinct_array(door.id) ;
+
+  _doors[direction] = door ;
 
   return 1 ;
 }
 
 int remove_door_id(string direction, string id) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  _doors[direction].id = remove_array_element(_doors[direction].id, id) ;
+  door.id = remove_array_element(door.id, id) ;
+
+  _doors[direction] = door ;
 
   return 1 ;
 }
 
-string *query_door_ids(string direction) {
-  if(nullp(_doors[direction]))
-    return null ;
-
-  return _doors[direction].id ;
+string *query_door_ids() {
+  return keys(_doors) ;
 }
 
 int set_door_short(string direction, string short) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  _doors[direction].short = short ;
+  door.short = short ;
+
+  _doors[direction] = door ;
 
   return 1 ;
 }
 
 string query_door_short(string direction) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  return _doors[direction].short ;
+  return door.short ;
 }
 
 int set_door_long(string direction, string long) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  _doors[direction].long = long ;
+  door.long = long ;
+
+  _doors[direction] = door ;
 
   return 1 ;
 }
 
 string query_door_long(string direction) {
-  if(nullp(_doors[direction]))
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
     return null ;
 
-  return _doors[direction].long ;
+  return door.long ;
 }
 
 mapping query_doors() {
   return copy(_doors) ;
+}
+
+string query_door_name(string direction) {
+  class Door door ;
+  if(nullp(door = _doors[direction]))
+    return null ;
+
+  return door.name ;
+}
+
+string *id_door(string id) {
+  string *doors = ({ }) ;
+
+  foreach(string dir, class Door door in _doors)
+    if(of(id, door.id))
+      doors += ({ dir }) ;
+
+  return doors ;
+}
+
+void reset_doors() {
+  string *exits = query_exit_ids() ;
+
+  foreach(string dir, class Door door in _doors) {
+    string other_room_file ;
+
+    // Sanity check.
+    if(member_array(dir, exits) == -1) {
+      remove_door(dir) ;
+      continue ;
+    }
+
+    if(other_room_file = query_exit(dir)) {
+      object other_room ;
+
+      other_room = find_object(other_room_file) ;
+
+      if(!objectp(other_room))
+        continue ;
+
+      foreach(string other_dir in other_room->query_exit_ids()) {
+        if(other_room->query_exit_dest(other_dir, true) == this_object()) {
+          if(other_room->query_door_open(other_dir)) {
+            set_door_open(dir, true, true) ;
+            break ;
+          } else if(other_room->query_door_locked(other_dir)) {
+            set_door_locked(dir, true, true) ;
+            break ;
+          }
+        }
+      }
+    }
+  }
+}
+
+varargs mixed query_door_status(string direction, int as_number) {
+  class Door door ;
+
+  if(nullp(door = _doors[direction]))
+    return null ;
+
+  if(as_number) {
+    switch(door.status) {
+      case "open": return 1 ;
+      case "closed": return 2 ;
+      case "locked": return 3 ;
+      default: return 0 ;
+    }
+  }
+
+  return door.status ;
 }

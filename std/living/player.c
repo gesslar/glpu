@@ -136,6 +136,7 @@ void reconnect() {
 /* Body Object Functions */
 void heart_beat() {
     clean_up_enemies() ;
+    cooldown() ;
 
     if(userp()) {
         if(!interactive(this_object())) {

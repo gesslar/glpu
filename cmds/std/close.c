@@ -17,32 +17,36 @@ mixed main(object tp, string args) {
   object room ;
   int here_flag ;
   object ob;
+  string *doors ;
 
   if(!args)
     return "Close what?";
 
   room = environment(tp) ;
-  if(room->valid_door(args)) {
-    string short, other_room_file ;
+  if(sizeof(doors = room->id_door(args))) {
     object other_room ;
+    string door ;
 
-    if(room->query_door_locked(args))
+    if(sizeof(doors) > 1)
+      return "There are multiple doors with that name.";
+
+    door = doors[0] ;
+
+    if(room->query_door_locked(door))
       return "It's locked.";
-    if(room->query_door_open(args))
-      room->set_door_open(args, false) ;
+
+    if(room->query_door_open(door))
+      room->set_door_open(door, false, true) ;
     else
-      return sprintf("The way leading %s is already closed.", args) ;
+      return sprintf("The way leading %s is already closed.", room->query_door_name(door)) ;
 
-    short = room->query_door_short(args) ;
-    tp->simple_action("$N $vclose the $o.\n", short) ;
+    tp->simple_action("$N $vclose the $o.\n", room->query_door_name(door)) ;
 
-    other_room = room->query_exit_dest(args) ;
+    other_room = room->query_exit_dest(door) ;
     if(other_room) {
       foreach(string dir in other_room->query_exit_ids()) {
         if(other_room->query_exit_dest(dir) == room) {
-            short = other_room->query_door_short(dir) ;
-            other_room->set_door_open(dir, false) ;
-            tell_down(other_room, sprintf("The %s closes.\n", short)) ;
+            other_room->set_door_open(dir, false, false) ;
             break ;
         }
       }

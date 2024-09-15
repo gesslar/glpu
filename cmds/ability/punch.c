@@ -17,13 +17,16 @@ void setup() {
     aggressive = true ;
     target_current = true ;
     mp_cost = 5.0 ;
-    cooldown = 10.0 ;
+
+    cooldowns = ([
+        "punch" : ({ "", 10 }),
+    ]) ;
 
     usage_text = "punch <target>" ;
     help_text = sprintf(
 "Use your fist to punch a target. This ability costs %.1f MP and has a "
-"cooldown of %.1f seconds.",
-        evaluate(mp_cost), evaluate(cooldown)
+"cooldown of %d seconds.",
+    evaluate(mp_cost), evaluate(cooldowns["punch"][1])
     ) ;
 }
 
@@ -42,6 +45,9 @@ mixed use(object tp, string arg) {
     ))) {
         return "You are already doing something." ;
     }
+
+    apply_cost(tp, arg) ;
+    apply_cooldown(tp, arg) ;
 
     tp->simple_action("$N $vpull back a fist...") ;
 

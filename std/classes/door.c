@@ -3,11 +3,12 @@
 
 class Door {
   string *id ;
+  string name ;
+  string status ;
+  string type ;
   string short ;
   string long ;
   string direction ;
-  int open ;
-  int locked ;
 }
 
 #endif // __DOOR_C__

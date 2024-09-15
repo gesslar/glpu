@@ -44,7 +44,7 @@ string query_exit(string id) {
   return dest ;
 }
 
-object query_exit_dest(string id) {
+varargs object query_exit_dest(string id, int loaded) {
   mixed dest   = _exits[id] ;
 
   if(!dest)
@@ -55,13 +55,27 @@ object query_exit_dest(string id) {
 
   if(stringp(dest)) {
     dest = resolve_path(query_directory(), dest) ;
-    dest = load_object(dest) ;
+    if(loaded)
+      dest = find_object(dest) ;
+    else
+      dest = load_object(dest) ;
   }
 
   if(!objectp(dest))
     return null ;
 
   return dest ;
+}
+
+object *query_exit_dests(int loaded) {
+  object *dests = ({ }) ;
+  string *exits = query_exit_ids() ;
+  foreach(string exit in exits) {
+    object dest = query_exit_dest(exit, loaded) ;
+    if(objectp(dest))
+      dests += ({ dest }) ;
+  }
+  return dests ;
 }
 
 int valid_exit(string exit) {

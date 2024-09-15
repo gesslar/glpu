@@ -9,7 +9,10 @@
  * 2024-09-13 - Gesslar - Created
  */
 
+#include <classes.h>
+
 inherit __DIR__ "manor" ;
+inherit CLASS_DOOR ;
 
 void setup() {
   set_short("The Washroom") ;
@@ -24,6 +27,13 @@ void setup() {
   set_exits(([
     "west" : "hall4",
   ])) ;
+
+  add_door(new(class Door,
+    id: "washroom door",
+    direction: "west",
+    short: "A grand door",
+    long: "A grand door that leads to the hall."
+  )) ;
 
   set_items(([
     "countertops" :

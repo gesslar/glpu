@@ -22,7 +22,7 @@ void setup() {
 
   set_exits(([
     "north" : "hall2",
-    "up" : "stairs1",
+    "up" : "landing",
   ])) ;
 
   set_items(([

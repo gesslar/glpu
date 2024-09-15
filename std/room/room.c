@@ -26,6 +26,7 @@ private nosave int *_size = ({1, 1, 1}) ;
 void mudlib_setup(mixed args...) {
   set_ignore_capacity(1) ;
   set_ignore_mass(1) ;
+  add_reset((: reset_doors :)) ;
 }
 
 private nosave string room_type = "room" ;
@@ -38,7 +39,9 @@ private nosave mapping custom_gmcp = ([ ]) ;
 mapping gmcp_room_info(object who) {
   mapping info = ([ ]) ;
   string *exit_dirs = query_exit_ids() ;
+  string *door_dirs = query_door_ids() ;
   mapping exits ;
+  mapping doors ;
   mapping result ;
   mapping gmcp_info = ([ ]) ;
   // string *suppress ;
@@ -50,11 +53,24 @@ mapping gmcp_room_info(object who) {
   exits = map(exits, (: base_name($2) :)) ;
   exits = map(exits, (: hash("md4", $2) :)) ;
 
+  doors = query_doors() ;
+  doors = map(doors, function(string dir, class Door door) {
+    return ([
+      "hash" : hash("md4", query_exit(dir)),
+      "name" : door.name,
+      "status" : query_door_status(dir, 1),
+      "type" : door.type,
+      "short" : door.short,
+      "long" : door.long,
+    ]) ;
+  }) ;
+
   result = ([
     "area"       : query_zone_name(),
     "hash"       : hash("md4", base_name()),
     "name"       : no_ansi(query_short()),
     "exits"      : exits,
+    "doors"      : doors,
     "environment": query_room_environment() || query_terrain(),
     "coords"     : COORD_D->get_coordinates(base_name()),
     "size"       : _size,

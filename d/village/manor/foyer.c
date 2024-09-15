@@ -52,4 +52,11 @@ void setup() {
     short: "A grand door",
     long: "A grand door that leads to the porch."
   )) ;
+
+  add_door(new(class Door,
+    id: "foyer door",
+    direction: "east",
+    short: "A grand door",
+    long: "A grand door that leads to the salon."
+  )) ;
 }

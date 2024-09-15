@@ -9,7 +9,10 @@
  * 2024-09-13 - Gesslar - Created
  */
 
+#include <classes.h>
+
 inherit __DIR__ "manor" ;
+inherit CLASS_DOOR ;
 
 void setup() {
   set_short("The Salon") ;
@@ -22,8 +25,7 @@ void setup() {
   "questionable taste.") ;
 
   set_exits(([
-    "east" : "foyer",
-    "west" : "library",
+    "west" : "foyer",
   ]));
 
   set_items(([
@@ -40,4 +42,11 @@ void setup() {
     "The collection of fine art pieces enhances the luxurious atmosphere of "
     "the room.",
   ])) ;
+
+  add_door(new(class Door,
+    id: "salon door",
+    direction: "west",
+    short: "A grand door",
+    long: "A grand door that leads to the foyer."
+  )) ;
 }

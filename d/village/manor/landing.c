@@ -21,8 +21,8 @@ void setup() {
   "mystical and overwhelming.") ;
 
   set_exits(([
-    "down": "stairs1",
-    "up"  : "stairs2",
+    "down": "hall3",
+    "up"  : "hall4",
   ])) ;
 
   set_items(([
