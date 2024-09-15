@@ -14,7 +14,7 @@ inherit __DIR__ "manor" ;
 void setup() {
   set_short("The Library") ;
   set_long("This library is a chaotic mix of bookshelves overflowing with "
-  "books of all sizes and colors. The walls are painted a deep purple, and "
+  "books of all sizes and colours. The walls are painted a deep purple, and "
   "the furniture is a mix of styles, from Victorian to modern. A large "
   "globe sits in one corner, while a collection of bizarre artifacts from "
   "around the world decorates the shelves. The air is thick with the smell "
@@ -31,7 +31,7 @@ void setup() {
     "haphazardly, creating a chaotic yet charming atmosphere.",
     "globe" :
     "The large globe in the corner is a fascinating artifact, "
-    "showing the world in vibrant colors.",
+    "showing the world in vibrant colours.",
     "artifacts" :
     "Bizarre artifacts from around the world decorate the shelves, "
     "each with its own unique story.",

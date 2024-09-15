@@ -15,7 +15,7 @@ inherit __DIR__ "manor" ;
 void setup() {
   set_short("A Conservatory") ;
   set_long("The conservatory is filled with exotic plants, each more bizarre "
-  "than the last. Brightly colored flowers bloom in abundance, and the air is "
+  "than the last. Brightly coloured flowers bloom in abundance, and the air is "
   "thick with humidity. A fountain in the center, adorned with goldfish, "
   "bubbles softly, while a collection of mismatched garden furniture "
   "surrounds it. The glass ceiling allows sunlight to pour in, creating a "
@@ -28,10 +28,10 @@ void setup() {
 
   set_items(([
     "plants" :
-    "The exotic plants are a riot of colors and shapes, each more bizarre "
+    "The exotic plants are a riot of colours and shapes, each more bizarre "
     "than the last.",
     "flowers" :
-    "Brightly colored flowers bloom in abundance, adding to the vibrant "
+    "Brightly coloured flowers bloom in abundance, adding to the vibrant "
     "atmosphere.",
     "fountain" :
     "The fountain bubbles softly, adorned with goldfish that swim lazily in "

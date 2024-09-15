@@ -34,12 +34,12 @@ void setup() {
         ({ "wooden sign", "sign", "bread-shaped sign" }) :
             "A charming wooden sign, carved in the shape of a plump loaf of "
             "bread, hangs above the bakery entrance. The words 'Olum Village "
-            "Bakery' are painted in warm, inviting colors, beckoning "
+            "Bakery' are painted in warm, inviting colours, beckoning "
             "passersby with the promise of fresh baked goods.",
         ({ "glass display case", "display case", "case" }) :
             "A spotless glass display case stretches along one side of the "
             "bakery, showcasing an array of tempting baked goods. Crusty "
-            "breads, flaky pastries, and colorful cakes are artfully "
+            "breads, flaky pastries, and colourful cakes are artfully "
             "arranged, each item looking more delicious than the last.",
         ({ "wooden shelves", "shelves" }) :
             "Sturdy wooden shelves line the wall behind the display case, "
@@ -66,7 +66,7 @@ void setup() {
             "An enticing array of baked goods fills the bakery. Golden loaves "
             "of various shapes and sizes, some studded with nuts or dried "
             "fruits, sit alongside delicate pastries glistening with sugar or "
-            "filled with colorful jams. The variety is impressive, catering "
+            "filled with colourful jams. The variety is impressive, catering "
             "to every taste and occasion.",
     ])) ;
 

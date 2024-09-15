@@ -41,7 +41,7 @@ void setup() {
         ({ "cobblestone paths", "paths", "cobblestones" }) :
             "Worn smooth by countless footsteps, the cobblestone paths "
             "weave through the square, guiding villagers and visitors alike. "
-            "Each stone, unique in shape and color, fits snugly against its "
+            "Each stone, unique in shape and colour, fits snugly against its "
             "neighbors, creating a durable and charming surface.",
         ({ "moss-covered stone well", "well", "stone well" }) :
             "At the heart of the square stands the village well, its stones "

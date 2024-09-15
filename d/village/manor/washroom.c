@@ -19,7 +19,7 @@ void setup() {
   set_long("This washroom is a curious blend of luxury and absurdity. The "
   "walls are covered in shiny, reflective tiles that seem to amplify the "
   "light, creating a dazzling effect. A large, ornate mirror hangs above a "
-  "lavish sink, surrounded by an array of colorful soaps and lotions that "
+  "lavish sink, surrounded by an array of colourful soaps and lotions that "
   "look more like decorations than practical items. The air is thick with "
   "the scent of floral fragrances, making it feel more like a spa than "
   "a washroom.") ;

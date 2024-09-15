@@ -16,12 +16,12 @@ inherit CLASS_DOOR ;
 
 void setup() {
   set_short("The Salon") ;
-  set_long("The salon is a riot of color and texture, with walls draped in "
+  set_long("The salon is a riot of colour and texture, with walls draped in "
   "mismatched fabrics that clash violently. A grand piano, painted in a "
   "gaudy shade of pink, sits in one corner, while oversized, plush couches "
   "in animal prints dominate the space. The ceiling is adorned with faux-"
   "gold leaf, and a large painting of a sunset hangs crookedly on the wall, "
-  "its colors almost blinding. This room is a testament to the residents'"
+  "its colours almost blinding. This room is a testament to the residents'"
   "questionable taste.") ;
 
   set_exits(([

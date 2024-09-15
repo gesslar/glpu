@@ -26,7 +26,7 @@ private nosave string link ;
 void mudlib_setup() {
     set_ignore_capacity(1) ;
     set_ignore_mass(1) ;
-    set_debug_clean(1) ;
+    // set_debug_clean(1) ;
 }
 
 void set_storage_options(class StorageOptions storage) {

@@ -27,7 +27,7 @@ int colour_to_greyscale(int colour_code) ;
 string body_colour_replace(object body, string text, int message_type) ;
 private int too_dark_check() ;
 private mapping too_dark_map() ;
-public int *colour_to_rgb(int color_code) ;
+public int *colour_to_rgb(int colour_code) ;
 public int rgb_to_colour(int r, int g, int b) ;
 
 private nosave string *fg_codes = ({ }) ;
@@ -528,13 +528,13 @@ public int *colour_to_rgb(int colour_code) {
     return ({ 0, 0, 0 }) ;
 
   if(colour_code < 16) {
-    // Standard colors
+    // Standard colours
     r = (colour_code & 1) ? 255 : 0 ;
     g = (colour_code & 2) ? 255 : 0 ;
     b = (colour_code & 4) ? 255 : 0 ;
     r += (colour_code & 8) ? 128 : 0 ;
   } else if(colour_code < 232) {
-    // 6x6x6 color cube
+    // 6x6x6 colour cube
     colour_code -= 16 ;
     r = (colour_code / 36) * 51 ;
     g = ((colour_code % 36) / 6) * 51 ;
@@ -562,10 +562,10 @@ public int rgb_to_colour(int r, int g, int b) {
     // Grayscale
     return (r - 8) / 10 + 232 ; // 232-255 maps to 8-255
   else if(r >= 0 && r < 128 && g >= 0 && g < 128 && b >= 0 && b < 128)
-    // Standard colors
+    // Standard colours
     return (r > 0 ? 1 : 0) + (g > 0 ? 2 : 0) + (b > 0 ? 4 : 0) ;
   else {
-    // 6x6x6 color cube
+    // 6x6x6 colour cube
     int cube_r = r / 51 ;
     int cube_g = g / 51 ;
     int cube_b = b / 51 ;

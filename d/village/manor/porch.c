@@ -19,7 +19,7 @@ void setup() {
   set_long("The porch is adorned with gaudy decorations, including bright "
   "plastic flowers and oversized lawn ornaments. A collection of mismatched "
   "chairs and tables creates a chaotic seating arrangement, while a large, "
-  "colorful welcome mat greets visitors. The air is filled with the sounds "
+  "colourful welcome mat greets visitors. The air is filled with the sounds "
   "of chirping birds, but the decor feels more like a carnival than a home.") ;
 
   set_exits(([
@@ -35,7 +35,7 @@ void setup() {
     "The mismatched chairs create a chaotic seating arrangement, inviting "
     "visitors to sit and relax.",
     "welcome mat" :
-    "The large, colorful welcome mat greets visitors with a cheerful design.",
+    "The large, colourful welcome mat greets visitors with a cheerful design.",
   ])) ;
 
   add_door(new(class Door,

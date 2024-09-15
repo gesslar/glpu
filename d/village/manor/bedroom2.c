@@ -20,7 +20,7 @@ void setup() {
   "shocking pink, and the bed is surrounded by sheer, flowing curtains "
   "that seem to float in the air. A large, gaudy chandelier hangs from the "
   "ceiling, casting a dim light over the room. A collection of mismatched "
-  "furniture pieces, all in bright colors, creates a chaotic yet strangely "
+  "furniture pieces, all in bright colours, creates a chaotic yet strangely "
   "alluring atmosphere.") ;
 
   set_exits(([
@@ -41,7 +41,7 @@ void setup() {
     "The gaudy chandelier hangs from the ceiling, casting a dim light over "
     "the room.",
     "furniture" :
-    "The mismatched furniture pieces are all in bright colors, creating a "
+    "The mismatched furniture pieces are all in bright colours, creating a "
     "chaotic yet alluring atmosphere.",
   ])) ;
 }

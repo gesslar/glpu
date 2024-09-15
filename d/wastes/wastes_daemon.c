@@ -257,7 +257,7 @@ private void setup_wastes_longs() {
       "to refresh themselves.",
 
       "Surrounded by lush greenery, the shallow water reflects the vibrant "
-      "colors of the flora around it."
+      "colours of the flora around it."
     }),
     "water" : ({
       "The river flows steadily, its surface reflecting the sky above, "

@@ -46,7 +46,7 @@ void setup() {
         "gardens" :
             "Glimpses of small gardens can be seen near the dwellings, "
             "contributing to the earthy scents in the air and adding splashes "
-            "of color to the residential landscape.",
+            "of colour to the residential landscape.",
         ({ "weeds", "cracks" }) :
             "Small weeds occasionally sprout between the bricks, their "
             "presence a testament to the less rigorous maintenance of this "

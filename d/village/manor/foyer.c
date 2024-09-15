@@ -18,8 +18,8 @@ void setup() {
   set_short("The Foyer");
   set_long("You step into a grand foyer that is both overwhelming and "
   "extravagant. The walls are lined with gold-framed mirrors that reflect "
-  "the light from a massive crystal chandelier, casting prismatic colors "
-  "across the room. Plush, velvet carpets in garish colors cover the floor, "
+  "the light from a massive crystal chandelier, casting prismatic colours "
+  "across the room. Plush, velvet carpets in garish colours cover the floor, "
   "muffling your footsteps. A life-sized statue of a marble cherub, "
   "holding a golden goblet, greets you at the entrance, while the air is "
   "thick with the scent of expensive perfumes. This is a space designed "
@@ -37,9 +37,9 @@ void setup() {
     "dazzling effect.",
     "chandelier" :
     "The massive crystal chandelier hangs from the ceiling, casting prismatic "
-    "colors across the room.",
+    "colours across the room.",
     "carpets" :
-    "The plush, velvet carpets are in garish colors, adding to the "
+    "The plush, velvet carpets are in garish colours, adding to the "
     "extravagant feel of the foyer.",
     "statue" :
     "The life-sized statue of a marble cherub holds a golden goblet, adding "
