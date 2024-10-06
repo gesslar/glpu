@@ -16,8 +16,7 @@ inherit STD_ITEM;
 private nosave mapping loot_properties = ([]);
 
 void mudlib_setup() {
-    add_id("loot");
-    save_var("value") ;
+  add_id("loot");
 }
 
 void virtual_setup(mixed args...) {

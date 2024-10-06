@@ -17,6 +17,7 @@
 #define M_NOISE         DIR_STD_MODULES "noise"
 #define M_PNOISE        DIR_STD_MODULES "pnoise"
 #define M_POTABLE       DIR_STD_MODULES "potable"
+#define M_PROC          DIR_STD_MODULES "proc"
 #define M_REF           DIR_STD_MODULES "ref"
 #define M_PERSIST_DATA  DIR_STD_MODULES "persist_data"
 #define M_SHOP          DIR_STD_MODULES "shop"

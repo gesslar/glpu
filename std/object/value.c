@@ -13,18 +13,17 @@
 
 #include <persist.h>
 
-protected nosave int _amount = null;
+protected nosave int _value = null;
 /**
  * @object_function set_value
  * @description Set the value of the object. The value is stored as an integer
  *              representing the value in the lowest denomination of currency.
  * @param {int} value - The value to set.
  */
-
 void set_value(int value) {
-    save_var("_amount");
+  save_var("_value");
 
-    _amount = value;
+  _value = value;
 }
 
 /**
@@ -35,7 +34,7 @@ void set_value(int value) {
  * @returns {int} - The value of the object.
  */
 int query_value() {
-    return _amount;
+  return _value;
 }
 
 /**
@@ -46,5 +45,5 @@ int query_value() {
  * @param {int} value - The value to add.
  */
 void adjust_value(int value) {
-    _amount += value;
+  _value += value;
 }
