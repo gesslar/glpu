@@ -26,20 +26,23 @@ private nosave mapping short_descriptions ;
 private nosave mapping long_descriptions ;
 
 private nosave int *dimensions ;
-// private nosave mixed *dimension_config = ({ ({ 25, 75 }), ({ 15, 75 }) }) ;
-private nosave mixed *dimension_config = ({ ({ 30, 1 }), ({ 30, 1 }) }) ;
+// private nosave mixed *dimension_config = ({ ({ 25, 1 }), ({ 25, 1 }),  }) ;
+// private nosave mixed *dimension_config = ({ ({ 30, 1 }), ({ 50, 1 }),  }) ;
+// private nosave mixed *dimension_config = ({ ({ 30, 1 }), ({ 30, 1 }) }) ;
+private nosave mixed *dimension_config = ({ ({ 10, 5 }), ({ 10, 5 }) }) ;
 private nosave int WIDTH = 0, HEIGHT = 1 ;
 
 // The seed is used to ensure that every time the daemon runs, it uses the same
 // seed, resulting in the same map.
 
 // Uncomment this to use the boot number as the seed.
-// private nosave mixed seed = BOOT_D->query_boot_number() ;
+private nosave mixed seed = BOOT_D->query_boot_number() ;
 
 // Use this seed for testing purposes, or whatever you want.
-private nosave mixed seed = 42 ;
+// private nosave mixed seed = 42 ;
 
 void setup() {
+  set_no_clean(1) ;
   setup_dimensions() ;
 
   // Initialize the noise module with the seed, updating our seed with the
@@ -257,7 +260,7 @@ private void setup_wastes_longs() {
       "to refresh themselves.",
 
       "Surrounded by lush greenery, the shallow water reflects the vibrant "
-      "colours of the flora around it."
+      "colors of the flora around it."
     }),
     "water" : ({
       "The river flows steadily, its surface reflecting the sky above, "
@@ -327,6 +330,7 @@ public void setup_exits(object room) {
   mapping exits;
   string maze_entrance_file, maze_exit_file;
   int *maze_entrance, *maze_exit;
+  int *cavern_entrance, *cavern_exit;
 
   x = coords[2];
   y = coords[1];
@@ -368,6 +372,34 @@ public void setup_exits(object room) {
       room->add_exit("north", sprintf("%d,%d,%d", x, y-1, z));
   }
 
+    // Northeast
+  if(x+1 < max_x && y-1 >= 0) {
+    room_type = determine_room_type(z, y-1, x+1);
+    if(room_type != "impassable")
+      room->add_exit("northeast", sprintf("%d,%d,%d", x+1, y-1, z));
+  }
+
+  // Northwest
+  if(x-1 >= 0 && y-1 >= 0) {
+    room_type = determine_room_type(z, y-1, x-1);
+    if(room_type != "impassable")
+      room->add_exit("northwest", sprintf("%d,%d,%d", x-1, y-1, z));
+  }
+
+  // Southeast
+  if(x+1 < max_x && y+1 < max_y) {
+    room_type = determine_room_type(z, y+1, x+1);
+    if(room_type != "impassable")
+      room->add_exit("southeast", sprintf("%d,%d,%d", x+1, y+1, z));
+  }
+
+  // Southwest
+  if(x-1 >= 0 && y+1 < max_y) {
+    room_type = determine_room_type(z, y+1, x-1);
+    if(room_type != "impassable")
+      room->add_exit("southwest", sprintf("%d,%d,%d", x-1, y+1, z));
+  }
+
   // Forest entrance
   if(x == 0 && y == 0 && z == 0)
     room->add_exit("west", "../forest/27,11,0");
@@ -383,6 +415,17 @@ public void setup_exits(object room) {
 
     room->add_exit("west", "/d/maze/"+maze_exit_file);
   }
+
+  // Set the exit to the caverns
+  // Do we have a valid exit to the caverns?
+  cavern_entrance = "/d/cavern/cavern_daemon"->query_entrance() ;
+  cavern_exit = "/d/cavern/cavern_daemon"->query_exit() ;
+  if(z == cavern_entrance[0] && y == cavern_entrance[1] && x == cavern_entrance[2])
+    room->add_exit("down",
+      sprintf("../cavern/%d,%d,%d",
+        cavern_exit[2], cavern_exit[1], cavern_exit[0]
+      )
+    );
 }
 
 private nosave string *terrain_types = ({ "rocky", "sandy", "impassable", }) ;

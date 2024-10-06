@@ -46,13 +46,13 @@ private nosave string default_long_description ;
 // The first element is the minimum size and is added to the result of the
 // prandom function applied to the second element to get the actual size.
 // It is in the order of z, y, x.
-private nosave mixed *dimension_config = ({ ({ 2, 2 }), ({ 10, 10 }), ({ 40, 10 }),  }) ;
+private nosave mixed *dimension_config = ({ ({ 5, 1 }), ({ 10, 5 }), ({ 10, 5 }),  }) ;
 private nosave int *dimensions ;
 
 // Some constants
-private nosave int DEPTH = 0, HEIGHT = 1, WIDTH = 2;
-private nosave int FOREST = 0, WASTES = 1;
-private nosave int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
+private nosave int DEPTH = 0, HEIGHT = 1, WIDTH = 2 ;
+private nosave int FOREST = 0, WASTES = 1 ;
+private nosave int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 ;
 
 // Exits out of the maze.
 private nosave mixed *exits_out = allocate(2) ; // north, east
@@ -61,8 +61,8 @@ private nosave mixed *external_entrances = allocate(2) ; // forest, wastes
 // The centre rooms of the maze.
 private nosave mixed *centre_rooms ;
 // The seed for the random number generator.
-// private nosave mixed seed = BOOT_D->query_boot_number() ;
-private nosave mixed seed = 42 ;
+private nosave mixed seed = BOOT_D->query_boot_number() ;
+// private nosave mixed seed = 42 ;
 // The maze.
 private nosave mixed *maze ;
 
@@ -89,6 +89,8 @@ private nosave mapping DIRECTIONS = ([
 ]) ;
 
 void setup() {
+  set_no_clean(1) ;
+
   if(dimensions)
     return ;
 

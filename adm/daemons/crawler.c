@@ -22,7 +22,7 @@ object stash_objects(string room_file, object tp) ;
 int *update_coordinates(int *coords, string exit, int *current_size, int *next_size) ;
 string log_file = "/log/crawl.log" ;
 
-private nosave float crawl_speed = 0.01 ;
+private nosave float crawl_speed = 0.001 ;
 private mapping done = ([]) ;
 private mapping todo = ([]) ;
 private int x, y, z ;

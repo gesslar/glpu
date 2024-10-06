@@ -105,7 +105,7 @@ public void setup_long(object room, string file) {
 }
 
 public void setup_exits(object room, string file) {
-    int *coords = room->get_virtual_coordinates() ;
+  int *coords = room->get_virtual_coordinates() ;
   int x, y, z;
   string room_type;
   mapping exits;
@@ -120,12 +120,9 @@ public void setup_exits(object room, string file) {
 
   if(x == 2 && y == 0 && z == 0)
     exits["north"] = "../village/village_path5";
+
   if(x == 27 && y == 11 && z == 0)
     exits["east"] = "../wastes/0,0,0" ;
-
-  if(x == 1 && y == 2 && z == 0)
-    exits["south"] = "../village/village_path3";
-
 
   {
     int *maze_entrance, *maze_exit ;
@@ -144,5 +141,6 @@ public void setup_exits(object room, string file) {
       }
     }
   }
+
   room->set_exits(exits);
 }

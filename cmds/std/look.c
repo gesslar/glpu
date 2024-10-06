@@ -103,6 +103,7 @@ mixed render_room(object tp, object room, int brief) {
   doors = keys(room->query_doors());
 
   if(sizeof(exits) > 0) {
+/*
     exits = map(exits, function(string exit, object room, string *doors) {
       if(of(exit, doors)) {
         if(room->query_door_open(exit))
@@ -112,13 +113,27 @@ mixed render_room(object tp, object room, int brief) {
       }
       return exit;
     }, room, doors) ;
-
-    data = "You may go " + simple_list(exits, "or") + ".";
+*/
+    data = "You may go " + simple_list(exits, "or") + ".\n";
   } else {
-    data = "There are no exits here.";
+    data = "There are no exits here.\n";
   }
   if(data)
-    result += "\n" + data + "\n" ;
+    result += "\n" + data ;
+
+  data = null ;
+  if(sizeof(doors) > 0) {
+    data = "" ;
+    foreach(string door in doors) {
+      if(room->query_door_open(door)) {
+        data += sprintf("The %s door is open.\n", door);
+      } else {
+        data += sprintf("The %s door is closed.\n", door);
+      }
+    }
+  }
+  if(data)
+    result += data ;
 
   users = find_targets(tp, null, room, (: living($1) && $1 != $(tp) :));
   objects = find_targets(tp, null, room, (: !living($1) :));

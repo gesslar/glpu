@@ -46,7 +46,11 @@ public void apply_map_file(string file) {
   map_depth = 1 ;
 }
 
-protected void apply_map_generator(function f) {
+// An indeterminate map is one that is generated on demand and has no fixed
+// size or shape and therefore cannot be stored in memory. All functions that
+// query the map for data will return null. You should accommodate for this
+// in your own object.
+protected varargs void apply_map_generator(function f, int indeterminate) {
   mixed result ;
 
   if(!valid_function(f))
@@ -55,15 +59,22 @@ protected void apply_map_generator(function f) {
   noise_map = f;
   result = (*f)() ;
 
-  if(!result || !pointerp(result))
-    error("Map generator function did not return a valid map.");
+  if(!indeterminate)
+    if(!result || !pointerp(result))
+      error("Map generator function did not return a valid map.");
 
-  map_type = "generator";
-  map_data = result ;
+  if(indeterminate == true) {
+    map_type = "squirrel5";
+    map_depth = -1;
+    map_data = null ;
+  } else {
+    map_type = "generator";
 
-  map_depth = sizeof(map_data) ;
-  map_height = sizeof(map_data[0]) ;
-  map_width = sizeof(map_data[0][0]) ;
+    map_data = result ;
+    map_depth = sizeof(map_data) ;
+    map_height = sizeof(map_data[0]) ;
+    map_width = sizeof(map_data[0][0]) ;
+  }
 }
 
 string get_map_type() {
@@ -101,7 +112,7 @@ protected mapping get_exits(int z, int y, int x) {
         }
       }
     }
-  } else {
+  } else if(map_type == "generator") {
     for(i = 0; i < sizeof(directions); i++) {
       if(y >= 0 && y < map_height && x >= 0 && x < map_width) {
         if(map_data[y][x] > 0.5) {
@@ -109,7 +120,10 @@ protected mapping get_exits(int z, int y, int x) {
         }
       }
     }
+  } else if(map_type == "indeterminate") {
+    return null ;
   }
+
   return exits;
 }
 
@@ -120,6 +134,8 @@ protected mapping get_exits(int z, int y, int x) {
   } else if(map_type == "generator") {
     if(y >= 0 && y < map_height && x >= 0 && x < map_width && z >= 0 && z < map_depth)
       return map_data[z][y][x];
+  } else if(map_type == "indeterminate") {
+    return null ;
   }
 
   return null ;
@@ -127,6 +143,9 @@ protected mapping get_exits(int z, int y, int x) {
 
 public int is_valid_room(int z, int y, int x) {
   mixed room_type ;
+
+  if(map_type == "indeterminate")
+    return 1 ;
 
   room_type = get_room_type(z, y, x);
 
@@ -136,6 +155,8 @@ public int is_valid_room(int z, int y, int x) {
 public int get_map_width() {
   if(map_type == "file")
     return map_width / 2 ;
+  else if(map_type == "indeterminate")
+    return 1 ;
   else
     return map_width;
 }
@@ -143,12 +164,17 @@ public int get_map_width() {
 public int get_map_height() {
   if(map_type == "file")
     return map_height / 2 ;
+  else if(map_type == "indeterminate")
+    return 1 ;
   else
     return map_height;
 }
 
 public int get_map_depth() {
-  return map_depth;
+  if(map_type == "indeterminate")
+    return 1 ;
+  else
+    return map_depth;
 }
 
 public string *get_directions() {

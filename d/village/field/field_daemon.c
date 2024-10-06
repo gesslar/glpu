@@ -68,7 +68,7 @@ string setup_field_shorts() {
 }
 
 void setup_short(object room, string file) {
-  room->set_short(element_of(field_shorts)) ;
+  room->set_short(element_of(field_shorts) + " ("+query_file_name(room)+")");
 }
 
 private nosave int rot = 0 ;
