@@ -143,14 +143,17 @@ mapping hex_to_colour = ([
   "#D0D0D0": "252", "#DADADA": "253", "#E4E4E4": "254", "#EEEEEE": "255"
 ]) ;
 
-varargs mapping query_colour_to_hex(int colour) {
+varargs mixed colour_to_hex(int colour) {
   if(nullp(colour))
     return colour_to_hex ;
 
-  return colour_to_hex[colour] ;
+  if(colour < 0 || colour > 255 )
+    return "" ;
+
+  return colour_to_hex[sprintf("%03d", colour)] ;
 }
 
-varargs mapping query_hex_to_colour(string hex) {
+varargs mixed hex_to_colour(string hex) {
   if(nullp(hex))
     return hex_to_colour ;
 
