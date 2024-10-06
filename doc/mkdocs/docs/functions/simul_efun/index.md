@@ -74,6 +74,7 @@ title: simul_efun
 ## [function](function.md)
 
 * [assemble_call_back](function.md#assemble_call_back)
+* [assert](function.md#assert)
 * [call_back](function.md#call_back)
 * [call_if](function.md#call_if)
 * [call_trace](function.md#call_trace)
@@ -214,6 +215,7 @@ title: simul_efun
 
 ## [system](system.md)
 
+* [_debug](system.md#_debug)
 * [_error](system.md#_error)
 * [_info](system.md#_info)
 * [_ok](system.md#_ok)

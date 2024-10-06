@@ -8,11 +8,11 @@
  * @returns {mixed[]} - A new array with distinct elements from the input array.
  */
 mixed *distinct_array(mixed *arr) {
-    mapping m;
+  mapping m;
 
-    m = allocate_mapping(arr, 0);
+  m = allocate_mapping(arr, 0);
 
-    return keys(m);
+  return keys(m);
 }
 
 /**
@@ -28,9 +28,9 @@ mixed *distinct_array(mixed *arr) {
  * @returns {mixed[]} - A new array with specified elements removed.
  */
 varargs mixed *remove_array_element(mixed *arr, int start, int end) {
-    if(!end) end = start;
-    if(start > end) return arr;
-    return arr[0..start-1] + arr[end+1..];
+  if(!end) end = start;
+  if(start > end) return arr;
+  return arr[0..start-1] + arr[end+1..];
 }
 
 /**
@@ -52,15 +52,14 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) {
  * @returns {mixed[]} - A new array reflecting the desired modifications.
  */
 varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add) {
-    mixed *before, *after;
-    if(!pointerp(items_to_add)) {
-        items_to_add = ({});
-    }
+  mixed *before, *after;
+  if(!pointerp(items_to_add))
+    items_to_add = ({});
 
-    before = arr[0..start - 1];
-    after = arr[start + delete_count..];
+  before = arr[0..start - 1];
+  after = arr[start + delete_count..];
 
-    return before + items_to_add + after;
+  return before + items_to_add + after;
 }
 
 /**
@@ -71,14 +70,13 @@ varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_a
  * @returns {mixed[]} - A new array with elements in reverse order.
  */
 mixed *reverse_array(mixed *arr) {
-    int i, j, sz;
-    mixed *ret;
+  int i, j, sz;
+  mixed *ret;
 
-    for(i = 0, j = sizeof(arr) - 1, sz = sizeof(arr), ret = allocate(sz); i < sz; i++, j--) {
-        ret[i] = arr[j];
-    }
+  for(i = 0, j = sizeof(arr) - 1, sz = sizeof(arr), ret = allocate(sz); i < sz; i++, j--)
+    ret[i] = arr[j];
 
-    return ret;
+  return ret;
 }
 
 /**
@@ -91,12 +89,12 @@ mixed *reverse_array(mixed *arr) {
  *                  otherwise.
  */
 int uniform_array(string type, mixed *arr) {
-    int sz = sizeof(arr);
+  int sz = sizeof(arr);
 
-    if(!sz)
-        return 1;
+  if(!sz)
+    return 1;
 
-    return sizeof(filter(arr, (: typeof($1) == $2 :), type)) == sz;
+  return sizeof(filter(arr, (: typeof($1) == $2 :), type)) == sz;
 }
 
 /**
@@ -111,30 +109,30 @@ int uniform_array(string type, mixed *arr) {
  * @return {mixed}
  */
 varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
-    mixed *work, *ret;
-    int i;
-    int len ;
+  mixed *work, *ret;
+  int i;
+  int len;
 
-    if(!pointerp(arr))
-        arr = ({});
+  if(!pointerp(arr))
+    arr = ({});
 
-    if(nullp(value))
-        value = 0;
+  if(nullp(value))
+    value = 0;
 
-    if(nullp(size))
-        error("array_fill: size is required");
+  if(nullp(size))
+    error("array_fill: size is required");
 
-    len = sizeof(arr);
+  len = sizeof(arr);
 
-    if(nullp(start_index))
-        start_index = len;
+  if(nullp(start_index))
+    start_index = len;
 
-    work = allocate(size);
+  work = allocate(size);
 
-    while(size--)
-        work[size] = value;
+  while(size--)
+    work[size] = value;
 
-    return arr[0..start_index-1] + work + arr[start_index..];
+  return arr[0..start_index-1] + work + arr[start_index..];
 }
 
 /**
@@ -149,28 +147,58 @@ varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
  * @return {mixed}
  */
 varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) {
-    mixed *work, *ret;
-    int i;
-    int len ;
+  mixed *work, *ret;
+  int i;
+  int len;
 
-    if(!pointerp(arr))
-        arr = ({});
+  if(!pointerp(arr))
+    arr = ({});
 
-    if(nullp(value))
-        value = 0;
+  if(nullp(value))
+    value = 0;
 
-    len = sizeof(arr);
+  len = sizeof(arr);
 
-    if(size <= len)
-        return arr[0..size-1];
+  if(size <= len)
+    return arr[0..size-1];
 
-    work = allocate(size - len);
+  work = allocate(size - len);
 
-    while(size--)
-        work[size] = value;
+  while(size--)
+    work[size] = value;
 
-    if(beginning)
-        return work + arr;
-    else
-        return arr + work;
+  if(beginning)
+    return work + arr;
+  else
+    return arr + work;
+}
+
+mixed *pop(mixed *arr) {
+  return arr[0..sizeof(arr)-2] ;
+}
+
+mixed *push(mixed *arr, mixed value) {
+  return arr + ({ value }) ;
+}
+
+mixed shift(mixed *arr) {
+  return arr[1..] ;
+}
+
+mixed *unshift(mixed *arr, mixed value) {
+  return ({ value }) + arr ;
+}
+
+varargs mixed *array_slice(mixed *arr, int start, int end) {
+  if(nullp(arr))
+    return ({});
+
+  if(end < 0)
+    end = sizeof(arr) + end ;
+
+  return arr[start..end] ;
+}
+
+mixed *array_merge(mixed *arr1, mixed *arr2) {
+  return arr1 + arr2 ;
 }

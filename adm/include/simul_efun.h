@@ -69,6 +69,7 @@ mixed call_back(mixed *cb, mixed arg...) ;
 varargs string call_trace(int colour) ;
 mixed call_if(mixed ob, string func, mixed arg) ;
 varargs int delay_act(string act, float delay, mixed *cb) ;
+varargs void assert(mixed statement, string message) ;
 
 // File: grammar
 string int_string (int num) ;

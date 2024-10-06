@@ -373,3 +373,20 @@ arguments. If no object is provided, the message will be sent
 to this_body(). If no object is found, the message will be
 discarded.
 
+## _debug
+
+### Synopsis
+
+```c
+varargs void _debug(mixed str, mixed args...)
+```
+
+### Parameters
+
+* `string str` - The debug message.
+* `mixed [args]` - Optional arguments to format the message.
+
+### Description
+
+Logs a debug message, optionally formatted with arguments.
+

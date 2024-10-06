@@ -45,6 +45,25 @@ varargs int delay_act(string act, float delay, mixed *cb)
 
 Delays an action for a specified amount of time.
 
+## assert
+
+### Synopsis
+
+```c
+varargs void assert(mixed statement, string message)
+```
+
+### Parameters
+
+* `mixed statement` - The statement to assert.
+* `string message` - The message to display if the condition is false.
+
+### Description
+
+Asserts that a statement is true. If the statement is false, it
+will throw an error with the given message. If no message is
+provided, it will use a default message.
+
 ## assemble_call_back
 
 ### Synopsis

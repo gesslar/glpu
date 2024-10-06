@@ -149,7 +149,7 @@ string doc_dir() {
 }
 
 /**
- * @simul_efun debug
+ * @simul_efun _debug
  * @description Logs a debug message, optionally formatted with arguments.
  * @param {string} str - The debug message.
  * @param {mixed} [args] - Optional arguments to format the message.

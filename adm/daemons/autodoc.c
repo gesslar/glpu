@@ -172,7 +172,7 @@ private nomask void parse_file(string file) {
   int j ;
 
   if(!file_exists(file))
-      return ;
+    return ;
 
   lines = explode(read_file(file), "\n") ;
 
@@ -216,8 +216,7 @@ private nomask void parse_file(string file) {
       // And then keep on trucking!
       if(new_tag_found == 1) {
         curr = curr || ([]) ;
-        if(nullp(tag_data))
-          tag_data = ({}) ; // Ensure we have an array to append to
+        tag_data = tag_data || ({}) ;
         if(!of(current_tag, curr))
           curr[current_tag] = ({ tag_data }) ;
         else
@@ -269,7 +268,7 @@ private nomask void parse_file(string file) {
                 line = trim(chop((line), "{", -1)) ;
                 curr["def"] = ({ ({ line }) }) ;
                 // Move the outer loop index to the function
-                //  definition line
+                // definition line
                 num = j ;
                 break ;
               }
@@ -282,108 +281,107 @@ private nomask void parse_file(string file) {
             in_jsdoc = 0 ;
             continue ;
           }
+        }
+        /* ********************************************************* */
+        /* NOW THAT WE HAVE THE FUNCTION DEFINITION, WE CAN ADD THE  */
+        /* DOCUMENTATION TO THE APPROPRIATE LOCATION IN THE docs([]) */
+        /* ********************************************************* */
+        if(!of(doc_type, docs))
+          docs[doc_type] = ([]) ;
 
-          /* ********************************************************* */
-          /* NOW THAT WE HAVE THE FUNCTION DEFINITION, WE CAN ADD THE  */
-          /* DOCUMENTATION TO THE APPROPRIATE LOCATION IN THE docs([]) */
-          /* ********************************************************* */
-          if(!of(doc_type, docs))
-            docs[doc_type] = ([]) ;
-
-          curr["source_file"] = file ;
-          docs[doc_type][function_tag] = curr ;
-          in_jsdoc = 0 ;
-          continue ;
-        } else {
-          /* ********************************************************* */
-          /* THIS IS THE BEGINNING OF THE JSDOC COMMENT BLOCK          */
-          /* Format: @function_type function_tag                       */
-          /* ********************************************************* */
-          // Check for the first tag to determine the document type and
-          if(!pcre_match(line, tag_regex) &&
-              pcre_match(line, jsdoc_function_regex)) {
-              matches = pcre_extract(line, jsdoc_function_regex) ;
-              if(sizeof(matches) > 0) {
-                /* ************************************************* */
-                /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER       */
-                /* docs([]) UNLESS IT'S IN THE IGNORE LIST, THEN,    */
-                /* NEVERMIND.                                        */
-                /* ************************************************* */
-                if(of(matches[0], jsdoc_function_ignore_tags)) {
-                  in_jsdoc = 0 ;
-                  continue ;
-                }
-
-                doc_type = matches[0] ;
-                function_tag = matches[1] ;
-                // we can continue now and parse the rest in the next
-                // iteration
+        curr["source_file"] = file ;
+        docs[doc_type][function_tag] = curr ;
+        in_jsdoc = 0 ;
+        continue ;
+      } else {
+        /* ********************************************************* */
+        /* THIS IS THE BEGINNING OF THE JSDOC COMMENT BLOCK          */
+        /* Format: @function_type function_tag                       */
+        /* ********************************************************* */
+        // Check for the first tag to determine the document type and
+        if(!pcre_match(line, tag_regex) &&
+            pcre_match(line, jsdoc_function_regex)) {
+            matches = pcre_extract(line, jsdoc_function_regex) ;
+            if(sizeof(matches) > 0) {
+              /* ************************************************* */
+              /* DOC_TYPE WILL BE THE CURRENT CATEGORY UNDER       */
+              /* docs([]) UNLESS IT'S IN THE IGNORE LIST, THEN,    */
+              /* NEVERMIND.                                        */
+              /* ************************************************* */
+              if(of(matches[0], jsdoc_function_ignore_tags)) {
+                in_jsdoc = 0 ;
                 continue ;
               }
-            }
 
-            /* ********************************************************* */
-            /* THIS IS THE MIDDLE OF THE JSDOC COMMENT BLOCK             */
-            /* WE ARE NOW LOOKING FOR A TAG                              */
-            /* Format: @tag_name tag_info                                */
-            /* WHERE tag_name IS ONE OF THE TAGS IN tags({})             */
-            /* ********************************************************* */
-            if(stringp(function_tag)) {
-              // If no current tag is found, try to match a tag
-              if(current_tag == null) {
-                if(pcre_match(line, tag_regex)) {
-                  matches = pcre_extract(line, tag_regex) ;
-                  if(sizeof(matches) > 0) {
-                    current_tag = matches[0] ;
-                    tag_data = ({ matches[1] }) ;
-                  }
-                }
-              /* ***************************************************** */
-              /* WE HAVE A TAG! NOW WE NEED TO GET THE INFO PERTAINING */
-              /* TO THAT TAG.                                          */
-              /* ***************************************************** */
-              } else {
-                // It looks like we have encountered a new tag.
-                // If so, we need to reset so we can get the new tag's
-                // information.
-                if(pcre_match(line, "^\\s*\\*\\s+@") == true) {
-                  // Reset the current tag and tag data
-                  new_tag_found = 1 ;
-                  num-- ;
-                  continue ;
-                }
-
-                // If we have a blank line, we can reset the current
-                // tag, we may have unexpectedly reached the end of the
-                // JSDoc comment block.
-                if(pcre_match(line, "^\\s*$") == true) {
-                  current_tag = null ;
-                  tag_data = null ;
-                  continue ;
-                }
-
-                // If we haven't reached a new tag and we haven't
-                // reached the end of the JSDoc comment block, we can
-                // assume we are still parsing additional information
-                // for the current tag. We can append the current line
-                // to the current tag's information.
-                if(pcre_match(rtrim(line), continue_regex)) {
-                  matches = pcre_extract(line, continue_regex) ;
-                  if(sizeof(matches) > 0)
-                    tag_data += ({ matches[0] }) ;
-                } else if(of(current_tag, multi_line_tags)) {
-                  if(pcre_match(rtrim(line), blank_line_regex))
-                    tag_data += ({ "" }) ;
-                  else
-                    tag_data += ({ trim(line) }) ;
-                } else
-                  tag_data += ({ trim(line) }) ;
-              }
+              doc_type = matches[0] ;
+              function_tag = matches[1] ;
+              // we can continue now and parse the rest in the next
+              // iteration
+              continue ;
             }
           }
-      } else
-        continue ;
-    }
+
+          /* ********************************************************* */
+          /* THIS IS THE MIDDLE OF THE JSDOC COMMENT BLOCK             */
+          /* WE ARE NOW LOOKING FOR A TAG                              */
+          /* Format: @tag_name tag_info                                */
+          /* WHERE tag_name IS ONE OF THE TAGS IN tags({})             */
+          /* ********************************************************* */
+          if(stringp(function_tag)) {
+            // If no current tag is found, try to match a tag
+            if(current_tag == null) {
+              if(pcre_match(line, tag_regex)) {
+                matches = pcre_extract(line, tag_regex) ;
+                if(sizeof(matches) > 0) {
+                  current_tag = matches[0] ;
+                  tag_data = ({ matches[1] }) ;
+                }
+              }
+            /* ***************************************************** */
+            /* WE HAVE A TAG! NOW WE NEED TO GET THE INFO PERTAINING */
+            /* TO THAT TAG.                                          */
+            /* ***************************************************** */
+            } else {
+              // It looks like we have encountered a new tag.
+              // If so, we need to reset so we can get the new tag's
+              // information.
+              if(pcre_match(line, "^\\s*\\*\\s+@") == true) {
+                // Reset the current tag and tag data
+                new_tag_found = 1 ;
+                num-- ;
+                continue ;
+              }
+
+              // If we have a blank line, we can reset the current
+              // tag, we may have unexpectedly reached the end of the
+              // JSDoc comment block.
+              if(pcre_match(line, "^\\s*$") == true) {
+                current_tag = null ;
+                tag_data = null ;
+                continue ;
+              }
+
+              // If we haven't reached a new tag and we haven't
+              // reached the end of the JSDoc comment block, we can
+              // assume we are still parsing additional information
+              // for the current tag. We can append the current line
+              // to the current tag's information.
+              if(pcre_match(rtrim(line), continue_regex)) {
+                matches = pcre_extract(line, continue_regex) ;
+                if(sizeof(matches) > 0)
+                  tag_data += ({ matches[0] }) ;
+              } else if(of(current_tag, multi_line_tags)) {
+                if(pcre_match(rtrim(line), blank_line_regex))
+                  tag_data += ({ "" }) ;
+                else
+                  tag_data += ({ trim(line) }) ;
+              } else
+                tag_data += ({ trim(line) }) ;
+            }
+          }
+        }
+    } else
+      continue ;
   }
 }
 
@@ -434,24 +432,24 @@ private nomask mixed *consolidate_function(string function_name, mapping func) {
         } else
           result[2][sz] = line ;
       }
+    }
 
-      // Add the returns [3]
-      if(of("returns", func)) {
-        string *matches ;
-        string type, desc ;
-        string *parts ;
+    // Add the returns [3]
+    if(of("returns", func)) {
+      string *matches ;
+      string type, desc ;
+      string *parts ;
 
-        currs = func["returns"] ;
-        curr = currs[0] ;
-        line = implode(curr, " ") ;
+      currs = func["returns"] ;
+      curr = currs[0] ;
+      line = implode(curr, " ") ;
 
-        if(sizeof(parts = pcre_extract(line, "^\\{(.*)\\} - (.*)$")) == 2) {
-          if(pcre_match(parts[0], jsdoc_array_regex))
-            parts[0] = pcre_replace(parts[0], jsdoc_array_regex, ({ "*" })) ;
-          result[3] = sprintf("`%s` - %s", parts[0], parts[1]) ;
-        } else
-          result[3] = line ;
-      }
+      if(sizeof(parts = pcre_extract(line, "^\\{(.*)\\} - (.*)$")) == 2) {
+        if(pcre_match(parts[0], jsdoc_array_regex))
+          parts[0] = pcre_replace(parts[0], jsdoc_array_regex, ({ "*" })) ;
+        result[3] = sprintf("`%s` - %s", parts[0], parts[1]) ;
+      } else
+      result[3] = line ;
     }
 
     // Add the description
