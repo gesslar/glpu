@@ -9,10 +9,10 @@
  * 2024-08-08 - Gesslar - Created
  */
 
-inherit STD_ABILITY;
+inherit STD_ABILITY ;
 
 void setup() {
-    set_name("punch");
+    set_name("punch") ;
 
     aggressive = true ;
     target_current = true ;
@@ -64,7 +64,7 @@ void finish_punch(int status, object tp, object victim) {
     if(tp->can_strike(victim)) {
         float damage = percent_of(25.0, tp->query_damage()) ;
 
-        tp->targetted_action("$N $vpunch $t!", victim);
+        tp->targetted_action("$N $vpunch $t!", victim) ;
         tp->deliver_damage(victim, damage, "bludgeoning") ;
         tp->use_skill("combat.melee.unarmed") ;
     } else {

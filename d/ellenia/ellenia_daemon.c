@@ -9,9 +9,9 @@
  * 2024-09-25 - Gesslar - Created
  */
 
-inherit STD_VIRTUAL_MAP;
+inherit STD_VIRTUAL_MAP ;
 
-inherit M_NOISE;
+inherit M_NOISE ;
 
 protected void generate_map() ;
 private varargs string determine_room_type(int z, int y, int x) ;

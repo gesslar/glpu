@@ -155,21 +155,21 @@ float adjust_sp(float x) {
 }
 
 float adjust_max_sp(float x) {
-    max_sp += to_float(x);
+    max_sp += to_float(x) ;
 
     if(max_sp < 0.0)
-        max_sp = 0.0;
+        max_sp = 0.0 ;
 
     if(sp > max_sp) {
-        sp = max_sp;
+        sp = max_sp ;
     }
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
         GMCP_LBL_CHAR_VITALS_SP: sprintf("%.2f", sp),
         GMCP_LBL_CHAR_VITALS_MAX_SP: sprintf("%.2f", max_sp),
-    ]));
+    ])) ;
 
-    return max_sp;
+    return max_sp ;
 }
 
 float adjust_mp(float x) {
@@ -184,21 +184,21 @@ float adjust_mp(float x) {
 }
 
 float adjust_max_mp(float x) {
-    max_mp += to_float(x);
+    max_mp += to_float(x) ;
 
     if(max_mp < 0.0)
-        max_mp = 0.0;
+        max_mp = 0.0 ;
 
     if(mp > max_mp) {
-        mp = max_mp;
+        mp = max_mp ;
     }
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_VITALS, ([
         GMCP_LBL_CHAR_VITALS_MP: sprintf("%.2f", mp),
         GMCP_LBL_CHAR_VITALS_MAX_MP: sprintf("%.2f", max_mp),
-    ]));
+    ])) ;
 
-    return max_mp;
+    return max_mp ;
 }
 
 protected void heal_tick(int force: (: 0 :)) {
@@ -242,7 +242,7 @@ int add_heart_rate(int x) {
 void update_regen_interval() {
     // Calculate the number of pulses for the regen interval
     regen_interval_pulses = to_int((mud_config("HEART_PULSE") * mud_config("HEARTBEATS_TO_REGEN")) / 1000.0); // Convert ms to seconds
-    tick = 0;
+    tick = 0 ;
 }
 
 // This function initializes the healing process
@@ -278,70 +278,70 @@ float *query_condition() {
 }
 
 string *query_condition_string() {
-    string *result = allocate(3);
-    float *ratio = query_condition();
+    string *result = allocate(3) ;
+    float *ratio = query_condition() ;
 
     // HP Condition
     if(ratio[0] <= 0.0)
-        result[0] = "dead";
+        result[0] = "dead" ;
     else if(ratio[0] <= 10.0)
-        result[0] = "critical";
+        result[0] = "critical" ;
     else if(ratio[0] <= 30.0)
-        result[0] = "severely injured";
+        result[0] = "severely injured" ;
     else if(ratio[0] <= 45.0)
-        result[0] = "moderately injured";
+        result[0] = "moderately injured" ;
     else if(ratio[0] <= 60.0)
-        result[0] = "injured";
+        result[0] = "injured" ;
     else if(ratio[0] <= 75.0)
-        result[0] = "hurt";
+        result[0] = "hurt" ;
     else if(ratio[0] <= 90.0)
-        result[0] = "wounded";
+        result[0] = "wounded" ;
     else if(ratio[0] < 100.0)
-        result[0] = "bruised and nicked";
+        result[0] = "bruised and nicked" ;
     else
-        result[0] = "healthy";
+        result[0] = "healthy" ;
 
     // SP Condition
     if(ratio[1] <= 5.0)
-        result[1] = "brain dead";
+        result[1] = "brain dead" ;
     else if(ratio[1] <= 15.5)
-        result[1] = "depleted";
+        result[1] = "depleted" ;
     else if(ratio[1] <= 30.0)
-        result[1] = "unfocused";
+        result[1] = "unfocused" ;
     else if(ratio[1] <= 45.0)
-        result[1] = "mentally fuzzy";
+        result[1] = "mentally fuzzy" ;
     else if(ratio[1] <= 60.0)
-        result[1] = "losing focus";
+        result[1] = "losing focus" ;
     else if(ratio[1] <= 75.0)
-        result[1] = "clear-headed";
+        result[1] = "clear-headed" ;
     else if(ratio[1] <= 90.0)
-        result[1] = "sharp";
+        result[1] = "sharp" ;
     else if(ratio[1] < 100.0)
-        result[1] = "focused";
+        result[1] = "focused" ;
     else
-        result[1] = "fully charged";
+        result[1] = "fully charged" ;
 
     // MP Condition
     if(ratio[2] <= 5.0)
-        result[2] = "exhausted";
+        result[2] = "exhausted" ;
     else if(ratio[2] <= 15.5)
-        result[2] = "sluggish";
+        result[2] = "sluggish" ;
     else if(ratio[2] <= 30.0)
-        result[2] = "fatigued";
+        result[2] = "fatigued" ;
     else if(ratio[2] <= 45.0)
-        result[2] = "tired";
+        result[2] = "tired" ;
     else if(ratio[2] <= 60.0)
-        result[2] = "somewhat tired";
+        result[2] = "somewhat tired" ;
     else if(ratio[2] <= 75.0)
-        result[2] = "lively";
+        result[2] = "lively" ;
     else if(ratio[2] <= 90.0)
-        result[2] = "energetic";
+        result[2] = "energetic" ;
     else if(ratio[2] < 100.0)
-        result[2] = "very lively";
+        result[2] = "very lively" ;
     else
-        result[2] = "full of stamina";
+        result[2] = "full of stamina" ;
 
-    return result;
+    return result ;
 }
 
 int is_dead() { return dead ; }

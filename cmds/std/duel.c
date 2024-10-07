@@ -38,5 +38,5 @@ mixed main(object tp, string arg) {
 
     tp->start_attack(victim) ;
 
-    return 1;
+    return 1 ;
 }

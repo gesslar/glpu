@@ -41,14 +41,14 @@ varargs mixed data_value(string file, string key, mixed def) {
         return null ;
 
     key = append(key, "|") ;
-    lines = explode_file(file);
+    lines = explode_file(file) ;
     i = data_index(lines, key) ;
     if(i == -1)
         return def ;
 
     line = lines[i] ;
-    parts = explode(line, "|");
-    parts = parts[1..];
+    parts = explode(line, "|") ;
+    parts = parts[1..] ;
     parts = map(parts, (: from_string :)) ;
     if(sizeof(parts) == 1)
         return parts[0] ;
@@ -77,15 +77,15 @@ varargs void data_write(string file, string key, mixed data...) {
     key = append(key, "|") ;
     out = key + out ;
 
-    lines = explode_file(file);
+    lines = explode_file(file) ;
     i = data_index(lines, key) ;
     if(i > -1) {
         lines[i] = out ;
-        implode_file(file, lines, 1);
+        implode_file(file, lines, 1) ;
         return ;
     }
 
-    implode_file(file, lines, 1);
+    implode_file(file, lines, 1) ;
 }
 
 /**
@@ -102,7 +102,7 @@ int data_del(string file, string key) {
     if(nullp(file) || nullp(key))
         return 0 ;
 
-    lines = explode_file(file);
+    lines = explode_file(file) ;
     i = data_index(lines, key) ;
     if(i == -1)
         return 0 ;
@@ -111,7 +111,7 @@ int data_del(string file, string key) {
     if(sizeof(lines) == 0)
         rm(file) ;
     else
-        implode_file(file, lines, 1);
+        implode_file(file, lines, 1) ;
 
     return 1 ;
 }
@@ -133,7 +133,7 @@ varargs int data_inc(string file, string key, int inc) {
     if(nullp(file) || nullp(key))
         return null ;
 
-    lines = explode_file(file);
+    lines = explode_file(file) ;
     i = data_index(lines, key) ;
     if(i == -1) {
         data_write(file, key, inc) ;
@@ -145,5 +145,5 @@ varargs int data_inc(string file, string key, int inc) {
     sscanf(line, key + "%d", val) ;
     val += inc ;
     lines[i] = key + val ;
-    implode_file(file, lines, 1);
+    implode_file(file, lines, 1) ;
 }

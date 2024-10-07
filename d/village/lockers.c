@@ -19,8 +19,8 @@ inherit CLASS_STORAGE ;
 string storage_id() ;
 
 void setup() {
-    set_light(1);
-    set_short("Village Storage - Private Lockers");
+    set_light(1) ;
+    set_short("Village Storage - Private Lockers") ;
     set_long(
     "This room, an extension of the village's central storage area, "
     "is dedicated to private lockers. The space maintains the same "
@@ -32,11 +32,11 @@ void setup() {
     "and secure, providing villagers with a place to store their personal "
     "belongings. The air is thick with the scent of old wood and leather, "
     "adding to the room's rustic charm."
-    );
+    ) ;
 
     set_exits(([
         "east" : "/d/village/centre"
-    ]));
+    ])) ;
 
     set_items(([
         ({ "walls", "plaster", "plaster walls" }) :
@@ -56,7 +56,7 @@ void setup() {
             "Each trunk bears a unique name, identifying its owner. Some "
             "are neatly painted, others roughly carved, creating a patchwork "
             "of personal touches in this communal space."
-    ]));
+    ])) ;
 
     set_storage_options(new(class StorageOptions,
         storage_type: "private",
@@ -64,7 +64,7 @@ void setup() {
         storage_id: (: storage_id :),
         clean_on_empty: true,
         restore_on_load: true
-    ));
+    )) ;
 
     init_storage_room() ;
 

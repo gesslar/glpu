@@ -13,9 +13,9 @@
  *                     is invalid.
  */
 string user_data_file(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case(name);
-    return("/data/users/" + name[0..0] + "/" + name + "/" + name);
+    if(!name ||!stringp(name)) return 0 ;
+    name = lower_case(name) ;
+    return("/data/users/" + name[0..0] + "/" + name + "/" + name) ;
 }
 
 /**
@@ -26,9 +26,9 @@ string user_data_file(string name) {
  *                     is invalid.
  */
 string user_body_data(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case(name);
-    return("/data/users/" + name[0..0] + "/" + name + "/" + name);
+    if(!name ||!stringp(name)) return 0 ;
+    name = lower_case(name) ;
+    return("/data/users/" + name[0..0] + "/" + name + "/" + name) ;
 }
 
 /**
@@ -39,8 +39,8 @@ string user_body_data(string name) {
  *                     if the input is invalid.
  */
 string user_inventory_data(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case(name);
+    if(!name ||!stringp(name)) return 0 ;
+    name = lower_case(name) ;
     return user_data_directory(name) + name + "_inv.txt" ;
 }
 
@@ -53,9 +53,9 @@ string user_inventory_data(string name) {
  *                     input is invalid.
  */
 string user_data_directory(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case(name);
-    return("/data/users/" + name[0..0] + "/" + name + "/");
+    if(!name ||!stringp(name)) return 0 ;
+    name = lower_case(name) ;
+    return("/data/users/" + name[0..0] + "/" + name + "/") ;
 }
 
 /**
@@ -65,7 +65,7 @@ string user_data_directory(string name) {
  * @returns {string} - The home directory path for the user.
  */
 string home_path(mixed name) {
-    if(objectp(name) && userp(name)) name = query_privs(name);
+    if(objectp(name) && userp(name)) name = query_privs(name) ;
     if(!stringp(name)) return null ;
 
     return "/home/" + name[0..0] + "/" + name + "/" ;
@@ -78,9 +78,9 @@ string home_path(mixed name) {
  * @returns {string} - The path for the account file, or 0 if the input is invalid.
  */
 string account_path(string name) {
-    if(!name ||!stringp(name)) return 0;
-    name = lower_case(name);
-    return("/data/accounts/" + name[0..0] + "/");
+    if(!name ||!stringp(name)) return 0 ;
+    name = lower_case(name) ;
+    return("/data/accounts/" + name[0..0] + "/") ;
 }
 
 /**
@@ -134,10 +134,10 @@ varargs int valid_user(mixed ob) {
         ob = previous_object() ;
 
     if(objectp(ob))
-        ob = query_privs(ob);
+        ob = query_privs(ob) ;
 
     if(!stringp(ob))
-        return 0;
+        return 0 ;
 
     return file_exists(user_data_file(lower_case(ob)) + __SAVE_EXTENSION__) ;
 }

@@ -73,18 +73,18 @@ void unsetup_chain() {
 
 // same as above but for virtual
 varargs void virtual_setup_chain(mixed args...) {
-    int x;
+    int x ;
 
-    call_if(this_object(), "virtual_mudlib_setup", args...);
+    call_if(this_object(), "virtual_mudlib_setup", args...) ;
 
     for(x = 0; x < 5; x++)
-        call_if(this_object(), "pre_virtual_setup_" + x, args...);
+        call_if(this_object(), "pre_virtual_setup_" + x, args...) ;
 
-    call_if(this_object(), "virtual_setup", args...);
+    call_if(this_object(), "virtual_setup", args...) ;
 
-    x = 5;
+    x = 5 ;
     while(x--)
-        call_if(this_object(), "post_virtual_setup_" + x, args...);
+        call_if(this_object(), "post_virtual_setup_" + x, args...) ;
 
-    call_if(this_object(), "virtual_mudlib_complete_setup");
+    call_if(this_object(), "virtual_mudlib_complete_setup") ;
 }

@@ -16,7 +16,7 @@ private mixed short, long ;
 private nosave mapping extra_short = ([ ]), extra_long = ([ ]) ;
 
 int set_short(mixed str) {
-    short = str;
+    short = str ;
 
     if(environment())
         event(environment(), "gmcp_item_update", environment()) ;
@@ -30,13 +30,13 @@ string query_short(object viewer: (: this_body() :)) {
     if(valid_function(result))
         result = (*result)(viewer) ;
     if(!stringp(result))
-        result = 0;
+        result = 0 ;
 
     return result ;
 }
 
 int set_long(mixed str) {
-    long = str;
+    long = str ;
 }
 
 string query_long(object viewer: (: this_body() :)) {
@@ -48,7 +48,7 @@ string query_long(object viewer: (: this_body() :)) {
         result = (*result)(viewer) ;
 
     if(!stringp(result))
-        result = 0;
+        result = 0 ;
 
     return result ;
 }
@@ -91,7 +91,7 @@ string query_extra_short(string id) {
     if(valid_function(extra_short[id]))
         result = (*extra_short[id])() ;
     if(!stringp(result))
-        result = 0;
+        result = 0 ;
 
     return result ;
 }
@@ -119,7 +119,7 @@ string query_extra_long(string id) {
     if(valid_function(extra_long[id]))
         result = (*extra_long[id])() ;
     if(!stringp(result))
-        result = 0;
+        result = 0 ;
 
     return result ;
 }

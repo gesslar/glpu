@@ -12,9 +12,9 @@
 inherit STD_ARMOUR ;
 
 void setup() {
-    set_id(({"sturdy leather jerkin","leather jerkin", "jerkin", "armour"}));
-    set_short("sturdy leather jerkin");
-    set_name("sturdy leather jerkin");
+    set_id(({"sturdy leather jerkin","leather jerkin", "jerkin", "armour"})) ;
+    set_short("sturdy leather jerkin") ;
+    set_name("sturdy leather jerkin") ;
     set_long("This sturdy leather jerkin is crafted from high-quality, "
              "supple leather, designed to offer both protection and "
              "mobility. The jerkin is dyed a rich, earthy brown, and the "
@@ -22,9 +22,9 @@ void setup() {
              "tear. Reinforced stitching runs along the seams, ensuring "
              "durability, while the inside is lined with a softer material "
              "for added comfort. The jerkin features adjustable straps "
-             "along the sides and shoulders, allowing for a snug fit.");
-    set_mass(200);
-    set_slot("torso");
+             "along the sides and shoulders, allowing for a snug fit.") ;
+    set_mass(200) ;
+    set_slot("torso") ;
     set_ac(2.0) ;
     set_defense(([
         "slashing" : 2.0,

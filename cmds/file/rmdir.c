@@ -12,18 +12,18 @@
 inherit STD_CMD ;
 
 void setup() {
-    usage_text = "rmdir <directory name>";
+    usage_text = "rmdir <directory name>" ;
     help_text =
 "This command permanantly removes a specified directory. It will not "
 "currently delete a directory that has content (ie. The directory "
-"you wish to remove must be empty before it can be deleted.)";
+"you wish to remove must be empty before it can be deleted.)" ;
 }
 
 mixed main(object tp, string str) {
     if(!str)
         return _usage(tp) ;
 
-    str = resolve_path(tp->query_env("cwd"), str);
+    str = resolve_path(tp->query_env("cwd"), str) ;
 
     if(!directory_exists(str) || file_exists(str))
         return _error("%s is not a directory.", str) ;

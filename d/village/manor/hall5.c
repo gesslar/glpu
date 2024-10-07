@@ -27,7 +27,7 @@ void setup() {
     "north": "bedroom1",
     "west" : "bedroom2",
     "south": "hall4",
-  ]));
+  ])) ;
 
   add_door(new(class Door,
     id: "bedroom1 door",

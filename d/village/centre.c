@@ -18,7 +18,7 @@ inherit CLASS_STORAGE ;
 
 void setup() {
     set_light(1) ;
-    set_short("The Gathering Place");
+    set_short("The Gathering Place") ;
     set_long(
         "Stepping into this weathered structure, you're immediately "
         "enveloped by a cacophony of voices and laughter. The large, open "
@@ -32,12 +32,12 @@ void setup() {
         "appearance, the place buzzes with energy as villagers and "
         "visitors alike mingle, sharing stories and forging connections in "
         "this humble yet vibrant hub of community life."
-    );
+    ) ;
 
     set_exits(([
         "south": "village_path5",
         "west" : "lockers",
-    ]));
+    ])) ;
 
     set_items(([
         ({ "wooden floors", "floors" }) :
@@ -69,7 +69,7 @@ void setup() {
             "animated conversations and warm laughter creating an atmosphere "
             "of welcome and community. Some huddle in deep discussion, while "
             "others move about, greeting friends old and new.",
-    ]));
+    ])) ;
 
     set_storage_options(new(class StorageOptions,
         storage_type: "public",

@@ -9,13 +9,13 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string args) {
-    caller->save_body();
-    write("Successful [save]: User saved.\n");
-    return 1;
+    caller->save_body() ;
+    write("Successful [save]: User saved.\n") ;
+    return 1 ;
 }
 
 string help(object caller) {
     return(" SYNTAX: save\n\n" +
     "This command will save your charachter data.\n\n" +
-    "See also: quit\n");
+    "See also: quit\n") ;
 }

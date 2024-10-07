@@ -25,12 +25,12 @@ inherit __DIR__ "damage" ;
 string query_name() ;
 
 // Variables
-private nosave mapping _current_enemies = ([]);
-private nosave mapping _seen_enemies = ([]);
-private nosave float _attack_speed = 2.0;
-private nosave int _next_combat_round = 0;
-private nosave mapping _defense = ([]);
-private nosave float _ac = 0.0;
+private nosave mapping _current_enemies = ([]) ;
+private nosave mapping _seen_enemies = ([]) ;
+private nosave float _attack_speed = 2.0 ;
+private nosave int _next_combat_round = 0 ;
+private nosave mapping _defense = ([]) ;
+private nosave float _ac = 0.0 ;
 private nosave object _last_damager ;
 private nosave object _killed_by_ob ;
 private nosave string *_combat_memory = ({ }) ;
@@ -40,24 +40,24 @@ void combat_round() {
   object enemy ;
 
   if(is_dead())
-    return;
+    return ;
 
   if(query_hp() <= 0.0) {
-    stop_all_attacks();
-    return;
+    stop_all_attacks() ;
+    return ;
   }
 
   clean_up_enemies() ;
 
   if(!in_combat()) {
-    _next_combat_round = 0;
-    return;
+    _next_combat_round = 0 ;
+    return ;
   }
 
-  enemy = highest_threat();
+  enemy = highest_threat() ;
 
   if(!valid_enemy(enemy))
-    return;
+    return ;
 
   swing() ;
 
@@ -73,29 +73,29 @@ void combat_round() {
 
 int start_attack(object victim) {
   if(!victim)
-    return 0;
+    return 0 ;
 
   if(_current_enemies[victim])
-    return 0;
+    return 0 ;
 
   _current_enemies[victim] = 1.0 ;
 
   if(!_seen_enemies[victim])
-    _seen_enemies[victim] = 1.0;
+    _seen_enemies[victim] = 1.0 ;
 
 
   if(!userp())
     module("combat_memory", "add_to_memory", victim) ;
 
-  _next_combat_round = call_out_walltime("combat_round", _attack_speed);
+  _next_combat_round = call_out_walltime("combat_round", _attack_speed) ;
 
-  victim->start_attack(this_object());
+  victim->start_attack(this_object()) ;
 
-  return 1;
+  return 1 ;
 }
 
 void swing(int count, int multi) {
-  object enemy = highest_threat();
+  object enemy = highest_threat() ;
   object weapon ;
   string *slots = query_weapon_slots() ;
   mapping wielded ;
@@ -108,14 +108,14 @@ void swing(int count, int multi) {
     return ;
 
   if(!enemy)
-    return;
+    return ;
 
   if(!valid_enemy(enemy))
-    return;
+    return ;
 
   if(query_mp() <= 0.0) {
-    tell(this_object(), "You are too exhausted to attack.\n");
-    return;
+    tell(this_object(), "You are too exhausted to attack.\n") ;
+    return ;
   }
 
   wielded = query_wielded() ;
@@ -150,9 +150,9 @@ int next_round() {
 
   speed += random_float(1.5) ;
 
-  _next_combat_round = call_out_walltime("combat_round", speed);
+  _next_combat_round = call_out_walltime("combat_round", speed) ;
 
-  return _next_combat_round;
+  return _next_combat_round ;
 }
 
 public int can_strike(object enemy, mixed weapon) {
@@ -231,10 +231,10 @@ void strike_enemy(object enemy, object weapon) {
   string proc ;
 
   if(!valid_enemy(enemy))
-    return;
+    return ;
 
   if(!current_enemy(enemy))
-    return;
+    return ;
 
   weapon_info = query_weapon_info(weapon) ;
 
@@ -279,9 +279,9 @@ void strike_enemy(object enemy, object weapon) {
   tell_down(environment(), messes[2], MSG_COMBAT_HIT, ({ this_object(), enemy })) ;
 
   deliver_damage(enemy, dam, wtype) ;
-  adjust_mp(-random_float(5.0));
-  add_threat(enemy, dam);
-  add_seen_threat(enemy, dam);
+  adjust_mp(-random_float(5.0)) ;
+  add_threat(enemy, dam) ;
+  add_seen_threat(enemy, dam) ;
 
   if(weapon && weapon->is_weapon())
     if(stringp(proc = weapon->can_proc()))
@@ -321,12 +321,12 @@ mapping query_weapon_info(object weapon) {
 
 int attacking(object victim) {
   if(!victim)
-    return 0;
+    return 0 ;
 
   if(_current_enemies[victim])
-    return 1;
+    return 1 ;
 
-  return 0;
+  return 0 ;
 }
 
 varargs int stop_attack(object victim, int seen) {
@@ -337,57 +337,57 @@ varargs int stop_attack(object victim, int seen) {
     return -1 ;
 
   if(_current_enemies[victim]) {
-    map_delete(_current_enemies, victim);
-    return 1;
+    map_delete(_current_enemies, victim) ;
+    return 1 ;
   }
 
   if(seen && _seen_enemies[victim]) {
-    map_delete(_seen_enemies, victim);
-    return 1;
+    map_delete(_seen_enemies, victim) ;
+    return 1 ;
   }
 
-  return 0;
+  return 0 ;
 }
 
 void stop_all_attacks() {
   if(find_call_out(_next_combat_round) != -1)
-    remove_call_out(_next_combat_round);
+    remove_call_out(_next_combat_round) ;
 
-  _current_enemies = ([]);
+  _current_enemies = ([]) ;
 
   GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
     GMCP_LBL_CHAR_STATUS_CURRENT_ENEMY: "",
     GMCP_LBL_CHAR_STATUS_CURRENT_ENEMIES: ({}),
   ])) ;
 
-  clean_up_enemies();
+  clean_up_enemies() ;
 
   if(is_dead())
-    return;
+    return ;
 }
 
 int in_combat() {
-  return sizeof(_current_enemies) > 0;
+  return sizeof(_current_enemies) > 0 ;
 }
 
 int seen_enemy(object victim) {
   if(!victim)
-    return 0;
+    return 0 ;
 
   if(_seen_enemies[victim])
-    return 1;
+    return 1 ;
 
-  return 0;
+  return 0 ;
 }
 
 int current_enemy(object victim) {
   if(!victim)
-    return 0;
+    return 0 ;
 
   if(_current_enemies[victim])
-    return 1;
+    return 1 ;
 
-  return 0;
+  return 0 ;
 }
 
 mapping current_enemies() {
@@ -395,85 +395,85 @@ mapping current_enemies() {
 }
 
 object highest_threat() {
-  object *enemies;
+  object *enemies ;
   object highest ;
-  int highest_threat = 0;
+  int highest_threat = 0 ;
 
   if(!sizeof(_current_enemies))
-    return 0;
+    return 0 ;
 
-  enemies = keys(_current_enemies);
-  highest = enemies[0];
+  enemies = keys(_current_enemies) ;
+  highest = enemies[0] ;
 
   foreach(object enemy in enemies) {
     if(_current_enemies[enemy] > highest_threat) {
-      highest = enemy;
-      highest_threat = _current_enemies[enemy];
+      highest = enemy ;
+      highest_threat = _current_enemies[enemy] ;
     }
   }
 
-  return highest;
+  return highest ;
 }
 
 object lowest_threat() {
-  object *enemies = keys(_current_enemies);
-  object lowest = enemies[0];
+  object *enemies = keys(_current_enemies) ;
+  object lowest = enemies[0] ;
   int lowest_threat = MAX_INT ;
 
   foreach(object enemy in enemies) {
     if(_current_enemies[enemy] < lowest_threat) {
-      lowest = enemy;
-      lowest_threat = _current_enemies[enemy];
+      lowest = enemy ;
+      lowest_threat = _current_enemies[enemy] ;
     }
   }
 
-  return lowest;
+  return lowest ;
 }
 
 object highest_seen_threat() {
-  object *enemies = keys(_seen_enemies);
-  object highest = enemies[0];
-  int highest_threat = 0;
+  object *enemies = keys(_seen_enemies) ;
+  object highest = enemies[0] ;
+  int highest_threat = 0 ;
 
   foreach(object enemy in enemies) {
     if(_seen_enemies[enemy] > highest_threat) {
-      highest = enemy;
-      highest_threat = _seen_enemies[enemy];
+      highest = enemy ;
+      highest_threat = _seen_enemies[enemy] ;
     }
   }
 
-  return highest;
+  return highest ;
 }
 
 object lowest_seen_threat() {
-  object *enemies = keys(_seen_enemies);
-  object lowest = enemies[0];
+  object *enemies = keys(_seen_enemies) ;
+  object lowest = enemies[0] ;
   int lowest_threat = MAX_INT ;
 
   foreach(object enemy in enemies) {
     if(_seen_enemies[enemy] < lowest_threat) {
-      lowest = enemy;
-      lowest_threat = _seen_enemies[enemy];
+      lowest = enemy ;
+      lowest_threat = _seen_enemies[enemy] ;
     }
   }
 
-  return lowest;
+  return lowest ;
 }
 
 void clean_up_enemies() {
   if(is_dead())
-    return;
+    return ;
 
   if(!in_combat())
-    return;
+    return ;
 
-  _current_enemies = filter(_current_enemies, (: valid_enemy :));
+  _current_enemies = filter(_current_enemies, (: valid_enemy :)) ;
 
   if(!in_combat()) {
-    _next_combat_round = 0;
+    _next_combat_round = 0 ;
 
     if(query_hp() > 0.0)
-      tell(this_object(), "You are no longer in combat.\n");
+      tell(this_object(), "You are no longer in combat.\n") ;
 
     GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
       GMCP_LBL_CHAR_STATUS_CURRENT_ENEMY: "",
@@ -489,11 +489,11 @@ varargs int valid_enemy(object enemy) {
   if(enemy->is_dead())
     return 0 ;
 
-  return 1;
+  return 1 ;
 }
 
 void clean_up_seen_enemies() {
-  _seen_enemies = filter(_seen_enemies, (: valid_seen_enemy :));
+  _seen_enemies = filter(_seen_enemies, (: valid_seen_enemy :)) ;
 }
 
 varargs int valid_seen_enemy(object enemy, int threat) {
@@ -503,41 +503,41 @@ varargs int valid_seen_enemy(object enemy, int threat) {
   if(enemy->is_dead())
     return 0 ;
 
-  return 1;
+  return 1 ;
 }
 
 float add_threat(object enemy, float amount) {
   if(!valid_enemy(enemy))
-    return 0.0;
+    return 0.0 ;
 
-  _current_enemies[enemy] += amount;
+  _current_enemies[enemy] += amount ;
 
-  return _current_enemies[enemy];
+  return _current_enemies[enemy] ;
 }
 
 float add_seen_threat(object enemy, float amount) {
   if(!valid_seen_enemy(enemy))
-    return 0.0;
+    return 0.0 ;
 
-  _seen_enemies[enemy] += amount;
+  _seen_enemies[enemy] += amount ;
 
-  return _seen_enemies[enemy];
+  return _seen_enemies[enemy] ;
 }
 
 float add_attack_speed(float amount) {
-  _attack_speed += amount;
+  _attack_speed += amount ;
 
-  _attack_speed = clamp(0.5, 10.0, _attack_speed);
+  _attack_speed = clamp(0.5, 10.0, _attack_speed) ;
 
-  return _attack_speed;
+  return _attack_speed ;
 }
 
 void set_attack_speed(float speed) {
-  _attack_speed = speed;
+  _attack_speed = speed ;
 }
 
 float query_attack_speed() {
-  return _attack_speed;
+  return _attack_speed ;
 }
 
 void set_defense(mapping def) {
@@ -571,7 +571,7 @@ mapping adjust_protection() {
   object *obs = values(equipment), ob ;
 
   { // Defenses
-    _defense = ([]);
+    _defense = ([]) ;
     foreach(ob in obs) {
       mapping def = ob->query_defense() ;
 
@@ -622,54 +622,54 @@ object set_killed_by(object ob) {
 // circumstances for players.
 
 private nomask float _damage = 0.0 ;
-private nomask string _weapon_name = "fist";
-private nomask string _weapon_type = "bludgeoning";
+private nomask string _weapon_name = "fist" ;
+private nomask string _weapon_type = "bludgeoning" ;
 
 float set_damage(float x) {
   if(x < 0.0)
-    return 0.0;
+    return 0.0 ;
 
-  return _damage = x;
+  return _damage = x ;
 }
 
 float query_damage() {
   if(_damage <= 0.0)
-    return random_float(query_level() * 2.0);
+    return random_float(query_level() * 2.0) ;
 
   return random_float(_damage) ;
 }
 
 string set_weapon_name(string str) {
   if(!stringp(str))
-    return _weapon_name;
+    return _weapon_name ;
 
-  return _weapon_name = str;
+  return _weapon_name = str ;
 }
 
 string query_weapon_name() {
-  return _weapon_name;
+  return _weapon_name ;
 }
 
 string set_weapon_type(string str) {
   if(!stringp(str))
-    return _weapon_type;
+    return _weapon_type ;
 
-  return _weapon_type = str;
+  return _weapon_type = str ;
 }
 
 string query_weapon_type() {
-  return _weapon_type;
+  return _weapon_type ;
 }
 
 mixed prevent_combat(object victim) {
   if(victim->query_peaceful(this_object()))
-    return "You cannot attack a peaceful creature.\n";
+    return "You cannot attack a peaceful creature.\n" ;
 
   if(victim->query_no_combat(this_object()))
-    return "You cannot attack that.\n";
+    return "You cannot attack that.\n" ;
 
   if(environment()->query_no_combat(this_object()))
-    return "You cannot attack here.\n";
+    return "You cannot attack here.\n" ;
 
   return 1 ;
 }

@@ -8,12 +8,12 @@
  */
 mixed assure_file(string file) {
     string *parts ;
-    string *path;
-    string dir;
-    int i;
+    string *path ;
+    string dir ;
+    int i ;
 
     if(nullp(file))
-        return "No file specified for assure_file().\n";
+        return "No file specified for assure_file().\n" ;
 
     if(file_size(file) != -1)
         return 1 ;
@@ -27,7 +27,7 @@ mixed assure_file(string file) {
     return file_size(dir) == -2 ;
 }
 
-//file_owner(string file);
+//file_owner(string file) ;
 
 //Tacitus @ LPUniversity
 //02-APR-05
@@ -42,18 +42,18 @@ mixed assure_file(string file) {
  * @returns {string} - The owner of the file, or 0 if not found.
  */
 string file_owner(string file) {
-    string temp;
+    string temp ;
 
-    if(file[0] != '/') file = "/" + file;
+    if(file[0] != '/') file = "/" + file ;
 
     if(sscanf(file, "/home/%s/%s/%*s", temp, temp) == 2) {
-        return temp;
+        return temp ;
     }
     if(sscanf(file, "/adm/%s/%*s", temp) == 2) {
-        return "Admin/" + temp;
+        return "Admin/" + temp ;
     }
 
-    return 0;
+    return 0 ;
 }
 
 /**
@@ -75,54 +75,54 @@ varargs string tail(string path, int line_count) {
     string *lines; // Array to hold split lines
     int start_index; // Index for trimming lines
 
-    if(nullp(path)) error("No file specified for tail(). [" + previous_object() + "]");
+    if(nullp(path)) error("No file specified for tail(). [" + previous_object() + "]") ;
     if(nullp(line_count)) line_count = 25; // Default to 25 lines if not specified
 
     // Get the total size of the file
-    file_size = file_size(path);
+    file_size = file_size(path) ;
     // Initialize reading position at the end of the file
-    end = file_size;
+    end = file_size ;
 
     // Ensure we don't start reading beyond the start of the file
-    if(end < 0) return "File does not exist or is empty.";
+    if(end < 0) return "File does not exist or is empty." ;
 
     while(end > 0) {
-        start = end - chunk_size;
+        start = end - chunk_size ;
         if(start < 0) start = 0; // Adjust start to not go below file beginning
 
         // Read the chunk from the file
-        chunk = read_bytes(path, start, end - start);
+        chunk = read_bytes(path, start, end - start) ;
 
         if(!strlen(chunk)) break; // Break if no data was read
 
         // Prepend the current chunk to the result
-        result = chunk + result;
+        result = chunk + result ;
 
         // Count the number of newlines in the current result
-        total_lines = sizeof(explode(result, "\n")) - 1;
+        total_lines = sizeof(explode(result, "\n")) - 1 ;
 
         // If we have enough lines, break the loop
-        if(total_lines >= line_count) break;
+        if(total_lines >= line_count) break ;
 
         end = start; // Move the end position for the next read
     }
 
     // Trim the result to exactly the number of lines requested
-    lines = explode(result, "\n");
-    start_index = (sizeof(lines) > line_count) ? sizeof(lines) - line_count : 0;
-    result = implode(lines[start_index..], "\n");
+    lines = explode(result, "\n") ;
+    start_index = (sizeof(lines) > line_count) ? sizeof(lines) - line_count : 0 ;
+    result = implode(lines[start_index..], "\n") ;
 
     // Add a newline at the beginning if we trimmed lines
-    if (start_index > 0) {
-        result = "\n" + result;
+    if(start_index > 0) {
+        result = "\n" + result ;
     }
 
     // Pad with empty lines if we have fewer lines than requested
-    if (sizeof(lines) < line_count) {
-        result = implode(allocate(line_count - sizeof(lines), ""), "\n") + result;
+    if(sizeof(lines) < line_count) {
+        result = implode(allocate(line_count - sizeof(lines), ""), "\n") + result ;
     }
 
-    return result;
+    return result ;
 }
 
 
@@ -141,9 +141,9 @@ varargs string tail(string path, int line_count) {
  * @returns {int} - 1 if the log message was written successfully, otherwise 0.
  */
 varargs int log_file(string file, string str, mixed arg...) {
-    if(!file || !str) return 0;
-    master()->log_file(file, str, arg...);
-    return 1;
+    if(!file || !str) return 0 ;
+    master()->log_file(file, str, arg...) ;
+    return 1 ;
 }
 
 /**
@@ -218,7 +218,7 @@ varargs void implode_file(string file, string *lines, int overwrite) {
  * @returns {string} - The name of the file corresponding to the object.
  */
 string query_file_name(object ob) {
-    string file, *parts;
+    string file, *parts ;
     string dir ;
 
     if(!objectp(ob))
@@ -228,10 +228,10 @@ string query_file_name(object ob) {
         error("Bad argument 1 to query_file_name().\n") ;
 
     file = base_name(ob) ;
-    parts = explode(file, "/");
-    file = parts[<1];
+    parts = explode(file, "/") ;
+    file = parts[<1] ;
 
-    return file;
+    return file ;
 }
 
 /**

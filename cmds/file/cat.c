@@ -13,7 +13,7 @@ void setup() {
 }
 
 mixed main(object tp, string str) {
-  string *lines;
+  string *lines ;
   int i, max_lines ;
 
   if(!str)
@@ -22,20 +22,20 @@ mixed main(object tp, string str) {
   str = resolve_file(tp, str) ;
 
   if(!file_exists(str))
-    return _error("No such file: %s", str);
+    return _error("No such file: %s", str) ;
 
-  i = file_size(str);
+  i = file_size(str) ;
   if(i < 0)
-    return _error("No such file or 0-length file: %s", str);
+    return _error("No such file or 0-length file: %s", str) ;
 
-  max_lines = file_length(str);
+  max_lines = file_length(str) ;
 
   tell(tp, "=== " + str + " ===\n") ;
 
-  i = 0;
+  i = 0 ;
 
   while(++i <= max_lines)
-    tell(tp, append(read_file(str, i, 1), "\n"));
+    tell(tp, append(read_file(str, i, 1), "\n")) ;
 
-  return 1;
+  return 1 ;
 }

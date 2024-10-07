@@ -1,7 +1,7 @@
 private nosave int light = 1 ;
 
 int set_light(int level) {
-    light = level;
+    light = level ;
     return level ;
 }
 

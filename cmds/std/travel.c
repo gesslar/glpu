@@ -27,7 +27,7 @@ void setup() {
 
   usage_text =
 "travel list - List all valid travel destinations.\n"
-"travel <destination> - Travel to a common destination.";
+"travel <destination> - Travel to a common destination." ;
   help_text =
 "This command allows you to travel to common destinations from your current "
 "location.\n\n"

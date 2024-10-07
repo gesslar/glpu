@@ -7,28 +7,28 @@
 #define INT_32_SIGNED_MAX   0x7FFFFFFF
 
 // Function Prototypes
-int Get1dNoise(int index, int seed);
-int Get2dNoise(int posX, int posY, int seed);
-int Get3dNoise(int posX, int posY, int posZ, int seed);
-int Get4dNoise(int posX, int posY, int posZ, int posT, int seed);
+int Get1dNoise(int index, int seed) ;
+int Get2dNoise(int posX, int posY, int seed) ;
+int Get3dNoise(int posX, int posY, int posZ, int seed) ;
+int Get4dNoise(int posX, int posY, int posZ, int posT, int seed) ;
 
-float Get1dNoiseZeroToOne(int index, int seed);
-float Get2dNoiseZeroToOne(int posX, int posY, int seed);
-float Get3dNoiseZeroToOne(int posX, int posY, int posZ, int seed);
-float Get4dNoiseZeroToOne(int posX, int posY, int posZ, int posT, int seed);
+float Get1dNoiseZeroToOne(int index, int seed) ;
+float Get2dNoiseZeroToOne(int posX, int posY, int seed) ;
+float Get3dNoiseZeroToOne(int posX, int posY, int posZ, int seed) ;
+float Get4dNoiseZeroToOne(int posX, int posY, int posZ, int posT, int seed) ;
 
-float Get1dNoiseNegOneToOne(int index, int seed);
-float Get2dNoiseNegOneToOne(int posX, int posY, int seed);
-float Get3dNoiseNegOneToOne(int posX, int posY, int posZ, int seed);
-float Get4dNoiseNegOneToOne(int posX, int posY, int posZ, int posT, int seed);
+float Get1dNoiseNegOneToOne(int index, int seed) ;
+float Get2dNoiseNegOneToOne(int posX, int posY, int seed) ;
+float Get3dNoiseNegOneToOne(int posX, int posY, int posZ, int seed) ;
+float Get4dNoiseNegOneToOne(int posX, int posY, int posZ, int posT, int seed) ;
 
 // Helper Functions
-private int SquirrelNoise5(int positionX, int seed);
-private int sanitize_seed(int seed);
-private int fake_uint32_overflow(int number);
-private int fake_int32_overflow(int number);
-private float normalize_zero_to_one(int raw_noise);
-private float normalize_neg_one_to_one(int raw_noise);
+private int SquirrelNoise5(int positionX, int seed) ;
+private int sanitize_seed(int seed) ;
+private int fake_uint32_overflow(int number) ;
+private int fake_int32_overflow(int number) ;
+private float normalize_zero_to_one(int raw_noise) ;
+private float normalize_neg_one_to_one(int raw_noise) ;
 
 //--------------------------------------------------------------------------
 /**
@@ -43,23 +43,23 @@ private int SquirrelNoise5(int positionX, int seed) {
     int SQ5_BIT_NOISE4 = 0xB79F3ABB; // 10110111100111110011101010111011
     int SQ5_BIT_NOISE5 = 0x1b56c4f5; // 00011011010101101100010011110101
 
-    int mangledBits = positionX;
+    int mangledBits = positionX ;
 
-    seed = sanitize_seed(seed || 0);
+    seed = sanitize_seed(seed || 0) ;
 
-    mangledBits = (mangledBits * SQ5_BIT_NOISE1) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits + seed) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits ^ (mangledBits >> 9)) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits + SQ5_BIT_NOISE2) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits ^ (mangledBits >> 11)) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits * SQ5_BIT_NOISE3) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits ^ (mangledBits >> 13)) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits + SQ5_BIT_NOISE4) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits ^ (mangledBits >> 15)) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits * SQ5_BIT_NOISE5) & INT_32_UNSIGNED_MAX;
-    mangledBits = (mangledBits ^ (mangledBits >> 17)) & INT_32_UNSIGNED_MAX;
+    mangledBits = (mangledBits * SQ5_BIT_NOISE1) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits + seed) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits ^ (mangledBits >> 9)) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits + SQ5_BIT_NOISE2) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits ^ (mangledBits >> 11)) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits * SQ5_BIT_NOISE3) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits ^ (mangledBits >> 13)) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits + SQ5_BIT_NOISE4) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits ^ (mangledBits >> 15)) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits * SQ5_BIT_NOISE5) & INT_32_UNSIGNED_MAX ;
+    mangledBits = (mangledBits ^ (mangledBits >> 17)) & INT_32_UNSIGNED_MAX ;
 
-    return mangledBits;
+    return mangledBits ;
 }
 
 //--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ private int SquirrelNoise5(int positionX, int seed) {
  * sanitize_seed - Ensures the seed is a non-negative 32-bit unsigned integer.
  */
 private int sanitize_seed(int seed) {
-    return abs(seed) & INT_32_UNSIGNED_MAX;
+    return abs(seed) & INT_32_UNSIGNED_MAX ;
 }
 
 //--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ private int sanitize_seed(int seed) {
  * fake_uint32_overflow - Mimics 32-bit unsigned integer overflow.
  */
 private int fake_uint32_overflow(int number) {
-    return number & INT_32_UNSIGNED_MAX;
+    return number & INT_32_UNSIGNED_MAX ;
 }
 
 //--------------------------------------------------------------------------
@@ -84,8 +84,8 @@ private int fake_uint32_overflow(int number) {
  */
 private int fake_int32_overflow(int number) {
     if(number <= INT_32_SIGNED_MAX)
-        return number;
-    return (number % INT_32_SIGNED_MAX) - INT_32_SIGNED_MAX - 2;
+        return number ;
+    return (number % INT_32_SIGNED_MAX) - INT_32_SIGNED_MAX - 2 ;
 }
 
 //--------------------------------------------------------------------------
@@ -97,10 +97,10 @@ private int fake_int32_overflow(int number) {
  */
 private float normalize_zero_to_one(int raw_noise) {
     // Apply bitmasking to treat the signed int as unsigned
-    int uResult = raw_noise & 0xFFFFFFFF;
+    int uResult = raw_noise & 0xFFFFFFFF ;
     // Normalize to [0.0, 1.0]
-    float normalized = ((float)uResult) / 4294967295.0;
-    return normalized;
+    float normalized = ((float)uResult) / 4294967295.0 ;
+    return normalized ;
 }
 
 //--------------------------------------------------------------------------
@@ -111,10 +111,10 @@ private float normalize_zero_to_one(int raw_noise) {
  * @return: Float normalized to [-1.0, 1.0].
  */
 private float normalize_neg_one_to_one(int raw_noise) {
-    float normalized_zero_to_one = normalize_zero_to_one(raw_noise);
+    float normalized_zero_to_one = normalize_zero_to_one(raw_noise) ;
     // Scale to [-1.0, 1.0]
-    float normalized = (normalized_zero_to_one * 2.0) - 1.0;
-    return normalized;
+    float normalized = (normalized_zero_to_one * 2.0) - 1.0 ;
+    return normalized ;
 }
 
 //--------------------------------------------------------------------------
@@ -122,7 +122,7 @@ private float normalize_neg_one_to_one(int raw_noise) {
  * Get1dNoise - Generates 1D noise.
  */
 int Get1dNoise(int positionX, int seed) {
-    return SquirrelNoise5(positionX, seed);
+    return SquirrelNoise5(positionX, seed) ;
 }
 
 //--------------------------------------------------------------------------
@@ -134,7 +134,7 @@ int Get2dNoise(int posX, int posY, int seed) {
     return SquirrelNoise5(
         posX + fake_uint32_overflow(PRIME_NUMBER * posY),
         seed
-    );
+    ) ;
 }
 
 //--------------------------------------------------------------------------
@@ -147,7 +147,7 @@ int Get3dNoise(int posX, int posY, int posZ, int seed) {
     return SquirrelNoise5(
         posX + fake_uint32_overflow(PRIME1 * posY) + fake_uint32_overflow(PRIME2 * posZ),
         seed
-    );
+    ) ;
 }
 
 //--------------------------------------------------------------------------
@@ -164,7 +164,7 @@ int Get4dNoise(int posX, int posY, int posZ, int posT, int seed) {
         fake_uint32_overflow(PRIME2 * posZ) +
         fake_uint32_overflow(PRIME3 * posT),
         seed
-    );
+    ) ;
 }
 
 //--------------------------------------------------------------------------
@@ -172,8 +172,8 @@ int Get4dNoise(int posX, int posY, int posZ, int posT, int seed) {
  * Get1dNoiseZeroToOne - Normalizes 1D noise to [0.0, 1.0].
  */
 float Get1dNoiseZeroToOne(int index, int seed) {
-    int raw_noise = Get1dNoise(index, seed);
-    return normalize_zero_to_one(raw_noise);
+    int raw_noise = Get1dNoise(index, seed) ;
+    return normalize_zero_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -181,8 +181,8 @@ float Get1dNoiseZeroToOne(int index, int seed) {
  * Get2dNoiseZeroToOne - Normalizes 2D noise to [0.0, 1.0].
  */
 float Get2dNoiseZeroToOne(int posX, int posY, int seed) {
-    int raw_noise = Get2dNoise(posX, posY, seed);
-    return normalize_zero_to_one(raw_noise);
+    int raw_noise = Get2dNoise(posX, posY, seed) ;
+    return normalize_zero_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -190,8 +190,8 @@ float Get2dNoiseZeroToOne(int posX, int posY, int seed) {
  * Get3dNoiseZeroToOne - Normalizes 3D noise to [0.0, 1.0].
  */
 float Get3dNoiseZeroToOne(int posX, int posY, int posZ, int seed) {
-    int raw_noise = Get3dNoise(posX, posY, posZ, seed);
-    return normalize_zero_to_one(raw_noise);
+    int raw_noise = Get3dNoise(posX, posY, posZ, seed) ;
+    return normalize_zero_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -199,8 +199,8 @@ float Get3dNoiseZeroToOne(int posX, int posY, int posZ, int seed) {
  * Get4dNoiseZeroToOne - Normalizes 4D noise to [0.0, 1.0].
  */
 float Get4dNoiseZeroToOne(int posX, int posY, int posZ, int posT, int seed) {
-    int raw_noise = Get4dNoise(posX, posY, posZ, posT, seed);
-    return normalize_zero_to_one(raw_noise);
+    int raw_noise = Get4dNoise(posX, posY, posZ, posT, seed) ;
+    return normalize_zero_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -208,8 +208,8 @@ float Get4dNoiseZeroToOne(int posX, int posY, int posZ, int posT, int seed) {
  * Get1dNoiseNegOneToOne - Normalizes 1D noise to [-1.0, 1.0].
  */
 float Get1dNoiseNegOneToOne(int index, int seed) {
-    int raw_noise = Get1dNoise(index, seed);
-    return normalize_neg_one_to_one(raw_noise);
+    int raw_noise = Get1dNoise(index, seed) ;
+    return normalize_neg_one_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -217,8 +217,8 @@ float Get1dNoiseNegOneToOne(int index, int seed) {
  * Get2dNoiseNegOneToOne - Normalizes 2D noise to [-1.0, 1.0].
  */
 float Get2dNoiseNegOneToOne(int posX, int posY, int seed) {
-    int raw_noise = Get2dNoise(posX, posY, seed);
-    return normalize_neg_one_to_one(raw_noise);
+    int raw_noise = Get2dNoise(posX, posY, seed) ;
+    return normalize_neg_one_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -226,8 +226,8 @@ float Get2dNoiseNegOneToOne(int posX, int posY, int seed) {
  * Get3dNoiseNegOneToOne - Normalizes 3D noise to [-1.0, 1.0].
  */
 float Get3dNoiseNegOneToOne(int posX, int posY, int posZ, int seed) {
-    int raw_noise = Get3dNoise(posX, posY, posZ, seed);
-    return normalize_neg_one_to_one(raw_noise);
+    int raw_noise = Get3dNoise(posX, posY, posZ, seed) ;
+    return normalize_neg_one_to_one(raw_noise) ;
 }
 
 //--------------------------------------------------------------------------
@@ -235,6 +235,6 @@ float Get3dNoiseNegOneToOne(int posX, int posY, int posZ, int seed) {
  * Get4dNoiseNegOneToOne - Normalizes 4D noise to [-1.0, 1.0].
  */
 float Get4dNoiseNegOneToOne(int posX, int posY, int posZ, int posT, int seed) {
-    int raw_noise = Get4dNoise(posX, posY, posZ, posT, seed);
-    return normalize_neg_one_to_one(raw_noise);
+    int raw_noise = Get4dNoise(posX, posY, posZ, posT, seed) ;
+    return normalize_neg_one_to_one(raw_noise) ;
 }

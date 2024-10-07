@@ -33,7 +33,7 @@ protected nomask nosave float hp_cost, sp_cost, mp_cost ;
 protected nomask nosave mapping cooldowns ;
 
 void mudlib_setup() {
-  ability_type = "ability";
+  ability_type = "ability" ;
 }
 
 mixed main(object tp, string arg) {
@@ -45,7 +45,7 @@ mixed main(object tp, string arg) {
   if(check_result == 2) return 1 ; // Failure, but message already sent
 
   // Now use
-  return use(tp, arg);
+  return use(tp, arg) ;
 }
 
 /**
@@ -69,7 +69,7 @@ int condition_check(object tp, string arg) {
   if(!cost_check(tp, arg))
     return 2 ;
 
-  return 1;
+  return 1 ;
 }
 
 /**
@@ -78,7 +78,7 @@ int condition_check(object tp, string arg) {
  * @returns {string} The type of ability.
  */
 string query_ability_type() {
-  return ability_type;
+  return ability_type ;
 }
 
 /**
@@ -95,7 +95,7 @@ varargs object local_target(object tp, string arg, function f) {
   mixed result ;
 
   if(!objectp(tp))
-    error("Bad argument 1 to local_target().\n");
+    error("Bad argument 1 to local_target().\n") ;
 
   if(nullp(arg)) {
     if(target_current) {
@@ -125,7 +125,7 @@ varargs object local_target(object tp, string arg, function f) {
     }
   }
 
-  return t;
+  return t ;
 }
 
 int cost_check(object tp, string arg) {
@@ -166,7 +166,7 @@ void apply_cost(object tp, string arg) {
  * @returns {string} The cooldown key if found, 0 if not found.
  */
 private string find_cooldown_key(string arg) {
-  string key, test;
+  string key, test ;
   mixed *keys ;
 
   keys = keys(cooldowns) ;
@@ -203,7 +203,7 @@ private string find_cooldown_key(string arg) {
 int cooldown_check(object tp, string arg) {
   string key ;
   int time ;
-  string test;
+  string test ;
   mixed *value ;
 
   if(!(key = find_cooldown_key(arg)))

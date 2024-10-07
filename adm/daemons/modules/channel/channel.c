@@ -13,7 +13,7 @@ inherit STD_DAEMON ;
 
 protected nosave string module_name = query_file_name() ;
 protected nosave string *channel_names = ({}) ;
-private mapping history = ([]);
+private mapping history = ([]) ;
 
 void mudlib_setup() {
   if(append(file_name(), ".c") == __FILE__)
@@ -50,5 +50,5 @@ string *last_messages(string channel, int num_lines) {
   if(!sizeof(history[channel]))
     return ({ "Channel " + channel + " has no history yet." }) ;
 
-  return history[channel][<num_lines..];
+  return history[channel][<num_lines..] ;
 }

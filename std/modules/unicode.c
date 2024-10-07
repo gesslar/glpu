@@ -44,7 +44,7 @@ private nomask nosave string *slider_colours = ({
     "{{0154}}", // light green
     "{{0118}}", // green
     "{{0047}}", // bright green
-});
+}) ;
 
 /**
  * @function uses_unicode
@@ -80,9 +80,9 @@ int default_user_width() {
 // Returns the colour in the colour array, cols, to use given the position
 // out of the width (typically screen width).
 string use_colour(string *cols, int position, int width) {
-   int col_index = floor(sizeof(cols) * ((0.0 + position) / (width || 1)));
+   int col_index = floor(sizeof(cols) * ((0.0 + position) / (width || 1))) ;
 
-   col_index = clamp(0, sizeof(cols) - 1, col_index);
+   col_index = clamp(0, sizeof(cols) - 1, col_index) ;
    return cols[col_index] ;
 }
 
@@ -91,11 +91,11 @@ string use_colour(string *cols, int position, int width) {
 // Example::
 //   gradient_string("Hello world",({"118","119","120","121","122","123"}))
 string gradient_string(string str, string *cols) {
-    int i = 0;
-    string *exstr = explode(str, "");
+    int i = 0 ;
+    string *exstr = explode(str, "") ;
     while(i < strlen(str)) {
-        exstr[i] = use_colour(cols, i, strlen(str)) + exstr[i];
-        i++;
+        exstr[i] = use_colour(cols, i, strlen(str)) + exstr[i] ;
+        i++ ;
     }
     return implode(exstr, "") + "{{res}}" ;
 }
@@ -107,24 +107,24 @@ string on_off_widget(int on) {
     object body = this_body() ;
 
     if(body->has_screenreader())
-        return on ? "On " : "Off ";
+        return on ? "On " : "Off " ;
     if(on)
-        return supports_unicode() ? "[ {{0036}}✓{{res}} ]" : sprintf("[{{0036}}On{{res}} ]");
+        return supports_unicode() ? "[ {{0036}}✓{{res}} ]" : sprintf("[{{0036}}On{{res}} ]") ;
     else
-        return supports_unicode() ? "[ {{0243}}✕{{res}} ]" : sprintf("[{{0243}}Off{{res}}]");
+        return supports_unicode() ? "[ {{0243}}✕{{res}} ]" : sprintf("[{{0243}}Off{{res}}]") ;
 }
 
 //: FUNCTION simple_divider
 // Prints a simple divider either using unicode or not, depending on user settings.
 varargs string simple_divider(int width) {
     object body = this_body() ;
-    string barchar = supports_unicode() ? "─" : "-";
+    string barchar = supports_unicode() ? "─" : "-" ;
 
     if(body->has_screenreader())
-        return "";
+        return "" ;
 
     if(!width)
-        width = default_user_width();
+        width = default_user_width() ;
 
     return repeat_string(barchar, width) ;
 }
@@ -133,13 +133,13 @@ varargs string simple_divider(int width) {
 // Prints a simple double divider either using unicode or not, depending on user settings.
 varargs string simple_double_divider(int width) {
     object body = this_body() ;
-    string barchar = supports_unicode() ? "═" : "=";
+    string barchar = supports_unicode() ? "═" : "=" ;
 
     if(body->has_screenreader())
-        return "";
+        return "" ;
 
     if(!width)
-        width = default_user_width();
+        width = default_user_width() ;
 
     return repeat_string(barchar, width) ;
 }
@@ -148,38 +148,38 @@ varargs string simple_double_divider(int width) {
 // A bar that is green with white dots when spent
 string green_bar(int value, int max, int width) {
     object body = this_body() ;
-    int green, white;
-    string barchar = supports_unicode() ? "▅" : "=";
-    string nobarchar = supports_unicode() ? "▅" : ".";
+    int green, white ;
+    string barchar = supports_unicode() ? "▅" : "=" ;
+    string nobarchar = supports_unicode() ? "▅" : "." ;
 
     if(body->has_screenreader())
-        return value + "/" + max;
+        return value + "/" + max ;
 
     if(value > max)
-        value = max;
+        value = max ;
 
-    green = (value * 1.00 / max) * (width)-1;
-    white = width - 2 - green;
+    green = (value * 1.00 / max) * (width)-1 ;
+    white = width - 2 - green ;
 
     return sprintf(
         "[" + (value >= max ? _c["green"] : _c["blue"]) + "%s{{res}}"+_c["black"]+"`%s{{res}}]",
-            repeat_string(barchar, green), repeat_string(nobarchar, white));
+            repeat_string(barchar, green), repeat_string(nobarchar, white)) ;
 }
 
 //: FUNCTION critical_bar
 // A bar that change colour the lower it gets
 string critical_bar(int value, int max, int width) {
     object body = this_body() ;
-    int green, white;
-    float p;
-    string barchar = supports_unicode() ? "▅" : "=";
-    string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_colour = "{{0036}}";
+    int green, white ;
+    float p ;
+    string barchar = supports_unicode() ? "▅" : "=" ;
+    string nobarchar = supports_unicode() ? "▅" : "." ;
+    string bar_colour = "{{0036}}" ;
 
     if(body->has_screenreader())
-        return value + "/" + max;
+        return value + "/" + max ;
 
-    p = value / (max * 1.0);
+    p = value / (max * 1.0) ;
 
     if(p < 0.10)
         bar_colour = _c["purple"] ;
@@ -189,35 +189,35 @@ string critical_bar(int value, int max, int width) {
       bar_colour = _c["gold"] ;
 
     if(value > max)
-        value = max;
+        value = max ;
 
-    green = (value * 1.00 / max) * (width)-1;
+    green = (value * 1.00 / max) * (width)-1 ;
     if(green < 0)
-        green = 0;
-    white = width - 1 - green;
+        green = 0 ;
+    white = width - 1 - green ;
 
     return sprintf(
         "[" + bar_colour + "%s{{res}}"+_c["black"]+"%s{{res}}]",
-            repeat_string(barchar, green), repeat_string(nobarchar, white));
+            repeat_string(barchar, green), repeat_string(nobarchar, white)) ;
 }
 
 //: FUNCTION reverse_critical_bar
 // A bar that change colour the lower it gets
 string reverse_critical_bar(int value, int max, int width) {
     object body = this_body() ;
-    int green, white;
-    float p;
-    string barchar = supports_unicode() ? "▅" : "=";
-    string nobarchar = supports_unicode() ? "▅" : ".";
-    string bar_colour = "{{0036}}";
+    int green, white ;
+    float p ;
+    string barchar = supports_unicode() ? "▅" : "=" ;
+    string nobarchar = supports_unicode() ? "▅" : "." ;
+    string bar_colour = "{{0036}}" ;
 
     if(!max)
-        return "";
+        return "" ;
 
     if(body->has_screenreader())
-        return value + "/" + max;
+        return value + "/" + max ;
 
-    p = value / (max * 1.0);
+    p = value / (max * 1.0) ;
 
     if(p < 0.30)
         bar_colour = _c["green"] ;
@@ -227,15 +227,15 @@ string reverse_critical_bar(int value, int max, int width) {
         bar_colour = _c["yellow"] ;
 
     if(value > max)
-        value = max;
+        value = max ;
 
-    green = (value * 1.00 / max) * (width)-1;
+    green = (value * 1.00 / max) * (width)-1 ;
     if(green < 0)
-        green = 0;
-    white = width - 1 - green;
+        green = 0 ;
+    white = width - 1 - green ;
 
     return sprintf("[" + bar_colour + "%s{{res}}"+_c["black"]+"%s{{res}}]",
-        repeat_string(barchar, green), repeat_string(nobarchar, white));
+        repeat_string(barchar, green), repeat_string(nobarchar, white)) ;
 }
 
 //: FUNCTION slider_red_green
@@ -243,31 +243,31 @@ string reverse_critical_bar(int value, int max, int width) {
 // value with a X. 0 is the middle and max is minus on red axis and + on green axis.
 string slider_red_green(int value, int max, int width) {
     object body = this_body() ;
-    string return_string;
-    int marker;
-    string x_char;
-    string line_char;
+    string return_string ;
+    int marker ;
+    string x_char ;
+    string line_char ;
 
     if(body->has_screenreader())
-        return value + "/" + max;
+        return value + "/" + max ;
 
     if(supports_unicode()) {
-        x_char = "●";
-        line_char = "▬";
+        x_char = "●" ;
+        line_char = "▬" ;
     } else {
-        x_char = "X";
-        line_char = "-";
+        x_char = "X" ;
+        line_char = "-" ;
     }
 
     width = width - 2; // [, X and ]
 
-    marker = width * ((value + (max / 2.0)) / (max * 1.0));
+    marker = width * ((value + (max / 2.0)) / (max * 1.0)) ;
 
-    return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
-    return_string = return_string[0..(width / 2)] + return_string[(width / 2 + 1)..];
-    return_string = gradient_string(return_string, slider_colours);
-    return_string = replace_string(return_string, x_char, _c["white"]+ x_char + "{{res}}");
-    return "[" + return_string + "{{res}}] ";
+    return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker) ;
+    return_string = return_string[0..(width / 2)] + return_string[(width / 2 + 1)..] ;
+    return_string = gradient_string(return_string, slider_colours) ;
+    return_string = replace_string(return_string, x_char, _c["white"]+ x_char + "{{res}}") ;
+    return "[" + return_string + "{{res}}] " ;
 }
 
 //: FUNCTION slider_colours_sum
@@ -277,49 +277,49 @@ string slider_red_green(int value, int max, int width) {
 // where each number is bigger and strings are ANSI colours.
 string slider_colours_sum(int value, mapping colours, int width) {
     object body = this_body() ;
-    int marker;
-    int max = sort_array(keys(colours), -1)[0];
-    string return_string;
-    int colour_add = 0;
-    int next_pos = 0;
-    string x_char;
-    string line_char;
+    int marker ;
+    int max = sort_array(keys(colours), -1)[0] ;
+    string return_string ;
+    int colour_add = 0 ;
+    int next_pos = 0 ;
+    string x_char ;
+    string line_char ;
     string colour_after_marker; // Save this colour to make things easier later.
 
     if(body->has_screenreader())
-        return value + "/" + max;
+        return value + "/" + max ;
 
     if(supports_unicode()) {
-        x_char = "●";
-        line_char = "▬";
+        x_char = "●" ;
+        line_char = "▬" ;
     } else {
-        x_char = "X";
-        line_char = "-";
+        x_char = "X" ;
+        line_char = "-" ;
     }
     width = width - 3; // [ and ]
-    marker = width * (1.0 * value / max);
+    marker = width * (1.0 * value / max) ;
 
     if(marker == 0)
-        return_string = x_char + repeat_string(line_char, width - 1);
+        return_string = x_char + repeat_string(line_char, width - 1) ;
     else if(marker == (width - 1))
-        return_string = repeat_string(line_char, width) + x_char;
+        return_string = repeat_string(line_char, width) + x_char ;
     else
-        return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker);
+        return_string = repeat_string(line_char, marker) + x_char + repeat_string(line_char, width - marker) ;
 
     foreach(int val in sort_array(keys(colours), 1)) {
-        string col = colours[val];
+        string col = colours[val] ;
         if(!next_pos)
-            return_string = col + return_string;
+            return_string = col + return_string ;
         if(next_pos)
             return_string = return_string[0..(next_pos + colour_add)] + col +
-                            return_string[((next_pos + colour_add) + 1)..];
+                            return_string[((next_pos + colour_add) + 1)..] ;
         colour_add += strlen(col) ; // TODO: Check this is correct
-        next_pos = width * (1.0 * val / max);
+        next_pos = width * (1.0 * val / max) ;
         if(next_pos > marker && !colour_after_marker)
-            colour_after_marker = col;
+            colour_after_marker = col ;
     }
 
-    return_string = replace_string(return_string, x_char, _c["white"] + x_char + colour_after_marker);
+    return_string = replace_string(return_string, x_char, _c["white"] + x_char + colour_after_marker) ;
 
-    return "[" + return_string + "{{res}}] ";
+    return "[" + return_string + "{{res}}] " ;
 }

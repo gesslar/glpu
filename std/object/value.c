@@ -13,7 +13,7 @@
 
 #include <persist.h>
 
-protected nosave int _value = null;
+protected nosave int _value = null ;
 /**
  * @object_function set_value
  * @description Set the value of the object. The value is stored as an integer
@@ -21,9 +21,9 @@ protected nosave int _value = null;
  * @param {int} value - The value to set.
  */
 void set_value(int value) {
-  save_var("_value");
+  save_var("_value") ;
 
-  _value = value;
+  _value = value ;
 }
 
 /**
@@ -34,7 +34,7 @@ void set_value(int value) {
  * @returns {int} - The value of the object.
  */
 int query_value() {
-  return _value;
+  return _value ;
 }
 
 /**
@@ -45,5 +45,5 @@ int query_value() {
  * @param {int} value - The value to add.
  */
 void adjust_value(int value) {
-  _value += value;
+  _value += value ;
 }

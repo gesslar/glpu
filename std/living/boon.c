@@ -101,7 +101,7 @@ public nomask int query_effective_boon(string cl, string type) {
 }
 
 protected nomask void process_boon() {
-    int now = time(), tag;
+    int now = time(), tag ;
     string cl, type ;
     mapping data, b, boon_data, c, curse_data ;
 

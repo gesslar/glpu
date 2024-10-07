@@ -12,7 +12,7 @@
 inherit __DIR__ "village_base" ;
 
 void setup() {
-    set_short("Village Square of Olum");
+    set_short("Village Square of Olum") ;
     set_long(
 "At the village center lies a bustling square, surrounded by ancient, timber-"
 "framed buildings. Cobblestone paths lead to a moss-covered stone well, the "

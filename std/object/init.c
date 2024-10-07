@@ -17,12 +17,12 @@ void init() {
 void event_init(object prev, object tp) {
     int sz ;
 
-    sz = sizeof(inits);
+    sz = sizeof(inits) ;
     for(int i = 0; i < sz; i++) {
         if(valid_function(inits[i])) {
             (*inits[i])(tp) ;
         } else {
-            catch(call_other(this_object(), inits[i], tp));
+            catch(call_other(this_object(), inits[i], tp)) ;
         }
     }
 }

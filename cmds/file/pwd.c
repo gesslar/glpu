@@ -18,5 +18,5 @@ void setup() {
 mixed main(object caller, string arg) {
     printf("Current working directory: %s\n", caller->query_env("cwd")) ;
     printf("Current working file: %s\n", caller->query_env("cwf")) ;
-    return 1;
+    return 1 ;
 }

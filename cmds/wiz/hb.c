@@ -40,7 +40,7 @@ mixed main(object tp, string arg) {
     if(i)
         return "Heartbeat is on for " + arg + " (" + i + "x" + hb_ms + "ms = " + (i * hb_ms) + "ms)" ;
     else
-        return "Heartbeat is off for " + arg + ".";
+        return "Heartbeat is off for " + arg + "." ;
 }
 
 mixed all_heartbeats(object tp) {

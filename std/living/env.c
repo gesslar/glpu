@@ -12,27 +12,27 @@
 #include <env.h>
 #include <player.h>
 
-private mapping env_settings = ([]);
-private mapping preferences = ([]);
+private mapping env_settings = ([]) ;
+private mapping preferences = ([]) ;
 
 void init_env() {
     if(nullp(env_settings))
-        env_settings = ([]);
+        env_settings = ([]) ;
     if(nullp(preferences))
-        preferences = ([]);
+        preferences = ([]) ;
 }
 
 int set_env(string var_name, string var_value) {
     if(!env_settings)
         init_env() ;
 
-    if(!var_value) map_delete(env_settings, var_name);
-    else env_settings += ([var_name : var_value]);
+    if(!var_value) map_delete(env_settings, var_name) ;
+    else env_settings += ([var_name : var_value]) ;
 
     if(userp(this_object()))
         this_object()->save_body() ;
 
-    return 1;
+    return 1 ;
 }
 
 varargs mixed query_env(string var_name, mixed def) {
@@ -44,20 +44,20 @@ varargs mixed query_env(string var_name, mixed def) {
 }
 
 mapping list_env() {
-    return copy(env_settings);
+    return copy(env_settings) ;
 }
 
 int set_pref(string pref_name, string pref_value) {
     if(!preferences)
         init_env() ;
 
-    if(!pref_value) map_delete(preferences, pref_name);
-    else preferences += ([pref_name : pref_value]);
+    if(!pref_value) map_delete(preferences, pref_name) ;
+    else preferences += ([pref_name : pref_value]) ;
 
     if(userp(this_object()))
         this_object()->save_body() ;
 
-    return 1;
+    return 1 ;
 }
 
 varargs string query_pref(string pref_name, string def) {
@@ -69,5 +69,5 @@ varargs string query_pref(string pref_name, string def) {
 }
 
 mapping list_pref() {
-    return copy(preferences);
+    return copy(preferences) ;
 }

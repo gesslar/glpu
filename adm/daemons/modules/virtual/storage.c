@@ -19,7 +19,7 @@
  * 2024-08-13 - Gesslar - Created
  */
 
-inherit STD_DAEMON;
+inherit STD_DAEMON ;
 
 public nomask object compile_object(string file) {
   string name ;

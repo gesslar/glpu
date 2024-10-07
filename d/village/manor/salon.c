@@ -26,7 +26,7 @@ void setup() {
 
   set_exits(([
     "west" : "foyer",
-  ]));
+  ])) ;
 
   set_items(([
     "furniture" :

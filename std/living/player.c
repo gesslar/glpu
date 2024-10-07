@@ -27,19 +27,19 @@ private int ed_setup = 0 ;
 
 /* Connection functions */
 void setup_body() {
-    set_living_name(query_real_name());
-    set_id(({query_real_name()}));
-    // set_real_name(name());
+    set_living_name(query_real_name()) ;
+    set_id(({query_real_name()})) ;
+    // set_real_name(name()) ;
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     if(!query_race()) set_race(mud_config("DEFAULT_RACE")) ;
     if(!query_level()) set_level(1.0) ;
     set_level_mod(0.0) ;
-    if(!query_env("cwd")) set_env("cwd", "/doc");
-    if(!query_short()) set_short(query_name());
+    if(!query_env("cwd")) set_env("cwd", "/doc") ;
+    if(!query_short()) set_short(query_name()) ;
     if(!query_pref("colour")) set_pref("colour", "on") ;
-    if(!query_pref("auto_tune")) set_pref("auto_tune", "all");
-    if(!query_pref("biff")) set_pref("biff", "on");
-    if(!query_pref("prompt")) set_pref("prompt", ">");
+    if(!query_pref("auto_tune")) set_pref("auto_tune", "all") ;
+    if(!query_pref("biff")) set_pref("biff", "on") ;
+    if(!query_pref("prompt")) set_pref("prompt", ">") ;
     init_living() ;
     rehash_capacity() ;
     update_regen_interval() ;
@@ -51,24 +51,24 @@ void setup_body() {
 }
 
 void enter_world(int reconnecting) {
-    string *cmds, *ch;
-    int i;
-    object mail_client;
+    string *cmds, *ch ;
+    int i ;
+    object mail_client ;
 
     if(!is_member(query_privs(previous_object()), "admin"))
-        return;
+        return ;
 
     catch {
-        ch = explode(query_pref("auto_tune"), " ");
+        ch = explode(query_pref("auto_tune"), " ") ;
         if(sizeof(ch) > 0)
             foreach(string channel in ch) {
                 CMD_CHANNEL->tune(channel, query_privs(this_object()), 1, 1) ;
             }
-    };
+    } ;
 
-    set_last_login(time());
+    set_last_login(time()) ;
     tell(this_object(), "\n") ;
-    say(capitalize(query_name()) + " has entered.\n");
+    say(capitalize(query_name()) + " has entered.\n") ;
 
     if(!reconnecting) {
         restore_inventory() ;
@@ -77,23 +77,23 @@ void enter_world(int reconnecting) {
 }
 
 void exit_world() {
-    string *cmds;
-    int i;
+    string *cmds ;
+    int i ;
 
-    if(this_body() != this_object()) return;
+    if(this_body() != this_object()) return ;
 
     if(file_size(home_path(query_real_name()) + ".quit") > 0) {
-        cmds = explode(read_file(home_path(query_real_name()) + ".quit"), "\n");
-        if(sizeof(cmds) <= 0) return;
-        for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i]));
+        cmds = explode(read_file(home_path(query_real_name()) + ".quit"), "\n") ;
+        if(sizeof(cmds) <= 0) return ;
+        for(i = 0; i < sizeof(cmds); i ++) catch(command(cmds[i])) ;
     }
 
-    set_last_login(time());
+    set_last_login(time()) ;
 
     if(environment())
-        say(query_name()+ " leaves " + mud_name() + ".\n");
+        say(query_name()+ " leaves " + mud_name() + ".\n") ;
 
-    save_body();
+    save_body() ;
 }
 
 void set_last_login(int time) {
@@ -106,28 +106,28 @@ int query_last_login() {
 
 void net_dead() {
     if(origin() != ORIGIN_DRIVER)
-        return;
+        return ;
 
     abort_edit() ;
 
-    set_last_login(time());
-    save_body();
+    set_last_login(time()) ;
+    save_body() ;
 
     if(environment())
-        tell_all(environment(), query_name()+ " falls into stupour.\n");
+        tell_all(environment(), query_name()+ " falls into stupour.\n") ;
 
     add_extra_short("link_dead", "[stupour]") ;
-    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
+    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n") ;
 
     if(interactive(this_object()))
         emit(SIG_USER_LINKDEAD, this_object()) ;
 }
 
 void reconnect() {
-    restore_body();
-    set_last_login(time());
-    tell(this_object(), "You have reconnected to your body.\n");
-    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
+    restore_body() ;
+    set_last_login(time()) ;
+    tell(this_object(), "You have reconnected to your body.\n") ;
+    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body()) ;
     remove_extra_short("link_dead") ;
     /* reconnection logged in login object */
 }
@@ -141,8 +141,8 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query_last_login()) > 3600) {
                 if(environment())
-                    simple_action("$N $vfade out of existance.");
-                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                    simple_action("$N $vfade out of existance.") ;
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n") ;
                 remove() ;
                 return ;
             }
@@ -256,7 +256,7 @@ void receive_environ(string var, mixed value) {
 
 void set_environ(mapping data) {
     if(base_name(previous_object()) != LOGIN_OB)
-        return;
+        return ;
 
     if(!mapp(data))
         return ;
@@ -272,22 +272,22 @@ void set_environ(mapping data) {
 void save_inventory() {
     string save ;
 
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0 ;
 
     save = save_to_string(1) ;
     write_file(user_inventory_data(query_privs(this_object())), save, 1) ;
 }
 
 void restore_body() {
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
-    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_real_name()) restore_object(user_body_data(query_real_name()));
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0 ;
+    if(is_member(query_privs(previous_object()), "admin") || query_privs(previous_object()) == this_body()->query_real_name()) restore_object(user_body_data(query_real_name())) ;
 }
 
 void restore_inventory() {
     string e ;
     string file, data ;
 
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0 ;
 
     file = user_inventory_data(query_privs(this_object())) ;
 
@@ -308,7 +308,7 @@ void restore_inventory() {
 void wipe_inventory() {
     string file ;
 
-    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0;
+    if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") && this_body() != this_object()) return 0 ;
 
     file = user_inventory_data(query_real_name()) ;
     rm(file) ;
@@ -319,13 +319,13 @@ int save_body() {
 
     if(!is_member(query_privs(previous_object() ? previous_object() : this_body()), "admin") &&
         this_body() != this_object() &&
-        base_name(previous_object()) != CMD_QUIT) return 0;
+        base_name(previous_object()) != CMD_QUIT) return 0 ;
 
-    catch(result = save_object(user_body_data(query_real_name())));
+    catch(result = save_object(user_body_data(query_real_name()))) ;
 
     save_inventory() ;
 
-    return result;
+    return result ;
 }
 
 int has_screenreader() {

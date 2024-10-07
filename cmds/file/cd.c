@@ -15,7 +15,7 @@ mixed main(object tp, string str) {
      test = str ;
 
      if(!stringp(test)) {
-          test = home_path(tp);
+          test = home_path(tp) ;
           if(!directory_exists(test = home_path(tp)))
               return _usage(tp) ;
      }
@@ -26,14 +26,14 @@ mixed main(object tp, string str) {
           test = str ;
 
      if(!directory_exists(test))
-          return _error("No such directory: %s", test);
+          return _error("No such directory: %s", test) ;
 
      if(!master()->valid_read(test, tp, "cd"))
-          return _error("Permission denied.");
+          return _error("Permission denied.") ;
 
-     tp->set_env("cwd", test);
+     tp->set_env("cwd", test) ;
 
-     return _ok("Current directory set to: %s", test);
+     return _ok("Current directory set to: %s", test) ;
 }
 
 string query_help(object tp) {
@@ -43,5 +43,5 @@ string query_help(object tp) {
 "command, you simply provide the directory, either an absolute path or one "
 "relative to the current directory, as the argument to this command.\n\n"
 "Typing 'cd' without any arguments will take you to your home directory.\n\n"
-"See also: mkdir, rmdir, ls";
+"See also: mkdir, rmdir, ls" ;
 }

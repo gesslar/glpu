@@ -12,9 +12,9 @@
  * @returns {int} - The unique object ID.
  */
 int getoid(object ob) {
-  int id;
-  sscanf(file_name(ob || previous_object()), "%*s#%d", id);
-  return id;
+  int id ;
+  sscanf(file_name(ob || previous_object()), "%*s#%d", id) ;
+  return id ;
 }
 
 /*
@@ -47,48 +47,48 @@ int getoid(object ob) {
  * @returns {object} - The located object, or 0 if not found.
  */
 varargs object get_object(string str, object player) {
-  object what;
-  mixed tmp;
+  object what ;
+  mixed tmp ;
 
-  if(!str) return 0;
-  if(!player || !living(player)) player = this_body();
+  if(!str) return 0 ;
+  if(!player || !living(player)) player = this_body() ;
   if(sscanf(str, "@%s", tmp) &&
     (tmp = get_object(tmp, player)) &&
     (what = environment(tmp))) {
-    return what;
+    return what ;
   }
 
   if(player) { //  Check existance of this_body()
     if(str == "me")
-      return player;
+      return player ;
     if(what = present(str, player))
       return what; // Inventory check
     if(what = environment(player)) { // Environment check
       if(str == "here" || str == "env" || str == "environment")
-        return what;
+        return what ;
       if(what = present(str, what))
-        return what;
+        return what ;
     }
   }
 
   // Call might be made by a room so make a previous_object() check
   // first just to be sure
-  if(what = present(str, previous_object())) return what;
+  if(what = present(str, previous_object())) return what ;
 
   //  Check to see if a living object matches the name
-  if(what = find_player(str)) return what;
-  if(what = find_living(str)) return what;
+  if(what = find_player(str)) return what ;
+  if(what = find_living(str)) return what ;
 
   // Search for a matching file_name, completing path with
   // user's present path
   if(player)
-    str = resolve_path((string)player->query_env("cwd"), str);
+    str = resolve_path((string)player->query_env("cwd"), str) ;
 
-  what = find_object(str);
+  what = find_object(str) ;
   if(!what && (file_size(str) >= 0 || file_size(str + ".c") >= 0))
-    catch(what = load_object(str));
+    catch(what = load_object(str)) ;
 
-  return what;
+  return what ;
 }
 
 // Created by Pallando@Tabor (93-03-02)
@@ -119,90 +119,90 @@ varargs object get_object(string str, object player) {
  * @returns {mixed} - The located object(s), or 0 if not found.
  */
 varargs mixed get_objects(string str, object player, int no_arr) {
-  mixed base, tmp, ret;
-  object what;
-  int i, s;
+  mixed base, tmp, ret ;
+  object what ;
+  int i, s ;
 
   // Hmm.  i and s do several jobs here.  It would be clearer to use different
   // variables (with longer names) for each job.
   // Is it worth slowing the function (using more memory) to do this?
 
   if(!str)
-    return 0;
+    return 0 ;
 
-  s = strlen(str);
-  i = s;
+  s = strlen(str) ;
+  i = s ;
 
   while(i-- && (str[i..i] != ":")); // a reverse sscanf
 
   if((i > 0) && (i < (s - 1))) { // of form "%s:%s"
-    base = get_objects(str[0..(i-1)], player);
-    str = str[(i+1)..s];
+    base = get_objects(str[0..(i-1)], player) ;
+    str = str[(i+1)..s] ;
     if(!base)
-      return 0;
+      return 0 ;
     if(!pointerp(base))
-      base = ({ base });
-    s = sizeof(base);
-    ret = ({ });
+      base = ({ base }) ;
+    s = sizeof(base) ;
+    ret = ({ }) ;
     if(str == "e") {
       while(s--)
         if(tmp = environment(base[s]))
-      ret += ({ tmp });
+      ret += ({ tmp }) ;
     } else if(str == "i") {
       while(s--)
         if(tmp = all_inventory(base[s]))
-          ret += (pointerp(tmp) ? tmp : ({ tmp }));
+          ret += (pointerp(tmp) ? tmp : ({ tmp })) ;
     } else if(str == "d") {
       while(s--)
         if(tmp = deep_inventory(base[s]))
-          ret += (pointerp(tmp) ? tmp : ({ tmp }));
+          ret += (pointerp(tmp) ? tmp : ({ tmp })) ;
     } else if(sscanf(str, "%d", i)) {
       if((i > -1) && (i < s))
-        return base[i];
+        return base[i] ;
       else
-        return 0;
+        return 0 ;
     } else if(str == "c") {
       while(s--)
         if(tmp = children(base_name(base[s])))
-          ret += tmp;
+          ret += tmp ;
     } else if(str == "s") {
       while(s--)
         for(tmp=shadow(base[s],0);tmp;tmp=shadow(tmp,0))
-          ret += ({ tmp });
+          ret += ({ tmp }) ;
     } else if(strlen(str) && str[0] == '>') {
-      str = extract(str,1);
+      str = extract(str,1) ;
       while(s--)
         if(objectp(tmp=(mixed)call_other(base[s],str)))
-          ret += ({ tmp });
+          ret += ({ tmp }) ;
         else if(pointerp(tmp) && sizeof(tmp) && objectp(tmp[0]))
-          ret += tmp;
+          ret += tmp ;
     } else {
       // This is the location to add more syntax options if wanted such as
       // ith item in jth base object, all such items in all base objects, etc
       while(s--)
         if(what = present(str, base[s]))
-          return what;
-      return 0;
+          return what ;
+      return 0 ;
     }
 
     switch(sizeof(ret)) {
       case 0:
-        return 0;
+        return 0 ;
         case 1:
-        return ret[0];
+        return ret[0] ;
     }
 
-    return(no_arr ? ret[0] : ret);
+    return(no_arr ? ret[0] : ret) ;
   }
 
   if(str == "users") {
-    ret = users();
-    if(!no_arr) return ret;
-    if(sizeof(ret)) return ret[0];
-    return 0;
+    ret = users() ;
+    if(!no_arr) return ret ;
+    if(sizeof(ret)) return ret[0] ;
+    return 0 ;
   }
 
-  return get_object(str, player);
+  return get_object(str, player) ;
 }
 
 /*
@@ -230,33 +230,33 @@ varargs mixed get_objects(string str, object player, int no_arr) {
 varargs object find_ob(mixed ob, mixed cont, function f) {
   // First let's deal with dest.
   if(nullp(cont))
-    cont = previous_object();
+    cont = previous_object() ;
   if(stringp(cont))
-    cont = load_object(cont);
+    cont = load_object(cont) ;
 
   if(objectp(ob))
-    return present(ob, cont) ? ob : 0;
+    return present(ob, cont) ? ob : 0 ;
 
   if(stringp(ob)) {
     if(ob[0] == '/') {
-      object *obs = all_inventory(cont);
+      object *obs = all_inventory(cont) ;
 
       if(strsrch(ob, "#") > -1) {
         foreach(object o in obs) {
           if(file_name(o) == ob)
-            return o;
+            return o ;
         }
       } else {
         ob = chop(ob, ".c", -1) ;
         foreach(object o in obs) {
           if(base_name(o) == ob)
-            return o;
+            return o ;
         }
       }
     }
   }
 
-  return 0;
+  return 0 ;
 }
 
 /**
@@ -299,16 +299,16 @@ object top_environment(object ob) {
  * @returns {object[]} - An array of environments of the object.
  */
 object *all_environment(object ob) {
-  object *envs = ({});
+  object *envs = ({}) ;
 
   while(ob = environment(ob)) {
     if(ob->is_room())
       break ;
 
-    envs += ({ ob });
+    envs += ({ ob }) ;
   }
 
-  return envs;
+  return envs ;
 }
 
 /**
@@ -319,9 +319,9 @@ object *all_environment(object ob) {
  */
 object *present_livings(object room) {
   if(!room)
-    return ({});
+    return ({}) ;
 
-  return filter(all_inventory(room), (: living($1) :));
+  return filter(all_inventory(room), (: living($1) :)) ;
 }
 
 /**
@@ -332,9 +332,9 @@ object *present_livings(object room) {
  */
 object *present_players(object room) {
   if(!room)
-    return ({});
+    return ({}) ;
 
-  return filter(present_livings(room), (: userp :));
+  return filter(present_livings(room), (: userp :)) ;
 }
 
 /**
@@ -346,9 +346,9 @@ object *present_players(object room) {
  */
 object *present_npcs(object room) {
   if(!room)
-    return ({});
+    return ({}) ;
 
-  return filter(present_livings(room), (: !userp($1) :));
+  return filter(present_livings(room), (: !userp($1) :)) ;
 }
 
 /**
@@ -360,16 +360,16 @@ object *present_npcs(object room) {
  * @returns {object} - The located living object, or 0 if not found.
  */
 object get_living(string name, object room) {
-  object ob;
+  object ob ;
 
   if(!room)
     return 0 ;
 
-  ob = present(name, room);
+  ob = present(name, room) ;
   if(ob && living(ob))
-    return ob;
+    return ob ;
 
-  return 0;
+  return 0 ;
 }
 
 /**
@@ -381,19 +381,19 @@ object get_living(string name, object room) {
  * @returns {object[]} - An array of located living objects.
  */
 object *get_livings(mixed names, object room) {
-  object *obs, *ret = ({});
+  object *obs, *ret = ({}) ;
 
   if(!room)
     return ret ;
 
   if(!pointerp(names))
-    names = ({ names });
+    names = ({ names }) ;
 
-  names = filter(names, (: stringp :));
+  names = filter(names, (: stringp :)) ;
 
-  obs = map(names, (: get_living($1, $(room)) :));
+  obs = map(names, (: get_living($1, $(room)) :)) ;
 
-  return obs;
+  return obs ;
 }
 
 /**
@@ -405,14 +405,14 @@ object *get_livings(mixed names, object room) {
  * @returns {object} - The located player object, or 0 if not found.
  */
 object get_player(string name, object room) {
-  object ob;
+  object ob ;
 
-  ob = get_living(name, room);
+  ob = get_living(name, room) ;
 
   if(ob && userp(ob))
-    return ob;
+    return ob ;
 
-  return 0;
+  return 0 ;
 }
 
 /**
@@ -423,12 +423,12 @@ object get_player(string name, object room) {
  * @returns {object[]} - An array of located player objects.
  */
 object *get_players(mixed names, object room) {
-  object *obs, *ret = ({});
+  object *obs, *ret = ({}) ;
 
-  ret = get_livings(names, room);
-  ret = filter(ret, (: userp :));
+  ret = get_livings(names, room) ;
+  ret = filter(ret, (: userp :)) ;
 
-  return ret;
+  return ret ;
 }
 
 /**
@@ -467,18 +467,18 @@ object this_caller() {
  *                       the container.
  */
 object *present_clones(mixed file, object container) {
-  object *obs = all_inventory(container);
+  object *obs = all_inventory(container) ;
   object *result ;
 
   if(objectp(file))
-    file = base_name(file);
+    file = base_name(file) ;
 
   if(!stringp(file))
-    return ({});
+    return ({}) ;
 
-  result = filter(obs, (: base_name($1) == $(file) :));
+  result = filter(obs, (: base_name($1) == $(file) :)) ;
 
-  return result;
+  return result ;
 }
 
 /**
@@ -494,15 +494,15 @@ object *present_clones(mixed file, object container) {
  * @returns {int} - 1 if the caller is the specified object, 0 otherwise.
  */
 int caller_is(mixed ob) {
-  object prev = previous_object(1);
+  object prev = previous_object(1) ;
 
   if(objectp(ob))
-    return this_caller() == ob;
+    return this_caller() == ob ;
 
   if(stringp(ob))
-    return base_name(ob) == base_name(prev);
+    return base_name(ob) == base_name(prev) ;
 
-  return 0;
+  return 0 ;
 }
 
 /**
@@ -538,19 +538,19 @@ varargs int same_env_check(object one, object two, int top_env) {
 }
 
 private object *filter_by_id(object *obs, string arg) {
-  return filter(obs, (: $1->id($(arg)) :));
+  return filter(obs, (: $1->id($(arg)) :)) ;
 }
 
 private object *filter_by_visibility(object tp, object *obs) {
-  return filter(obs, (: $(tp)->can_see($1) :));
+  return filter(obs, (: $(tp)->can_see($1) :)) ;
 }
 
 private object *apply_custom_filter(object *obs, function f, object tp) {
-  return filter(obs, (: (*$(f))($1, $(tp)) :));
+  return filter(obs, (: (*$(f))($1, $(tp)) :)) ;
 }
 
 private object *get_all_inventory(object env) {
-  return all_inventory(env);
+  return all_inventory(env) ;
 }
 
 /**
@@ -574,36 +574,36 @@ private object *get_all_inventory(object env) {
  * @returns {object[]} - An array of located objects or 0 if none are found.
  */
 varargs object *find_targets(object tp, string arg, object source, function f) {
-  object *obs = ({});
-  object env;
+  object *obs = ({}) ;
+  object env ;
 
   if(nullp(tp))
-    error("Missing argument 1 for find_targets");
+    error("Missing argument 1 for find_targets") ;
 
   // Determine the environment to search in
   if(objectp(source))
-    env = source;
+    env = source ;
   else
-    env = environment(tp);
+    env = environment(tp) ;
 
   if(!env)
     return 0 ;
 
   // Get all inventory objects from the determined environment
-  obs = get_all_inventory(env);
+  obs = get_all_inventory(env) ;
 
   // Filter objects by ID if argument is provided
   if(arg)
-    obs = filter_by_id(obs, arg);
+    obs = filter_by_id(obs, arg) ;
 
   // Filter objects by visibility
-  obs = filter_by_visibility(tp, obs);
+  obs = filter_by_visibility(tp, obs) ;
 
   // Apply the additional custom filter function if provided
   if(valid_function(f))
-    obs = apply_custom_filter(obs, f, tp);
+    obs = apply_custom_filter(obs, f, tp) ;
 
-  return obs;
+  return obs ;
 }
 
 /**
@@ -625,27 +625,27 @@ varargs object *find_targets(object tp, string arg, object source, function f) {
  * @returns {object} - The located object, or 0 if not found.
  */
 varargs object find_target(object tp, string arg, object source, function f) {
-  object *obs;
-  string base_arg;
+  object *obs ;
+  string base_arg ;
   int num, sz ;
 
   // Parse the argument for a numeric index
   if(sscanf(arg, "%s %d", base_arg, num) != 2)
-    base_arg = arg;
+    base_arg = arg ;
 
-  obs = find_targets(tp, base_arg, source, f);
+  obs = find_targets(tp, base_arg, source, f) ;
 
-  sz = sizeof(obs);
+  sz = sizeof(obs) ;
   if(!sz)
-    return 0;
+    return 0 ;
 
   if(!num)
-    return obs[0];
+    return obs[0] ;
 
   if(num < 1 || num > sz)
-    return 0;
+    return 0 ;
 
-  return obs[num - 1];
+  return obs[num - 1] ;
 }
 
 /**
@@ -667,11 +667,11 @@ varargs object *clones(mixed file, int env_only) {
     file = base_name(file) ;
 
   if(!stringp(file))
-    return ({});
+    return ({}) ;
 
   obs = children(file) ;
   if(env_only)
-    obs = filter(obs, (: environment :));
+    obs = filter(obs, (: environment :)) ;
 
   obs = filter(obs, (: clonep :)) ;
 

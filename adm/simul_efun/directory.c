@@ -13,8 +13,8 @@
  *                  otherwise 0.
  */
 mixed assure_dir(string path) {
-    string *parts, dir;
-    int j;
+    string *parts, dir ;
+    int j ;
 
     string old_privs ;
 
@@ -23,17 +23,17 @@ mixed assure_dir(string path) {
     old_privs = query_privs() ;
     set_privs(this_object(), query_privs(previous_object())) ;
 
-    parts = explode(path, "/");
-    dir = "";
+    parts = explode(path, "/") ;
+    dir = "" ;
     for(j = 0; j < sizeof(parts); j++) {
-        dir += parts[j];
-        mkdir(dir);
-        dir += "/";
+        dir += parts[j] ;
+        mkdir(dir) ;
+        dir += "/" ;
     }
 
     set_privs(this_object(), old_privs) ;
 
-    return file_size(path) == -2;
+    return file_size(path) == -2 ;
 }
 
 /**
@@ -44,7 +44,7 @@ mixed assure_dir(string path) {
  * @returns {string} - The directory path of the object.
  */
 string query_directory(object ob) {
-    string file, *parts;
+    string file, *parts ;
     string dir ;
 
     if(!objectp(ob))
@@ -54,9 +54,9 @@ string query_directory(object ob) {
         error("Bad argument 1 to query_directory()") ;
 
     file = base_name(ob) ;
-    parts = explode(file, "/");
-    parts = parts[0..<2];
-    dir = implode(parts, "/");
+    parts = explode(file, "/") ;
+    parts = parts[0..<2] ;
+    dir = implode(parts, "/") ;
 
-    return append(prepend(dir, "/"), "/");
+    return append(prepend(dir, "/"), "/") ;
 }

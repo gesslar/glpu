@@ -16,7 +16,7 @@ private nosave mixed *_coin_table = ({ }) ;
 
 varargs public void add_loot(mixed item, float chance) {
   if(nullp(item))
-    return;
+    return ;
 
   if(nullp(chance))
     chance = 100.0 ;
@@ -24,7 +24,7 @@ varargs public void add_loot(mixed item, float chance) {
     chance = to_float(chance) ;
 
   if(!floatp(chance))
-    return;
+    return ;
 
   chance = clamp(0.0, 100.0, chance) ;
 
@@ -36,15 +36,15 @@ varargs public void add_loot(mixed item, float chance) {
       _loot_table += ({ ({ item, chance }) }) ;
       break ;
     default :
-      return;
+      return ;
   }
 }
 
 public varargs void set_loot_table(mixed *table) {
   if(!pointerp(table))
-    return;
+    return ;
 
-  _loot_table = table;
+  _loot_table = table ;
 }
 
 public mixed *query_loot_table() {
@@ -53,7 +53,7 @@ public mixed *query_loot_table() {
 
 varargs public void add_coin(string type, int num, float chance) {
   if(nullp(type) || nullp(num))
-    return;
+    return ;
 
   if(nullp(chance))
     chance = 100.0 ;
@@ -61,7 +61,7 @@ varargs public void add_coin(string type, int num, float chance) {
     chance = to_float(chance) ;
 
   if(!floatp(chance))
-    return;
+    return ;
 
   chance = clamp(0.0, 100.0, chance) ;
 
@@ -70,9 +70,9 @@ varargs public void add_coin(string type, int num, float chance) {
 
 public varargs void set_coin_table(mixed *table) {
   if(!pointerp(table))
-    return;
+    return ;
 
-  _coin_table = table;
+  _coin_table = table ;
 }
 
 public mixed *query_coin_table() {

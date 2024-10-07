@@ -6,9 +6,9 @@
 //
 // 2024/02/04: Gesslar - Created
 
-private nosave int create_time = time();
+private nosave int create_time = time() ;
 private nosave object cloned_by = previous_object() ;
-private nosave string cloned_by_string = file_name(previous_object());
+private nosave string cloned_by_string = file_name(previous_object()) ;
 
 int query_object_create_time() { return create_time; }
 int query_object_age() { return time() - create_time; }

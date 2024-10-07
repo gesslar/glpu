@@ -9,12 +9,12 @@
 inherit STD_CMD ;
 
 mixed main(object tp, string str){
-      write(dump_socket_status());
-      return 1;
+      write(dump_socket_status()) ;
+      return 1 ;
 }
 
 string help(object caller) {
      return("SYNTAX: sockinfo\n\n"
      "The sockinfo command will tell you what sockets are loaded\n"
-     "and what they are currently being used for.\n");
+     "and what they are currently being used for.\n") ;
 }

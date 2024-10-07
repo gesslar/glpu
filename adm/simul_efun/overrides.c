@@ -28,9 +28,9 @@ int exec(object to, object from) {
        userp(previous_object()) ||
        base_name(previous_object()) == CMD_SU ||
        linkp(previous_object()))
-        return efun::exec(to, from);
+        return efun::exec(to, from) ;
     else
-        return 0;
+        return 0 ;
 }
 
 /**
@@ -51,7 +51,7 @@ void shutdown(int how) {
 
     emit(SIG_SYS_SHUTDOWN) ;
     PERSIST_D->persist_objects() ;
-    efun::shutdown(how);
+    efun::shutdown(how) ;
 }
 
 /**
@@ -60,7 +60,7 @@ void shutdown(int how) {
  * @returns {object} - The shutdown daemon.
  */
 object shutdown_d() {
-    return load_object(SHUTDOWN_D);
+    return load_object(SHUTDOWN_D) ;
 }
 
 /**
@@ -72,11 +72,11 @@ object shutdown_d() {
  * @param {object} ob - The object to destruct.
  */
 void set_privs(object ob, string privs) {
-    string name;
+    string name ;
 
-    if(is_member(query_privs(previous_object()), "admin") || ob = master()) efun::set_privs(ob, privs);
-    sscanf(file_name(ob), "/home/%*s/%s/%*s", name);
-    if(name == privs) efun::set_privs(ob, privs);
+    if(is_member(query_privs(previous_object()), "admin") || ob = master()) efun::set_privs(ob, privs) ;
+    sscanf(file_name(ob), "/home/%*s/%s/%*s", name) ;
+    if(name == privs) efun::set_privs(ob, privs) ;
 }
 
 /**
@@ -88,7 +88,7 @@ void set_privs(object ob, string privs) {
  * @param {string} msg - The message to write.
  */
 void write(string msg) {
-    if(this_body()) message("write", msg + "", this_body());
+    if(this_body()) message("write", msg + "", this_body()) ;
     else debug_message(msg) ;
 }
 
@@ -101,15 +101,15 @@ void write(string msg) {
  *                          the message.
  */
 varargs void say(string msg, mixed exclude) {
-    object me;
+    object me ;
 
-    if(this_body()) me = this_body();
-    else me = previous_object();
+    if(this_body()) me = this_body() ;
+    else me = previous_object() ;
 
-    if(objectp(exclude)) exclude = ({ me, exclude });
-    else if(pointerp(exclude)) exclude += ({ me });
-    else if(!exclude) exclude = ({ me });
-    message("say", msg, environment(me), exclude);
+    if(objectp(exclude)) exclude = ({ me, exclude }) ;
+    else if(pointerp(exclude)) exclude += ({ me }) ;
+    else if(!exclude) exclude = ({ me }) ;
+    message("say", msg, environment(me), exclude) ;
 }
 
 /**
@@ -122,12 +122,12 @@ varargs void say(string msg, mixed exclude) {
  */
 varargs void shout(string msg, mixed exclude) {
     if(objectp(exclude))
-        exclude = ({ exclude });
+        exclude = ({ exclude }) ;
     else if(!pointerp(exclude))
-        exclude = ({ });
+        exclude = ({ }) ;
     if(this_body())
-        exclude += ({ this_body() });
-    message("shout", msg, users(), exclude);
+        exclude += ({ this_body() }) ;
+    message("shout", msg, users(), exclude) ;
 }
 
 /**
@@ -140,7 +140,7 @@ varargs void shout(string msg, mixed exclude) {
  */
 varargs void tell_object(mixed ob, mixed msg, mixed type) {
     if(!type) type = "tell_object" ;
-    message(type, msg + "", ob);
+    message(type, msg + "", ob) ;
 }
 
 /**
@@ -156,7 +156,7 @@ varargs void tell_room(mixed room, string msg, mixed exclude) {
     if(!exclude || exclude==0) {
         message ("tell_room",msg,room) ;
     } else {
-        message("tell_room", msg, room, exclude);
+        message("tell_room", msg, room, exclude) ;
     }
 }
 
@@ -170,7 +170,7 @@ varargs void tell_room(mixed room, string msg, mixed exclude) {
  */
 varargs int userp(object ob) {
     if(!ob) ob = previous_object() ;
-    return efun::userp(ob);
+    return efun::userp(ob) ;
 }
 
 /**
@@ -182,7 +182,7 @@ varargs int userp(object ob) {
  * @returns {string} - The number in string form.
  */
 varargs string query_num(int x, int many) {
-    string sign;
+    string sign ;
 
     if(nullp(x))
         error ("Too few arguments to 'query_num'.") ;

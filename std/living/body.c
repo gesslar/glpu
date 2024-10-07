@@ -16,7 +16,7 @@
 #include <gmcp_defines.h>
 
 inherit STD_CONTAINER ;
-inherit STD_ITEM;
+inherit STD_ITEM ;
 
 inherit __DIR__ "act" ;
 inherit __DIR__ "advancement" ;
@@ -41,8 +41,8 @@ inherit M_ACTION ;
 inherit M_LOG ;
 
 /* Global Variables */
-string *path;
-nosave string *command_history = ({});
+string *path ;
+nosave string *command_history = ({}) ;
 object su_body ;
 
 /* Prototypes */
@@ -50,27 +50,27 @@ object su_body ;
 void mudlib_setup() {
     enable_commands() ;
     path = ({"/cmds/std/","/cmds/ability/", "/cmds/spell/"}) ;
-    if(!query_pref("prompt")) set_pref("prompt", ">");
+    if(!query_pref("prompt")) set_pref("prompt", ">") ;
     set_log_level(0) ;
     set_prevent_get(1) ;
-    add_action("command_hook", "", 1);
+    add_action("command_hook", "", 1) ;
     set_ignore_mass(1) ;
 }
 
 private nosave string *body_slots = ({
     "head", "neck", "torso", "back", "arms", "hands", "legs", "feet"
-});
+}) ;
 
 private nosave string *weapon_slots = ({
     "right hand", "left hand"
-});
+}) ;
 
 string *query_body_slots() {
-    return copy(body_slots);
+    return copy(body_slots) ;
 }
 
 string *query_weapon_slots() {
-    return copy(weapon_slots);
+    return copy(weapon_slots) ;
 }
 
 string *query_all_commands() {
@@ -191,35 +191,35 @@ void event_remove(object prev) {
 /* User path functions */
 
 string *query_path() {
-    return copy(path);
+    return copy(path) ;
 }
 
 int add_path(string str) {
     if(!adminp(previous_object()) && this_body() != this_object())
-        return 0;
+        return 0 ;
 
     if(member_array(str, path) != -1)
-        return 0;
+        return 0 ;
 
-    str = append(str, "/");
+    str = append(str, "/") ;
 
     if(!directory_exists(str))
-        return 0;
+        return 0 ;
 
-    path += ({str});
+    path += ({str}) ;
 
-    return 1;
+    return 1 ;
 }
 
 int rem_path(string str) {
     if(!adminp(previous_object()) && this_body() != this_object())
-        return 0;
+        return 0 ;
 
     if(member_array(str, path) == -1)
-        return 0;
+        return 0 ;
 
-    path -= ({str});
-    return 1;
+    path -= ({str}) ;
+    return 1 ;
 }
 
 void receive_message(string type, string msg) {
@@ -231,17 +231,17 @@ string process_input(string arg) {
 }
 
 nomask varargs string *query_command_history(int index, int range) {
-    if(this_body() != this_object() && !adminp(previous_object())) return ({});
-    if(!index) return command_history + ({});
-    else if(range) return command_history[index..range] + ({});
-    else return ({ command_history[index] });
+    if(this_body() != this_object() && !adminp(previous_object())) return ({}) ;
+    if(!index) return command_history + ({}) ;
+    else if(range) return command_history[index..range] + ({}) ;
+    else return ({ command_history[index] }) ;
 }
 
 int command_hook(string arg) {
-    string verb, err, *cmds = ({});
-    string custom, tmp;
-    object caller, command;
-    int i;
+    string verb, err, *cmds = ({}) ;
+    string custom, tmp ;
+    object caller, command ;
+    int i ;
     mixed result ;
     object *obs, ob ;
 
@@ -249,17 +249,17 @@ int command_hook(string arg) {
 
     if(interactive(caller))
         if(caller != this_object())
-            return 0;
+            return 0 ;
 
-    verb = query_verb();
+    verb = query_verb() ;
 
     if(sscanf(alias_parse(verb, arg), "%s %s", verb, arg) != 2)
-        verb = alias_parse(verb, arg);
+        verb = alias_parse(verb, arg) ;
 
     if(arg == "")
-        arg = 0;
+        arg = 0 ;
 
-    verb = lower_case(verb);
+    verb = lower_case(verb) ;
     // First let's check in our immediate inventory
     obs = all_inventory() ;
     foreach(ob in obs) {
@@ -279,8 +279,8 @@ int command_hook(string arg) {
         }
     }
 
-    if(arg) command_history += ({ verb + " " + arg });
-    else command_history += ({ verb });
+    if(arg) command_history += ({ verb + " " + arg }) ;
+    else command_history += ({ verb }) ;
 
     if(environment() && environment()->valid_exit(verb)) {
         arg = verb ;
@@ -289,44 +289,44 @@ int command_hook(string arg) {
 
     catch {
         if(environment()) {
-            if(SOUL_D->request_emote(verb, arg)) return 1;
+            if(SOUL_D->request_emote(verb, arg)) return 1 ;
         }
 
-        err = catch(load_object(CHAN_D));
+        err = catch(load_object(CHAN_D)) ;
         if(!err) {
-            if(CHAN_D->chat(verb, query_privs(), arg)) return 1;
+            if(CHAN_D->chat(verb, query_privs(), arg)) return 1 ;
         }
-    };
+    } ;
 
     for(i = 0; i < sizeof(path); i ++) {
         if(file_exists(path[i] + verb + ".c"))
-            cmds += ({ path[i] + verb });
+            cmds += ({ path[i] + verb }) ;
     }
 
     if(sizeof(cmds) > 0) {
-        mixed return_value;
+        mixed return_value ;
 
-        i = 0;
+        i = 0 ;
         while(return_value <= 0 && i < sizeof(cmds)) {
-            err = catch(command = load_object(cmds[i]));
+            err = catch(command = load_object(cmds[i])) ;
 
             if(err) {
-                write("Error: Command " + verb + " non-functional.\n");
-                write(err);
-                i++;
-                continue;
+                write("Error: Command " + verb + " non-functional.\n") ;
+                write(err) ;
+                i++ ;
+                continue ;
             }
 
-            return_value = command->main(caller, arg);
-            i++;
+            return_value = command->main(caller, arg) ;
+            i++ ;
             result = evaluate_result(return_value) ;
             if(result == 1) return 1 ;
         }
 
-        return return_value;
+        return return_value ;
     }
 
-    return 0;
+    return 0 ;
 }
 
 private nomask int evaluate_result(mixed result) {
@@ -355,7 +355,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     object curr = environment() ;
     string tmp ;
 
-    result = move(dest);
+    result = move(dest) ;
     if(result)
         return result ;
 
@@ -366,12 +366,12 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 
     if(curr) {
         if(depart_message != "SILENT") {
-            if(!depart_message) depart_message = query_env("move_out");
-            if(!depart_message) depart_message = "$N leaves $D.";
+            if(!depart_message) depart_message = query_env("move_out") ;
+            if(!depart_message) depart_message = "$N leaves $D." ;
             if(!dir) dir = "somewhere" ;
 
             tmp = replace_string(depart_message, "$N", query_name()) ;
-            tmp = replace_string(tmp, "$D", dir);
+            tmp = replace_string(tmp, "$D", dir) ;
 
             tmp = append(tmp, "\n") ;
 
@@ -382,9 +382,9 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
     if(arrive_message != "SILENT") {
         curr = environment() ;
 
-        if(!arrive_message) arrive_message = query_env("move_in");
-        if(!arrive_message) arrive_message = "$N arrives.\n";
-        tmp = replace_string(arrive_message, "$N", query_name());
+        if(!arrive_message) arrive_message = query_env("move_in") ;
+        if(!arrive_message) arrive_message = "$N arrives.\n" ;
+        tmp = replace_string(arrive_message, "$N", query_name()) ;
 
         tmp = append(tmp, "\n") ;
 
@@ -399,7 +399,7 @@ varargs int move_living(mixed dest, string dir, string depart_message, string ar
 }
 
 mixed* query_commands() {
-    return commands();
+    return commands() ;
 }
 
 int force_me(string cmd) {
@@ -407,14 +407,14 @@ int force_me(string cmd) {
             this_body() != this_object()
         && !adminp(previous_object())
         && !adminp(this_caller()))
-        return 0;
+        return 0 ;
     else
-        return command(cmd);
+        return command(cmd) ;
 }
 
 //Misc functions
 void write_prompt() {
-    string prompt = query_pref("prompt");
+    string prompt = query_pref("prompt") ;
 
     receive(prompt + " ") ;
 }

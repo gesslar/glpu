@@ -10,7 +10,7 @@
  * 2024-08-23 - Gesslar - Created
  */
 
-inherit STD_DAEMON;
+inherit STD_DAEMON ;
 
 // Forward declarations
 public void set_map_file(string file) ;
@@ -32,17 +32,17 @@ private nosave mixed noise_range = ({ MAX_FLOAT, -MAX_FLOAT }) ;
 private nosave string *directions = ({"north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"}) ;
 private nosave int *dx = ({0, 1, 1, 1, 0, -1, -1, -1}) ;
 private nosave int *dy = ({-1, -1, 0, 1, 1, 1, 0, -1}) ;
-private nosave int *exit_symbols = ({'|', '/', '-', '\\', '|', '/', '-', '\\'});
+private nosave int *exit_symbols = ({'|', '/', '-', '\\', '|', '/', '-', '\\'}) ;
 
 public void apply_map_file(string file) {
   if(!file)
-    error("No map file set. Use set_map_file() first.");
+    error("No map file set. Use set_map_file() first.") ;
 
-  map_type = "file";
-  map_file = file;
-  map_lines = explode(read_file(map_file), "\n");
-  map_height = sizeof(map_lines);
-  map_width = max(map(map_lines, (: strlen :)));
+  map_type = "file" ;
+  map_file = file ;
+  map_lines = explode(read_file(map_file), "\n") ;
+  map_height = sizeof(map_lines) ;
+  map_width = max(map(map_lines, (: strlen :))) ;
   map_depth = 1 ;
 }
 
@@ -54,21 +54,21 @@ protected varargs void apply_map_generator(function f, int indeterminate) {
   mixed result ;
 
   if(!valid_function(f))
-    error("Invalid map generator function.");
+    error("Invalid map generator function.") ;
 
-  noise_map = f;
+  noise_map = f ;
   result = (*f)() ;
 
   if(!indeterminate)
     if(!result || !pointerp(result))
-      error("Map generator function did not return a valid map.");
+      error("Map generator function did not return a valid map.") ;
 
   if(indeterminate == true) {
-    map_type = "squirrel5";
-    map_depth = -1;
+    map_type = "squirrel5" ;
+    map_depth = -1 ;
     map_data = null ;
   } else {
-    map_type = "generator";
+    map_type = "generator" ;
 
     map_data = result ;
     map_depth = sizeof(map_data) ;
@@ -78,7 +78,7 @@ protected varargs void apply_map_generator(function f, int indeterminate) {
 }
 
 string get_map_type() {
-  return map_type;
+  return map_type ;
 }
 
 protected void update_noise_range(mixed value) {
@@ -98,17 +98,17 @@ mixed *query_map_data() {
 }
 
 protected mapping get_exits(int z, int y, int x) {
-  mapping exits = ([]);
+  mapping exits = ([]) ;
   int i, nx, ny ;
 
   if(map_type == "file") {
     for(i = 0; i < sizeof(directions); i++) {
-      nx = x * 2 + dx[i];
-      ny = y * 2 + dy[i];
+      nx = x * 2 + dx[i] ;
+      ny = y * 2 + dy[i] ;
 
       if(ny >= 0 && ny < map_height && nx >= 0 && nx < map_width) {
         if(sizeof(map_lines[ny]) > nx && map_lines[ny][nx] == exit_symbols[i]) {
-          exits[directions[i]] = sprintf("%d,%d,%d", x + dx[i], y + dy[i], z);
+          exits[directions[i]] = sprintf("%d,%d,%d", x + dx[i], y + dy[i], z) ;
         }
       }
     }
@@ -116,7 +116,7 @@ protected mapping get_exits(int z, int y, int x) {
     for(i = 0; i < sizeof(directions); i++) {
       if(y >= 0 && y < map_height && x >= 0 && x < map_width) {
         if(map_data[y][x] > 0.5) {
-          exits[directions[i]] = sprintf("%d,%d,%d", x + dx[i], y + dy[i], z);
+          exits[directions[i]] = sprintf("%d,%d,%d", x + dx[i], y + dy[i], z) ;
         }
       }
     }
@@ -124,16 +124,16 @@ protected mapping get_exits(int z, int y, int x) {
     return null ;
   }
 
-  return exits;
+  return exits ;
 }
 
 /* protected */ mixed get_room_type(int z, int y, int x) {
   if(map_type == "file") {
     if(y * 2 < map_height && x * 2 < map_width)
-      return map_lines[y * 2][x * 2..x * 2];
+      return map_lines[y * 2][x * 2..x * 2] ;
   } else if(map_type == "generator") {
     if(y >= 0 && y < map_height && x >= 0 && x < map_width && z >= 0 && z < map_depth)
-      return map_data[z][y][x];
+      return map_data[z][y][x] ;
   } else if(map_type == "indeterminate") {
     return null ;
   }
@@ -147,9 +147,9 @@ public int is_valid_room(int z, int y, int x) {
   if(map_type == "indeterminate")
     return 1 ;
 
-  room_type = get_room_type(z, y, x);
+  room_type = get_room_type(z, y, x) ;
 
-  return (room_type && room_type != "" && room_type != " ");
+  return (room_type && room_type != "" && room_type != " ") ;
 }
 
 public int get_map_width() {
@@ -158,7 +158,7 @@ public int get_map_width() {
   else if(map_type == "indeterminate")
     return 1 ;
   else
-    return map_width;
+    return map_width ;
 }
 
 public int get_map_height() {
@@ -167,23 +167,23 @@ public int get_map_height() {
   else if(map_type == "indeterminate")
     return 1 ;
   else
-    return map_height;
+    return map_height ;
 }
 
 public int get_map_depth() {
   if(map_type == "indeterminate")
     return 1 ;
   else
-    return map_depth;
+    return map_depth ;
 }
 
 public string *get_directions() {
-  return directions;
+  return directions ;
 }
 
 public mapping get_room_info(int z, int y, int x) {
   return ([
     "type": get_room_type(z, y, x),
     "exits": get_exits(z, y, x),
-  ]);
+  ]) ;
 }

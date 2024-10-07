@@ -137,7 +137,7 @@ varargs string compose_message(object forwhom, string msg, object *who, mixed *o
 
     res = fmt[0] ;
     i = 1 ;
-    while (i < sizeof(fmt)) {
+    while(i < sizeof(fmt)) {
         c = fmt[i][1] ;
         if(fmt[i][2] && fmt[i][2] < 'a') {
             if(fmt[i][3] && fmt[i][3] < 'a') {

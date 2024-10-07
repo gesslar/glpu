@@ -34,12 +34,12 @@ mixed main(object tp, string message) {
 
     if(!objectp(target)) {
         tp->set_tell_reply("") ;
-        return "You cannot seem to find " + capitalize(who) + ".";
+        return "You cannot seem to find " + capitalize(who) + "." ;
     }
 
     if(target == tp) {
         tp->simple_action("$N $vstart talking to $r.") ;
-        return 1;
+        return 1 ;
     }
 
     name = tp->query_name() ;
@@ -53,7 +53,7 @@ mixed main(object tp, string message) {
         tell(target, sprintf("%s tells you: %s\n", name, message)) ;
     }
 
-    target->set_tell_reply(query_privs(tp));
+    target->set_tell_reply(query_privs(tp)) ;
 
-    return 1;
+    return 1 ;
 }

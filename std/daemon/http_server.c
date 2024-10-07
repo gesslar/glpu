@@ -67,26 +67,26 @@ protected nomask int query_listen_port() {
 protected nomask void start_server() {
     int fd, status ;
 
-    fd = socket_create(get_option("tls") ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_close");
+    fd = socket_create(get_option("tls") ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_close") ;
 
     if(fd < 0) {
-        _log(0, "Unable to create socket: %s", socket_error(fd));
-        return;
+        _log(0, "Unable to create socket: %s", socket_error(fd)) ;
+        return ;
     }
 
-    status = socket_bind(fd, LISTEN_PORT);
+    status = socket_bind(fd, LISTEN_PORT) ;
     if(status != EESUCCESS) {
-        _log(0, "Unable to bind to port %d: %s", LISTEN_PORT, socket_error(status));
-        return;
+        _log(0, "Unable to bind to port %d: %s", LISTEN_PORT, socket_error(status)) ;
+        return ;
     }
 
-    status = socket_listen(fd, "socket_listen");
+    status = socket_listen(fd, "socket_listen") ;
     if(status != EESUCCESS) {
-        _log(0, "Unable to listen on socket: %s", socket_error(status));
-        return;
+        _log(0, "Unable to listen on socket: %s", socket_error(status)) ;
+        return ;
     }
 
-    _log(1, "Listening on port %d", LISTEN_PORT);
+    _log(1, "Listening on port %d", LISTEN_PORT) ;
 }
 
 protected nomask void socket_listen(int fd) {
@@ -96,14 +96,14 @@ protected nomask void socket_listen(int fd) {
     string client_host ;
     int client_port ;
 
-    client_fd = socket_accept(fd, "socket_read", "socket_ready");
+    client_fd = socket_accept(fd, "socket_read", "socket_ready") ;
     if(client_fd < 0) {
-        _log(0, "Error accepting client: %s", socket_error(client_fd));
-        return;
+        _log(0, "Error accepting client: %s", socket_error(client_fd)) ;
+        return ;
     }
 
-    client_address = socket_address(client_fd);
-    sscanf(client_address, "%s %d", client_host, client_port);
+    client_address = socket_address(client_fd) ;
+    sscanf(client_address, "%s %d", client_host, client_port) ;
 
     client = ([
         "host": client_host,
@@ -118,8 +118,8 @@ protected nomask void socket_listen(int fd) {
     _log(2, "New connection from %s %d", client_host, client_port) ;
 
     if(get_option("tls")) {
-        socket_set_option(client_fd, SO_TLS_VERIFY_PEER, 1);
-        socket_set_option(client_fd, SO_TLS_SNI_HOSTNAME, client_host);
+        socket_set_option(client_fd, SO_TLS_VERIFY_PEER, 1) ;
+        socket_set_option(client_fd, SO_TLS_SNI_HOSTNAME, client_host) ;
     }
 
     clients[client_fd] = client ;
@@ -152,7 +152,7 @@ protected nomask void socket_shutdown(int fd) {
     if(result != EESUCCESS) {
         _log(0, "Error closing socket: %s", socket_error(result)) ;
     } else {
-        _log(3, "Removing socket: %s %d", client["host"], client["port"]);
+        _log(3, "Removing socket: %s %d", client["host"], client["port"]) ;
     }
 
     call_if(client, "http_handle_shutdown", client) ;
@@ -264,8 +264,8 @@ protected nomask void send_http_response(int fd, mapping client) {
             case HTTP_STATUS_BAD_GATEWAY:
             case HTTP_STATUS_SERVICE_UNAVAILABLE:
                 sscanf(status, "%*d %s", body) ;
-                break;
-            default: body = status; break;
+                break ;
+            default: body = status; break ;
         }
     }
 
@@ -286,16 +286,16 @@ protected nomask void send_http_response(int fd, mapping client) {
         switch(typeof(val)) {
             case T_STRING:
                 val = val ;
-                break;
+                break ;
             case T_INT:
                 val = sprintf("%d", val) ;
-                break;
+                break ;
             case T_FLOAT:
                 val = sprintf("%f", val) ;
-                break;
+                break ;
             default:
                 throw(sprintf("Invalid type for header value: %O", val)) ;
-                break;
+                break ;
         }
 
         response += sprintf("%s: %s\r\n", header, val) ;
@@ -323,7 +323,7 @@ protected nomask void send_http_response(int fd, mapping client) {
         _log(2, "Body sent") ;
     } else {
         response += body ;
-        result = socket_write(fd, response);
+        result = socket_write(fd, response) ;
         if(result != EESUCCESS) {
             _log(0, "Error writing response: %s", socket_error(result)) ;
             socket_shutdown(fd) ;

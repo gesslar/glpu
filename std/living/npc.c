@@ -9,7 +9,7 @@
 #include <npc.h>
 #include <logs.h>
 
-inherit STD_BODY;
+inherit STD_BODY ;
 inherit M_LOOT ;
 
 inherit __DIR__ "living" ;
@@ -57,28 +57,28 @@ float set_level(float level) {
 }
 
 int force_me(string cmd) {
-    return command(cmd);
+    return command(cmd) ;
 }
 
 int player_check() ;
 void start_heart_beat() {
     if(player_check())
-        set_heart_beat(mud_config("DEFAULT_HEART_RATE"));
+        set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
 }
 
 void stop_heart_beat() {
     if(!player_check() && query_hp() >= 100.0)
-        set_heart_beat(0);
+        set_heart_beat(0) ;
 }
 
 int player_check() {
     object env ;
 
     if((env = environment()) && sizeof(present_players(env))) {
-        return 1;
+        return 1 ;
     }
 
-    return 0;
+    return 0 ;
 }
 
 /* Body Object Functions */
@@ -90,9 +90,9 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query_last_login()) > 3600) {
                 if(environment())
-                    tell_room(environment(), query_name() + " fades out of existance.\n");
-                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
-                destruct(this_object());
+                    tell_room(environment(), query_name() + " fades out of existance.\n") ;
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n") ;
+                destruct(this_object()) ;
             }
         } else {
             /* Prevent link-dead from idle */

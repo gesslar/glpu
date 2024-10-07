@@ -10,11 +10,9 @@ Last edited 5-July-06 by Vicore
 
 inherit STD_CMD ;
 
-object pager;
-
 void setup() {
-    usage_text = "more <file>" ;
-    help_text =
+  usage_text = "more <file>" ;
+  help_text =
 "This command will allow you to page files to your terminal, a screen at a "
 "time. For more information about using this application and it's feature, "
 "type 'help' within the pager.\n\n"
@@ -24,22 +22,22 @@ void setup() {
 }
 
 mixed main(object tp, string file) {
-    string text;
+  string text ;
 
-    if(!file && tp->query_env("cwf"))
-        file = tp->query_env("cwf");
-    else if(!file)
-        return _usage(tp) ;
+  if(!file && tp->query_env("cwf"))
+    file = tp->query_env("cwf") ;
+  else if(!file)
+    return _usage(tp) ;
 
-    file = resolve_file(tp, file) ;
+  file = resolve_file(tp, file) ;
 
-    if(!file_exists(file))
-        return _error("Error [more]: File '%s' does not exist.", file) ;
+  if(!file_exists(file))
+    return _error("File '%s' does not exist.", file) ;
 
-    text = read_file(file);
+  text = read_file(file) ;
 
-    text = "=== " + file + " ===\n" + text ;
-    tp->page(text, null, 1) ;
+  text = "=== " + file + " ===\n" + text ;
+  tp->page(text, null, 1) ;
 
-    return 1;
+  return 1 ;
 }

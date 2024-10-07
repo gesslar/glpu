@@ -33,16 +33,16 @@ mixed main(object caller, string arg) {
           }
      }
 
-     tell(caller, "Thank you for visiting " + mud_name() + ".\n");
-     caller->exit_world();
+     tell(caller, "Thank you for visiting " + mud_name() + ".\n") ;
+     caller->exit_world() ;
      log_file(LOG_LOGIN, capitalize(caller->query_real_name()) + " logged out from " +
-     query_ip_number(caller) + " on " + ctime(time()) + "\n");
-     destruct(caller);
-     return 1;
+     query_ip_number(caller) + " on " + ctime(time()) + "\n") ;
+     destruct(caller) ;
+     return 1 ;
 }
 
 string help(object caller) {
      return(" SYNTAX: quit\n\n" +
      "This command will save your characher and disconnect you from the mud.\n\n" +
-     "See also: save\n");
+     "See also: save\n") ;
 }

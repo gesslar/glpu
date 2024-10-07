@@ -39,7 +39,7 @@ mixed adjust_wealth(string currency, int amount) {
   int mass ;
 
   if(nullp(_wealth))
-    _wealth = ([]);
+    _wealth = ([]) ;
 
   if(!CURRENCY_D->valid_currency_type(currency))
     return "That is not a valid currency type.\n" ;
@@ -87,11 +87,11 @@ mapping set_wealth(mapping w) {
 
 void init_wealth() {
   if(nullp(_wealth))
-    _wealth = ([]);
+    _wealth = ([]) ;
 }
 
 void wipe_wealth() {
-  _wealth = ([]);
+  _wealth = ([]) ;
 
   GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
     GMCP_LBL_CHAR_STATUS_WEALTH : ([ ])

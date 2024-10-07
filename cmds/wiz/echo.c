@@ -12,15 +12,15 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string str) {
-    object room = environment(caller);
+    object room = environment(caller) ;
 
     if(!str)
-        return "Syntax: echo <argument>";
+        return "Syntax: echo <argument>" ;
 
-    tell(caller, "You echoed to the room: " + str);
-    tell_down(room, str, 0, caller);
+    tell(caller, "You echoed to the room: " + str) ;
+    tell_down(room, str, 0, caller) ;
 
-    return 1;
+    return 1 ;
 }
 
 string help(object caller) {
@@ -31,5 +31,5 @@ string help(object caller) {
 "pass to this  exactly as you typed it with a newline (aka line break) after "
 "it.\n\n"
 "For example, if you type 'echo The room shakes.' then everyone else in the "
-"room will see the following printed 'The room shakes.'.";
+"room will see the following printed 'The room shakes.'." ;
 }

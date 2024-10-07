@@ -11,10 +11,10 @@ inherit STD_CMD ;
 string query_wealth(object tp) ;
 
 mixed main(object tp, string args) {
-    object *inventory;
+    object *inventory ;
     string *shorts ;
     string wealth ;
-    int i;
+    int i ;
     int fill, cap ;
     object *equipped = values(tp->query_equipped()) ;
     object *wielded = values(tp->query_wielded()) ;
@@ -38,7 +38,7 @@ mixed main(object tp, string args) {
             result += " (" + file_name(ob) + ")" ;
 
         return result ;
-    }, tp, equipped, wielded);
+    }, tp, equipped, wielded) ;
 
     shorts -= ({ 0 }) ;
 
@@ -80,5 +80,5 @@ string query_wealth(object tp) {
 string help(object tp) {
     return(" SYNTAX: inventory\n\n"
         "This command displays a list of everything that is currently\n"
-        "in your inventory.\n");
+        "in your inventory.\n") ;
 }

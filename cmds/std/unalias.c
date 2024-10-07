@@ -17,7 +17,7 @@ void setup() {
 "This command enables you to remove an alias from your alias list. "
 "Aliases are shortcuts you have set up for commands, allowing you to use "
 "shorthand instead of the full command. This command allows you to remove "
-"aliases you have set up, freeing up the shortcut for other uses.";
+"aliases you have set up, freeing up the shortcut for other uses." ;
 }
 
 mixed main(object caller, string args) {

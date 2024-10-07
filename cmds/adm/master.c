@@ -30,7 +30,7 @@ mixed main(object caller, string arguments) {
      string err = "" ;
 
      if(!adminp(previous_object()))
-          return _error("Access denied.\n");
+          return _error("Access denied.\n") ;
 
      foreach(action in actions) {
           mixed result ;
@@ -54,5 +54,5 @@ mixed main(object caller, string arguments) {
 string query_help(object caller) {
      return (
 " SYNTAX: master\n\n"
-"This command reloads core system files. No argument is taken.\n");
+"This command reloads core system files. No argument is taken.\n") ;
 }

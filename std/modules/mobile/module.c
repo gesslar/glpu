@@ -8,8 +8,8 @@
 
 inherit STD_ITEM ;
 
-protected nosave object owner;
-protected nosave string module_name;
+protected nosave object owner ;
+protected nosave string module_name ;
 
 private varargs int start_module(mixed args...) ;
 private void stop_module() ;

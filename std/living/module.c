@@ -11,7 +11,7 @@
 
 #include <module.h>
 
-private nosave mapping modules = ([]);
+private nosave mapping modules = ([]) ;
 
 varargs object add_module(string module, mixed args...) {
     object ob ;

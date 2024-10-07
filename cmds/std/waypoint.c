@@ -37,7 +37,7 @@ string remove_waypoint(object tp, int num) ;
 mixed main(object tp, string str) {
   string name = query_privs(tp) ;
   string file = user_data_directory(name) + "waypoints.txt" ;
-  string *lines = ({});
+  string *lines = ({}) ;
   int num ;
 
   if(!str)
@@ -59,7 +59,7 @@ mixed list_waypoints(object tp) {
   string name = query_privs(tp) ;
   string file = user_data_directory(name) + "waypoints.txt" ;
   int max_waypoints = mud_config("WAYPOINTS_MAX") ;
-  mixed *wps = ({});
+  mixed *wps = ({}) ;
   int num, sz ;
   string result = "" ;
   string data ;
@@ -130,7 +130,7 @@ mixed set_waypoint(object tp) {
 mixed remove_waypoint(object tp, int num) {
   string name = query_privs(tp) ;
   string file = user_data_directory(name) + "waypoints.txt" ;
-  mixed *wps = ({});
+  mixed *wps = ({}) ;
   string *wp ;
   int i ;
   string result = "" ;

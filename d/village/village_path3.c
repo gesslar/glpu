@@ -12,7 +12,7 @@
 inherit __DIR__ "village_base" ;
 
 void setup() {
-    set_short("A Path Through the Village");
+    set_short("A Path Through the Village") ;
     set_long(
 "Eastward from the lively center of the village square, the path becomes more "
 "refined, with well-placed stones and borders of flowering shrubs indicating "

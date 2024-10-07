@@ -9,7 +9,7 @@
  * 2024-08-30 - Gesslar - Created
  */
 
-inherit STD_VIRTUAL_SERVER;
+inherit STD_VIRTUAL_SERVER ;
 
 object generate_object(string file) {
     object result ;

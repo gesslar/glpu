@@ -15,14 +15,14 @@ inherit M_EDIBLE ;
 string consume_message() ;
 
 void mudlib_setup() {
-    set_edible(1);
+    set_edible(1) ;
     save_var("_uses", "_max_uses", "_use_status_message") ;
     add_extra_long("consume", (: consume_message :)) ;
 }
 
 void set_id(mixed str) {
-    ::set_id(str);
-    add_id("food");
+    ::set_id(str) ;
+    add_id("food") ;
 }
 
 int consume(object tp) {

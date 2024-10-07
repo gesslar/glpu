@@ -31,44 +31,44 @@ void init_storage_room() {
 }
 
 object store() {
-    object store;
-    string org, file;
+    object store ;
+    string org, file ;
 
-    org = storage_options.storage_org;
+    org = storage_options.storage_org ;
     if(!stringp(org))
-        error("Invalid storage organization specified");
+        error("Invalid storage organization specified") ;
 
     switch(storage_options.storage_type) {
         case "public":
-            file = sprintf("/storage/%s", org);
-            break;
+            file = sprintf("/storage/%s", org) ;
+            break ;
         case "private": {
-            mixed id = storage_options.storage_id;
+            mixed id = storage_options.storage_id ;
             if(valid_function(id))
-                id = (*id)();
+                id = (*id)() ;
             if(!stringp(id))
-                error("Invalid storage ID specified for private storage");
-            file = sprintf("/storage/%s/%s", org, id);
-            break;
+                error("Invalid storage ID specified for private storage") ;
+            file = sprintf("/storage/%s/%s", org, id) ;
+            break ;
         }
         default:
             // Default to custom storage
-            file = sprintf("/obj/storage/%s", org);
+            file = sprintf("/obj/storage/%s", org) ;
             if(file_size(file + ".c") < 0) {
-                error("Custom storage file not found: " + file + ".c");
+                error("Custom storage file not found: " + file + ".c") ;
             }
-            store = new(file);
-            store->set_storage_options(storage_options);
-            return store;
+            store = new(file) ;
+            store->set_storage_options(storage_options) ;
+            return store ;
     }
 
     if(store = find_object(file))
-        return store;
+        return store ;
 
-    store = load_object(file);
-    store->set_storage_options(storage_options);
+    store = load_object(file) ;
+    store->set_storage_options(storage_options) ;
     store->set_link(file_name()) ;
-    return store;
+    return store ;
 }
 
 object get_storage_object() {

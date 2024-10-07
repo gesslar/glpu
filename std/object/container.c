@@ -21,12 +21,12 @@ private nosave int _locked = 0 ;
 private nosave int _opaque = 1 ;
 
 int can_receive(object ob) {
-    return 1;
+    return 1 ;
 }
 void receive_effect(object ob) {}
 
 int can_release(object ob) {
-    return 1;
+    return 1 ;
 }
 void release_effect(object ob) {}
 

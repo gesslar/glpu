@@ -26,7 +26,7 @@ string object_data_file(object ob) {
     string source_file = query_file_name(ob) ;
     string save_file ;
 
-    save_file = source_dir + source_file;
+    save_file = source_dir + source_file ;
 
     return save_file ;
 }

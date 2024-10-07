@@ -10,11 +10,10 @@
  */
 
 // Functions from other objects
-void set_spawn_info(mapping info);
+void set_spawn_info(mapping info) ;
 
 // Elements have the format of: ([ "object" : string, "number" : int|function, "args" : array ])
-private nosave mapping inventory;
-
+private nosave mapping inventory ;
 
 /**
  * @description Add or clone an object to the inventory of this_object()
@@ -151,7 +150,7 @@ void reset_objects() {
     int result ;
     mapping element ;
     object ob ;
-    string e;
+    string e ;
 
     if(!inventory)
         return ;

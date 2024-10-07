@@ -31,37 +31,37 @@ private nomask mapping _actions = ([
 ]) ;
 
 void set_drink_action(string action) {
-    _actions["drink"]["action"] = action;
+    _actions["drink"]["action"] = action ;
 }
 
 void set_self_drink_action(string action) {
-    _actions["drink"]["self"] = action;
+    _actions["drink"]["self"] = action ;
 }
 
 void set_room_drink_action(string action) {
-    _actions["drink"]["room"] = action;
+    _actions["drink"]["room"] = action ;
 }
 
 void set_sip_action(string action) {
-    _actions["sip"]["action"] = action;
+    _actions["sip"]["action"] = action ;
 }
 
 void set_self_sip_action(string action) {
-    _actions["sip"]["self"] = action;
+    _actions["sip"]["self"] = action ;
 }
 
 void set_room_sip_action(string action) {
-    _actions["sip"]["room"] = action;
+    _actions["sip"]["room"] = action ;
 }
 
 int set_potable(int potable) {
-    _potable = potable;
+    _potable = potable ;
 
-    return _potable;
+    return _potable ;
 }
 
 int is_potable() {
-    return _potable;
+    return _potable ;
 }
 
 int drink(object tp) {
@@ -72,19 +72,19 @@ int drink(object tp) {
         return 0 ;
 
     if(_actions["drink"]["action"])
-        tp->simple_action(_actions["drink"]["action"], this_object());
+        tp->simple_action(_actions["drink"]["action"], this_object()) ;
     else {
         if(!_actions["drink"]["self"] && !_actions["drink"]["room"]) {
-            tp->simple_action(_default_actions["drink"], this_object());
+            tp->simple_action(_default_actions["drink"], this_object()) ;
         } else {
             if(_actions["drink"]["self"])
-                tp->simple_action(_actions["drink"]["self"], this_object());
+                tp->simple_action(_actions["drink"]["self"], this_object()) ;
             else
-                tp->simple_action(_default_actions["drink"], this_object());
+                tp->simple_action(_default_actions["drink"], this_object()) ;
             if(_actions["drink"]["room"])
-                tp->simple_action(_actions["drink"]["room"], this_object());
+                tp->simple_action(_actions["drink"]["room"], this_object()) ;
             else
-                tp->simple_action(_default_actions["drink"], this_object());
+                tp->simple_action(_default_actions["drink"], this_object()) ;
         }
     }
 
@@ -100,19 +100,19 @@ int sip(object tp, int amount) {
         return 0 ;
 
     if(_actions["sip"]["action"])
-        tp->simple_action(_actions["sip"]["action"], this_object());
+        tp->simple_action(_actions["sip"]["action"], this_object()) ;
     else {
         if(!_actions["sip"]["self"] && !_actions["sip"]["room"]) {
-            tp->simple_action(_default_actions["sip"], this_object());
+            tp->simple_action(_default_actions["sip"], this_object()) ;
         } else {
             if(_actions["sip"]["self"])
-                tp->simple_action(_actions["sip"]["self"], this_object());
+                tp->simple_action(_actions["sip"]["self"], this_object()) ;
             else
-                tp->simple_action(_default_actions["sip"], this_object());
+                tp->simple_action(_default_actions["sip"], this_object()) ;
             if(_actions["sip"]["room"])
-                tp->simple_action(_actions["sip"]["room"], this_object());
+                tp->simple_action(_actions["sip"]["room"], this_object()) ;
             else
-                tp->simple_action(_default_actions["sip"], this_object());
+                tp->simple_action(_default_actions["sip"], this_object()) ;
         }
     }
 
@@ -120,5 +120,5 @@ int sip(object tp, int amount) {
 }
 
 void reset_potable() {
-    reset_uses();
+    reset_uses() ;
 }

@@ -16,14 +16,14 @@ inherit M_POTABLE ;
 string consume_message() ;
 
 void mudlib_setup() {
-    set_potable(1);
+    set_potable(1) ;
     save_var("_uses", "_max_uses", "_use_status_message") ;
     add_extra_long("consume", (: consume_message :)) ;
 }
 
 void set_id(mixed str) {
-    ::set_id(str);
-    add_id("drink");
+    ::set_id(str) ;
+    add_id("drink") ;
 }
 
 int drink(object tp) {

@@ -9,7 +9,7 @@
  * 2024-08-06 - Gesslar - Created
  */
 
-inherit STD_CMD;
+inherit STD_CMD ;
 
 mixed main(object tp, string str) {
     string result ;

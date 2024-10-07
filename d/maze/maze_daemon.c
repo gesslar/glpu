@@ -1,4 +1,4 @@
-inherit STD_VIRTUAL_MAP;
+inherit STD_VIRTUAL_MAP ;
 
 private void init_maze() ; // Added forward declaration
 private void setup_dimensions() ;
@@ -76,7 +76,7 @@ private nosave int DOWN = (1<<4) ;
 private nosave int room_count = 0 ;
 
 // The minimum and maximum coordinates for the maze.
-private nosave int MIN_X, MIN_Y, MAX_X, MAX_Y, MIN_Z, MAX_Z;
+private nosave int MIN_X, MIN_Y, MAX_X, MAX_Y, MIN_Z, MAX_Z ;
 // The directions for the maze. Used to calculate the coordinates of the
 // neighbouring cells.
 private nosave mapping DIRECTIONS = ([
@@ -167,8 +167,8 @@ protected mixed *generate_map() {
  * @param z The layer to generate.
  */
 private void generate_layer(int z) {
-  int start_x, start_y;
-  mixed *stack = ({});
+  int start_x, start_y ;
+  mixed *stack = ({}) ;
   mapping *directions = ({ }) ;
   mixed *result ;
 
@@ -230,7 +230,7 @@ private void generate_layer(int z) {
       stack += ({ (["x": nx, "y": ny]) }) ;
       found_neighbour = 1 ;
 
-      break;
+      break ;
     }
 
     // If we don't find a neighbour, we remove the current cell from the stack.
@@ -269,11 +269,11 @@ mixed *find_layer_connections(int z) {
   mixed *result ;
   mixed *current = maze[z] ;
   mixed *below = maze[z+1] ;
-  mixed *connections = ({});
+  mixed *connections = ({}) ;
   int num_connections ;
   int x, y ;
 
-  candidates = ({});
+  candidates = ({}) ;
 
   for(y = 0; y < dimensions[HEIGHT]; y++)
     for(x = 0; x < dimensions[WIDTH]; x++) {
@@ -308,32 +308,32 @@ public int oob(int z, int y, int x) {
 
 // Clear a wall at the given coordinates.
 private string clear_wall(int z, int y, int x) {
-  string result;
+  string result ;
 
   if(oob(z, y, x))
-    return 0;
+    return 0 ;
 
-  result = maze[z][y][x] = clear_bit(maze[z][y][x], WALL);
+  result = maze[z][y][x] = clear_bit(maze[z][y][x], WALL) ;
 
-  return result;
+  return result ;
 }
 
 private string set_wall(int z, int y, int x) {
-  string result;
+  string result ;
 
   if(oob(z, y, x))
-    return 0;
+    return 0 ;
 
-  clear_path(z, y, x);
-  result = maze[z][y][x] = set_bit(maze[z][y][x], WALL);
+  clear_path(z, y, x) ;
+  result = maze[z][y][x] = set_bit(maze[z][y][x], WALL) ;
 
-  return result;
+  return result ;
 }
 
 // Check if the coordinates are a wall.
 public int is_wall(int z, int y, int x) {
   if(oob(z, y, x))
-    return 0;
+    return 0 ;
 
   return test_bit(maze[z][y][x], WALL) ;
 }
@@ -472,7 +472,7 @@ private void setup_longs() {
   }) ;
 
   default_long_description = "You stand in a maze, surrounded by high walls that "
-    "block your view of the outside.";
+    "block your view of the outside." ;
 }
 
 // Setup the exits for the maze. This will setup the exits for the maze by
@@ -482,7 +482,7 @@ public void setup_exits(object room) {
   int x, y, z, layer ;
   int *adjacent ;
   int max_x, max_y, max_z ;
-  string file = query_file_name(room);
+  string file = query_file_name(room) ;
   string room_type ;
   string test ;
 

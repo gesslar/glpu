@@ -13,10 +13,10 @@ inherit STD_FOOD ;
 
 void setup() {
     set_id("muffin") ;
-    set_name("muffin");
-    set_short("a muffin");
-    set_long("A delicious muffin.");
-    set_mass(5);
+    set_name("muffin") ;
+    set_short("a muffin") ;
+    set_long("A delicious muffin.") ;
+    set_mass(5) ;
     set_value(2) ;
-    set_uses(1);
+    set_uses(1) ;
 }

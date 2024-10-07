@@ -27,7 +27,7 @@ mixed main(object tp, string file) {
     if(!file_exists(file))
         return _error("File does not exist: %s", file) ;
 
-    out = explode(tail(file, 20), "\n");
+    out = explode(tail(file, 20), "\n") ;
     out = ({ "=== " + file + " ===" }) + out ;
 
     return out ;

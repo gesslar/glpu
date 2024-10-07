@@ -8,7 +8,7 @@
  * @returns {float} - The value that is `a` percent of `b`.
  */
 float percent_of(float a, float b) {
-    return (a / 100.0) * to_float(b);
+    return (a / 100.0) * to_float(b) ;
 }
 
 /**
@@ -19,7 +19,7 @@ float percent_of(float a, float b) {
  * @returns {float} - The percentage of `a` out of `b`.
  */
 float percent(float a, float b) {
-    return (to_float(a) / to_float(b)) * 100.0;
+    return (to_float(a) / to_float(b)) * 100.0 ;
 }
 
 /**
@@ -31,9 +31,9 @@ float percent(float a, float b) {
  * @returns {float} - The value, constrained within the range of `min` to `max`.
  */
 float clamp(float min, float max, float val) {
-    if(val < min) return min;
-    if(val > max) return max;
-    return val;
+    if(val < min) return min ;
+    if(val > max) return max ;
+    return val ;
 }
 
 /**
@@ -46,8 +46,8 @@ float clamp(float min, float max, float val) {
 varargs float remainder(mixed a, mixed b) {
     int result ;
 
-    if(intp(a)) a = to_float(a);
-    if(intp(b)) b = to_float(b);
+    if(intp(a)) a = to_float(a) ;
+    if(intp(b)) b = to_float(b) ;
 
     result = a / b ;
 
@@ -61,50 +61,50 @@ varargs float remainder(mixed a, mixed b) {
  * @returns {int} - The sum of all elements in the array.
  */
 int sum(mixed *arr) {
-    int i, total = 0;
+    int i, total = 0 ;
 
     for(i = 0; i < sizeof(arr); i++) {
-        total += arr[i];
+        total += arr[i] ;
     }
 
-    return total;
+    return total ;
 }
 
 private int evaluate_simple_condition(int number, string condition) {
-    string operator;
-    int value;
+    string operator ;
+    int value ;
 
     if(sscanf(condition, "%([<>=!]+)%d", operator, value) == 2) {
         switch(operator) {
             case "=":
-            case "==": return number == value;
-            case ">":  return number > value;
-            case "<":  return number < value;
-            case ">=": return number >= value;
-            case "<=": return number <= value;
-            case "!=": return number != value;
-            default:   throw("Invalid operator: " + operator);
+            case "==": return number == value ;
+            case ">":  return number > value ;
+            case "<":  return number < value ;
+            case ">=": return number >= value ;
+            case "<=": return number <= value ;
+            case "!=": return number != value ;
+            default:   throw("Invalid operator: " + operator) ;
         }
     }
     // ... rest of the function remains the same
 }
 
 private int evaluate_compound_condition(int number, string condition) {
-    string *parts, part;
-    string *or_parts, or_part;
-    int or_result, i, j;
+    string *parts, part ;
+    string *or_parts, or_part ;
+    int or_result, i, j ;
 
-    parts = explode(lower_case(condition), "and");
+    parts = explode(lower_case(condition), "and") ;
     for(i = 0; i < sizeof(parts); i++) {
-        part = parts[i];
-        or_parts = explode(part, "or");
-        or_result = 0;
+        part = parts[i] ;
+        or_parts = explode(part, "or") ;
+        or_result = 0 ;
         for(j = 0; j < sizeof(or_parts); j++) {
-            or_part = trim(or_parts[j]);
+            or_part = trim(or_parts[j]) ;
             if(or_part[0] == '(') or_part = or_part[1..<2]; // Remove parentheses
             if(evaluate_simple_condition(number, or_part)) {
-                or_result = 1;
-                break;
+                or_result = 1 ;
+                break ;
             }
         }
         if(!or_result) return 0; // If any AND condition fails, return false
@@ -180,6 +180,6 @@ private int evaluate_compound_condition(int number, string condition) {
  */
 int evaluate_number(int number, string condition) {
     // Remove all spaces from the condition
-    condition = replace_string(condition, " ", "");
-    return evaluate_compound_condition(number, condition);
+    condition = replace_string(condition, " ", "") ;
+    return evaluate_compound_condition(number, condition) ;
 }

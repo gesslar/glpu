@@ -14,7 +14,7 @@
  * @returns {string} - The base library name.
  */
 string baselib_name() {
-    return "LPUniversity";
+    return "LPUniversity" ;
 }
 
 /**
@@ -78,7 +78,7 @@ string admin_email() {
  * @returns {int} - The port number.
  */
 int port() {
-    return __PORT__;
+    return __PORT__ ;
 }
 
 object simul_efun() {
@@ -107,7 +107,7 @@ string driver_version() {
  * @returns {string} - The system architecture.
  */
 string arch() {
-    return __ARCH__;
+    return __ARCH__ ;
 }
 
 /**

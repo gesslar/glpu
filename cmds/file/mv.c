@@ -24,14 +24,14 @@ void setup() {
 }
 
 mixed main(object tp, string str) {
-    string origin, dest;
+    string origin, dest ;
     int result ;
 
     if(!str || !sscanf(str, "%s %s", origin, dest))
         return _usage(tp) ;
 
-    origin = resolve_path(tp->query_env("cwd"), origin);
-    dest = resolve_path(tp->query_env("cwd"), dest);
+    origin = resolve_path(tp->query_env("cwd"), origin) ;
+    dest = resolve_path(tp->query_env("cwd"), dest) ;
 
     if(!master()->valid_write(origin, tp, "mv") || !master()->valid_write(dest, tp, "mv"))
         return _error(tp, "Permission denied.") ;

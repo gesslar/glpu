@@ -11,7 +11,7 @@ inherit STD_CMD ;
 mixed list_aliases(object tp, int global) ;
 
 mixed main(object tp, string args) {
-    string verb, alias;
+    string verb, alias ;
     mapping aliases ;
 
     if(!args) return list_aliases(tp, 0) ;
@@ -21,7 +21,7 @@ mixed main(object tp, string args) {
         if(verb == "alias" || verb == "unalias")
             return _error("You may not alias 'alias' or 'unalias'.") ;
 
-        tp->add_alias(verb, alias);
+        tp->add_alias(verb, alias) ;
 
         return _ok("Added alias `%s`\n>> %s", verb, alias) ;
     }
@@ -41,24 +41,24 @@ mixed main(object tp, string args) {
 }
 
 mixed list_aliases(object tp, int global) {
-    mapping data = tp->get_aliases(global);
+    mapping data = tp->get_aliases(global) ;
     string *keys, header, footer ;
-    int i, sz;
+    int i, sz ;
     string *out ;
 
     if(!mapp(data))
         return "Aliases: No aliases defined.\n" ;
 
     if(global) {
-        header = "Current global aliases:";
-        footer = "Number of global aliases: %d";
+        header = "Current global aliases:" ;
+        footer = "Number of global aliases: %d" ;
     } else {
-        header = "Current local aliases:";
-        footer = "Number of local aliases: %d";
+        header = "Current local aliases:" ;
+        footer = "Number of local aliases: %d" ;
     }
 
-    keys = keys(data);
-    sz = sizeof(keys);
+    keys = keys(data) ;
+    sz = sizeof(keys) ;
 
     if(!sz)
         return "Aliases: No aliases defined.\n" ;
@@ -94,5 +94,5 @@ string help(object tp) {
     "beginning with that verb will be parsed with that alias\n"
     "(ex. 'alias $: emote $*' will result in any command beginning with ':' to\n"
     "be parsed as emote $*).\n\n"
-    "See also: unalias\n");
+    "See also: unalias\n") ;
 }

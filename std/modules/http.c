@@ -54,7 +54,7 @@ protected nomask mapping parse_http_request(buffer buf) {
         "\\S+\\s+" // Path
         "HTTP/\\d\\.\\d)\\r\\n" // Version
         "([\\s\\S]*)$" // Rest of the request
-    );
+    ) ;
 
     // We didn't find the request line
     if(!sizeof(matches)) {
@@ -82,7 +82,7 @@ protected nomask mapping parse_http_request(buffer buf) {
 
     str = matches[1] ;
 
-    matches = pcre_extract(str, "^([\\s\\S]*)\\r\\n\\r\\n([\\s\\S]*)$");
+    matches = pcre_extract(str, "^([\\s\\S]*)\\r\\n\\r\\n([\\s\\S]*)$") ;
     // We didn't find the headers
     if(!sizeof(matches)) {
         result["buffer"] = to_binary(str) ;
@@ -102,7 +102,7 @@ protected nomask mapping parse_http_request(buffer buf) {
 
     str = matches[1] ;
 
-    content_type = result["headers"]["content-type"];
+    content_type = result["headers"]["content-type"] ;
     result["body"] = parse_body(str, content_type) ;
     _log(3, "Request body: %O", result["body"]) ;
 
@@ -137,60 +137,60 @@ protected nomask mapping parse_http_response(string str) {
 }
 
 protected nomask mapping parse_http_request_line(string request_line) {
-    string *parts;
-    mapping result = ([]);
+    string *parts ;
+    mapping result = ([]) ;
 
     // Define the regex pattern for matching the HTTP method, path, and version
-    string pattern = "^(GET|POST|PUT|DELETE|OPTIONS|HEAD|PATCH|TRACE|CONNECT)\\s+([^\\s]+)\\s+HTTP/(\\d\\.\\d)$";
+    string pattern = "^(GET|POST|PUT|DELETE|OPTIONS|HEAD|PATCH|TRACE|CONNECT)\\s+([^\\s]+)\\s+HTTP/(\\d\\.\\d)$" ;
 
     // Extract the method, path, and version using regex
-    parts = pcre_extract(request_line, pattern);
+    parts = pcre_extract(request_line, pattern) ;
 
     // Ensure parts were extracted correctly
     if(sizeof(parts) == 3) {
-        result["method"] = parts[0];
-        result["path"] = parts[1];
-        result["version"] = parts[2];
+        result["method"] = parts[0] ;
+        result["path"] = parts[1] ;
+        result["version"] = parts[2] ;
     } else {
-        return 0;
+        return 0 ;
     }
 
-    return result;
+    return result ;
 }
 
 protected nomask mapping parse_route(string route) {
     mapping result = ([]) ;
-    string *parts;
+    string *parts ;
 
     // Define the regex pattern for matching the path and optional query
-    string pattern = "^(/[^?]*)(?:\\?(.*))?$";
+    string pattern = "^(/[^?]*)(?:\\?(.*))?$" ;
 
     // Extract the path and query using regex
-    parts = pcre_extract(route, pattern);
+    parts = pcre_extract(route, pattern) ;
 
     // Ensure parts were extracted correctly
     if(sizeof(parts) >= 1) { // parts[0] is the path, parts[1] is the query if present
-        result["route"] = parts[0];
+        result["route"] = parts[0] ;
         if(sizeof(parts) == 2) {
-            mapping query = parse_query(parts[1]);
-            result["query"] = query;
+            mapping query = parse_query(parts[1]) ;
+            result["query"] = query ;
         } else {
-            result["query"] = "";
+            result["query"] = "" ;
         }
     } else {
-        throw("Bad query.");
+        throw("Bad query.") ;
     }
 
-    return result;
+    return result ;
 }
 
 protected nomask mapping parse_response_status(mixed str, int keep_remainder: (: 0 :)) {
-    string *parts;
-    mapping result = ([]);
+    string *parts ;
+    mapping result = ([]) ;
     int sz ;
 
     // Define the regex pattern for matching the HTTP status code and message
-    string pattern = "^HTTP/\\d(?:\\.\\d)?\\s+(\\d{3})(?: )?([\\w ]+)?\\r\\n([\\s\\S]+)$";
+    string pattern = "^HTTP/\\d(?:\\.\\d)?\\s+(\\d{3})(?: )?([\\w ]+)?\\r\\n([\\s\\S]+)$" ;
 
     if(bufferp(str))
         str = to_string(str) ;
@@ -198,74 +198,74 @@ protected nomask mapping parse_response_status(mixed str, int keep_remainder: (:
     _log(4, "Testing string: %s", str) ;
 
     // Extract the status code, message, and remainder using regex
-    parts = pcre_extract(str, pattern);
+    parts = pcre_extract(str, pattern) ;
 
     _log(4, "parts: %O", parts) ;
 
     // Ensure parts were extracted correctly
     sz = sizeof(parts) ;
     if(sz >= 1) {
-        result["code"] = to_int(parts[0]);
+        result["code"] = to_int(parts[0]) ;
         if(sz >= 2) {
-            result["message"] = parts[1];
+            result["message"] = parts[1] ;
         } else {
-            result["message"] = "";
+            result["message"] = "" ;
         }
         if(keep_remainder && sz == 3) {
-            result["buffer"] = to_binary(parts[2]);
+            result["buffer"] = to_binary(parts[2]) ;
         }
     } else {
-        return 0;
+        return 0 ;
     }
 
-    return result;
+    return result ;
 }
 
 protected nomask mapping parse_headers(mixed str, int keep_remainder) {
-    mapping headers = ([]);
-    string remainder;
-    string search_pat = "^.*?:\\s+.*\r\n";
-    string extract_pat = "^(.*?):\\s+(.*)\r\n";
-    string replace_pat = "^(.*?:\\s+.*\r\n)";
-    string *match;
+    mapping headers = ([]) ;
+    string remainder ;
+    string search_pat = "^.*?:\\s+.*\r\n" ;
+    string extract_pat = "^(.*?):\\s+(.*)\r\n" ;
+    string replace_pat = "^(.*?:\\s+.*\r\n)" ;
+    string *match ;
 
     if(bufferp(str))
         str = to_string(str) ;
 
     while(pcre_match(str, search_pat)) {
-        match = pcre_extract(str, extract_pat);
+        match = pcre_extract(str, extract_pat) ;
 
         if(sizeof(match) >= 2) {
-            string header_name = lower_case(match[0]);
-            string header_value = match[1];
+            string header_name = lower_case(match[0]) ;
+            string header_value = match[1] ;
 
             if(pcre_match(header_value, "^\\d+$")) {
-                headers[header_name] = to_int(header_value);
+                headers[header_name] = to_int(header_value) ;
             } else if(pcre_match(header_value, "^\\d+\\.\\d+$")) {
-                headers[header_name] = to_float(header_value);
+                headers[header_name] = to_float(header_value) ;
             } else {
                 switch (header_name) {
                     case "connection":
                     case "accept-encoding":
-                        headers[header_name] = explode(header_value, ",");
-                        headers[header_name] = map(headers[header_name], (: trim :));
-                        break;
+                        headers[header_name] = explode(header_value, ",") ;
+                        headers[header_name] = map(headers[header_name], (: trim :)) ;
+                        break ;
                     default:
-                        headers[header_name] = header_value;
+                        headers[header_name] = header_value ;
                 }
             }
 
-            str = pcre_replace(str, replace_pat, ({ "" }));
+            str = pcre_replace(str, replace_pat, ({ "" })) ;
         } else {
-            break;
+            break ;
         }
     }
 
     if(keep_remainder) {
-        headers["buffer"] = to_binary(str)[2..];
+        headers["buffer"] = to_binary(str)[2..] ;
     }
 
-    return headers;
+    return headers ;
 }
 
 protected nomask mapping parse_query(string str) {
@@ -289,7 +289,7 @@ protected nomask mapping parse_query(string str) {
 }
 
 protected nomask mixed parse_body(mixed body, string content_type) {
-    mixed payload = ([]);
+    mixed payload = ([]) ;
     string type, encoding ;
     string *encoding_matches ;
     mixed err ;
@@ -297,7 +297,7 @@ protected nomask mixed parse_body(mixed body, string content_type) {
     _log(2, "Beginning parse_body") ;
 
     if(!body || body == "")
-        return 0;
+        return 0 ;
 
     if(bufferp(body))
         body = to_string(body) ;
@@ -322,7 +322,7 @@ protected nomask mixed parse_body(mixed body, string content_type) {
             // Attempt to decode JSON payload
             // Use regex to check if the body is a JSON object
             if(pcre_match(body, "^\\s*\\{[\\s\\S]*\\}\\s*$") == 1) {
-                err = catch(payload = json_decode(body));
+                err = catch(payload = json_decode(body)) ;
                 if(err) {
                     _log(2, "Failed to decode JSON payload: %O", err),
                     payload = body ;
@@ -330,23 +330,23 @@ protected nomask mixed parse_body(mixed body, string content_type) {
                     _log(3, "Decoded JSON payload: %O", payload) ;
                 }
             }
-            break;
+            break ;
         case CONTENT_TYPE_APPLICATION_FORM_URLENCODED: {
             // Decode URL-encoded form data
-            string *args;
-            args = explode(body, "&");
+            string *args ;
+            args = explode(body, "&") ;
             if(sizeof(args)) {
-                payload = ([]);
+                payload = ([]) ;
                 foreach(string arg in args) {
-                    string *parts;
-                    parts = explode(arg, "=");
+                    string *parts ;
+                    parts = explode(arg, "=") ;
                     if(sizeof(parts) == 2) {
-                        payload[url_decode(parts[0])] = url_decode(parts[1]);
+                        payload[url_decode(parts[0])] = url_decode(parts[1]) ;
                     }
                 }
-                _log(3, "Decoded form data: %O", payload);
+                _log(3, "Decoded form data: %O", payload) ;
             }
-            break;
+            break ;
         }
         case "auto" : {
             string *matches ;
@@ -369,70 +369,70 @@ protected nomask mixed parse_body(mixed body, string content_type) {
         default:
             // Just send it back
             _log(3, "Unknown content type: %s", type) ;
-            payload = body;
-            break;
+            payload = body ;
+            break ;
     }
 
     _log(2, "Sizeof payload: %d", sizeof(payload)) ;
 
-    return payload;
+    return payload ;
 }
 
 protected nomask string url_encode(string str) {
-    string allowed = "-_.~";
-    string result = "";
-    int sz, i;
+    string allowed = "-_.~" ;
+    string result = "" ;
+    int sz, i ;
 
-    sz = sizeof(str);
+    sz = sizeof(str) ;
     for(i = 0; i < sz; i++) {
         if(pcre_match(str[i..i], "^[a-zA-Z0-9" + allowed + "]$") == 0) {
-            result += sprintf("%%%02X", str[i]);
+            result += sprintf("%%%02X", str[i]) ;
         } else {
-            result += str[i..i];
+            result += str[i..i] ;
         }
     }
 
-    return result;
+    return result ;
 }
 
 protected nomask string url_decode(string str) {
-    mixed *arrs;
-    string *parts;
-    int *matches;
-    int sz, i;
+    mixed *arrs ;
+    string *parts ;
+    int *matches ;
+    int sz, i ;
 
     // Use pcre_assoc to find percent-encoded sequences
-    arrs = pcre_assoc(str, ({ "%[A-Fa-f0-9]{2}" }), ({ 1 }));
+    arrs = pcre_assoc(str, ({ "%[A-Fa-f0-9]{2}" }), ({ 1 })) ;
 
-    parts = arrs[0];
-    matches = arrs[1];
+    parts = arrs[0] ;
+    matches = arrs[1] ;
 
-    sz = sizeof(parts);
+    sz = sizeof(parts) ;
     for(i = 0; i < sz; i++) {
         if(matches[i] == 1) {
-            int char;
-            sscanf(parts[i], "%%%x", char);
-            parts[i] = sprintf("%c", char);
+            int char ;
+            sscanf(parts[i], "%%%x", char) ;
+            parts[i] = sprintf("%c", char) ;
         }
     }
 
-    return implode(parts, "");
+    return implode(parts, "") ;
 }
 
 protected nomask mapping parse_url(string str) {
-    string location, protocol, host, path, secure_part;
+    string location, protocol, host, path, secure_part ;
     int port, secure ;
     string *matches, port_string ;
     mapping result = ([]) ;
 
     // Use regex to parse the URL and determine the protoco
-    matches = pcre_extract(str, "^(http|ws)(s?)://([^:/]+):?(\\d+)?(/.*)?$");
+    matches = pcre_extract(str, "^(http|ws)(s?)://([^:/]+):?(\\d+)?(/.*)?$") ;
     if(!sizeof(matches))
         return 0 ;
 
-    protocol = matches[0];
-    secure = matches[1] == "s";
-    host = matches[2];
+    protocol = matches[0] ;
+    secure = matches[1] == "s" ;
+    host = matches[2] ;
     if(sizeof(matches) >= 4)
         port_string = matches[3] ;
     if(sizeof(matches) >= 5)
@@ -455,13 +455,13 @@ protected nomask mapping parse_url(string str) {
 }
 
 protected nomask varargs int find_marker(mixed buf, string marker) {
-    int i, sz, marker_sz, direction, start;
-    string type = typeof(buf);
-    mixed marker_test;
+    int i, sz, marker_sz, direction, start ;
+    string type = typeof(buf) ;
+    mixed marker_test ;
 
-    sz = sizeof(buf);
+    sz = sizeof(buf) ;
     if(stringp(buf))
-        buf = to_binary(buf);
+        buf = to_binary(buf) ;
 
     if(bufferp(buf))
         return bufsrch(buf, to_binary(marker)) ;
@@ -470,46 +470,46 @@ protected nomask varargs int find_marker(mixed buf, string marker) {
 }
 
 protected nomask varargs int bufsrch(buffer buf, mixed str) {
-    int buf_sz;
-    int sub_buf_sz;
-    mixed sub_buf;
-    int start;
+    int buf_sz ;
+    int sub_buf_sz ;
+    mixed sub_buf ;
+    int start ;
 
-    buf_sz = sizeof(buf);
+    buf_sz = sizeof(buf) ;
     if(stringp(str))
-        sub_buf = to_binary(str);
+        sub_buf = to_binary(str) ;
     else
-        sub_buf = str;
+        sub_buf = str ;
 
-    sub_buf_sz = sizeof(sub_buf);
-    start = 0;
+    sub_buf_sz = sizeof(sub_buf) ;
+    start = 0 ;
 
     if(sub_buf_sz > buf_sz || start < 0)
-        return -1;
+        return -1 ;
 
     for(int i = start; i <= buf_sz - sub_buf_sz; i++) {
-        int match = 1;
+        int match = 1 ;
         for(int j = 0; j < sub_buf_sz; j++) {
             if(buf[i+j] != sub_buf[j]) {
-                match = 0;
-                break;
+                match = 0 ;
+                break ;
             }
         }
-        printf("Debug: Checking at index %d, match = %d\n", i, match);
+        printf("Debug: Checking at index %d, match = %d\n", i, match) ;
         if(match) {
-            return i;
+            return i ;
         }
     }
 
-    return -1;
+    return -1 ;
 }
 
 protected nomask string binary_to_hex(buffer buf) {
-    string hex = "";
-    int len = sizeof(buf);
+    string hex = "" ;
+    int len = sizeof(buf) ;
 
     for(int i = 0; i < len; i++) {
-        hex += sprintf("0x%02x ", buf[i]);
+        hex += sprintf("0x%02x ", buf[i]) ;
     }
 
     // Remove the trailing and space
@@ -517,17 +517,17 @@ protected nomask string binary_to_hex(buffer buf) {
         hex = trim(hex) ;
     }
 
-    return hex;
+    return hex ;
 }
 
 protected nomask buffer hex_to_binary(string hex) {
-    buffer binary = allocate_buffer(strlen(hex) / 2);
-    int byte;
+    buffer binary = allocate_buffer(strlen(hex) / 2) ;
+    int byte ;
     for(int i = 0; i < strlen(hex); i += 2) {
-        sscanf(hex[i..i+1], "%x", byte);
-        binary[i / 2] = byte;
+        sscanf(hex[i..i+1], "%x", byte) ;
+        binary[i / 2] = byte ;
     }
-    return binary;
+    return binary ;
 }
 
 protected nomask void cache_response(string file, mixed response) {
@@ -536,7 +536,7 @@ protected nomask void cache_response(string file, mixed response) {
     int max = get_config(__MAX_BYTE_TRANSFER__) ;
     int start ;
     int result ;
-    int x, y;
+    int x, y ;
 
     _log(3, "Writing to cache file: "+file) ;
     _log(4, "Writing response: %O", binary_to_hex(response)) ;
@@ -560,38 +560,38 @@ protected nomask void cache_response(string file, mixed response) {
 }
 
 protected nomask mixed read_cache(string file) {
-    mixed response = "";
-    int chunk_size = get_config(__MAX_BYTE_TRANSFER__);
-    int max = get_config(__MAX_STRING_LENGTH__);
+    mixed response = "" ;
+    int chunk_size = get_config(__MAX_BYTE_TRANSFER__) ;
+    int max = get_config(__MAX_STRING_LENGTH__) ;
 
-    int curr = 0;
-    int sz = file_size(file);
-    string input;
-    int bytes_to_read;
+    int curr = 0 ;
+    int sz = file_size(file) ;
+    string input ;
+    int bytes_to_read ;
 
     if(sz < 1) {
-        return response;
+        return response ;
     }
 
     if(sz > max) {
-        return 0;
+        return 0 ;
     }
 
     while(curr < sz) {  // This condition is correct
-        bytes_to_read = min(({sz - curr, chunk_size}));
+        bytes_to_read = min(({sz - curr, chunk_size})) ;
 
-        input = read_bytes(file, curr, bytes_to_read);
+        input = read_bytes(file, curr, bytes_to_read) ;
 
         if(!input) {
             break; // Exit loop if read_bytes fails
         }
 
-        response += input;
+        response += input ;
         curr += sizeof(input);  // This is the key change
     }
 
-    _log(3, "Bytes read: %d", sizeof(response));
-    return response;
+    _log(3, "Bytes read: %d", sizeof(response)) ;
+    return response ;
 }
 
 protected nomask string http_time_string(mapping client) {

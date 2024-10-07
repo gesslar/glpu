@@ -23,8 +23,8 @@ protected void remove_shop() ;
 protected void reset_shop() ;
 private nomask object create_storage() ;
 
-protected nosave int shop_open = 1;
-protected nosave int allow_npcs = 0;
+protected nosave int shop_open = 1 ;
+protected nosave int allow_npcs = 0 ;
 protected nosave float sell_factor = 0.5; // when a player sells, use this
                                           // factor to determine the price
 protected nosave string shop_keep_file ;
@@ -151,13 +151,13 @@ mixed cmd_buy(object tp, string str) {
     return 0 ;
 
   if(!shop_open)
-    return "The shop is closed.";
+    return "The shop is closed." ;
 
   if(!userp(tp))
-    return "Only players can buy from the shop.";
+    return "Only players can buy from the shop." ;
 
   if(!ob = present(str, store))
-    return "The shop does not have that item.";
+    return "The shop does not have that item." ;
 
   cost = query_cost(tp, ob, "buy") ;
 
@@ -169,7 +169,7 @@ mixed cmd_buy(object tp, string str) {
   if(ob->move(tp)) {
     reverse_transaction(tp, result) ;
 
-    return "You can't carry that much weight.";
+    return "You can't carry that much weight." ;
   }
 
   short = get_short(ob) ;
@@ -204,10 +204,10 @@ mixed cmd_sell(object tp, string str) {
     return 0 ;
 
   if(!shop_open)
-    return "The shop is closed.";
+    return "The shop is closed." ;
 
   if(!userp(tp))
-    return "Only players can sell to the shop.";
+    return "Only players can sell to the shop." ;
 
   if(!str)
     return "Sell what?" ;

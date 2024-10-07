@@ -41,9 +41,9 @@ int set_attribute(string key, int value) {
         return null ;
     }
 
-    attributes[key] = value;
+    attributes[key] = value ;
 
-    return attributes[key];
+    return attributes[key] ;
 }
 
 varargs int query_attribute(string key, int raw) {
@@ -52,7 +52,7 @@ varargs int query_attribute(string key, int raw) {
     }
 
     if(raw)
-        return attributes[key];
+        return attributes[key] ;
 
     return attributes[key] + query_effective_boon("attribute", key) ;
 }
@@ -62,9 +62,9 @@ int modify_attribute(string key, int value) {
         return null ;
     }
 
-    attributes[key] += value;
+    attributes[key] += value ;
 
-    return attributes[key];
+    return attributes[key] ;
 }
 
 mapping query_attributes() {

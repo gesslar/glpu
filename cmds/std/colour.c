@@ -15,19 +15,18 @@ mixed main(object caller, string str) {
         cmd = str ;
     }
 
-
     switch(cmd) {
         case "on" :
         case "begin" :
             str = "on" ;
-            caller->set_env("colour", str);
-            return _ok(caller, "Colour " + str + ".");
+            caller->set_env("colour", str) ;
+            return _ok(caller, "Colour " + str + ".") ;
         case "off" :
             str = "off" ;
-            caller->set_env("colour", str);
-            return _ok(caller, "Colour " + str + ".");
+            caller->set_env("colour", str) ;
+            return _ok(caller, "Colour " + str + ".") ;
         case "list" :
-            return _info(caller, "Colour List:\n\n" + COLOUR_D->get_colour_list());
+            return _info(caller, "Colour List:\n\n" + COLOUR_D->get_colour_list()) ;
         case "show" : {
             int num ;
             string code ;
@@ -43,7 +42,7 @@ mixed main(object caller, string str) {
                 return _error(caller, "Invalid colour code.") ;
             if(num < 0 || num > 255) {
                 _error(caller, "Invalid colour code.") ;
-                return 1;
+                return 1 ;
             }
 
             fg = "{{"+sprintf("0%'0'3d", num)+"}}" ;

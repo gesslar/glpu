@@ -142,7 +142,7 @@ void adjust_proc_chance(float chance) {
  * @returns {string} The name of the proc that can occur, or false if no proc can occur.
  */
 string can_proc() {
-  mapping procs = ([]);
+  mapping procs = ([]) ;
   int now = time() ;
   string result ;
   float roll ;

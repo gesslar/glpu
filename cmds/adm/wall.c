@@ -7,29 +7,29 @@
 inherit STD_CMD ;
 
 mixed main(object caller, string str) {
-    int i;
-    object *users;
+    int i ;
+    object *users ;
 
     if(!adminp(previous_object()))
-        return _error("Error [wall]: Access denied.");
+        return _error("Error [wall]: Access denied.") ;
 
     if(!stringp(str)) {
-        _error("You must supply an argument. Syntax: wall <msg>");
-        return 1;
+        _error("You must supply an argument. Syntax: wall <msg>") ;
+        return 1 ;
     }
 
-    users = users();
+    users = users() ;
 
     for(i = 0; i < sizeof(users); i++) {
         tell_object(users[i], "**** System Wide Message From: "
         + capitalize(caller->query_real_name()) + " at " + ctime(time())
-        + " ****\n\n\t" + str + "\n");
+        + " ****\n\n\t" + str + "\n") ;
     }
 
-    return 1;
+    return 1 ;
 }
 
 string help(object caller) {
     return (" SYNTAX: wall <msg>\n\n"
-      + "This command pages a message to everybody on the MUD.\n");
+      + "This command pages a message to everybody on the MUD.\n") ;
 }

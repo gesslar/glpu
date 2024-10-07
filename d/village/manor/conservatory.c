@@ -24,7 +24,7 @@ void setup() {
   set_exits(([
     "west" : "hall2",
     "south" : "library",
-  ]));
+  ])) ;
 
   set_items(([
     "plants" :

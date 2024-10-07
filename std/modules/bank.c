@@ -10,10 +10,10 @@
 void add_command(string cmd, string fun) ;
 
 void init_bank() {
-  add_command("register", "cmd_register");
-  add_command("deposit", "cmd_deposit");
-  add_command("withdraw", "cmd_withdraw");
-  add_command("balance", "cmd_balance");
+  add_command("register", "cmd_register") ;
+  add_command("deposit", "cmd_deposit") ;
+  add_command("withdraw", "cmd_withdraw") ;
+  add_command("balance", "cmd_balance") ;
 }
 
 mixed cmd_balance(object tp, string arg) {

@@ -32,8 +32,8 @@ mixed main(object tp, string args) {
     if(sscanf(args, "%s %s", file, reference) != 2)
         return _usage(tp) ;
 
-    file = resolve_path(tp->query_env("cwd"), file);
-    reference = resolve_path(tp->query_env("cwd"), reference);
+    file = resolve_path(tp->query_env("cwd"), file) ;
+    reference = resolve_path(tp->query_env("cwd"), reference) ;
 
     if(!file_exists(file))
         return _error(tp, "File '%s' does not exist.", file) ;

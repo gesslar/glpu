@@ -11,7 +11,6 @@
    30-JUNE-05 Gwegster - added user_exists()
 */
 
-
 /**
  * @simul_efun directory_exists
  * @description Checks if a directory exists.
@@ -19,7 +18,7 @@
  * @returns {int} - 1 if the directory exists, otherwise 0.
  */
 int directory_exists(string dirname) {
-    return (file_size(dirname) == -2);
+    return (file_size(dirname) == -2) ;
 }
 
 /**
@@ -29,7 +28,7 @@ int directory_exists(string dirname) {
  * @returns {int} - 1 if the file exists, otherwise 0.
  */
 int file_exists(string file) {
-    return (file_size(file) >= 0);
+    return (file_size(file) >= 0) ;
 }
 
 /**
@@ -39,7 +38,7 @@ int file_exists(string file) {
  * @returns {int} - 1 if the compiled file exists, otherwise 0.
  */
 int cfile_exists(string file) {
-    return file_exists(append(file, ".c"));
+    return file_exists(append(file, ".c")) ;
 }
 
 /**
@@ -49,7 +48,7 @@ int cfile_exists(string file) {
  * @returns {int} - 1 if the save file exists, otherwise 0.
  */
 int ofile_exists(string file) {
-    return file_exists(append(file, __SAVE_EXTENSION__));
+    return file_exists(append(file, __SAVE_EXTENSION__)) ;
 }
 
 /**
@@ -59,5 +58,5 @@ int ofile_exists(string file) {
  * @returns {int} - 1 if the user data file exists, otherwise 0.
  */
 int user_exists(string user) {
-    return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + __SAVE_EXTENSION__));
+    return (file_exists("/data/users/" + user[0..0] + "/" + user + "/" + user + __SAVE_EXTENSION__)) ;
 }

@@ -12,11 +12,11 @@
 inherit STD_CMD ;
 
 void setup() {
-    usage_text = "mkdir <directory name>";
+    usage_text = "mkdir <directory name>" ;
     help_text =
 "This command creates a new directory. If you specify a path, the directory "
 "will be created in the specified location; otherwise, it will be created "
-"in the current working directory.";
+"in the current working directory." ;
 }
 
 mixed main(object tp, string str) {
@@ -25,7 +25,7 @@ mixed main(object tp, string str) {
     if(!str)
         return _usage(tp) ;
 
-    str = resolve_path(tp->query_env("cwd"), str);
+    str = resolve_path(tp->query_env("cwd"), str) ;
 
     if(file_exists(str))
         return _error("%s already a file.\n", str) ;

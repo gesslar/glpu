@@ -29,8 +29,8 @@ string map_source;   /* Map Source file (aka filename) */
 
 /* Function Prototypes */
 
-void clear();
-private int parse_map(string filename);
+void clear() ;
+private int parse_map(string filename) ;
 
 /* Functions */
 void setup() {
@@ -40,8 +40,8 @@ void setup() {
 
 /* Clears the map of all data */
 void clear() {
-    map = ({});
-    map_source = "";
+    map = ({}) ;
+    map_source = "" ;
 }
 
 /* Load a map from file
@@ -53,22 +53,22 @@ void clear() {
  */
 
 int load(string filename) {
-    if(!file_exists(filename)) return 0;
+    if(!file_exists(filename)) return 0 ;
     else {
-        clear();
-        return parse_map(filename);
+        clear() ;
+        return parse_map(filename) ;
     }
 }
 
 /* Returns 1 if a map is loaded or 0 if false */
 int is_loaded() {
-    if(sizeof(map) > 0) return 1;
-    else return 0;
+    if(sizeof(map) > 0) return 1 ;
+    else return 0 ;
 }
 
 /* Returns the filename of current map */
 string get_map_source() {
-    return map_source;
+    return map_source ;
 }
 
 /* Parses the map and creates 2D array
@@ -81,29 +81,29 @@ string get_map_source() {
  *
  */
 private int parse_map(string filename) {
-    string file_contents, *file_exploded;
-    int y, x;
+    string file_contents, *file_exploded ;
+    int y, x ;
 
-    file_contents = read_file(filename);
+    file_contents = read_file(filename) ;
     if(!file_contents || !stringp(file_contents))
-    return -2;
+    return -2 ;
 
-    file_exploded = explode(file_contents, "\n");
+    file_exploded = explode(file_contents, "\n") ;
     if(!pointerp(file_exploded) || sizeof(file_exploded) <= 0)
-    return -3;
+    return -3 ;
 
-    map = allocate(sizeof(file_exploded));
-    map_source = filename;
+    map = allocate(sizeof(file_exploded)) ;
+    map_source = filename ;
 
     for(y = 0; y < sizeof(file_exploded); y++) {
-        map[y] = allocate(strlen(file_exploded[y]));
+        map[y] = allocate(strlen(file_exploded[y])) ;
 
         for(x = 0; x < sizeof(map[y]); x++) {
-            map[y][x] = file_exploded[y][x..x];
+            map[y][x] = file_exploded[y][x..x] ;
         }
     }
 
-    return 1;
+    return 1 ;
 }
 
 /* Get the width of a row or if no argument is provided
@@ -112,39 +112,39 @@ private int parse_map(string filename) {
  */
 varargs int get_width(int y) {
     if(intp(y)) {
-        if(y >= sizeof(map) || y < 0) return -1;
-        else return sizeof(map[y]);
+        if(y >= sizeof(map) || y < 0) return -1 ;
+        else return sizeof(map[y]) ;
     } else {
-        int max_width = 0;
+        int max_width = 0 ;
 
         foreach(mixed element in map)
-        if(sizeof(element) > max_width) max_width = sizeof(element);
+        if(sizeof(element) > max_width) max_width = sizeof(element) ;
 
-        return max_width;
+        return max_width ;
     }
 }
 
 /* Returns the height of the map */
 int get_height() {
-    return sizeof(map);
+    return sizeof(map) ;
 }
 
 /* Returns the tile type at the coordinates provided
  * Will return -1 for invalid or not existing coordinates
  */
 mixed get_tile_at(int x, int y) {
-    if(x < 0 || y < 0) return -1;
-    if(y >= sizeof(map) || sizeof(map[y]) <= x) return -1;
-    return "" + map[y][x];
+    if(x < 0 || y < 0) return -1 ;
+    if(y >= sizeof(map) || sizeof(map[y]) <= x) return -1 ;
+    return "" + map[y][x] ;
 }
 
 /* Allows you to set the tile type at the coordinates provided
  * Returns 1 for success, 0 for failure, and -1 for invalid argument */
 int set_tile_at(mixed tile_type, int x, int y) {
-    if(x < 0 || y < 0) return -1;
-    if(y >= sizeof(map) || sizeof(map[y]) <= x) return 0;
-    map[y][x] = tile_type;
-    return 1;
+    if(x < 0 || y < 0) return -1 ;
+    if(y >= sizeof(map) || sizeof(map[y]) <= x) return 0 ;
+    map[y][x] = tile_type ;
+    return 1 ;
 }
 
 /* Returns 1 if tile type at coordinates match the tiletype
@@ -152,8 +152,8 @@ int set_tile_at(mixed tile_type, int x, int y) {
  * Returns -1 for invalid argument.
  */
 int is_tile_type(mixed tile_type, int x, int y) {
-    if(x < 0 || y < 0) return -1;
-    if(y >= sizeof(map) || sizeof(map[y]) <= x) return -1;
-    if(map[y][x] == tile_type) return 1;
-    else return 0;
+    if(x < 0 || y < 0) return -1 ;
+    if(y >= sizeof(map) || sizeof(map[y]) <= x) return -1 ;
+    if(map[y][x] == tile_type) return 1 ;
+    else return 0 ;
 }

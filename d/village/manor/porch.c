@@ -15,7 +15,7 @@ inherit __DIR__ "manor" ;
 inherit CLASS_DOOR ;
 
 void setup() {
-  set_short("The Porch");
+  set_short("The Porch") ;
   set_long("The porch is adorned with gaudy decorations, including bright "
   "plastic flowers and oversized lawn ornaments. A collection of mismatched "
   "chairs and tables creates a chaotic seating arrangement, while a large, "

@@ -33,14 +33,14 @@ mixed main(object tp, string str) {
     if(!message)
         return _usage(tp) ;
 
-    target = find_living(lower_case(who));
+    target = find_living(lower_case(who)) ;
 
     if(!objectp(target))
         return "You cannot seem to find " + capitalize(who) + ".\n" ;
 
     if(target == tp) {
         tp->simple_action("$N $vstart talking to $r.") ;
-        return 1;
+        return 1 ;
     }
 
     name = tp->query_name() ;
@@ -56,5 +56,5 @@ mixed main(object tp, string str) {
 
     target->set_tell_reply(name) ;
 
-    return 1;
+    return 1 ;
 }

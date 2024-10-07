@@ -13,8 +13,8 @@
  * @returns {int} - 1 if the user is a member of the group, otherwise 0.
  */
 int is_member(string user, string group) {
-     if(master()->is_member(user, group)) return 1;
-     else return 0;
+     if(master()->is_member(user, group)) return 1 ;
+     else return 0 ;
 }
 
 /**
@@ -27,10 +27,10 @@ int is_member(string user, string group) {
 int adminp(mixed user) {
      if(!user) user = previous_object() ;
      if(stringp(user)) {
-          if(is_member(user, "admin")) return 1;
+          if(is_member(user, "admin")) return 1 ;
      }
-     else if(is_member(query_privs(user), "admin")) return 1;
-     else return 0;
+     else if(is_member(query_privs(user), "admin")) return 1 ;
+     else return 0 ;
 }
 
 /**
@@ -41,12 +41,12 @@ int adminp(mixed user) {
  * @returns {int} - 1 if the user has developer privileges, otherwise 0.
  */
 varargs int devp(mixed user) {
-     if(!user) user = previous_object();
+     if(!user) user = previous_object() ;
      if(stringp(user)) {
-          if(is_member(user, "developer")) return 1;
+          if(is_member(user, "developer")) return 1 ;
      }
-     else if(is_member(query_privs(user), "developer")) return 1;
-     else return 0;
+     else if(is_member(query_privs(user), "developer")) return 1 ;
+     else return 0 ;
 }
 
 /**

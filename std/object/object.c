@@ -26,10 +26,10 @@ inherit M_MESSAGING ;
 
 private nomask nosave function *destruct_functions = ({}) ;
 private nomask nosave function *reset_functions = ({}) ;
-private string real_name, short, long;
+private string real_name, short, long ;
 private nosave string name ;
 protected nosave mixed *create_args = ({}) ;
-private nosave string virtual_master = 0;
+private nosave string virtual_master = 0 ;
 private nosave object _last_location = 0 ;
 private string _last_location_string = "" ;
 private nosave mixed _prevent_get = 0 ;
@@ -61,49 +61,49 @@ varargs void reset() {
 }
 
 int remove() {
-    object *obs, ob, next, env = environment();
+    object *obs, ob, next, env = environment() ;
 
-    catch(call_if(this_object(), "removing", env));
+    catch(call_if(this_object(), "removing", env)) ;
 
     ob = first_inventory(this_object()) ;
     while(ob) {
-        next = next_inventory(ob);
+        next = next_inventory(ob) ;
 
         if(env) {
             if(!ob->move(env)) {
-                ob = next;
-                continue;
+                ob = next ;
+                continue ;
             }
         }
 
         if(!userp(ob)) {
-            ob->remove();
+            ob->remove() ;
             if(objectp(ob))
-                destruct(ob);
+                destruct(ob) ;
         }
 
-        ob = next;
+        ob = next ;
     }
 
     obs = all_inventory(this_object()) ;
     obs = filter(obs, (: !userp($1) :)) ;
 
     if(sizeof(obs))
-        filter(obs, (: destruct :));
+        filter(obs, (: destruct :)) ;
 
-    destruct();
+    destruct() ;
 
-    return 1;
+    return 1 ;
 }
 
 string set_real_name(string str) {
     if(interactive(this_object()) && !is_member(query_privs(previous_object()), "admin")
-        && previous_object() != this_object()) return 0;
+        && previous_object() != this_object()) return 0 ;
 
-    real_name = lower_case(str);
+    real_name = lower_case(str) ;
 
     if(living())
-        set_living_name(real_name);
+        set_living_name(real_name) ;
 
     return real_name ;
 }
@@ -116,7 +116,7 @@ string set_name(string str) {
     string result ;
 
     if(!str)
-        return 0;
+        return 0 ;
 
     if(valid_user(lower_case(str)))
         name = capitalize(lower_case(str)) ;
@@ -127,7 +127,7 @@ string set_name(string str) {
         result = set_real_name(name) ;
 
         if(!result)
-            return 0;
+            return 0 ;
     }
 
     rehash_ids() ;
@@ -144,11 +144,11 @@ string find_path(string path) {
 }
 
 void set_virtual_master(string str) {
-    virtual_master = str;
+    virtual_master = str ;
 }
 
 string query_virtual_master() {
-    return virtual_master;
+    return virtual_master ;
 }
 
 void on_destruct() {
@@ -156,9 +156,9 @@ void on_destruct() {
 
     if(env) {
         if(!env->ignore_capacity())
-            env->adjust_fill(-query_mass());
+            env->adjust_fill(-query_mass()) ;
         if(!env->ignore_mass())
-            env->adjust_mass(query_mass());
+            env->adjust_mass(query_mass()) ;
 
         event(env, "gmcp_item_remove", env) ;
     }

@@ -11,13 +11,13 @@
 
 int can_see(object target) {
     if(!objectp(target))
-        return 0;
+        return 0 ;
 
     if(target->query_invis())
-        return 0;
+        return 0 ;
 
     if(target->query_hidden())
-        return 0;
+        return 0 ;
 
-    return 1;
+    return 1 ;
 }

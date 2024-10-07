@@ -14,7 +14,7 @@ inherit __DIR__ "village_base" ;
 inherit M_SHOP_MENU ;
 
 void setup() {
-    set_short("Olum Village Bakery");
+    set_short("Olum Village Bakery") ;
     set_long(
     "The cozy bakery, marked by a cheerful wooden sign shaped like a "
     "loaf of bread, fills the air with enticing aromas. Wooden shelves "
@@ -24,7 +24,7 @@ void setup() {
     "The friendly baker, dusted with flour, kneads dough at a worn "
     "wooden worktable. The scent of yeast, sugar, and warm bread "
     "creates an irresistible atmosphere that welcomes visitors and "
-    "tempts them with promises of delicious treats.");
+    "tempts them with promises of delicious treats.") ;
 
     set_exits(([
         "east" : "village_path1",

@@ -16,60 +16,60 @@ inherit STD_DAEMON ;
 
 /* Prototypes */
 
-void parse_config();
-string *parse(string str);
-void add_alias(string verb, string cm, string *groups);
-mapping get_alias(string priv);
-mapping get_xverb(string priv);
+void parse_config() ;
+string *parse(string str) ;
+void add_alias(string verb, string cm, string *groups) ;
+mapping get_alias(string priv) ;
+mapping get_xverb(string priv) ;
 
 /* Global Variables */
 
-mapping xverb = ([]);
-mapping alias = ([]);
+mapping xverb = ([]) ;
+mapping alias = ([]) ;
 
 /* Functions */
 
 int setup() {
      set_no_clean() ;
-     parse_config();
+     parse_config() ;
 }
 
 void parse_config() {
-     int i, total_errors = 0, total_parsed = 0;
+     int i, total_errors = 0, total_parsed = 0 ;
      string *conf ;
-     string *cur_groups = ({});
+     string *cur_groups = ({}) ;
      string out = "" ;
      float time ;
 
      time = time_frac() ;
-     conf = parse(read_file(CONFIG_FILE));
+     conf = parse(read_file(CONFIG_FILE)) ;
 
      for(i = 0; i < sizeof(conf); i++) {
-          string groups, verb, alias;
+          string groups, verb, alias ;
 
-          if(!conf[i]) continue;
+          if(!conf[i]) continue ;
 
           if(sscanf(conf[i], ":;%s:", groups)) {
-               cur_groups = explode(groups, " ");
-               continue;
+               cur_groups = explode(groups, " ") ;
+               continue ;
           }
 
           if(!sizeof(cur_groups)) {
                out += "\n" ;
                out += "\tGlobal Alias Server Error: No assignment definition found.\n" ;
                out += "\tGlobal Alias Server Error: Global Aliases were not parsed.\n" ;
-               return;
+               return ;
           }
 
           if(sscanf(conf[i], "%s %s", verb, alias)) {
-               add_alias(verb, alias, cur_groups);
-               total_parsed ++;
+               add_alias(verb, alias, cur_groups) ;
+               total_parsed ++ ;
           }
 
           else {
                out += "\n" ;
                out += "\tGlobal Alias Server Error: Definition found (" + i +") but in invalid format.\n" ;
-               total_errors ++;
+               total_errors ++ ;
           }
      }
 
@@ -78,67 +78,67 @@ void parse_config() {
 }
 
 string *parse(string str) {
-     string *arr;
-     int i;
+     string *arr ;
+     int i ;
 
      if(!str) {
-          return ({});
+          return ({}) ;
      }
 
-     arr = explode(str, "\n");
+     arr = explode(str, "\n") ;
 
      for(i = 0; i < sizeof(arr); i++) {
           if(arr[i][0] == '#' || arr[i] == "") {
-               arr[i] = 0;
-               continue;
+               arr[i] = 0 ;
+               continue ;
           }
-          arr[i] = replace_string(arr[i], "\t", "");
+          arr[i] = replace_string(arr[i], "\t", "") ;
      }
-     return arr;
+     return arr ;
 }
 
 
 void add_alias(string verb, string cmd, string *groups) {
-     int i;
+     int i ;
 
-     if(origin() != ORIGIN_LOCAL) return;
+     if(origin() != ORIGIN_LOCAL) return ;
 
      if(verb[0] == '$' && strlen(verb) > 1) {
-          if(!mapp(xverb)) xverb = ([]);
+          if(!mapp(xverb)) xverb = ([]) ;
 
           for(i = 0; i < sizeof(groups); i++) {
-               if(!xverb[groups[i]]) xverb += ([groups[i] : ([]) ]);
-               xverb[groups[i]] += ([verb[1..<1] : cmd]);
+               if(!xverb[groups[i]]) xverb += ([groups[i] : ([]) ]) ;
+               xverb[groups[i]] += ([verb[1..<1] : cmd]) ;
           }
      }
 
      else {
-          if(!mapp(alias)) alias = ([]);
+          if(!mapp(alias)) alias = ([]) ;
           for(i = 0; i < sizeof(groups); i++) {
-               if(!alias[groups[i]]) alias += ([groups[i] : ([]) ]);
-               alias[groups[i]] += ([verb : cmd]);
+               if(!alias[groups[i]]) alias += ([groups[i] : ([]) ]) ;
+               alias[groups[i]] += ([verb : cmd]) ;
           }
      }
 }
 
 mapping get_alias(string priv) {
-     int i;
-     string *keys = keys(alias);
-     mapping ret = ([]);
+     int i ;
+     string *keys = keys(alias) ;
+     mapping ret = ([]) ;
 
      for(i = 0; i < sizeof(keys); i++)
-          if(is_member(priv, keys[i]) || keys[i] == "all") ret += alias[keys[i]];
+          if(is_member(priv, keys[i]) || keys[i] == "all") ret += alias[keys[i]] ;
 
-     return ret;
+     return ret ;
 }
 
 mapping get_xverb(string priv) {
-     int i;
-     string *keys = keys(xverb);
-     mapping ret = ([]);
+     int i ;
+     string *keys = keys(xverb) ;
+     mapping ret = ([]) ;
 
      for(i = 0; i < sizeof(keys); i++)
-          if(is_member(priv, keys[i]) || keys[i] == "all") ret += xverb[keys[i]];
+          if(is_member(priv, keys[i]) || keys[i] == "all") ret += xverb[keys[i]] ;
 
-     return ret;
+     return ret ;
 }

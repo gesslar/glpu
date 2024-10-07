@@ -21,7 +21,7 @@ void virtual_setup(mixed args...) {
     string file = args[0] ;
     object ob ;
 
-    set_zone("lush_field");
+    set_zone("lush_field") ;
 
     __DIR__ "field_daemon"->setup_exits(this_object(), file) ;
     __DIR__ "field_daemon"->setup_short(this_object(), file) ;

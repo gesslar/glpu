@@ -27,18 +27,18 @@ int valid_function(mixed f) {
  * @returns {string} - The formatted call stack trace.
  */
 varargs string call_trace(int colour) {
-  string res;
-  int i, n;
-  object *objects;
-  string *programs;
-  string *functions;
+  string res ;
+  int i, n ;
+  object *objects ;
+  string *programs ;
+  string *functions ;
   string *origins ;
   string *lines ;
 
-  res = "";
-  programs = call_stack(0);
-  objects = call_stack(1);
-  functions = call_stack(2);
+  res = "" ;
+  programs = call_stack(0) ;
+  objects = call_stack(1) ;
+  functions = call_stack(2) ;
   origins = call_stack(3) ;
   lines = call_stack(4) ;
 
@@ -49,7 +49,7 @@ varargs string call_trace(int colour) {
     return sprintf("%d", num) ;
   }) ;
 
-  n = sizeof(programs);
+  n = sizeof(programs) ;
   // We don't want to include the call_trace() function itself
   while(n-- > 1) {
     i = n ;
@@ -59,11 +59,11 @@ varargs string call_trace(int colour) {
       lines[i],
       functions[i],
       origins[i]
-    );
+    ) ;
   }
 
   if(!colour) res = no_ansi(res) ;
-  return res;
+  return res ;
 }
 
 /**
@@ -167,7 +167,7 @@ mixed call_back(mixed cb, mixed new_arg...) {
 
     final_arg = ({ new_arg... }) + curr ;
 
-    fun = (: call_other, cb_ob, cb_fun :);
+    fun = (: call_other, cb_ob, cb_fun :) ;
   } else if(valid_function(cb[0])) {
     function cb_fun = cb[0] ;
     mixed *curr ;
@@ -208,13 +208,13 @@ varargs mixed call_if(mixed ob, string func, mixed arg...) {
     error("Bad argument 2 to call_if()") ;
 
   if(stringp(ob))
-    ob = load_object(ob);
+    ob = load_object(ob) ;
 
   if(function_exists(func, ob))
     if(sizeof(arg))
-      return call_other(ob, func, arg...);
+      return call_other(ob, func, arg...) ;
     else
-      return call_other(ob, func);
+      return call_other(ob, func) ;
 
   return null ;
 }

@@ -12,16 +12,16 @@
 inherit STD_ACT ;
 
 void setup() {
-    usage_text = "say <message>";
+    usage_text = "say <message>" ;
     help_text =
-"This command enables you to speak to the room.";
+"This command enables you to speak to the room." ;
 }
 
 mixed main(object tp, string str) {
     if(!str)
-        return "Say what?";
+        return "Say what?" ;
 
-    tp->simple_action("$N $vsay, \"$o\"", str);
+    tp->simple_action("$N $vsay, \"$o\"", str) ;
 
-    return 1;
+    return 1 ;
 }

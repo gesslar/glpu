@@ -14,8 +14,8 @@ inherit STD_CMD ;
 private string process_skill_data(object tp, mapping s, string curr, int depth) ;
 
 void setup() {
-    usage_text = "skills\n";
-    help_text = "This command will display your current skill levels.\n";
+    usage_text = "skills\n" ;
+    help_text = "This command will display your current skill levels.\n" ;
 }
 
 mixed main(object tp, string str) {

@@ -11,27 +11,27 @@
 
 #include <daemons.h>
 
-inherit STD_CMD;
+inherit STD_CMD ;
 
 mixed main(object tp, string str) {
     string cmd, arg ;
     mixed result ;
 
     if(!str)
-        return query_help(tp);
+        return query_help(tp) ;
 
     if(sscanf(str, "%s %s", cmd, arg) != 2)
-        cmd = str;
+        cmd = str ;
 
     switch(cmd) {
         case "scan":
-            result = AUTODOC_D->autodoc_scan();
+            result = AUTODOC_D->autodoc_scan() ;
             if(stringp(result))
-                return _error(result);
+                return _error(result) ;
             else
                 return 1 ;
         default:
-            return _error("Invalid command to autodoc.");
+            return _error("Invalid command to autodoc.") ;
     }
 }
 

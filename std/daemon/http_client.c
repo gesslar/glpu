@@ -106,16 +106,16 @@ varargs private nomask void http_connect(mapping request) {
     _log(2, "Connecting to %s", host) ;
     _log(4, "Request before creating socket: %O", request) ;
 
-    fd = socket_create(secure ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed");
+    fd = socket_create(secure ? STREAM_TLS_BINARY : STREAM_BINARY, "socket_read", "socket_closed") ;
 
     if(fd < 0) {
-        _log(0, "Unable to create socket: %s", socket_error(fd));
-        return;
+        _log(0, "Unable to create socket: %s", socket_error(fd)) ;
+        return ;
     }
 
     if(secure) {
-        socket_set_option(fd, SO_TLS_VERIFY_PEER, 1);
-        socket_set_option(fd, SO_TLS_SNI_HOSTNAME, host);
+        socket_set_option(fd, SO_TLS_VERIFY_PEER, 1) ;
+        socket_set_option(fd, SO_TLS_SNI_HOSTNAME, host) ;
     }
 
     server = ([
@@ -166,7 +166,7 @@ nomask void socket_resolve(string host, string addr, int key) {
 
         call_if(this_object(), "http_handle_connecting", server) ;
 
-        result = socket_connect(fd, addr + " " + port, "socket_read", "socket_ready");
+        result = socket_connect(fd, addr + " " + port, "socket_read", "socket_ready") ;
         if(result != EESUCCESS) {
             _log(2, "Failed to connect to %s", host) ;
 
@@ -269,12 +269,12 @@ nomask void shutdown_socket(int fd) {
 }
 
 nomask void socket_read(int fd, buffer incoming) {
-    mapping server = servers[fd];
+    mapping server = servers[fd] ;
     int status_code ;
     buffer buf ;
 
     if(!server)
-        return;
+        return ;
 
     _log(4, "First 10 bytes: %O", incoming[0..10]) ;
 
@@ -284,15 +284,15 @@ nomask void socket_read(int fd, buffer incoming) {
 
     if(server["buffer"]) {
         buf = server["buffer"] + incoming ;
-        map_delete(server, "buffer");
+        map_delete(server, "buffer") ;
     } else {
         buf = incoming ;
     }
 
     server["received_total"] += sizeof(buf) ;
     // Process headers if not done yet
-    server["response"] = server["response"] || ([]);
-    _log(4, "Server[response]: %O", server["response"]);
+    server["response"] = server["response"] || ([]) ;
+    _log(4, "Server[response]: %O", server["response"]) ;
 
     _log(3, "Starting to process status") ;
     if(sizeof(buf) && !server["response"]["status"]) {
@@ -300,9 +300,9 @@ nomask void socket_read(int fd, buffer incoming) {
 
         status = parse_response_status(buf, 1) ;
         if(!status) {
-            server["buffer"] = buf;
-            servers[fd] = server;
-            return;
+            server["buffer"] = buf ;
+            servers[fd] = server ;
+            return ;
         }
 
         if(status["buffer"]) {
@@ -318,24 +318,24 @@ nomask void socket_read(int fd, buffer incoming) {
 
     _log(3, "Starting to process headers") ;
     if(sizeof(buf) && !server["response"]["headers"]) {
-        mapping headers;
+        mapping headers ;
 
-        headers = parse_headers(buf, 1);
+        headers = parse_headers(buf, 1) ;
 
         if(!headers) {
-            server["buffer"] = buf;
-            servers[fd] = server;
-            return;
+            server["buffer"] = buf ;
+            servers[fd] = server ;
+            return ;
         }
 
         if(headers["buffer"]) {
-            buf = headers["buffer"];
-            map_delete(headers, "buffer");
+            buf = headers["buffer"] ;
+            map_delete(headers, "buffer") ;
         }
 
-        server["response"]["headers"] = headers;
+        server["response"]["headers"] = headers ;
 
-        _log(4, "Headers found: %O", headers);
+        _log(4, "Headers found: %O", headers) ;
         _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
     }
 
@@ -360,7 +360,7 @@ nomask void socket_read(int fd, buffer incoming) {
 
         server["buffer"] = buf ;
         servers[fd] = server ;
-        process_redirect(fd, server);
+        process_redirect(fd, server) ;
         return ;
     }
 
@@ -436,7 +436,7 @@ private nomask void process_response(int fd, mapping server) {
 
         buf = read_cache(file) ;
 
-        assoc = pcre_assoc(buf, ({ "(\r\n0\r\n\r\n)", "(\r\n[0-9a-fA-F]+\r\n)", "([0-9a-fA-F]+\r\n)", "(\r\n)" }), ({ 2, 1, 1, 1 }));
+        assoc = pcre_assoc(buf, ({ "(\r\n0\r\n\r\n)", "(\r\n[0-9a-fA-F]+\r\n)", "([0-9a-fA-F]+\r\n)", "(\r\n)" }), ({ 2, 1, 1, 1 })) ;
 
         parts = assoc[0] ;
         indices = assoc[1] ;
@@ -520,25 +520,25 @@ private nomask void process_redirect(int fd, mapping server) {
 
     _log(2, "Processing redirect") ;
 
-    location = server["response"]["headers"]["location"];
+    location = server["response"]["headers"]["location"] ;
     if(!stringp(location) || !strlen(location)) {
-        _log(0, "No location header found in redirect response");
-        return;
+        _log(0, "No location header found in redirect response") ;
+        return ;
     }
 
-    processed_url = parse_url(location);
+    processed_url = parse_url(location) ;
 
     if(!processed_url) {
-        _log(0, "Failed to parse URL: %s", location);
-        shutdown_socket(fd);
-        return;
+        _log(0, "Failed to parse URL: %s", location) ;
+        shutdown_socket(fd) ;
+        return ;
     }
 
-    shutdown_socket(fd);
+    shutdown_socket(fd) ;
 
-    _log(1, "Redirecting to: %s", location);
+    _log(1, "Redirecting to: %s", location) ;
 
-    headers = server["headers"];
+    headers = server["headers"] ;
     if(!headers)
         headers = ([]) ;
 
@@ -549,7 +549,7 @@ private nomask void process_redirect(int fd, mapping server) {
         server["request"]["method"],
         headers,
         server["request"]["body"],
-    );
+    ) ;
 }
 
 private nomask mixed send_http_request(int fd, mapping server) {
@@ -569,7 +569,7 @@ private nomask mixed send_http_request(int fd, mapping server) {
         _log(2, "Invalid request parameters") ;
         return "Invalid request parameters" ;
     }
-    method = upper_case(method);
+    method = upper_case(method) ;
 
     request = method + " " + path + " HTTP/1.1\r\n" ;
     request += "Host: " + host + "\r\n" ;
@@ -595,23 +595,23 @@ private nomask mixed send_http_request(int fd, mapping server) {
             matches = pcre_extract(
                 content_type,
                 "(\\w+)/([-\\w]+)(?:\\s*;\\s*charset=(\\S+))?"
-            );
+            ) ;
 
             switch(sizeof(matches)) {
                 case 2:
-                    type = matches[0];
-                    subtype = matches[1];
-                    charset = "utf-8";
-                    break;
+                    type = matches[0] ;
+                    subtype = matches[1] ;
+                    charset = "utf-8" ;
+                    break ;
                 case 3:
-                    type = matches[0];
-                    subtype = matches[1];
-                    charset = matches[2] || "utf-8";
-                    break;
+                    type = matches[0] ;
+                    subtype = matches[1] ;
+                    charset = matches[2] || "utf-8" ;
+                    break ;
                 default:
-                    _log(2, "Failed to parse Content-Type header: %s", content_type);
-                    shutdown_socket(fd);
-                    return "Failed to parse Content-Type header: " + content_type;
+                    _log(2, "Failed to parse Content-Type header: %s", content_type) ;
+                    shutdown_socket(fd) ;
+                    return "Failed to parse Content-Type header: " + content_type ;
             }
 
             request += sprintf("Content-Type: %s/%s; charset=%s\r\n", type, subtype, charset) ;

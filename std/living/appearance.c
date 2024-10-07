@@ -12,39 +12,39 @@
 string hair, hair_colour, eyes, eye_colour ;
 
 string query_hair() {
-    return hair;
+    return hair ;
 }
 
 string query_hair_colour() {
-    return hair_colour;
+    return hair_colour ;
 }
 
 string query_eyes() {
-    return eyes;
+    return eyes ;
 }
 
 string query_eye_colour() {
-    return eye_colour;
+    return eye_colour ;
 }
 
 int set_hair(string str) {
-    hair = str;
-    return 1;
+    hair = str ;
+    return 1 ;
 }
 
 int set_hair_colour(string str) {
-    hair_colour = str;
-    return 1;
+    hair_colour = str ;
+    return 1 ;
 }
 
 int set_eyes(string str) {
-    eyes = str;
-    return 1;
+    eyes = str ;
+    return 1 ;
 }
 
 int set_eye_colour(string str) {
-    eye_colour = str;
-    return 1;
+    eye_colour = str ;
+    return 1 ;
 }
 
 string query_hair_string() {

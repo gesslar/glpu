@@ -18,9 +18,9 @@ inherit STD_CMD ;
 #include <logs.h>
 
 mixed main(object tp, string str) {
-    string file, *path, err, output = "";
+    string file, *path, err, output = "" ;
     object cmd ;
-    int i;
+    int i ;
     string border ;
     int width = 80 ;
 
@@ -29,48 +29,48 @@ mixed main(object tp, string str) {
 
     border = "╞" + repeat_string("═", width - 2) + "╡\n" ;
 
-    if(!str) str = "help";
-    path = tp->query_path();
+    if(!str) str = "help" ;
+    path = tp->query_path() ;
 
      for(i = 0; i < sizeof(path); i++) {
         if(file_exists(path[i] + str + ".c")) {
-            err = catch(cmd = load_object(path[i] + str));
-            if(!err) file = cmd->query_help(tp);
+            err = catch(cmd = load_object(path[i] + str)) ;
+            if(!err) file = cmd->query_help(tp) ;
 
-            if(err) return _error("This is a problem with "+ str + "\nPlease inform an admin.");
+            if(err) return _error("This is a problem with "+ str + "\nPlease inform an admin.") ;
 
             if(!file) return _error("The command " + str +
                 " exists but there is no help file for it.\n"
-                " Please inform an admin.");
+                " Please inform an admin.") ;
 
-            output += border;
+            output += border ;
             output += sprintf("%|*s\n", width, str) ;
-            output += border + "\n";
-            output += (file + "\n");
+            output += border + "\n" ;
+            output += (file + "\n") ;
 
-            tp->page(output);
-            return 1;
+            tp->page(output) ;
+            return 1 ;
         }
     }
 
-    path = HELP_PATH;
-    if(devp(tp)) path += DEV_PATH;
-    if(adminp(tp)) path += ({"/doc/admin/"});
+    path = HELP_PATH ;
+    if(devp(tp)) path += DEV_PATH ;
+    if(adminp(tp)) path += ({"/doc/admin/"}) ;
 
     for(i = 0; i < sizeof(path); i++) {
         if(file_exists(path[i] + str)) {
-            file = read_file(path[i] + str);
-            output += border;
-            output += ("\t\t  Help file for topic '"+  capitalize(str) + "'\n");
-            output += border + "\n";
-            output += (file + "\n");
+            file = read_file(path[i] + str) ;
+            output += border ;
+            output += ("\t\t  Help file for topic '"+  capitalize(str) + "'\n") ;
+            output += border + "\n" ;
+            output += (file + "\n") ;
 
-            tp->page(output);
-            return 1;
+            tp->page(output) ;
+            return 1 ;
         }
     }
-    log_file(LOG_HELP, "Not found: " + str + "\n");
-    return _error("Unable to find help file for: " + str);
+    log_file(LOG_HELP, "Not found: " + str + "\n") ;
+    return _error("Unable to find help file for: " + str) ;
 }
 
 string help(object caller) {

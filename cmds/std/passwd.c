@@ -10,45 +10,44 @@
  * 2024-07-14 - Gesslar - Created
  */
 
-
 inherit STD_CMD ;
 
-void password_confirmed(int status, object tp);
-void new_password(string str, object tp);
-void confirm_password(string str, string pass, object tp);
+void password_confirmed(int status, object tp) ;
+void new_password(string str, object tp) ;
+void confirm_password(string str, string pass, object tp) ;
 
 mixed main(object tp, string arg) {
-    _info("Changing your password.");
-    prompt_password(tp, 3, assemble_call_back((:password_confirmed:), tp));
+    _info("Changing your password.") ;
+    prompt_password(tp, 3, assemble_call_back((:password_confirmed:), tp)) ;
 
     return 1 ;
 }
 
 void password_confirmed(int status, object tp) {
     if(status) {
-        _question("Please enter your new password: ");
-        input_to((:new_password:), I_NOECHO | I_NOESC, tp);
+        _question("Please enter your new password: ") ;
+        input_to((:new_password:), I_NOECHO | I_NOESC, tp) ;
     } else {
-        _error("Password change failed.");
+        _error("Password change failed.") ;
     }
 }
 
 void new_password(string str, object tp) {
     if(!str || str == "") {
-        _error("Password cannot be empty.");
-        return;
+        _error("Password cannot be empty.") ;
+        return ;
     }
-    _question("Please confirm your new password: ");
+    _question("Please confirm your new password: ") ;
     input_to((:confirm_password:), I_NOECHO | I_NOESC, str, tp) ;
 }
 
 void confirm_password(string str, string pass, object tp) {
     if(str == pass) {
-        _ok("Password accepted.");
-        tp->query_user()->set_password(str);
-        _ok("Password changed.");
+        _ok("Password accepted.") ;
+        tp->query_user()->set_password(str) ;
+        _ok("Password changed.") ;
     } else {
-        _error("Passwords do not match.");
+        _error("Passwords do not match.") ;
     }
 }
 
@@ -59,5 +58,5 @@ string query_help(object tp) {
 "enter your current passwd for security purposes and then it will request you "
 "to input your new passwd and then will ask again to confirm. After you have "
 "provided the requested information, the command will inform you if the change "
-"was succesful.";
+"was succesful." ;
 }

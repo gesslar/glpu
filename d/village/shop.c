@@ -14,7 +14,7 @@ inherit __DIR__ "village_base" ;
 inherit M_SHOP ;
 
 void setup() {
-    set_short("Olum Village Shop");
+    set_short("Olum Village Shop") ;
     set_long(
     "The small, rustic shop, marked by a weathered wooden sign, emanates a "
     "cozy charm. Rough-hewn shelves made of dark oak are packed with a motley "
@@ -24,7 +24,7 @@ void setup() {
     "of old wood and herbs fills the air, adding to the inviting, homely "
     "atmosphere. Here, amidst the humble surroundings, one can find everyday "
     "necessities and rare finds, each item with a story waiting to be "
-    "discovered.");
+    "discovered.") ;
 
     set_exits(([
         "west" : "village_path1",

@@ -11,16 +11,16 @@
  *                     already present.
  */
 string append(string source, string to_append) {
-    int source_len, to_append_len;
+    int source_len, to_append_len ;
 
-    source_len = strlen(source);
-    to_append_len = strlen(to_append);
+    source_len = strlen(source) ;
+    to_append_len = strlen(to_append) ;
 
     if(source[<to_append_len..] != to_append) {
-        source += to_append;
+        source += to_append ;
     }
 
-    return source;
+    return source ;
 }
 
 /**
@@ -33,16 +33,16 @@ string append(string source, string to_append) {
  *                     already present.
  */
 string prepend(string source, string to_prepend) {
-    int source_len, to_prepend_len;
+    int source_len, to_prepend_len ;
 
-    source_len = strlen(source);
-    to_prepend_len = strlen(to_prepend);
+    source_len = strlen(source) ;
+    to_prepend_len = strlen(to_prepend) ;
 
     if(source[0..to_prepend_len-1] != to_prepend) {
-        source = to_prepend + source;
+        source = to_prepend + source ;
     }
 
-    return source;
+    return source ;
 }
 
 /**
@@ -56,26 +56,26 @@ string prepend(string source, string to_prepend) {
  * @returns {string} - The string with the substring chopped off if it was present.
  */
 varargs string chop(string str, string sub, int dir) {
-    int sub_len;
+    int sub_len ;
 
-    if(nullp(str)) error("chop: Missing argument 1 for chop");
-    if(nullp(sub)) error("chop: Missing argument 2 for chop");
+    if(nullp(str)) error("chop: Missing argument 1 for chop") ;
+    if(nullp(sub)) error("chop: Missing argument 2 for chop") ;
 
     if(dir != -1)
-        dir = 1;
+        dir = 1 ;
 
-    sub_len = strlen(sub);
+    sub_len = strlen(sub) ;
     if(dir == 1) {
         if(sub[0..sub_len-1] == sub) {
-            str = str[0..sub_len];
+            str = str[0..sub_len] ;
         }
     } else if(dir == -1) {
         if(str[<sub_len..] == sub) {
-            str = str[0..<sub_len+1];
+            str = str[0..<sub_len+1] ;
         }
     }
 
-    return str;
+    return str ;
 }
 
 /**
@@ -87,8 +87,8 @@ varargs string chop(string str, string sub, int dir) {
  * @returns {string} - The extracted substring.
  */
 varargs string extract(string str, int from, int to) {
-    if(nullp(to)) return str[from ..];
-    else return str[from .. to];
+    if(nullp(to)) return str[from ..] ;
+    else return str[from .. to] ;
 }
 
 /**
@@ -111,13 +111,13 @@ string no_ansi(string str) {
  * @returns {string} - The simple list string.
  */
 varargs string simple_list(string *arr, string conjunction) {
-    if(!arr) error("simple_list: Missing argument 1 for simpple_list");
-    if(!conjunction) conjunction = "and";
+    if(!arr) error("simple_list: Missing argument 1 for simpple_list") ;
+    if(!conjunction) conjunction = "and" ;
 
-    if(sizeof(arr) == 0) error("simple_list: Argument 1 for simple_list is empty");
-    else if(sizeof(arr) == 1) return arr[0];
-    else if(sizeof(arr) == 2) return arr[0] + " " + conjunction + " " + arr[1];
-    else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
+    if(sizeof(arr) == 0) error("simple_list: Argument 1 for simple_list is empty") ;
+    else if(sizeof(arr) == 1) return arr[0] ;
+    else if(sizeof(arr) == 2) return arr[0] + " " + conjunction + " " + arr[1] ;
+    else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1] ;
 }
 
 /**
@@ -132,14 +132,14 @@ varargs string simple_list(string *arr, string conjunction) {
  * @returns {string} - The extracted substring.
  */
 varargs string substr(string str, string sub, int reverse) {
-    int sub_len;
+    int sub_len ;
     int pos ;
 
-    if(nullp(str)) error("substr: Missing argument 1 for substr");
-    if(nullp(sub)) error("substr: Missing argument 2 for substr");
+    if(nullp(str)) error("substr: Missing argument 1 for substr") ;
+    if(nullp(sub)) error("substr: Missing argument 2 for substr") ;
 
     reverse = !!reverse ;
-    sub_len = strlen(sub);
+    sub_len = strlen(sub) ;
     pos = strsrch(str, sub, reverse) ;
 
     if(pos == -1) return "" ;
@@ -162,191 +162,191 @@ varargs string substr(string str, string sub, int reverse) {
  * @returns {mixed} - The LPC value represented by the string.
  */
 varargs mixed from_string(string str, int flag) {
-    mixed *ret = ({ 0, "" });
+    mixed *ret = ({ 0, "" }) ;
 
     if(!str || !sizeof(str) || str == "")
-        return 0;
+        return 0 ;
 
     if((str = trim(str)) == "")
-        return 0;
+        return 0 ;
 
     str = implode(map(explode(str, "\n"), function(string line) {
-        return trim(line);
-    }), "\n");
+        return trim(line) ;
+    }), "\n") ;
 
-    str = replace_string(str, "\n", "");
-    str = replace_string(str, "\"\"", "");
+    str = replace_string(str, "\n", "") ;
+    str = replace_string(str, "\"\"", "") ;
 
     if(str[0] == '(') {
         switch(str[1]) {
             case '{':
-                ret[0] = ({});
-                str = ltrim(str[2..]);
+                ret[0] = ({}) ;
+                str = ltrim(str[2..]) ;
                 if(str[0] == '}') {
                     // Empty array case
-                    str = str[1..];
-                    str = ltrim(str);
+                    str = str[1..] ;
+                    str = ltrim(str) ;
                     if(str[0] != ')')
-                        error("Illegal array terminator.\n");
-                    ret[1] = str[1..];
-                    return flag ? ret : ret[0];
+                        error("Illegal array terminator.\n") ;
+                    ret[1] = str[1..] ;
+                    return flag ? ret : ret[0] ;
                 }
                 while(str[0] != '}') {
-                    mixed *tmp;
+                    mixed *tmp ;
 
-                    tmp = from_string(str, 1);
-                    ret[0] += ({ tmp[0] });
-                    str = tmp[1];
+                    tmp = from_string(str, 1) ;
+                    ret[0] += ({ tmp[0] }) ;
+                    str = tmp[1] ;
                     while(str[0] == ' ' || str[0] == '\t')
-                        str = str[1..];
+                        str = str[1..] ;
                     if(str[0] != ',' && str[0] != '}') {
-                        error("Improperly formatted array: " + str + "\n");
+                        error("Improperly formatted array: " + str + "\n") ;
                     } else if(str[0] == ',') {
-                        str = str[1..];
+                        str = str[1..] ;
                         while(str[0] == ' ' || str[0] == '\t')
-                            str = str[1..];
+                            str = str[1..] ;
                     }
                 }
 
                 if(str[1] != ')') {
-                    str = str[2..];
+                    str = str[2..] ;
                     while(str[0] == ' ' || str[0] == '\t')
-                        str = str[1..];
+                        str = str[1..] ;
                     if(str[0] != ')')
-                        error("Illegal array terminator.\n");
+                        error("Illegal array terminator.\n") ;
                     else
-                        ret[1] = str[1..];
+                        ret[1] = str[1..] ;
                 }
                 else
-                    ret[1] = str[2..];
+                    ret[1] = str[2..] ;
 
                 if(!flag)
-                    return ret[0];
+                    return ret[0] ;
 
                 while(ret[1][0] == ' ' || ret[1][0] == '\t')
-                    ret[1] = ret[1][1..];
+                    ret[1] = ret[1][1..] ;
 
-                return ret;
+                return ret ;
             case '[':
-                ret[0] = ([]);
-                str = str[2..];
+                ret[0] = ([]) ;
+                str = str[2..] ;
                 while(str[0] != ']') {
-                    mixed *tmp;
-                    mixed cle;
+                    mixed *tmp ;
+                    mixed cle ;
 
-                    tmp = from_string(str, 1);
-                    str = tmp[1];
-                    while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                    tmp = from_string(str, 1) ;
+                    str = tmp[1] ;
+                    while(str[0] == ' ' || str[0] == '\t') str = str[1..] ;
                     if(str[0] != ':')
-                        error("Illegally formatting mapping: " + str + "\n");
-                    cle = tmp[0];
-                    tmp = from_string(str[1..], 1);
-                    ret[0][cle] = tmp[0];
-                    str = tmp[1];
+                        error("Illegally formatting mapping: " + str + "\n") ;
+                    cle = tmp[0] ;
+                    tmp = from_string(str[1..], 1) ;
+                    ret[0][cle] = tmp[0] ;
+                    str = tmp[1] ;
                     while(str[0] == ' ' || str[0] == '\t')
-                        str = str[1..];
+                        str = str[1..] ;
                     if(str[0] != ',' && str[0] != ']')
-                        error("Illegally formatted mapping: " + str + "n");
+                        error("Illegally formatted mapping: " + str + "n") ;
                     else if(str[0] != ']') {
-                        str = str[1..];
-                        while(str[0] == ' ' || str[0] == '\t') str = str[1..];
+                        str = str[1..] ;
+                        while(str[0] == ' ' || str[0] == '\t') str = str[1..] ;
                     }
                 }
                 if(str[1] != ')') {
-                    str = str[2..];
+                    str = str[2..] ;
                     while(str[0] == ' ' || str[0] == '\t')
-                        str = str[1..];
+                        str = str[1..] ;
                     if(str[0] != ')')
-                        error("Illegal array terminator.\n");
+                        error("Illegal array terminator.\n") ;
                     else
-                        ret[1] = str[1..];
+                        ret[1] = str[1..] ;
                 }
                 else
-                    ret[1] = str[2..];
+                    ret[1] = str[2..] ;
                 if(!flag)
-                    return ret[0];
+                    return ret[0] ;
                 while(ret[1][0] == ' ' || ret[1][0] == '\t')
-                    ret[1] = ret[1][1..];
-                return ret;
+                    ret[1] = ret[1][1..] ;
+                return ret ;
         }
     } else if(str[0] == '"') {
-        string tmp;
+        string tmp ;
 
-        tmp = "";
+        tmp = "" ;
         while(str[1] != '"' || (str[1] == '"' && str[0] == '\\')) {
             if(str[1] == '"')
-                tmp = tmp[0..<2] + "\"";
+                tmp = tmp[0..<2] + "\"" ;
             else
-                tmp += str[1..1];
-            str = str[1..];
+                tmp += str[1..1] ;
+            str = str[1..] ;
         }
         if(!flag)
-            return tmp;
+            return tmp ;
         if(strlen(str) > 2)
-            str = trim(str[2..]);
-        return ({ tmp, str });
+            str = trim(str[2..]) ;
+        return ({ tmp, str }) ;
     } else if(str[0] >= '0' && str[0] <= '9' || str[0] == '-') {
-        string tmp;
-        int y;
+        string tmp ;
+        int y ;
 
         if(strlen(str) > 1 && str[0] == '-') {
-            tmp = str[0..0];
-            str = str[1..];
+            tmp = str[0..0] ;
+            str = str[1..] ;
         } else {
-            tmp = "";
+            tmp = "" ;
         }
 
         if(strlen(str) > 1 && str[0..1] == "0x") {
-            tmp = "0x";
-            str = str[2..];
+            tmp = "0x" ;
+            str = str[2..] ;
             while(str != "" && (str[0] >= '0' && str[0] <= '9')) {
-                tmp += str[0..0];
-                if(strlen(str) > 1) str = str[1..];
-                else str = "";
+                tmp += str[0..0] ;
+                if(strlen(str) > 1) str = str[1..] ;
+                else str = "" ;
             }
-            sscanf(tmp, "%x", y);
+            sscanf(tmp, "%x", y) ;
         } else {
             int decimal_found = 0 ;
             while(str != "" && (str[0] == '.' || (str[0] >= '0' && str[0] <= '9'))) {
                 if(str[0] == '.') {
                     if(decimal_found)
-                        error("Improperly formatted number: " + str + "\n");
+                        error("Improperly formatted number: " + str + "\n") ;
                     decimal_found = 1 ;
                 }
 
-                tmp += str[0..0];
-                if(strlen(str) > 1) str = str[1..];
-                else str = "";
+                tmp += str[0..0] ;
+                if(strlen(str) > 1) str = str[1..] ;
+                else str = "" ;
             }
             if(decimal_found)
-                sscanf(tmp, "%f", y);
+                sscanf(tmp, "%f", y) ;
             else
-                sscanf(tmp, "%d", y);
+                sscanf(tmp, "%d", y) ;
         }
         if(!flag)
-            return y;
+            return y ;
         if(str != "")
-            str = trim(str);
-        return ({ y, str });
+            str = trim(str) ;
+        return ({ y, str }) ;
     } else {
-        string tmp;
+        string tmp ;
 
-        tmp = "";
+        tmp = "" ;
         while(strlen(str) && ((str[0] >= 'a' && str[0] <= 'z') ||
                 (str[0] >= 'A' && str[0] <= 'Z') ||
                 (str[0] >= '0' && str[0] <= '9') ||
                 (str[0] == '_'))) {
-            tmp += str[0..0];
+            tmp += str[0..0] ;
             if(strlen(str) > 1)
-                str = str[1..];
-            else str = "";
+                str = str[1..] ;
+            else str = "" ;
         }
         if(!flag)
-            return get_object(tmp);
+            return get_object(tmp) ;
         else
-        return ({ get_object(tmp), str });
+        return ({ get_object(tmp), str }) ;
     }
-    error("Gobbledygook in string.\n");
+    error("Gobbledygook in string.\n") ;
 }
 
 /**
@@ -387,60 +387,60 @@ private nosave string thousands = "," ;
  * @returns {string} - The number with commas added as a string.
  */
 string add_commas(mixed number) {
-    string num_str;
-    string result = "";
-    int len;
-    int dot_index;
-    int insert_position;
-    int is_negative = 0;
+    string num_str ;
+    string result = "" ;
+    int len ;
+    int dot_index ;
+    int insert_position ;
+    int is_negative = 0 ;
 
     if(typeof(number) == T_INT) {
-        num_str = sprintf("%d", number);
+        num_str = sprintf("%d", number) ;
     } else if(typeof(number) == T_FLOAT) {
-        num_str = sprintf("%f", number);
+        num_str = sprintf("%f", number) ;
     } else if(typeof(number) == T_STRING) {
         if((dot_index = strsrch(number, decimal)) > -1) {
-            string int_part = number[0..dot_index-1];
-            return sprintf("%s.%s", add_commas(to_int(int_part)), number[dot_index+1..]);
+            string int_part = number[0..dot_index-1] ;
+            return sprintf("%s.%s", add_commas(to_int(int_part)), number[dot_index+1..]) ;
         }
         else
-            number = to_int(number);
+            number = to_int(number) ;
         if(nullp(number))
-            error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.");
-        return add_commas(number);
+            error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
+        return add_commas(number) ;
     } else {
-        error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.");
+        error("add_commas: Argument 1 must be an number, or a string that can be converted to a number.") ;
     }
 
     // Check if the number is negative
     if(num_str[0] == '-') {
-        is_negative = 1;
+        is_negative = 1 ;
         num_str = num_str[1..]; // Remove the negative sign for processing
     }
 
-    len = strlen(num_str);
+    len = strlen(num_str) ;
     dot_index = strsrch(num_str, decimal, -1); // Search for decimal point from the end
 
     // If there's a decimal point, handle the fractional part separately
     if(dot_index != -1) {
         result = add_commas(to_int(num_str[0..dot_index-1])); // Recurse on the integer part
-        result = sprintf("%s%s%s", result, decimal, num_str[dot_index+1..]);
-        return is_negative ? "-" + result : result;
+        result = sprintf("%s%s%s", result, decimal, num_str[dot_index+1..]) ;
+        return is_negative ? "-" + result : result ;
     }
 
     // Calculate where to start inserting commas
-    insert_position = (len % 3) || 3;
+    insert_position = (len % 3) || 3 ;
 
     for(int i = 0; i < len; i++) {
         if(i == insert_position && i != 0) {
             result = result + thousands + num_str[i..i]; // Insert comma then the character
-            insert_position += 3;
+            insert_position += 3 ;
         } else {
             result += num_str[i..i]; // Just add the character
         }
     }
 
-    return is_negative ? "-" + result : result;
+    return is_negative ? "-" + result : result ;
 }
 
 /**
@@ -450,7 +450,7 @@ string add_commas(mixed number) {
  * @returns {string} - The reversed string.
  */
 string reverse_string(string str) {
-    return implode(reverse_array(explode(str, "")), "");
+    return implode(reverse_array(explode(str, "")), "") ;
 }
 
 /**
@@ -463,30 +463,30 @@ string reverse_string(string str) {
  * @returns {int} - The position of the substring in the string, or -1 if not found.
  */
 varargs int reverse_strsrch(string str, string sub, int start) {
-    int sub_len, str_len;
-    int i;
+    int sub_len, str_len ;
+    int i ;
 
-    if(!str) error("reverse_strsrch: Missing argument 1 for reverse_strsrch");
-    if(!sub) error("reverse_strsrch: Missing argument 2 for reverse_strsrch");
-    if(!start) start = 0;
+    if(!str) error("reverse_strsrch: Missing argument 1 for reverse_strsrch") ;
+    if(!sub) error("reverse_strsrch: Missing argument 2 for reverse_strsrch") ;
+    if(!start) start = 0 ;
 
-    str_len = strlen(str);
-    sub_len = strlen(sub);
+    str_len = strlen(str) ;
+    sub_len = strlen(sub) ;
 
-    if(str_len < 1) return -1;
-    if(sub_len < 1) return -1;
-    if(sub_len > str_len) return -1;
-    if(start < 0) return -1;
+    if(str_len < 1) return -1 ;
+    if(sub_len < 1) return -1 ;
+    if(sub_len > str_len) return -1 ;
+    if(start < 0) return -1 ;
     // Ensure start does not exceed string length
-    if(start >= str_len) start = str_len - 1;
+    if(start >= str_len) start = str_len - 1 ;
 
     for(i = str_len - start - 1; i >= 0; i--) {
-        if(i + sub_len > str_len) continue;
+        if(i + sub_len > str_len) continue ;
         if(str[i..i+sub_len-1] == sub)
-            return i;
+            return i ;
     }
 
-    return -1;
+    return -1 ;
 }
 #include <colour.h>
 /**
@@ -499,13 +499,13 @@ varargs int reverse_strsrch(string str, string sub, int start) {
  * @returns {int} - The position of the substring in the string, or -1 if not found.
  */
 varargs int pcre_strsrch(string str, string substr, int reverse) {
-    int pos;
-    string *matches;
+    int pos ;
+    string *matches ;
 
-    matches = pcre_extract(str, substr);
-    if(sizeof(matches) == 0) return -1;
-    pos = strsrch(str, matches[0], reverse);
-    return pos;
+    matches = pcre_extract(str, substr) ;
+    if(sizeof(matches) == 0) return -1 ;
+    pos = strsrch(str, matches[0], reverse) ;
+    return pos ;
 }
 
 /**

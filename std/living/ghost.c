@@ -18,8 +18,8 @@ inherit STD_BODY ;
 inherit M_GMCP ;
 
 void mudlib_setup() {
-    // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return;
-    path = ({"/cmds/ghost/"});
+    // if(origin() != ORIGIN_DRIVER && origin() != ORIGIN_LOCAL) return ;
+    path = ({"/cmds/ghost/"}) ;
     set_log_level(0) ;
     if(clonep())
         slot(SIG_SYS_CRASH, "on_crash") ;
@@ -27,10 +27,10 @@ void mudlib_setup() {
 
 /* Connection functions */
 void setup_body() {
-    add_action("command_hook", "", 1);
+    add_action("command_hook", "", 1) ;
     add_action("revive", "revive") ;
-    set_living_name(query_real_name());
-    set_id(({query_real_name()}));
+    set_living_name(query_real_name()) ;
+    set_id(({query_real_name()})) ;
     set_heart_beat(mud_config("DEFAULT_HEART_RATE")) ;
     set_race("ghost") ;
     set_level(1.0) ;
@@ -39,10 +39,10 @@ void setup_body() {
     set_mp(1.0) ;
     set_env("move_out", "$N drifts away to the $D.") ;
     set_env("move_in", "$N drifts into the area.") ;
-    enable_commands();
-    if(!query_short()) set_short(query_name());
+    enable_commands() ;
+    if(!query_short()) set_short(query_name()) ;
     if(!query_pref("colour")) set_pref("colour", "off") ;
-    if(!query_pref("prompt")) set_pref("prompt", ">");
+    if(!query_pref("prompt")) set_pref("prompt", ">") ;
     if(!query_pref("biff")) set_pref("biff", "off") ;
     update_regen_interval() ;
     init_vitals() ;
@@ -54,7 +54,7 @@ int revive(string str) {
     string name = query_privs() ;
 
     if(this_body() != this_object())
-        return 0;
+        return 0 ;
 
     body = BODY_D->create_body(name) ;
 
@@ -81,19 +81,19 @@ int revive(string str) {
 
 void net_dead() {
     if(origin() != ORIGIN_DRIVER)
-        return;
+        return ;
 
     if(environment())
-        tell_all(environment(), query_name()+ " begins to fade.\n");
+        tell_all(environment(), query_name()+ " begins to fade.\n") ;
 
     add_extra_short("link_dead", "[fading]") ;
-    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n");
+    log_file(LOG_LOGIN, query_real_name() + " went link-dead on " + ctime(time()) + "\n") ;
 
 }
 
 void reconnect() {
-    tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), query_name() + " brigtens.\n", this_body());
+    tell(this_object(), "Success: Reconnected.\n") ;
+    if(environment()) tell_room(environment(), query_name() + " brigtens.\n", this_body()) ;
     remove_extra_short("link_dead") ;
 }
 
@@ -103,8 +103,8 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query_last_login()) > 3600) {
                 if(environment())
-                    tell_room(environment(), query_name() + " fades out of existance.\n");
-                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
+                    tell_room(environment(), query_name() + " fades out of existance.\n") ;
+                log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n") ;
                 remove() ;
                 return ;
             }

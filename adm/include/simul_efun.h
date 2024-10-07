@@ -83,7 +83,7 @@ mixed json_decode(string str) ;
 mapping json_encode(mixed arg) ;
 
 // File: mappings
-string pretty_map(mapping map);
+string pretty_map(mapping map) ;
 
 // File: messaging
 varargs void tell_up(object ob, string str, int msg_type, mixed exclude) ;

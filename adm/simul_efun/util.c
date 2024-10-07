@@ -15,7 +15,7 @@ string generate_uuid() {
     // supposed to use lower case but accept upper case (so run lower_case when comparing incoming stuff)
     return sprintf("%04x%04x-%04x-4%03x-%0x%03x-%04x%04x%04x",
         random(0x10000),random(0x10000),random(0x10000),random(0x1000),
-        (8+random(4)), random(0x1000),random(0x10000),random(0x10000),random(0x10000));
+        (8+random(4)), random(0x1000),random(0x10000),random(0x10000),random(0x10000)) ;
 }
 
 /**
@@ -28,12 +28,12 @@ string generate_uuid() {
 int of(mixed needle, mixed haystack) {
     switch(typeof(haystack)) {
         case T_ARRAY:
-            return member_array(needle, haystack) > -1;
+            return member_array(needle, haystack) > -1 ;
         case T_MAPPING:
             return !nullp(haystack[needle]) ;
         case T_STRING:
-            return strsrch(haystack, needle) > -1;
+            return strsrch(haystack, needle) > -1 ;
         default:
-            return 0;
+            return 0 ;
     }
 }

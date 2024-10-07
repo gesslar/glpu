@@ -30,24 +30,24 @@ void mudlib_setup() {
 }
 
 void set_storage_options(class StorageOptions storage) {
-    mixed id;
+    mixed id ;
 
-    storage_options = storage;
+    storage_options = storage ;
 
-    id = storage_options.storage_id;
+    id = storage_options.storage_id ;
     if(id) {
         if(valid_function(id))
-            id = (*id)();
+            id = (*id)() ;
     } else if(storage_options.storage_org) {
-        id = storage_options.storage_org;
+        id = storage_options.storage_org ;
     } else {
-        error("Either storage_id or storage_org must be specified in storage options.");
+        error("Either storage_id or storage_org must be specified in storage options.") ;
     }
 
     if(!stringp(id))
-        error("storage_id must resolve to a string.");
+        error("storage_id must resolve to a string.") ;
 
-    storage_options.storage_id = id;
+    storage_options.storage_id = id ;
 
     if(storage_options.restore_on_load) {
         if(storage_options.storage_type == "private") {
@@ -56,12 +56,12 @@ void set_storage_options(class StorageOptions storage) {
 
             if(!storage_options.storage_directory)
                 if(!storage_options.storage_org)
-                    error("For private storage, storage_directory is only optional if storage_org is specified.");
+                    error("For private storage, storage_directory is only optional if storage_org is specified.") ;
                 else
-                    storage_options.storage_directory = storage_options.storage_org;
+                    storage_options.storage_directory = storage_options.storage_org ;
         }
 
-        restore_contents();
+        restore_contents() ;
     }
 }
 
@@ -159,15 +159,15 @@ void set_storage_directory(string dir) {
 }
 
 string query_storage_directory() {
-    return storage_options.storage_directory;
+    return storage_options.storage_directory ;
 }
 
 int request_clean_up() {
     if(sizeof(all_inventory()) == 0 && classp(storage_options) &&
        storage_options.clean_on_empty)
-        return 1;
+        return 1 ;
 
-    return 0;
+    return 0 ;
 }
 
 int id(string id) {

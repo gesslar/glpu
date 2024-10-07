@@ -17,13 +17,13 @@
 #include <object.h>
 #include <persist.h>
 
-private nosave int save_recurse;
+private nosave int save_recurse ;
 private nosave mixed *saved_vars = ({ }) ;
 
 //:FUNCTION save_var
 //Mark a variable as one that gets saved.
 protected void save_var(mixed *vars...) {
-  saved_vars = distinct_array(({ saved_vars..., vars... }));
+  saved_vars = distinct_array(({ saved_vars..., vars... })) ;
 }
 
 //###Security problem here - Beek. What is it used for anyway?
@@ -39,47 +39,47 @@ protected void set_save_recurse(int flag) { save_recurse = flag; }
 //saves an object into a string representation.
 varargs string save_to_string(int recursep) {
   string *elements, element ;
-  mapping map = ([]);
+  mapping map = ([]) ;
   mapping tmp ;
 
   event(({ this_object() }), "saving") ;
 
 //### setting a property based on a function arg?  Gross.
-  set_save_recurse(recursep);
+  set_save_recurse(recursep) ;
 
   if(sizeof(elements = distinct_array(copy(saved_vars)) - ({ 0 }))) {
     tmp = ([ ]) ;
 
     foreach(element in elements)
-      tmp[element] = fetch_variable(element);
+      tmp[element] = fetch_variable(element) ;
 
     if(sizeof(tmp))
       map["#vars#"] = tmp ;
   }
 
-  map["#base_name#"] = base_name();
+  map["#base_name#"] = base_name() ;
 
   if(save_recurse)
-    map["#inventory#"] = all_inventory()->save_to_string(1) - ({ 0 });
+    map["#inventory#"] = all_inventory()->save_to_string(1) - ({ 0 }) ;
 
-  return save_variable(map);
+  return save_variable(map) ;
 }
 
 //:FUNCTION load_from_string
 //loads an object from a string representation.
 void load_from_string(mixed value, int recurse) {
-  mixed data;
+  mixed data ;
   mixed *tmpsaved_vars ;
   mixed val ;
   string key ;
-  string obj;
-  object ob;
+  string obj ;
+  object ob ;
   mapping current ;
 
   if(!mapp(value))
-    data = restore_variable(value);
+    data = restore_variable(value) ;
   else
-    data = value;
+    data = value ;
 
   foreach(key, val in data) {
     if(key == "#vars#") {
@@ -99,7 +99,7 @@ void load_from_string(mixed value, int recurse) {
     foreach(obj in data["#inventory#"]) {
       mixed result ;
 
-      val = restore_variable(obj);
+      val = restore_variable(obj) ;
       result = catch(ob = new(val["#base_name#"])) ;
       if(intp(result) && result == 0)
         ob->load_from_string(val, recurse + 1) ;

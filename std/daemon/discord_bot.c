@@ -265,25 +265,25 @@ void websocket_handle_text_frame(mapping payload) {
 
     // payload = frame_info["payload"] ;
     if(payload["s"]) {
-        _log(3, "Sequence: %d", payload["s"]);
-        server["discord"]["seq"] = payload["s"];
+        _log(3, "Sequence: %d", payload["s"]) ;
+        server["discord"]["seq"] = payload["s"] ;
     } else
         _log(3, "No sequence") ;
 
     if(mapp(payload)) {
         switch(payload["op"]) {
             case DISCORD_DISPATCH:
-                discord_handle_event(payload);
-                break;
+                discord_handle_event(payload) ;
+                break ;
             case DISCORD_HEARTBEAT:
-                discord_send_heartbeat(1);
-                break;
+                discord_send_heartbeat(1) ;
+                break ;
             case DISCORD_HELLO:
-                discord_handle_hello(payload);
-                break;
+                discord_handle_hello(payload) ;
+                break ;
             case DISCORD_HEARTBEAT_ACK:
-                discord_handle_heartbeat_ack(payload);
-                break;
+                discord_handle_heartbeat_ack(payload) ;
+                break ;
             default:
                 _log(2, "Unknown text opcode %O", payload["op"]) ;
         }
@@ -332,14 +332,14 @@ void discord_handle_event(mapping payload) {
 void discord_handle_hello(mapping payload) {
     int heartbeat_interval ;
 
-    heartbeat_interval = payload["d"]["heartbeat_interval"];
+    heartbeat_interval = payload["d"]["heartbeat_interval"] ;
 
-    _log(2, "Received Hello with heartbeat interval (%d ms)", heartbeat_interval);
-    server["discord"]["heartbeat_interval"] = heartbeat_interval / 1000.0;
+    _log(2, "Received Hello with heartbeat interval (%d ms)", heartbeat_interval) ;
+    server["discord"]["heartbeat_interval"] = heartbeat_interval / 1000.0 ;
 
-    discord_send_identify();
+    discord_send_identify() ;
 
-    server["discord"]["heartbeat"] = call_out_walltime("discord_initial_heartbeat", random(100000) / 100000.0);
+    server["discord"]["heartbeat"] = call_out_walltime("discord_initial_heartbeat", random(100000) / 100000.0) ;
 }
 
 void discord_send_identify() {
@@ -372,21 +372,21 @@ void discord_send_identify() {
                 "device": "FluffOS"
             ])
         ])
-    ]));
+    ])) ;
 
     _log(2, "Sending Identify") ;
 
     result = websocket_message(WS_TEXT_FRAME, identify_payload) ;
 
     if(!result) {
-        _log(2, "Failed to send Identify payload");
+        _log(2, "Failed to send Identify payload") ;
     } else {
-        _log(2, "Identify payload sent successfully");
+        _log(2, "Identify payload sent successfully") ;
     }
 }
 
 varargs void discord_send_heartbeat(int immediate) {
-    string payload;
+    string payload ;
     int seq ;
     int result ;
 
@@ -397,13 +397,13 @@ varargs void discord_send_heartbeat(int immediate) {
     payload = json_encode(([
         "op": DISCORD_HEARTBEAT,
         "d": seq,
-    ]));
+    ])) ;
 
-    result = websocket_message(WS_TEXT_FRAME, payload);
+    result = websocket_message(WS_TEXT_FRAME, payload) ;
     if(!result) {
-        _log(2, "Failed to send heartbeat");
+        _log(2, "Failed to send heartbeat") ;
     } else {
-        _log(2, "Sent heartbeat to %s", query_bot_name());
+        _log(2, "Sent heartbeat to %s", query_bot_name()) ;
     }
 
     if(!immediate) {
@@ -411,7 +411,7 @@ varargs void discord_send_heartbeat(int immediate) {
         server["discord"]["heartbeat"] = call_out_walltime(
             "discord_send_heartbeat",
             server["discord"]["heartbeat_interval"]
-        );
+        ) ;
     }
 }
 
@@ -425,17 +425,17 @@ protected nomask void discord_initial_heartbeat() {
 void discord_handle_heartbeat_ack(mapping payload) {
     int seq ;
 
-    _log(2, "Received Heartbeat ACK");
+    _log(2, "Received Heartbeat ACK") ;
 
     seq = payload["d"] ;
     server["discord"]["seq"] = seq ;
 
     if(!server["discord"]["heartbeat"]) {
-        _log(2, "Starting heartbeat");
+        _log(2, "Starting heartbeat") ;
         server["discord"]["heartbeat"] = call_out_walltime(
             "discord_send_heartbeat",
             server["discord"]["heartbeat_interval"]
-        );
+        ) ;
     }
 }
 
@@ -447,12 +447,12 @@ private nomask void discord_handle_ready(mapping data) {
     mapping application ;
 
     if(!mapp(data)) {
-        _log(2, "Received invalid ready frame");
-        shutdown_websocket(WS_CLOSE_INVALID_FRAME_PAYLOAD_DATA, "Invalid ready frame");
-        return;
+        _log(2, "Received invalid ready frame") ;
+        shutdown_websocket(WS_CLOSE_INVALID_FRAME_PAYLOAD_DATA, "Invalid ready frame") ;
+        return ;
     }
 
-    _log(2, "Received valid ready frame");
+    _log(2, "Received valid ready frame") ;
 
     server["discord"]["session_id"] = data["session_id"] ;
 
@@ -543,7 +543,7 @@ void rest_api_callback(mapping response) {
  */
 
 private nomask void set_bot_name(string name) {
-    if(!stringp(name)) error("Invalid argument 1 to set_bot_name()");
+    if(!stringp(name)) error("Invalid argument 1 to set_bot_name()") ;
 
     set_log_prefix("("+name+")") ;
 
@@ -570,7 +570,7 @@ private nomask string query_token() {
 }
 
 private nomask void set_token(string token) {
-    if(!stringp(token)) error("Invalid argument 1 to set_token()");
+    if(!stringp(token)) error("Invalid argument 1 to set_token()") ;
 
     _log(3, "Setting token to %O", token) ;
 

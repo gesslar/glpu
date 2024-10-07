@@ -51,13 +51,13 @@ int start_edit(string file, mixed *cb) {
                     _error("File is too large to read") ;
                     abort_edit() ;
                 }
-                text = read_file(file);
+                text = read_file(file) ;
             }
         }
     }
 
     if(strlen(text))
-        text = append(text, "\n");
+        text = append(text, "\n") ;
 
     lines = map(explode(text, "\n"), (: "║ " + $1 :)) ;
     text = implode(lines, "\n") + "\n║ " ;

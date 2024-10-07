@@ -33,13 +33,12 @@ private nomask buffer apply_mask(buffer data, buffer mask) ;
 varargs protected nomask int websocket_close(int code, string reason) ;
 protected nomask void shutdown_websocket() ;
 
-
 private string unformat_frame(buffer message) ;
 private nomask varargs buffer format_frame(int opcode, mixed args...) ;
 
 protected nomask varargs int websocket_message(int frame_opcode, mixed args...) ;
 protected nomask void send_pong(string payload) ;
-protected nomask void send_ping();
+protected nomask void send_ping() ;
 
 void shutdown() ;
 void shutdown_force() ;
@@ -110,10 +109,10 @@ protected nomask mapping websocket_connect(string url) {
         server["request"]["secure"] ? STREAM_TLS_BINARY : STREAM_BINARY,
         "websocket_read",
         "websocket_closed"
-    );
+    ) ;
 
     if(fd < 0) {
-        _log(0, "Unable to create socket: %s", socket_error(fd));
+        _log(0, "Unable to create socket: %s", socket_error(fd)) ;
         server = null ;
         return ([
             "status" : "error",
@@ -124,15 +123,15 @@ protected nomask mapping websocket_connect(string url) {
     _log(4, "Socket created: %d", fd) ;
 
     if(fd < 0) {
-        _log(0, "Unable to create socket: %s", socket_error(fd));
+        _log(0, "Unable to create socket: %s", socket_error(fd)) ;
         return ([
             "error" : socket_error(fd),
         ]) ;
     }
 
     if(server["request"]["secure"]) {
-        socket_set_option(fd, SO_TLS_VERIFY_PEER, 1);
-        socket_set_option(fd, SO_TLS_SNI_HOSTNAME, server["request"]["host"]);
+        socket_set_option(fd, SO_TLS_VERIFY_PEER, 1) ;
+        socket_set_option(fd, SO_TLS_SNI_HOSTNAME, server["request"]["host"]) ;
     }
 
     server["websocket_state"] = WS_STATE_RESOLVING ;
@@ -181,7 +180,7 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
 
         call_if(this_object(), "websocket_handle_resolved") ;
 
-        result = socket_connect(fd, addr + " " + port, "websocket_read", "websocket_ready");
+        result = socket_connect(fd, addr + " " + port, "websocket_read", "websocket_ready") ;
         if(result != EESUCCESS) {
             _log(1, "Error connecting to %s: %s", host, socket_error(result)) ;
 
@@ -218,14 +217,14 @@ protected nomask void websocket_resolved(string host, string addr, int key) {
  * @param {int} fd - The file descriptor of the socket.
  */
 public nomask void websocket_ready(int fd) {
-    string out;
-    string raw_key, sec_websocket_key;
+    string out ;
+    string raw_key, sec_websocket_key ;
     string host ;
     int result ;
     string subs ;
     int written ;
 
-    _log(2, "Socket fully connected, now able to send data");
+    _log(2, "Socket fully connected, now able to send data") ;
 
     if(!server) {
         _log(0, "No server data for fd %d", fd) ;
@@ -235,19 +234,19 @@ public nomask void websocket_ready(int fd) {
     server["state"] = WS_STATE_HANDSHAKE ;
 
     if(!stringp(raw_key = server["handshake_key"])) {
-        _log(0, "No handshake key for fd %d", fd);
-        shutdown_websocket();
-        return;
+        _log(0, "No handshake key for fd %d", fd) ;
+        shutdown_websocket() ;
+        return ;
     }
 
     if(!server["request"]["host"]) {
-        _log(0, "No host specified for fd %d", fd);
-        shutdown_websocket();
-        return;
+        _log(0, "No host specified for fd %d", fd) ;
+        shutdown_websocket() ;
+        return ;
     }
 
-    sec_websocket_key = base64_encode(to_binary(raw_key));
-    _log(2, "Sec-WebSocket-Key Sent to %s: %s", sec_websocket_key, server["request"]["host"]);
+    sec_websocket_key = base64_encode(to_binary(raw_key)) ;
+    _log(2, "Sec-WebSocket-Key Sent to %s: %s", sec_websocket_key, server["request"]["host"]) ;
 
     out = sprintf(
         "GET "+server["request"]["path"]+" HTTP/1.1\r\n"
@@ -257,15 +256,15 @@ public nomask void websocket_ready(int fd) {
         "Sec-WebSocket-Key: %s\r\n"
         "Sec-WebSocket-Version: 13\r\n",
         sec_websocket_key
-    );
+    ) ;
 
     if(sizeof(server["subprotocols"])) {
-        subs = implode(server["subprotocols"], ", ");
-        subs = sprintf("Sec-WebSocket-Protocol: %s\r\n", subs);
+        subs = implode(server["subprotocols"], ", ") ;
+        subs = sprintf("Sec-WebSocket-Protocol: %s\r\n", subs) ;
     }
 
     if(strlen(subs))
-        out += subs;
+        out += subs ;
 
     out += "\r\n" ;
 
@@ -274,14 +273,14 @@ public nomask void websocket_ready(int fd) {
 
     written = sizeof(to_binary(out)) ;
     server["sent_total"] = written ;
-    result = socket_write(fd, out);
+    result = socket_write(fd, out) ;
     if(result != EESUCCESS) {
-        _log(2, "Failed to send handshake request: %d", result);
-        call_if(this_object(), "websocket_handle_handshake_error", result);
-        shutdown_websocket();
+        _log(2, "Failed to send handshake request: %d", result) ;
+        call_if(this_object(), "websocket_handle_handshake_error", result) ;
+        shutdown_websocket() ;
     } else {
-        call_if(this_object(), "websocket_handle_handshake_sent");
-        _log(2, "Handshake request sent");
+        call_if(this_object(), "websocket_handle_handshake_sent") ;
+        _log(2, "Handshake request sent") ;
     }
 }
 
@@ -355,43 +354,43 @@ protected nomask void shutdown_websocket() {
  * @param {buffer} incoming - The incoming data buffer.
  */
 public nomask void websocket_read(int fd, buffer incoming) {
-    buffer buf;
-    mapping frame_info;
-    mapping http;
+    buffer buf ;
+    mapping frame_info ;
+    mapping http ;
 
     if(!server)
-        return;
+        return ;
 
-    server["transactions"]++;
+    server["transactions"]++ ;
 
-    _log(3, "===========  STARTING WS TRANSACTION %d  ===========", server["transactions"]);
+    _log(3, "===========  STARTING WS TRANSACTION %d  ===========", server["transactions"]) ;
 
     _log(4, "Typeof incoming: %s", typeof(incoming)) ;
     _log(4, "Typeof buffer: %s", typeof(server["buffer"])) ;
 
     if(server["buffer"]) {
-        buf = server["buffer"] + incoming;
-        map_delete(server, "buffer");
+        buf = server["buffer"] + incoming ;
+        map_delete(server, "buffer") ;
     } else {
-        buf = incoming;
+        buf = incoming ;
     }
 
-    server["received_total"] += sizeof(buf);
+    server["received_total"] += sizeof(buf) ;
 
-    _log(3, "Incoming size: %d", sizeof(incoming));
-    _log(3, "Buffer size: %d", sizeof(buf));
+    _log(3, "Incoming size: %d", sizeof(incoming)) ;
+    _log(3, "Buffer size: %d", sizeof(buf)) ;
 
     // Process headers if not done yet
-    server["response"] = server["response"] || ([]);
+    server["response"] = server["response"] || ([]) ;
 
     if(sizeof(buf) && !server["response"]["status"]) {
         mapping status ;
 
         status = parse_response_status(buf, 1) ;
         if(!status) {
-            server["buffer"] = buf;
+            server["buffer"] = buf ;
             _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
-            return;
+            return ;
         }
 
         if(status["buffer"]) {
@@ -405,58 +404,58 @@ public nomask void websocket_read(int fd, buffer incoming) {
     }
 
     if(sizeof(buf) && !server["response"]["headers"]) {
-        mapping headers;
+        mapping headers ;
 
-        headers = parse_headers(buf, 1);
+        headers = parse_headers(buf, 1) ;
 
         if(!headers) {
-            server["buffer"] = buf;
+            server["buffer"] = buf ;
             _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
-            return;
+            return ;
         }
 
         if(headers["buffer"]) {
-            buf = headers["buffer"];
-            map_delete(headers, "buffer");
+            buf = headers["buffer"] ;
+            map_delete(headers, "buffer") ;
         }
 
-        server["response"]["headers"] = headers;
+        server["response"]["headers"] = headers ;
 
-        _log(4, "Headers found: %O", headers);
+        _log(4, "Headers found: %O", headers) ;
     }
 
     if(server["state"] == WS_STATE_HANDSHAKE) {
-        process_handshake(buf);
-        return;
+        process_handshake(buf) ;
+        return ;
     }
 
     if(server["state"] == WS_STATE_CONNECTED) {
-        _log(2, "Processing WebSocket data");
+        _log(2, "Processing WebSocket data") ;
 
         // Handle WebSocket data frames
         while(is_message_complete(buf)) {
-            frame_info = parse_websocket_frame(buf);
+            frame_info = parse_websocket_frame(buf) ;
             if(frame_info) {
-                process_websocket_message(frame_info);
+                process_websocket_message(frame_info) ;
                 if(!server)
-                    return;
-                buf = frame_info["buffer"];
+                    return ;
+                buf = frame_info["buffer"] ;
             } else {
-                break;
+                break ;
             }
         }
 
         // Save any remaining buffer data for next processing
-        server["buffer"] = buf;
+        server["buffer"] = buf ;
         _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
 
         // Continue processing if there's still data left
         if(sizeof(buf))
-            _log(2, "Data left in buffer for next transaction.");
+            _log(2, "Data left in buffer for next transaction.") ;
     }
 
-    _log(3, "Final buffer size: %d", sizeof(buf));
-    _log(3, "===========  ENDING WS TRANSACTION %d  ===========", server["transactions"]);
+    _log(3, "Final buffer size: %d", sizeof(buf)) ;
+    _log(3, "===========  ENDING WS TRANSACTION %d  ===========", server["transactions"]) ;
 }
 
 /**
@@ -465,48 +464,48 @@ public nomask void websocket_read(int fd, buffer incoming) {
  * @param {buffer} buf - The buffer containing the handshake data.
  */
 private nomask void process_handshake(buffer buf) {
-    string raw_key = server["handshake_key"];
-    string sec_websocket_key, concat, hash_result_hex, expected, accept;
-    buffer hash_result_binary;
-    mapping frame_info;
+    string raw_key = server["handshake_key"] ;
+    string sec_websocket_key, concat, hash_result_hex, expected, accept ;
+    buffer hash_result_binary ;
+    mapping frame_info ;
     mapping response = server["response"] ;
 
-    _log(2, "Validating handshake");
-    _log(4, "Server: %O", server);
-    // _log(4, "Buffer: %O", buf);
+    _log(2, "Validating handshake") ;
+    _log(4, "Server: %O", server) ;
+    // _log(4, "Buffer: %O", buf) ;
 
-    _log(2, "HTTP Status Code: %d", server["response"]["status"]["code"]);
-    _log(2, "Header 'upgrade': %s", server["response"]["headers"]["upgrade"]);
-    _log(2, "Header 'connection': %O", identify(server["response"]["headers"]["connection"]));
+    _log(2, "HTTP Status Code: %d", server["response"]["status"]["code"]) ;
+    _log(2, "Header 'upgrade': %s", server["response"]["headers"]["upgrade"]) ;
+    _log(2, "Header 'connection': %O", identify(server["response"]["headers"]["connection"])) ;
 
     // Encode the raw key
-    sec_websocket_key = base64_encode(to_binary(raw_key));
-    _log(3, "Generated Key: %s", raw_key);
+    sec_websocket_key = base64_encode(to_binary(raw_key)) ;
+    _log(3, "Generated Key: %s", raw_key) ;
 
     // Concatenate base64 encoded key and WebSocket GUID
-    concat = sec_websocket_key + WS_HANDSHAKE_GUID;
+    concat = sec_websocket_key + WS_HANDSHAKE_GUID ;
 
     // Compute SHA-1 hash
-    hash_result_hex = hash("sha1", concat);
+    hash_result_hex = hash("sha1", concat) ;
 
     // Convert hex to binary
-    hash_result_binary = hex_to_binary(hash_result_hex);
+    hash_result_binary = hex_to_binary(hash_result_hex) ;
 
     // Base64 encode the binary hash result
-    expected = base64_encode(hash_result_binary);
-    _log(3, "Base64 Encoded SHA-1 Hash (Expected): %s", expected);
+    expected = base64_encode(hash_result_binary) ;
+    _log(3, "Base64 Encoded SHA-1 Hash (Expected): %s", expected) ;
 
     // Accept value from server
-    accept = server["response"]["headers"]["sec-websocket-accept"];
-    _log(3, "Header 'sec-websocket-accept': %s", accept);
+    accept = server["response"]["headers"]["sec-websocket-accept"] ;
+    _log(3, "Header 'sec-websocket-accept': %s", accept) ;
 
     // Compare expected and accept values
     if(accept != expected) {
-        _log(1, "Accept and Expected do not match.");
-        server["state"] = WS_STATE_HANDSHAKE_FAILED;
-        call_if(this_object(), "websocket_handle_handshake_failed", "Accept and Expected do not match.");
-        shutdown_websocket();
-        return;
+        _log(1, "Accept and Expected do not match.") ;
+        server["state"] = WS_STATE_HANDSHAKE_FAILED ;
+        call_if(this_object(), "websocket_handle_handshake_failed", "Accept and Expected do not match.") ;
+        shutdown_websocket() ;
+        return ;
     }
 
     if(response["status"]["code"] != 101 ||
@@ -514,22 +513,22 @@ private nomask void process_handshake(buffer buf) {
         (member_array("Upgrade", response["headers"]["connection"]) == -1 &&
          member_array("upgrade", response["headers"]["connection"]) == -1) ||
         accept != expected) {
-        _log(1, "Handshake invalid. Disconnecting.");
-        server["state"] = WS_STATE_HANDSHAKE_FAILED;
-        call_if(this_object(), "websocket_handle_handshake_failed", "Handshake invalid. Disconnecting.");
-        shutdown_websocket();
-        return;
+        _log(1, "Handshake invalid. Disconnecting.") ;
+        server["state"] = WS_STATE_HANDSHAKE_FAILED ;
+        call_if(this_object(), "websocket_handle_handshake_failed", "Handshake invalid. Disconnecting.") ;
+        shutdown_websocket() ;
+        return ;
     }
 
-    _log(2, "Handshake validated");
+    _log(2, "Handshake validated") ;
 
-    server["state"] = WS_STATE_CONNECTED;
+    server["state"] = WS_STATE_CONNECTED ;
 
-    _log(1, "Connected to %s", server["request"]["host"]);
+    _log(1, "Connected to %s", server["request"]["host"]) ;
 
-    map_delete(server, "handshake_key");
+    map_delete(server, "handshake_key") ;
 
-    call_if(this_object(), "websocket_handle_connected");
+    call_if(this_object(), "websocket_handle_connected") ;
 }
 
 /**
@@ -539,23 +538,23 @@ private nomask void process_handshake(buffer buf) {
  * @returns {int} - 1 if the message is complete, 0 otherwise.
  */
 private nomask int is_message_complete(buffer buf) {
-    int payload_length;
-    int offset;
+    int payload_length ;
+    int offset ;
 
     if(sizeof(buf) < 2) {
-        return 0;
+        return 0 ;
     }
 
-    payload_length = buf[1] & 0x7F;
-    offset = 2;
+    payload_length = buf[1] & 0x7F ;
+    offset = 2 ;
 
     if(payload_length == 126) {
         if(sizeof(buf) < 4) {
             _log(3, "Not enough data to determine the full payload length") ;
             return 0; // Not enough data to determine the full payload length
         }
-        payload_length = (buf[2] << 8) | buf[3];
-        offset = 4;
+        payload_length = (buf[2] << 8) | buf[3] ;
+        offset = 4 ;
     } else if(payload_length == 127) {
         if(sizeof(buf) < 10) {
             _log(3, "Not enough data to determine the full payload length") ;
@@ -564,24 +563,24 @@ private nomask int is_message_complete(buffer buf) {
         payload_length = ((buf[2] & 0xFF) << 56) | ((buf[3] & 0xFF) << 48) |
                          ((buf[4] & 0xFF) << 40) | ((buf[5] & 0xFF) << 32) |
                          ((buf[6] & 0xFF) << 24) | ((buf[7] & 0xFF) << 16) |
-                         ((buf[8] & 0xFF) << 8)  |  (buf[9] & 0xFF);
-        offset = 10;
+                         ((buf[8] & 0xFF) << 8)  |  (buf[9] & 0xFF) ;
+        offset = 10 ;
     }
 
     // Handle masked payloads
     if(buf[1] & 0x80) {
-        offset += 4;
+        offset += 4 ;
     }
 
     // Check if we have enough data for the complete frame
     if(sizeof(buf) < offset + payload_length) {
         _log(3, "Not enough data for the full payload") ;
-        return 0;
+        return 0 ;
     }
 
     _log(3, "Enough data for the full payload") ;
 
-    return 1;
+    return 1 ;
 }
 
 /**
@@ -591,81 +590,81 @@ private nomask int is_message_complete(buffer buf) {
  * @returns {mapping} - A mapping with the frame information.
  */
 private nomask mapping parse_websocket_frame(buffer buf) {
-    mapping result = ([]);
-    int fin, opcode, masked, payload_length, offset;
-    buffer payload;
+    mapping result = ([]) ;
+    int fin, opcode, masked, payload_length, offset ;
+    buffer payload ;
 
     if(sizeof(buf) < 2) {
-        _log(3, "Insufficient data to process");
-        return 0;
+        _log(3, "Insufficient data to process") ;
+        return 0 ;
     }
 
-    fin = buf[0] & 0x80;
-    opcode = buf[0] & 0x0F;
-    masked = buf[1] & 0x80;
-    payload_length = buf[1] & 0x7F;
-    offset = 2;
+    fin = buf[0] & 0x80 ;
+    opcode = buf[0] & 0x0F ;
+    masked = buf[1] & 0x80 ;
+    payload_length = buf[1] & 0x7F ;
+    offset = 2 ;
 
-    _log(3, "Initial frame details - fin: %d, opcode: %d, masked: %d, payload_length: %d", fin, opcode, masked, payload_length);
+    _log(3, "Initial frame details - fin: %d, opcode: %d, masked: %d, payload_length: %d", fin, opcode, masked, payload_length) ;
 
     if(payload_length == 126) {
         if(sizeof(buf) < 4) {
-            _log(3, "Insufficient data for extended payload length (126)");
-            return 0;
+            _log(3, "Insufficient data for extended payload length (126)") ;
+            return 0 ;
         }
-        payload_length = (buf[2] << 8) | buf[3];
-        offset = 4;
+        payload_length = (buf[2] << 8) | buf[3] ;
+        offset = 4 ;
     } else if(payload_length == 127) {
         if(sizeof(buf) < 10) {
-            _log(3, "Insufficient data for extended payload length (127)");
-            return 0;
+            _log(3, "Insufficient data for extended payload length (127)") ;
+            return 0 ;
         }
         payload_length = ((buf[2] & 0xFF) << 56) | ((buf[3] & 0xFF) << 48) |
                          ((buf[4] & 0xFF) << 40) | ((buf[5] & 0xFF) << 32) |
                          ((buf[6] & 0xFF) << 24) | ((buf[7] & 0xFF) << 16) |
-                         ((buf[8] & 0xFF) << 8) | (buf[9] & 0xFF);
-        offset = 10;
+                         ((buf[8] & 0xFF) << 8) | (buf[9] & 0xFF) ;
+        offset = 10 ;
     }
 
-    _log(3, "Processed payload length: %d, offset: %d", payload_length, offset);
+    _log(3, "Processed payload length: %d, offset: %d", payload_length, offset) ;
 
     if(masked)
-        offset += 4;
+        offset += 4 ;
 
     if(sizeof(buf) < offset + payload_length) {
-        _log(3, "Insufficient data for full payload. Needed: %d, available: %d", offset + payload_length, sizeof(buf));
-        return 0;
+        _log(3, "Insufficient data for full payload. Needed: %d, available: %d", offset + payload_length, sizeof(buf)) ;
+        return 0 ;
     }
 
-    payload = allocate_buffer(payload_length);
+    payload = allocate_buffer(payload_length) ;
 
     if(masked) {
-        buffer mask = buf[2..5];
+        buffer mask = buf[2..5] ;
         for(int i = 0; i < payload_length; i++) {
-            payload[i] = buf[offset + i] ^ mask[i % 4];
+            payload[i] = buf[offset + i] ^ mask[i % 4] ;
         }
     } else {
-        payload = buf[offset..offset + payload_length - 1];
+        payload = buf[offset..offset + payload_length - 1] ;
     }
 
-    _log(3, "Payload unmasked or copied");
+    _log(3, "Payload unmasked or copied") ;
 
-    result["fin"] = fin;
-    result["opcode"] = opcode;
-    result["masked"] = masked;
-    result["payload_length"] = payload_length;
+    result["fin"] = fin ;
+    result["opcode"] = opcode ;
+    result["masked"] = masked ;
+    result["payload_length"] = payload_length ;
     if(opcode == WS_TEXT_FRAME)
-        result["payload"] = parse_body(to_string(payload), "auto");
+        result["payload"] = parse_body(to_string(payload), "auto") ;
     else
-        result["payload"] = payload;
+        result["payload"] = payload ;
 
     // Update the buffer to only contain unprocessed data
-    result["buffer"] = buf[offset + payload_length..];
+    result["buffer"] = buf[offset + payload_length..] ;
 
-    _log(3, "Offset: %d, Payload Length: %d, Buffer Size: %d", offset, payload_length, sizeof(buf));
-    _log(3, "Remaining buffer size: %d", sizeof(result["buffer"]));
+    _log(3, "Offset: %d, Payload Length: %d, Buffer Size: %d", offset, payload_length, sizeof(buf)) ;
+    _log(3, "Remaining buffer size: %d", sizeof(result["buffer"])) ;
 
-    return result;
+    return result ;
 }
 
 // WEBSOCKET HANDLERS
@@ -684,46 +683,46 @@ private nomask void process_unknown_frame(mapping frame_info) ;
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_websocket_message(mapping frame_info) {
-    int opcode;
+    int opcode ;
     mixed err ;
 
-    opcode = frame_info["opcode"];
+    opcode = frame_info["opcode"] ;
 
     // Process the frame based on the opcode
     if(opcode == WS_TEXT_FRAME) {
-        _log(2, "Received text frame");
-        _log(4, "Payload: %O", frame_info["payload"]);
-        err = catch(process_text_frame(frame_info));
+        _log(2, "Received text frame") ;
+        _log(4, "Payload: %O", frame_info["payload"]) ;
+        err = catch(process_text_frame(frame_info)) ;
     } else if(opcode == WS_CLOSE_FRAME) {
-        _log(2, "Received close frame");
-        _log(3, "Payload: %O", binary_to_hex(frame_info["payload"]));
-        err = catch(process_close_frame(frame_info));
+        _log(2, "Received close frame") ;
+        _log(3, "Payload: %O", binary_to_hex(frame_info["payload"])) ;
+        err = catch(process_close_frame(frame_info)) ;
     } else if(opcode == WS_PING_FRAME) {
-        _log(2, "Received ping frame");
-        err = catch(process_ping_frame(frame_info));
+        _log(2, "Received ping frame") ;
+        err = catch(process_ping_frame(frame_info)) ;
     } else if(opcode == WS_PONG_FRAME) {
-        _log(2, "Received pong frame");
-        err = catch(process_pong_frame(frame_info));
+        _log(2, "Received pong frame") ;
+        err = catch(process_pong_frame(frame_info)) ;
     } else if(opcode == WS_CONTINUATION_FRAME) {
-        _log(2, "Received continuation frame");
-        err = catch(process_continuation_frame(frame_info));
+        _log(2, "Received continuation frame") ;
+        err = catch(process_continuation_frame(frame_info)) ;
     } else if(opcode == WS_BINARY_FRAME) {
-        _log(2, "Received binary frame");
-        err = catch(process_binary_frame(frame_info));
+        _log(2, "Received binary frame") ;
+        err = catch(process_binary_frame(frame_info)) ;
     } else {
-        _log(2, "Received unknown frame with opcode %d", opcode);
+        _log(2, "Received unknown frame with opcode %d", opcode) ;
     }
 
     if(err) {
-        _log(2, "Error processing frame: %O", err);
-        shutdown_websocket();
+        _log(2, "Error processing frame: %O", err) ;
+        shutdown_websocket() ;
     }
 
     if(!server)
-        return;
+        return ;
 
     // Save any remaining buffer data for next processing
-    server["buffer"] = frame_info["buffer"];
+    server["buffer"] = frame_info["buffer"] ;
     _log(4, "Type of buffer: %s", typeof(server["buffer"])) ;
 }
 
@@ -733,11 +732,11 @@ private nomask void process_websocket_message(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_text_frame(mapping frame_info) {
-    mapping payload = frame_info["payload"];
+    mapping payload = frame_info["payload"] ;
 
-    _log(3, "Payload: %O", payload);
+    _log(3, "Payload: %O", payload) ;
 
-    call_if(this_object(), "websocket_handle_text_frame", payload);
+    call_if(this_object(), "websocket_handle_text_frame", payload) ;
 }
 
 /**
@@ -746,17 +745,17 @@ private nomask void process_text_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_close_frame(mapping frame_info) {
-    int close_code = 0;
+    int close_code = 0 ;
 
-    string close_reason = "<no reason given>";
+    string close_reason = "<no reason given>" ;
     if(sizeof(frame_info["payload"]) >= 2) {
-        close_code = (frame_info["payload"][0] << 8) | frame_info["payload"][1];
+        close_code = (frame_info["payload"][0] << 8) | frame_info["payload"][1] ;
         if(sizeof(frame_info["payload"]) > 2)
-            close_reason = to_string(frame_info["payload"][2..]);
+            close_reason = to_string(frame_info["payload"][2..]) ;
     }
-    _log(0, "Connection closed by server. Code: %d, Reason: %s", close_code, close_reason);
+    _log(0, "Connection closed by server. Code: %d, Reason: %s", close_code, close_reason) ;
 
-    call_if(this_object(), "websocket_handle_close_frame", frame_info["payload"]);
+    call_if(this_object(), "websocket_handle_close_frame", frame_info["payload"]) ;
 }
 
 /**
@@ -765,8 +764,8 @@ private nomask void process_close_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_ping_frame(mapping frame_info) {
-    _log(2, "Received ping frame");
-    send_pong(to_string(frame_info["payload"]));
+    _log(2, "Received ping frame") ;
+    send_pong(to_string(frame_info["payload"])) ;
 
     call_if(this_object(), "websocket_handle_ping_frame", frame_info) ;
 }
@@ -777,9 +776,9 @@ private nomask void process_ping_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_pong_frame(mapping frame_info) {
-    _log(2, "Received pong frame");
+    _log(2, "Received pong frame") ;
 
-    call_if(this_object(), "websocket_handle_pong_frame", frame_info);
+    call_if(this_object(), "websocket_handle_pong_frame", frame_info) ;
 }
 
 /**
@@ -788,9 +787,9 @@ private nomask void process_pong_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_continuation_frame(mapping frame_info) {
-    _log(2, "Received continuation frame");
+    _log(2, "Received continuation frame") ;
 
-    call_if(this_object(), "websocket_handle_continuation_frame", frame_info);
+    call_if(this_object(), "websocket_handle_continuation_frame", frame_info) ;
 }
 
 /**
@@ -799,9 +798,9 @@ private nomask void process_continuation_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_binary_frame(mapping frame_info) {
-    _log(2, "Received binary frame");
+    _log(2, "Received binary frame") ;
 
-    call_if(this_object(), "websocket_handle_binary_frame", frame_info);
+    call_if(this_object(), "websocket_handle_binary_frame", frame_info) ;
 }
 
 /**
@@ -810,9 +809,9 @@ private nomask void process_binary_frame(mapping frame_info) {
  * @param {mapping} frame_info - The frame information.
  */
 private nomask void process_unknown_frame(mapping frame_info) {
-    _log(2, "Received unknown frame");
+    _log(2, "Received unknown frame") ;
 
-    call_if(this_object(), "websocket_handle_unknown_frame", frame_info);
+    call_if(this_object(), "websocket_handle_unknown_frame", frame_info) ;
 }
 
 /**
@@ -823,52 +822,52 @@ private nomask void process_unknown_frame(mapping frame_info) {
  * @returns {buffer} - The formatted frame.
  */
 private nomask varargs buffer format_frame(int opcode, mixed args...) {
-    int len, i, frame_offset;
-    buffer frame;
-    buffer payload;
-    int close_code;
-    string reason;
-    buffer close_payload;
-    buffer mask;
-    buffer masked_payload;
+    int len, i, frame_offset ;
+    buffer frame ;
+    buffer payload ;
+    int close_code ;
+    string reason ;
+    buffer close_payload ;
+    buffer mask ;
+    buffer masked_payload ;
 
     if(!arrayp(args)) {
-        args = ({ args });
+        args = ({ args }) ;
     }
 
     // Determine the payload based on the opcode
     switch(opcode) {
         case WS_CLOSE_FRAME: {
             if(sizeof(args) < 1 || !intp(args[0])) {
-                _log(2, "Invalid close code: %O", args[0]);
-                return 0;
+                _log(2, "Invalid close code: %O", args[0]) ;
+                return 0 ;
             }
-            close_code = args[0];
-            reason = (sizeof(args) > 1 && stringp(args[1])) ? args[1] : "";
-            close_payload = allocate_buffer(2 + strlen(reason));
-            close_payload[0] = (close_code >> 8) & 0xFF;
-            close_payload[1] = close_code & 0xFF;
-            close_payload[2..] = to_binary(reason);
-            payload = close_payload;
-            break;
+            close_code = args[0] ;
+            reason = (sizeof(args) > 1 && stringp(args[1])) ? args[1] : "" ;
+            close_payload = allocate_buffer(2 + strlen(reason)) ;
+            close_payload[0] = (close_code >> 8) & 0xFF ;
+            close_payload[1] = close_code & 0xFF ;
+            close_payload[2..] = to_binary(reason) ;
+            payload = close_payload ;
+            break ;
         }
         case WS_TEXT_FRAME:
         case WS_BINARY_FRAME:
         case WS_PING_FRAME:
         case WS_PONG_FRAME:
             payload = to_binary(args[0]); // Convert string to buffer
-            break;
+            break ;
         default:
-            _log(3, "Unsupported frame opcode: %d", opcode);
-            return 0;
+            _log(3, "Unsupported frame opcode: %d", opcode) ;
+            return 0 ;
     }
 
-    len = sizeof(payload);
-    mask = allocate_buffer(4);
+    len = sizeof(payload) ;
+    mask = allocate_buffer(4) ;
 
     // Generate a random masking key
     for(i = 0; i < 4; i++) {
-        mask[i] = random(256);
+        mask[i] = random(256) ;
     }
 
     if(len <= 125) {
@@ -878,14 +877,14 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
     } else if(len <= 65535) {
         frame = allocate_buffer(4 + len + 4); // 2 bytes header + 2 bytes extended payload length + 4 bytes mask key + payload
         frame[1] = 0x80 | 126; // Mask bit set + 126
-        frame[2] = (len >> 8) & 0xFF;
-        frame[3] = len & 0xFF;
+        frame[2] = (len >> 8) & 0xFF ;
+        frame[3] = len & 0xFF ;
         frame_offset = 4; // Header size + extended payload length
     } else {
         frame = allocate_buffer(10 + len + 4); // 2 bytes header + 8 bytes extended payload length + 4 bytes mask key + payload
         frame[1] = 0x80 | 127; // Mask bit set + 127
         for(i = 0; i < 8; i++) {
-            frame[2 + i] = (len >> (8 * (7 - i))) & 0xFF;
+            frame[2 + i] = (len >> (8 * (7 - i))) & 0xFF ;
         }
         frame_offset = 10; // Header size + extended payload length
     }
@@ -894,20 +893,20 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
     frame[frame_offset..(frame_offset + 3)] = mask; // Set the mask key
 
     // Mask the payload
-    masked_payload = allocate_buffer(len);
+    masked_payload = allocate_buffer(len) ;
     for(i = 0; i < len; i++) {
-        masked_payload[i] = payload[i] ^ mask[i % 4];
+        masked_payload[i] = payload[i] ^ mask[i % 4] ;
     }
-    frame[(frame_offset + 4)..] = masked_payload;
+    frame[(frame_offset + 4)..] = masked_payload ;
 
     // Detailed logging
-    _log(2, "Payload length: %d", len);
-    _log(3, "Masking key: %O", binary_to_hex(mask));
-    _log(3, "Payload before masking: %O", binary_to_hex(payload));
-    _log(3, "Masked payload: %O", binary_to_hex(masked_payload));
-    _log(3, "Final frame: %O", binary_to_hex(frame));
+    _log(2, "Payload length: %d", len) ;
+    _log(3, "Masking key: %O", binary_to_hex(mask)) ;
+    _log(3, "Payload before masking: %O", binary_to_hex(payload)) ;
+    _log(3, "Masked payload: %O", binary_to_hex(masked_payload)) ;
+    _log(3, "Final frame: %O", binary_to_hex(frame)) ;
 
-    return frame;
+    return frame ;
 }
 
 /**
@@ -918,14 +917,14 @@ private nomask varargs buffer format_frame(int opcode, mixed args...) {
  * @returns {buffer} - The masked data buffer.
  */
 private nomask buffer apply_mask(buffer data, buffer mask) {
-    int length = sizeof(data);
-    buffer masked_data = allocate_buffer(length);
+    int length = sizeof(data) ;
+    buffer masked_data = allocate_buffer(length) ;
 
     for(int i = 0; i < length; i++) {
-        masked_data[i] = data[i] ^ mask[i % 4];
+        masked_data[i] = data[i] ^ mask[i % 4] ;
     }
 
-    return masked_data;
+    return masked_data ;
 }
 
 /**
@@ -935,50 +934,50 @@ private nomask buffer apply_mask(buffer data, buffer mask) {
  * @returns {string} - The unformatted frame as a string.
  */
 private string unformat_frame(buffer message) {
-    int len, i, frame_offset;
-    int payload_len;
-    buffer mask;
-    buffer payload;
-    buffer unmasked_payload;
-    int fin, opcode, mask_bit;
+    int len, i, frame_offset ;
+    int payload_len ;
+    buffer mask ;
+    buffer payload ;
+    buffer unmasked_payload ;
+    int fin, opcode, mask_bit ;
 
     // Read the first byte (FIN bit and opcode)
-    fin = message[0] & 0x80;
-    opcode = message[0] & 0x0F;
+    fin = message[0] & 0x80 ;
+    opcode = message[0] & 0x0F ;
 
     // Read the second byte (Mask bit and payload length)
-    mask_bit = message[1] & 0x80;
-    payload_len = message[1] & 0x7F;
+    mask_bit = message[1] & 0x80 ;
+    payload_len = message[1] & 0x7F ;
 
     // Determine the payload length
     if(payload_len == 126) {
-        payload_len = (message[2] << 8) | message[3];
-        frame_offset = 4;
+        payload_len = (message[2] << 8) | message[3] ;
+        frame_offset = 4 ;
     } else if(payload_len == 127) {
-        payload_len = 0;
+        payload_len = 0 ;
         for(i = 0; i < 8; i++) {
-            payload_len = (payload_len << 8) | message[2 + i];
+            payload_len = (payload_len << 8) | message[2 + i] ;
         }
-        frame_offset = 10;
+        frame_offset = 10 ;
     } else {
-        frame_offset = 2;
+        frame_offset = 2 ;
     }
 
     // Read the masking key
-    mask = message[frame_offset..(frame_offset + 3)];
-    frame_offset += 4;
+    mask = message[frame_offset..(frame_offset + 3)] ;
+    frame_offset += 4 ;
 
     // Read the masked payload
-    payload = message[frame_offset..(frame_offset + payload_len - 1)];
+    payload = message[frame_offset..(frame_offset + payload_len - 1)] ;
 
     // Unmask the payload
-    unmasked_payload = allocate_buffer(payload_len);
+    unmasked_payload = allocate_buffer(payload_len) ;
     for(i = 0; i < payload_len; i++) {
-        unmasked_payload[i] = payload[i] ^ mask[i % 4];
+        unmasked_payload[i] = payload[i] ^ mask[i % 4] ;
     }
 
     // Convert the unmasked payload to a string and return it
-    return to_string(unmasked_payload);
+    return to_string(unmasked_payload) ;
 }
 
 /**
@@ -989,53 +988,53 @@ private string unformat_frame(buffer message) {
  * @returns {int} - 1 if the message was sent successfully, 0 otherwise.
  */
 protected nomask varargs int websocket_message(int frame_opcode, mixed args...) {
-    buffer frame;
-    int result;
-    int written;
-    string unformatted_frame;
+    buffer frame ;
+    int result ;
+    int written ;
+    string unformatted_frame ;
     int fd ;
 
     if(!server)
-        return 0;
+        return 0 ;
 
     fd = server["fd"] ;
 
     if(member_array(frame_opcode, WS_VALID_FRAME_OPCODES) == -1) {
-        _log(3, "Invalid opcode: %d", frame_opcode);
-        return 0;
+        _log(3, "Invalid opcode: %d", frame_opcode) ;
+        return 0 ;
     }
 
     if(nullp(args)) {
-        _log(3, "No payload provided for frame opcode: %d", frame_opcode);
-        return 0;
+        _log(3, "No payload provided for frame opcode: %d", frame_opcode) ;
+        return 0 ;
     }
 
-    if(!pointerp(args)) args = ({ args });
+    if(!pointerp(args)) args = ({ args }) ;
 
-    _log(3, "Preparing to format frame with opcode: %d and payload: %O", frame_opcode, args);
+    _log(3, "Preparing to format frame with opcode: %d and payload: %O", frame_opcode, args) ;
 
-    frame = format_frame(frame_opcode, args...);
-    written = sizeof(frame);
-    server["sent_total"] += written;
-    result = socket_write(fd, frame);
+    frame = format_frame(frame_opcode, args...) ;
+    written = sizeof(frame) ;
+    server["sent_total"] += written ;
+    result = socket_write(fd, frame) ;
 
-    _log(3, "Frame type: %d, Message: %O", frame_opcode, args);
-    _log(3, "Binary frame: %O", binary_to_hex(frame));
+    _log(3, "Frame type: %d, Message: %O", frame_opcode, args) ;
+    _log(3, "Binary frame: %O", binary_to_hex(frame)) ;
 
-    unformatted_frame = unformat_frame(frame);
-    _log(3, "Unformatted frame: %s", unformatted_frame);
+    unformatted_frame = unformat_frame(frame) ;
+    _log(3, "Unformatted frame: %s", unformatted_frame) ;
 
     if(result != EESUCCESS) {
-        _log(2, "Failed to send message: %s", socket_error(result));
-        call_if(this_object(), "websocket_handle_message_error", result);
-        shutdown_websocket();
-        return 0;
+        _log(2, "Failed to send message: %s", socket_error(result)) ;
+        call_if(this_object(), "websocket_handle_message_error", result) ;
+        shutdown_websocket() ;
+        return 0 ;
     } else {
-        _log(2, "Sent message to %s", server["request"]["host"]);
+        _log(2, "Sent message to %s", server["request"]["host"]) ;
 
-        call_if(this_object(), "websocket_handle_message_sent", frame_opcode, args);
+        call_if(this_object(), "websocket_handle_message_sent", frame_opcode, args) ;
 
-        return 1;
+        return 1 ;
     }
 }
 
@@ -1053,7 +1052,7 @@ protected nomask void send_ping() {
     if(server["state"] != WS_STATE_CONNECTED)
         return ;
 
-    result = websocket_message(WS_PING_FRAME, "");
+    result = websocket_message(WS_PING_FRAME, "") ;
     if(!result) {
         _log(2, "Failed to send ping: %d", result) ;
     } else {
@@ -1069,12 +1068,12 @@ protected nomask void send_ping() {
 protected nomask void send_pong(string payload) {
     int result ;
 
-    _log(2, "Sending pong frame");
+    _log(2, "Sending pong frame") ;
 
     if(!server)
         return ;
 
-    result = websocket_message(WS_PONG_FRAME, payload);
+    result = websocket_message(WS_PONG_FRAME, payload) ;
     if(!result) {
         _log(2, "Failed to send pong: %d", result) ;
     } else {
@@ -1142,10 +1141,10 @@ varargs protected nomask int websocket_close(int code: (: WS_CLOSE_NORMAL :), st
  * @returns {string} - A random string of the specified length.
  */
 protected nomask string random_string(int length) {
-    string result = "";
+    string result = "" ;
     while(length--)
-        result += element_of(charset);
-    return result;
+        result += element_of(charset) ;
+    return result ;
 }
 
  /**

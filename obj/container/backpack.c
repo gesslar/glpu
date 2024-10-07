@@ -14,10 +14,10 @@ inherit STD_CONTAINER ;
 
 void setup() {
     set_id("backpack") ;
-    set_adj("small");
-    set_name("backpack");
-    set_short("a small backpack");
-    set_long("A backpack for carrying items.");
-    set_mass(5);
-    set_capacity(10);
+    set_adj("small") ;
+    set_name("backpack") ;
+    set_short("a small backpack") ;
+    set_long("A backpack for carrying items.") ;
+    set_mass(5) ;
+    set_capacity(10) ;
 }
