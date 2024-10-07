@@ -117,9 +117,6 @@ private void setup_dimensions() {
   MAX_Y = dimensions[HEIGHT] - 1;
   MIN_X = 0;
   MAX_X = dimensions[WIDTH] - 1;
-
-  _debug("\n\n\n") ;
-  _debug("Dimensions: %s", identify(dimensions));
 }
 
 /**
@@ -205,8 +202,6 @@ private void generate_layer(int z) {
     x = stack[<1][0];
     y = stack[<1][1];
 
-    _debug("Current position: %d, %d", y, x, y);
-
     if (!is_path(z, y, x)) {
       set_path(z, y, x);
       carved_tiles++;
@@ -217,8 +212,6 @@ private void generate_layer(int z) {
     seed = result[0];
     shuffled_dirs = result[1];
 
-    _debug("Shuffled dirs: %s", identify(shuffled_dirs));
-
     // Find valid directions
     foreach (dir in shuffled_dirs) {
       int nx = x + DIRECTIONS[dir]["dx"];
@@ -227,17 +220,11 @@ private void generate_layer(int z) {
       if (oob(z, ny, nx))
         continue;
 
-      _debug("  Parent: %d, %d, %d", z, y, x) ;
-      _debug("  Testing (%s): %d, %d, %d", dir, z, ny, nx) ;
-      _debug("    Is wall: %d", is_wall(z, ny, nx)) ;
-      // _debug("    Surrounding are walls: %d", surrounding_cells_are_walls(z, ny, nx, x, y)) ;
       // Ensure the new cell and its neighbors are walls
       if (is_wall(z, ny, nx) && surrounding_cells_are_walls(z, ny, nx, x, y)) {
         valid_dirs += ({ dir });
       }
     }
-
-    _debug("Valid dirs: %s", identify(valid_dirs));
 
     if (sizeof(valid_dirs) > 0) {
       int nx, ny;
@@ -247,8 +234,6 @@ private void generate_layer(int z) {
       dir = valid_dirs[0]; // Already shuffled, take the first
       nx = x + DIRECTIONS[dir]["dx"];
       ny = y + DIRECTIONS[dir]["dy"];
-
-      _debug("Moving %s to: %d, %d ➡️", dir, ny, nx);
 
       // Move to the new cell
       stack += ({ ({ nx, ny }) });
@@ -264,8 +249,6 @@ private void generate_layer(int z) {
       while(sizeof(walls) > 0) {
         int count = 0 ;
         int *wall, i ;
-
-        _debug("Attempt %d with size %d", ++xx, sizeof(walls)) ;
 
         result = prandom(seed, sizeof(walls)) ;
         seed = result[0] ;
@@ -285,7 +268,6 @@ private void generate_layer(int z) {
 
         // Record a success at x,y
         if(count == 1 || count == 2) {
-          _debug("Found a candidate at %d, %d", wall[1], wall[0]);
           stack += ({ ({ wall[1], wall[0] }) });
           break ;
         }
@@ -320,8 +302,6 @@ private mixed *any_surrounding_cell_is_a_path(int z, int y, int x) {
   int *dxs = ({ -1, 0, 1, 0 });
   int *dys = ({  0, 1, 0, -1 });
   mixed *result = ({});
-
-  _debug("Checking if any surrounding cell is a path at %d, %d", y, x);
 
   for (int i = 0; i < 4; i++) {
     int nx = x + dxs[i];
@@ -486,24 +466,17 @@ public void setup_exits(object room) {
     return ;
 
   room_type = cavern_map[layer][y][x] ;
-_debug("coords: %d,%d,%d", x, y, z) ;
 
   foreach(string dir, mapping info in DIRECTIONS) {
-    _debug("Checking dir %s on layer %d", dir, layer) ;
     if(dir == "up") {
       if(!is_up(layer, y, x))
         continue ;
 
       layer_connections = all_connections[layer-1] ;
 
-      _debug("Up Connections: %s", identify(layer_connections)) ;
       foreach(mixed *connection in layer_connections) {
         int *down = connection[0] ;
         int *up = connection[1] ;
-
-        _debug("z = %d, y = %d, x = %d", z, y, x) ;
-        _debug("layer = %d", layer) ;
-        if(z == 0 && y == 33 && x == 184) { _debug("We matched on an up! Down: %d,%d,%d", down[2], down[1], down[0]) ; _debug("Up: %d,%d,%d", up[2], up[1], up[0]) ; }
 
         if(up[0] == layer && up[1] == y && up[2] == x) {
           room->add_exit(dir, sprintf("%d,%d,%d", down[2], down[1], down[0]*-1)) ;
@@ -515,12 +488,9 @@ _debug("coords: %d,%d,%d", x, y, z) ;
         continue ;
 
       layer_connections = all_connections[layer] ;
-      _debug("Down Connections: %s", identify(layer_connections)) ;
       foreach(mixed *connection in layer_connections) {
         int *down = connection[0] ;
         int *up = connection[1] ;
-
-        if(z == 0 && y == 33 && x == 184) { _debug("Down: %d,%d,%d", down[2], down[1], down[0]) ; _debug("Up: %d,%d,%d", up[2], up[1], up[0]) ; }
 
         if(down[0] == layer && down[1] == y && down[2] == x) {
           room->add_exit(dir, sprintf("%d,%d,%d", up[2], up[1], up[0]*-1)) ;
