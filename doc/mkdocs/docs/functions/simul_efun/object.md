@@ -248,6 +248,27 @@ Retrieves all clones of the specified file present in the
 specified container. If the file is an object, it will
 retrieve all clones using the object's base name.
 
+## present_npcs
+
+### Synopsis
+
+```c
+object *present_npcs(object room)
+```
+
+### Parameters
+
+* `object room` - The room to search for NPCs in.
+
+### Returns
+
+`object*` - An array of NPC objects present in the room.
+
+### Description
+
+Retrieves all non-player characters (NPCs) present in the
+specified room.
+
 ## present_livings
 
 ### Synopsis

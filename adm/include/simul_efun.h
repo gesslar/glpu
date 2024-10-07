@@ -109,6 +109,7 @@ object *get_players(mixed names, object room) ;
 object *present_clones(string file, object room) ;
 object *present_livings(object room) ;
 object *present_players(object room) ;
+object *present_npcs(object room) ;
 object get_living(string name, object room) ;
 object get_player(string name, object room) ;
 object this_body() ;

@@ -134,6 +134,7 @@ title: simul_efun
 * [getoid](object.md#getoid)
 * [present_clones](object.md#present_clones)
 * [present_livings](object.md#present_livings)
+* [present_npcs](object.md#present_npcs)
 * [present_players](object.md#present_players)
 * [same_env_check](object.md#same_env_check)
 * [this_body](object.md#this_body)

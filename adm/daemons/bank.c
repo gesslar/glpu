@@ -128,12 +128,7 @@ mixed add_balance(string name, int amount) {
   if(stringp(result))
     return "Database error: " + result ;
 
-  if(amount > 0)
-    return "Successfully deposited " + amount + " coins." ;
-  else if(amount < 0)
-    return "Successfully withdrew " + (-amount) + " coins." ;
-  else
-    return "No transaction performed." ;
+  return 1 ;
 }
 
 /**
