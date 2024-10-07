@@ -58,7 +58,7 @@ void crawl(mixed arg...) {
 void crawl_next_room(object tp, mixed arg...) {
   string file ;
   object room ;
-  object v = load_object(VOID_ROOM) ;
+  object v = load_object(ROOM_VOID) ;
 
   if(!sizeof(todo)) {
     if(tp)
@@ -160,7 +160,7 @@ int *update_coordinates(int *coords, string exit, int *current_size, int *next_s
 
 object stash_objects(string room_file, object tp) {
   object room ;
-  object v = load_object(VOID_ROOM) ;
+  object v = load_object(ROOM_VOID) ;
 
   if(room = find_object(room_file)) {
     object *all = all_inventory(room) ;

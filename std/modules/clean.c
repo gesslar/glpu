@@ -107,7 +107,7 @@ void set_debug_clean(int i) {
     contents = all_inventory() ;
     filter(contents, (: $1->remove() :)) ;
     contents -= ({ 0 }) ;
-    contents->move(VOID_ROOM) ;
+    contents->move(ROOM_VOID) ;
 
     if(debug_clean) _debug("   ✔️ %O cleaning up now.", this_object()) ;
 

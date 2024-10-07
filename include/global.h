@@ -13,10 +13,11 @@
 #include <runtime_config.h>
 #include <signal.h>
 
-#define SIMUL_OB   "/adm/obj/simul_efun"
-#define LOGIN_OB   "/adm/obj/login"
-#define VOID_ROOM  "/d/std/void"
-#define FREEZER_ROOM "/d/std/freezer"
+#define SIMUL_OB     "/adm/obj/simul_efun"
+#define LOGIN_OB     "/adm/obj/login"
+#define ROOM_VOID    "/d/std/void"
+#define ROOM_FREEZER "/d/std/freezer"
+#define ROOM_START   "/d/village/square"
 
 #define true 1
 #define false 0

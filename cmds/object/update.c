@@ -70,7 +70,7 @@ mixed main(object tp, string arg) {
         return _error("You cannot update the update command. Destruct it instead.");
     }
 
-    if(file[0..<3] == VOID_ROOM) {
+    if(file[0..<3] == ROOM_VOID) {
         return _error("You cannot update the void object.");
     }
 
@@ -99,7 +99,7 @@ mixed main(object tp, string arg) {
 
         if(is_room_obj) {
             users = filter_array(all_inventory(obj), (: interactive :));
-            users->move(load_object(VOID_ROOM), 1);
+            users->move(load_object(ROOM_VOID), 1);
             obj->remove();
             if(obj) destruct(obj);
         }

@@ -17,23 +17,28 @@ developer.
 
 // 2024/02/01: Gesslar - some formatting updates
 
+#include <rooms.h>
+
 inherit STD_ROOM;
 
-void create() {
-     set_short("A workroom");
-     set_long("This is a bare and generic workroom for developers who don't "
-          "have one of their own. To see the source code for this workroom, "
-          "you can type 'more here'. There is a sign on the wall."
-     );
-     set_exits(([
-        "square": "/d/village/square",
-        "void"  : "/d/std/void"
-     ]));
-     set_items(([
-          "sign" : "The sign reads:\n"
-          "'You are never given a wish without also being given the "
-          "power to make it come true. You may, however, have to work for"
-          "it.'",
-     ]));
-     set_light(1);
+void setup() {
+  set_short("A workroom");
+  set_long(
+"This is a bare and generic workroom for developers who don't "
+"have one of their own. To see the source code for this workroom, "
+"you can type 'more here'. There is a sign on the wall."
+  );
+  set_exits(([
+    "square": ROOM_START,
+    "void"  : ROOM_VOID
+  ]));
+
+  set_items(([
+    "sign" : "The sign reads:\n"
+    "'You are never given a wish without also being given the "
+    "power to make it come true. You may, however, have to work for"
+    "it.'",
+  ]));
+
+  set_light(1);
 }

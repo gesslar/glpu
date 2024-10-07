@@ -13,7 +13,6 @@
 #include <origin.h>
 #include <gmcp_defines.h>
 #include <logs.h>
-#include <rooms.h>
 #include <player.h>
 
 inherit STD_BODY ;
@@ -208,8 +207,8 @@ void move_or_destruct(object ob) {
 
     // Were we in the VOID? If not, temporarily set the new destination
     // to the VOID.
-    if(!ob && env != find_object(VOID_ROOM))
-        catch(ob = load_object(VOID_ROOM)) ;
+    if(!ob && env != find_object(ROOM_VOID))
+        catch(ob = load_object(ROOM_VOID)) ;
 
     // Were we in the starting room? If not, temporarily set the new
     // destination to the starting room.
@@ -222,7 +221,7 @@ void move_or_destruct(object ob) {
     // a copy of the void.
     if(!ob) {
         /* This is bad.  Try to save them anyway. */
-        catch(ob = new(VOID_ROOM)) ;
+        catch(ob = new(ROOM_VOID)) ;
         if(!ob)
             return ;
 

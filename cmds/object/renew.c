@@ -35,7 +35,7 @@ mixed main(object tp, string str) {
 
     env = environment(ob) ;
 
-    if(ob->move(VOID_ROOM))
+    if(ob->move(ROOM_VOID))
         return _error("Failed to move the object to the void.") ;
 
     file = base_name(ob) ;

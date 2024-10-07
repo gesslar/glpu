@@ -35,16 +35,22 @@ private nosave string room_icon = "" ;
 private nosave string room_environment = null ;
 private nosave int room_colour = null ;
 private nosave mapping custom_gmcp = ([ ]) ;
-
+private nosave int no_gmcp_room_info = 0 ;
 mapping gmcp_room_info(object who) {
   mapping info = ([ ]) ;
-  string *exit_dirs = query_exit_ids() ;
-  string *door_dirs = query_door_ids() ;
+  string *exit_dirs ;
+  string *door_dirs ;
   mapping exits ;
   mapping doors ;
   mapping result ;
   mapping gmcp_info = ([ ]) ;
   // string *suppress ;
+
+  if(no_gmcp_room_info)
+    return info ;
+
+  exit_dirs = query_exit_ids() ;
+  door_dirs = query_door_ids() ;
 
   exits = query_exits() ;
   // suppress = query_exit_suppress() || ({}) ;
@@ -154,6 +160,10 @@ int *get_virtual_coordinates() {
     return null ;
 
   return ({z, y, x}) ;
+}
+
+void set_no_gmcp_room_info(int no_gmcp) {
+  no_gmcp_room_info = no_gmcp ;
 }
 
 void add_custom_gmcp(string key, mixed value) {

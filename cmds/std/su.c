@@ -18,7 +18,7 @@ mixed main(object source, string arg) {
     object room, freezer ;
 
     room = environment(source) ;
-    freezer = load_object(FREEZER_ROOM) ;
+    freezer = load_object(ROOM_FREEZER) ;
 
     su_body = source->query_su_body() ;
     if(!arg) {
