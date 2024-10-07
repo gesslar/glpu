@@ -609,8 +609,8 @@ void set_gmcp_supports(mapping supports) {
 
   if(!gmcp_login_status) {
     if(of("Char", supports) &&
-      of("modules", supports["Char"]) &&
-      of("Login", supports["Char"]["modules"])) {
+       of("modules", supports["Char"]) &&
+       of("Login", supports["Char"]["modules"])) {
       mapping payload = ([ "type" : ({ "password-credentials" }) ]) ;
 
       _info(this_object(), "\n["+mud_name()+"] GMCP Authentication available.") ;
