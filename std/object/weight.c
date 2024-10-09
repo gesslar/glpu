@@ -1,60 +1,54 @@
-// /std/object/weight.c
-// Handles mass of objects
-//
-// Created:     2024/02/18: Gesslar
-// Last Change: 2024/02/18: Gesslar
-//
-// 2024/02/18: Gesslar - Created
+/**
+ * @file /std/object/weight.c
+ * @description Handles mass of objects
+ *
+ * @created 2024-02-18 - Gesslar
+ * @last_modified 2024-02-18 - Gesslar
+ *
+ * @history
+ * 2024-02-18 - Gesslar - Created
+ */
 
-int mass ;
+#include <weight.h>
+
+int _mass ;
 
 int query_mass() {
-    return mass ;
+  return _mass ;
 }
 
-int set_mass(int x) {
-    if(x < 0)
-        return 0 ;
+int set_mass(int new_mass) {
+  int delta ;
 
-    if(environment()) {
-        int capacity = environment()->query_capacity() ;
-        if(x > capacity)
-            return 0 ;
-        if(x < 0)
-            return 0 ;
+  if(new_mass < 0)
+    return 0 ;
 
-        environment()->adjust_fill(x) ;
-    }
-    mass = x ;
-    return 1 ;
+  // If our new mass is less than 0, we cannot set the mass.
+  delta = new_mass - _mass ;
+
+  return adjust_mass(delta) ;
 }
 
-int adjust_mass(int x) {
-    int new_mass = mass + x ;
+int adjust_mass(int delta) {
+  object env ;
+  int new_mass ;
 
-    if(x == 0)
-        return 1 ;
-
-    if(environment()) {
-        int ignore_cap = environment()->ignore_capacity() ;
-        int ignore_mass = environment()->ignore_mass() ;
-        int cap = environment()->query_capacity() ;
-
-        if(!ignore_cap && !ignore_mass) {
-            if(!ignore_cap) {
-                if(new_mass > cap || new_mass < 0)
-                    return 0 ;
-            }
-            if(!ignore_mass) {
-                if(!environment()->adjust_mass(x))
-                    return 0 ;
-            }
-
-            environment()->adjust_fill(x) ;
-        }
-
-    }
-    mass = new_mass ;
-
+  // We're not changing mass. So, that's all right.
+  if(delta == 0)
     return 1 ;
+
+  // If we have an environment, we need to check if we can adjust its
+  // mass and fill and if so, then we can adjust our mass.
+  if(env = environment()) {
+    if(!env->adjust_mass(delta))
+      return 0 ;
+
+    if(!env->adjust_fill(delta)) {
+      env->adjust_mass(-delta) ;
+      return 0 ;
+    }
+  }
+
+  _mass += delta ;
+  return 1 ;
 }

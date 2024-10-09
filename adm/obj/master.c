@@ -82,8 +82,6 @@ protected void epilog(int load_empty) {
         }
         debug_message(out) ;
     }
-
-    call_out_walltime((:emit(SIG_SYS_BOOT):), 0.5) ;
 }
 
 void tune_into_error() {

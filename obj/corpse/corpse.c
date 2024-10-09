@@ -64,7 +64,7 @@ void decay(int it) {
             return ;
     }
 
-    call_out_walltime((: decay, ++it :), 10.0) ;
+    call_out_walltime((: decay, ++it :), 30.0+random_float(15.0)) ;
 }
 
 int is_corpse() { return 1 ; }

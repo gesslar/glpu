@@ -62,6 +62,17 @@ int allow_move(mixed dest) {
   return MOVE_OK ;
 }
 
+private void roll_back(mixed *rollback) {
+  int i = sizeof(rollback) ;
+
+  while(i--) {
+    if(objectp(rollback[i][0]))
+      rollback[i][0]->adjust_mass(rollback[i][1][0]) ;
+    if(objectp(rollback[i][0]))
+      rollback[i][0]->adjust_fill(rollback[i][1][1]) ;
+  }
+}
+
 int move(mixed dest) {
   int result ;
   object prev = environment() ;
@@ -71,6 +82,9 @@ int move(mixed dest) {
   int prev_ignore_mass = prev ? call_if(prev, "ignore_mass") : 0 ;
   int dest_ignore_mass = call_if(dest, "ignore_mass") || 0 ;
   int mass = query_mass() ;
+  string e ;
+
+  mixed *rollback = ({}) ;
 
   result = allow_move(dest) ;
 
@@ -78,46 +92,75 @@ int move(mixed dest) {
     return result ;
 
   if(!objectp(dest)) {
-    if(stringp(dest))
-      dest = load_object(dest) ;
+    if(stringp(dest)) {
+      e = catch(dest = load_object(dest)) ;
+
+      if(stringp(e) || !objectp(dest))
+        return MOVE_NO_DEST ;
+    }
     else
       return MOVE_NO_DEST ;
   }
 
-  if(!objectp(dest))
-    return MOVE_NO_DEST ;
-
   if(prev && prev == dest)
     return MOVE_ALREADY_THERE ;
 
-  move_object(dest) ;
+  // 0 = prev, 1 = dest
+  rollback = allocate(2) ;
 
   if(use_mass) {
-    object env, *envs = all_environment(dest) ;
+    // 0 = object, 1 = ({ mass, fill})
+    rollback[0] = allocate(2) ;
 
-    // First do the checks
-    foreach(env in envs) {
-      int fill = env->query_fill() ;
-      int cap = env->query_capacity() ;
-      int env_ignore_capacity = env->ignore_capacity() ;
+    // Update the mass and fill of the previous environment.
+    rollback[0][0] = prev ;
+    rollback[0][1] = allocate(2, 0) ;
+    if(prev) {
+      if(!prev->ignore_mass()) {
+        if(prev->adjust_mass(-mass))
+          rollback[0][1][0] = mass ;
+        else
+          return MOVE_TOO_HEAVY ;
+      }
 
-      if(env_ignore_capacity)
-        break ;
+      if(!prev->ignore_capacity()) {
+        if(prev->adjust_fill(-mass))
+          rollback[0][1][1] = mass ;
+        else {
+          roll_back(rollback) ;
+          return MOVE_TOO_HEAVY ;
+        }
+      }
+    }
 
-      if(mass + fill > cap)
+    // Update the mass and fill of the new environment. Rolling back if we fail,
+    // both the new and the previous environment.
+    rollback[1] = allocate(2) ;
+    rollback[1][0] = dest ;
+    rollback[1][1] = allocate(2, 0) ;
+    if(!dest->ignore_mass()) {
+      if(dest->adjust_mass(mass))
+        rollback[1][1][0] = -mass ;
+      else {
+        roll_back(rollback) ;
         return MOVE_TOO_HEAVY ;
+      }
+    }
 
-      // Now do the adjustments
-      if(prev && !prev_ignore_capacity)
-          prev->adjust_fill(-mass) ;
-      if(!dest_ignore_capacity)
-          dest->adjust_fill(mass) ;
-      if(prev && !prev_ignore_mass)
-          prev->adjust_mass(-mass) ;
-      if(!dest_ignore_mass)
-          dest->adjust_mass(mass) ;
+    if(!dest->ignore_capacity()) {
+      if(dest->adjust_fill(mass))
+        rollback[1][1][1] = -mass ;
+      else {
+        roll_back(rollback) ;
+        return MOVE_TOO_HEAVY ;
+      }
     }
   }
+
+  flush_messages() ;
+
+  // Ok, we can move now.
+  move_object(dest) ;
 
   event(this_object(), "moved", prev) ;
   if(prev && this_object()) {
@@ -135,6 +178,8 @@ int move(mixed dest) {
 
   if(this_object())
     return MOVE_OK ;
-  else
+  else {
+    roll_back(rollback) ;
     return MOVE_DESTRUCTED ;
+  }
 }
