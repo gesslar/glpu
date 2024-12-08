@@ -318,10 +318,11 @@ protected nomask mixed parse_body(mixed body, string content_type) {
       if(pcre_match(body, "^\\s*\\{[\\s\\S]*\\}\\s*$") == 1) {
         err = catch(payload = json_decode(body)) ;
         if(err) {
-          _log(2, "Failed to decode JSON payload: %O", err) ;
+          _log(1, "Failed to decode JSON payload: %O", err) ;
           payload = body ;
-        } else
+        } else {
           _log(3, "Decoded JSON payload: %O", payload) ;
+        }
       }
       break ;
     case CONTENT_TYPE_APPLICATION_FORM_URLENCODED: {
@@ -497,6 +498,8 @@ protected nomask string binary_to_hex(buffer buf) {
   string hex = "" ;
   int len = sizeof(buf) ;
 
+  _log(4, "Buffer = %O", buf) ;
+
   for(int i = 0; i < len; i++)
     hex += sprintf("0x%02x ", buf[i]) ;
 
@@ -504,6 +507,7 @@ protected nomask string binary_to_hex(buffer buf) {
   if(len > 0)
     hex = trim(hex) ;
 
+  _log(3, "Converted %d bytes to hex", sizeof(buf)) ;
   return hex ;
 }
 
@@ -519,44 +523,71 @@ protected nomask buffer hex_to_binary(string hex) {
   return binary ;
 }
 
-protected nomask void cache_response(string file, mixed response) {
-  int fs = file_size(file) ;
-  int sz = sizeof(response) ;
-  int max = get_config(__MAX_BYTE_TRANSFER__) ;
-  int start ;
-  int result ;
-  int x, y ;
+protected nomask void cache_response(string file, buffer response) {
+  int fs = file_size(file); // Current file size
+  int sz, result;
+  int start = fs > 0 ? fs : 0; // Start at the end of the file if it exists, otherwise at 0
 
-  _log(3, "Writing to cache file: "+file) ;
-  _log(4, "Writing response: %O", binary_to_hex(response)) ;
-  _log(3, "Filename " + file + " exists (size: %d): " + (file_exists(file) ? "true" : "false"), fs) ;
+  _log(3, "Writing to cache file: " + file);
+  _log(3, "Filename " + file + " exists (size: %d): %s", fs, (fs > 0 ? "true" : "false"));
 
-  if(bufferp(response))
-    response = to_string(response) ;
-
-  if(!stringp(response)) {
-    _log(4, "response is not a buffer or string") ;
-    return ;
+  // Ensure the response is a buffer
+  if(!bufferp(response)) {
+    _log(4, "Response is not a buffer: %O", response);
+    return;
   }
 
-  result = write_file(file, response) ;
-  if(!result) {
-    _log(4, "Failed to write to file: "+file) ;
-    return ;
+  sz = sizeof(response);
+
+  // Write the buffer to the file
+  result = write_buffer(file, start, response);
+  if(result != sz) {
+    _log(4, "Failed to write entire buffer to file: %s (expected %d bytes, wrote %d bytes)", file, sz, result);
+    return;
   }
 
-  _log(3, "Wrote %d bytes to file: %s, new file size: %d", sz, file, file_size(file)) ;
+  _log(3, "Wrote %d bytes to file: %s, new file size: %d", sz, file, file_size(file));
+}
+
+private nomask int integrity_check(string file, buffer response) {
+  buffer cached_content = read_buffer(file, 0, file_size(file));
+  if(sizeof(cached_content) != sizeof(response)) {
+    _log(4, "Mismatch detected: Cached file size: %d, Response size: %d", sizeof(cached_content), sizeof(response));
+    return 0 ;
+  }
+
+  for(int i = 0; i < min(({ sizeof(cached_content), sizeof(response) })); i++) {
+    if(cached_content[i] != response[i]) {
+      _log(4, "Discrepancy at byte %d: Cached file: %02x, Response: %02x", i, cached_content[i], response[i]);
+      break;
+    }
+  }
+
+  return 1 ;
 }
 
 protected nomask mixed read_cache(string file) {
   mixed response = "" ;
   int chunk_size = get_config(__MAX_BYTE_TRANSFER__) ;
   int max = get_config(__MAX_STRING_LENGTH__) ;
+  buffer buf, total;
+  string tail ;
 
   int curr = 0 ;
   int sz = file_size(file) ;
   string input ;
   int bytes_to_read ;
+
+  if(sz == -1) {
+    _log(2, "Cache file does not exist: %s", file) ;
+    return response ;
+  } else if(sz == 0) {
+    _log(2, "Cache file is empty: %s", file) ;
+    return response ;
+  }
+
+  tail = tail(file, 5) ;
+  _log(3, "Tail of file (5 lines): %O", tail) ;
 
   if(sz < 1)
     return response ;
@@ -564,20 +595,28 @@ protected nomask mixed read_cache(string file) {
   if(sz > max)
     return 0 ;
 
+  total = allocate_buffer(sz);
+
   while(curr < sz) {
     bytes_to_read = min(({sz - curr, chunk_size})) ;
 
-    input = read_bytes(file, curr, bytes_to_read) ;
+    buf = read_buffer(file, curr, bytes_to_read) ;
+    if(!buf) // Exit loop if read_bytes fails
+      break ;
 
-    if(!input)
-      break; // Exit loop if read_bytes fails
+    _log(4, "Read buffer: %s", to_string(buf)) ;
 
-    response += input ;
-    curr += sizeof(input);  // This is the key change
+    write_buffer(total, curr, buf) ;
+    _log(4, "Accumulated response: %s", to_string(total)) ;
+    curr += sizeof(buf);
   }
 
-  _log(3, "Bytes read: %d", sizeof(response)) ;
-  return response ;
+  _log(3, "Last 10 bytes of response: %O", identify(total[<10..])) ;
+
+  _log(3, "File size: %d", sz) ;
+  _log(3, "Bytes read: %d", sizeof(total)) ;
+  _log(3, "Integrity check: %d", integrity_check(file, total)) ;
+  return total ;
 }
 
 protected nomask string http_time_string(mapping client) {
