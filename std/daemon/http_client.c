@@ -6,10 +6,16 @@
  *              receive responses.
  *
  * @created 2024-07-05 - Gesslar
- * @last_modified 2024-07-05 - Gesslar
+ * @last_modified 2024-12-07 - Gesslar
  *
  * @history
  * 2024-07-05 - Gesslar - Created
+ * 2024-12-07 - Gesslar - Enhance HTTP client logging and response processing.
+ *                        Improved cache file checks with detailed logging for
+ *                        existence and size. Adjusted buffer handling in
+ *                        chunked transfer encoding and content-length
+ *                        scenarios. Cleaned up response processing logic for
+ *                        better clarity and reliability.
  */
 
 // This is a base HTTP client daemon that is intended to be inherited by other
