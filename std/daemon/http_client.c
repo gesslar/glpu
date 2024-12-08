@@ -228,6 +228,7 @@ nomask void shutdown_socket(int fd) {
   float now, started ;
   float received_total ;
   mixed callback ;
+  int fs ;
 
   _log(3, "Shutting down socket: %d", fd) ;
 
@@ -235,7 +236,12 @@ nomask void shutdown_socket(int fd) {
     return ;
 
   cache_file = server["cache"] ;
-  if(file_size(cache_file) > 0) {
+  fs = file_size(cache_file) ;
+  if(fs == -1) {
+    _log(2, "Cache file does not exist: %s", cache_file) ;
+  } else if(fs == 0) {
+    _log(2, "Cache file is empty: %s", cache_file) ;
+  } else {
     _log(2, "Total received: %d", server["received_total"]) ;
     _log(2, "Body received: %d", server["received_body"]) ;
 
@@ -272,7 +278,7 @@ nomask void socket_read(int fd, buffer incoming) {
   if(!server)
     return ;
 
-  _log(4, "First 10 bytes: %O", incoming[0..10]) ;
+  _log(4, "First 10 bytes: %O", incoming[0..9]) ;
 
   server["transactions"] ++ ;
 
@@ -309,7 +315,8 @@ nomask void socket_read(int fd, buffer incoming) {
 
     _log(3, "Status found: %O", status) ;
     _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
-  }
+  } else
+    _log(3, "Status already found") ;
 
   _log(3, "Starting to process headers") ;
   if(sizeof(buf) && !server["response"]["headers"]) {
@@ -332,10 +339,11 @@ nomask void socket_read(int fd, buffer incoming) {
 
     _log(4, "Headers found: %O", headers) ;
     _log(3, "Remaining buffer size: %d", sizeof(buf)) ;
-  }
+  } else
+    _log(3, "Headers already found") ;
 
   if(!sizeof(server["response"]["status"]) || !sizeof(server["response"]["headers"])) {
-    _log(3, "Both status and headers not found") ;
+    _log(3, "* Both status and headers not found") ;
     server["buffer"] = buf ;
     servers[fd] = server ;
     return ;
@@ -397,61 +405,71 @@ protected nomask void socket_ready(int fd) {
 
 private nomask void process_response(int fd, mapping server) {
   string file = server["cache"] ;
-  mixed response ;
+  mixed response = "" ;
   mixed err ;
-
-  if(file_size(file) < 1) {
-    _log(3, "Failed to read cache file: %s", file) ;
-    rm(file) ;
-    return ;
-  }
+  buffer cache ;
+  string buf ;
+  string rn = "\\r\\n", capture = "("+rn+")", replace = "" ;
 
   _log(2, "Processing response: %s", file) ;
 
   if(!server["response"]["body"])
     server["response"]["body"] = 0 ;
 
+  cache = read_cache(file) ;
+  buf = to_string(cache) ;
+  _log(3, "Last 10 bytes of converted cache: %O", identify(buf[<10..])) ;
+
   // Chunked transfer encoding
   if(server["response"]["headers"]["transfer-encoding"] == "chunked") {
-    string buf = "" ;
     mixed *assoc ;
     string *parts ;
     int *indices ;
     int i, sz ;
     int end_found ;
-    string incoming, str ;
-
-    if(!response)
-        response = "" ;
+    int total_size ;
 
     _log(2, "Chunked transfer encoding found") ;
 
-    buf = read_cache(file) ;
-
-    assoc = pcre_assoc(buf, ({ "(\r\n0\r\n\r\n)", "(\r\n[0-9a-fA-F]+\r\n)", "([0-9a-fA-F]+\r\n)", "(\r\n)" }), ({ 2, 1, 1, 1 })) ;
+    assoc = pcre_assoc(buf, ({
+      "(\\r\\n0\\r\\n\\r\\n)",      // End of chunked transfer encoding
+      "([0-9a-fA-F]+\\r\\n)",       // Chunk size
+      "(\\r\\n)"                    // New line between chunks
+    }), ({ 1, 2, 3 }));
 
     parts = assoc[0] ;
     indices = assoc[1] ;
 
+    total_size = 0 ;
     for(i = 0, sz = sizeof(parts); i < sz; i++) {
-      if(indices[i] != 0) {
-        if(indices[i] == 2)
-          end_found = 1 ;
+      // Regular old stuff. Nothing to see here.
+      if(indices[i] == 0)
+        continue ;
 
-        parts[i] = "" ;
+      switch(indices[i]) {
+        case 1: // End of chunked transfer encoding
+          end_found = 1 ; // We done here.
+          break ;
+        case 2: { // Get the chunk size and add it to the total size
+          int chunk_size ;
+          sscanf(parts[i], "%x", chunk_size) ;
+          total_size += chunk_size ;
+          break ;
+        }
+        case 3: // New line between chunks
+          break ; // will be replaced with "" after this switch
       }
+
+      parts[i] = "" ;
     }
 
-    buf = implode(parts, "") ;
+    response = implode(parts, "") ;
 
-    response = buf ;
-    server["response"]["body"] = response ;
-    servers[fd] = server ;
-    if(end_found) {
-      _log(2, "Chunked transfer encoding complete") ;
-      call_if(this_object(), "http_handle_response", server) ;
-    }
-  } else if(server["response"]["headers"]["content-length"]) {
+    _log(3, "Total size of chunked response: %d", total_size) ;
+    _log(3, "Size of response: %d", sizeof(buf)) ;
+  }
+  // Content-Length
+  else if(server["response"]["headers"]["content-length"]) {
     int expected = server["response"]["headers"]["content-length"] ;
     mixed *assoc ;
     string *parts ;
@@ -460,34 +478,36 @@ private nomask void process_response(int fd, mapping server) {
 
     _log(2, "Content-Length: %d", expected) ;
 
-    response = read_cache(file) ;
+    cache = read_cache(file) ;
+    buf = to_string(cache) ;
+    sz = sizeof(cache) ;
 
-    _log(2, "Size of response: %d", sizeof(response)) ;
-
-    assoc = pcre_assoc(response, ({ "(\r\n\r\n)" }), ({ 1 })) ;
-    parts = assoc[0] ;
-    indices = assoc[1] ;
-
-    _log(4, "assoc: %O\n", assoc) ;
-
-    i = 0 ;
-    sz = sizeof(parts) ;
-    for(i = 0; i < sz; i++) {
-      if(indices[i] == 1)
-        parts[i] = "" ;
+    _log(3, "Do we have any new lines to strip? %d", pcre_match(buf, rn)) ;
+    if(pcre_match(buf, rn)) {
+      _log(2, "Size of response before removing new lines: %d", sz) ;
+      while(pcre_match(buf, rn)) {
+        _log(2, "> Substituting new line with empty string") ;
+        buf = pcre_replace(buf, capture, ({ replace })) ;
+      }
     }
 
-    response = implode(parts, "") ;
-
-    server["response"]["body"] = response ;
-    servers[fd] = server ;
-    if(sizeof(response) == expected) {
+    if(sz == expected) {
       _log(2, "Content-Length: %d", expected) ;
-      _log(2, "Size of response: %d", sizeof(response)) ;
+      _log(2, "Size of response after removing new lines: %d", sizeof(cache)) ;
       call_if(this_object(), "http_handle_response", server) ;
-    }
-  } else
-    _log("No content-length or chunked transfer encoding found") ;
+    } else
+      _log(2, "Size of response (%d) does not match Content-Length (%d)", sizeof(buf), expected) ;
+
+    response = buf ;
+  }
+  // No content-length or chunked transfer encoding found. What is it???
+  // If someone identifies the format, please update this!
+  else {
+    _log(2, "No content-length or chunked transfer encoding found. "
+      "Therefore, assumingthe response is the entire body. 🤷🏻") ;
+
+    response = buf ;
+  }
 
   _log(2, "Removing cache file: %s", file) ;
 
@@ -495,13 +515,13 @@ private nomask void process_response(int fd, mapping server) {
     int result = rm(file) ;
 
     if(result == 0) {
-      _log(3, "Failed to remove cache file: %s", file) ;
+      _log(2, "Failed to remove cache file: %s", file) ;
       throw("Failed to remove cache file: " + file) ;
     }
   } ;
 
-  if(err)
-    _log(3, "Failed to remove cache file: %s", file) ;
+  server["response"]["body"] = response ;
+  servers[fd] = server ;
 }
 
 private nomask void process_redirect(int fd, mapping server) {
