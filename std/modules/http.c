@@ -3,10 +3,15 @@
  * @description HTTP module with shared functions for use in HTTP operations
  *
  * @created 2024-07-05 - Gesslar
- * @last_modified 2024-07-05 - Gesslar
+ * @last_modified 2024-12-07 - Gesslar
  *
  * @history
  * 2024-07-05 - Gesslar - Created
+ * 2024-12-07 - Gesslar - Refactor HTTP module: Improve logging and buffer
+ *                        handling in cache response and read cache functions.
+ *                        Added integrity check for cached responses and
+ *                        enhanced error handling for JSON decoding. Cleaned
+ *                        up code for better readability.
  */
 
 inherit M_LOG ;
