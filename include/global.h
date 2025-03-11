@@ -24,7 +24,6 @@
 #define true 1
 #define false 0
 #define null ([])[0]
-#define nil null
 #define undefined ([])[0]
 
 #define DATE "%F"
