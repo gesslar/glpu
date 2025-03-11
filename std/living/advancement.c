@@ -12,96 +12,93 @@
 #include <advancement.h>
 #include <gmcp_defines.h>
 
-private float level = 1.0 ;
-private float level_mod = 0.0 ;
-private int xp = 0 ;
+private float _level = 1.0 ;
+private float _level_mod = 0.0 ;
+private int _xp = 0 ;
 
 int query_xp() {
-    return xp ;
+  return _xp ;
 }
 
 float query_tnl() {
-    return ADVANCE_D->tnl(level) ;
+  return ADVANCE_D->tnl(_level) ;
 }
 
 float query_level() {
-    return level ;
+  return _level ;
 }
 
 float query_effective_level() {
-    return level + level_mod ;
+  return _level + _level_mod ;
 }
 
 float set_level(float l) {
-    level = to_float(l) ;
+  _level = to_float(l) ;
 
-    if(userp()) {
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_XP: xp,
-            GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
-            GMCP_LBL_CHAR_STATUS_LEVEL: level,
-        ])) ;
-    }
+  if(userp()) {
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+      GMCP_LBL_CHAR_STATUS_XP: _xp,
+      GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
+      GMCP_LBL_CHAR_STATUS_LEVEL: _level,
+    ])) ;
+  }
 
-    return level ;
+  return _level ;
 }
 
 float add_level(float l) {
-    level += to_float(l) ;
+  _level += to_float(l) ;
 
-    if(userp()) {
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_XP: xp,
-            GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
-            GMCP_LBL_CHAR_STATUS_LEVEL: level,
-        ])) ;
-    }
+  if(userp()) {
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+      GMCP_LBL_CHAR_STATUS_XP: _xp,
+      GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
+      GMCP_LBL_CHAR_STATUS_LEVEL: _level,
+    ])) ;
+  }
 
-    return level ;
+  return _level ;
 }
 
 float query_level_mod() {
-    return level_mod ;
+  return _level_mod ;
 }
 
 float set_level_mod(float l) {
-    level_mod = to_float(l) ;
-    return level_mod ;
+  return adjust_level_mod(l - _level_mod) ;
 }
 
-float add_level_mod(float l) {
-    level_mod += to_float(l) ;
-    return level_mod ;
+float adjust_level_mod(float l) {
+  _level_mod += to_float(l) ;
+
+  return _level_mod ;
 }
 
-int add_xp(int amount) {
-    xp += amount ;
+int adjust_xp(int amount) {
+  _xp += amount ;
 
-    if(userp()) {
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_XP: xp,
-            GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
-            GMCP_LBL_CHAR_STATUS_LEVEL: level,
-        ])) ;
-    }
+  if(userp()) {
+    GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
+      GMCP_LBL_CHAR_STATUS_XP: _xp,
+      GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
+      GMCP_LBL_CHAR_STATUS_LEVEL: _level,
+    ])) ;
+  }
 
-    return xp ;
+  return _xp ;
 }
 
 int set_xp(int amount) {
-    xp = amount ;
+  int delta ;
 
-    if(userp()) {
-        GMCP_D->send_gmcp(this_object(), GMCP_PKG_CHAR_STATUS, ([
-            GMCP_LBL_CHAR_STATUS_XP: xp,
-            GMCP_LBL_CHAR_STATUS_TNL: query_tnl(),
-            GMCP_LBL_CHAR_STATUS_LEVEL: level,
-        ])) ;
-    }
+  if(_xp < 1)
+    delta = amount  ;
+  else
+    delta = amount ;
 
-    return xp ;
+  return adjust_xp(delta) ;
 }
 
 void on_advance(object tp, float l) {
-    tell(tp, "You have advanced to level " + to_int(l) + "!\n") ;
+  tell(tp, "You have advanced to level " + to_int(l) + "!\n") ;
 }

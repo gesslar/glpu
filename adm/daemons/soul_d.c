@@ -34,7 +34,7 @@ nomask string *query_emote_msgs(string emote) ;
 
 
 void setup() {
-    set_no_clean() ;
+    set_no_clean(1) ;
     set_persistent() ;
 }
 

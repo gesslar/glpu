@@ -20,7 +20,7 @@ varargs void broadcast_gmcp(mixed audience, string gmcp_package, mixed arg) ;
 void init_gmcp(object who) ;
 
 void setup() {
-  set_no_clean() ;
+  set_no_clean(1) ;
 }
 
 varargs void broadcast_gmcp(mixed audience, string gmcp_package, mixed arg) {

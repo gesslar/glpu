@@ -6,12 +6,18 @@ title: simul_efun
 ## [arrays](arrays.md)
 
 * [array_fill](arrays.md#array_fill)
+* [array_merge](arrays.md#array_merge)
 * [array_pad](arrays.md#array_pad)
+* [array_slice](arrays.md#array_slice)
 * [distinct_array](arrays.md#distinct_array)
+* [pop](arrays.md#pop)
+* [push](arrays.md#push)
 * [remove_array_element](arrays.md#remove_array_element)
 * [reverse_array](arrays.md#reverse_array)
+* [shift](arrays.md#shift)
 * [splice](arrays.md#splice)
 * [uniform_array](arrays.md#uniform_array)
+* [unshift](arrays.md#unshift)
 
 ## [base64](base64.md)
 

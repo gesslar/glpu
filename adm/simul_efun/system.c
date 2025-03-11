@@ -162,17 +162,17 @@ varargs void _debug(mixed str, mixed args...) {
         str = sprintf("%O", str) ;
     }
 
-    str = COLOUR_D->substitute_colour(str, "high") ;
+    str = COLOUR_D->substitute_colour(str, "on") ;
 
     debug_message(str) ;
 }
 
 private nosave mapping _symbols = ([
-    "ok"      : ({ ({ "{{0036}}", "" }), ({ "\u2022 ", "o ", "" }) }),
-    "error"   : ({ ({ "{{0160}}", "" }), ({ "\u25CF ", "o ", "" }) }),
-    "warn"    : ({ ({ "{{0214}}", "" }), ({ "\u25B2 ", "o ", "" }) }),
-    "info"    : ({ ({ "{{0228}}", "" }), ({ "\u25A0 ", "o ", "" }) }),
-    "question": ({ ({ "{{0033}}", "" }), ({ "\u25C6 ", "o ", "" }) }),
+    "ok"      : ({ ({ SYSTEM_OK,      "" }), ({ "\u2022 ", "o ", "" }) }),
+    "error"   : ({ ({ SYSTEM_ERROR,   "" }), ({ "\u25CF ", "o ", "" }) }),
+    "warn"    : ({ ({ SYSTEM_WARNING, "" }), ({ "\u25B2 ", "o ", "" }) }),
+    "info"    : ({ ({ SYSTEM_INFO,    "" }), ({ "\u25A0 ", "o ", "" }) }),
+    "question": ({ ({ SYSTEM_QUERY,   "" }), ({ "\u25C6 ", "o ", "" }) }),
 ]) ;
 
 /**

@@ -55,8 +55,8 @@ private nosave mapping long_descriptions ;
 
 private nosave int *dimensions ;
 // Dimension configuration {min, range} for z, y, x
-private nosave mixed *dimension_config = ({ ({ 5, 1 }), ({ 25, 10 }), ({ 25, 10 }) }) ;
-private nosave float coverage_percentage = 0.03 ; // 5%
+private nosave mixed *dimension_config = ({ ({ 3, 1 }), ({ 50, 1 }), ({ 50, 1 }) }) ;
+private nosave float coverage_percentage = 0.10 ; // 5%
 private nosave int min_room_size = 1 ;
 private nosave int max_room_size = 3 ;
 private mixed *neighbour_excludes = ({}) ;

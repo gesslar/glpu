@@ -28,12 +28,11 @@ mixed main(object caller, string arg) {
     if(ob = find_object(file))
         destruct(ob) ;
 
-    write_file(file,"mixed eval() { "+arg+" ; }\n") ;
+    write_file(file,"mixed eval() { "+arg+"; }\n") ;
     if(err = catch(ob = load_object(file))) {
         rm(file) ;
         return _error("Error loading file %s\n%s", file, err) ;
     }
-
 
     err = catch {
         reset_eval_cost() ;

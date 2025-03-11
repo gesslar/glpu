@@ -25,7 +25,7 @@ private nomask void execute_callback(mapping request, mapping response) ;
 private nomask nosave mapping api_calls = ([ ]) ;
 
 void setup() {
-    set_log_level(0) ;
+    set_log_level(4) ;
     set_log_prefix("(GITHUB_ISSUES)") ;
 
     assure_dir("/data/github/issues/pending") ;

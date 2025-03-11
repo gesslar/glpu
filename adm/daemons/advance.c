@@ -62,7 +62,11 @@ int advance(object tp) {
 }
 
 int earn_xp(object tp, int amount) {
-  tp->add_xp(amount) ;
+  _debug("earn_xp: " + amount) ;
+  _debug("xp: " + tp->query_xp()) ;
+  tp->adjust_xp(amount) ;
+  _debug("xp: " + tp->query_xp()) ;
+
 
   if(mud_config("PLAYER_AUTOLEVEL"))
     advance(tp) ;

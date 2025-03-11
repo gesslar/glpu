@@ -138,7 +138,7 @@ void Items(object who, string submodule, mixed arg) {
 
       foreach(item in items) {
         item_data += ({ ([
-          "name": COLOUR_D->substitute_colour(get_short(item), "high"),
+          "name": COLOUR_D->substitute_colour(get_short(item), "on"),
           "id"  : item->query_ids(),
           "attrib": get_item_attrib(item),
           "hash": hash("md4", file_name(item)),
@@ -153,7 +153,7 @@ void Items(object who, string submodule, mixed arg) {
         return ;
 
       item_data = ([
-        "name"    : COLOUR_D->substitute_colour(get_short(item), "high"),
+        "name"    : COLOUR_D->substitute_colour(get_short(item), "on"),
         "id"      : item->query_ids(),
         "attrib"  : get_item_attrib(item),
         "hash"    : hash("md4", file_name(item)),

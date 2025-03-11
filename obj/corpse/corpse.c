@@ -9,62 +9,72 @@
  * 2024-07-27 - Gesslar - Created
  */
 
-inherit STD_ITEM ;
-inherit STD_CONTAINER ;
+inherit STD_ITEM;
+inherit STD_CONTAINER;
 
-private string killer_name ;
-private string dead_name ;
+private string dead_name, killer_name;
+private nosave int pc_corpse, npc_corpse;
 
-void decay(int it) ;
+void decay(int it);
 
-int pc_corpse, npc_corpse ;
+private nosave string *_shorts = ({
+  "the dead body of {NAME}",
+  "the bloated body of {NAME}",
+  "the decaying body of {NAME}",
+  "the rotting body of {NAME}",
+  "the putrid body of {NAME}",
+  "the decomposing body of {NAME}",
+  "the skeletal remains of {NAME}",
+});
 
 void setup_corpse(object dead, object killer) {
-    killer_name = killer ? killer->query_name() : "unknown" ;
-    dead_name = dead->query_name() ;
-    set_id(({ "body", "dead body", "corpse" })) ;
-    set_name(dead_name+"'s' body") ;
-    set_short("the dead body of "+dead_name) ;
-    set_long("This is the dead body of "+dead_name+".") ;
-    set_mass(1) ;
-    set_capacity(1000) ;
+  string *corpse_shorts = copy(_shorts);
+  string short = shift(ref corpse_shorts);
 
-    pc_corpse = dead->is_pc() ;
-    npc_corpse = dead->is_npc() ;
+  killer_name = killer ? killer->query_name() : "unknown";
+  dead_name = dead->query_name();
 
-    call_out_walltime((: decay, 0 :), 1.0) ;
+  set_id(({ "body", "dead body", "corpse" }));
+  set_name(dead_name+"'s body");
+
+  short = replace_string(short, "{NAME}", dead_name);
+
+  set_short(short);
+  set_long("This is the dead body of "+dead_name+".");
+  set_mass(1);
+  set_capacity(1000);
+
+  pc_corpse = dead->is_pc();
+  npc_corpse = dead->is_npc();
+
+  call_out_walltime((: decay, corpse_shorts :), 5.0+random_float(5.0));
 }
 
-int is_pc_corpse() { return pc_corpse ; }
-int is_npc_corpse() { return npc_corpse ; }
+string query_killer_name() { return killer_name; }
+string query_dead_name() { return dead_name; }
 
-void decay(int it) {
-    if(!environment())
-        return ;
+int is_pc_corpse() { return pc_corpse; }
+int is_npc_corpse() { return npc_corpse; }
 
-    switch(it) {
-        case 0:
-            // don't do anything
-            break ;
-        case 1:
-            set_short("the decaying body of "+dead_name) ;
-            break ;
-        case 2:
-            set_short("the rotting body of "+dead_name) ;
-            break ;
-        case 2:
-            set_short("the putrid body of "+dead_name) ;
-            break ;
-        case 4:
-            set_short("the skeletal remains of "+dead_name) ;
-            break ;
-        default:
-            // clean_contents() ;
-            remove() ;
-            return ;
-    }
+void decay(string *corpse_shorts) {
+  string short;
 
-    call_out_walltime((: decay, ++it :), 30.0+random_float(15.0)) ;
+  if(!environment())
+    return;
+
+  short = shift(ref corpse_shorts);
+  short = replace_string(short, "{NAME}", dead_name);
+  set_short(short);
+
+  if(sizeof(corpse_shorts) == 0) {
+    call_out_walltime(function() {
+      // clean_contents();
+      remove();
+    }, 1.0);
+    return;
+  }
+
+  call_out_walltime((: decay, corpse_shorts :), 5.0+random_float(5.0));
 }
 
-int is_corpse() { return 1 ; }
+int is_corpse() { return 1; }

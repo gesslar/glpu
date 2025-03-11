@@ -85,7 +85,7 @@ int rec_msg(string chan, string usr, string msg) {
     } else
         real_message = sprintf(": %s", msg) ;
 
-    CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+    CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
     history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
 
     if(!of(chan, locals))
@@ -109,7 +109,7 @@ int rec_grapevine_msg(string chan, string usr, string msg, string game) {
 
     name = sprintf("%s@%s", usr, game) ;
 
-    CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + name + real_message + "\n") ;
+    CHAN_D->rec_msg(chan, lower_case(name), "[" + capitalize(chan) + "] " + name + real_message + "\n") ;
     history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + name + real_message + "\n" }) ;
 
     save_data() ;

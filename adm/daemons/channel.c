@@ -8,7 +8,10 @@
 
 */
 
+#include <gmcp_defines.h>
+
 inherit STD_DAEMON ;
+
 
 /* Last modified by Tacitus on July 5th, 2006 */
 
@@ -25,285 +28,311 @@ varargs int filter_listing(string element, string name) ;
 string *get_channels(string module_name) ;
 string *get_modules() ;
 string *get_tuned(string argument) ;
-void rec_msg(string channel, string msg) ;
+void rec_msg(string channel, string user, string msg) ;
 
 mapping channels ;
 mapping modules ;
 
 void setup() {
-    string str, err, *arr ;
-    int i ;
-    float time ;
-    object ob ;
+  string str, err, *arr ;
+  int i ;
+  float time ;
+  object ob ;
 
-    set_no_clean() ;
+  set_no_clean(1) ;
 
-    channels = ([]) ;
-    modules = ([]) ;
+  channels = ([]) ;
+  modules = ([]) ;
 
-    arr = explode_file(__DIR__ "modules/channel/installed_modules") ;
+  arr = explode_file(__DIR__ "modules/channel/installed_modules") ;
 
-    if(!sizeof(arr))
-        return ;
+  if(!sizeof(arr))
+    return ;
 
-    for(i = 0; i < sizeof(arr); i++) {
-        if(ob = find_object(arr[i]))
-            ob->remove() ;
+  for(i = 0; i < sizeof(arr); i++) {
+    if(ob = find_object(arr[i]))
+      ob->remove() ;
 
-        _debug("> Loading channel module: %s", arr[i]) ;
-        time = time_frac() ;
-        err = catch(load_object(arr[i])) ;
+    _debug("> Loading channel module: %s", arr[i]) ;
+    time = time_frac() ;
+    err = catch(load_object(arr[i])) ;
 
-        if(err != 0)
-            _debug("< Error %s when loading %s", err, arr[i]) ;
-        else
-            _debug("< Done (%.2fs)", time_frac() - time) ;
-    }
+    if(err != 0)
+      _debug("< Error %s when loading %s", err, arr[i]) ;
+    else
+      _debug("< Done (%.2fs)", time_frac() - time) ;
+  }
 
-    set_no_clean(1) ;
+  set_no_clean(1) ;
 }
 
 int register_module(string name, string path) {
-    string *keys ;
+  string *keys ;
 
-    keys = keys(modules) ;
-    if(!name || !path)
-        return 0 ;
+  keys = keys(modules) ;
+  if(!name || !path)
+    return 0 ;
 
-    if(member_array(name, keys) != -1) {
-        if(modules[name] == path)  {
-            _debug("  > Module %s already registered to path %s", name, path) ;
-            return 1 ;
-        } else {
-            _debug("  > Module %s already registered to path %s", name, modules[name]) ;
-            return -1 ;
-        }
+  if(member_array(name, keys) != -1) {
+    if(modules[name] == path)  {
+      _debug("  > Module %s already registered to path %s", name, path) ;
+      return 1 ;
+    } else {
+      _debug("  > Module %s already registered to path %s", name, modules[name]) ;
+      return -1 ;
     }
+  }
 
-    modules[name] = path ;
+  modules[name] = path ;
 
-    _debug("  > Module %s registered to path %s", name, path) ;
+  _debug("  > Module %s registered to path %s", name, path) ;
 
-    return 1 ;
+  return 1 ;
 }
 
 int unregister_module(string module_name) {
-    string *keys = keys(modules) ;
+  string *keys = keys(modules) ;
 
-    if(!module_name || member_array(module_name, keys) == -1) return 0 ;
+  if(!module_name || member_array(module_name, keys) == -1)
+    return 0 ;
 
-    if(modules[module_name] != file_name(previous_object())) return 0 ;
+  if(modules[module_name] != file_name(previous_object()))
+    return 0 ;
 
-    foreach(mixed key, mixed value in channels) {
-        if(value["module"] == module_name) map_delete(channels, key) ;
-    }
+  foreach(mixed key, mixed value in channels)
+    if(value["module"] == module_name)
+      map_delete(channels, key) ;
 
-    return 1 ;
+  return 1 ;
 }
 
 int register_channel(string module_name, string channel_name) {
-    string *keys ;
-    string new_name = channel_name ;
+  string *keys ;
+  string new_name = channel_name ;
 
-    if(!valid_module(module_name))
-        return -1 ;
+  if(!valid_module(module_name))
+    return -1 ;
 
-    keys = keys(modules) ;
-    if(member_array(module_name, keys) == -1) return -1 ;
-    keys = keys(channels) ;
+  keys = keys(modules) ;
+  if(member_array(module_name, keys) == -1)
+    return -1 ;
 
-    if(modules[module_name] != file_name(previous_object())) return 0 ;
+  keys = keys(channels) ;
 
-    if(member_array(channel_name, keys) != -1) {
-        if(channels[channel_name]["module"] == module_name) {
-            channels[channel_name]["listeners"] = ({}) ;
-            return 1 ;
-        }
-        else new_name = module_name[0..3] + channel_name ;
+  if(modules[module_name] != file_name(previous_object()))
+    return 0 ;
+
+  if(member_array(channel_name, keys) != -1) {
+    if(channels[channel_name]["module"] == module_name) {
+      channels[channel_name]["listeners"] = ({}) ;
+      return 1 ;
     }
-    channels[new_name] = (["module" : module_name, "real_name" : channel_name, "listeners" : ({})]) ;
+    else
+      new_name = module_name[0..3] + channel_name ;
+  }
 
-    _debug("   > Channel %s registered to module %s", new_name, module_name) ;
+  channels[new_name] = (["module" : module_name, "real_name" : channel_name, "listeners" : ({})]) ;
 
-    return 1 ;
+  _debug("   > Channel %s registered to module %s", new_name, module_name) ;
+
+  return 1 ;
 }
 
 int remove_channel(string channel_name) {
-    string *keys ;
+  string *keys ;
 
-    keys = keys(channels) ;
-    if(member_array(channel_name, keys) == -1) return 0 ;
-    map_delete(channels, channel_name) ;
+  keys = keys(channels) ;
+  if(member_array(channel_name, keys) == -1)
+    return 0 ;
 
-    return 1 ;
+  map_delete(channels, channel_name) ;
+
+  return 1 ;
 }
 
 int tune(string channel, string user, int flag) {
-    string *keys ;
-    object mod_obj ;
+  string *keys ;
+  object mod_obj ;
 
-    keys = keys(channels) ;
-    if(member_array(channel, keys) == -1)
-        return 0 ;
+  keys = keys(channels) ;
+  if(member_array(channel, keys) == -1)
+    return 0 ;
 
-    if(!valid_module(channels[channel]["module"])) {
-        map_delete(channels, channel) ;
-        return 0 ;
-    }
+  if(!valid_module(channels[channel]["module"])) {
+    map_delete(channels, channel) ;
+    return 0 ;
+  }
 
-    mod_obj = find_object(modules[channels[channel]["module"]]) ;
+  mod_obj = find_object(modules[channels[channel]["module"]]) ;
 
-    if(!mod_obj->is_allowed(channels[channel]["real_name"], user, flag))
-        return 0 ;
-    if(flag == 1 && member_array(user, channels[channel]["listeners"]) == -1)
-        channels[channel]["listeners"] += ({user}) ;
-    if(flag == 0 && member_array(user, channels[channel]["listeners"]) != -1)
-        channels[channel]["listeners"] -= ({user}) ;
+  if(!mod_obj->is_allowed(channels[channel]["real_name"], user, flag))
+    return 0 ;
 
-    return 1 ;
+  if(flag == 1 && member_array(user, channels[channel]["listeners"]) == -1)
+    channels[channel]["listeners"] += ({user}) ;
+
+  if(flag == 0 && member_array(user, channels[channel]["listeners"]) != -1)
+    channels[channel]["listeners"] -= ({user}) ;
+
+  return 1 ;
 }
 
 int valid_channel(string channel_name) {
-    return !nullp(channels[channel_name]) ;
+  return !nullp(channels[channel_name]) ;
 }
 
 int valid_module(string module_name) {
-    return !nullp(modules[module_name]) ;
+  return !nullp(modules[module_name]) ;
 }
 
 int chat(string channel, string user, string msg) {
-    object mod_obj ;
-    string *keys ;
+  object mod_obj ;
+  string *keys ;
 
-    keys = keys(channels) ;
-    if(member_array(channel, keys) == -1) return 0 ;
+  keys = keys(channels) ;
+  if(member_array(channel, keys) == -1)
+    return 0 ;
 
-    if(!valid_module(channels[channel]["module"])) {
-        map_delete(channels, channel) ;
-        return 0 ;
-    }
-    mod_obj = find_object(modules[channels[channel]["module"]]) ;
+  if(!valid_module(channels[channel]["module"])) {
+    map_delete(channels, channel) ;
+    return 0 ;
+  }
 
-    if(member_array(user, channels[channel]["listeners"]) == -1) return 0 ;
-    if(!mod_obj->is_allowed(channels[channel]["real_name"], user)) return 0 ;
-    if(!msg) return(notify_fail("Syntax: <channel> <msg>\n")) ;
-    if(mod_obj->rec_msg(channels[channel]["real_name"], user, msg)) return 1 ;
-    else return 0 ;
+  mod_obj = find_object(modules[channels[channel]["module"]]) ;
+
+  if(member_array(user, channels[channel]["listeners"]) == -1) return 0 ;
+  if(!mod_obj->is_allowed(channels[channel]["real_name"], user)) return 0 ;
+  if(!msg) return(notify_fail("Syntax: <channel> <msg>\n")) ;
+  if(mod_obj->rec_msg(channels[channel]["real_name"], user, msg)) return 1 ;
+  else return 0 ;
 }
 
 void grapevine_chat(mapping payload) {
-    object mod_obj ;
-    string *keys ;
-    string channel, user, msg, game ;
+  object mod_obj ;
+  string *keys ;
+  string channel, user, msg, game ;
 
-    channel = payload["channel"] ;
-    msg = payload["message"] ;
-    game = payload["game"] ;
-    user = payload["name"] ;
+  channel = payload["channel"] ;
+  msg = payload["message"] ;
+  game = payload["game"] ;
+  user = payload["name"] ;
 
-    keys = keys(channels) ;
-    if(member_array(channel, keys) == -1) return 0 ;
+  keys = keys(channels) ;
+  if(member_array(channel, keys) == -1) return 0 ;
 
-    if(!valid_module(channels[channel]["module"])) {
-        map_delete(channels, channel) ;
-        return 0 ;
-    }
+  if(!valid_module(channels[channel]["module"])) {
+    map_delete(channels, channel) ;
+    return 0 ;
+  }
 
-    mod_obj = find_object(modules[channels[channel]["module"]]) ;
-    return call_if(mod_obj, "rec_grapevine_msg", channel, user, msg, game) ;
+  mod_obj = find_object(modules[channels[channel]["module"]]) ;
+  return call_if(mod_obj, "rec_grapevine_msg", channel, user, msg, game) ;
 }
 
 string *get_channels(string module_name, string name) {
-    string *ret = ({}), *keys ;
-    int i ;
+  string *ret = ({}), *keys ;
+  int i ;
 
-    keys = keys(channels) ;
+  keys = keys(channels) ;
 
-    if(module_name == "all") ret = keys ;
-    else {
-        for(i = 0; i < sizeof(keys); i++)
-        if(channels[keys[i]]["module"] == module_name) ret += ({keys[i]}) ;
-    }
+  if(module_name == "all")
+    ret = keys ;
+  else {
+    for(i = 0; i < sizeof(keys); i++)
+    if(channels[keys[i]]["module"] == module_name) ret += ({keys[i]}) ;
+  }
 
-    ret = filter_array(ret, "filter_listing", this_object(), name) ;
-    ret = sort_array(ret, 1) ;
+  ret = filter_array(ret, "filter_listing", this_object(), name) ;
+  ret = sort_array(ret, 1) ;
 
-    return ret ;
+  return ret ;
 }
 
 string *get_tuned(string argument) {
-    string *ret = ({}) ;
-// printf("All channels: %O\n", channels) ;
-    if(!argument)
-        return ret ;
+  string *ret = ({}) ;
 
-    if(sizeof(channels[argument]["listeners"]) <= 0)
-        return ret ;
-
-    ret = channels[argument]["listeners"] ;
-
-    foreach(string name in ret)
-        if(find_living(name))
-            if(!interactive(find_living(name))) ret -= ({ name }) ;
-
+  if(!argument)
     return ret ;
+
+  if(sizeof(channels[argument]["listeners"]) <= 0)
+    return ret ;
+
+  ret = channels[argument]["listeners"] ;
+
+  foreach(string name in ret)
+    if(find_living(name))
+      if(!interactive(find_living(name)))
+        ret -= ({ name }) ;
+
+  return ret ;
 }
 
 varargs int filter_listing(string element, string name) {
-    object mod_obj ;
+  object mod_obj ;
 
-    if(!element)
-        return 0 ;
-
-    if(!name) {
-        if(!this_body())
-            return 0 ;
-        else
-            name = query_privs(this_body()) ;
-    }
-
-    catch(mod_obj = load_object(modules[channels[element]["module"]])) ;
-
-    if(!mod_obj)
-        return 0 ;
-    if(mod_obj->is_allowed(element, name))
-        return 1 ;
-
+  if(!element)
     return 0 ;
+
+  if(!name) {
+    if(!this_body())
+      return 0 ;
+    else
+      name = query_privs(this_body()) ;
+  }
+
+  catch(mod_obj = load_object(modules[channels[element]["module"]])) ;
+
+  if(!mod_obj)
+    return 0 ;
+  if(mod_obj->is_allowed(element, name))
+    return 1 ;
+
+  return 0 ;
 }
 
 string *get_modules() {
-    string *keys = keys(modules) ;
+  string *keys = keys(modules) ;
 
-    return keys ;
+  return keys ;
 }
 
-void rec_msg(string channel, string msg) {
-    string *listeners ;
-    string *keys ;
-    int i ;
-    object ob ;
+void rec_msg(string channel, string user, string msg) {
+  string *listeners ;
+  string *keys ;
+  int i ;
+  object ob ;
+  mapping payload ;
 
-    keys = keys(channels) ;
-    if(member_array(channel, keys) == -1)
-        return 0 ;
+  keys = keys(channels) ;
+  if(member_array(channel, keys) == -1)
+    return 0 ;
 
-    if(!valid_module(channels[channel]["module"])) {
-        map_delete(channels, channel) ;
-        return 0 ;
+  if(!valid_module(channels[channel]["module"])) {
+    map_delete(channels, channel) ;
+    return 0 ;
+  }
+
+  payload = ([
+    "channel" : channel,
+    "talker" : user,
+    "text" : msg,
+  ]) ;
+
+  _debug("PAYLOAD: %O", payload) ;
+
+  listeners = channels[channel]["listeners"] ;
+  listeners -= ({ 0 }) ;
+  if(listeners) {
+    for(i = 0; i < sizeof(listeners); i ++) {
+      ob = find_living(listeners[i]) ;
+
+      if(!objectp(ob)) {
+        channels[channel]["listeners"] -= ({ listeners[i] }) ;
+        continue ;
+      }
+
+      tell_object(ob, msg) ;
+      GMCP_D->send_gmcp(ob, GMCP_PKG_COMM_CHANNEL_TEXT, payload) ;
     }
-
-    listeners = channels[channel]["listeners"] ;
-    listeners -= ({ 0 }) ;
-    if(listeners) {
-        for(i = 0; i < sizeof(listeners); i ++) {
-            ob = find_living(listeners[i]) ;
-
-            if(!objectp(ob)) {
-                channels[channel]["listeners"] -= ({ listeners[i] }) ;
-                continue ;
-            }
-            tell_object(ob, msg) ;
-        }
-    }
+  }
 }

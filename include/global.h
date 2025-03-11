@@ -2,7 +2,9 @@
 #define __GLOBAL_H__
 
 #include <clean.h>
+#include <colour.h>
 #include <daemons.h>
+#include <gmcp_defines.h>
 #include <input.h>
 #include <inventory.h>
 #include <messaging.h>
@@ -22,6 +24,7 @@
 #define true 1
 #define false 0
 #define null ([])[0]
+#define nil null
 #define undefined ([])[0]
 
 #define DATE "%F"

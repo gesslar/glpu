@@ -175,8 +175,6 @@ private void autovalue_loot_item(mixed item, object tp, object source) {
 
     item->set_value(value) ;
   }
-
-  _debug("Value of %s is %d", identify(item), item->query_value()) ;
 }
 
 /**

@@ -132,17 +132,14 @@ void do_receive(string message, int message_type) {
         // coloured messages.
         switch(term) {
             case "on" :
-                term = "high" ;
+                term = "on" ;
                 break ;
             case "off" :
-                term = "plain" ;
+                term = "off" ;
                 message_type |= NO_COLOUR ;
                 break ;
-            case "low" :
-                term = "low" ;
-                break ;
             default:
-                term = "plain" ;
+                term = "off" ;
                 message_type |= NO_COLOUR ;
                 break ;
         }

@@ -38,7 +38,7 @@ int rec_msg(string chan, string usr, string msg) {
   if(!adminp(usr))
     return 0 ;
 
-  CHAN_D->rec_msg(chan, sprintf("[%s] %s: %s\n", capitalize(chan), capitalize(usr), msg)) ;
+  CHAN_D->rec_msg(chan, lower_case(usr), sprintf("[%s] %s: %s\n", capitalize(chan), capitalize(usr), msg)) ;
 
   add_history("announce", sprintf("%s %s [%s] %s: %s\n",
     ldate(time(), 1),
@@ -54,7 +54,7 @@ int rec_msg(string chan, string usr, string msg) {
 void announce_login(object user) {
   string name = capitalize(query_privs(user)) ;
 
-  CHAN_D->rec_msg("announce",
+  CHAN_D->rec_msg("announce", query_privs(user),
     sprintf("[Announce] System: %s has logged into %s.\n", name, mud_name())) ;
 
   add_history("announce",
@@ -71,7 +71,7 @@ void announce_login(object user) {
 void announce_logoff(object user) {
   string name = capitalize(query_privs(user)) ;
 
-  CHAN_D->rec_msg("announce",
+  CHAN_D->rec_msg("announce", query_privs(user),
     sprintf("[Announce] System: %s has left %s.\n", name, mud_name())) ;
 
   add_history("announce",
@@ -88,7 +88,7 @@ void announce_logoff(object user) {
 void announce_crawl_complete(mixed arg...) {
   string name = "System" ;
 
-  CHAN_D->rec_msg("announce",
+  CHAN_D->rec_msg("announce", "system",
     sprintf("[Announce] System: Coordinate crawler has completed.\n")) ;
 
   add_history("announce",

@@ -517,3 +517,13 @@ varargs int pcre_strsrch(string str, string substr, int reverse) {
 int colourp(string str) {
     return pcre_match(str, COLOUR_REGEX) ;
 }
+
+string all_caps(string str) {
+  int len;
+
+  len = strlen(str);
+  while(len--)
+    str[len..len] = capitalize(str[len..len]);
+
+  return str;
+}

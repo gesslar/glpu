@@ -1,0 +1,29 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "/adm/dist/fluffos/": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "/adm/dist/fluffos/": true
+  },
+  "files.watcherExclude": {
+    "**/.github/workflows/**": true
+  },
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "text": "If being asked to document functions, please use the conventions specified in the file."
+    },
+    {
+      "file": ".vscode/LLM_Doc_Instructions_FluffOS.md"
+    },
+    {
+      "text": "Do not insert a space between keywords and parentheses."
+    }
+  ],
+}

@@ -303,19 +303,19 @@ BODY ;
 string filename_prefix(mixed* file_details) {
     switch(file_details[1]) {
         case -2:
-            return "{{0026}} " ;
+            return "{{0033CC}} " ;
         default:
             switch(file_details[0][<2..<1]) { //Will hit default if size>2
                 case ".c":
                     if(stat(__Path+file_details[0])[2])
-                        return "{{0010}}*" ;
-                    return "{{0002}} " ;
+                        return "{{00FF00}}*" ;
+                    return "{{008000}} " ;
                 case ".h":
-                    return "{{0124}} " ;
+                    return "{{990000}} " ;
                 case __SAVE_EXTENSION__:
-                    return "{{0030}} " ;
+                    return "{{006666}} " ;
                 default:
-                   return "{{0243}} " ;
+                   return "{{767676}} " ;
             }
             break ;
     }

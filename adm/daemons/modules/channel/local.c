@@ -84,31 +84,31 @@ int rec_msg(string chan, string usr, string msg) {
 
     switch(chan) {
         case "admin" : {
-                CHAN_D->rec_msg(chan,  "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+                CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
                 history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
                 break ;
             }
 
         case "wiz" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+                CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
                 history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
                 break ;
             }
 
         case "gossip" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+                CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
                 history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
                 break ;
             }
 
         case "chat" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+                CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
                 history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
                 break ;
             }
 
         case "dev" : {
-                CHAN_D->rec_msg(chan, "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
+                CHAN_D->rec_msg(chan, lower_case(usr), "[" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n") ;
                 history[chan] += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + real_message + "\n" }) ;
                 break ;
             }

@@ -57,7 +57,7 @@ varargs string ltime(int x, int brief) {
  *                          (MM-DD HH:MM). Otherwise, returns a full date and
  *                          time format (YYYY-MM-DD HH:MM:SS).
  */
-varargs ldatetime(int x, int brief) {
+varargs string ldatetime(int x, int brief) {
     return ldate(x, brief) + " " + ltime(x, brief) ;
 }
 

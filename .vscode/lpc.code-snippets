@@ -1,0 +1,34 @@
+{
+  "LPC Header": {
+    "prefix": "!header",
+    "body": [
+      "/**",
+      " * @file /${RELATIVE_FILEPATH}",
+      " *",
+      " * ${2:Short description of this file and its purpose.}",
+      " *",
+      " * @created ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} - Gesslar",
+      " * @last_modified ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} - Gesslar",
+      " *",
+      " * @history",
+      " * ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} - Gesslar - Created",
+      " */",
+      ""
+    ],
+    "description": "Insert a file header for new LPC files."
+  },
+  "LPC Last Changed": {
+    "prefix": "!modified",
+    "body": [
+      " * @last_modified ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} - Gesslar",
+    ],
+    "description": "Update the last modified date in the file header."
+  },
+  "LPC Updated": {
+    "prefix": "!history",
+    "body": [
+      " * ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} - Gesslar - ${1:Description of the update.}",
+    ],
+    "description": "Add to the history of updates."
+  }
+}

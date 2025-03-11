@@ -42,7 +42,7 @@ int rec_msg(string chan, string usr, string msg) {
 
     if(!adminp(usr)) return 0 ;
 
-    CHAN_D->rec_msg(chan,  "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n") ;
+    CHAN_D->rec_msg(chan, lower_case(usr), "["  + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n") ;
 
     history += ({ ldate(time(),1) +" "+ltime() + " [" + capitalize(chan) + "] " + capitalize(usr) + ": " + msg + "\n" }) ;
 

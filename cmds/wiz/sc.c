@@ -14,36 +14,38 @@ inherit STD_CMD ;
 string deep_scan(object tp, object *inv, int indent) ;
 
 mixed main(object tp, string arg) {
-    object ob, *inv ;
-    string str ;
+  object ob, *inv ;
+  string str ;
 
-    if(!arg)
-        arg = "here" ;
+  if(!arg)
+    arg = "here" ;
 
-    ob = get_object(arg) ;
+  ob = get_object(arg) ;
+  if(!ob)
+    return "No such object." ;
 
-    inv = all_inventory(ob) ;
+  inv = all_inventory(ob) ;
 
-    str = "Deep scanning "+ob+"\n" ;
-    str += deep_scan(tp, inv, 2) ;
+  str = "Deep scanning "+ob+"\n" ;
+  str += deep_scan(tp, inv, 2) ;
 
-    return str ;
+  return str ;
 }
 
 string deep_scan(object tp, object *inv, int indent) {
-    object ob ;
-    string str ;
+  object ob ;
+  string str ;
 
-    str = "" ;
+  str = "" ;
 
-    foreach(ob in inv) {
-        object *new_inv ;
+  foreach(ob in inv) {
+    object *new_inv ;
 
-        str += repeat_string(" ", indent) + ob + " (" + get_short(ob) + ")\n" ;
-        new_inv = all_inventory(ob) ;
-        if(sizeof(new_inv))
-            str += deep_scan(tp, new_inv, indent + 2) ;
-    }
+    str += repeat_string(" ", indent) + ob + " (" + get_short(ob) + ")\n" ;
+    new_inv = all_inventory(ob) ;
+    if(sizeof(new_inv))
+      str += deep_scan(tp, new_inv, indent + 2) ;
+  }
 
-    return str ;
+  return str ;
 }

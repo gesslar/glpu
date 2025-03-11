@@ -30,7 +30,7 @@ mapping alias = ([]) ;
 /* Functions */
 
 int setup() {
-     set_no_clean() ;
+     set_no_clean(1) ;
      parse_config() ;
 }
 

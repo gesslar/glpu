@@ -1,147 +1,147 @@
 {
-    "LIB_VERSION": "1.4.0",
-    "LIB_NAME": "gLPU",
-    "OPEN_STATUS": "Mudlib Development",
-    "ADMIN_EMAIL": "gesslar@gmail.com",
-    "LOG_DIR": "/log/",
-    "LOG_CATCH" : "/log/catch",
-    "LOG_RUNTIME" : "/log/runtime",
-    "TMP_DIR": "/tmp/",
-    "DISPLAY_NEWS": true,
-    "LOGIN_MSG": "/adm/etc/login/splash",
-    "LOGIN_NEWS": "/adm/etc/login/motd",
-    "FLOGIN_NEWS": "/adm/etc/login/first_login",
-    "FIRST_USER": "/adm/etc/first_user",
-    "ALLOW_SHUTDOWN" : [
-        "/adm/daemons/shutdown_d",
-        "/adm/daemons/autodoc"
+  "LIB_VERSION": "1.4.0",
+  "LIB_NAME": "gLPU",
+  "OPEN_STATUS": "Mudlib Development",
+  "ADMIN_EMAIL": "gesslar@gmail.com",
+  "LOG_DIR": "/log/",
+  "LOG_CATCH" : "/log/catch",
+  "LOG_RUNTIME" : "/log/runtime",
+  "TMP_DIR": "/tmp/",
+  "DISPLAY_NEWS": true,
+  "LOGIN_MSG": "/adm/etc/login/splash",
+  "LOGIN_NEWS": "/adm/etc/login/motd",
+  "FLOGIN_NEWS": "/adm/etc/login/first_login",
+  "FIRST_USER": "/adm/etc/first_user",
+  "ALLOW_SHUTDOWN" : [
+    "/adm/daemons/shutdown_d",
+    "/adm/daemons/autodoc"
+  ],
+  "LOOK_HIGHLIGHT" : "on",
+  "LOOK_HIGHLIGHT_COLOUR" : "669",
+  "COLOUR_TOO_DARK" : "on",
+  "COLOUR_TOO_DARK_SUB" : {
+    "000" : "238",
+    "016" : "238",
+    "017" : "019",
+    "018" : "019",
+    "232" : "238",
+    "233" : "238",
+    "234" : "238",
+    "235" : "238",
+    "236" : "238"
+  },
+  "USE_MASS" : true,
+  "AUTODOC_SOURCE_DIRS" : [
+    "/adm/simul_efun/",
+    "/adm/daemons/",
+    "/std/modules/",
+    "/std/object/"
+  ],
+  "DOC_DIR": "/doc/",
+  "AUTODOC_ROOT" : "/doc/autodoc/",
+  "DOCS" : {
+    "general" : [
+      "general",
+      "game"
     ],
-    "LOOK_HIGHLIGHT" : "on",
-    "LOOK_HIGHLIGHT_COLOUR" : "243",
-    "COLOUR_TOO_DARK" : "on",
-    "COLOUR_TOO_DARK_SUB" : {
-        "000" : "238",
-        "016" : "238",
-        "017" : "019",
-        "018" : "019",
-        "232" : "238",
-        "233" : "238",
-        "234" : "238",
-        "235" : "238",
-        "236" : "238"
+    "developer" : [
+      "autodoc/daemon_function",
+      "autodoc/efun_override",
+      "autodoc/simul_efun",
+      "autodoc/module_function",
+      "autodoc/object_function"
+    ]
+  },
+  "CURRENCY" : [
+    [ "copper", 1 ],
+    [ "silver", 10 ],
+    [ "gold", 100 ],
+    [ "platinum", 1000 ]
+  ],
+  "TIMEOUT_PLAYERS" : "on",
+  "TIMEOUT_PLAYERS_TIME" : 3600,
+  "TIMEOUT_DEVS" : "off",
+  "TIMEOUT_DEVS_TIME" : 86400,
+  "TIMEOUT_ADMINS" : "off",
+  "TIMEOUT_ADMINS_TIME" : 604800,
+  "ALARMS" : "on",
+  "ALARMS_PATH" : "/adm/etc/alarms/",
+  "DB_PATH" : "/data/db/",
+  "DB_SUFFIX" : ".sqlite3",
+  "DB_TABLE_SUFFIX" : ".tbl",
+  "DB_CHUNK_SIZE" : 100,
+  "DECIMAL" : ".",
+  "THOUSANDS" : ",",
+  "MORELINES" : 40,
+  "PAGE_DISPLAY" : "line",
+  "HEART_PULSE" : 2000.0,
+  "HEARTBEATS_TO_REGEN" : 5,
+  "DEFAULT_HEART_RATE" : 10,
+  "OBJECT_DATA_DIR" : "/data/obj/",
+  "DEFAULT_RACE" : "human",
+  "DAMAGE_LEVEL_MODIFIER" : 25.0,
+  "DEFAULT_HIT_CHANCE" : 65.0,
+  "PLAYER_AUTOLEVEL" : true,
+  "BASE_TNL" : 100.0,
+  "TNL_RATE" : 1.25,
+  "OVERLEVEL_THRESHOLD" : 5.0,
+  "OVERLEVEL_XP_PUNISH" : 0.05,
+  "UNDERLEVEL_THRESHOLD" : 0.0,
+  "UNDERLEVEL_XP_BONUS" : 0.05,
+  "ALLOW_RECURSE_RMDIR" : [
+    "/adm/daemons/autodoc",
+    "/cmds/file/rm"
+  ],
+  "SKILLS" : {
+    "combat" : {
+      "defense" : [
+        "dodge",
+        "parry"
+      ],
+      "melee" : [
+        "attack",
+        "bludgeoning",
+        "piercing",
+        "slashing",
+        "unarmed"
+      ]
     },
-    "USE_MASS" : true,
-    "AUTODOC_SOURCE_DIRS" : [
-        "/adm/simul_efun/",
-        "/adm/daemons/",
-        "/std/modules/",
-        "/std/object/"
+    "social" : [
+      "barter",
+      "charm",
+      "intimidate",
+      "persuade"
     ],
-    "DOC_DIR": "/doc/",
-    "AUTODOC_ROOT" : "/doc/autodoc/",
-    "DOCS" : {
-        "general" : [
-            "general",
-            "game"
-        ],
-        "developer" : [
-            "autodoc/daemon_function",
-            "autodoc/efun_override",
-            "autodoc/simul_efun",
-            "autodoc/module_function",
-            "autodoc/object_function"
-        ]
-    },
-    "CURRENCY" : [
-        [ "copper", 1 ],
-        [ "silver", 10 ],
-        [ "gold", 100 ],
-        [ "platinum", 1000 ]
-    ],
-    "TIMEOUT_PLAYERS" : "on",
-    "TIMEOUT_PLAYERS_TIME" : 3600,
-    "TIMEOUT_DEVS" : "off",
-    "TIMEOUT_DEVS_TIME" : 86400,
-    "TIMEOUT_ADMINS" : "off",
-    "TIMEOUT_ADMINS_TIME" : 604800,
-    "ALARMS" : "on",
-    "ALARMS_PATH" : "/adm/etc/alarms/",
-    "DB_PATH" : "/data/db/",
-    "DB_SUFFIX" : ".sqlite3",
-    "DB_TABLE_SUFFIX" : ".tbl",
-    "DB_CHUNK_SIZE" : 100,
-    "DECIMAL" : ".",
-    "THOUSANDS" : ",",
-    "MORELINES" : 40,
-    "PAGE_DISPLAY" : "line",
-    "HEART_PULSE" : 2000.0,
-    "HEARTBEATS_TO_REGEN" : 5,
-    "DEFAULT_HEART_RATE" : 10,
-    "OBJECT_DATA_DIR" : "/data/obj/",
-    "DEFAULT_RACE" : "human",
-    "DAMAGE_LEVEL_MODIFIER" : 25.0,
-    "DEFAULT_HIT_CHANCE" : 65.0,
-    "PLAYER_AUTOLEVEL" : true,
-    "BASE_TNL" : 100.0,
-    "TNL_RATE" : 1.25,
-    "OVERLEVEL_THRESHOLD" : 5.0,
-    "OVERLEVEL_XP_PUNISH" : 0.05,
-    "UNDERLEVEL_THRESHOLD" : 0.0,
-    "UNDERLEVEL_XP_BONUS" : 0.05,
-    "ALLOW_RECURSE_RMDIR" : [
-        "/adm/daemons/autodoc",
-        "/cmds/file/rm"
-    ],
-    "SKILLS" : {
-        "combat" : {
-            "defense" : [
-                "dodge",
-                "parry"
-            ],
-            "melee" : [
-                "attack",
-                "bludgeoning",
-                "piercing",
-                "slashing",
-                "unarmed"
-            ]
-        },
-        "social" : [
-            "barter",
-            "charm",
-            "intimidate",
-            "persuade"
-        ],
-        "general" : [
-            "appraise",
-            "hide",
-            "jump",
-            "listen",
-            "search",
-            "spot",
-            "swim"
-        ]
-    },
-    "ATTRIBUTES" : [
-        "strength",
-        "dexterity",
-        "constitution",
-        "intelligence",
-        "wisdom",
-        "charisma"
-    ],
-    "STORAGE_DATA_DIR" : "/data/storage/",
-    "GUI" : true,
-    "WAYPOINTS_MAX" : 10,
-    "TRAVEL_DESTINATIONS" : {
-        "bank"   : "/d/village/financier",
-        "bakery" : "/d/village/bakery",
-        "lockers": "/d/village/lockers",
-        "square" : "/d/village/square",
-        "shop"   : "/d/village/shop",
-        "tavern" : "/d/village/tavern",
-        "centre" : "/d/village/centre"
-    },
-    "COIN_VALUE_PER_LEVEL" : 15,
-    "COIN_VARIANCE" : 0.25
+    "general" : [
+      "appraise",
+      "hide",
+      "jump",
+      "listen",
+      "search",
+      "spot",
+      "swim"
+    ]
+  },
+  "ATTRIBUTES" : [
+    "strength",
+    "dexterity",
+    "constitution",
+    "intelligence",
+    "wisdom",
+    "charisma"
+  ],
+  "STORAGE_DATA_DIR" : "/data/storage/",
+  "GUI" : true,
+  "WAYPOINTS_MAX" : 10,
+  "TRAVEL_DESTINATIONS" : {
+    "bank"   : "/d/village/financier",
+    "bakery" : "/d/village/bakery",
+    "lockers": "/d/village/lockers",
+    "square" : "/d/village/square",
+    "shop"   : "/d/village/shop",
+    "tavern" : "/d/village/tavern",
+    "centre" : "/d/village/centre"
+  },
+  "COIN_VALUE_PER_LEVEL" : 15,
+  "COIN_VARIANCE" : 0.25
 }

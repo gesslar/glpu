@@ -9,6 +9,8 @@
 //
 // 2022/03/23: Gesslar - Created
 
+#include <colour.h>
+
 private nosave float dir_delay = 0.02 ;
 private nosave float file_delay = 0.01 ;
 
@@ -70,7 +72,7 @@ void check_dir() {
 
     current = dirs_to_check[0] ;
 
-    message("info", "{{0178}}+ CHECKING: " + current + "{{res}}\n", notify) ;
+    message("info", SYSTEM_INFO + "CHECKING: " + current + "{{res}}\n", notify) ;
 
     current = append(current, "/") ;
     dirs_to_check = dirs_to_check[1..] ;
@@ -102,7 +104,7 @@ void check_file() {
     file_call_out = call_out_walltime("check_file", file_delay) ;
 
     file = files_to_check[0] ;
-    message("info", "{{0032}}- CHECKING: " + file + "{{res}}\n", notify) ;
+    message("info", SYSTEM_INFO + " - CHECKING: " + file + "{{res}}\n", notify) ;
 
     files_to_check = files_to_check[1..] ;
 

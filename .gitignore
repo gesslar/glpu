@@ -33,8 +33,9 @@ journal.*
 # Customised configuration files
 /adm/etc/config.json
 /adm/etc/mssp.json
-lpc-config.json
-.vscode/
+# lpc-config.json
+.vscode/keybindings.json
+.vscode/tasks.json
 
 # Alarm files
 adm/etc/alarms/*.txt

@@ -274,3 +274,9 @@ varargs void assert(mixed statement, string message) {
   if(result == 0)
     error(message) ;
 }
+
+void assert_arg(mixed condition, int arg_num, string message) {
+  message = message || "";
+  message += sprintf(" [Arg #%d]", arg_num);
+  assert(condition, message);
+}

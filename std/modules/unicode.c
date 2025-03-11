@@ -23,27 +23,29 @@ Original Lima header:
 **
 */
 
+#include <colour.h>
+
 private nomask nosave mapping _c = ([
-    "green" : "{{0036}}",
-    "blue"  : "{{0027}}",
-    "purple": "{{0127}}",
-    "yellow": "{{0185}}",
-    "gold"  : "{{0220}}",
-    "black" : "{{0238}}",
-    "white" : "{{0015}}",
+    "green" : "{{009966}}",
+    "blue"  : "{{0033FF}}",
+    "purple": "{{990099}}",
+    "yellow": "{{CCCC33}}",
+    "gold"  : "{{FFCC00}}",
+    "black" : "{{444444}}",
+    "white" : "{{FFFFFF}}",
 ]) ;
 
 private nomask nosave string *slider_colours = ({
-    "{{0009}}", // red
-    "{{0202}}", // dark orange
-    "{{0208}}", // orange
-    "{{0214}}", // light orange
-    "{{0220}}", // gold
-    "{{0226}}", // yellow
-    "{{0190}}", // light yellow
-    "{{0154}}", // light green
-    "{{0118}}", // green
-    "{{0047}}", // bright green
+    "{{FF0000}}", // red
+    "{{FF3300}}", // dark orange
+    "{{FF6600}}", // orange
+    "{{FF9900}}", // light orange
+    "{{FFCC00}}", // gold
+    "{{FFFF00}}", // yellow
+    "{{CCFF00}}", // light yellow
+    "{{99FF00}}", // light green
+    "{{66FF00}}", // green
+    "{{00FF33}}", // bright green
 }) ;
 
 /**
@@ -109,9 +111,9 @@ string on_off_widget(int on) {
     if(body->has_screenreader())
         return on ? "On " : "Off " ;
     if(on)
-        return supports_unicode() ? "[ {{0036}}✓{{res}} ]" : sprintf("[{{0036}}On{{res}} ]") ;
+        return supports_unicode() ? "[ " SYSTEM_OK "✓{{res}} ]" : "[" SYSTEM_OK "On{{res}} ]" ;
     else
-        return supports_unicode() ? "[ {{0243}}✕{{res}} ]" : sprintf("[{{0243}}Off{{res}}]") ;
+        return supports_unicode() ? "[ " SYSTEM_ERROR "✕{{res}} ]" : "[" SYSTEM_ERROR "Off{{res}}]" ;
 }
 
 //: FUNCTION simple_divider
@@ -174,7 +176,7 @@ string critical_bar(int value, int max, int width) {
     float p ;
     string barchar = supports_unicode() ? "▅" : "=" ;
     string nobarchar = supports_unicode() ? "▅" : "." ;
-    string bar_colour = "{{0036}}" ;
+    string bar_colour = "{{009966}}" ;
 
     if(body->has_screenreader())
         return value + "/" + max ;
@@ -209,7 +211,7 @@ string reverse_critical_bar(int value, int max, int width) {
     float p ;
     string barchar = supports_unicode() ? "▅" : "=" ;
     string nobarchar = supports_unicode() ? "▅" : "." ;
-    string bar_colour = "{{0036}}" ;
+    string bar_colour = "{{009966}}" ;
 
     if(!max)
         return "" ;

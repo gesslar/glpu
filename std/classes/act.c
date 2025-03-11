@@ -1,7 +1,7 @@
 #ifndef __ACT_C__
 #define __ACT_C__
 
-class ClassAct {
+class Act {
     int id ;
     string uuid ;
     string action ;

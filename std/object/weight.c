@@ -33,6 +33,9 @@ int adjust_mass(int delta) {
   object env ;
   int new_mass ;
 
+  if(!mud_config("USE_MASS"))
+    return 1 ;
+
   // We're not changing mass. So, that's all right.
   if(delta == 0)
     return 1 ;
@@ -40,15 +43,19 @@ int adjust_mass(int delta) {
   // If we have an environment, we need to check if we can adjust its
   // mass and fill and if so, then we can adjust our mass.
   if(env = environment()) {
-    if(!env->adjust_mass(delta))
-      return 0 ;
+    if(!env->ignore_mass())
+      if(!env->adjust_mass(delta))
+        return 0 ;
 
-    if(!env->adjust_fill(delta)) {
-      env->adjust_mass(-delta) ;
-      return 0 ;
-    }
+    if(!env->ignore_capacity())
+      if(!env->adjust_fill(delta))
+        if(!env->ignore_mass()) {
+          env->adjust_mass(-delta) ;
+        return 0 ;
+        }
   }
 
   _mass += delta ;
+
   return 1 ;
 }

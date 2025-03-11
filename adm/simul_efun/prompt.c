@@ -82,23 +82,23 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) {
     mess += "\n" ;
 
     mess +=
-        "{{0000}}black{{res}}\t\t"
-        "{{0001}}red{{res}}\t\t"
-        "{{0002}}green{{res}}\t\t"
-        "{{0003}}oran{{ges}}\n"
-        "{{0004}}blue{{res}}\t\t"
-        "{{0005}}magenta{{res}}\t\t"
-        "{{0006}}cy{{ans}}\t\t"
-        "{{0007}}white{{res}}\n"
+        "{{000000}}black{{res}}\t\t"
+        "{{800000}}red{{res}}\t\t"
+        "{{008000}}green{{res}}\t\t"
+        "{{808000}}orange{{res}}\n"
+        "{{000080}}blue{{res}}\t\t"
+        "{{800080}}magenta{{res}}\t\t"
+        "{{008080}}cyan{{res}}\t\t"
+        "{{C0C0C0}}white{{res}}\n"
         "\n"
-        "{{0008}}bright black{{res}}\t"
-        "{{0009}}bright red{{res}}\t"
-        "{{0010}}bright green{{res}}"
-        "{{0011}}bright orange{{res}}\n"
-        "{{0012}}bright blue{{res}}\t"
-        "{{0013}}bright magenta{{res}}"
-        "{{0014}}bright cyan{{res}}\t"
-        "{{0015}}bright white{{res}}\n" ;
+        "{{808080}}bright black{{res}}\t"
+        "{{FF0000}}bright red{{res}}\t"
+        "{{00FF00}}bright green{{res}}"
+        "{{FFFF00}}bright orange{{res}}\n"
+        "{{0000FF}}bright blue{{res}}\t"
+        "{{FF00FF}}bright magenta{{res}}"
+        "{{00FFFF}}bright cyan{{res}}\t"
+        "{{FFFFFF}}bright white{{res}}\n" ;
 
     mess += "\n" ;
 

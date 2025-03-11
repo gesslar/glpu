@@ -9,7 +9,7 @@
 inherit STD_ROOM ;
 
 void setup() {
-  set_no_clean() ;
+  set_no_clean(1) ;
   set_light(1) ;
   set_short("The Void") ;
     set_long(
