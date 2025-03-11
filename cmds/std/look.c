@@ -47,9 +47,6 @@ string highlight_view(object tp, string str, string *keys) {
   int i;
   string colour;
 
-  if(look_hightlight_enabled != "on")
-    return str;
-
   if(tp->query_pref("highlight") != "on")
     return str;
 
