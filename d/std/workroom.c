@@ -36,7 +36,7 @@ void setup() {
   set_items(([
     "sign" : "The sign reads:\n"
     "'You are never given a wish without also being given the "
-    "power to make it come true. You may, however, have to work for"
+    "power to make it come true. You may, however, have to work for "
     "it.'",
   ])) ;
 
