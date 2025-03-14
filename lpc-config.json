@@ -19,5 +19,5 @@
     "tmp/",
     "adm/dist/fluffos/"
   ],
-  "diagnostics": "on"
+  "diagnostics": "off"
 }
