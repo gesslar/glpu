@@ -8,6 +8,6 @@
 //
 // 2024/02/20: Gesslar - Created
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
-inherit M_CHECKS ;
+inherit M_CHECKS;

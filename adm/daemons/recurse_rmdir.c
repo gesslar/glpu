@@ -13,61 +13,61 @@
 
 #include <origin.h>
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-public nomask void recurse_rmdir(string dir) ;
-private nomask void handle_delete(string contents) ;
+public nomask void recurse_rmdir(string dir);
+private nomask void handle_delete(string contents);
 
-private nosave nomask string *allowed = ({}) ;
+private nosave nomask string *allowed = ({});
 
 nomask void setup() {
-    allowed = mud_config("ALLOW_RECURSE_RMDIR") ;
+    allowed = mud_config("ALLOW_RECURSE_RMDIR");
 }
 
 public nomask void recurse_rmdir(string dir) {
-    string *contents ;
-    object prev = previous_object() ;
+    string *contents;
+    object prev = previous_object();
 
     if(!stringp(dir) || dir == "")
-        return ;
+        return;
 
     if(origin() != ORIGIN_LOCAL)
         if(!of(base_name(prev), allowed))
-            return ;
+            return;
 
     if(!directory_exists(dir))
-        return ;
+        return;
 
     if(!of(base_name(prev), allowed))
-        return ;
+        return;
 
-    reset_eval_cost() ;
+    reset_eval_cost();
 
-    dir = append(dir, "/") ;
+    dir = append(dir, "/");
 
-    log_file("system/recurse_rmdir", sprintf("%s: %s\n", ctime(), dir)) ;
+    log_file("system/recurse_rmdir", sprintf("%s: %s\n", ctime(), dir));
 
-    contents = get_dir(dir) ;
-    contents -= ({ ".", ".." }) ;
-    contents = map(contents, (: $(dir) + $1 :)) ;
+    contents = get_dir(dir);
+    contents -= ({ ".", ".." });
+    contents = map(contents, (: $(dir) + $1 :));
 
     while(sizeof(contents) > 0) {
-        string file = contents[0] ;
-        contents = contents[1..] ;
-        handle_delete(file) ;
+        string file = contents[0];
+        contents = contents[1..];
+        handle_delete(file);
     }
 
-    log_file("system/recurse_rmdir", sprintf("Removed directory: %s\n", dir)) ;
-    rmdir(dir) ;
+    log_file("system/recurse_rmdir", sprintf("Removed directory: %s\n", dir));
+    rmdir(dir);
 }
 
 private nomask void handle_delete(string file) {
-    int is_dir = directory_exists(file) ;
+    int is_dir = directory_exists(file);
 
     if(is_dir)
-        recurse_rmdir(file) ;
+        recurse_rmdir(file);
     else {
-        log_file("system/recurse_rmdir", sprintf("Removed file: %s\n", file)) ;
-        rm(file) ;
+        log_file("system/recurse_rmdir", sprintf("Removed file: %s\n", file));
+        rm(file);
     }
 }

@@ -11,29 +11,29 @@
 
 #include <classes.h>
 
-inherit __DIR__ "manor" ;
-inherit CLASS_DOOR ;
+inherit __DIR__ "manor";
+inherit CLASS_DOOR;
 
 void setup() {
-  set_short("The Washroom") ;
+  set_short("The Washroom");
   set_long("This washroom is a curious blend of luxury and absurdity. The "
   "walls are covered in shiny, reflective tiles that seem to amplify the "
   "light, creating a dazzling effect. A large, ornate mirror hangs above a "
   "lavish sink, surrounded by an array of colourful soaps and lotions that "
   "look more like decorations than practical items. The air is thick with "
   "the scent of floral fragrances, making it feel more like a spa than "
-  "a washroom.") ;
+  "a washroom.");
 
   set_exits(([
     "west" : "hall4",
-  ])) ;
+  ]));
 
   add_door(new(class Door,
     id: "washroom door",
     direction: "west",
     short: "A grand door",
     long: "A grand door that leads to the hall."
-  )) ;
+  ));
 
   set_items(([
     "countertops" :
@@ -51,5 +51,5 @@ void setup() {
     "bathtub" :
     "The large bathtub is inviting, surrounded by potted plants that add a "
     "touch of greenery.",
-  ])) ;
+  ]));
 }

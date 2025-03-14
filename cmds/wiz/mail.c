@@ -10,20 +10,20 @@
 
 */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 mixed main(object caller, string arg) {
-    object mail_client ;
+    object mail_client;
 
-    mail_client = new(OBJ_MAIL_CLIENT) ;
+    mail_client = new(OBJ_MAIL_CLIENT);
 
     if(!mail_client)
-        return notify_fail("Error [mail]: could not find mail client\n") ;
+        return notify_fail("Error [mail]: could not find mail client\n");
 
-    mail_client->move(this_body()) ;
-    mail_client->start_mail(arg) ;
+    mail_client->move(this_body());
+    mail_client->start_mail(arg);
 
-    return 1 ;
+    return 1;
 }
 
 string help(object caller) {
@@ -32,5 +32,5 @@ string help(object caller) {
     "straight to mailing a specific person then you may use the optional\n"+
     "target argument to begin a mail to that person. If you wish to mail\n"+
     "multiple users at once, then seperate each name by a comma. You can\n"+
-    "also mail to groups if you surround the group name with paranthesis.\n" ;
+    "also mail to groups if you surround the group name with paranthesis.\n";
 }

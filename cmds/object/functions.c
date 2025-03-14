@@ -11,26 +11,26 @@
 // - general formatting
 
 mixed main(object tp, string arg) {
-    object ob, pager ;
-    string *funcs, ret ;
+    object ob, pager;
+    string *funcs, ret;
 
     if(!arg || arg == "")
-        return "Error: [functions]: SYNTAX: functions <object id>|<filename>.\n" ;
+        return "Error: [functions]: SYNTAX: functions <object id>|<filename>.\n";
 
-    ob = get_object(arg) ;
+    ob = get_object(arg);
 
     if(!ob)
-        return "Error: [functions]: Could not find object " + arg + ".\n" ;
+        return "Error: [functions]: Could not find object " + arg + ".\n";
 
-    funcs = functions(ob) ;
-    funcs = distinct_array(funcs) ;
-    funcs = sort_array(funcs, 1) ;
+    funcs = functions(ob);
+    funcs = distinct_array(funcs);
+    funcs = sort_array(funcs, 1);
 
-    ret = sprintf("%-#79.3s\n\n", implode(funcs, "\n")) ;
+    ret = sprintf("%-#79.3s\n\n", implode(funcs, "\n"));
 
-    tp->page(ret) ;
+    tp->page(ret);
 
-    return 1 ;
+    return 1;
 }
 
 string help(object tp) {
@@ -38,5 +38,5 @@ string help(object tp) {
 "SYNTAX: functions <object>\n\n" +
 "This command will show the functions contained in <object> You may use the "
 "id of the object if it is in your inventory or environment, otherwise you may "
-"use the filename of the object to try and locate it." ;
+"use the filename of the object to try and locate it.";
 }

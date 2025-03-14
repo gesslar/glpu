@@ -6,4 +6,4 @@
 //
 // 2024/02/04: Gesslar - Created
 
-inherit STD_VIRTUAL_SERVER ;
+inherit STD_VIRTUAL_SERVER;

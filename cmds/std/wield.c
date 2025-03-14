@@ -9,39 +9,39 @@
  * 2024-08-04 - Gesslar - Created
  */
 
-inherit STD_ACT ;
+inherit STD_ACT;
 
 mixed main(object tp, string str) {
-    object ob ;
-    mixed result ;
+    object ob;
+    mixed result;
 
     if(!ob = find_target(tp, str, tp))
-        return "You do not have that item." ;
+        return "You do not have that item.";
 
     if(!ob->is_weapon())
-        return "You can only wield weapons." ;
+        return "You can only wield weapons.";
 
     if(tp->equipped(ob))
-        return "You are already wielding that weapon." ;
+        return "You are already wielding that weapon.";
 
-    result = tp->can_equip(ob, "right hand") ;
+    result = tp->can_equip(ob, "right hand");
     if(stringp(result))
-        return result ;
+        return result;
 
     if(result == 0)
-        return "1 You cannot wield that weapon." ;
+        return "1 You cannot wield that weapon.";
 
-    result = ob->can_equip(tp) ;
+    result = ob->can_equip(tp);
     if(!result)
-        return "2 You cannot wield that weapon." ;
+        return "2 You cannot wield that weapon.";
 
-    result = ob->equip(tp, "right hand") ;
+    result = ob->equip(tp, "right hand");
     if(stringp(result))
-        return result ;
+        return result;
     if(result == 0)
-        return "3 You cannot wield that weapon." ;
+        return "3 You cannot wield that weapon.";
 
-    tp->simple_action("$N $vwield $o.", get_short(ob)) ;
+    tp->simple_action("$N $vwield $o.", get_short(ob));
 
-    return 1 ;
+    return 1;
 }

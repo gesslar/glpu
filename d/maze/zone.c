@@ -10,15 +10,15 @@
  */
 
 
-inherit STD_VIRTUAL_SERVER ;
+inherit STD_VIRTUAL_SERVER;
 
 object generate_object(string file) {
-    object result ;
+    object result;
 
     if(pcre_match(file, "^\\d+,\\d+,-?\\d+$")) {
-        result = new(__DIR__ "maze_base", file) ;
-        return result ;
+        result = new(__DIR__ "maze_base", file);
+        return result;
     }
 
-    return 0 ;
+    return 0;
 }

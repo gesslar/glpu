@@ -9,72 +9,72 @@
 #include <classes.h>
 #include <gmcp_defines.h>
 
-inherit STD_DAEMON ;
-inherit CLASS_GMCP ;
+inherit STD_DAEMON;
+inherit CLASS_GMCP;
 
 // Functions
-string normalize_package_info(string package_info) ;
-class ClassGMCP convert_message(string message) ;
-varargs void send_gmcp(object body, string gmcp_package, mixed arg) ;
-varargs void broadcast_gmcp(mixed audience, string gmcp_package, mixed arg) ;
-void init_gmcp(object who) ;
+string normalize_package_info(string package_info);
+class ClassGMCP convert_message(string message);
+varargs void send_gmcp(object body, string gmcp_package, mixed arg);
+varargs void broadcast_gmcp(mixed audience, string gmcp_package, mixed arg);
+void init_gmcp(object who);
 
 void setup() {
-  set_no_clean(1) ;
+  set_no_clean(1);
 }
 
 varargs void broadcast_gmcp(mixed audience, string gmcp_package, mixed arg) {
-  object *targets = ({ }) ;
+  object *targets = ({ });
 
   if(!get_config(__RC_ENABLE_GMCP__) || !gmcp_package || nullp(audience))
-    return ;
+    return;
 
   if(objectp(audience)) {
     if(audience->is_room()) {
-      targets = present_players(audience) ;
+      targets = present_players(audience);
       if(!sizeof(targets))
-        return ;
+        return;
     } else if(audience->is_player())
-      targets += ({ audience }) ;
+      targets += ({ audience });
   } else if(arrayp(audience))
-    targets += audience ;
+    targets += audience;
   else
-    return ;
+    return;
   foreach(object target in targets)
-    send_gmcp(target, gmcp_package, arg) ;
+    send_gmcp(target, gmcp_package, arg);
 }
 
 varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
-  mixed *packet ;
-  class ClassGMCP gmcp ;
-  string gmcp_module ;
-  mixed err ;
-  object ob ;
-  string base ;
+  mixed *packet;
+  class ClassGMCP gmcp;
+  string gmcp_module;
+  mixed err;
+  object ob;
+  string base;
 
   if(!get_config(__RC_ENABLE_GMCP__))
-    return ;
+    return;
 
   if(!body || !gmcp_package)
-    return ;
+    return;
 
-  base = base_name(body) ;
+  base = base_name(body);
   if(base == LOGIN_OB) {
     if(!has_gmcp(body))
-      return ;
+      return;
   } else if(userp(body) || ghostp(body)) {
     if(!body->gmcp_enabled())
-      return ;
+      return;
   } else
-    return ;
+    return;
 
-  gmcp = convert_message(gmcp_package) ;
+  gmcp = convert_message(gmcp_package);
   if(gmcp == null || (gmcp.package == null && gmcp.module == null))
-    return ;
+    return;
 
-  gmcp.payload = arg ;
+  gmcp.payload = arg;
 
-  gmcp_module = __DIR__ "modules/gmcp/" + gmcp.package + ".c" ;
+  gmcp_module = __DIR__ "modules/gmcp/" + gmcp.package + ".c";
 
   if(!file_exists(gmcp_module)) {
     log_file("system/gmcp", "[%s] Module %s not found [%O]",
@@ -83,77 +83,77 @@ varargs void send_gmcp(object body, string gmcp_package, mixed arg) {
       previous_object()->query_gmcp_module() ?
         previous_object(1) :
         previous_object()
-    ) ;
-    return ;
+    );
+    return;
   }
 
   if(err = catch(ob = load_object(gmcp_module)))
-    return ;
+    return;
 
   if(gmcp.submodule)
-    call_other(gmcp_module, gmcp.module, body, gmcp.submodule, gmcp.payload) ;
+    call_other(gmcp_module, gmcp.module, body, gmcp.submodule, gmcp.payload);
   else
-    call_other(gmcp_module, gmcp.module, body, gmcp.payload) ;
+    call_other(gmcp_module, gmcp.module, body, gmcp.payload);
 }
 
 class ClassGMCP convert_message(string message) {
-  class ClassGMCP gmcp = new(class ClassGMCP) ;
-  string *parts ;
-  string package_info, message_info ;
-  int pos ;
-  int sz ;
+  class ClassGMCP gmcp = new(class ClassGMCP);
+  string *parts;
+  string package_info, message_info;
+  int pos;
+  int sz;
 
-  message = trim(message) ;
+  message = trim(message);
 
-  pos = strsrch(message, " ") ;
+  pos = strsrch(message, " ");
   if(pos == -1) {
-    package_info = message ;
-    message_info = null ;
+    package_info = message;
+    message_info = null;
   } else {
-    package_info = message[0..pos-1] ;
-    message_info = message[pos+1..] ;
+    package_info = message[0..pos-1];
+    message_info = message[pos+1..];
   }
 
-  gmcp.name = package_info ;
+  gmcp.name = package_info;
 
-  parts = explode(package_info, ".") ;
-  sz = sizeof(parts) ;
+  parts = explode(package_info, ".");
+  sz = sizeof(parts);
   if(sz >= 1) {
-    gmcp.package = parts[0] ;
+    gmcp.package = parts[0];
     if(sz >= 2) {
       if(sz == 2)
-        gmcp.module = parts[1] ;
+        gmcp.module = parts[1];
       else if(sz == 3) {
-        gmcp.module = parts[1] ;
-        gmcp.submodule = parts[2] ;
+        gmcp.module = parts[1];
+        gmcp.submodule = parts[2];
       }
     }
   }
 
   if(!gmcp.package)
-    return null ;
+    return null;
   if(!gmcp.module)
-    return null ;
+    return null;
 
   if(message_info == null)
-    gmcp.payload = null ;
+    gmcp.payload = null;
   else {
-    mixed err ;
+    mixed err;
     err = catch {
-      gmcp.payload = json_decode(message_info) ;
-    } ;
+      gmcp.payload = json_decode(message_info);
+    };
     if(err)
-      _debug("Error decoding JSON: %O", chop(err, "\n", -1)) ;
+      _debug("Error decoding JSON: %O", chop(err, "\n", -1));
   }
 
-  return gmcp ;
+  return gmcp;
 }
 
 void init_gmcp(object who) {
-  send_gmcp(who, GMCP_PKG_CHAR_STATUSVARS) ;
-  send_gmcp(who, GMCP_PKG_CHAR_STATUS) ;
-  send_gmcp(who, GMCP_PKG_CHAR_VITALS) ;
-  send_gmcp(who, GMCP_PKG_ROOM_INFO) ;
-  send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_ROOM) ;
-  send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_INV) ;
+  send_gmcp(who, GMCP_PKG_CHAR_STATUSVARS);
+  send_gmcp(who, GMCP_PKG_CHAR_STATUS);
+  send_gmcp(who, GMCP_PKG_CHAR_VITALS);
+  send_gmcp(who, GMCP_PKG_ROOM_INFO);
+  send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_ROOM);
+  send_gmcp(who, GMCP_PKG_CHAR_ITEMS_LIST, GMCP_LIST_INV);
 }

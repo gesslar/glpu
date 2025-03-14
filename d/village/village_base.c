@@ -9,9 +9,9 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit STD_ROOM ;
+inherit STD_ROOM;
 
 void pre_setup_1() {
-    set_zone(__DIR__ "olum") ;
-    set_terrain("road") ;
+    set_zone(__DIR__ "olum");
+    set_terrain("road");
 }

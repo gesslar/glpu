@@ -9,46 +9,46 @@
  * 2024-09-10 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-protected nosave string module_name = query_file_name() ;
-protected nosave string *channel_names = ({}) ;
-private mapping history = ([]) ;
+protected nosave string module_name = query_file_name();
+protected nosave string *channel_names = ({});
+private mapping history = ([]);
 
 void mudlib_setup() {
   if(append(file_name(), ".c") == __FILE__)
-    return ;
+    return;
 
-  set_persistent() ;
-  set_no_clean(1) ;
+  set_persistent();
+  set_no_clean(1);
 }
 
 void post_setup_1() {
   if(append(file_name(), ".c") == __FILE__)
-    return ;
+    return;
 
-  CHAN_D->register_module(module_name, file_name()) ;
+  CHAN_D->register_module(module_name, file_name());
 
   foreach(string channel in channel_names) {
-    CHAN_D->register_channel(module_name, channel) ;
+    CHAN_D->register_channel(module_name, channel);
 
     if(nullp(history[channel]))
-      history[channel] = ({}) ;
+      history[channel] = ({});
   }
 }
 
 void add_history(string channel, string message) {
   if(nullp(history[channel]))
-    history[channel] = ({}) ;
+    history[channel] = ({});
 
-  history[channel] += ({ message }) ;
+  history[channel] += ({ message });
 }
 
 string *last_messages(string channel, int num_lines) {
-  num_lines = clamp(10, 100, num_lines) ;
+  num_lines = clamp(10, 100, num_lines);
 
   if(!sizeof(history[channel]))
-    return ({ "Channel " + channel + " has no history yet." }) ;
+    return ({ "Channel " + channel + " has no history yet." });
 
-  return history[channel][<num_lines..] ;
+  return history[channel][<num_lines..];
 }

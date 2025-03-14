@@ -11,28 +11,28 @@
 
 #include <classes.h>
 
-inherit __DIR__  "manor" ;
-inherit CLASS_DOOR ;
+inherit __DIR__  "manor";
+inherit CLASS_DOOR;
 
 void setup() {
-  set_short("A Bedroom") ;
+  set_short("A Bedroom");
   set_long("This bedroom is a cacophony of colours and patterns. The bed is "
   "draped in a bright orange satin coverlet, surrounded by gaudy floral "
   "wallpaper that seems to vibrate. A large, ornate mirror with a gold "
   "frame hangs above a dresser cluttered with trinkets, including a "
   "collection of porcelain cats. The air is heavy with the scent of "
-  "lavender, but it feels more overwhelming than soothing.") ;
+  "lavender, but it feels more overwhelming than soothing.");
 
   set_exits(([
     "south": "hall5",
-  ])) ;
+  ]));
 
   add_door(new(class Door,
     id: "bedroom1 door",
     direction: "south",
     short: "A grand door",
     long: "A grand door that leads to the hall."
-  )) ;
+  ));
 
   set_items(([
     "bed" :
@@ -44,5 +44,5 @@ void setup() {
     "dresser" :
     "The dresser is cluttered with various trinkets, including a collection "
     "of porcelain cats.",
-  ])) ;
+  ]));
 }

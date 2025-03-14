@@ -18,7 +18,7 @@ void setup() {
   "set <preference> - delete a preference\n"
   "set <preference> <value> - set a preference\n"
   "set <preference>_colour prompt - prompt for a colour\n"
- ;
+;
 
   help_text =
 "This command allows you, the user, to setup, modify, or delete preferences "

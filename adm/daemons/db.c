@@ -8,7 +8,7 @@
 
 #include <type.h>
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 #ifndef __PACKAGE_DB__
 #else
@@ -16,49 +16,49 @@ inherit STD_DAEMON ;
 #else
 
 // Forward declarations
-int valid_db(string db) ;
-int valid_table(string db, string table) ;
-mixed query(string db, string q, mixed *callback) ;
-int allow_upsert(string db) ;
-mixed sqlite_version(string db) ;
-string statement_from_mapping(mapping data) ;
-private mapping *collate_data(mixed *result) ;
-private void execute_query(string db, string q, int offset, string query_id, mixed *callback) ;
-mapping query_databases() ;
-mapping query_tables(string db_name) ;
-void lazy_query(string db, string q, mixed *callback) ;
+int valid_db(string db);
+int valid_table(string db, string table);
+mixed query(string db, string q, mixed *callback);
+int allow_upsert(string db);
+mixed sqlite_version(string db);
+string statement_from_mapping(mapping data);
+private mapping *collate_data(mixed *result);
+private void execute_query(string db, string q, int offset, string query_id, mixed *callback);
+mapping query_databases();
+mapping query_tables(string db_name);
+void lazy_query(string db, string q, mixed *callback);
 
-private nosave mapping handle = ([ ]) ;
-private nosave mapping databases = ([ ]) ;
-private nosave mapping table_definitions = ([ ]) ;
-private nosave int db_chunk_size = mud_config("DB_CHUNK_SIZE") ;
+private nosave mapping handle = ([ ]);
+private nosave mapping databases = ([ ]);
+private nosave mapping table_definitions = ([ ]);
+private nosave int db_chunk_size = mud_config("DB_CHUNK_SIZE");
 
 void setup() {
-    string db_path = mud_config("DB_PATH") ;
-    string db_suffix = mud_config("DB_SUFFIX") ;
-    string table_suffix = mud_config("DB_TABLE_SUFFIX") ;
+    string db_path = mud_config("DB_PATH");
+    string db_suffix = mud_config("DB_SUFFIX");
+    string table_suffix = mud_config("DB_TABLE_SUFFIX");
 
-    databases = ([ ]) ;
-    table_definitions = ([ ]) ;
+    databases = ([ ]);
+    table_definitions = ([ ]);
 
     if(strlen(db_path) > 0) {
         // Find all table definition files first
-        string *table_files = get_dir(db_path + "*" + table_suffix) ;
+        string *table_files = get_dir(db_path + "*" + table_suffix);
 
         foreach(string table_file in table_files) {
-            string db_name = chop(table_file, table_suffix, -1) ;
-            string table_file_name = db_path + table_file ;
+            string db_name = chop(table_file, table_suffix, -1);
+            string table_file_name = db_path + table_file;
 
             if(file_size(table_file_name) > 0) {
-                string line, *lines = explode_file(table_file_name) ;
-                table_definitions[db_name] = ([ ]) ;
+                string line, *lines = explode_file(table_file_name);
+                table_definitions[db_name] = ([ ]);
 
                 foreach(line in lines) {
-                    int pos ;
-                    string table_name, table_definition ;
+                    int pos;
+                    string table_name, table_definition;
 
                     if(sscanf(line, "%s=%s", table_name, table_definition) == 2) {
-                        table_definitions[db_name][table_name] = table_definition ;
+                        table_definitions[db_name][table_name] = table_definition;
                     }
                 }
             }
@@ -66,43 +66,43 @@ void setup() {
 
         // Now, create databases and tables based on the table definitions
         foreach(string db_name, mapping tables in table_definitions) {
-            string database_file = db_path + db_name + db_suffix ;
-            int con = -1 ;
+            string database_file = db_path + db_name + db_suffix;
+            int con = -1;
 
-            databases[db_name] = database_file ;
+            databases[db_name] = database_file;
 
             if(sizeof(tables)) {
                 mixed err = catch {
-                    int fd ;
-                    mixed result ;
-                    int close_result ;
-                    string current ;
+                    int fd;
+                    mixed result;
+                    int close_result;
+                    string current;
 
-                    fd = db_connect("", database_file, "", __USE_SQLITE3__) ;
+                    fd = db_connect("", database_file, "", __USE_SQLITE3__);
                     if(fd == 0) {
-                        log_file("system/db", "Error connecting to " + db_name + " at " + database_file + "\n") ;
-                        return ;
+                        log_file("system/db", "Error connecting to " + db_name + " at " + database_file + "\n");
+                        return;
                     }
 
                     foreach(string table_name, string table_definition in tables) {
-                        current = table_name ;
-                        result = db_exec(fd, "CREATE TABLE IF NOT EXISTS " + table_name + " (" + table_definition + ")") ;
+                        current = table_name;
+                        result = db_exec(fd, "CREATE TABLE IF NOT EXISTS " + table_name + " (" + table_definition + ")");
 
                         if(stringp(result)) {
-                            log_file("system/db", "Error creating table " + table_name + " in " + db_name + ": " + result + "\n") ;
-                            return ;
+                            log_file("system/db", "Error creating table " + table_name + " in " + db_name + ": " + result + "\n");
+                            return;
                         }
                     }
 
-                    close_result = db_close(fd) ;
+                    close_result = db_close(fd);
                     if(close_result == 0) {
-                        log_file("system/db", "Error closing connection to " + db_name + " at " + database_file + "\n") ;
-                        return ;
+                        log_file("system/db", "Error closing connection to " + db_name + " at " + database_file + "\n");
+                        return;
                     }
-                } ;
+                };
                 if(err) {
-                    log_file("system/db", "Error creating tables in " + db_name + ": " + err + "\n") ;
-                    continue ;
+                    log_file("system/db", "Error creating tables in " + db_name + ": " + err + "\n");
+                    continue;
                 }
             }
         }
@@ -116,21 +116,21 @@ void setup() {
  * @returns {mapping[]} - An array of mappings representing the collated data.
  */
 private mapping *collate_data(mixed *result) {
-    mapping *data = ({ }) ;
-    int i, sz = sizeof(result) ;
+    mapping *data = ({ });
+    int i, sz = sizeof(result);
 
     for(i = 1; i < sz; i++) {
-        mapping row = ([ ]) ;
-        int j, sz2 = sizeof(result[i]) ;
+        mapping row = ([ ]);
+        int j, sz2 = sizeof(result[i]);
 
         for(j = 0; j < sz2; j++) {
-            row[result[0][j]] = result[i][j] ;
+            row[result[0][j]] = result[i][j];
         }
 
-        data += ({ row }) ;
+        data += ({ row });
     }
 
-    return data ;
+    return data;
 }
 
 /**
@@ -142,55 +142,55 @@ private mapping *collate_data(mixed *result) {
  * @returns {mixed} - Query result or 1 if callback is provided.
  */
 mixed query(string db, string q, mixed *callback) {
-    string database_file = databases[db] ;
-    int fd ;
-    int close_result, i ;
-    mixed rows, *result = ({ }) ;
+    string database_file = databases[db];
+    int fd;
+    int close_result, i;
+    mixed rows, *result = ({ });
 
     if(!db || !q)
-        return "Invalid db or query." ;
+        return "Invalid db or query.";
 
-    q = append(q, ";") ;
-    fd = db_connect("", database_file, "", __USE_SQLITE3__) ;
+    q = append(q, ";");
+    fd = db_connect("", database_file, "", __USE_SQLITE3__);
     if(fd == 0) {
-        log_file("system/db", "Error connecting to " + db + " at " + database_file + "\n") ;
-        return 0 ;
+        log_file("system/db", "Error connecting to " + db + " at " + database_file + "\n");
+        return 0;
     }
 
-    rows = db_exec(fd, q) ;
+    rows = db_exec(fd, q);
 
     if(stringp(rows)) {
-        log_file("system/db", "Error querying " + db + ": " + rows + "\n") ;
-        return "Error querying " + db + ": " + rows + "\n" ;
+        log_file("system/db", "Error querying " + db + ": " + rows + "\n");
+        return "Error querying " + db + ": " + rows + "\n";
     }
 
     if(rows == 0)
-        return 0 ;
+        return 0;
 
-    result = allocate(rows+1) ;
+    result = allocate(rows+1);
     catch {
         for(i = 0; i <= rows; i++) {
-            mixed info = db_fetch(fd, i) ;
+            mixed info = db_fetch(fd, i);
 
             if(stringp(info))
-                log_file("system/db", "Error fetching row " + i + " in " + db + ": '" + q + "' " + info + "\n") ;
+                log_file("system/db", "Error fetching row " + i + " in " + db + ": '" + q + "' " + info + "\n");
             else
-                result[i] = info ;
+                result[i] = info;
         }
-    } ;
+    };
 
-    close_result = db_close(fd) ;
+    close_result = db_close(fd);
     if(close_result == 0) {
-        log_file("system/db", "Error closing connection to " + db + " at " + database_file + "\n") ;
-        return "Error closing connection to " + db + " at " + database_file + "\n" ;
+        log_file("system/db", "Error closing connection to " + db + " at " + database_file + "\n");
+        return "Error closing connection to " + db + " at " + database_file + "\n";
     }
 
     if(callback) {
-        call_back(callback, collate_data(result)) ;
-        return 1 ;
+        call_back(callback, collate_data(result));
+        return 1;
     }
 
-    return collate_data(result) ;
+    return collate_data(result);
 }
 
 /**
@@ -201,8 +201,8 @@ mixed query(string db, string q, mixed *callback) {
  * @param {mixed[]} callback - Callback function to handle the result.
  */
 void lazy_query(string db, string q, mixed *callback) {
-    string query_id = db + "_" + time_ns() ;
-    execute_query(db, q, 0, query_id, callback) ;
+    string query_id = db + "_" + time_ns();
+    execute_query(db, q, 0, query_id, callback);
 }
 
 /**
@@ -215,71 +215,71 @@ void lazy_query(string db, string q, mixed *callback) {
  * @param {mixed[]} callback - Callback function to handle the result.
  */
 private void execute_query(string db, string q, int offset, string query_id, mixed *callback) {
-    string database_file, modified_query ;
-    int fd, close_result, i ;
-    mixed rows, *result ;
+    string database_file, modified_query;
+    int fd, close_result, i;
+    mixed rows, *result;
 
-    database_file = databases[db] ;
-    result = ({ }) ;
+    database_file = databases[db];
+    result = ({ });
 
     // Modify the query to include LIMIT and OFFSET
-    modified_query = q + " LIMIT " + db_chunk_size + " OFFSET " + offset ;
+    modified_query = q + " LIMIT " + db_chunk_size + " OFFSET " + offset;
 
-    fd = db_connect("", database_file, "", __USE_SQLITE3__) ;
+    fd = db_connect("", database_file, "", __USE_SQLITE3__);
     if(fd == 0) {
-        log_file("system/db", "Error connecting to " + db + " at " + database_file + "\n") ;
-        if(callback) call_back(callback, "Error: Connection failed.") ;
-        map_delete(handle, query_id) ;
-        return ;
+        log_file("system/db", "Error connecting to " + db + " at " + database_file + "\n");
+        if(callback) call_back(callback, "Error: Connection failed.");
+        map_delete(handle, query_id);
+        return;
     }
 
-    rows = db_exec(fd, modified_query) ;
+    rows = db_exec(fd, modified_query);
 
     if(stringp(rows)) {
-        log_file("system/db", "Error querying " + db + ": " + rows + "\n") ;
-        if(callback) call_back(callback, "Error: Query failed - " + rows) ;
-        map_delete(handle, query_id) ;
-        return ;
+        log_file("system/db", "Error querying " + db + ": " + rows + "\n");
+        if(callback) call_back(callback, "Error: Query failed - " + rows);
+        map_delete(handle, query_id);
+        return;
     }
 
     if(rows == 0) {
         // If no more rows, finalize the result and invoke the callback
-        if(callback) call_back(callback, handle[query_id]) ;
-        map_delete(handle, query_id) ;
-        return ;
+        if(callback) call_back(callback, handle[query_id]);
+        map_delete(handle, query_id);
+        return;
     }
 
-    result = allocate(rows+1) ;
+    result = allocate(rows+1);
     for(i = 0; i <= rows; i++) {
-        mixed info = db_fetch(fd, i) ;
+        mixed info = db_fetch(fd, i);
         if(stringp(info)) {
-            log_file("system/db", "Error fetching row " + i + " in " + db + ": '" + q + "' " + info + "\n") ;
+            log_file("system/db", "Error fetching row " + i + " in " + db + ": '" + q + "' " + info + "\n");
         } else {
-            result[i] = info ;
+            result[i] = info;
         }
     }
 
     // Accumulate the results for this chunk
     if(!arrayp(handle[query_id])) {
-        handle[query_id] = ({ }) ;
+        handle[query_id] = ({ });
     }
     handle[query_id] += result ; // Append the results from this chunk
 
-    close_result = db_close(fd) ;
+    close_result = db_close(fd);
     if(close_result == 0) {
-        log_file("system/db", "Error closing connection to " + db + " at " + database_file + "\n") ;
-        if(callback) call_back(callback, "Error: Connection close failed.") ;
-        map_delete(handle, query_id) ;
-        return ;
+        log_file("system/db", "Error closing connection to " + db + " at " + database_file + "\n");
+        if(callback) call_back(callback, "Error: Connection close failed.");
+        map_delete(handle, query_id);
+        return;
     }
 
     // If the chunk returned exactly db_chunk_size rows, there might be more data to fetch
     if(sizeof(rows) == db_chunk_size) {
-        call_out("execute_query", 1, db, q, offset + db_chunk_size, query_id, callback) ;
+        call_out("execute_query", 1, db, q, offset + db_chunk_size, query_id, callback);
     } else {
         // Final chunk, process the accumulated result
-        if(callback) call_back(callback, handle[query_id]) ;
-        map_delete(handle, query_id) ;
+        if(callback) call_back(callback, handle[query_id]);
+        map_delete(handle, query_id);
     }
 }
 
@@ -289,7 +289,7 @@ private void execute_query(string db, string q, int offset, string query_id, mix
  * @returns {mapping} - A mapping of database names to their file paths.
  */
 mapping query_databases() {
-    return copy(databases) ;
+    return copy(databases);
 }
 
 /**
@@ -299,7 +299,7 @@ mapping query_databases() {
  * @returns {mapping} - A mapping of table names to their definitions.
  */
 mapping query_tables(string db_name) {
-    return copy(table_definitions[db_name]) ;
+    return copy(table_definitions[db_name]);
 }
 
 /**
@@ -309,7 +309,7 @@ mapping query_tables(string db_name) {
  * @returns {int} - 1 if the database is valid, 0 otherwise.
  */
 int valid_db(string db) {
-    return !nullp(databases[db]) ;
+    return !nullp(databases[db]);
 }
 
 /**
@@ -320,21 +320,21 @@ int valid_db(string db) {
  * @returns {int} - 1 if the table exists, 0 otherwise.
  */
 int valid_table(string db, string table) {
-    string statement = sprintf("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';", table) ;
-    mixed result ;
+    string statement = sprintf("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';", table);
+    mixed result;
 
     if(!valid_db(db))
-        return 0 ;
+        return 0;
 
-    result = query(db, statement, 0) ;
+    result = query(db, statement, 0);
 
     if(!result)
-        return 0 ;
+        return 0;
 
     if(stringp(result))
-        return 0 ;
+        return 0;
 
-    return sizeof(result) > 0 ;
+    return sizeof(result) > 0;
 }
 
 /**
@@ -344,21 +344,21 @@ int valid_table(string db, string table) {
  * @returns {mixed} - An array of version numbers or an error code.
  */
 mixed sqlite_version(string db) {
-    string statement = "SELECT sqlite_version() ;" ;
-    mixed result ;
+    string statement = "SELECT sqlite_version() ;";
+    mixed result;
 
     if(!valid_db(db))
-        return 0 ;
+        return 0;
 
-    result = query(db, statement, 0) ;
+    result = query(db, statement, 0);
 
     if(!result)
-        return -1 ;
+        return -1;
 
     if(stringp(result))
-        return 0 ;
+        return 0;
 
-    return explode(result[0][0], ".") ;
+    return explode(result[0][0], ".");
 }
 
 /**
@@ -368,26 +368,26 @@ mixed sqlite_version(string db) {
  * @returns {string} - The generated SQL statement or null if the mapping is empty.
  */
 string statement_from_mapping(mapping data) {
-    string *values = ({ }) ;
-    string statement ;
+    string *values = ({ });
+    string statement;
 
     if(!sizeof(data))
-        return null ;
+        return null;
 
-    statement = "(" + implode(keys(data), ",") + ") VALUES (" ;
+    statement = "(" + implode(keys(data), ",") + ") VALUES (";
     foreach(mixed k, mixed v in data) {
         if(!stringp(k))
-            continue ;
+            continue;
 
         if(typeof(v) == T_STRING)
-            values += ({ "'" + replace_string(v, "'", "''") + "'" }) ;
+            values += ({ "'" + replace_string(v, "'", "''") + "'" });
         else
-            values += ({ (string)v }) ;
+            values += ({ (string)v });
     }
 
-    statement += implode(values, ",") + ")" ;
+    statement += implode(values, ",") + ")";
 
-    return statement ;
+    return statement;
 }
 
 /**
@@ -397,12 +397,12 @@ string statement_from_mapping(mapping data) {
  * @returns {int} - 1 if upsert is supported, 0 otherwise.
  */
 int allow_upsert(string db) {
-    mixed version = sqlite_version(db) ;
+    mixed version = sqlite_version(db);
 
     if(!arrayp(version) || sizeof(version) < 3)
-        return 0 ;
+        return 0;
 
-    return (version[0] > 3) || (version[0] == 3 && version[1] >= 24) ;
+    return (version[0] > 3) || (version[0] == 3 && version[1] >= 24);
 }
 
 #endif // __USE_SQLITE3__

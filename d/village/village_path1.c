@@ -9,10 +9,10 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-    set_short("A Path Through the Village") ;
+    set_short("A Path Through the Village");
     set_long(
 "Just north of the village square, a cobblestone path stretches out, leading "
 "past a series of quaint village establishments. Along this path, the "
@@ -22,14 +22,14 @@ void setup() {
 "towards the promise of wholesome, everyday fare. The path itself, worn "
 "by the footsteps of countless patrons, speaks to the steady rhythm of "
 "village life, where the baker's humble offerings are a staple of daily "
-"existence.") ;
+"existence.");
 
     set_exits(([
         "south": "square",
         "west" : "bakery",
         "east" : "shop",
         "north": "field/0,9,0",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "village square", "square" }) :
@@ -52,5 +52,5 @@ void setup() {
             "painted with a rustic touch. It's a symbol of the shop's "
             "dedication to the fundamental joy of baking, offering a warm "
             "welcome to all who pass by.",
-    ])) ;
+    ]));
 }

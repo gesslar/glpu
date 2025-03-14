@@ -1,1 +1,1 @@
-inherit STD_ZONE ;
+inherit STD_ZONE;

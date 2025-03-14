@@ -18,36 +18,36 @@ int exec(object to, object from) {
      userp(previous_object()) ||
      base_name(previous_object()) == CMD_SU ||
      linkp(previous_object()))
-    return efun::exec(to, from) ;
+    return efun::exec(to, from);
   else
-    return 0 ;
+    return 0;
 }
 
 void shutdown(int how) {
-  object po = previous_object() ;
+  object po = previous_object();
 
   if(po != master() && po != load_object(SHUTDOWN_D))
-      return ;
+      return;
 
-  emit(SIG_SYS_SHUTDOWN) ;
-  PERSIST_D->persist_objects() ;
-  efun::shutdown(how) ;
+  emit(SIG_SYS_SHUTDOWN);
+  PERSIST_D->persist_objects();
+  efun::shutdown(how);
 }
 
 object shutdown_d() {
-  return load_object(SHUTDOWN_D) ;
+  return load_object(SHUTDOWN_D);
 }
 
 void set_privs(object ob, string privs) {
-  string name ;
+  string name;
 
   if(is_member(query_privs(previous_object()), "admin") || ob = master())
-    efun::set_privs(ob, privs) ;
+    efun::set_privs(ob, privs);
 
-  sscanf(file_name(ob), "/home/%*s/%s/%*s", name) ;
+  sscanf(file_name(ob), "/home/%*s/%s/%*s", name);
 
   if(name == privs)
-    efun::set_privs(ob, privs) ;
+    efun::set_privs(ob, privs);
 }
 
 
@@ -107,10 +107,10 @@ varargs void tell_room(mixed room, string msg, mixed exclude) {
  */
 varargs int userp(object ob) {
   if(!ob)
-    ob = previous_object() ;
+    ob = previous_object();
 
   return
-    efun::userp(ob) ;
+    efun::userp(ob);
 }
 
 /**
@@ -122,40 +122,40 @@ varargs int userp(object ob) {
  * @returns {string} - The number in string form.
  */
 varargs string query_num(int x, int many) {
-  string sign ;
+  string sign;
 
   assert_arg(!nullp(x), 1, "Missing argument.");
   assert_arg(!nullp(many) && intp(many), 2, "Invalid argument.");
 
-  sign = x < 0 ? "negative " : "" ;
-  x = abs(x) ;
+  sign = x < 0 ? "negative " : "";
+  x = abs(x);
 
-  return sign + efun::query_num(x, many) ;
+  return sign + efun::query_num(x, many);
 }
 
 varargs string ctime(int x) {
-  string fmt ;
+  string fmt;
 
   if(nullp(x))
-    x = time() ;
+    x = time();
 
-  fmt = "%Y-%m-%d %H:%M:%S" ;
+  fmt = "%Y-%m-%d %H:%M:%S";
 
-  return strftime(fmt, x) ;
+  return strftime(fmt, x);
 }
 
 varargs mixed element_of(mixed *arr, int secure) {
   if(!secure)
-    return efun::element_of(arr) ;
+    return efun::element_of(arr);
 
   else {
     if(pointerp(arr)) {
-      int sz = sizeof(arr) ;
-      int element = secure_random(sz) ;
+      int sz = sizeof(arr);
+      int element = secure_random(sz);
 
-      return arr[element] ;
+      return arr[element];
     }
   }
 
-  error("Invalid array passed to element_of()") ;
+  error("Invalid array passed to element_of()");
 }

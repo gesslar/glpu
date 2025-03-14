@@ -11,21 +11,21 @@
 
 #include <discord_bot.h>
 
-inherit STD_DISCORD_BOT ;
+inherit STD_DISCORD_BOT;
 
 void setup() {
-    start_bot() ;
+    start_bot();
 }
 
 void bot_handle_message_create(mixed data) {
-    mapping payload ;
+    mapping payload;
 
     payload = ([
         "content": "Hello, " + data["author"]["username"] + "!",
         "channel_id": data["channel_id"]
-    ]) ;
+    ]);
 
     call_out_walltime((:
         discord_send_text, EVENT_MESSAGE_CREATE, payload
-    :), 2.0) ;
+    :), 2.0);
 }

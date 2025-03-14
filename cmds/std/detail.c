@@ -12,52 +12,52 @@
 
 #include <ed.h>
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 void setup() {
     usage_text = "detail features - list the available features to detail\n"
-                 "detail <feature> - detail a feature\n" ;
+                 "detail <feature> - detail a feature\n";
 }
 
 mixed main(object tp, string str) {
-    mixed result ;
+    mixed result;
 
     if(!str)
-        return "Usage:\n" + usage_text ;
+        return "Usage:\n" + usage_text;
 
-    result = call_if(this_object(), sprintf("detail_%s", str), tp) ;
+    result = call_if(this_object(), sprintf("detail_%s", str), tp);
 
-    return result || "Unknown feature." ;
+    return result || "Unknown feature.";
 }
 
-void finish_description(int status, string file, string temp_file, object tp) ;
+void finish_description(int status, string file, string temp_file, object tp);
 mixed detail_description(object tp) {
-    string prompt ;
+    string prompt;
 
-    prompt = "Enter your long description. You are limited to 800 characters\n\n" ;
-    tell(tp, prompt) ;
+    prompt = "Enter your long description. You are limited to 800 characters\n\n";
+    tell(tp, prompt);
     tp->start_edit(
         null,
         assemble_call_back((: finish_description :), tp)
-    ) ;
+    );
 
-    return 1 ;
+    return 1;
 }
 
 void finish_description(int status, string file, string temp_file, object tp) {
-    string text ;
+    string text;
 
-    defer((: rm, temp_file :)) ;
+    defer((: rm, temp_file :));
 
         if(status == ED_STATUS_ABORTED || file_size(temp_file) < 1) {
         if(interactive(tp))
-            _info(tp, "Description aborted.") ;
-        return ;
+            _info(tp, "Description aborted.");
+        return;
     }
 
-    text = read_file(temp_file) ;
+    text = read_file(temp_file);
 
-    tp->set_long(text) ;
+    tp->set_long(text);
 
-    tell(tp, "Description updated.\n") ;
+    tell(tp, "Description updated.\n");
 }

@@ -9,19 +9,19 @@
  * @returns {string} - The formatted date string.
  */
 varargs string ldate(int x, int brief) {
-    string fmt ;
+    string fmt;
 
-    if(nullp(x)) x = time() ;
+    if(nullp(x)) x = time();
 
     if(x == 1) {
-        brief = 1 ;
-        x = time() ;
+        brief = 1;
+        x = time();
     }
 
-    if(brief) fmt = "%m-%d" ;
-    else fmt = "%Y-%m-%d" ;
+    if(brief) fmt = "%m-%d";
+    else fmt = "%Y-%m-%d";
 
-    return strftime(fmt, x) ;
+    return strftime(fmt, x);
 }
 
 /**
@@ -33,19 +33,19 @@ varargs string ldate(int x, int brief) {
  * @returns {string} - The formatted time string.
  */
 varargs string ltime(int x, int brief) {
-    string fmt ;
+    string fmt;
 
-    if(nullp(x)) x = time() ;
+    if(nullp(x)) x = time();
 
     if(x == 1) {
-        brief = 1 ;
-        x = time() ;
+        brief = 1;
+        x = time();
     }
 
-    if(brief) fmt = "%H:%M" ;
-    else fmt = "%H:%M:%S" ;
+    if(brief) fmt = "%H:%M";
+    else fmt = "%H:%M:%S";
 
-    return strftime(fmt, x) ;
+    return strftime(fmt, x);
 }
 
 /**
@@ -58,7 +58,7 @@ varargs string ltime(int x, int brief) {
  *                          time format (YYYY-MM-DD HH:MM:SS).
  */
 varargs string ldatetime(int x, int brief) {
-    return ldate(x, brief) + " " + ltime(x, brief) ;
+    return ldate(x, brief) + " " + ltime(x, brief);
 }
 
 /**
@@ -71,8 +71,8 @@ varargs string ldatetime(int x, int brief) {
  * @returns {int} - The time value converted to milliseconds.
  */
 varargs int time_ms(int nanoseconds) {
-    nanoseconds = nanoseconds || time_ns() ;
-    return nanoseconds / 1_000_000 ;
+    nanoseconds = nanoseconds || time_ns();
+    return nanoseconds / 1_000_000;
 }
 
 /**
@@ -85,6 +85,6 @@ varargs int time_ms(int nanoseconds) {
  * @returns {float} - The time value converted to a fractional value in seconds.
  */
 varargs float time_frac(int nanoseconds) {
-    nanoseconds = nanoseconds || time_ns() ;
-    return nanoseconds / 1_000_000_000.0 ;
+    nanoseconds = nanoseconds || time_ns();
+    return nanoseconds / 1_000_000_000.0;
 }

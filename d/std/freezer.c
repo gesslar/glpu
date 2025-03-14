@@ -9,16 +9,16 @@
  * 2024-08-11 - Gesslar - Created
  */
 
-inherit STD_ROOM ;
+inherit STD_ROOM;
 
 void setup() {
-  set_no_clean() ;
-  set_light(1) ;
-  set_short("The Freezer") ;
-  set_long("Brrr!") ;
+  set_no_clean(1);
+  set_light(1);
+  set_short("The Freezer");
+  set_long("Brrr!");
   set_exits(([
     "square" : ROOM_START,
-  ])) ;
+  ]));
 
-  set_no_gmcp_room_info(1) ;
+  set_no_gmcp_room_info(1);
 }

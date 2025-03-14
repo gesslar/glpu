@@ -74,7 +74,7 @@ mapping colour_to_hex = ([
   "244": "#808080", "245": "#8A8A8A", "246": "#949494", "247": "#9E9E9E",
   "248": "#A8A8A8", "249": "#B2B2B2", "250": "#BCBCBC", "251": "#C6C6C6",
   "252": "#D0D0D0", "253": "#DADADA", "254": "#E4E4E4", "255": "#EEEEEE"
-]) ;
+]);
 
 mapping hex_to_colour = ([
   "#000000": "000", "#800000": "001", "#008000": "002", "#808000": "003",
@@ -141,25 +141,25 @@ mapping hex_to_colour = ([
   "#808080": "244", "#8A8A8A": "245", "#949494": "246", "#9E9E9E": "247",
   "#A8A8A8": "248", "#B2B2B2": "249", "#BCBCBC": "250", "#C6C6C6": "251",
   "#D0D0D0": "252", "#DADADA": "253", "#E4E4E4": "254", "#EEEEEE": "255"
-]) ;
+]);
 
 varargs mixed colour_to_hex(int colour) {
   if(nullp(colour))
-    return colour_to_hex ;
+    return colour_to_hex;
 
   if(colour < 0 || colour > 255 )
-    return "" ;
+    return "";
 
-  return colour_to_hex[sprintf("%03d", colour)] ;
+  return colour_to_hex[sprintf("%03d", colour)];
 }
 
 varargs mixed hex_to_colour(string hex) {
   if(nullp(hex))
-    return hex_to_colour ;
+    return hex_to_colour;
 
-  hex = upper_case(hex) ;
+  hex = upper_case(hex);
   if(hex[0] == '#')
-    hex = hex[1..] ;
+    hex = hex[1..];
 
-  return hex_to_colour[hex] ;
+  return hex_to_colour[hex];
 }

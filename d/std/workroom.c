@@ -19,26 +19,26 @@ developer.
 
 #include <rooms.h>
 
-inherit STD_ROOM ;
+inherit STD_ROOM;
 
 void setup() {
-  set_short("A workroom") ;
+  set_short("A workroom");
   set_long(
 "This is a bare and generic workroom for developers who don't "
 "have one of their own. To see the source code for this workroom, "
 "you can type 'more here'. There is a sign on the wall."
-  ) ;
+  );
   set_exits(([
     "square": ROOM_START,
     "void"  : ROOM_VOID
-  ])) ;
+  ]));
 
   set_items(([
     "sign" : "The sign reads:\n"
     "'You are never given a wish without also being given the "
     "power to make it come true. You may, however, have to work for "
     "it.'",
-  ])) ;
+  ]));
 
-  set_light(1) ;
+  set_light(1);
 }

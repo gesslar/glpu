@@ -114,21 +114,21 @@ private int evaluate_simple_condition(int number, string condition) {
 }
 
 private int evaluate_compound_condition(int number, string condition) {
-  string *parts, part ;
-  string *or_parts, or_part ;
-  int or_result, i, j ;
+  string *parts, part;
+  string *or_parts, or_part;
+  int or_result, i, j;
 
-  parts = explode(lower_case(condition), "and") ;
+  parts = explode(lower_case(condition), "and");
   for(i = 0; i < sizeof(parts); i++) {
-    part = parts[i] ;
-    or_parts = explode(part, "or") ;
-    or_result = 0 ;
+    part = parts[i];
+    or_parts = explode(part, "or");
+    or_result = 0;
     for(j = 0; j < sizeof(or_parts); j++) {
-      or_part = trim(or_parts[j]) ;
+      or_part = trim(or_parts[j]);
       if(or_part[0] == '(') or_part = or_part[1..<2]; // Remove parentheses
       if(evaluate_simple_condition(number, or_part)) {
-        or_result = 1 ;
-        break ;
+        or_result = 1;
+        break;
       }
     }
     if(!or_result)
@@ -204,6 +204,6 @@ private int evaluate_compound_condition(int number, string condition) {
  */
 int evaluate_number(int number, string condition) {
   // Remove all spaces from the condition
-  condition = replace_string(condition, " ", "") ;
-  return evaluate_compound_condition(number, condition) ;
+  condition = replace_string(condition, " ", "");
+  return evaluate_compound_condition(number, condition);
 }

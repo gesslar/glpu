@@ -9,31 +9,31 @@
  * 2024-07-27 - Gesslar - Created
  */
 
-inherit STD_ACT ;
+inherit STD_ACT;
 
 mixed main(object tp, string str) {
-    mapping eq, wielded ;
-    string slot, *slots ;
-    string out = "" ;
-    int sz, max ;
+    mapping eq, wielded;
+    string slot, *slots;
+    string out = "";
+    int sz, max;
 
-    eq = tp->query_equipped() ;
-    wielded = tp->query_wielded() ;
+    eq = tp->query_equipped();
+    wielded = tp->query_wielded();
 
     if(!sizeof(eq) && !sizeof(wielded))
-        return "You are not equipping anything." ;
+        return "You are not equipping anything.";
 
-    out += "You have equipped the following items:\n\n" ;
+    out += "You have equipped the following items:\n\n";
 
-    slots = keys(wielded) ;
-    slots += keys(eq) ;
+    slots = keys(wielded);
+    slots += keys(eq);
 
-    max = max(map(slots, (: strlen :))) ;
+    max = max(map(slots, (: strlen :)));
 
     foreach(slot in slots) {
-        object item = wielded[slot] || eq[slot] ;
-        out += sprintf("%*s : %s\n", max, capitalize(slot), get_short(item)) ;
+        object item = wielded[slot] || eq[slot];
+        out += sprintf("%*s : %s\n", max, capitalize(slot), get_short(item));
     }
 
-    return out ;
+    return out;
 }

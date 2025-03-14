@@ -9,16 +9,16 @@
 
 #include <daemons.h>
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 mixed main(object tp, string args) {
-    string *out ;
-    mapping config ;
-    string temp ;
+    string *out;
+    mapping config;
+    string temp;
 
-    config = CONFIG_D->get_all_config() ;
+    config = CONFIG_D->get_all_config();
 
-    temp = pretty_map(config) ;
+    temp = pretty_map(config);
 
-    return ({ "Current MUD Configuration", "" }) + explode(temp, "\n") ;
+    return ({ "Current MUD Configuration", "" }) + explode(temp, "\n");
 }

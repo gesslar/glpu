@@ -279,7 +279,7 @@ varargs int _ok(mixed args...) {
   tp = objectp(args[0])
     ? args[0]
     : this_body()
-  ;
+;
 
   if(tp)
     tell(tp, append(result.message, "\n"));

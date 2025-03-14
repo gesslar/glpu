@@ -9,18 +9,18 @@
  * 2024-02-29 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
-inherit M_BANK ;
+inherit __DIR__ "village_base";
+inherit M_BANK;
 
 void setup() {
-    set_short("Well-appointed office") ;
+    set_short("Well-appointed office");
     set_long(
 "The financier's office, marked by a polished brass plaque, exudes quiet "
 "elegance. Dark wood paneling and shelves of ledgers convey reliability, "
 "while a large oak desk centers the room, ready for business. Here, in an "
 "atmosphere of calm efficiency, the financier oversees the village's wealth, "
 "offering counsel and loans with a steady hand. This space is the heart of "
-"financial dealings, where futures are shaped with care and precision.") ;
+"financial dealings, where futures are shaped with care and precision.");
 
     set_items(([
     ({ "polished brass plaque", "brass plaque", "polished plaque", "plaque" }) :
@@ -47,12 +47,12 @@ void setup() {
         "the financier's trade. Each quill, poised for action, partners with "
         "the ink to document the ebb and flow of wealth, marking commitments "
         "with a flourish that binds word to deed.",
-    ])) ;
+    ]));
 
-    add_exit("west", "village_path3") ;
+    add_exit("west", "village_path3");
 
-    init_bank() ;
+    init_bank();
 
-    set_terrain("indoor") ;
-    set_room_type("bank") ;
+    set_terrain("indoor");
+    set_room_type("bank");
 }

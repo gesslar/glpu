@@ -9,12 +9,12 @@
  * 2024-08-01 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
-inherit M_SHOP_MENU ;
+inherit M_SHOP_MENU;
 
 void setup() {
-    set_short("Olum Village Bakery") ;
+    set_short("Olum Village Bakery");
     set_long(
     "The cozy bakery, marked by a cheerful wooden sign shaped like a "
     "loaf of bread, fills the air with enticing aromas. Wooden shelves "
@@ -24,11 +24,11 @@ void setup() {
     "The friendly baker, dusted with flour, kneads dough at a worn "
     "wooden worktable. The scent of yeast, sugar, and warm bread "
     "creates an irresistible atmosphere that welcomes visitors and "
-    "tempts them with promises of delicious treats.") ;
+    "tempts them with promises of delicious treats.");
 
     set_exits(([
         "east" : "village_path1",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "wooden sign", "sign", "bread-shaped sign" }) :
@@ -68,13 +68,13 @@ void setup() {
             "fruits, sit alongside delicate pastries glistening with sugar or "
             "filled with colourful jams. The variety is impressive, catering "
             "to every taste and occasion.",
-    ])) ;
+    ]));
 
-    init_shop() ;
+    init_shop();
 
-    add_menu_item("food", "/obj/food/muffin") ;
-    add_menu_item("drink", "/obj/drink/strawberry_juice") ;
+    add_menu_item("food", "/obj/food/muffin");
+    add_menu_item("drink", "/obj/drink/strawberry_juice");
 
-    set_terrain("indoor") ;
-    set_room_type("food") ;
+    set_terrain("indoor");
+    set_room_type("food");
 }

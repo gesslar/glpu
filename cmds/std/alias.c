@@ -6,76 +6,76 @@
 
 */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
-mixed list_aliases(object tp, int global) ;
+mixed list_aliases(object tp, int global);
 
 mixed main(object tp, string args) {
-    string verb, alias ;
-    mapping aliases ;
+    string verb, alias;
+    mapping aliases;
 
-    if(!args) return list_aliases(tp, 0) ;
-    else if(args == "-g") return list_aliases(tp, 1) ;
+    if(!args) return list_aliases(tp, 0);
+    else if(args == "-g") return list_aliases(tp, 1);
 
     if(sscanf(args, "%s %s", verb, alias) == 2) {
         if(verb == "alias" || verb == "unalias")
-            return _error("You may not alias 'alias' or 'unalias'.") ;
+            return _error("You may not alias 'alias' or 'unalias'.");
 
-        tp->add_alias(verb, alias) ;
+        tp->add_alias(verb, alias);
 
-        return _ok("Added alias `%s`\n>> %s", verb, alias) ;
+        return _ok("Added alias `%s`\n>> %s", verb, alias);
     }
 
-    aliases = tp->get_aliases(0) ;
+    aliases = tp->get_aliases(0);
     if(of(args, aliases)) {
-        alias = aliases[args] ;
-        return _info("%s is aliased to:\n>> %s", args, alias) ;
+        alias = aliases[args];
+        return _info("%s is aliased to:\n>> %s", args, alias);
     }
-    aliases = tp->get_aliases(1) ;
+    aliases = tp->get_aliases(1);
     if(of(args, aliases)) {
-        alias = aliases[args] ;
-        return _info("%s is globally aliased to:\n>> %s", args, alias) ;
+        alias = aliases[args];
+        return _info("%s is globally aliased to:\n>> %s", args, alias);
     }
 
-    return _error("No such alias `%s` defined.", args) ;
+    return _error("No such alias `%s` defined.", args);
 }
 
 mixed list_aliases(object tp, int global) {
-    mapping data = tp->get_aliases(global) ;
-    string *keys, header, footer ;
-    int i, sz ;
-    string *out ;
+    mapping data = tp->get_aliases(global);
+    string *keys, header, footer;
+    int i, sz;
+    string *out;
 
     if(!mapp(data))
-        return "Aliases: No aliases defined.\n" ;
+        return "Aliases: No aliases defined.\n";
 
     if(global) {
-        header = "Current global aliases:" ;
-        footer = "Number of global aliases: %d" ;
+        header = "Current global aliases:";
+        footer = "Number of global aliases: %d";
     } else {
-        header = "Current local aliases:" ;
-        footer = "Number of local aliases: %d" ;
+        header = "Current local aliases:";
+        footer = "Number of local aliases: %d";
     }
 
-    keys = keys(data) ;
-    sz = sizeof(keys) ;
+    keys = keys(data);
+    sz = sizeof(keys);
 
     if(!sz)
-        return "Aliases: No aliases defined.\n" ;
+        return "Aliases: No aliases defined.\n";
 
-    keys = sort_array(keys, 1) ;
+    keys = sort_array(keys, 1);
 
-    out = allocate(sz + 4) ;
-    out[0] = header ;
-    out[1] = "" ;
-    out[<2] = "" ;
-    out[<1] = sprintf(footer, sz) ;
+    out = allocate(sz + 4);
+    out[0] = header;
+    out[1] = "";
+    out[<2] = "";
+    out[<1] = sprintf(footer, sz);
 
     for(i = 0; i < sz; i++) {
-        out[i+2] = sprintf("%-10s %-20s", keys[i], data[keys[i]]) ;
+        out[i+2] = sprintf("%-10s %-20s", keys[i], data[keys[i]]);
     }
 
-    return out ;
+    return out;
 }
 
 string help(object tp) {
@@ -94,5 +94,5 @@ string help(object tp) {
     "beginning with that verb will be parsed with that alias\n"
     "(ex. 'alias $: emote $*' will result in any command beginning with ':' to\n"
     "be parsed as emote $*).\n\n"
-    "See also: unalias\n") ;
+    "See also: unalias\n");
 }

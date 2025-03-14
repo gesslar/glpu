@@ -9,23 +9,23 @@
  * 2024-07-28 - Gesslar - Created
  */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 mixed main(object tp, string arg) {
-  object ob, *inv ;
+  object ob, *inv;
 
   if(!arg)
-    arg = "here" ;
+    arg = "here";
 
-  ob = get_object(arg) ;
+  ob = get_object(arg);
   if(!ob)
-    return "No such object." ;
+    return "No such object.";
 
-  inv = all_inventory(ob) ;
+  inv = all_inventory(ob);
 
-  tell(tp, "Shallow scanning "+ob+"\n") ;
+  tell(tp, "Shallow scanning "+ob+"\n");
   foreach(ob in inv)
-    tell(tp, "  " + ob + " (" + get_short(ob) + ")\n") ;
+    tell(tp, "  " + ob + " (" + get_short(ob) + ")\n");
 
-  return 1 ;
+  return 1;
 }

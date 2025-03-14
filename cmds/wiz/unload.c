@@ -9,38 +9,38 @@
  * 2024-08-13 - Gesslar - Created
  */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 mixed main(object tp, string arg) {
-    string file, *files ;
-    object ob ;
-    int unloaded = 0 ;
+    string file, *files;
+    object ob;
+    int unloaded = 0;
 
     if(!arg)
-        return _info("Usage: unload <file>") ;
+        return _info("Usage: unload <file>");
 
-    files = get_files(tp->query_env("cwd"), arg) ;
+    files = get_files(tp->query_env("cwd"), arg);
     if(!sizeof(files))
-        return _info("No files found matching: %s", arg) ;
+        return _info("No files found matching: %s", arg);
 
     foreach(file in files) {
-        ob = find_object(file) ;
+        ob = find_object(file);
 
         if(!ob)
-            continue ;
+            continue;
 
         if(sizeof(present_players(ob))) {
-            _info("Skipping %s.", file) ;
-            continue ;
+            _info("Skipping %s.", file);
+            continue;
         }
 
-        catch(ob->remove()) ;
+        catch(ob->remove());
         if(ob)
-            destruct(ob) ;
-        unloaded++ ;
+            destruct(ob);
+        unloaded++;
 
-        _ok("Unloaded %s.", file) ;
+        _ok("Unloaded %s.", file);
     }
 
-    return _ok("%d files unloaded.", unloaded) ;
+    return _ok("%d files unloaded.", unloaded);
 }

@@ -6,13 +6,13 @@
 //
 // 2022/08/23: Gesslar - Created
 
-inherit STD_OBJECT ;
-inherit M_PERSIST_DATA ;
+inherit STD_OBJECT;
+inherit M_PERSIST_DATA;
 
 void create(mixed args...) {
-    setup_chain() ;
+    setup_chain();
 }
 
 int is_daemon() {
-    return 1 ;
+    return 1;
 }

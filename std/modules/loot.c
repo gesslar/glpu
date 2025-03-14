@@ -11,70 +11,70 @@
 
 #include <type.h>
 
-private nosave mixed *_loot_table = ({ }) ;
-private nosave mixed *_coin_table = ({ }) ;
+private nosave mixed *_loot_table = ({ });
+private nosave mixed *_coin_table = ({ });
 
 varargs public void add_loot(mixed item, float chance) {
   if(nullp(item))
-    return ;
+    return;
 
   if(nullp(chance))
-    chance = 100.0 ;
+    chance = 100.0;
   else if(intp(chance))
-    chance = to_float(chance) ;
+    chance = to_float(chance);
 
   if(!floatp(chance))
-    return ;
+    return;
 
-  chance = clamp(0.0, 100.0, chance) ;
+  chance = clamp(0.0, 100.0, chance);
 
   switch(typeof(item)) {
     case T_STRING :
     case T_MAPPING :
     case T_FUNCTION :
     case T_ARRAY :
-      _loot_table += ({ ({ item, chance }) }) ;
-      break ;
+      _loot_table += ({ ({ item, chance }) });
+      break;
     default :
-      return ;
+      return;
   }
 }
 
 public varargs void set_loot_table(mixed *table) {
   if(!pointerp(table))
-    return ;
+    return;
 
-  _loot_table = table ;
+  _loot_table = table;
 }
 
 public mixed *query_loot_table() {
-  return copy(_loot_table) ;
+  return copy(_loot_table);
 }
 
 varargs public void add_coin(string type, int num, float chance) {
   if(nullp(type) || nullp(num))
-    return ;
+    return;
 
   if(nullp(chance))
-    chance = 100.0 ;
+    chance = 100.0;
   else if(intp(chance))
-    chance = to_float(chance) ;
+    chance = to_float(chance);
 
   if(!floatp(chance))
-    return ;
+    return;
 
-  chance = clamp(0.0, 100.0, chance) ;
+  chance = clamp(0.0, 100.0, chance);
 
-  _coin_table += ({ ({ type, num, chance }) }) ;
+  _coin_table += ({ ({ type, num, chance }) });
 }
 
 public varargs void set_coin_table(mixed *table) {
   if(!pointerp(table))
-    return ;
+    return;
 
-  _coin_table = table ;
+  _coin_table = table;
 }
 
 public mixed *query_coin_table() {
-  return copy(_coin_table) ;
+  return copy(_coin_table);
 }

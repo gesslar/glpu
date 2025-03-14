@@ -19,24 +19,24 @@
  * 2024-08-13 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 public nomask object compile_object(string file) {
-  string name ;
-  object ob ;
-  string e ;
+  string name;
+  object ob;
+  string e;
 
-  e = catch(ob = new(STD_STORAGE_OBJECT)) ;
+  e = catch(ob = new(STD_STORAGE_OBJECT));
 
   if(e) {
-    log_file("VIRTUAL", e) ;
-    return 0 ;
+    log_file("VIRTUAL", e);
+    return 0;
   }
 
   if(!ob)
-    return 0 ;
+    return 0;
 
-  ob->set_virtual_master(base_name(ob)) ;
+  ob->set_virtual_master(base_name(ob));
 
-  return ob ;
+  return ob;
 }

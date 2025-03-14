@@ -9,12 +9,12 @@
  * 2024-07-28 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 void setup() {
-  set_no_clean(1) ;
-  slot(SIG_PLAYER_DIED, "player_died") ;
-  slot(SIG_PLAYER_REVIVED, "player_revived") ;
+  set_no_clean(1);
+  slot(SIG_PLAYER_DIED, "player_died");
+  slot(SIG_PLAYER_REVIVED, "player_revived");
 }
 
 void player_died(object player, object killer) {
@@ -24,7 +24,7 @@ void player_died(object player, object killer) {
       killer ? killer->query_name() : "unknown",
       environment(player)
     )
-  ) ;
+  );
 }
 
 void player_revived(object player) {
@@ -33,5 +33,5 @@ void player_revived(object player) {
       player->query_name(),
       environment(player)
     )
-  ) ;
+  );
 }

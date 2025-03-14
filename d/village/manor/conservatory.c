@@ -10,21 +10,21 @@
  */
 
 
-inherit __DIR__ "manor" ;
+inherit __DIR__ "manor";
 
 void setup() {
-  set_short("A Conservatory") ;
+  set_short("A Conservatory");
   set_long("The conservatory is filled with exotic plants, each more bizarre "
   "than the last. Brightly coloured flowers bloom in abundance, and the air is "
   "thick with humidity. A fountain in the center, adorned with goldfish, "
   "bubbles softly, while a collection of mismatched garden furniture "
   "surrounds it. The glass ceiling allows sunlight to pour in, creating a "
-  "greenhouse effect that feels both tropical and overwhelming.") ;
+  "greenhouse effect that feels both tropical and overwhelming.");
 
   set_exits(([
     "west" : "hall2",
     "south" : "library",
-  ])) ;
+  ]));
 
   set_items(([
     "plants" :
@@ -39,5 +39,5 @@ void setup() {
     "furniture" :
     "The mismatched garden furniture creates a casual, inviting space to "
     "relax.",
-  ])) ;
+  ]));
 }

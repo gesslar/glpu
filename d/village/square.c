@@ -9,10 +9,10 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-    set_short("Village Square of Olum") ;
+    set_short("Village Square of Olum");
     set_long(
 "At the village center lies a bustling square, surrounded by ancient, timber-"
 "framed buildings. Cobblestone paths lead to a moss-covered stone well, the "
@@ -20,7 +20,7 @@ void setup() {
 "and conversation ripple through the air as elders on benches share stories, "
 "overseeing the vibrant tableau of daily life. The well stands as a testament "
 "to the village's enduring spirit, anchoring the square's lively exchange "
-"and community bonds.") ;
+"and community bonds.");
 
     set_exits(([
         "north": "village_path1",
@@ -28,9 +28,9 @@ void setup() {
         "east" : "village_path3",
         "south": "village_path4",
         "down" : "../tunnels/0,0,-1",
-    ])) ;
+    ]));
 
-    set_room_size(({2,2,1})) ;
+    set_room_size(({2,2,1}));
 
     set_items(([
         ({ "timber-framed buildings", "buildings", "ancient buildings" }) :
@@ -58,5 +58,5 @@ void setup() {
             "often sit. These wise individuals, with their weathered faces "
             "and kind eyes, watch over the daily activities, always ready to "
             "share a story or offer advice to those who seek it.",
-    ])) ;
+    ]));
 }

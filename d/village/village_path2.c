@@ -9,10 +9,10 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-    set_short("A Path Through the Village") ;
+    set_short("A Path Through the Village");
     set_long(
 "Westward from the village square, the path transitions from cobblestone to "
 "packed earth, guiding travelers towards the quieter side of the village. "
@@ -22,13 +22,13 @@ void setup() {
 "swaying gently, depicts a frothy mug, symbolizing the simple comforts "
 "waiting within. This stretch of the path, less traveled yet worn smooth "
 "by the tavern's regulars, leads to a place of rest and camaraderie, where "
-"tales and ale are shared with equal generosity.") ;
+"tales and ale are shared with equal generosity.");
 
     set_exits(([
         "east" : "square",
         "south": "tavern",
         "west" : "village_path5",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "village square", "square" }) :
@@ -60,5 +60,5 @@ void setup() {
             "to the thirsty and the weary. It symbolizes the universal "
             "language of rest and refreshment, offering a silent but "
             "heartfelt invitation to come and partake.",
-    ])) ;
+    ]));
 }

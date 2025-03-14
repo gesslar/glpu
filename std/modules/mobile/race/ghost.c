@@ -9,9 +9,9 @@
  * 2024-07-25 - Gesslar - Created
  */
 
-inherit __DIR__ "race" ;
+inherit __DIR__ "race";
 
 int set_up_body_parts(object ob, mixed args...) {
-    wipe_body_parts() ;
-    return 1 ;
+    wipe_body_parts();
+    return 1;
 }

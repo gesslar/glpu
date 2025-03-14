@@ -6,8 +6,8 @@
 //
 // 2024/02/20: Gesslar - Created
 
-inherit STD_ABILITY ;
+inherit STD_ABILITY;
 
 void mudlib_setup() {
-    ability_type = "spell" ;
+    ability_type = "spell";
 }

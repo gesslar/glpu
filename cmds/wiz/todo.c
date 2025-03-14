@@ -12,11 +12,11 @@
 
 #include <daemons.h>
 
-inherit STD_REPORTER ;
+inherit STD_REPORTER;
 
-void finish_report(string text, object tp) ;
+void finish_report(string text, object tp);
 
 void setup() {
-    set_report_type(query_file_name()) ;
-    set_git_hub_label(query_file_name()) ;
+    set_report_type(query_file_name());
+    set_git_hub_label(query_file_name());
 }

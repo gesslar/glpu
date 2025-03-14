@@ -2,10 +2,10 @@
 #define __ROOMINFO_H__
 
 class RoomInfo {
-    string short ;
-    string *todo ;
-    string *done ;
-    int *coords ;
+    string short;
+    string *todo;
+    string *done;
+    int *coords;
     int *size ;  // {width, height, depth} in grid squares
 }
 

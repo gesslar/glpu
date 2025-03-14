@@ -9,10 +9,10 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-    set_short("A Path Through the Village") ;
+    set_short("A Path Through the Village");
     set_long(
 "Eastward from the lively center of the village square, the path becomes more "
 "refined, with well-placed stones and borders of flowering shrubs indicating "
@@ -23,12 +23,12 @@ void setup() {
 "sophistication that speaks to the serious nature of the transactions within. "
 "This path, often traversed by those seeking counsel or investment, leads "
 "directly to the financier's door, promising discretion and expertise for "
-"those navigating the complexities of wealth and commerce.") ;
+"those navigating the complexities of wealth and commerce.");
 
     set_exits(([
         "east" : "financier",
         "west" : "square",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "village square", "square" }) :
@@ -62,7 +62,7 @@ void setup() {
             "but a promise; a promise of confidentiality, expertise, and the "
             "serious business of wealth management that defines the very "
             "essence of the financier's practice.",
-    ])) ;
+    ]));
 
-    add_exit("east", "financier") ;
+    add_exit("east", "financier");
 }
