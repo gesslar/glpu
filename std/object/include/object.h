@@ -7,6 +7,7 @@ string query_real_name();
 void set_real_name(string str);
 
 int remove();
+varargs void reset(mixed args...);
 string set_real_name(string str);
 string find_path(string path);
 void set_virtual_master(string str);
