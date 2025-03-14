@@ -171,6 +171,7 @@ public string substitute_colour(string text, string mode) {
         tags[sz] = good;
       } else {
         string sequence = hex_to_sequence(tags[sz]);
+
         cache[tags[sz]] = sequence;
         tags[sz] = sequence;
       }
@@ -456,7 +457,11 @@ private void normalize_hex(string ref hex) {
   if(!sizeof(match = pcre_extract(hex, TRUE_COLOUR_REGEX)))
     return;
 
-  hex = match[0];
+  hex = strlen(match[0])
+    ? match[0]
+    : strlen(match[1])
+      ? match[1]
+      : "";
 
   // We good!
   if(strlen(hex) == 6)
