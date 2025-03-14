@@ -47,7 +47,7 @@ string arrange_string(string str, int width) {
     if(!width)
         return "" ;
 
-    len=strlen(stripped_colours=COLOUR_D->substitute_colour(str, "plain")) ;
+    len=strlen(stripped_colours=COLOUR_D->substitute_colour(str, "off")) ;
 
    if(len<width)
         return str+repeat_string(" ",width-len) ;
