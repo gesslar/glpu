@@ -1,280 +1,351 @@
+/**
+ * @file /adm/simul_efun/function.c
+ *
+ * Advanced function manipulation and callback handling simul-efuns. Provides
+ * tools for function validation, callback assembly, call tracing, and delayed
+ * execution management.
+ *
+ * @created Unknown
+ * @last_modified 2024-03-11
+ */
+
 #include <simul_efun.h>
 #include <function.h>
 
 /**
- * @simul_efun valid_function
- * @description Checks if a given function is valid and not owned by a destructed
- *              object.
- * @param {mixed} f - The function to check.
- * @returns {int} - 1 if the function is valid, otherwise 0.
+ * Verifies that a function pointer is valid and usable.
+ *
+ * Checks if the function exists and its owner object hasn't been destructed.
+ *
+ * @param {mixed} f - Function pointer to validate
+ * @returns {int} 1 if function is valid and callable, 0 otherwise
+ * @example
+ * function f = (: object->method :);
+ * if(valid_function(f)) {
+ *     evaluate(f);
+ * }
  */
 int valid_function(mixed f) {
-  int fp ;
+  int fp;
 
-  fp = functionp(f) ;
+  fp = functionp(f);
 
   if(fp)
-    return !(fp & FP_OWNER_DESTED) ;
+    return !(fp & FP_OWNER_DESTED);
 
-  return false ;
+  return false;
 }
 
+private nosave string *traceColours = ({
+  "#0099ff",
+  "#66ff33",
+  "#ff33cc",
+  "#ff6600",
+  "#33cccc",
+});
+
 /**
- * @simul_efun call_trace
- * @description Returns a formatted string of the current call stack trace.
- * @param {int} [colour=0] - Whether to include colour codes. Defaults to 0
- *                           (no colour).
- * @returns {string} - The formatted call stack trace.
+ * Generates a formatted call stack trace.
+ *
+ * Creates a detailed stack trace with object paths, line numbers, and
+ * function names. Each frame is color-coded when colors are enabled.
+ *
+ * @param {int} [colour=0] - Whether to include ANSI color codes
+ * @returns {string} Formatted call stack trace
+ * @example
+ * debug("Error occurred:\n" + call_trace(1));
  */
 varargs string call_trace(int colour) {
-  string res ;
-  int i, n ;
-  object *objects ;
-  string *programs ;
-  string *functions ;
-  string *origins ;
-  string *lines ;
+  string res;
+  int i, n;
+  object *objects;
+  string *programs;
+  string *functions;
+  string *origins;
+  string *lines;
+  string *colours = colour
+    ? traceColours
+    : map(traceColours, (: "" :));
 
-  res = "" ;
-  programs = call_stack(0) ;
-  objects = call_stack(1) ;
-  functions = call_stack(2) ;
-  origins = call_stack(3) ;
-  lines = call_stack(4) ;
+  res = "";
+  programs = call_stack(0);
+  objects = call_stack(1);
+  functions = call_stack(2);
+  origins = call_stack(3);
+  lines = call_stack(4);
 
   // now fix up the lines
   lines = map(lines, function(string line) {
-    int num ;
-    sscanf(line, "%*s:%d", num) ;
-    return sprintf("%d", num) ;
-  }) ;
+    int num;
+    sscanf(line, "%*s:%d", num);
+    return sprintf("%d", num);
+  });
 
-  n = sizeof(programs) ;
+  n = sizeof(programs);
   // We don't want to include the call_trace() function itself
-  while(n-- > 1) {
-    i = n ;
-    res += sprintf("[{{0039}}%O{{res}}] {{0119}}%s{{res}}:{{0206}}%s{{res}}::{{0208}}%s{{res}}() ({{0172}}%s{{res}})\n",
-      objects[i],
-      programs[i],
-      lines[i],
-      functions[i],
-      origins[i]
-    ) ;
+
+  if(colour || !colour) {
+    res += reduce(objects[1..],
+      function(string acc, object obj, int index, object *objs,
+        string *programs, string *lines, string *functions, string *origins, string *cols) {
+          return sprintf("%s[%s%O{{res}}] %s%s{{res}}:%s%s{{res}}::%s%s{{res}}() (%s%s{{res}})\n",
+            acc,
+            cols[0],
+            obj,
+            cols[1],
+            programs[index+1],
+            cols[2],
+            lines[index+1],
+            cols[3],
+            functions[index+1],
+            cols[4],
+            origins[index+1]
+          );
+      }, "", programs, lines, functions, origins, colours);
   }
 
-  if(!colour) res = no_ansi(res) ;
-  return res ;
+  return res;
 }
 
 /**
- * @simul_efun assemble_call_back
- * @description Assembles a callback function from the provided arguments.
- *              This function is used to create a callable structure that can be
- *              invoked later. The callback can be either a method on an object or
- *              a function. The assembled callback is returned as an array.
+ * Creates a callback structure for delayed execution.
  *
- *              Usage:
- *              - When you need to create a callback for an object method:
- *                `assemble_call_back(object, "method", args...)`
- *              - When you need to create a callback for a function:
- *                `assemble_call_back(function, args...)`
+ * Builds a standardized callback array that can be stored and executed later.
+ * Supports both object methods and function pointers with arguments.
  *
- *              The function performs the following steps:
- *              1. Checks if the provided arguments form a valid array.
- *              2. Determines the size of the arguments array.
- *              3. Checks if the first argument is an object. If so, it verifies that
- *                 the second argument is a valid method name on the object.
- *              4. If the first argument is a function, it creates a callback with the
- *                 function and any additional arguments.
- *              5. Returns the assembled callback as an array.
- * @param {mixed} arg - The arguments to assemble into a callback.
- * @returns {mixed[]} - The assembled callback.
+ * @param {object|function} target - Object or function to callback to
+ * @param {string} [method] - Method name if target is an object
+ * @param {...mixed} arg - Additional arguments to pass to callback
+ * @returns {mixed*} Assembled callback array
+ * @errors If arguments are invalid or method doesn't exist
+ * @see call_back
+ * @see delay_act
+ * @example
+ * mixed *cb = assemble_call_back(player, "move", "/room/square");
+ * mixed *cb = assemble_call_back((: do_something :), arg1, arg2);
  */
 mixed *assemble_call_back(mixed arg...) {
-  int sz ;
+  int sz;
 
   if(!pointerp(arg))
-    error("ERROR: Invalid argument passed to assemble_call_back().") ;
+    error("ERROR: Invalid argument passed to assemble_call_back().");
 
-  sz = sizeof(arg) ;
+  sz = sizeof(arg);
   if(!sz)
-    error("ERROR: No arguments passed to assemble_call_back().") ;
+    error("ERROR: No arguments passed to assemble_call_back().");
 
   if(objectp(arg[0])) {
-    object ob ;
-    string fun ;
+    object ob;
+    string fun;
 
     if(sz < 2)
-      error("ERROR: No function passed to assemble_call_back().") ;
+      error("ERROR: No function passed to assemble_call_back().");
 
-    ob = arg[0] ;
-    fun = arg[1] ;
+    ob = arg[0];
+    fun = arg[1];
     if(sz > 2)
-      arg = arg[2..] ;
+      arg = arg[2..];
     else
-      arg = ({}) ;
+      arg = ({});
 
     if(!function_exists(fun, ob))
-      error("ERROR: Function does not exist in object passed to assemble_call_back().") ;
+      error("ERROR: Function does not exist in object passed to assemble_call_back().");
 
-    return ({ ob, fun, arg... }) ;
+    return ({ ob, fun, arg... });
   } else if(valid_function(arg[0])) {
     if(sz > 1)
-      return ({ arg[0], arg[1..]... }) ;
+      return ({ arg[0], arg[1..]... });
     else
-      return ({ arg[0], ({})... }) ;
+      return ({ arg[0], ({})... });
   }
 
-  error("ERROR: Invalid function passed to assemble_call_back().") ;
+  error("ERROR: Invalid function passed to assemble_call_back().");
 }
 
 /**
- * @simul_efun call_back
- * @description Executes a callback with the given arguments.
- * @param {mixed} cb - The callback to execute.
- * @param {mixed} new_arg - The arguments to pass to the callback.
- * @returns {mixed} - The result of the callback execution.
+ * Executes a previously assembled callback.
+ *
+ * Takes a callback structure created by assemble_call_back() and executes it,
+ * optionally with new arguments prepended to the stored ones.
+ *
+ * @param {mixed*} cb - Callback array from assemble_call_back()
+ * @param {...mixed} new_arg - Additional arguments to prepend
+ * @returns {mixed} Result from callback execution
+ * @errors If callback structure is invalid
+ * @see assemble_call_back
+ * @see valid_function
+ * @example
+ * mixed *cb = assemble_call_back(player, "tell", "Hello!");
+ * call_back(cb);  // Calls player->tell("Hello!")
  */
 mixed call_back(mixed cb, mixed new_arg...) {
-  int sz ;
-  mixed fun ;
-  mixed final_arg = ({}) ;
+  int sz;
+  mixed fun;
+  mixed final_arg = ({});
 
   if(!pointerp(cb))
-    error("ERROR: Invalid argument passed to call_back().") ;
+    error("ERROR: Invalid argument passed to call_back().");
 
-  sz = sizeof(cb) ;
+  sz = sizeof(cb);
   if(!sz)
-    error("ERROR: No arguments passed to call_back().") ;
+    error("ERROR: No arguments passed to call_back().");
 
   if(objectp(cb[0])) {
-    object cb_ob = cb[0] ;
-    string cb_fun ;
-    mixed *curr ;
+    object cb_ob = cb[0];
+    string cb_fun;
+    mixed *curr;
 
     if(sz < 2)
-      error("ERROR: No function passed to call_back().") ;
+      error("ERROR: No function passed to call_back().");
 
-    cb_fun = cb[1] ;
+    cb_fun = cb[1];
 
     if(sz > 2)
-      curr = cb[2..] ;
+      curr = cb[2..];
     else
-      curr = ({}) ;
+      curr = ({});
 
     if(!function_exists(cb_fun, cb_ob))
-      error("ERROR: Function does not exist in object passed to call_back().") ;
+      error("ERROR: Function does not exist in object passed to call_back().");
 
-    final_arg = ({ new_arg... }) + curr ;
+    final_arg = ({ new_arg... }) + curr;
 
-    fun = (: call_other, cb_ob, cb_fun :) ;
+    fun = (: call_other, cb_ob, cb_fun :);
   } else if(valid_function(cb[0])) {
-    function cb_fun = cb[0] ;
-    mixed *curr ;
+    function cb_fun = cb[0];
+    mixed *curr;
 
     if(sz > 1)
-      curr = cb[1..] ;
+      curr = cb[1..];
     else
-      curr = ({}) ;
+      curr = ({});
 
-    fun = cb_fun ;
-    final_arg = ({ new_arg... }) + curr ;
+    fun = cb_fun;
+    final_arg = ({ new_arg... }) + curr;
   } else
-    return null ;
+    return null;
 
-  return catch((*fun)(final_arg...)) ;
+  return catch((*fun)(final_arg...));
 }
 
 /**
- * @simul_efun call_if
- * @description Calls the specified function on the given object if it exists.
- * @param {mixed} ob - The object to call the function on.
- * @param {string} func - The name of the function to call.
- * @param {mixed} arg - The argument to pass to the function.
- * @returns {mixed} - The return value of the function, or null if the function
- *                    does not exist.
+ * Safely calls a function on an object if it exists.
+ *
+ * Attempts to call the named function, returning null if function doesn't
+ * exist instead of throwing an error.
+ *
+ * @param {object|string} ob - Target object or filename
+ * @param {string} func - Function name to call
+ * @param {...mixed} [arg] - Arguments to pass to function
+ * @returns {mixed} Function result or null if function doesn't exist
+ * @errors If ob or func arguments are invalid types
+ * @see function_exists
+ * @see call_back
+ * @example
+ * call_if(user, "receive_message", "Hello");
  */
 varargs mixed call_if(mixed ob, string func, mixed arg...) {
   if(nullp(ob))
-    error("Missing argument 1 to call_if()") ;
+    error("Missing argument 1 to call_if()");
 
   if(!objectp(ob) && !stringp(ob))
-    error("Bad argument 1 to call_if()") ;
+    error("Bad argument 1 to call_if()");
 
   if(nullp(func))
-    error("Missing argument 2 to call_if()") ;
+    error("Missing argument 2 to call_if()");
 
   if(!stringp(func))
-    error("Bad argument 2 to call_if()") ;
+    error("Bad argument 2 to call_if()");
 
   if(stringp(ob))
-    ob = load_object(ob) ;
+    ob = load_object(ob);
 
   if(function_exists(func, ob))
     if(sizeof(arg))
-      return call_other(ob, func, arg...) ;
+      return call_other(ob, func, arg...);
     else
-      return call_other(ob, func) ;
+      return call_other(ob, func);
 
-  return null ;
+  return null;
 }
 
 /**
- * @simul_efun delay_act
- * @description Delays an action for a specified amount of time.
- * @param {string} action - The action to delay.
- * @param {float} delay - The amount of time to delay the action.
- * @param {mixed*} cb - The callback to execute after the delay.
- * @returns {int} - The ID of the delayed action.
+ * Schedules an action with delayed execution.
+ *
+ * Creates a delayed action on the current body object, with optional
+ * callback on completion.
+ *
+ * @param {string} act - Action description
+ * @param {float} delay - Time to wait before execution
+ * @param {mixed*} [cb] - Callback to execute after delay
+ * @returns {int} Action ID or 0 if already acting
+ * @example
+ * delay_act("casting", 3.0, assemble_call_back(this_object(), "cast_spell"));
  */
 varargs int delay_act(string act, float delay, mixed *cb) {
-  int id ;
-  object tp = this_body() ;
+  object user = this_body();
 
-  if(!tp)
-    return null ;
+  if(!user)
+    return null;
 
   if(!act || !delay || !cb)
-    return null ;
+    return null;
 
-  if(tp->is_acting())
-    return 0 ;
+  if(user->is_acting())
+    return 0;
 
-  return tp->act(act, delay, cb) ;
+  return user->act(act, delay, cb);
 }
 
 /**
- * @simul_efun assert
- * @description Asserts that a statement is true. If the statement is false, it
- *              will throw an error with the given message. If no message is
- *              provided, it will use a default message.
- * @param {mixed} statement - The statement to assert.
- * @param {string} message - The message to display if the condition is false.
+ * Verifies a condition, throwing an error if false.
+ *
+ * Enhanced assertion checking with custom error messages and evaluation
+ * of complex conditions.
+ *
+ * @param {mixed} statement - Condition to verify
+ * @param {string} [message="Assertion failed"] - Error message if condition fails
+ * @throws If statement evaluates to false or null
+ * @example
+ * assert(hp > 0, "Health cannot be negative");
  */
 varargs void assert(mixed statement, string message) {
-  mixed result ;
-  string err ;
+  mixed result;
+  string err;
 
   if(nullp(statement))
-    error("Missing argument 1 to assert()") ;
+    error("Missing argument 1 to assert()");
 
   if(!stringp(message))
-    message = "Assertion failed" ;
+    message = "Assertion failed";
 
-  err = catch(result = evaluate(statement)) ;
+  err = catch(result = evaluate(statement));
 
   if(stringp(err)) {
-    message = append(message, "\n") ;
-    error(message + err) ;
+    message = append(message, "\n");
+    error(message + err);
   }
 
   if(nullp(result))
-    error(message) ;
+    error(message);
 
   if(result == 0)
-    error(message) ;
+    error(message);
 }
 
+/**
+ * Verifies a function argument condition.
+ *
+ * Specialized assertion for validating function parameters with
+ * numbered argument reference.
+ *
+ * @param {mixed} condition - Condition to verify
+ * @param {int} arg_num - Parameter position number
+ * @param {string} message - Error message prefix
+ * @throws If condition is false, with formatted argument number
+ * @example
+ * assert_arg(stringp(name), 1, "Expected string");
+ */
 void assert_arg(mixed condition, int arg_num, string message) {
   message = message || "";
   message += sprintf(" [Arg #%d]", arg_num);
