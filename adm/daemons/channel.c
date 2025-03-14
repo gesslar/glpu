@@ -53,14 +53,14 @@ void setup() {
     if(ob = find_object(arr[i]))
       ob->remove();
 
-    _debug("> Loading channel module: %s", arr[i]);
+    debug("> Loading channel module: %s", arr[i]);
     time = time_frac();
     err = catch(load_object(arr[i]));
 
     if(err != 0)
-      _debug("< Error %s when loading %s", err, arr[i]);
+      debug("< Error %s when loading %s", err, arr[i]);
     else
-      _debug("< Done (%.2fs)", time_frac() - time);
+      debug("< Done (%.2fs)", time_frac() - time);
   }
 
   set_no_clean(1);
@@ -75,17 +75,17 @@ int register_module(string name, string path) {
 
   if(member_array(name, keys) != -1) {
     if(modules[name] == path)  {
-      _debug("  > Module %s already registered to path %s", name, path);
+      debug("  > Module %s already registered to path %s", name, path);
       return 1;
     } else {
-      _debug("  > Module %s already registered to path %s", name, modules[name]);
+      debug("  > Module %s already registered to path %s", name, modules[name]);
       return -1;
     }
   }
 
   modules[name] = path;
 
-  _debug("  > Module %s registered to path %s", name, path);
+  debug("  > Module %s registered to path %s", name, path);
 
   return 1;
 }
@@ -133,7 +133,7 @@ int register_channel(string module_name, string channel_name) {
 
   channels[new_name] = (["module" : module_name, "real_name" : channel_name, "listeners" : ({})]);
 
-  _debug("   > Channel %s registered to module %s", new_name, module_name);
+  debug("   > Channel %s registered to module %s", new_name, module_name);
 
   return 1;
 }
@@ -318,7 +318,7 @@ void rec_msg(string channel, string user, string msg) {
     "text" : msg,
   ]);
 
-  _debug("PAYLOAD: %O", payload);
+  debug("PAYLOAD: %O", payload);
 
   listeners = channels[channel]["listeners"];
   listeners -= ({ 0 });

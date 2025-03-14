@@ -178,7 +178,7 @@ public void setup_exits(object room) {
   z = coords[0];
 
   current_room_type = determine_room_type(z, y, x);
-  _debug("Current room type: %s", current_room_type);
+  debug("Current room type: %s", current_room_type);
   if(current_room_type == "impassable")
     return;
 
@@ -230,7 +230,7 @@ private varargs string determine_room_type(int z, int y, int x) {
     to_float(y) / 15.0
   ) + 1.0;
 
-  _debug("Noise value for x%d,y%d,z%d: %f", x, y, z, value);
+  debug("Noise value for x%d,y%d,z%d: %f", x, y, z, value);
 
   if(nullp(value))
     return null;

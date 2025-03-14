@@ -97,7 +97,7 @@ varargs void _log(mixed args...) {
         prefix = sprintf("[%s] %s", ldatetime(), prefix);
 
     if(sizeof(rest))
-        _debug(prefix + message, rest...);
+        debug(prefix + message, rest...);
     else
-        _debug(prefix + message);
+        debug(prefix + message);
 }

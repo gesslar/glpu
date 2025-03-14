@@ -147,16 +147,16 @@ string can_proc() {
   string result;
   float roll;
 
-  _debug("can_proc: Checking for procs.");
+  debug("can_proc: Checking for procs.");
   // If there are no procs, return false
   if(!sizeof(_procs))
     return false;
-  _debug("can_proc: There are %d procs.", sizeof(_procs));
+  debug("can_proc: There are %d procs.", sizeof(_procs));
 
   // If the proc chance is 0, return false
   if(_proc_chance <= 0.0)
     return false;
-  _debug("can_proc: Proc chance is %f.", _proc_chance);
+  debug("can_proc: Proc chance is %f.", _proc_chance);
 
   // Iterate through all procs and check if they can proc, if they have
   // a cooldown
@@ -165,15 +165,15 @@ string can_proc() {
       if(now - _cooldowns[name] > proc["cooldown"])
         procs[name] = proc["chance"] || 100;
   }
-  _debug("can_proc: Procs: %O", procs);
+  debug("can_proc: Procs: %O", procs);
 
   if(!sizeof(procs))
     return false;
-  _debug("can_proc: Final procs: %O", procs);
+  debug("can_proc: Final procs: %O", procs);
   // Now let's check which proc can occur. This is based on the weight of
   // the proc.
   result = element_of_weighted(procs);
-  _debug("can_proc: Result: %s", result);
+  debug("can_proc: Result: %s", result);
   return result;
 }
 
@@ -186,9 +186,9 @@ varargs void proc(string name, mixed args...) {
   mapping proc = query_proc(name);
   mixed func;
 
-  _debug("proc: Calling proc %s.", name);
+  debug("proc: Calling proc %s.", name);
   if(nullp(proc)) {
-    _debug("proc: Proc %s not found.", name);
+    debug("proc: Proc %s not found.", name);
     return;
   }
 

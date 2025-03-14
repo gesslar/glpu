@@ -27,13 +27,13 @@ void virtual_setup(mixed args...) {
   object ob;
 
   set_zone("ellenia");
-  // _debug("Setting up room type for %O", this_object());
+  // debug("Setting up room type for %O", this_object());
   __DIR__ "ellenia_daemon"->setup_room_type(this_object());
   __DIR__ "ellenia_daemon"->setup_room_subtype(this_object());
   __DIR__ "ellenia_daemon"->setup_exits(this_object(), file);
   __DIR__ "ellenia_daemon"->setup_short(this_object(), file);
   __DIR__ "ellenia_daemon"->setup_long(this_object(), file);
-  // _debug("Room type for %O is %O", this_object(), query_room_environment());
+  // debug("Room type for %O is %O", this_object(), query_room_environment());
 
   add_reset((: repopulate :));
 
