@@ -9,68 +9,68 @@
  * 2024-07-28 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-object create_body_basic(object user) ;
-object create_body(object user) ;
-mixed create_ghost(object user) ;
-mixed revive(object ghost, object user) ;
+object create_body_basic(object user);
+object create_body(object user);
+mixed create_ghost(object user);
+mixed revive(object ghost, object user);
 
 object create_body(string name) {
-    object body ;
-    string err ;
-    string type ;
-    string dest ;
+    object body;
+    string err;
+    string type;
+    string dest;
 
     if(!name)
-        return 0 ;
+        return 0;
 
-    name = lower_case(name) ;
+    name = lower_case(name);
 
     if(!user_exists(name))
-        return 0 ;
+        return 0;
 
     if(adminp(name))
-        type = "admin" ;
+        type = "admin";
     else if(devp(name))
-        type = "dev" ;
+        type = "dev";
     else
-        type = "player" ;
+        type = "player";
 
-    dest = sprintf("/%s/%s", type, name) ;
+    dest = sprintf("/%s/%s", type, name);
 
-    err = catch(body = load_object(dest)) ;
+    err = catch(body = load_object(dest));
 
     if(err)
-        return 0 ;
+        return 0;
 
     if(!body)
-        return 0 ;
+        return 0;
 
-    body->set_name(name) ;
-    set_privs(body, name) ;
-    body->restore_body() ;
+    body->set_name(name);
+    set_privs(body, name);
+    body->restore_body();
 
-    return body ;
+    return body;
 }
 
 mixed create_ghost(string name) {
-    string err ;
-    object ghost ;
+    string err;
+    object ghost;
 
     if(!name)
-        return 0 ;
+        return 0;
 
-    name = lower_case(name) ;
+    name = lower_case(name);
 
-    err = catch(ghost = load_object(sprintf("/ghost/%s", name))) ;
+    err = catch(ghost = load_object(sprintf("/ghost/%s", name)));
     if(err) {
-        log_file("ghost", err) ;
-        return err ;
+        log_file("ghost", err);
+        return err;
     }
 
-    ghost->set_name(name) ;
-    set_privs(ghost, name) ;
+    ghost->set_name(name);
+    set_privs(ghost, name);
 
-    return ghost ;
+    return ghost;
 }

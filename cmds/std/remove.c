@@ -9,45 +9,45 @@
  * 2024-07-26 - Gesslar - Created
  */
 
-inherit STD_ACT ;
+inherit STD_ACT;
 
 void setup() {
     help_text =
 "Use this command to remove an item of clothing or armour that you are wearing. "
 "For example, to remove a pair of boots, you would type 'remove boots'. You "
-"may only remove items that you are wearing." ;
-    usage_text = "remove <item>" ;
+"may only remove items that you are wearing.";
+    usage_text = "remove <item>";
 }
 
 mixed main(object tp, string str) {
-    object ob ;
-    string slot ;
-    string *slots ;
-    string *items ;
-    int i ;
-    mixed result ;
+    object ob;
+    string slot;
+    string *slots;
+    string *items;
+    int i;
+    mixed result;
 
     if(!ob = find_target(tp, str, tp))
-        return "You do not have that item." ;
+        return "You do not have that item.";
 
-    slot = ob->query_slot() ;
+    slot = ob->query_slot();
     if(nullp(slot))
-        return "That item cannot be removed." ;
+        return "That item cannot be removed.";
 
     if(tp->equipped_on(slot) != ob)
-        return "You are not wearing that item." ;
+        return "You are not wearing that item.";
 
-    result = ob->can_unequip(tp) ;
+    result = ob->can_unequip(tp);
     if(stringp(result))
-        return result ;
+        return result;
     if(result == 0)
-        return "You cannot remove that item." ;
+        return "You cannot remove that item.";
 
-    result = ob->unequip() ;
+    result = ob->unequip();
     if(stringp(result))
-        return result ;
+        return result;
     if(result == 0)
-        return "You cannot remove that item." ;
+        return "You cannot remove that item.";
 
-    return 1 ;
+    return 1;
 }

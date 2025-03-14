@@ -9,24 +9,24 @@
  * 2024-08-07 - Gesslar - Created
  */
 
-inherit STD_ACT ;
+inherit STD_ACT;
 
 mixed main(object tp, string str) {
-    object ob ;
-    int uses ;
+    object ob;
+    int uses;
 
     if(!ob = find_target(tp, str, tp))
-        return "You don't have that." ;
+        return "You don't have that.";
 
     if(!ob->is_food())
-        return "You can't nibble on that." ;
+        return "You can't nibble on that.";
 
-    uses = ob->query_uses() ;
+    uses = ob->query_uses();
     if(uses < 1)
-        return "There is nothing left to nibble on." ;
+        return "There is nothing left to nibble on.";
 
     if(!ob->nibble(tp))
-        return "You couldn't nibble on that." ;
+        return "You couldn't nibble on that.";
 
-    return 1 ;
+    return 1;
 }

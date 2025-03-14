@@ -11,105 +11,105 @@
 
 #include <colour.h>
 
-private nosave float dir_delay = 0.02 ;
-private nosave float file_delay = 0.01 ;
+private nosave float dir_delay = 0.02;
+private nosave float file_delay = 0.01;
 
-private nosave string *dirs_to_check = ({ }) ;
-private nosave string *files_to_check = ({ }) ;
-private nosave string *errs = ({ }) ;
+private nosave string *dirs_to_check = ({ });
+private nosave string *files_to_check = ({ });
+private nosave string *errs = ({ });
 private nosave string *exclude = ({
     ".", "..", "attic", "BACKUP", "old", "backup",
     "ATTIC", ".git", ".vscode", "tmp", "TMP", "u",
     "log", "doc", "plans", "players", "data", "_attic",
     "weapon2", "removed", "cards", "fluffos", ".github", "ARCHIVE",
     "archive", "home",
-}) ;
+});
 
-private nosave int file_call_out = 0 ;
-private nosave int dir_call_out = 0 ;
-private nosave int files_checked = 0 ;
-private nosave int dirs_checked = 0 ;
+private nosave int file_call_out = 0;
+private nosave int dir_call_out = 0;
+private nosave int files_checked = 0;
+private nosave int dirs_checked = 0;
 
-private nosave float started ;
-private nosave object notify ;
+private nosave float started;
+private nosave object notify;
 
 void check_running() {
     if(!sizeof(dirs_to_check) && !sizeof(files_to_check)) {
-        message("info", "\aDone!\n", notify) ;
-        message("info", sprintf("%d dirs and %d files checked.\n", dirs_checked, files_checked), notify) ;
-        message("info", sprintf("Duration: %.2fs\n", time_frac()-started), notify) ;
+        message("info", "\aDone!\n", notify);
+        message("info", sprintf("%d dirs and %d files checked.\n", dirs_checked, files_checked), notify);
+        message("info", sprintf("Duration: %.2fs\n", time_frac()-started), notify);
     }
 }
 
 void runit(object who) {
-    notify = who ;
+    notify = who;
 
-    started = time_frac() ;
-    message("info", "=== STARTING THE ERROR FINDER ===\n", notify) ;
+    started = time_frac();
+    message("info", "=== STARTING THE ERROR FINDER ===\n", notify);
 
-    dirs_to_check = ({ "/" }) ;
+    dirs_to_check = ({ "/" });
 
-    dir_call_out = call_out_walltime("check_dir", dir_delay) ;
+    dir_call_out = call_out_walltime("check_dir", dir_delay);
 
-    rm("/log/ERRORS") ;
+    rm("/log/ERRORS");
 }
 
 void check_dir() {
-    string *paths, *files, *dirs ;
-    string current ;
+    string *paths, *files, *dirs;
+    string current;
 
-    check_running() ;
+    check_running();
 
     if(sizeof(dirs_to_check) > 0) {
-        dir_call_out = call_out_walltime("check_dir", dir_delay) ;
+        dir_call_out = call_out_walltime("check_dir", dir_delay);
     }
     else
     {
-        return ;
+        return;
     }
 
-    dirs_checked++ ;
+    dirs_checked++;
 
-    current = dirs_to_check[0] ;
+    current = dirs_to_check[0];
 
-    message("info", SYSTEM_INFO + "CHECKING: " + current + "{{res}}\n", notify) ;
+    message("info", SYSTEM_INFO + "CHECKING: " + current + "{{res}}\n", notify);
 
-    current = append(current, "/") ;
-    dirs_to_check = dirs_to_check[1..] ;
+    current = append(current, "/");
+    dirs_to_check = dirs_to_check[1..];
 
-    paths = get_dir(current) ;
-    paths -= exclude ;
-    paths = map(paths, (: $2 + $1 :), current) ;
-    files = filter(paths, (: file_size($1) > 0 && $1[<2..] == ".c" :)) ;
-    dirs = filter(paths, (: file_size($1) == -2 :)) ;
+    paths = get_dir(current);
+    paths -= exclude;
+    paths = map(paths, (: $2 + $1 :), current);
+    files = filter(paths, (: file_size($1) > 0 && $1[<2..] == ".c" :));
+    dirs = filter(paths, (: file_size($1) == -2 :));
 
-    dirs_to_check += dirs ;
-    files_to_check += files ;
+    dirs_to_check += dirs;
+    files_to_check += files;
 
     if((file_call_out == 0 || find_call_out(file_call_out) == -1) && sizeof(files_to_check) > 0) {
-        file_call_out = call_out_walltime("check_file", file_delay) ;
+        file_call_out = call_out_walltime("check_file", file_delay);
     }
 }
 
 void check_file() {
-    string file ;
-    mixed err ;
+    string file;
+    mixed err;
 
-    check_running() ;
+    check_running();
 
-    if(!sizeof(files_to_check)) return ;
+    if(!sizeof(files_to_check)) return;
 
-    files_checked++ ;
+    files_checked++;
 
-    file_call_out = call_out_walltime("check_file", file_delay) ;
+    file_call_out = call_out_walltime("check_file", file_delay);
 
-    file = files_to_check[0] ;
-    message("info", SYSTEM_INFO + " - CHECKING: " + file + "{{res}}\n", notify) ;
+    file = files_to_check[0];
+    message("info", SYSTEM_INFO + " - CHECKING: " + file + "{{res}}\n", notify);
 
-    files_to_check = files_to_check[1..] ;
+    files_to_check = files_to_check[1..];
 
     if(err = catch(test_load(file))) {
-        errs += ({ ({ file, err }) }) ;
-        write_file("/log/ERRORS", file + "\n" + err + "\n") ;
+        errs += ({ ({ file, err }) });
+        write_file("/log/ERRORS", file + "\n" + err + "\n");
     }
 }

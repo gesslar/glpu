@@ -9,7 +9,7 @@
  * @param {mixed...} arg - arguments to pass to the signal
  */
 void emit(int sig, mixed arg...) {
-    catch(SIGNAL_D->dispatch_signal(sig, arg...)) ;
+    catch(SIGNAL_D->dispatch_signal(sig, arg...));
 }
 
 /**
@@ -20,7 +20,7 @@ void emit(int sig, mixed arg...) {
  * @returns {int} - `SIG_SLOT_OK` if the slot was registered successfully. See `include/signal.h` for other return values.
  */
 int slot(int sig, string func) {
-    return SIGNAL_D->register_slot(sig, previous_object(), func) ;
+    return SIGNAL_D->register_slot(sig, previous_object(), func);
 }
 
 /**
@@ -30,7 +30,7 @@ int slot(int sig, string func) {
  * @returns {int} - `SIG_SLOT_OK` if the slot was unregistered successfully. See `include/signal.h` for other return values.
  */
 int unslot(int sig) {
-    return SIGNAL_D->unregister_slot(sig, previous_object()) ;
+    return SIGNAL_D->unregister_slot(sig, previous_object());
 }
 
 /**
@@ -39,5 +39,5 @@ int unslot(int sig) {
  * @returns {object} - signal daemon object
  */
 object signal_d() {
-    return load_object(SIGNAL_D) ;
+    return load_object(SIGNAL_D);
 }

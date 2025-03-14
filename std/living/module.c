@@ -11,98 +11,98 @@
 
 #include <module.h>
 
-private nosave mapping modules = ([]) ;
+private nosave mapping modules = ([]);
 
 varargs object add_module(string module, mixed args...) {
-    object ob ;
-    string path ;
-    string name ;
-    string e ;
+    object ob;
+    string path;
+    string name;
+    string e;
 
-    if(!module || module == "") error("Invalid module name.\n") ;
-    if(modules[module]) error("Module " + module + " already exists.\n") ;
+    if(!module || module == "") error("Invalid module name.\n");
+    if(modules[module]) error("Module " + module + " already exists.\n");
 
-    path = "/std/modules/mobile/" + module + ".c" ;
-    path = replace_string(path, " ", "_") ;
+    path = "/std/modules/mobile/" + module + ".c";
+    path = replace_string(path, " ", "_");
     if(!file_exists(path))
-        error("Module " + module + " does not exist.\n") ;
+        error("Module " + module + " does not exist.\n");
 
-    e = catch(ob = new(path)) ;
+    e = catch(ob = new(path));
     if(e)
-        error("Module " + module + " failed to load with error: " + e + "\n") ;
+        error("Module " + module + " failed to load with error: " + e + "\n");
 
     if(ob->attach(this_object(), args...) == 0) {
-        ob->remove() ;
-        return 0 ;
+        ob->remove();
+        return 0;
     }
 
-    name = ob->query_name() ;
+    name = ob->query_name();
 
-    modules[name] = ob ;
+    modules[name] = ob;
 
-    return ob ;
+    return ob;
 }
 
 object query_module(string module) {
     if(!module || module == "")
-        error("Invalid module name. " + module) ;
+        error("Invalid module name. " + module);
     if(!modules[module])
-        return 0 ;
+        return 0;
 
-    return modules[module] ;
+    return modules[module];
 }
 
 void remove_module(string module) {
-    object ob ;
+    object ob;
 
-    if(!module || module == "") error("Invalid module name.\n") ;
-    if(!modules[module]) error("Module " + module + " does not exist.\n") ;
+    if(!module || module == "") error("Invalid module name.\n");
+    if(!modules[module]) error("Module " + module + " does not exist.\n");
 
-    ob = modules[module] ;
+    ob = modules[module];
     if(!objectp(ob))
-        return ;
+        return;
 
-    ob->remove() ;
-    map_delete(modules, module) ;
+    ob->remove();
+    map_delete(modules, module);
 }
 
 object get_module(string module) {
-    object ob ;
+    object ob;
 
-    if(!module || module == "") error("Invalid module name.\n") ;
-    ob = modules[module] ;
+    if(!module || module == "") error("Invalid module name.\n");
+    ob = modules[module];
 
     if(!objectp(ob))
-        return 0 ;
+        return 0;
 
-    return modules[module] ;
+    return modules[module];
 }
 
 mapping query_modules() {
-    return copy(modules) ;
+    return copy(modules);
 }
 
 varargs mixed module(string module, string func, mixed args...) {
-    object ob ;
+    object ob;
 
     if(!stringp(module) || module == "")
-        error("Invalid module name.\n") ;
+        error("Invalid module name.\n");
     if(!stringp(func) || func == "")
-        error("Invalid function name.\n") ;
+        error("Invalid function name.\n");
 
-    ob = modules[module] ;
+    ob = modules[module];
 
     if(!objectp(ob))
-        return null ;
+        return null;
 
-    return call_if(ob, func, args...) ;
+    return call_if(ob, func, args...);
 }
 
 void remove_all_modules() {
     foreach(string module, object ob in modules) {
         if(objectp(ob))
-            catch(ob->remove()) ;
+            catch(ob->remove());
     }
 
-    modules = ([ ]) ;
+    modules = ([ ]);
 }

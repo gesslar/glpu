@@ -11,50 +11,50 @@
 
 #include <weight.h>
 
-int _mass ;
+int _mass;
 
 int query_mass() {
-  return _mass ;
+  return _mass;
 }
 
 int set_mass(int new_mass) {
-  int delta ;
+  int delta;
 
   if(new_mass < 0)
-    return 0 ;
+    return 0;
 
   // If our new mass is less than 0, we cannot set the mass.
-  delta = new_mass - _mass ;
+  delta = new_mass - _mass;
 
-  return adjust_mass(delta) ;
+  return adjust_mass(delta);
 }
 
 int adjust_mass(int delta) {
-  object env ;
+  object env;
 
   if(!mud_config("USE_MASS"))
-    return 1 ;
+    return 1;
 
   // We're not changing mass. So, that's all right.
   if(delta == 0)
-    return 1 ;
+    return 1;
 
   // If we have an environment, we need to check if we can adjust its
   // mass and fill and if so, then we can adjust our mass.
   if(env = environment()) {
     if(!env->ignore_mass())
       if(!env->adjust_mass(delta))
-        return 0 ;
+        return 0;
 
     if(!env->ignore_capacity())
       if(!env->adjust_fill(delta))
         if(!env->ignore_mass()) {
-          env->adjust_mass(-delta) ;
-        return 0 ;
+          env->adjust_mass(-delta);
+        return 0;
         }
   }
 
-  _mass += delta ;
+  _mass += delta;
 
-  return 1 ;
+  return 1;
 }

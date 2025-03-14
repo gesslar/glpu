@@ -145,7 +145,7 @@ string on_off_widget(int on) {
     : supports_unicode()
       ? "[ " SYSTEM_ERROR "✕{{res}} ]"
       : "["  SYSTEM_ERROR "Off{{res}}]"
-  ;
+;
 }
 /**
  * Returns a string that serves as a simple divider either using unicode or

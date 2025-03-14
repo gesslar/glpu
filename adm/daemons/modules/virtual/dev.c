@@ -10,4 +10,4 @@
  * 2024-07-30 - Gesslar - Created
  */
 
-inherit __DIR__ "player" ;
+inherit __DIR__ "player";

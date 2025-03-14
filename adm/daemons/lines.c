@@ -16,9 +16,9 @@
  * 2024-07-13 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-private nosave mapping line_drawing = ([ ]) ;
+private nosave mapping line_drawing = ([ ]);
 
 void setup() {
     line_drawing["UTF-8"] = ([
@@ -69,7 +69,7 @@ void setup() {
         "╪" : "╪",
         "╫" : "╫",
         "╳" : "╳",
-    ]) ;
+    ]);
 
     line_drawing["US-ASCII"] = ([
         // lines
@@ -120,23 +120,23 @@ void setup() {
         "╪" : "+",
         "╫" : "+",
         "╳" : "╳",
-    ]) ;
+    ]);
 
-    line_drawing["screenreader"] = allocate_mapping(keys(line_drawing["UTF-8"]), " ") ;
+    line_drawing["screenreader"] = allocate_mapping(keys(line_drawing["UTF-8"]), " ");
 }
 
 private string replace_lines_characters(string mess, mapping replacement) {
-    string k, v ;
+    string k, v;
 
     foreach(k, v in replacement) {
-        while(strsrch(mess, k) > -1) mess = replace_string(mess, k, v) ;
+        while(strsrch(mess, k) > -1) mess = replace_string(mess, k, v);
     }
 
-    return mess ;
+    return mess;
 }
 
 string substitute_lines(string mess, string encoding) {
-    if(encoding == "UTF-8") return mess ;
-    if(of(encoding, line_drawing)) return replace_lines_characters(mess, line_drawing[encoding]) ;
-    return replace_lines_characters(mess, line_drawing["US-ASCII"]) ;
+    if(encoding == "UTF-8") return mess;
+    if(of(encoding, line_drawing)) return replace_lines_characters(mess, line_drawing[encoding]);
+    return replace_lines_characters(mess, line_drawing["US-ASCII"]);
 }

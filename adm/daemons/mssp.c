@@ -14,13 +14,13 @@
 
 #include <runtime_config.h>
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-private nosave mapping mud_stats = ([]) ;
+private nosave mapping mud_stats = ([]);
 
 void setup() {
     if(file_exists("/adm/etc/mssp.json"))
-        mud_stats = json_decode(read_file("/adm/etc/mssp.json")) ;
+        mud_stats = json_decode(read_file("/adm/etc/mssp.json"));
 }
 
 mapping get_mud_stats() {
@@ -35,5 +35,5 @@ mapping get_mud_stats() {
         "MSP"       : sprintf("%d", get_config(__RC_ENABLE_MSP__)),
         "MCCP"      : "1",
         "UTF-8"     : "1",
-    ]) + mud_stats ;
+    ]) + mud_stats;
 }

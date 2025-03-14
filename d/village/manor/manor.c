@@ -9,9 +9,9 @@
  * 2024-09-13 - Gesslar - Created
  */
 
-inherit STD_ROOM ;
+inherit STD_ROOM;
 
 void base_setup() {
-  set_zone("opulent_manor") ;
-  set_terrain("indoor") ;
+  set_zone("opulent_manor");
+  set_terrain("indoor");
 }

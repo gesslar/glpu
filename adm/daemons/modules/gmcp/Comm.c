@@ -19,18 +19,18 @@
 
 #include <gmcp_defines.h>
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 varargs void Channel(object who, string sub, mapping data) {
   switch(sub) {
     case "Text":
-      _debug("Text", data) ;
-      assert((: mapp($(data)) && !nullp($(data)["channel"]) && !nullp($(data)["text"]) :)) ;
+      _debug("Text", data);
+      assert((: mapp($(data)) && !nullp($(data)["channel"]) && !nullp($(data)["text"]) :));
 
       if(nullp(data["talker"]))
-        data["talker"] = "system" ;
+        data["talker"] = "system";
 
-      who->do_gmcp(GMCP_PKG_COMM_CHANNEL_TEXT, data) ;
-      break ;
+      who->do_gmcp(GMCP_PKG_COMM_CHANNEL_TEXT, data);
+      break;
   }
 }

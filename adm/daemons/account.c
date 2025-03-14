@@ -9,26 +9,26 @@
  * 2024-08-09 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 // Forward declarations
-int create_account(string name, string password) ;
-mapping load_account(string name) ;
-string write_account(string name, string key, mixed data) ;
-mixed read_account(string name, string key) ;
-int valid_manip(string name) ;
-int remove_account(string name) ;
-int add_character(string account_name, string str) ;
-int remove_character(string account_name, string str) ;
-string character_account(string str) ;
-string *account_characters(string account_name) ;
+int create_account(string name, string password);
+mapping load_account(string name);
+string write_account(string name, string key, mixed data);
+mixed read_account(string name, string key);
+int valid_manip(string name);
+int remove_account(string name);
+int add_character(string account_name, string str);
+int remove_character(string account_name, string str);
+string character_account(string str);
+string *account_characters(string account_name);
 
-private nomask mapping accounts = ([ ]) ;
-private nomask mapping reverse = ([ ]) ;
+private nomask mapping accounts = ([ ]);
+private nomask mapping reverse = ([ ]);
 
 void setup() {
-    set_no_clean(1) ;
-    set_persistent(1) ;
+    set_no_clean(1);
+    set_persistent(1);
 }
 
 /**
@@ -39,35 +39,35 @@ void setup() {
  * @returns {int} 1 if the account was created successfully, 0 otherwise.
  */
 int create_account(string name, string password) {
-    mapping account ;
+    mapping account;
 
     if(!valid_manip(name))
-        return 0 ;
+        return 0;
 
     if(!name || !stringp(name))
-        return 0 ;
+        return 0;
 
     if(!password || !stringp(password))
-        return 0 ;
+        return 0;
 
     if(valid_account(name))
-        return 0 ;
+        return 0;
 
     if(password[0..2] != "$6$")
-        return 0 ;
+        return 0;
 
-    name = lower_case(name) ;
+    name = lower_case(name);
 
     account = ([
         "password" : password,
         "characters" : ({})
-    ]) ;
+    ]);
 
-    accounts[name] = account ;
+    accounts[name] = account;
 
-    save_data() ;
+    save_data();
 
-    return 1 ;
+    return 1;
 }
 
 /**
@@ -77,27 +77,27 @@ int create_account(string name, string password) {
  * @returns {mapping} The account data if found, null otherwise.
  */
 mapping load_account(string name) {
-    string file ;
+    string file;
 
     if(!valid_manip(name))
-        return null ;
+        return null;
 
     if(!name || !stringp(name))
-        return null ;
+        return null;
 
     if(!accounts[name]) {
-        file = account_file(name) ;
+        file = account_file(name);
 
         if(!file_exists(file))
-            return null ;
+            return null;
 
-        accounts[name] = from_string(read_file(file)) ;
-        reverse[file] = name ;
+        accounts[name] = from_string(read_file(file));
+        reverse[file] = name;
 
-        rm(file) ;
+        rm(file);
     }
 
-    return accounts[name] ;
+    return accounts[name];
 }
 
 /**
@@ -109,32 +109,32 @@ mapping load_account(string name) {
  * @returns {string} The written data if successful, 0 otherwise.
  */
 string write_account(string name, string key, mixed data) {
-    mapping account ;
+    mapping account;
 
     if(!valid_manip(name))
-        return 0 ;
+        return 0;
 
     if(!name || !stringp(name))
-        return 0 ;
+        return 0;
 
     if(!key || !stringp(key))
-        return 0 ;
+        return 0;
 
     if(!data)
-        return 0 ;
+        return 0;
 
-    account = load_account(name) ;
+    account = load_account(name);
 
     if(!account)
-        return 0 ;
+        return 0;
 
-    account[key] = data ;
+    account[key] = data;
 
-    write_file(account_file(name), pretty_map(account)) ;
+    write_file(account_file(name), pretty_map(account));
 
-    save_data() ;
+    save_data();
 
-    return account[key] ;
+    return account[key];
 }
 
 /**
@@ -145,23 +145,23 @@ string write_account(string name, string key, mixed data) {
  * @returns {mixed} The value of the key if found, 0 otherwise.
  */
 mixed read_account(string name, string key) {
-    mapping account ;
+    mapping account;
 
     if(!valid_manip(name))
-        return 0 ;
+        return 0;
 
     if(!name || !stringp(name))
-        return 0 ;
+        return 0;
 
     if(!key || !stringp(key))
-        return 0 ;
+        return 0;
 
-    account = load_account(name) ;
+    account = load_account(name);
 
     if(!account)
-        return 0 ;
+        return 0;
 
-    return account[key] ;
+    return account[key];
 }
 
 /**
@@ -171,19 +171,19 @@ mixed read_account(string name, string key) {
  * @returns {int} 1 if manipulation is allowed, 0 otherwise.
  */
 int valid_manip(string name) {
-    object prev = previous_object() ;
-    object caller = this_caller() ;
+    object prev = previous_object();
+    object caller = this_caller();
 
     if(!prev && !caller)
-        return 0 ;
+        return 0;
 
     if(!is_member(query_privs(prev), "admin") &&
        query_privs(prev) != name &&
        base_name(previous_object()) != "/std/modules/gmcp/Char" &&
        (caller && query_privs(caller)) != name)
-        return 0 ;
+        return 0;
 
-    return 1 ;
+    return 1;
 }
 
 /**
@@ -194,23 +194,23 @@ int valid_manip(string name) {
  */
 int remove_account(string name) {
     if(!valid_manip(name))
-        return 0 ;
+        return 0;
 
     if(!name || !stringp(name))
-        return 0 ;
+        return 0;
 
     if(!valid_account(name))
-        return 0 ;
+        return 0;
 
-    map_delete(accounts, name) ;
+    map_delete(accounts, name);
     foreach(string key, string value in reverse) {
         if(value == name)
-            map_delete(reverse, key) ;
+            map_delete(reverse, key);
     }
 
-    save_data() ;
+    save_data();
 
-    return 1 ;
+    return 1;
 }
 
 /**
@@ -221,40 +221,40 @@ int remove_account(string name) {
  * @returns {int} 1 if the character was added successfully, null otherwise.
  */
 int add_character(string account_name, string str) {
-    mapping account ;
-    string *characters ;
+    mapping account;
+    string *characters;
 
     if(!account_name || !stringp(account_name))
-        return null ;
+        return null;
 
     if(!valid_manip(account_name))
-        return null ;
+        return null;
 
     if(!accounts[account_name])
-        return null ;
+        return null;
 
     if(!str || !stringp(str))
-        return null ;
+        return null;
 
-    str = lower_case(str) ;
+    str = lower_case(str);
 
     // if(user_exists(str))
-    //     return 0 ;
+    //     return 0;
 
-    account = load_account(account_name) ;
+    account = load_account(account_name);
 
     if(!account)
-        return 0 ;
+        return 0;
 
-    characters = account["characters"] || ({}) ;
-    characters += ({ str }) ;
-    account["characters"] = distinct_array(characters) ;
-    accounts[account_name] = account ;
-    reverse[str] = account_name ;
+    characters = account["characters"] || ({});
+    characters += ({ str });
+    account["characters"] = distinct_array(characters);
+    accounts[account_name] = account;
+    reverse[str] = account_name;
 
-    save_data() ;
+    save_data();
 
-    return 1 ;
+    return 1;
 }
 
 /**
@@ -265,37 +265,37 @@ int add_character(string account_name, string str) {
  * @returns {int} 1 if the character was removed successfully, null otherwise.
  */
 int remove_character(string account_name, string str) {
-    mapping account ;
-    string *characters ;
+    mapping account;
+    string *characters;
 
     if(!account_name || !stringp(account_name))
-        return null ;
+        return null;
 
     if(!valid_manip(account_name))
-        return null ;
+        return null;
 
     if(!accounts[account_name])
-        return null ;
+        return null;
 
     if(!str || !stringp(str))
-        return null ;
+        return null;
 
-    str = lower_case(str) ;
+    str = lower_case(str);
 
-    account = load_account(account_name) ;
+    account = load_account(account_name);
 
     if(!account)
-        return 0 ;
+        return 0;
 
-    characters = account["characters"] || ({}) ;
-    characters -= ({ str }) ;
-    account["characters"] = characters ;
-    accounts[account_name] = account ;
-    map_delete(reverse, str) ;
+    characters = account["characters"] || ({});
+    characters -= ({ str });
+    account["characters"] = characters;
+    accounts[account_name] = account;
+    map_delete(reverse, str);
 
-    save_data() ;
+    save_data();
 
-    return 1 ;
+    return 1;
 }
 
 /**
@@ -306,12 +306,12 @@ int remove_character(string account_name, string str) {
  */
 string character_account(string str) {
     if(!str || !stringp(str))
-        return null ;
+        return null;
 
     if(!reverse[str])
-        return null ;
+        return null;
 
-    return reverse[str] ;
+    return reverse[str];
 }
 
 /**
@@ -321,21 +321,21 @@ string character_account(string str) {
  * @returns {string *} An array of character names if found, null otherwise.
  */
 string *account_characters(string account_name) {
-    mapping account ;
+    mapping account;
 
     if(!account_name || !stringp(account_name))
-        return null ;
+        return null;
 
     if(!valid_manip(account_name))
-        return null ;
+        return null;
 
     if(!accounts[account_name])
-        return null ;
+        return null;
 
-    account = load_account(account_name) ;
+    account = load_account(account_name);
 
     if(!account)
-        return 0 ;
+        return 0;
 
-    return account["characters"] || ({}) ;
+    return account["characters"] || ({});
 }

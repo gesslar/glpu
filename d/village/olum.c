@@ -9,4 +9,4 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit STD_ZONE ;
+inherit STD_ZONE;

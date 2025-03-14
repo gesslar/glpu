@@ -10,17 +10,17 @@
  */
 
 mixed main(object tp, string arg) {
-    object ob ;
+    object ob;
 
     if(!arg)
-        arg = "here" ;
+        arg = "here";
 
-    ob = get_object(arg) ;
+    ob = get_object(arg);
 
     if(!objectp(ob))
-        return _error("Unable to find %s.", arg) ;
+        return _error("Unable to find %s.", arg);
 
-    call_if(ob, "reset") ;
+    call_if(ob, "reset");
 
-    return _ok("Reset called on %s (%s).", get_short(ob), file_name(ob)) ;
+    return _ok("Reset called on %s (%s).", get_short(ob), file_name(ob));
 }

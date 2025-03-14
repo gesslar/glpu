@@ -21,17 +21,17 @@ private nosave string *_terrain_types = ({
     "swamp",
     "tunnels",
     "wastes",
-}) ;
+});
 
-private nosave string _terrain ;
+private nosave string _terrain;
 
 void set_terrain(string terrain) {
     if(!of(terrain, _terrain_types))
-        return ;
+        return;
 
-    _terrain = terrain ;
+    _terrain = terrain;
 }
 
 string query_terrain() {
-    return _terrain ;
+    return _terrain;
 }

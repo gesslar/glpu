@@ -1,3 +1,3 @@
 #include <commands.h>
 
-inherit CMD_LOOK ;
+inherit CMD_LOOK;

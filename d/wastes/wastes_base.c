@@ -9,53 +9,53 @@
  * 2024-08-30 - Gesslar - Created
  */
 
-inherit STD_ROOM ;
+inherit STD_ROOM;
 
-void repopulate() ;
+void repopulate();
 
-private nosave string *mob_files = ({}) ;
-private nosave object *mobs = ({}) ;
-private nosave float spawn_chance = 15.0 ;
+private nosave string *mob_files = ({});
+private nosave object *mobs = ({});
+private nosave float spawn_chance = 15.0;
 
 void setup() {
-  set_light(0) ;
-  set_terrain("wastes") ;
+  set_light(0);
+  set_terrain("wastes");
 }
 
 void virtual_setup(mixed args...) {
-  string file = args[0] ;
-  object ob ;
+  string file = args[0];
+  object ob;
 
-  set_zone("barren_wasteland") ;
-  // _debug("Setting up room type for %O", this_object()) ;
-  __DIR__ "wastes_daemon"->setup_room_type(this_object()) ;
-  __DIR__ "wastes_daemon"->setup_room_subtype(this_object()) ;
-  __DIR__ "wastes_daemon"->setup_exits(this_object(), file) ;
-  __DIR__ "wastes_daemon"->setup_short(this_object(), file) ;
-  __DIR__ "wastes_daemon"->setup_long(this_object(), file) ;
-  // _debug("Room type for %O is %O", this_object(), query_room_environment()) ;
+  set_zone("barren_wasteland");
+  // _debug("Setting up room type for %O", this_object());
+  __DIR__ "wastes_daemon"->setup_room_type(this_object());
+  __DIR__ "wastes_daemon"->setup_room_subtype(this_object());
+  __DIR__ "wastes_daemon"->setup_exits(this_object(), file);
+  __DIR__ "wastes_daemon"->setup_short(this_object(), file);
+  __DIR__ "wastes_daemon"->setup_long(this_object(), file);
+  // _debug("Room type for %O is %O", this_object(), query_room_environment());
 
-  add_reset((: repopulate :)) ;
+  add_reset((: repopulate :));
 
   mob_files = ({
     "/mob/waste_rat",
     "/mob/wasterel",
-  }) ;
+  });
 }
 
 void repopulate() {
-  mobs -= ({ 0 }) ;
+  mobs -= ({ 0 });
   foreach(object mob in mobs) {
     if(objectp(mob)) {
-      mob->simple_action("$N $vscurry away across the barren wasteland.") ;
-      mob->remove() ;
+      mob->simple_action("$N $vscurry away across the barren wasteland.");
+      mob->remove();
     }
   }
 
   if(random_float(100.0) < spawn_chance) {
-    string file = element_of(mob_files) ;
+    string file = element_of(mob_files);
 
-    mobs += ({ add_inventory(file) }) ;
-    mobs->simple_action("$N $varrive.") ;
+    mobs += ({ add_inventory(file) });
+    mobs->simple_action("$N $varrive.");
   }
 }

@@ -9,31 +9,31 @@
  * 2024-02-28 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 // Forward declarations
-void setup() ;
-mixed new_account(string name) ;
-mixed query_balance(string name) ;
-mixed add_balance(string name, int amount) ;
-varargs mixed query_activity(string name, int limit) ;
+void setup();
+mixed new_account(string name);
+mixed query_balance(string name);
+mixed add_balance(string name, int amount);
+varargs mixed query_activity(string name, int limit);
 
-private nosave string db = "bank" ;
+private nosave string db = "bank";
 // These statements are in sprintf format
-private nosave mapping balance_statements = ([]) ;
-private nosave mapping activity_statements = ([]) ;
+private nosave mapping balance_statements = ([]);
+private nosave mapping activity_statements = ([]);
 
 void setup() {
   balance_statements = ([
     "select" : "SELECT amount FROM balance WHERE name = '%s' ;",
     "update" : "UPDATE balance SET amount = %d, time = %d WHERE name = '%s' ;",
     "add" : "INSERT INTO balance (name, amount, time) VALUES ('%s', %d, %d) ;",
-  ]) ;
+  ]);
   activity_statements = ([
     "select": "SELECT * FROM activity WHERE name = '%s' ORDER BY time DESC ;",
     "select_limited": "SELECT * FROM activity WHERE name = '%s' ORDER BY time DESC LIMIT %d ;",
     "add" : "INSERT INTO activity (time, name, amount) VALUES (%d, '%s', %d);",
-  ]) ;
+  ]);
 }
 
 /**
@@ -44,24 +44,24 @@ void setup() {
  *                    if the account already exists or if there was a database error.
  */
 mixed new_account(string name) {
-  string query ;
-  mixed result ;
+  string query;
+  mixed result;
 
-  name = capitalize(lower_case(name)) ;
-  result = query_balance(name) ;
+  name = capitalize(lower_case(name));
+  result = query_balance(name);
 
   if(!nullp(result))
-    return "Account already exists." ;
+    return "Account already exists.";
 
   query = sprintf(
     "INSERT INTO balance (name, amount, time) VALUES ('%s', 0, %d); " +
     "INSERT INTO activity (time, name, amount) VALUES (%d, '%s', 0);",
     name, time(), time(), name
-  ) ;
+  );
 
-  result = DB_D->query(db, query) ;
+  result = DB_D->query(db, query);
 
-  return stringp(result) ? result : 1 ;
+  return stringp(result) ? result : 1;
 }
 
 /**
@@ -73,21 +73,21 @@ mixed new_account(string name) {
  *                    if there was a database error.
  */
 mixed query_balance(string name) {
-  string query ;
-  mixed result ;
+  string query;
+  mixed result;
 
-  name = capitalize(lower_case(name)) ;
-  query = sprintf(balance_statements["select"], name) ;
+  name = capitalize(lower_case(name));
+  query = sprintf(balance_statements["select"], name);
 
-  result = DB_D->query(db, query) ;
+  result = DB_D->query(db, query);
 
   if(stringp(result))
-    return result ;
+    return result;
 
   if(sizeof(result) == 0)
-    return null ;
+    return null;
 
-  return result[0]["amount"] ;
+  return result[0]["amount"];
 }
 
 /**
@@ -100,35 +100,35 @@ mixed query_balance(string name) {
  *                    there are insufficient funds, or if there was a database error.
  */
 mixed add_balance(string name, int amount) {
-  string query ;
-  mixed result, current_balance ;
-  int new_balance ;
+  string query;
+  mixed result, current_balance;
+  int new_balance;
 
-  name = capitalize(lower_case(name)) ;
-  current_balance = query_balance(name) ;
+  name = capitalize(lower_case(name));
+  current_balance = query_balance(name);
 
   if(stringp(current_balance))
-    return current_balance ;
+    return current_balance;
 
   if(nullp(current_balance))
-    return "Account does not exist." ;
+    return "Account does not exist.";
 
-  new_balance = current_balance + amount ;
+  new_balance = current_balance + amount;
   if(new_balance < 0)
-    return "Insufficient funds." ;
+    return "Insufficient funds.";
 
   query = sprintf(
     "UPDATE balance SET amount = %d, time = %d WHERE name = '%s'; " +
     "INSERT INTO activity (time, name, amount) VALUES (%d, '%s', %d);",
     new_balance, time(), name, time(), name, amount
-  ) ;
+  );
 
-  result = DB_D->query(db, query) ;
+  result = DB_D->query(db, query);
 
   if(stringp(result))
-    return "Database error: " + result ;
+    return "Database error: " + result;
 
-  return 1 ;
+  return 1;
 }
 
 /**
@@ -141,22 +141,22 @@ mixed add_balance(string name, int amount) {
  *                    or an error message if there was a database error.
  */
 varargs mixed query_activity(string name, int limit: (: 10 :)) {
-  string query ;
-  mixed result ;
+  string query;
+  mixed result;
 
-  name = capitalize(lower_case(name)) ;
+  name = capitalize(lower_case(name));
   if(limit > 0)
-    query = sprintf(activity_statements["select_limited"], name, limit) ;
+    query = sprintf(activity_statements["select_limited"], name, limit);
   else
-    query = sprintf(activity_statements["select"], name) ;
+    query = sprintf(activity_statements["select"], name);
 
-  result = DB_D->query(db, query) ;
+  result = DB_D->query(db, query);
 
   if(stringp(result))
-    return result ;
+    return result;
 
   if(sizeof(result) == 0)
-    return null ;
+    return null;
 
-  return result ;
+  return result;
 }

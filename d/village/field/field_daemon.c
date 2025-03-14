@@ -9,54 +9,54 @@
  * 2024-07-24 - Gesslar - Created
  */
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 // Functions
-private void setup_field_shorts() ;
-private void setup_field_longs() ;
+private void setup_field_shorts();
+private void setup_field_longs();
 
 // Variables
-private nosave mapping field_exits = ([]) ;
+private nosave mapping field_exits = ([]);
 
 void setup() {
-  setup_field_shorts() ;
-  setup_field_longs() ;
+  setup_field_shorts();
+  setup_field_longs();
 }
 
 void setup_exits(object room) {
-  int *coords = room->get_virtual_coordinates() ;
-  mapping exits = ([]) ;
+  int *coords = room->get_virtual_coordinates();
+  mapping exits = ([]);
 
   if(!coords)
-    return ;
+    return;
 
   // Check and add exits for each direction. room.c returns coordinates as
   // (z, y, x), but we need to convert them to (x, y, z) for the exits.
   // west
-  if(coords[2] > 0) exits["west"] = sprintf("%d,%d,%d", coords[2]-1, coords[1], coords[0]) ;
+  if(coords[2] > 0) exits["west"] = sprintf("%d,%d,%d", coords[2]-1, coords[1], coords[0]);
   // east
-  if(coords[2] < 9) exits["east"] = sprintf("%d,%d,%d", coords[2]+1, coords[1], coords[0]) ;
+  if(coords[2] < 9) exits["east"] = sprintf("%d,%d,%d", coords[2]+1, coords[1], coords[0]);
   // south
-  if(coords[1] < 9) exits["south"] = sprintf("%d,%d,%d", coords[2], coords[1]+1, coords[0]) ;
+  if(coords[1] < 9) exits["south"] = sprintf("%d,%d,%d", coords[2], coords[1]+1, coords[0]);
   // north
-  if(coords[1] > 0) exits["north"] = sprintf("%d,%d,%d", coords[2], coords[1]-1, coords[0]) ;
+  if(coords[1] > 0) exits["north"] = sprintf("%d,%d,%d", coords[2], coords[1]-1, coords[0]);
   // northwest
-  if(coords[2] > 0 && coords[1] > 0) exits["northwest"] = sprintf("%d,%d,%d", coords[2]-1, coords[1]-1, coords[0]) ;
+  if(coords[2] > 0 && coords[1] > 0) exits["northwest"] = sprintf("%d,%d,%d", coords[2]-1, coords[1]-1, coords[0]);
   // northeast
-  if(coords[2] < 9 && coords[1] > 0) exits["northeast"] = sprintf("%d,%d,%d", coords[2]+1, coords[1]-1, coords[0]) ;
+  if(coords[2] < 9 && coords[1] > 0) exits["northeast"] = sprintf("%d,%d,%d", coords[2]+1, coords[1]-1, coords[0]);
   // southwest
-  if(coords[2] > 0 && coords[1] < 9) exits["southwest"] = sprintf("%d,%d,%d", coords[2]-1, coords[1]+1, coords[0]) ;
+  if(coords[2] > 0 && coords[1] < 9) exits["southwest"] = sprintf("%d,%d,%d", coords[2]-1, coords[1]+1, coords[0]);
   // southeast
-  if(coords[2] < 9 && coords[1] < 9) exits["southeast"] = sprintf("%d,%d,%d", coords[2]+1, coords[1]+1, coords[0]) ;
+  if(coords[2] < 9 && coords[1] < 9) exits["southeast"] = sprintf("%d,%d,%d", coords[2]+1, coords[1]+1, coords[0]);
 
   // Special case for the bottom-left corner (0,9,0)
   if(coords[2] == 0 && coords[1] == 9 && coords[0] == 0)
-    exits["south"] = "../village_path1" ;
+    exits["south"] = "../village_path1";
 
-  room->set_exits(exits) ;
+  room->set_exits(exits);
 }
 
-private nosave string *field_shorts ;
+private nosave string *field_shorts;
 
 string setup_field_shorts() {
   field_shorts = ({
@@ -64,15 +64,15 @@ string setup_field_shorts() {
     "Grassy Meadow",
     "Quiet Field",
     "Grassy Plains",
-  }) ;
+  });
 }
 
 void setup_short(object room, string file) {
-  room->set_short(element_of(field_shorts) + " ("+query_file_name(room)+")") ;
+  room->set_short(element_of(field_shorts) + " ("+query_file_name(room)+")");
 }
 
-private nosave int rot = 0 ;
-private nosave string *field_longs ;
+private nosave int rot = 0;
+private nosave string *field_longs;
 
 string setup_field_longs() {
   field_longs = ({
@@ -108,11 +108,11 @@ string setup_field_longs() {
     "making it easy to lose oneself in the natural splendor of the "
     "landscape. This open field is an ideal spot for those seeking "
     "solitude and a connection with nature.",
-  }) ;
+  });
 }
 void setup_long(object room, string file) {
-  room->set_long(field_longs[rot]) ;
+  room->set_long(field_longs[rot]);
 
   if(++rot == sizeof(field_longs))
-    rot = 0 ;
+    rot = 0;
 }

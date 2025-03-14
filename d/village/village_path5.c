@@ -9,10 +9,10 @@
  * 2024-08-12 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-    set_short("A Path Through the Village") ;
+    set_short("A Path Through the Village");
     set_long(
 "West from the village square, a brick path leads to a quieter part of the "
 "village. The bricks, though less maintained, are in good condition with "
@@ -22,13 +22,13 @@ void setup() {
 "and activity around it. The path, free of dwellings, emphasizes this lone "
 "building's significance. The air carries scents of old wood, fresh ink, "
 "and excitement, hinting at the building's role as a gathering place for "
-"newcomers to the village and beyond.") ;
+"newcomers to the village and beyond.");
 
     set_exits(([
         "north" : "centre",
         "east" : "village_path2",
         "south" : "../forest/2,0,0",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "village square", "square" }) :
@@ -55,5 +55,5 @@ void setup() {
             "The air here carries a mix of domestic scents - freshly baked "
             "bread, laundry drying in the breeze, and the earthy smell of "
             "nearby gardens, creating a homely atmosphere.",
-    ])) ;
+    ]));
 }

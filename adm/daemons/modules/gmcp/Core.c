@@ -19,8 +19,8 @@
 
 #include <gmcp_defines.h>
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
 void Ping(object who) {
-  who->do_gmcp(GMCP_PKG_CORE_PING) ;
+  who->do_gmcp(GMCP_PKG_CORE_PING);
 }

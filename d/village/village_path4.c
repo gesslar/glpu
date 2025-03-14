@@ -9,10 +9,10 @@
  * 2024-02-04 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
 void setup() {
-  set_short("A Path Through the Village") ;
+  set_short("A Path Through the Village");
   set_long(
 "South from the village square, a meticulously laid brick path veers into a "
 "realm of conspicuous opulence. Lined with extravagantly pruned hedges and "
@@ -24,12 +24,12 @@ void setup() {
 "questionable taste) of the occupants. This path, distinctly less worn than "
 "those leading to more modest dwellings, guides visitors to a world of "
 "excess, where the line between affluence and extravagance is not just "
-"crossed but obliterated.") ;
+"crossed but obliterated.");
 
   set_exits(([
     "south": "manor/porch",
     "north": "square",
-  ])) ;
+  ]));
 
   set_items(([
     ({ "village square", "square" }) :
@@ -67,5 +67,5 @@ void setup() {
       "as they are in proclamation. They are the manor's flags, waving "
       "declarations of a prosperity so profound that it eclipses "
       "modesty, heralding the power and prestige of those within.",
-  ])) ;
+  ]));
 }

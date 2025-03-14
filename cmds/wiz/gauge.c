@@ -38,5 +38,5 @@ Usage: gauge <command>
 
 The gauge command will execute the given command, and will tell you how many
 milliseconds of CPU the command took.
-text ;
+text;
 }

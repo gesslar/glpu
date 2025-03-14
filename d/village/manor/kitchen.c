@@ -9,21 +9,21 @@
  * 2024-09-13 - Gesslar - Created
  */
 
-inherit __DIR__ "manor" ;
+inherit __DIR__ "manor";
 
 void setup() {
-  set_short("The Kitchen") ;
+  set_short("The Kitchen");
   set_long("The kitchen is a flamboyant display of culinary excess. "
   "Brightly coloured appliances stand out against the gaudy wallpaper, "
   "which features oversized fruit patterns. A large island in the center "
   "is cluttered with an array of mismatched utensils and gadgets, while a "
   "collection of cookbooks, each with a different cover, spills off the "
   "shelves. The air is filled with the scent of spices, making it feel "
-  "both inviting and overwhelming.") ;
+  "both inviting and overwhelming.");
 
   set_exits(([
     "east" : "hall2",
-  ])) ;
+  ]));
 
   set_items(([
     "appliances" :
@@ -35,5 +35,5 @@ void setup() {
     "cookbooks" :
     "The cookbooks, each with a different cover, are stacked haphazardly, "
     "offering a variety of recipes and culinary inspiration.",
-  ])) ;
+  ]));
 }

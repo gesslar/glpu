@@ -12,61 +12,61 @@
 #include <attributes.h>
 #include <boon.h>
 
-private nomask nosave string *default_attributes = ({}) ;
-private nomask mapping attributes = ([]) ;
+private nomask nosave string *default_attributes = ({});
+private nomask mapping attributes = ([]);
 
 void init_attributes() {
-    string key ;
-    mixed data ;
+    string key;
+    mixed data;
 
-    default_attributes = mud_config("ATTRIBUTES") ;
+    default_attributes = mud_config("ATTRIBUTES");
 
-    attributes = attributes || ([]) ;
+    attributes = attributes || ([]);
 
     foreach(key in default_attributes) {
         if(!of(key, attributes)) {
-            attributes[key] = 5 ;
+            attributes[key] = 5;
         }
     }
 
     foreach(key, data in attributes) {
         if(!of(key, default_attributes)) {
-            map_delete(attributes, key) ;
+            map_delete(attributes, key);
         }
     }
 }
 
 int set_attribute(string key, int value) {
     if(!of(key, attributes)) {
-        return null ;
+        return null;
     }
 
-    attributes[key] = value ;
+    attributes[key] = value;
 
-    return attributes[key] ;
+    return attributes[key];
 }
 
 varargs int query_attribute(string key, int raw) {
     if(!of(key, attributes)) {
-        return null ;
+        return null;
     }
 
     if(raw)
-        return attributes[key] ;
+        return attributes[key];
 
-    return attributes[key] + query_effective_boon("attribute", key) ;
+    return attributes[key] + query_effective_boon("attribute", key);
 }
 
 int modify_attribute(string key, int value) {
     if(!of(key, attributes)) {
-        return null ;
+        return null;
     }
 
-    attributes[key] += value ;
+    attributes[key] += value;
 
-    return attributes[key] ;
+    return attributes[key];
 }
 
 mapping query_attributes() {
-    return copy(attributes) ;
+    return copy(attributes);
 }

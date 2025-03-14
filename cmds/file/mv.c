@@ -9,10 +9,10 @@
  * 2024-08-16 - Gesslar - Created
  */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 void setup() {
-    usage_text = "mv <origin> <dest>" ;
+    usage_text = "mv <origin> <dest>";
     help_text =
 "Moves a file or directory from origin to destination. The origin and "
 "destination can be either absolute or relative paths.\n"
@@ -20,26 +20,26 @@ void setup() {
 "* If the destination does not exist, it will be created.\n"
 "* If the source does not exist, an error will be returned.\n"
 "* If the source is a directory, the destination must be a directory as well.\n"
-"* If the destination is a file, an error will be returned." ;
+"* If the destination is a file, an error will be returned.";
 }
 
 mixed main(object tp, string str) {
-    string origin, dest ;
-    int result ;
+    string origin, dest;
+    int result;
 
     if(!str || !sscanf(str, "%s %s", origin, dest))
-        return _usage(tp) ;
+        return _usage(tp);
 
-    origin = resolve_path(tp->query_env("cwd"), origin) ;
-    dest = resolve_path(tp->query_env("cwd"), dest) ;
+    origin = resolve_path(tp->query_env("cwd"), origin);
+    dest = resolve_path(tp->query_env("cwd"), dest);
 
     if(!master()->valid_write(origin, tp, "mv") || !master()->valid_write(dest, tp, "mv"))
-        return _error(tp, "Permission denied.") ;
+        return _error(tp, "Permission denied.");
 
-    result = rename(origin, dest) ;
+    result = rename(origin, dest);
 
     if(result < 0)
-        return _error(tp, "Move failed.") ;
+        return _error(tp, "Move failed.");
 
-    return _ok(tp, "Moved %s to %s", origin, dest) ;
+    return _ok(tp, "Moved %s to %s", origin, dest);
 }

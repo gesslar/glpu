@@ -14,51 +14,51 @@
 //
 // 2024/02/03: Gesslar - Created
 
-inherit STD_DAEMON ;
+inherit STD_DAEMON;
 
-public void rehash_config() ;
-public mixed get_mud_config(string key) ;
+public void rehash_config();
+public mixed get_mud_config(string key);
 
-private nosave string DEFAULT_CONFIG = "/adm/etc/default.json" ;
-private nosave string CONFIG_FILE = "/adm/etc/config.json" ;
-private nosave mapping config = ([ ]) ;
+private nosave string DEFAULT_CONFIG = "/adm/etc/default.json";
+private nosave string CONFIG_FILE = "/adm/etc/config.json";
+private nosave mapping config = ([ ]);
 
 void setup() {
-    set_no_clean(1) ;
-    rehash_config() ;
+    set_no_clean(1);
+    rehash_config();
 }
 
 public mixed get_mud_config(string key) {
     if(nullp(config))
-        error("get_mud_config: No configuration found.") ;
+        error("get_mud_config: No configuration found.");
 
     if(!key)
-        error("get_mud_config: Missing key.") ;
+        error("get_mud_config: Missing key.");
 
     if(nullp(config[key]))
-        error("get_mud_config: Invalid key: " + key + ".") ;
+        error("get_mud_config: Invalid key: " + key + ".");
 
-    return config[key] ;
+    return config[key];
 }
 
 public void rehash_config() {
-     mapping temp ;
+     mapping temp;
 
     if(file_exists(DEFAULT_CONFIG)) {
-        temp = json_decode(read_file(DEFAULT_CONFIG)) ;
+        temp = json_decode(read_file(DEFAULT_CONFIG));
         if(mapp(temp)) {
-            config += temp ;
+            config += temp;
         }
     }
 
     if(file_exists(CONFIG_FILE)) {
-        temp = json_decode(read_file(CONFIG_FILE)) ;
+        temp = json_decode(read_file(CONFIG_FILE));
         if(mapp(temp)) {
-            config += temp ;
+            config += temp;
         }
     }
 }
 
 mapping get_all_config() {
-    return copy(config) ;
+    return copy(config);
 }

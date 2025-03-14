@@ -9,8 +9,8 @@
  * 2024-08-20 - Gesslar - Created
  */
 
-inherit __DIR__ "monster" ;
+inherit __DIR__ "monster";
 
 void monster_setup(mixed args...) {
-    set_race("insect") ;
+    set_race("insect");
 }

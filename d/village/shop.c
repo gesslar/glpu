@@ -9,12 +9,12 @@
  * 2024-08-01 - Gesslar - Created
  */
 
-inherit __DIR__ "village_base" ;
+inherit __DIR__ "village_base";
 
-inherit M_SHOP ;
+inherit M_SHOP;
 
 void setup() {
-    set_short("Olum Village Shop") ;
+    set_short("Olum Village Shop");
     set_long(
     "The small, rustic shop, marked by a weathered wooden sign, emanates a "
     "cozy charm. Rough-hewn shelves made of dark oak are packed with a motley "
@@ -24,11 +24,11 @@ void setup() {
     "of old wood and herbs fills the air, adding to the inviting, homely "
     "atmosphere. Here, amidst the humble surroundings, one can find everyday "
     "necessities and rare finds, each item with a story waiting to be "
-    "discovered.") ;
+    "discovered.");
 
     set_exits(([
         "west" : "village_path1",
-    ])) ;
+    ]));
 
     set_items(([
         ({ "weathered wooden sign", "wooden sign", "sign" }) :
@@ -58,15 +58,15 @@ void setup() {
             "practical tools for everyday use to curious trinkets that catch "
             "the eye, each piece seems to have a history of its own. Some "
             "gleam with newness, while others bear the patina of age and use.",
-    ])) ;
+    ]));
 
-    init_shop() ;
+    init_shop();
 
     add_shop_inventory(
         "/obj/weapon/piercing/rusty_sword",
         "/obj/armour/torso/leather_jerkin",
-    ) ;
+    );
 
-    set_terrain("indoor") ;
-    set_room_type("shop") ;
+    set_terrain("indoor");
+    set_room_type("shop");
 }

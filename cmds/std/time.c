@@ -9,8 +9,8 @@
  * 2024-08-05 - Gesslar - Created
  */
 
-inherit STD_CMD ;
+inherit STD_CMD;
 
 mixed main(object tp, string str) {
-    return sprintf("It is now %s.\n", TIME_D->query_full_time()) ;
+    return sprintf("It is now %s.\n", TIME_D->query_full_time());
 }

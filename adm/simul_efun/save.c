@@ -7,12 +7,12 @@
  * @returns {string} - The data directory path for the object.
  */
 string object_data_directory(object ob) {
-    string source_dir = query_directory(ob) ;
-    string save_dir ;
+    string source_dir = query_directory(ob);
+    string save_dir;
 
-    save_dir = mud_config("OBJECT_DATA_DIR") + source_dir[1..] ;
+    save_dir = mud_config("OBJECT_DATA_DIR") + source_dir[1..];
 
-    return save_dir ;
+    return save_dir;
 }
 
 /**
@@ -22,13 +22,13 @@ string object_data_directory(object ob) {
  * @returns {string} - The data file path for the object.
  */
 string object_data_file(object ob) {
-    string source_dir = object_data_directory(ob) ;
-    string source_file = query_file_name(ob) ;
-    string save_file ;
+    string source_dir = object_data_directory(ob);
+    string source_file = query_file_name(ob);
+    string save_file;
 
-    save_file = source_dir + source_file ;
+    save_file = source_dir + source_file;
 
-    return save_file ;
+    return save_file;
 }
 
 /**
@@ -40,15 +40,15 @@ string object_data_file(object ob) {
  *                     failed.
  */
 string assure_object_data_dir(object ob) {
-    string dir = object_data_directory(ob) ;
+    string dir = object_data_directory(ob);
 
     if(directory_exists(dir))
-        return dir ;
+        return dir;
 
-    assure_dir(dir) ;
+    assure_dir(dir);
 
     if(directory_exists(dir))
-        return dir ;
+        return dir;
 
-    return 0 ;
+    return 0;
 }
