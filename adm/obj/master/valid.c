@@ -213,7 +213,6 @@ int valid_object(object ob) {
 }
 
 int valid_override(string file, string efun_name, string mainfile) {
-  debug_message(sprintf("[%O]\n", ({file, efun_name, mainfile})));
   if(mainfile == "/adm/obj/simul_efun.c") return 1;
   if(mainfile == "/adm/simul_efun/override.c") return 1;
   if(mainfile == "/adm/simul_efun/overrides.c") return 1;
