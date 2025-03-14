@@ -25,5 +25,5 @@ void virtual_setup(mixed args...) {
   __DIR__ "cavern_daemon"->setup_exits(this_object(), file);
   __DIR__ "cavern_daemon"->setup_short(this_object(), file);
   __DIR__ "cavern_daemon"->setup_long(this_object(), file);
-  // _debug("Room type for %O is %O", this_object(), query_room_environment());
+  // debug("Room type for %O is %O", this_object(), query_room_environment());
 }

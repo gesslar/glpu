@@ -157,10 +157,16 @@ string doc_dir() {
 /**
  * Logs a debug message, optionally formatted with arguments.
  *
+ * If the first argument is not a string, it will be printed using %O
+ * notation using sprintf.
+ *
+ * If the first argument is a string, it will be printed according to
+ * sprintf, using any following additional arguments as substitutions.
+ *
  * @param {string} str - The debug message.
  * @param {...mixed} [args] - Optional arguments to format the message.
  */
-varargs void _debug(mixed str, mixed args...) {
+varargs void debug(mixed str, mixed args...) {
   if(stringp(str)) {
     if(sizeof(args))
       str = sprintf(str, args...);
@@ -284,7 +290,7 @@ varargs int _ok(mixed args...) {
   if(tp)
     tell(tp, append(result.message, "\n"));
   else
-    _debug(mess);
+    debug(mess);
 
   return 1;
 }
@@ -333,7 +339,7 @@ varargs int _error(mixed args...) {
   if(tp)
     tell(tp, mess + "\n");
   else
-    _debug(mess);
+    debug(mess);
 
   return 1;
 }
@@ -379,7 +385,7 @@ varargs int _warn(mixed args...) {
     if(tp)
         tell(tp, mess + "\n");
     else
-        _debug(mess);
+        debug(mess);
 
     return 1;
 }
@@ -425,7 +431,7 @@ varargs int _info(mixed args...) {
     if(tp)
         tell(tp, mess + "\n");
     else
-        _debug(mess);
+        debug(mess);
 
     return 1;
 }

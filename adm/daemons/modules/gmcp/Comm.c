@@ -24,7 +24,7 @@ inherit STD_DAEMON;
 varargs void Channel(object who, string sub, mapping data) {
   switch(sub) {
     case "Text":
-      _debug("Text", data);
+      debug("Text", data);
       assert((: mapp($(data)) && !nullp($(data)["channel"]) && !nullp($(data)["text"]) :));
 
       if(nullp(data["talker"]))
