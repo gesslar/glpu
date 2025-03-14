@@ -397,7 +397,7 @@ string *DEFAULT_PATH = ({ ":DEFAULT:" });
 string *get_include_path(string object_path) {
   string *parts = explode(object_path, "/");
   string *include_path = ({ });
-debug_message(">>> "+object_path);
+
   if(parts[0] == "std") {
     string path1, path2;
 
