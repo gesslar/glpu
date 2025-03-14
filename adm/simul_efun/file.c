@@ -1,33 +1,51 @@
+/**
+ * @file /adm/simul_efun/file.c
+ *
+ * File manipulation and querying simul-efuns. Provides secure methods for
+ * reading, writing, and managing files, including logging and temporary files.
+ *
+ * @created 2005-04-02 - Tacitus
+ * @last_modified 2024-03-11
+ *
+ * @history
+ * 2005-07-01 - Tacitus - Updated file_owner function
+ * 2005-04-02 - Tacitus - Created
+ */
+
 #include <simul_efun.h>
 
 /**
- * @simul_efun assure_file
- * @description Given a file, ensures that the directory structure leading to
- *              the file exists, creating directories as needed.
- * @param {string} file - The path of the file to ensure.
+ * Ensures a file's parent directories exist.
+ *
+ * Creates any missing directories in the path to the specified file.
+ *
+ * @param {string} file - Path to the target file
+ * @returns {int|string} 1 on success, error message on failure
+ * @example
+ * assure_file("/log/system/startup.log");
  */
 mixed assure_file(string file) {
-    string *parts ;
-    string *path ;
-    string dir ;
-    int i ;
+  string *parts;
+  string *path;
+  string dir;
+  int i;
 
-    if(nullp(file))
-        return "No file specified for assure_file().\n" ;
+  if(nullp(file))
+    return "No file specified for assure_file().\n";
 
-    if(file_size(file) != -1)
-        return 1 ;
+  if(file_size(file) != -1)
+    return 1;
 
-    parts = dir_file(file) ;
-    dir = parts[0] ;
+  parts = dir_file(file);
+  dir = parts[0];
 
-    if(!assure_dir(dir))
-        return "Failed to create directory: " + dir + "\n" ;
+  if(!assure_dir(dir))
+    return "Failed to create directory: " + dir + "\n";
 
-    return file_size(dir) == -2 ;
+  return file_size(dir) == -2;
 }
 
-//file_owner(string file) ;
+//file_owner(string file);
 
 //Tacitus @ LPUniversity
 //02-APR-05
@@ -36,93 +54,107 @@ mixed assure_file(string file) {
 //Last edited on July 1st, 2005 by Tacitus
 
 /**
- * @simul_efun file_owner
- * @description Determines the owner of a file based on its path.
- * @param {string} file - The path of the file to check.
- * @returns {string} - The owner of the file, or 0 if not found.
+ * Determines ownership of a file based on its path.
+ *
+ * Analyzes path structure to identify file owner, with special handling
+ * for admin directories.
+ *
+ * @param {string} file - Path to analyze
+ * @returns {string} Owner name or "Admin/name" for admin files, 0 if not found
+ * @example
+ * string owner = file_owner("/home/players/bob/workroom.c");  // Returns "bob"
  */
 string file_owner(string file) {
-    string temp ;
+  string temp;
 
-    if(file[0] != '/') file = "/" + file ;
+  if(file[0] != '/') file = "/" + file;
 
-    if(sscanf(file, "/home/%s/%s/%*s", temp, temp) == 2) {
-        return temp ;
-    }
-    if(sscanf(file, "/adm/%s/%*s", temp) == 2) {
-        return "Admin/" + temp ;
-    }
+  if(sscanf(file, "/home/%s/%s/%*s", temp, temp) == 2)
+      return temp;
 
-    return 0 ;
+  if(sscanf(file, "/adm/%s/%*s", temp) == 2)
+    return "Admin/" + temp;
+
+  return 0;
 }
 
 /**
- * @simul_efun tail
- * @description Returns the last few lines of a file, similar to the Unix
- *              `tail` command.
- * @param {string} path - The path of the file to read.
- * @param {int} [line_count=25] - The number of lines to read from the end of
- *                                the file. Defaults to 25.
- * @returns {string} - The last few lines of the file.
+ * Returns the last n lines of a file.
+ *
+ * Reads from end of file efficiently, even for large files.
+ *
+ * @param {string} path - File to read
+ * @param {int} [line_count=25] - Number of lines to return
+ * @returns {string} Requested lines with proper newline formatting
+ * @errors If file path is null or invalid
+ * @example
+ * write(tail("/log/system.log", 10));  // Shows last 10 log entries
  */
 varargs string tail(string path, int line_count) {
-    int chunk_size = 80 * 5; // Chunk size for each read operation
-    string result = ""; // Accumulator for the result
-    int total_lines = 0; // Counter for total lines found
-    int file_size; // Total size of the file
-    int start, end; // Variables to define the read range
-    string chunk; // Variable to hold the data read in each chunk
-    string *lines; // Array to hold split lines
-    int start_index; // Index for trimming lines
+  int chunk_size = 80 * 5; // Chunk size for each read operation
+  string result = ""; // Accumulator for the result
+  int total_lines = 0; // Counter for total lines found
+  int file_size; // Total size of the file
+  int start, end; // Variables to define the read range
+  string chunk; // Variable to hold the data read in each chunk
+  string *lines; // Array to hold split lines
+  int start_index; // Index for trimming lines
 
-    if(nullp(path)) error("No file specified for tail(). [" + previous_object() + "]") ;
-    if(nullp(line_count)) line_count = 25; // Default to 25 lines if not specified
+  if(nullp(path))
+    error("No file specified for tail(). [" + previous_object() + "]");
 
-    // Get the total size of the file
-    file_size = file_size(path) ;
-    // Initialize reading position at the end of the file
-    end = file_size ;
+  if(nullp(line_count))
+    line_count = 25; // Default to 25 lines if not specified
 
-    // Ensure we don't start reading beyond the start of the file
-    if(end < 0) return "File does not exist or is empty." ;
+  // Get the total size of the file
+  file_size = file_size(path);
 
-    while(end > 0) {
-        start = end - chunk_size ;
-        if(start < 0) start = 0; // Adjust start to not go below file beginning
+  // Initialize reading position at the end of the file
+  end = file_size;
 
-        // Read the chunk from the file
-        chunk = read_bytes(path, start, end - start) ;
+  // Ensure we don't start reading beyond the start of the file
+  if(end < 0)
+    return "File does not exist or is empty.";
 
-        if(!strlen(chunk)) break; // Break if no data was read
+  while(end > 0) {
+    start = end - chunk_size;
 
-        // Prepend the current chunk to the result
-        result = chunk + result ;
+    if(start < 0)
+      start = 0; // Adjust start to not go below file beginning
 
-        // Count the number of newlines in the current result
-        total_lines = sizeof(explode(result, "\n")) - 1 ;
+    // Read the chunk from the file
+    chunk = read_bytes(path, start, end - start);
 
-        // If we have enough lines, break the loop
-        if(total_lines >= line_count) break ;
+    if(!strlen(chunk))
+      break; // Break if no data was read
 
-        end = start; // Move the end position for the next read
-    }
+    // Prepend the current chunk to the result
+    result = chunk + result;
 
-    // Trim the result to exactly the number of lines requested
-    lines = explode(result, "\n") ;
-    start_index = (sizeof(lines) > line_count) ? sizeof(lines) - line_count : 0 ;
-    result = implode(lines[start_index..], "\n") ;
+    // Count the number of newlines in the current result
+    total_lines = sizeof(explode(result, "\n")) - 1;
 
-    // Add a newline at the beginning if we trimmed lines
-    if(start_index > 0) {
-        result = "\n" + result ;
-    }
+    // If we have enough lines, break the loop
+    if(total_lines >= line_count)
+      break;
 
-    // Pad with empty lines if we have fewer lines than requested
-    if(sizeof(lines) < line_count) {
-        result = implode(allocate(line_count - sizeof(lines), ""), "\n") + result ;
-    }
+    end = start; // Move the end position for the next read
+  }
 
-    return result ;
+  // Trim the result to exactly the number of lines requested
+  lines = explode(result, "\n");
+  start_index = (sizeof(lines) > line_count) ? sizeof(lines) - line_count : 0;
+  result = implode(lines[start_index..], "\n");
+
+  // Add a newline at the beginning if we trimmed lines
+  if(start_index > 0)
+    result = "\n" + result;
+
+  // Pad with empty lines if we have fewer lines than requested
+  if(sizeof(lines) < line_count)
+    result = implode(allocate(line_count - sizeof(lines), ""), "\n") + result;
+
+  return result;
 }
 
 
@@ -133,237 +165,261 @@ varargs string tail(string path, int line_count) {
 //Simul-efuns
 
 /**
- * @simul_efun log_file
- * @description Writes a log message to a specified log file.
- * @param {string} file - The name of the log file.
- * @param {string} str - The log message to write.
- * @param {mixed} [arg] - Additional arguments to include in the log message.
- * @returns {int} - 1 if the log message was written successfully, otherwise 0.
+ * Writes a message to a log file.
+ *
+ * Routes logging through master object for security.
+ *
+ * @param {string} file - Log file name
+ * @param {string} str - Message to log
+ * @param {mixed} [arg] - Optional formatting arguments
+ * @returns {int} 1 on success, 0 on failure
+ * @example
+ * log_file("system.log", "Server started at %s", ctime());
  */
 varargs int log_file(string file, string str, mixed arg...) {
-    if(!file || !str) return 0 ;
-    master()->log_file(file, str, arg...) ;
-    return 1 ;
+  if(!file || !str)
+    return 0;
+
+  master()->log_file(file, str, arg...);
+
+  return 1;
 }
 
 /**
- * @simul_efun explode_file
- * @description Reads a file and returns its content as an array of lines,
- *              excluding comment lines and empty lines.
- * @param {string} file - The path of the file to read.
- * @returns {string[]} - An array of lines from the file.
+ * Reads file content into array of lines.
+ *
+ * Filters out comments and empty lines.
+ *
+ * @param {string} file - File to read
+ * @returns {string*} Array of non-empty, non-comment lines
+ * @example
+ * string *config = explode_file("/etc/config.rc");
  */
 string *explode_file(string file) {
-    string old_privs ;
+  string old_privs;
 
-    if(!file) return ({}) ;
+  if(!file)
+    return ({});
 
-    old_privs = query_privs() ;
-    set_privs(this_object(), query_privs(previous_object())) ;
+  old_privs = query_privs();
+  set_privs(this_object(), query_privs(previous_object()));
 
-    if(!file_exists(file)) {
-        set_privs(this_object(), old_privs) ;
-        return ({}) ;
+  if(!file_exists(file)) {
+    set_privs(this_object(), old_privs);
+    return ({});
+  }
+
+  catch {
+    string data = read_file(file);
+    string *lines;
+
+    if(!data) {
+      set_privs(this_object(), old_privs);
+      return ({});
     }
+    lines = explode(data, "\n");
+    lines = filter(lines, (: $1[0] != '#' :));
+    lines = filter(lines, (: strlen(trim($1)) > 0 :));
+  };
 
-    catch {
-        string data = read_file(file) ;
-        string *lines ;
+  set_privs(this_object(), old_privs);
 
-        if(!data) {
-            set_privs(this_object(), old_privs) ;
-            return ({}) ;
-        }
-        lines = explode(data, "\n") ;
-        lines = filter(lines, (: $1[0] != '#' :)) ;
-        lines = filter(lines, (: strlen(trim($1)) > 0 :)) ;
-    } ;
-
-    set_privs(this_object(), old_privs) ;
-
-    return lines ;
+  return lines;
 }
 
 /**
- * @simul_efun implode_file
- * @description Writes an array of lines to a specified file, optionally
- *              overwriting the existing content.
- * @param {string} file - The path of the file to write to.
- * @param {string[]} lines - The array of lines to write.
- * @param {int} [overwrite=0] - Whether to overwrite the existing content.
- *                              Defaults to 0 (append).
+ * Writes array of lines to a file.
+ *
+ * @param {string} file - Target file path
+ * @param {string*} lines - Lines to write
+ * @param {int} [overwrite=0] - Whether to overwrite existing content
+ * @example
+ * implode_file("/save/names.txt", ({ "Bob", "Alice" }), 1);
  */
 varargs void implode_file(string file, string *lines, int overwrite) {
-    string old_privs ;
+  string old_privs;
 
-    if(!file) return ;
-    if(!lines) return ;
-    if(!sizeof(lines)) return ;
+  if(!file) return;
+  if(!lines) return;
+  if(!sizeof(lines)) return;
 
-    overwrite = !!overwrite ;
-    old_privs = query_privs() ;
-    set_privs(this_object(), query_privs(previous_object())) ;
+  overwrite = !!overwrite;
+  old_privs = query_privs();
+  set_privs(this_object(), query_privs(previous_object()));
 
-    catch {
-        write_file(file, implode(lines, "\n") + "\n", overwrite) ;
-    } ;
+  catch(write_file(file, implode(lines, "\n") + "\n", overwrite));
 
-    set_privs(this_object(), old_privs) ;
+  set_privs(this_object(), old_privs);
 }
 
 /**
- * @simul_efun query_file_name
- * @description Returns the name of the file corresponding to a given object.
- * @param {object} ob - The object to query the file name of.
- * @returns {string} - The name of the file corresponding to the object.
+ * Gets filename portion of an object's path.
+ *
+ * @param {object} ob - Object to query, defaults to previous_object()
+ * @returns {string} Base filename without path
+ * @errors If no valid object available
+ * @example
+ * string name = query_file_name(this_object());  // Returns "room.c"
  */
 string query_file_name(object ob) {
-    string file, *parts ;
-    string dir ;
+  string file, *parts;
 
-    if(!objectp(ob))
-        ob = previous_object() ;
+  if(!objectp(ob))
+    ob = previous_object();
 
-    if(!objectp(ob))
-        error("Bad argument 1 to query_file_name().\n") ;
+  if(!objectp(ob))
+    error("Bad argument 1 to query_file_name().\n");
 
-    file = base_name(ob) ;
-    parts = explode(file, "/") ;
-    file = parts[<1] ;
+  file = base_name(ob);
+  parts = explode(file, "/");
+  file = parts[<1];
 
-    return file ;
+  return file;
 }
 
 /**
- * @simul_efun temp_file
- * @description Generates a temporary file name based on the provided argument.
- * @param {mixed} arg - The file or object to create a temporary file for.
- * @returns {string} - The path to the temporary file.
+ * Generates a unique temporary file path.
+ *
+ * Creates path based on object name or provided string with timestamp.
+ *
+ * @param {object|string} [arg] - Base for temp filename, defaults to previous_object()
+ * @returns {string} Full path to temporary file
+ * @errors If argument is invalid type
+ * @example
+ * string tmp = temp_file("backup");  // Returns "/tmp/backup.1234567890"
  */
 varargs string temp_file(mixed arg) {
-    string file ;
-    string *matches ;
+  string file;
+  string *matches;
 
-    if(nullp(arg))
-        arg = previous_object() ;
+  if(nullp(arg))
+    arg = previous_object();
 
-    if(stringp(arg)) {
-        file = arg ;
-    } else if(objectp(arg)) {
-        file = query_privs(arg) ;
-    } else {
-        error("Bad argument 1 to temp_file().\n") ;
-    }
+  if(stringp(arg))
+    file = arg;
+  else if(objectp(arg))
+    file = query_privs(arg);
+  else
+    error("Bad argument 1 to temp_file().\n");
 
-    matches = pcre_extract(file, "^\\[([a-zA-Z0-9_-]+)\\]$|^([a-zA-Z0-9_-]+)$") ;
-    if(sizeof(matches) < 1) {
-        error("Bad argument 1 to temp_file().\n") ;
-    }
+  matches = pcre_extract(file, "^\\[([a-zA-Z0-9_-]+)\\]$|^([a-zA-Z0-9_-]+)$");
+  if(sizeof(matches) < 1)
+      error("Bad argument 1 to temp_file().\n");
 
-    if(sizeof(matches) == 1)
-        file = sprintf("%s.%d", matches[0], time_ns()) ;
-    else
-        file = sprintf("%s.%d", matches[1], time_ns()) ;
+  if(sizeof(matches) == 1)
+    file = sprintf("%s.%d", matches[0], time_ns());
+  else
+    file = sprintf("%s.%d", matches[1], time_ns());
 
-    return sprintf("%s%s", tmp_dir(), file) ;
+  return sprintf("%s%s", tmp_dir(), file);
 }
 
 /**
- * @simul_efun dir_file
- * @description Given a path, returns an array containing the directory and file
- *              name components.
- * @param {mixed} path - The path to extract the components from. If it is an
-                         object, the base name is used.
- * @returns {string[]} - An array containing the directory and file name
-                         components.
+ * Splits path into directory and filename components.
+ *
+ * @param {string|object} path - Path or object to analyze
+ * @returns {({ string, string })} Tuple of ({ directory, filename })
+ * @example
+ * string *parts = dir_file("/d/town/square.c");
+ * // Returns ({ "/d/town/", "square.c" })
  */
 string *dir_file(mixed path) {
-    string *matches, dir, file ;
+  string *matches, dir, file;
 
-    if(nullp(path))
-        path = previous_object() ;
+  if(nullp(path))
+    path = previous_object();
 
-    if(objectp(path))
-        path = base_name(path) ;
+  if(objectp(path))
+    path = base_name(path);
 
-    if(!stringp(path) || !strlen(path))
-        error("Bad argument 1 to dir_file().\n") ;
+  if(!stringp(path) || !strlen(path))
+    error("Bad argument 1 to dir_file().\n");
 
-    path = prepend(path, "/") ;
-    matches = pcre_extract(path, "^(.*/)([^/]+)$") ;
-    if(sizeof(matches) < 2) {
-        return ({}) ;
-    }
+  path = prepend(path, "/");
+  matches = pcre_extract(path, "^(.*/)([^/]+)$");
+  if(sizeof(matches) < 2) {
+    return ({});
+  }
 
-    dir = matches[0] ;
-    file = matches[1] ;
+  dir = matches[0];
+  file = matches[1];
 
-    return ({ dir, file }) ;
+  return ({ dir, file });
 }
 
 /**
- * @simul_efun valid_dir_file
- * @description Given a path, returns an array containing the directory and file
- *              name components. It ensures that the directory exists.
- * @param {string} path - The path to check.
- * @param {int} file_too - Whether the file should exist.
- * @returns {string[]} - An array containing the directory and file name
- *                      components.
+ * Verifies directory and optionally file existence.
+ *
+ * Traverses path components to validate directory structure and optionally
+ * checks if the final component exists as a file.
+ *
+ * @param {string} path - Path to verify
+ * @param {int} [file_too=0] - Whether to check file existence
+ * @returns {({ string, string })} Tuple of ({ directory_path, filename }),
+ *                                 or null if invalid
+ * @example
+ * string *parts = valid_dir_file("/d/town/square.c", 1);
+ * // Returns ({ "/d/town/", "square.c" }) if path exists
  */
 varargs string *valid_dir_file(string path, int file_too) {
-    string *parts ;
-    int sz, i ;
-    string dir = "/" ;
+  string *parts;
+  int sz, i;
+  string dir = "/";
 
-    if(nullp(path))
-        return null ;
+  if(nullp(path))
+    return null;
 
-    if(directory_exists(path)) {
-        if(file_too)
-            return null ;
-        return ({ prepend(append(path, "/"), "/"), "" }) ;
-    }
+  if(directory_exists(path)) {
+    if(file_too)
+      return null;
 
-    parts = explode(path, "/") ;
-    while(sizeof(parts) > 1) {
-        if(directory_exists(dir + parts[0]))
-            dir += append(parts[0], "/") ;
-        else
-            break ;
-        parts = parts[1..] ;
-    }
+    return ({ prepend(append(path, "/"), "/"), "" });
+  }
 
-    if(file_too) {
-        if(file_exists(dir + parts[0]))
-            return ({ dir, parts[0] }) ;
-        else
-            return null ;
-    }
-    return ({ dir, parts[0] }) ;
+  parts = explode(path, "/");
+  while(sizeof(parts) > 1) {
+    if(directory_exists(dir + parts[0]))
+      dir += append(parts[0], "/");
+    else
+      break;
+
+    parts = parts[1..];
+  }
+
+  if(file_too) {
+    if(file_exists(dir + parts[0]))
+      return ({ dir, parts[0] });
+    else
+      return null;
+  }
+  return ({ dir, parts[0] });
 }
 
 /**
- * @simul_efun touch
- * @description Creates an empty file at the specified path. If the path does
- *              not exist, the function will create the necessary directories.
- * @param {string} file - The path of the file to create.
- * @returns {int} - 1 if the file was created successfully, otherwise 0.
+ * Creates or updates a file's timestamp.
+ *
+ * Creates parent directories if needed.
+ *
+ * @param {string} file - File to touch
+ * @returns {int} 1 if successful, 0 otherwise
+ * @example
+ * touch("/var/run/daemon.pid");
  */
 int touch(string file) {
-    string old_privs ;
+  string old_privs;
 
-    if(!file)
-        return 0 ;
+  if(!file)
+    return 0;
 
-    old_privs = query_privs() ;
-    set_privs(this_object(), query_privs(previous_object())) ;
+  old_privs = query_privs();
+  set_privs(this_object(), query_privs(previous_object()));
 
-    catch {
-        assure_file(file) ;
-        write_file(file, "") ;
-    } ;
+  catch {
+    assure_file(file);
+    write_file(file, "");
+  };
 
-    set_privs(this_object(), old_privs) ;
+  set_privs(this_object(), old_privs);
 
-    return file_size(file) != -1 ;
+  return file_size(file) != -1;
 }

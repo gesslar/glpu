@@ -19,6 +19,10 @@ RESET_REGEX           "|" \
 ATTRIBUTE_REGEX       "|" \
 TRUE_COLOUR_REGEX
 
+#define HEX_CHECK_3 "^#?[a-fA-F0-9]{3}$"
+#define HEX_CHECK_6 "^#?[a-fA-F0-9]{6}$"
+#define HEX_CHECK   "^#?(?:[a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
+
 #define SYSTEM_OK       "{{009966}}"
 #define SYSTEM_ERROR    "{{CC0000}}"
 #define SYSTEM_WARNING  "{{FF9900}}"

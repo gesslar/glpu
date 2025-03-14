@@ -1,7 +1,7 @@
 #ifndef __SIMUL_EFUN_H__
 #define __SIMUL_EFUN_H__
 
-// File: arrays
+// File: array.c
 int every(mixed *arr, function fun);
 int includes(mixed *arr, mixed elem);
 int push(mixed ref *arr, mixed value);
@@ -25,25 +25,28 @@ varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning);
 varargs mixed find(mixed *arr, function fun, mixed extra...);
 varargs mixed reduce(mixed *arr, function fun, mixed init);
 
-// File: base64
+// File: base64.c
 string base64_encode(mixed source_str);
 string base64_decode(string source);
 
-// File: data
+// File: colour.c
+string gradient_hex(string hex, int step);
+
+// File: data.c
 varargs mixed data_value(string file, string key, mixed def);
 varargs void data_write(string file, string key, mixed data...);
 varargs int data_inc(string file, string key, int inc);
 int data_del(string file, string key);
 
-// File: description
+// File: description.c
 string get_short(object ob);
 string get_long(object ob);
 
-// File: directory
+// File: directory.c
 int assure_dir(string path);
 string query_directory(object ob);
 
-// File: english
+// File: english.c
 string cap_words(string str);
 varargs string cap_significant_words(string str, int title);
 string possessive_noun(mixed ob);
@@ -56,14 +59,14 @@ varargs string article(string str, int definite);
 varargs string add_article(string str, int definite);
 string remove_article(string str);
 
-// File: exists
+// File: existence.c
 int directory_exists(string dirname);
 int file_exists(string file);
 int cfile_exists(string file);
 int ofile_exists(string file);
 int user_exists(string user);
 
-// File: file
+// File: file.c
 int file_lines(string file);
 int log_file(string file, string str);
 int touch(string file);
@@ -77,38 +80,38 @@ varargs string temp_file(mixed arg);
 varargs void implode_file(string file, string *lines, int overwrite);
 void assure_file(string file);
 
-// File: function
+// File: function.c
 int valid_function(mixed f);
 mixed *assemble_call_back(mixed arg...);
 mixed call_back(mixed *cb, mixed arg...);
-mixed call_if(mixed ob, string func, mixed arg);
+varargs mixed call_if(mixed ob, string func, mixed arg);
 varargs int delay_act(string act, float delay, mixed *cb);
 varargs string call_trace(int colour);
 varargs void assert(mixed statement, string message);
 void assert_arg(mixed condition, int arg_num, string message);
 
-// File: grammar
+// File: grammar.c
 string int_string (int num);
 string ordinal (int n);
 
-// File: identify
+// File: identify.c
 string identify(mixed arg);
 
-// File: json
+// File: json.c
 mixed json_decode(string str);
 mapping json_encode(mixed arg);
 
-// File: mappings
+// File: mapping.c
 string pretty_map(mapping map);
 
-// File: messaging
+// File: messaging.c
 varargs void tell_up(object ob, string str, int msg_type, mixed exclude);
 varargs void tell_down(object ob, string str, int msg_type, mixed exclude);
 varargs void tell_all(object ob, string str, int msg_type, mixed exclude);
 varargs void tell_direct(object ob, string str, int msg_type, mixed exclude);
 varargs void tell(object ob, string str, int msg_type, mixed exclude);
 
-// File: numbers
+// File: number.c
 float percent_of(float a, float b);
 float percent(float a, float b);
 float clamp(float min, float max, float val);
@@ -116,7 +119,7 @@ varargs float remainder(mixed a, mixed b);
 int sum(mixed *arr);
 int evaluate_number(int number, string condition);
 
-// File: object
+// File: object.c
 int caller_is(mixed ob);
 int getoid(object ob);
 int same_env_check(object ob1, object ob2, int top_env);
@@ -137,11 +140,11 @@ varargs object find_targets(object tp, string str, object env, function f);
 varargs object find_target(object tp, string str, object env, function f);
 varargs object *clones(mixed file, int env_only);
 
-// File: prompt
+// File: prompt.c
 varargs void prompt_colour(object body, mixed *cb, string prompt);
 void prompt_password(object user, int attempts, mixed *cb);
 
-// File: random
+// File: random.c
 int *prandom(int seed, int max);
 mixed *prandom_float(int seed);
 int *prandom_clamp(int seed, int min, int max);
@@ -152,7 +155,7 @@ mixed element_of_weighted(mapping m);
 int random_clamp(int min, int max);
 int *sanitize_seed(mixed seed);
 
-// File: resolve_path
+// File: resolve_path.c
 string resolve_path(string base_dir, string path);
 string valid_path(string base_dir, string path);
 string valid_file(string base_dir, string path);
@@ -160,26 +163,26 @@ string valid_dir(string base_dir, string path);
 string resolve_file(string base_dir, string path);
 string resolve_dir(string base_dir, string path);
 
-// File: save
+// File: save.c
 string object_data_directory(object ob);
 string object_data_file(object ob);
 string assure_object_data_dir(object ob);
 
-// File: security
+// File: security.c
 int is_member(string user, string group);
 int adminp(mixed user);
 int devp(mixed user);
 int wizardp(mixed user);
 
-// File: signal
+// File: signal.c
 void emit(int sig, mixed arg...);
 int slot(int sig, string func);
 int unslot(int sig);
 
-// File: socket
+// File: socket.c
 string dump_socket_status();
 
-// File: string
+// File: string.c
 string append(string source, string to_append);
 string no_ansi(string str);
 string prepend(string source, string to_prepend);
@@ -195,7 +198,7 @@ string reverse_strsrch(string str, string sub, int start);
 varargs int pcre_strsrch(string str, string pattern, int start);
 int colourp(string str);
 
-// File: system
+// File: system.c
 int port();
 object simul_efun();
 mixed mud_config(string str);
@@ -218,13 +221,13 @@ varargs int _error(mixed args...);
 varargs int _question(mixed args...);
 varargs int _warn(mixed args...);
 
-// File: time
+// File: time.c
 varargs string ldate(int x, int brief);
 varargs string ltime(int x, int brief);
 int time_ms();
 float time_frac(int nanoseconds);
 
-// File: user
+// File: user.c
 string user_data_file(string name);
 string user_mob_data(string name);
 string user_data_directory(string priv);
@@ -236,7 +239,7 @@ int ghostp(object user);
 int linkp(object user);
 varargs int valid_user(mixed user);
 
-// File: util
+// File: util.c
 string generate_uuid();
 int of(mixed needle, mixed haystack);
 

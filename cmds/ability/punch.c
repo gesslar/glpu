@@ -33,44 +33,41 @@ void setup() {
 void finish_punch(object tp, object victim) ;
 
 mixed use(object tp, string arg) {
-    object victim ;
-    mixed result ;
+  object victim ;
+  mixed result ;
 
-    if(!victim = local_target(tp, arg, (: living($1) && $1 != $(tp) :)))
-        return 1 ;
-
-    if(!result = delay_act("punch", 2.0, assemble_call_back(
-        (: finish_punch :),
-        tp, victim
-    ))) {
-        return "You are already doing something." ;
-    }
-
-    apply_cost(tp, arg) ;
-    apply_cooldown(tp, arg) ;
-
-    tp->simple_action("$N $vpull back a fist...") ;
-
+  if(!victim = local_target(tp, arg, (: living($1) && $1 != $(tp) :)))
     return 1 ;
-}
 
-void finish_punch(int status, object tp, object victim) {
-    if(!status)
-        return ;
+  if(!result = delay_act("punch", 2.0, assemble_call_back(
+    function(int status, object tp, object victim) {
+      if(!status)
+          return ;
 
-    if(!same_env_check(tp, victim))
-        return ;
+      if(!same_env_check(tp, victim))
+          return ;
 
-    if(tp->can_strike(victim)) {
-        float damage = percent_of(25.0, tp->query_damage()) ;
+      if(tp->can_strike(victim)) {
+          float damage = percent_of(25.0, tp->query_damage()) ;
 
-        tp->targetted_action("$N $vpunch $t!", victim) ;
-        tp->deliver_damage(victim, damage, "bludgeoning") ;
-        tp->use_skill("combat.melee.unarmed") ;
-    } else {
-        tp->targetted_action("$N $vtry to punch $t, but $vmiss.", victim) ;
-        victim->use_skill("combat.defense.dodge") ;
-    }
+          tp->targetted_action("$N $vpunch $t!", victim) ;
+          tp->deliver_damage(victim, damage, "bludgeoning") ;
+          tp->use_skill("combat.melee.unarmed") ;
+      } else {
+          tp->targetted_action("$N $vtry to punch $t, but $vmiss.", victim) ;
+          victim->use_skill("combat.defense.dodge") ;
+      }
 
-    victim->start_attack(tp) ;
+      victim->start_attack(tp) ;
+    }, tp, victim
+  ))) {
+    return "You are already doing something." ;
+  }
+
+  apply_cost(tp, arg) ;
+  apply_cooldown(tp, arg) ;
+
+  tp->simple_action("$N $vpull back a fist...") ;
+
+  return 1 ;
 }

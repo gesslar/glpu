@@ -11,7 +11,7 @@ mixed *distinct_array(mixed *arr, int same_order) {
   assert_arg(pointerp(arr), 1, "Array is required.");
 
   if(!!same_order) {
-    return reduce(arr, function(mixed *acc, mixed element, int index) {
+    return reduce(arr, function(mixed *acc, mixed element) {
       return member_array(element, acc) == -1
         ? acc + ({ element })
         : acc;
@@ -119,8 +119,7 @@ int uniform_array(string type, mixed *arr) {
  * @return {mixed} - The filled array.
  */
 varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
-  mixed *work, *ret;
-  int i;
+  mixed *work;
   int len;
 
   if(!pointerp(arr))
@@ -157,7 +156,7 @@ varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
  * @return {mixed} - The padded array.
  */
 varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) {
-  mixed *work, *ret;
+  mixed *work;
   int i;
   int len;
 
@@ -262,7 +261,7 @@ varargs mixed *array_slice(mixed *arr, int start, int end) {
 /**
  * Merges arrays into a single array.
  *
- * @param {mixed[]...} arrs - Comma separated arguments of arrays
+ * @param {mixed[]} arrs - Comma separated arguments of arrays
  * @return {mixed[]} - A new array with elements from both input arrays.
  */
 mixed *array_merge(mixed arrs...) {
@@ -293,7 +292,7 @@ mixed *array_merge(mixed arrs...) {
  * int product = reduce(nums, (: $1 * $2 :), 1);
  * ```
  */
-varargs mixed reduce(mixed *arr, function fun, mixed init) {
+varargs mixed reduce(mixed *arr, function fun, mixed init, mixed arg...) {
   mixed result;
   int start, i;
 
@@ -313,8 +312,10 @@ varargs mixed reduce(mixed *arr, function fun, mixed init) {
     start = 0;
   }
 
+  arg = pointerp(arg) && sizeof(arg) ? arg : ({});
+
   for(i = start; i < sizeof(arr); i++)
-    result = (*fun)(result, arr[i], i, arr);
+    result = (*fun)(result, arr[i], i, arr, arg...);
 
   return result;
 }

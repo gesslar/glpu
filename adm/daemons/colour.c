@@ -22,17 +22,22 @@ string substitute_colour(string text, string mode);
 string wrap(string str, int wrap_at, int indent_at);
 int colourp(string text);
 void resync();
-int is_too_dark(string colour);
-string substitute_too_dark(string text);
+int is_too_dark_hex(string hex);
+varargs int is_too_dark_rgb(int r, int g, int b);
+string substitute_too_dark(string hex);
 int colour_to_greyscale(int colour_code);
 string body_colour_replace(object body, string text, int message_type);
+varargs int get_luminance(int r, int g, int b);
 private int too_dark_check();
-private mapping too_dark_map();
+varargs int get_luminance(int r, int g, int b);
 public int *colour_to_rgb(int colour_code);
-public string rgb_to_hex(int *rgb);
+varargs int hex_check(string hex, int three_or_six);
+private void normalize_hex(string ref hex);
+varargs public string rgb_to_hex(int *rgb);
 public int rgb_to_colour(int r, int g, int b);
 public string rgb_to_sequence(int *rgb, int mode);
 string hex_to_sequence(string hex);
+int *hex_to_rgb(string hex);
 string ansi256_to_3hex(int ansi);
 private string cached(string tag);
 void cache_256();
@@ -66,16 +71,6 @@ void setup() {
  */
 private int too_dark_check() {
   return mud_config("COLOUR_TOO_DARK") == "on";
-}
-
-/**
- * Gets the mapping of too dark colour substitutions.
- *
- * @returns {mapping} Mapping of dark colours to their substitutes
- * @private
- */
-private mapping too_dark_map() {
-  return mud_config("COLOUR_TOO_DARK_SUB");
 }
 
 /**
@@ -348,6 +343,29 @@ string get_colour_list() {
   return output;
 }
 
+mixed *_base_colours = ({
+  ({ "{{000000}}", "black"          }),
+  ({ "{{800000}}", "red"            }),
+  ({ "{{008000}}", "green"          }),
+  ({ "{{808000}}", "orange"         }),
+  ({ "{{000080}}", "blue"           }),
+  ({ "{{800080}}", "magenta"        }),
+  ({ "{{008080}}", "cyan"           }),
+  ({ "{{C0C0C0}}", "white"          }),
+  ({ "{{808080}}", "bright black"   }),
+  ({ "{{FF0000}}", "bright red"     }),
+  ({ "{{00FF00}}", "bright green"   }),
+  ({ "{{FFFF00}}", "bright orange"  }),
+  ({ "{{0000FF}}", "bright blue"    }),
+  ({ "{{FF00FF}}", "bright magenta" }),
+  ({ "{{00FFFF}}", "bright cyan"    }),
+  ({ "{{FFFFFF}}", "bright white"   }),
+});
+
+mixed *base_colours() {
+  return copy(_base_colours);
+}
+
 /**
  * Converts an ANSI 256 color code to a 3-digit hex representation.
  *
@@ -359,6 +377,14 @@ string ansi256_to_3hex(int ansi) {
   return sprintf("%X%X%X", rgb[0] / 17, rgb[1] / 17, rgb[2] / 17); // Convert to 3-hex
 }
 
+varargs int get_luminance(int r, int g, int b) {
+  assert_arg(!nullp(r) && intp(r), 1, "Invalid value.");
+  assert_arg(!nullp(g) && intp(g), 1, "Invalid value.");
+  assert_arg(!nullp(b) && intp(b), 1, "Invalid value.");
+
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 /**
  * Checks if a colour value is considered too dark for display.
  *
@@ -368,21 +394,19 @@ string ansi256_to_3hex(int ansi) {
  * @param {string} colour - The colour code to check
  * @returns {int} 1 if the colour is too dark, 0 otherwise
  */
-int is_too_dark(string colour) {
-  string *matches;
+int is_too_dark_hex(string hex) {
+  int *rgb;
 
   if(!too_dark_check())
     return 0;
 
-  if(!pcre_match(colour, "^[0-1](?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])$"))
-    return 0;
+  rgb = hex_to_rgb(hex);
 
-  colour = colour[1..];
-  colour = sprintf("%03d", to_int(colour));
-  if(too_dark_map()[colour])
-    return 1;
+  return is_too_dark_rgb(rgb...);
+}
 
-  return 0;
+varargs int is_too_dark_rgb(int r, int g, int b) {
+  return get_luminance(r, g, b) < 50;
 }
 
 /**
@@ -394,20 +418,59 @@ int is_too_dark(string colour) {
  * @param {string} text - The colour code to potentially substitute
  * @returns {string} Substituted colour code or original if not too dark
  */
-string substitute_too_dark(string text) {
-  string result;
-  int num;
+string substitute_too_dark(string hex) {
+  int *rgb;
 
   if(!too_dark_check())
-    return text;
+    return hex;
 
-  num = to_int(text);
-  result = sprintf("%03d", num);
+  normalize_hex(ref hex);
+  rgb = hex_to_rgb(hex);
 
-  if(too_dark_map()[result])
-    return too_dark_map()[result];
+  // Increase brightness (adjust +50 as needed)
+  rgb[0] = clamp(0, 255, rgb[0] + 50);
+  rgb[1] = clamp(0, 255, rgb[1] + 50);
+  rgb[2] = clamp(0, 255, rgb[2] + 50);
 
-  return text;
+  return rgb_to_hex(rgb...);
+}
+
+varargs int hex_check(string hex) {
+  string *new_hex;
+
+  if(pcre_match(hex, HEX_CHECK))
+    return 1;
+
+  return sizeof(new_hex = pcre_extract(hex, TRUE_COLOUR_REGEX));
+}
+
+private void normalize_hex(string ref hex) {
+  int r, g, b;
+  string *match;
+
+  assert_arg(hex_check(hex), 1, "Invalid hex value.");
+
+  hex = all_caps(hex);
+
+  // Nope. But, frankly, we shouldn't even have arrived here.
+  if(!sizeof(match = pcre_extract(hex, TRUE_COLOUR_REGEX)))
+    return;
+
+  hex = match[0];
+
+  // We good!
+  if(strlen(hex) == 6)
+    return;
+
+  sscanf(hex[0..0], "%x", r);
+  sscanf(hex[1..1], "%x", g);
+  sscanf(hex[2..2], "%x", b);
+
+  r *= 17;
+  g *= 17;
+  b *= 17;
+
+  hex = sprintf("%2x%2x%2x", r, g, b);
 }
 
 /**
@@ -436,7 +499,7 @@ int colour_to_greyscale(int colour_code) {
  * Processes text according to the body's colour preferences and message type.
  * Handles special cases like combat messages differently.
  *
- * @param {object} body - The body object with colour preferences
+ * @param {object STD_BODY} body - The body object with colour preferences
  * @param {string} text - Text to process
  * @param {int} message_type - Type of message (NO_COLOUR, MSG_COMBAT_HIT, etc)
  * @returns {string} Text with applied colour preferences
@@ -531,7 +594,7 @@ int *colour_to_rgb(int x) {
  * @param {int*} rgb - Array containing RGB values [r, g, b]
  * @returns {string} Hexadecimal color string in format "RRGGBB"
  */
-string rgb_to_hex(int *rgb) {
+varargs string rgb_to_hex(int *rgb) {
   return sprintf("%02X%02X%02X", rgb[0], rgb[1], rgb[2]);
 }
 
@@ -553,6 +616,19 @@ public string rgb_to_sequence(int *rgb, int mode) {
   return sprintf("\e[%d;2;%d;%d;%dm", bg, r, g, b);
 }
 
+int *hex_to_rgb(string hex) {
+  int r, g, b;
+  string *match;
+
+  normalize_hex(ref hex);
+
+  sscanf(hex[0..1], "%x", r);
+  sscanf(hex[2..3], "%x", g);
+  sscanf(hex[4..5], "%x", b);
+
+  return ({r, g, b});
+}
+
 /**
  * Converts a hex color string to an ANSI escape sequence.
  *
@@ -561,32 +637,12 @@ public string rgb_to_sequence(int *rgb, int mode) {
  * @returns {string} ANSI escape sequence for the color
  */
 string hex_to_sequence(string hex, int mode) {
-  int r, g, b;
+  int *rgb;
   int bg = !!mode ? 48 : 38;
-  string *extracted = pcre_extract(hex, TRUE_COLOUR_REGEX);
 
-  extracted = filter(extracted, (: strlen :));
+  rgb = hex_to_rgb(hex);
 
-  if(sizeof(extracted) != 1)
-    return hex;
-
-  hex = all_caps(extracted[0]);
-
-  if(strlen(hex) == 3) {
-    sscanf(hex[0..0], "%x", r);
-    sscanf(hex[1..1], "%x", g);
-    sscanf(hex[2..2], "%x", b);
-
-    r *= 17;
-    g *= 17;
-    b *= 17;
-  } else {
-    sscanf(hex[0..1], "%x", r);
-    sscanf(hex[2..3], "%x", g);
-    sscanf(hex[4..5], "%x", b);
-  }
-
-  return sprintf("\e[%d;2;%d;%d;%dm", bg, r, g, b);
+  return rgb_to_sequence(rgb, mode);
 }
 
 /**

@@ -151,10 +151,10 @@ void do_receive(string message, int message_type) {
         message_type |= NO_COLOUR ;
     }
 
-    // If NO_COLOUR flag is set, substitute colours with "plain" (i.e., no
+    // If NO_COLOUR flag is set, substitute colours with "off" (i.e., no
     // colour).
     if(message_type & NO_COLOUR) {
-        message = COLOUR_D->substitute_colour(message, "plain") ;
+        message = COLOUR_D->substitute_colour(message, "off") ;
     } else {
         message = COLOUR_D->substitute_colour(message, term) ;
     }

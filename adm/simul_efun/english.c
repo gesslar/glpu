@@ -1,232 +1,294 @@
+/**
+ * @file /adm/simul_efun/english.c
+ *
+ * English language processing simul-efuns for text manipulation and grammar.
+ * Provides functions for capitalization, articles, and pronoun generation
+ * based on gender and grammar rules.
+ *
+ * @created Unknown
+ * @last_modified 2024-03-11
+ */
+
 #include <simul_efun.h>
 
 /**
- * @simul_efun cap_words
- * @description Capitalizes the first letter of each word in a string.
- * @param {string} str - The string to capitalize.
- * @returns {string} - The capitalized string.
+ * Capitalizes the first letter of each word in a string.
+ *
+ * @param {string} str - Input string to capitalize
+ * @returns {string} String with each word capitalized
+ * @example
+ * cap_words("hello world");  // Returns "Hello World"
  */
 string cap_words(string str) {
-    string *words ;
+  string *words;
 
-    words = explode(str, " ") ;
-    words = map(words, (: capitalize :)) ;
+  words = explode(str, " ");
+  words = map(words, (: capitalize :));
 
-    return implode(words, " ") ;
+  return implode(words, " ");
 }
 
+/**
+ * List of words that typically aren't capitalized in titles.
+ *
+ * @type {string*}
+ */
 private nosave string *insignificant_words = ({
-    "the", "of", "and", "in", "on", "at", "to", "for", "with", "from", "by",
-    "as", "or", "is", "a", "an", "but", "nor", "yet", "so", "if", "then",
-    "else", "when", "where", "why", "how" }) ;
+  "the", "of", "and", "in", "on", "at", "to", "for", "with", "from", "by",
+  "as", "or", "is", "a", "an", "but", "nor", "yet", "so", "if", "then",
+  "else", "when", "where", "why", "how" });
 
 /**
- * @simul_efun cap_significant_words
- * @description Capitalizes significant words in a string, ignoring certain
- *              insignificant words. Optionally capitalizes the first word
- *              as a title.
- * @param {string} str - The string to capitalize.
- * @param {int} [title=0] - Whether to capitalize the first word as a title.
- * @returns {string} - The string with significant words capitalized.
+ * Capitalizes significant words in a string, treating it as a title.
+ *
+ * Follows standard English title capitalization rules where major words
+ * are capitalized but articles, conjunctions, and prepositions are not,
+ * unless they start the title.
+ *
+ * @param {string} str - Text to capitalize
+ * @param {int} [title=0] - Whether to force capitalize first word
+ * @returns {string} Text with appropriate words capitalized
+ * @example
+ * cap_significant_words("the tale of two cities", 1);
+ * // Returns "The Tale of Two Cities"
  */
 varargs string cap_significant_words(string str, int title) {
-    string *words ;
+  string *words;
 
-    words = explode(str, " ") ;
-    words = map(words, (:
-        member_array($1, insignificant_words) == -1 ? capitalize($1) : $1
-    :)) ;
-    str = implode(words, " ") ;
-    if(title) str = capitalize(str) ;
+  words = explode(str, " ");
+  words = map(words, (:
+    member_array($1, insignificant_words) == -1 ? capitalize($1) : $1
+  :));
 
-    return str ;
+  str = implode(words, " ");
+
+  if(title)
+    str = capitalize(str);
+
+  return str;
 }
 
 /**
- * @simul_efun possessive_noun
- * @description Returns the possessive form of a noun. If the noun ends with 's',
- *              it adds an apostrophe; otherwise, it adds 's.
- * @param {mixed} ob - The object or string to convert to possessive form.
- * @returns {string} - The possessive form of the noun.
+ * Creates the possessive form of a noun.
+ *
+ * @param {string | object STD_ITEM} ob - Noun or object with query_name()
+ * @returns {string} Possessive form ("'s" or "'" depending on ending)
+ * @example
+ * possessive_noun("James");  // Returns "James'"
+ * possessive_noun("cat");    // Returns "cat's"
  */
 string possessive_noun(mixed ob) {
-    if(objectp(ob)) ob = ob->query_name() ;
-    if(!stringp(ob)) return "its" ;
+  if(objectp(ob))
+    ob = ob->query_name();
 
-    if(ob[<1] == 's') return ob + "'" ;
-    else return ob + "'s" ;
+  if(!stringp(ob))
+    return "its";
+
+  if(ob[<1] == 's')
+    return ob + "'";
+
+  else
+    return ob + "'s";
 }
 
 /**
- * @simul_efun possessive_proper_noun
- * @description Returns the possessive form of a proper noun. Applies 's to the
- *              end of the noun.
- * @param {mixed} ob - The object or string to convert to possessive form.
- * @returns {string} - The possessive form of the proper noun.
+ * Creates the possessive form of a proper noun.
+ *
+ * Always adds "'s" regardless of ending, following proper noun rules.
+ *
+ * @param {string|object STD_ITEM} ob - Proper noun or object with query_name()
+ * @returns {string} Possessive form with "'s"
+ * @example
+ * possessive_proper_noun("James");  // Returns "James's"
  */
 string possessive_proper_noun(mixed ob) {
-    if(objectp(ob)) ob = ob->query_name() ;
-    if(!stringp(ob)) return "its" ;
+  if(objectp(ob))
+    ob = ob->query_name();
 
-    return ob + "'s" ;
+  if(!stringp(ob))
+    return "its";
+
+  return ob + "'s";
 }
 
 /**
- * @simul_efun possessive_pronoun
- * @description Returns the possessive pronoun corresponding to the object's
- *              gender. Defaults to "its" for non-string or unknown gender.
- * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} - The possessive pronoun.
+ * Gets the possessive pronoun for a gender.
+ *
+ * @param {string|object STD_BODY} ob - Gender string or object with query_gender()
+ * @returns {string} Possessive pronoun (his/hers/its/theirs)
+ * @example
+ * possessive_pronoun("female");  // Returns "hers"
  */
 string possessive_pronoun(mixed ob) {
-    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
-    if(!stringp(ob)) return "its" ;
+  if(objectp(ob))
+    ob = ob->query_gender() || "neuter";
 
-    switch(ob) {
-        case "male" : return "his" ;
-        case "female" : return "hers" ;
-        case "other" : return "theirs" ;
-        case "none" : "its" ;
-        default: return "its" ;
-    }
+  if(!stringp(ob))
+    return "its";
 
-/**
- * @simul_efun possessive
- * @description Returns the possessive adjective corresponding to the object's
- *              gender. Defaults to "its" for non-string or unknown gender.
- * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} - The possessive adjective.
- */}
-
-string possessive(mixed ob) {
-    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
-    if(!stringp(ob)) return "its" ;
-
-    switch(ob) {
-        case "male" : return "his" ;
-        case "female" : return "her" ;
-        case "other" : return "their" ;
-        case "none" : "its" ;
-        default: return "its" ;
-    }
+  switch(ob) {
+    case "male" : return "his";
+    case "female" : return "hers";
+    case "other" : return "theirs";
+    case "none" : "its";
+    default: return "its";
+  }
 }
 
 /**
- * @simul_efun reflexive
- * @description Returns the reflexive pronoun corresponding to the object's
- *              gender. Defaults to "itself" for non-string or unknown gender.
- * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} - The reflexive pronoun.
+ * Gets the possessive adjective for a gender.
+ *
+ * @param {string|object STD_BODY} ob - Gender string or object with query_gender()
+ * @returns {string} Possessive adjective (his/her/its/their)
+ * @example
+ * possessive("female");  // Returns "her"
+ */
+string possessive(mixed ob) {
+  if(objectp(ob))
+    ob = ob->query_gender() || "neuter";
+
+  if(!stringp(ob))
+    return "its";
+
+  switch(ob) {
+    case "male" : return "his";
+    case "female" : return "her";
+    case "other" : return "their";
+    case "none" : "its";
+    default: return "its";
+  }
+}
+
+/**
+ * Gets the reflexive pronoun for a gender.
+ *
+ * @param {string|object STD_BODY} ob - Gender string or object with query_gender()
+ * @returns {string} Reflexive pronoun (himself/herself/itself/themself)
+ * @example
+ * reflexive("female");  // Returns "herself"
  */
 string reflexive(mixed ob) {
-    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
-    if(!stringp(ob)) return "itself" ;
+  if(objectp(ob))
+    ob = ob->query_gender() || "neuter";
 
-    switch(ob) {
-        case "male" : return "himself" ;
-        case "female" : return "herself" ;
-        case "other" : return "themself" ;
-        case "none" : "itself" ;
-        default: return "itself" ;
-    }
+  if(!stringp(ob))
+    return "itself";
+
+  switch(ob) {
+    case "male" : return "himself";
+    case "female" : return "herself";
+    case "other" : return "themself";
+    case "none" : "itself";
+    default: return "itself";
+  }
 }
 
 /**
- * @simul_efun objective
- * @description Returns the objective pronoun corresponding to the object's
- *              gender. Defaults to "it" for non-string or unknown gender.
- * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} - The objective pronoun.
+ * Gets the objective pronoun for a gender.
+ *
+ * @param {string|object} ob - Gender string or object with query_gender()
+ * @returns {string} Objective pronoun (him/her/it/them)
+ * @example
+ * objective("female");  // Returns "her"
  */
 string objective(mixed ob) {
-    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
-    if(!stringp(ob)) return "it" ;
+  if(objectp(ob))
+    ob = ob->query_gender() || "neuter";
 
-    switch(ob) {
-        case "male" : return "him" ;
-        case "female" : return "her" ;
-        case "other" : return "them" ;
-        case "none" : "it" ;
-        default: return "it" ;
-    }
+  if(!stringp(ob))
+    return "it";
+
+  switch(ob) {
+    case "male" : return "him";
+    case "female" : return "her";
+    case "other" : return "them";
+    case "none" : "it";
+    default: return "it";
+  }
 }
 
 /**
- * @simul_efun subjective
- * @description Returns the subjective pronoun corresponding to the object's
- *              gender. Defaults to "it" for non-string or unknown gender.
- * @param {mixed} ob - The object or gender string to convert.
- * @returns {string} - The subjective pronoun.
+ * Gets the subjective pronoun for a gender.
+ *
+ * @param {string|object} ob - Gender string or object with query_gender()
+ * @returns {string} Subjective pronoun (he/she/it/they)
+ * @example
+ * subjective("female");  // Returns "she"
  */
 string subjective(mixed ob) {
-    if(objectp(ob)) ob = ob->query_gender() || "neuter" ;
-    if(!stringp(ob)) return "it" ;
+  if(objectp(ob))
+    ob = ob->query_gender() || "neuter";
 
-    switch(ob) {
-        case "male" : return "he" ;
-        case "female" : return "she" ;
-        case "other" : return "they" ;
-        case "none" : "it" ;
-        default: return "it" ;
-    }
+  if(!stringp(ob))
+    return "it";
+
+  switch(ob) {
+    case "male" : return "he";
+    case "female" : return "she";
+    case "other" : return "they";
+    case "none" : "it";
+    default: return "it";
+  }
 }
 
 /**
-  * @simul_efun article
-  * @description Returns the article corresponding to the noun. If definite
-  *              is true, returns "the"; otherwise, returns "a" or "an"
-  *              depending on the noun's initial letter.
-  * @param {string} str - The noun to determine the article for.
-  * @param {int} [definite=0] - Whether to return the definite article.
-  * @returns {string} - The article.
+ * Determines the appropriate article for a word.
+ *
+ * @param {string} str - Word to check
+ * @param {int} [definite=0] - Use "the" instead of "a/an"
+ * @returns {string} Appropriate article (the/a/an)
+ * @example
+ * article("elephant");     // Returns "an"
+ * article("bear", 1);      // Returns "the"
  */
 varargs string article(string str, int definite) {
-    if(!stringp(str))
-        return "" ;
+  if(!stringp(str))
+    return "";
 
-    if(definite)
-        return "the" ;
+  if(definite)
+    return "the";
 
+  else
+    if(of(str[0], ({ 'a', 'e', 'i', 'o', 'u' })))
+      return "an";
     else
-        if(of(str[0], ({ 'a', 'e', 'i', 'o', 'u' })))
-            return "an" ;
-        else
-            return "a" ;
+      return "a";
 }
 
 /**
- * @simul_efun add_article
- * @description Adds an article to a string. If definite is true, adds "the";
- *              otherwise, adds "a" or "an" depending on the noun's initial
- *              letter.
- * @param {string} str - The string to add the article to.
- * @param {int} [definite=0] - Whether to add the definite article.
- * @returns {string} - The string with the article prepended.
+ * Adds appropriate article to start of string.
+ *
+ * @param {string} str - String to add article to
+ * @param {int} [definite=0] - Use "the" instead of "a/an"
+ * @returns {string} String with article added
+ * @example
+ * add_article("elephant");     // Returns "an elephant"
+ * add_article("bear", 1);      // Returns "the bear"
  */
 varargs string add_article(string str, int definite) {
-    string art = article(str, definite) ;
+  string art = article(str, definite);
 
-    if(!strlen(art))
-        return str ;
+  if(!strlen(art))
+    return str;
 
-    return art + " " + str ;
+  return art + " " + str;
 }
 
 /**
- * @simul_efun remove_article
- * @description Removes an article from a string. If the string begins with
- *              "the ", "a ", or "an ", removes the article.
- * @param {string} str - The string to remove the article from.
- * @returns {string} - The string with the article removed.
+ * Removes leading article from string if present.
+ *
+ * @param {string} str - String to process
+ * @returns {string} String with any leading article removed
+ * @example
+ * remove_article("the bear");  // Returns "bear"
+ * remove_article("an apple");  // Returns "apple"
  */
 string remove_article(string str) {
-    int pos ;
+  if(!stringp(str))
+    return "";
 
-    if(!stringp(str))
-        return "" ;
+  if(pcre_match(lower_case(str), "^(the|a|an) "))
+    return str[strsrch(str, " ") + 1..];
 
-    if(pcre_match(lower_case(str), "^(the|a|an) "))
-        return str[strsrch(str, " ") + 1..] ;
-
-    return str ;
+  return str;
 }

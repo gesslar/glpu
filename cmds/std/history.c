@@ -21,7 +21,7 @@ inherit STD_CMD;
  * - Full history (with "all" argument)
  * - Custom range (with numeric argument)
  *
- * @param {object} caller - The player viewing their history
+ * @param {object STD_PLAYER} caller - The player viewing their history
  * @param {string} args - Optional argument: "all" or number of entries to show
  * @returns {int|string} 1 on success, error message on failure
  * @example
@@ -33,7 +33,7 @@ mixed main(object caller, string args) {
   int range, i;
   string *history = ({});
 
-  history = this_body()->query_command_history();
+  history = caller->query_command_history();
 
   if(stringp(args)) {
     if(args == "all") {
@@ -59,7 +59,7 @@ mixed main(object caller, string args) {
 /**
  * Provides help documentation for the history command.
  *
- * @param {object} caller - The player requesting help
+ * @param {object STD_PLAYER} caller - The player requesting help
  * @returns {string} Help text explaining command usage
  */
 string help(object caller) {

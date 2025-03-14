@@ -31,7 +31,6 @@ int set_mass(int new_mass) {
 
 int adjust_mass(int delta) {
   object env ;
-  int new_mass ;
 
   if(!mud_config("USE_MASS"))
     return 1 ;
