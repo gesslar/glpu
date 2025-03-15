@@ -23,10 +23,10 @@ mixed main(object caller, string arg) {
     singled_emotes = ({});
     fix_array(emotes);
 
-    write("\nAvailable emotes:\n");
+    tell_me("\nAvailable emotes:\n");
 
     //for(i = 0; i < sizeof(singled_emotes); i++)
-    //    write(singled_emotes[i]+"\n");
+    //    tell_me(singled_emotes[i]+"\n");
 
     print_emotes(singled_emotes);
 
@@ -48,7 +48,7 @@ void print_emotes(string *emotes) {
 
     for(i = 0; i < sizeof(emotes); i++) {
         if(new_line >= 4) {
-            write("\n");
+            tell_me("\n");
             new_line = 0;
             row_count++;
             column_count = 0;
@@ -95,8 +95,8 @@ void print_emotes(string *emotes) {
         column_count++;
     }
 
-    write("\n\n*Cyan* untargeted only.\n");
-    write("*Blue* targeted only.\n\n");
+    tell_me("\n\n*Cyan* untargeted only.\n");
+    tell_me("*Blue* targeted only.\n\n");
 }
 
 

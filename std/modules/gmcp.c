@@ -8,7 +8,6 @@
 
 #include <daemons.h>
 #include <classes.h>
-#include <type.h>
 
 #include "/std/living/include/env.h"
 

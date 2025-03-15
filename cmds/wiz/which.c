@@ -20,36 +20,36 @@ mixed main(object caller, string args) {
     for(i = 0; i < sizeof(command_path); i ++) {
         if(file_exists(command_path[i] + args + ".c")) {
             is_located = 1;
-            write(command_path[i] + args + "\n");
+            tell_me(command_path[i] + args + "\n");
         }
     }
 
     for(i = 0; i < sizeof(actions); i++) {
         if(actions[i][0] == args) {
             is_located = 1;
-            write("Local:  " + actions[i][2] + "\n");
+            tell_me("Local:  " + actions[i][2] + "\n");
         }
     }
 
     if(mapp(aliases) && aliases[args]) {
         is_located = 1;
-        write("Alias: " + args + " -> " + aliases[args] + "\n");
+        tell_me("Alias: " + args + " -> " + aliases[args] + "\n");
     }
 
     if(member_array(args, SOUL_D->query_emotes()) != -1) {
         is_located = 1;
-        write("Soul: " + args + "\n");
+        tell_me("Soul: " + args + "\n");
     }
 
 
     if(member_array(args + "/t", SOUL_D->query_emotes()) != -1) {
         is_located = 1;
-        write("Targetted Soul: " + args + "\n");
+        tell_me("Targetted Soul: " + args + "\n");
     }
 
     if(environment(previous_object())->valid_exit(args)) {
         is_located = 1;
-        write("Local Exit: " +
+        tell_me("Local Exit: " +
             environment(this_body())->query_exit(args) + "\n");
     }
 

@@ -61,14 +61,13 @@ mixed main(object tp, string str) {
             tmp = custom;
             tmp = replace_string(tmp, "$O", short);
             tmp = replace_string(tmp, "$N", tp->query_name());
-            tell_room(environment(tp), capitalize(tmp) + "\n", tp);
-            write("Success [clone]: New object '" + file + "' cloned to " +
+            tell_them(capitalize(tmp) + "\n");
+            tell_me("Success [clone]: New object '" + file + "' cloned to " +
                 get_short(dest) + " (" +file_name(dest)+ ").\n");
         } else {
-            write("Success [clone]: New object '" + file + "' cloned to " +
+            tell_me("Success [clone]: New object '" + file + "' cloned to " +
                 get_short(dest) + " (" +file_name(dest)+ ").\n");
-            tell_room(environment(tp),
-                capitalize(tp->query_name()) + " creates " + short + ".\n", tp);
+            tell_them(capitalize(tp->query_name()) + " creates " + short + ".\n");
         }
         tp->set_env("cwf", str);
         return 1;
@@ -92,14 +91,13 @@ mixed main(object tp, string str) {
         tmp = custom;
         tmp = replace_string(tmp, "$O", short);
         tmp = replace_string(tmp, "$N", tp->query_name());
-        tell_room(environment(tp), capitalize(tmp) + "\n", tp);
-        write("Success [clone]: New object '" + file + "' cloned to " +
+        tell_them(capitalize(tmp) + "\n");
+        tell_me("Success [clone]: New object '" + file + "' cloned to " +
             get_short(dest) + " (" +file_name(dest)+ ").\n");
     } else {
-        write("Success [clone]: New object '" + file + "' cloned to " +
+        tell_me("Success [clone]: New object '" + file + "' cloned to " +
             get_short(dest) + " (" +file_name(dest)+ ").\n");
-        tell_room(environment(tp),
-            tp->query_name() + " creates " + short + ".\n", tp);
+        tell_them(tp->query_name() + " creates " + short + ".\n");
     }
 
     tp->set_env("cwf", str);

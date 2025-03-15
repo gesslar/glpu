@@ -19,17 +19,7 @@
   "LOOK_HIGHLIGHT" : "on",
   "LOOK_HIGHLIGHT_COLOUR" : "669",
   "COLOUR_TOO_DARK" : "on",
-  "COLOUR_TOO_DARK_SUB" : {
-    "000" : "238",
-    "016" : "238",
-    "017" : "019",
-    "018" : "019",
-    "232" : "238",
-    "233" : "238",
-    "234" : "238",
-    "235" : "238",
-    "236" : "238"
-  },
+  "COLOUR_MININUM_LUMINANCE": 50.0,
   "USE_MASS" : true,
   "AUTODOC_SOURCE_DIRS" : [
     "/adm/simul_efun/",

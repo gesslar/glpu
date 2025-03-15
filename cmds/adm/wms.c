@@ -100,8 +100,8 @@ void add_user() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Please enter the user you wish to add []: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Please enter the user you wish to add []: ");
     input_to("add_user2");
 }
 
@@ -118,32 +118,32 @@ void add_user2(string str) {
 
     if(!str) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
 
-        write("Error: No name supplied.\nPlease enter the user you wish to add [quit]: ");
+        tell_me("Error: No name supplied.\nPlease enter the user you wish to add [quit]: ");
         count = 1;
         input_to("add_user2");
         return;
     }
 
     if(str == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
         return;
     }
 
     user = restore_user(str);
 
     if(!user) {
-        write("Error: No such user.\nPlease enter the user you wish to add [quit]: ");
+        tell_me("Error: No such user.\nPlease enter the user you wish to add [quit]: ");
         count = 1;
         input_to("add_user2");
         return;
     }
 
     if(users[str]) {
-        write("Error: User already in database... Aborting.\n");
+        tell_me("Error: User already in database... Aborting.\n");
         return;
     }
 
@@ -155,8 +155,8 @@ void add_user2(string str) {
     data += (["email" : user->query_pref("email") ]);
     users += ([str : data]);
     current = str;
-    write("Data structure created for user " + capitalize(str) + ".\n");
-    write("Now entering editor... Please enter profile/user history.\n");
+    tell_me("Data structure created for user " + capitalize(str) + ".\n");
+    tell_me("Now entering editor... Please enter profile/user history.\n");
 
     current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
@@ -190,7 +190,7 @@ void add_user3() {
     current = "";
     rm(current_file);
     current_file = "";
-    write("Success: User addition to database complete.\n");
+    tell_me("Success: User addition to database complete.\n");
     save_object(datafile());
     return;
 }
@@ -213,9 +213,9 @@ int auto_add(string str) {
     data += (["added" : time() ]);
     data += (["email" : user->query_pref("email") ]);
     users += ([str : data]);
-    write("WMS: Data structure created for user " + capitalize(str) + ".\n");
+    tell_me("WMS: Data structure created for user " + capitalize(str) + ".\n");
     log_file(WMS_LOG, capitalize(str) + " was added to the WMS database automaticaly on " + ctime(time()) + "\n");
-    write("Now entering editor... Please enter profile/user history.\n");
+    tell_me("Now entering editor... Please enter profile/user history.\n");
     current = str;
 
 
@@ -233,8 +233,8 @@ void edit_user() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("User you wish to edit: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("User you wish to edit: ");
     input_to("edit_user2");
     return;
 }
@@ -247,22 +247,22 @@ void edit_user2(string name) {
 
      if(!name) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
 
-        write("Error: No name supplied.\nPlease enter the user you wish to edit [quit]: ");
+        tell_me("Error: No name supplied.\nPlease enter the user you wish to edit [quit]: ");
         count = 1;
         input_to("edit_user2");
         return;
     }
     if(name == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
             return;
     }
 
     if(!users[name]) {
-        write("Error: User not found in database.\nPlease enter the user you wish to edit [quit]: ");
+        tell_me("Error: User not found in database.\nPlease enter the user you wish to edit [quit]: ");
         count = 1;
         input_to("edit_user2");
         return;
@@ -270,7 +270,7 @@ void edit_user2(string name) {
 
     current = name;
 
-    write("\nPlease update the user's profile using ed:\n\n");
+    tell_me("\nPlease update the user's profile using ed:\n\n");
 
     current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
     while(file_exists(current_file)) current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
@@ -295,7 +295,7 @@ void edit_user3() {
     current = "";
     rm(current_file);
     current_file = "";
-    write("Success: Profile edit complete.\n");
+    tell_me("Success: Profile edit complete.\n");
     save_object(datafile());
     return;
 }
@@ -304,8 +304,8 @@ void note_user() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Please enter the name of the user who you wish to add a note to: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Please enter the name of the user who you wish to add a note to: ");
     input_to("note_user2");
     return;
 }
@@ -318,39 +318,39 @@ void note_user2(string name) {
 
     if(!name) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
 
-        write("Error: No name supplied.\nPlease enter the user you wish to note [quit]: ");
+        tell_me("Error: No name supplied.\nPlease enter the user you wish to note [quit]: ");
         count = 1;
         input_to("note_user2");
         return;
     }
     if(name == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
             return;
     }
 
 if(!users[name]) {
-        write("Error: User not found in database.\nPlease enter the user you wish to note [quit]: ");
+        tell_me("Error: User not found in database.\nPlease enter the user you wish to note [quit]: ");
         count = 1;
         input_to("note_user2");
         return;
     }
 
     current = name;
-    write("Please select a type of note you wish to make: \n");
+    tell_me("Please select a type of note you wish to make: \n");
     message("note", "Note types:\n", this_body());
-    write("1 : Warning\n");
-    write("2 : Praise\n");
-    write("3 : Action\n");
-    write("4 : Project success\n");
-    write("5 : Project failure\n");
-    write("6 : Promoted\n");
-    write("7 : Demoted\n");
-    write("8 : Loss of privilage\n");
-    write("9 : Gain of privilage\n");
+    tell_me("1 : Warning\n");
+    tell_me("2 : Praise\n");
+    tell_me("3 : Action\n");
+    tell_me("4 : Project success\n");
+    tell_me("5 : Project failure\n");
+    tell_me("6 : Promoted\n");
+    tell_me("7 : Demoted\n");
+    tell_me("8 : Loss of privilage\n");
+    tell_me("9 : Gain of privilage\n");
     input_to("note_user3");
 }
 
@@ -362,23 +362,23 @@ void note_user3(string str) {
 
     if(!str) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
 
-        write("Error: No type supplied.\nPlease enter the type of note you wish to add [quit]: ");
+        tell_me("Error: No type supplied.\nPlease enter the type of note you wish to add [quit]: ");
         count = 1;
         input_to("note_user3");
         return;
     }
 
     if(str == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
             return;
     }
 
     if(!to_int(str)) {
-        write("Error: Invalid type supplied.\nPlease enter the type of note you wish to add [quit]: ");
+        tell_me("Error: Invalid type supplied.\nPlease enter the type of note you wish to add [quit]: ");
         count = 1;
         input_to("notes_user3");
         return;
@@ -387,14 +387,14 @@ void note_user3(string str) {
     switch(to_int(str)) {
         case 1..9 : break;
         default : {
-            write("Error: Invalid type supplied.\nPlease enter the type of note you wish to add [quit]: ");
+            tell_me("Error: Invalid type supplied.\nPlease enter the type of note you wish to add [quit]: ");
             count = 1;
             input_to("notes_user3");
             return;
         }
     }
 
-    write("Is this note to be public (viewable by other admins)? [yes] : ");
+    tell_me("Is this note to be public (viewable by other admins)? [yes] : ");
     input_to("note_user4", 0, to_int(str));
 }
 
@@ -412,7 +412,7 @@ void note_user4(string str, int i) {
     note = notes;
 
     if(str == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
             return;
     }
 
@@ -444,7 +444,7 @@ void note_user4(string str, int i) {
 
     new_note += (["perm" : str, "type" : type, "admin" : this_body()->query_real_name(), "date" : time(), "for" : current]);
     note += ([idn : new_note]);
-    write("\nNow entering editor... Please enter note contents.\n");
+    tell_me("\nNow entering editor... Please enter note contents.\n");
 
 
     current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
@@ -476,7 +476,7 @@ void note_user5() {
     rm(current_file);
     current_file = "";
     idn = 0;
-    write("Success: Note content added.\n");
+    tell_me("Success: Note content added.\n");
     save_object(datafile());
 }
 
@@ -484,8 +484,8 @@ void flag_user() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Please enter the name of the user who you wish to flag: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Please enter the name of the user who you wish to flag: ");
     input_to("flag_user2");
 }
 
@@ -499,11 +499,11 @@ void flag_user2(string str) {
 
     if(!str) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
 
-        write("Error: No name supplied.\nPlease enter the type of note you wish to add [quit]: ");
+        tell_me("Error: No name supplied.\nPlease enter the type of note you wish to add [quit]: ");
         count = 1;
         input_to("flag_user2");
         str = "quit";
@@ -511,12 +511,12 @@ void flag_user2(string str) {
     }
 
     if(str == "quit") {
-        write("Now exiting WMS...\n");
+        tell_me("Now exiting WMS...\n");
             return;
     }
 
     if(!users[str]) {
-        write("Error: User not found in database.\nPlease enter the type of note you wish to add [quit]: ");
+        tell_me("Error: User not found in database.\nPlease enter the type of note you wish to add [quit]: ");
         count = 1;
         input_to("flag_user2");
         return;
@@ -524,22 +524,22 @@ void flag_user2(string str) {
 
     data = users[str];
     current = str;
-    write(capitalize(str) + " currently has flags toggled as follows:\n\n");
+    tell_me(capitalize(str) + " currently has flags toggled as follows:\n\n");
     flags = data["flags"];
 
-    if(member_array("excellent performance", flags) != -1) write("1 ) Excellent performance : Toggled\n");
-    else write ("1 ) Excellent performance : Not Toggled\n");
-    if(member_array("inactive", flags) != -1) write ("2 ) Inactive : Toggled.\n");
-    else write("2 ) Inactive : Not Toggled.\n");
-    if(member_array("suspended", flags) != -1) write("3 ) Suspended : Toggled.\n");
-    else write("3 ) Suspended : Not Toggled.\n");
-    if(member_array("discipline problem", flags) != -1) write("4 ) Discipline Problem: Toggled.\n");
-    else write("4 ) Discipline Problem: Not Toggled.\n");
-    if(member_array("recruiter", flags) != -1) write("5 ) Recruiter : Toggled.\n");
-    else write("5 ) Recruiter : Not Toggled.\n");
+    if(member_array("excellent performance", flags) != -1) tell_me("1 ) Excellent performance : Toggled\n");
+    else tell_me("1 ) Excellent performance : Not Toggled\n");
+    if(member_array("inactive", flags) != -1) tell_me("2 ) Inactive : Toggled.\n");
+    else tell_me("2 ) Inactive : Not Toggled.\n");
+    if(member_array("suspended", flags) != -1) tell_me("3 ) Suspended : Toggled.\n");
+    else tell_me("3 ) Suspended : Not Toggled.\n");
+    if(member_array("discipline problem", flags) != -1) tell_me("4 ) Discipline Problem: Toggled.\n");
+    else tell_me("4 ) Discipline Problem: Not Toggled.\n");
+    if(member_array("recruiter", flags) != -1) tell_me("5 ) Recruiter : Toggled.\n");
+    else tell_me("5 ) Recruiter : Not Toggled.\n");
 
-    write("\n");
-    write("Please enter the number of the item you wish to toggle/untoggle [quit]: ");
+    tell_me("\n");
+    tell_me("Please enter the number of the item you wish to toggle/untoggle [quit]: ");
     input_to("flag_user3");
 }
 
@@ -556,20 +556,20 @@ void flag_user3(string str) {
      hist = ({});
      flags = data["flags"];
      hist = data["history"];
-     write("\n");
+     tell_me("\n");
 
      if(!str || str == "quit") {
-           write("Now exiting WMS...\n");
+           tell_me("Now exiting WMS...\n");
            return;
      }
 
      if(!to_int(str)) {
           if(count) {
-               write("Now exiting WMS...\n");
+               tell_me("Now exiting WMS...\n");
                return;
           }
 
-          write("Error: Invalid argument supplied.\nPlease enter the number of the item you wish to toggle/untoggle [quit]: ");
+          tell_me("Error: Invalid argument supplied.\nPlease enter the number of the item you wish to toggle/untoggle [quit]: ");
           input_to("flag_user3");
           count = 1;
           return;
@@ -633,11 +633,11 @@ void flag_user3(string str) {
 
         default :
             if(count) {
-                write("Now exiting WMS...\n");
+                tell_me("Now exiting WMS...\n");
                 return;
             }
 
-            write("Error : Invalid argument.\nPlease enter the number of the item you wish to toggle/untoggle [quit]: ");
+            tell_me("Error : Invalid argument.\nPlease enter the number of the item you wish to toggle/untoggle [quit]: ");
             count = 1;
             input_to("flag_user3");
             return;
@@ -647,7 +647,7 @@ void flag_user3(string str) {
     data["flags"] = flags;
     users[current] = data;
     count = 0;
-    write("Flags updated for " + capitalize(current) + "\n");
+    tell_me("Flags updated for " + capitalize(current) + "\n");
     log_file(WMS_LOG, capitalize(this_body()->query_real_name()) + " modified " + capitalize(current) + "'s flags on " + ctime(time()) + "\n");
     current = "";
     save_object(datafile());
@@ -657,16 +657,16 @@ void filter_list() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Filter Options:\n");
-    write("1 : Alphabetical Order\n");
-    write("2 : E flag only\n");
-    write("3 : D flag only\n");
-    write("4 : I flag only\n");
-    write("5 : S flag only\n");
-    write("6 : R flag only\n");
-    write("7 : None\n");
-    write("\n" + "Please select the filter option you wish to use [quit]: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Filter Options:\n");
+    tell_me("1 : Alphabetical Order\n");
+    tell_me("2 : E flag only\n");
+    tell_me("3 : D flag only\n");
+    tell_me("4 : I flag only\n");
+    tell_me("5 : S flag only\n");
+    tell_me("6 : R flag only\n");
+    tell_me("7 : None\n");
+    tell_me("\n" + "Please select the filter option you wish to use [quit]: ");
     input_to("filter_list2");
 }
 
@@ -686,7 +686,7 @@ void filter_list2(string str) {
     if(!str) str = "7";
 
     if(!to_int(str)) {
-        write("Error: Invalid argument supplied.\nNow exiting WMS...\n");
+        tell_me("Error: Invalid argument supplied.\nNow exiting WMS...\n");
         return;
     }
 
@@ -755,14 +755,14 @@ void filter_list2(string str) {
             break;
 
         default :
-            write("Error: Invalid argument passed.\n\n");
+            tell_me("Error: Invalid argument passed.\n\n");
             filter_list();
             return;
     }
 
-    write("Welcome to WMS...\n\n");
-    write(sprintf("%-10s %s -- %s -- %s\n", "Name", ":: Date Added", "Flags", "# of Notes"));
-    write("---------------------------------------------------\n");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me(sprintf("%-10s %s -- %s -- %s\n", "Name", ":: Date Added", "Flags", "# of Notes"));
+    tell_me("---------------------------------------------------\n");
 
     for(i = 0; i < sizeof(keys); i ++) {
         data = users[keys[i]];
@@ -776,9 +776,9 @@ void remove_user() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Note: You may not undo this action. There is no confirmation.\n");
-    write("Please enter the name of the user you wish to remove from the database: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Note: You may not undo this action. There is no confirmation.\n");
+    tell_me("Please enter the name of the user you wish to remove from the database: ");
     input_to("remove_user2");
 }
 
@@ -791,12 +791,12 @@ void remove_user2(string str) {
         return 0;
 
     if(!str) {
-        write("Error: No name supplied... Aborting.\n");
+        tell_me("Error: No name supplied... Aborting.\n");
         return;
     }
 
     if(!users[str]) {
-        write("Error: User not found in database... Aborting.\n");
+        tell_me("Error: User not found in database... Aborting.\n");
         return;
     }
 
@@ -809,7 +809,7 @@ void remove_user2(string str) {
 
     map_delete(users, str);
     log_file(WMS_LOG, capitalize(str) + " was deleted manually from the WMS database by " + capitalize(this_body()->query_real_name()) + " on " + ctime(time()) + ".\n");
-    write("User " + capitalize(str) + " has been deleted from the database.\n");
+    tell_me("User " + capitalize(str) + " has been deleted from the database.\n");
 }
 
 
@@ -817,8 +817,8 @@ void read_note() {
     if(!adminp(this_body()))
         return 0;
 
-    write("Welcome to WMS...\n\n");
-    write("Please enter the note id you wish to read: ");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Please enter the note id you wish to read: ");
     input_to("read_note2");
 }
 
@@ -832,17 +832,17 @@ void read_note2(string str) {
 
     if(!str) {
         if(count) {
-            write("Now exiting WMS...\n");
+            tell_me("Now exiting WMS...\n");
             return;
         }
-        write("Error: No id supplied.\nPlease enter the id of the note you wish to read [quit]: ");
+        tell_me("Error: No id supplied.\nPlease enter the id of the note you wish to read [quit]: ");
         count = 1;
         input_to("read_note2");
         return;
     }
 
     if(!to_int(str)) {
-        write("Error: Invalid ID supplied.\nPlease enter the id of the note you wish to read [quit]: ");
+        tell_me("Error: Invalid ID supplied.\nPlease enter the id of the note you wish to read [quit]: ");
         count = 1;
         input_to("read_note2");
         return;
@@ -851,38 +851,38 @@ void read_note2(string str) {
     note_id = to_int(str);
 
     if(!notes[note_id]) {
-        write("Error: Note not found in database... Now exiting WMS.\n");
+        tell_me("Error: Note not found in database... Now exiting WMS.\n");
         return;
     }
 
     data = notes[note_id];
 
     if(!mapp(data)) {
-    write("Error: Note not found in database... Now exiting WMS.\n");
+    tell_me("Error: Note not found in database... Now exiting WMS.\n");
     return;
     }
 
     if(data["perm"] != "public" && data["perm"] != this_body()->query_real_name()) {
-        write("Error: Note not found in database... Now exiting WMS.\n");
+        tell_me("Error: Note not found in database... Now exiting WMS.\n");
         return;
     }
 
     if(!data["msg"]) {
-        write("Error: No Content in Note... Now exiting WMS.\n");
+        tell_me("Error: No Content in Note... Now exiting WMS.\n");
         return;
     }
 
     if(data["msg"] == "removed") {
-        write("Error: Note not found in database... Now exiting WMS.\n");
+        tell_me("Error: Note not found in database... Now exiting WMS.\n");
         return;
     }
-    write("\nNote Id: " + note_id + "\n");
+    tell_me("\nNote Id: " + note_id + "\n");
     printf("For: %-10s Author: %-10s\n", capitalize(data["for"]),
         capitalize(data["admin"]));
     printf("Type: %-12s Permissions: %-10s\n", capitalize(data["type"]),
         capitalize(data["perm"]));
-    write("Date: " + ctime(data["date"]) + "\n\n");
-    write(data["msg"]);
+    tell_me("Date: " + ctime(data["date"]) + "\n\n");
+    tell_me(data["msg"]);
 }
 
 void disp_user(string str) {
@@ -901,47 +901,47 @@ void disp_user(string str) {
         return;
 
     if(!users[str]) {
-        write(help(this_body()));
+        tell_me(help(this_body()));
         return;
     }
 
     data = users[str];
     flags = data["flags"];
-    write("Welcome to WMS...\n\n");
-    write("Username   : " + capitalize(str) + "\n");
-    write("Date Added : " + ctime(data["added"]) + "\n");
-    write("E-mail     : " + data["email"] + "\n");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me("Username   : " + capitalize(str) + "\n");
+    tell_me("Date Added : " + ctime(data["added"]) + "\n");
+    tell_me("E-mail     : " + data["email"] + "\n");
 
     if(!sizeof(flags))
-        write("Flags      : " + "N/A\n");
+        tell_me("Flags      : " + "N/A\n");
     else
-        write("Flags      :\n");
+        tell_me("Flags      :\n");
 
     for(i = 0; i < sizeof(flags); i ++) {
-        write(" " + capitalize(flags[i]) + "\n");
+        tell_me(" " + capitalize(flags[i]) + "\n");
     }
 
-    write("History    :\n");
+    tell_me("History    :\n");
     hist = data["history"];
 
     for(i = 0; i < sizeof(hist); i ++) {
-        write(" " + hist[i] + "\n");
+        tell_me(" " + hist[i] + "\n");
     }
 
-    write("Notes      :\n");
+    tell_me("Notes      :\n");
     note_ids = data["notes"];
 
     for(i = 0; i < sizeof(note_ids); i++) {
         note = notes[note_ids[i]];
         if(note["perm"] != "public" && note["perm"] != this_body()->query_real_name()) continue;
-        write(" #" + note_ids[i] + " - " + note["type"] + " - " + capitalize(note["admin"]) + "\n");
+        tell_me(" #" + note_ids[i] + " - " + note["type"] + " - " + capitalize(note["admin"]) + "\n");
     }
 
-    write("Profile    :\n");
+    tell_me("Profile    :\n");
     if(!data["profile"] || data["profile"] == 0)
-        write(" No data\n");
+        tell_me(" No data\n");
     else
-        write(" " + data["profile"]);
+        tell_me(" " + data["profile"]);
 }
 
 void summary() {
@@ -953,9 +953,9 @@ void summary() {
         return 0;
 
     keys = keys(users);
-    write("Welcome to WMS...\n\n");
-    write(sprintf("%-10s %s -- %s -- %s\n", "Name", ":: Date Added", "Flags", "# of Notes"));
-    write("---------------------------------------------------\n");
+    tell_me("Welcome to WMS...\n\n");
+    tell_me(sprintf("%-10s %s -- %s -- %s\n", "Name", ":: Date Added", "Flags", "# of Notes"));
+    tell_me("---------------------------------------------------\n");
 
     for(i = 0; i < sizeof(keys); i ++) {
         data = users[keys[i]];

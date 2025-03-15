@@ -23,7 +23,7 @@
  * @returns {int} 1 if directory exists/created, 0 otherwise
  * @example
  * if(assure_dir("/d/players/" + name + "/letters")) {
- *     write("Created mail directory.\n");
+ *     tell_me("Created mail directory.\n");
  * }
  */
 mixed assure_dir(string path) {

@@ -126,7 +126,7 @@ varargs void data_write(string file, string key, mixed data...) {
  * @returns {int} 1 if key was found and deleted, 0 otherwise
  * @example
  * if(data_del("/save/player.dat", "temporary_buff")) {
- *     write("Buff removed.\n");
+ *     tell_me("Buff removed.\n");
  * }
  */
 int data_del(string file, string key) {

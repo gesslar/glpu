@@ -25,7 +25,6 @@
 #include <socket_err.h>
 #include <http.h>
 #include <daemons.h>
-#include <type.h>
 
 inherit STD_DAEMON;
 inherit M_HTTP;

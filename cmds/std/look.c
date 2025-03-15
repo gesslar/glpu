@@ -53,15 +53,14 @@ string highlight_view(object tp, string str, string *keys) {
   if(sizeof(keys) <= 0)
     return str;
 
-  if(!colour = tp->query_pref("highlight_colour"))
-    colour = default_highlight_colour;
+  colour = tp->query_pref("highlight_colour") || default_highlight_colour;
+  colour = "{{" + colour + "}}";
 
   // need to determine if number is from 0-256 with a leading 0
   if(!pcre_match(colour, TRUE_COLOUR_REGEX))
     colour = default_highlight_colour;
 
   // colour = COLOUR_D->substitute_too_dark(colour);
-  colour = "{{" + colour + "}}";
 
   for(i = 0; i < sizeof(keys); i++) {
     str = replace_string(str , " " + keys[i] + " ", " " + colour+keys[i] + "{{res}} ");

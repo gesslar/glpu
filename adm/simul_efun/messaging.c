@@ -85,3 +85,25 @@ varargs void tell(mixed args...) {
 
   tell_direct(ob, str, msg_type);
 }
+
+varargs void tell_me(string str, int message_type) {
+  if(!this_body())
+    return;
+
+  tell(this_body(), str, message_type);
+}
+
+varargs void tell_them(string str, object *exclude, int message_type) {
+  if(!this_body())
+    return;
+
+  if(!exclude)
+    exclude = ({});
+
+  if(!pointerp(exclude))
+    exclude = ({ exclude });
+
+  exclude = distinct_array(({ this_body() }) + exclude);
+
+  tell_all(environment(this_body()), str, message_type, exclude);
+}

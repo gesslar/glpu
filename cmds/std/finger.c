@@ -11,7 +11,7 @@ mixed main(object caller, string user) {
     if(!user)
         return(notify_fail("Syntax: finger <user>\n"));
 
-    write(FINGER_D->finger_user(user));
+    tell_me(FINGER_D->finger_user(user));
 
     return 1;
 }

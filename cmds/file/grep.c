@@ -361,12 +361,12 @@ mixed main(object caller, string str) {
   }
 
   if(sizeof(files) < 1) {
-    write("No files found.\n");
+    tell_me("No files found.\n");
     return 1;
   }
 
   if(!opt[0]["F"] && (str = catch(regexp("", opt[1])))) {
-    write("Invalid regular expression: " + str);
+    tell_me("Invalid regular expression: " + str);
     return 1;
   }
 
@@ -388,7 +388,7 @@ mixed main(object caller, string str) {
   }
 
   if(opt[0]["m"] && strlen(out) < __LARGEST_PRINTABLE_STRING__) {
-    write(out + "\n");
+    tell_me(out + "\n");
   } else {
     out = "grep " + opt[1] + " (in " + implode(opt[2..], " ") + ")" + "\n\n" + out;
     caller->page(out, null, 1);

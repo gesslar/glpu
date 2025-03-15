@@ -22,9 +22,9 @@
  * @returns {string} Formatted short description
  * @example
  * // Basic usage
- * write(get_short(sword));  // "a sharp sword (glowing) (magical)"
+ * tell_me(get_short(sword));  // "a sharp sword (glowing) (magical)"
  * // Without extras
- * write(get_short(sword, 0));  // "a sharp sword"
+ * tell_me(get_short(sword, 0));  // "a sharp sword"
  */
 varargs string get_short(object ob, int extras) {
   string result;
@@ -66,9 +66,9 @@ varargs string get_short(object ob, int extras) {
  * @returns {string} Formatted long description
  * @example
  * // Basic usage
- * write(get_long(room));
+ * tell_me(get_long(room));
  * // Without extras
- * write(get_long(room, 0));
+ * tell_me(get_long(room, 0));
  */
 varargs string get_long(object ob, int extras) {
   string result;

@@ -6,7 +6,6 @@
 //
 // 2024/01/31: Gesslar - Created
 
-#include <type.h>
 #include <id.h>
 #include <object.h>
 
@@ -19,7 +18,7 @@ void set_id(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to set_id().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to set_id().");
 
     _ids = distinct_array(str);
@@ -30,7 +29,7 @@ void set_adj(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to set_adj().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to set_adj().");
 
     _adj = distinct_array(str);
@@ -41,7 +40,7 @@ void add_id(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to add_id().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to add_id().");
 
     _ids = distinct_array(_ids + str);
@@ -52,7 +51,7 @@ void add_adj(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to add_adj().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to add_adj().");
 
     _adj = distinct_array(_adj + str);
@@ -63,7 +62,7 @@ void remove_id(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to remove_id().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to remove_id().");
 
     _ids = distinct_array(_ids - str);
@@ -74,7 +73,7 @@ void remove_adj(mixed str) {
         str = ({ str });
     if(!pointerp(str))
         error("Bad argument 1 to remove_adj().");
-    if(!uniform_array(T_STRING, str))
+    if(!uniform_array(str, T_STRING))
         error("Bad argument 1 to remove_adj().");
 
     _adj = distinct_array(_adj - str);

@@ -74,7 +74,7 @@ mixed main(object caller, string arg) {
     }
 
     ret +=("\n");
-    write(ret);
+    tell_me(ret);
     return 1;
 }
 

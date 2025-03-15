@@ -42,13 +42,13 @@ void setup() {
 
 mixed main(object tp, string arg) {
      if(!adminp(this_interactive())) return notify_fail("Error [access]: Access denied.\n");
-     write("\n\t--'Security System Interface'--\n"
+     tell_me("\n\t--'Security System Interface'--\n"
            "\t\tVersion: 1.3RCDev\n\n");
-     write(" 1: Display current access settings\n");
-     write(" 2: Modify current access settings\n");
-     write(" 3: Reload data from file\n");
-     write(" 4: Save & Exit\n");
-     write(" 5: Exit without saving\n");
+     tell_me(" 1: Display current access settings\n");
+     tell_me(" 2: Modify current access settings\n");
+     tell_me(" 3: Reload data from file\n");
+     tell_me(" 4: Save & Exit\n");
+     tell_me(" 5: Exit without saving\n");
      input_to("i_MainMenu", tp);
      return 1;
 }
@@ -57,47 +57,47 @@ int i_MainMenu(string str, object tp) {
      if(!str) return 1;
      switch(str) {
           case "1" : {
-               write("\n\tDISPLAY CURRENT ACCESS SETTINGS\n\n");
-               write(" 1: Display raw data\n");
-               write(" 2: List all groups\n");
-               write(" 3: List members of a group\n");
-               write(" 4: List access for directory\n");
-               write(" 5: Main menu\n");
+               tell_me("\n\tDISPLAY CURRENT ACCESS SETTINGS\n\n");
+               tell_me(" 1: Display raw data\n");
+               tell_me(" 2: List all groups\n");
+               tell_me(" 3: List members of a group\n");
+               tell_me(" 4: List access for directory\n");
+               tell_me(" 5: Main menu\n");
                input_to("i_DisMenu", tp);
                return 1;
           }
           case "2" : {
-               write("\n\tMODIFY CURRENT ACCESS SETTINGS\n\n");
-               write(" 1: Create group\n");
-               write(" 2: Delete group\n");
-               write(" 3: Toggle user membership to group\n");
-               write(" 4: Modify access to a directory\n");
-               write(" 5: Main menu\n");
+               tell_me("\n\tMODIFY CURRENT ACCESS SETTINGS\n\n");
+               tell_me(" 1: Create group\n");
+               tell_me(" 2: Delete group\n");
+               tell_me(" 3: Toggle user membership to group\n");
+               tell_me(" 4: Modify access to a directory\n");
+               tell_me(" 5: Main menu\n");
                input_to("i_ModMenu", tp);
                return 1;
           }
           case "3" : {
                parse_files();
-               write("\nSuccess: Data reloaded from file -- All unsaved changes lost.\n");
+               tell_me("\nSuccess: Data reloaded from file -- All unsaved changes lost.\n");
                main(tp, 0, 0);
                return 1;
           }
 
           case "4" : {
-               write("Attempting to write data to files...\n");
+               tell_me("Attempting to write data to files...\n");
                write_gFile(0);
                write_aFile(0);
                parse_files();
-               write("Success [access]: Exited with data saved.\n");
+               tell_me("Success [access]: Exited with data saved.\n");
                return 1;
           }
           case "5" : {
-               write("Success [access]: Exiting without saving.\n");
+               tell_me("Success [access]: Exiting without saving.\n");
                parse_files();
                return 1;
           }
           default : {
-               write("Error [access]: Unknown menu " + str + "\n");
+               tell_me("Error [access]: Unknown menu " + str + "\n");
                return 1;
           }
      }
@@ -110,32 +110,32 @@ int i_ModMenu(string str, object tp) {
 
      switch(str) {
           case "1" : {
-               write("Enter the name of the group you wish to create: ");
+               tell_me("Enter the name of the group you wish to create: ");
                input_to("i_crGroup", tp);
                return 1;
           }
 
           case "2" : {
-               write("Enter the name of the group you wish to delete: ");
+               tell_me("Enter the name of the group you wish to delete: ");
                input_to("i_dlGroup", tp);
                return 1;
           }
 
           case "3" : {
-               write("Enter the name of the user who you wish to toggle membership: ");
+               tell_me("Enter the name of the user who you wish to toggle membership: ");
                input_to("i_tgMembership", tp);
                return 1;
           }
 
           case "4" : {
-               write("Enter the directory that you wish to modify the access to: ");
+               tell_me("Enter the directory that you wish to modify the access to: ");
                input_to("i_mdDirectory", tp);
                return 1;
 
           }
 
           default : {
-               write("\n");
+               tell_me("\n");
                main(tp, 0, 0);
                return 1;
           }
@@ -146,25 +146,25 @@ int i_ModMenu(string str, object tp) {
 
 int i_mdDirectory(string str, object tp) {
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(str[<1..<1] != "/") str += "/";
 
-     write("\nEnter the name of the group/user whom's access you wish to edit: ");
+     tell_me("\nEnter the name of the group/user whom's access you wish to edit: ");
      input_to("i_mdDirGroup", tp, str);
      return 1;
 }
 
 int i_mdDirGroup(string str, object tp, string dir) {
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      } else {
-          write("\nEnter the access key: ");
+          tell_me("\nEnter the access key: ");
           input_to("i_mdDirAKey", tp, dir, str);
           return 1;
      }
@@ -175,7 +175,7 @@ int i_mdDirAKey(string str, object tp, string dir, string group) {
      string *akeys = allocate(8);
 
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
@@ -193,24 +193,24 @@ int i_mdDirAKey(string str, object tp, string dir, string group) {
      if(!access[dir]) access += ([dir : ([group : akeys]) ]);
      else access[dir] += ([ group : akeys]);
 
-     write("\nSuccess: Access to '" + dir +"' for group/user '" + group + "' updated.\n");
+     tell_me("\nSuccess: Access to '" + dir +"' for group/user '" + group + "' updated.\n");
      i_MainMenu("2", tp);
      return 1;
 }
 
 int i_tgMembership(string str, object tp) {
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(!user_data_file(str)) {
-          write("\nError: User '" + str + "' does not exist.\n");
+          tell_me("\nError: User '" + str + "' does not exist.\n");
           i_MainMenu("2", tp);
           return 1;
      } else {
-          write("Enter the name of the group that you wish to toggle " + capitalize(str) + "'s membership to: ");
+          tell_me("Enter the name of the group that you wish to toggle " + capitalize(str) + "'s membership to: ");
           input_to("i_tgMembership2", tp, str);
           return 1;
      }
@@ -219,7 +219,7 @@ int i_tgMembership(string str, object tp) {
 int i_tgMembership2(string str, object tp, string user) {
      string *user_list;
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
@@ -227,19 +227,19 @@ int i_tgMembership2(string str, object tp, string user) {
      user_list = groups[str];
 
      if(sizeof(user_list) == 0) {
-          write("\nError:  Group '" + str + "' does not exist.\n");
+          tell_me("\nError:  Group '" + str + "' does not exist.\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(member_array(user, user_list) == -1) {
           groups[str] += ({user});
-          write("\nSuccess: User '" + user + "' was added to group '" + str + "'\n");
+          tell_me("\nSuccess: User '" + user + "' was added to group '" + str + "'\n");
           i_MainMenu("2", tp);
           return 1;
      } else {
           groups[str] -= ({user});
-          write("\nSuccess: User '" + user + "' was removed from the group '" + str + "'\n");
+          tell_me("\nSuccess: User '" + user + "' was removed from the group '" + str + "'\n");
           i_MainMenu("2", tp);
           return 1;
      }
@@ -247,18 +247,18 @@ int i_tgMembership2(string str, object tp, string user) {
 
 int i_crGroup(string str, object tp) {
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(groups[str]) {
-          write("\nError:  a group with the name '" + str + "' already exists.\n");
+          tell_me("\nError:  a group with the name '" + str + "' already exists.\n");
           i_MainMenu("2", tp);
           return 1;
      } else {
           groups[str] = ({query_privs(this_body())});
-          write("\nSuccess:  group '" + str + "' created. Note: You were added to the new group.\n");
+          tell_me("\nSuccess:  group '" + str + "' created. Note: You were added to the new group.\n");
           i_MainMenu("2", tp);
           return 1;
      }
@@ -266,25 +266,25 @@ int i_crGroup(string str, object tp) {
 
 int i_dlGroup(string str, object tp) {
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(!groups[str]) {
-          write("\nError:  group '" + str + "' does not exist.\n");
+          tell_me("\nError:  group '" + str + "' does not exist.\n");
           i_MainMenu("2", tp);
           return 1;
      }
 
      if(str == "admin" || str == "soul") {
-          write("\nError:  group '" + str + "' cannot be deleted.\n\t"
+          tell_me("\nError:  group '" + str + "' cannot be deleted.\n\t"
                + "The group is a system group and is required for proper functionality of the mudlib.\n");
           i_MainMenu("2", tp);
           return 1;
      } else {
           map_delete(groups, str);
-          write("Success:  The group '" + str + "' was deleted.\n");
+          tell_me("Success:  The group '" + str + "' was deleted.\n");
           i_MainMenu("2", tp);
           return 1;
      }
@@ -300,11 +300,11 @@ int i_DisMenu(string str, object tp) {
 
      switch(str) {
           case "1" :  {
-               write("\nRaw group data:\n\n");
+               tell_me("\nRaw group data:\n\n");
                write_gFile(1);
-               write("\nRaw access data:\n\n");
+               tell_me("\nRaw access data:\n\n");
                write_aFile(1);
-               write("\n[Hit enter to continue]");
+               tell_me("\n[Hit enter to continue]");
                input_to("i_cnDisMenu", tp);
                return 1;
           }
@@ -312,25 +312,25 @@ int i_DisMenu(string str, object tp) {
           case "2" :  {
                arr = keys(groups);
                if(!sizeof(arr)) arr = ({ "[None]" });
-               write("\nThere is a total of " + sizeof(arr) + " groups on " + mud_name() + "\n\n");
-               write(simple_list(arr));
-               write("\n[Hit enter to continue]");
+               tell_me("\nThere is a total of " + sizeof(arr) + " groups on " + mud_name() + "\n\n");
+               tell_me(simple_list(arr));
+               tell_me("\n[Hit enter to continue]");
                input_to("i_cnDisMenu", tp);
                return 1;
           }
 
           case "3" : {
-               write("\n Enter name of group: ");
+               tell_me("\n Enter name of group: ");
                input_to("i_qGroup", tp);
                return 1;
           }
           case "4" : {
-               write("\n Enter name of directory: ");
+               tell_me("\n Enter name of directory: ");
                input_to("i_qDirectory", tp);
                return 1;
           }
           default : {
-               write("\n");
+               tell_me("\n");
                main(tp, 0, 0);
                return 1;
           }
@@ -344,14 +344,14 @@ int i_qDirectory(string str, object tp) {
      int j;
 
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("1", tp);
           return 1;
      }
 
      if(!mapp(access[str])) {
-          write("\nError: No specific access settings have been set for directory '" + str +"'\n");
-          write("\n[Hit enter to continue]");
+          tell_me("\nError: No specific access settings have been set for directory '" + str +"'\n");
+          tell_me("\n[Hit enter to continue]");
           input_to("i_cnDisMenu", tp);
           return 1;
      }
@@ -364,8 +364,8 @@ int i_qDirectory(string str, object tp) {
      arr += ({(sprintf("%s[%s]", keys[j], implode(access_data[keys[j]], "")))});
      if(sizeof(arr) > 1) output += sprintf("%s%s\n",implode(arr[0..(sizeof(arr)-2)], ":"), ":" + arr[sizeof(arr)-1]);
      else output += arr[0] + "\n";
-     write("\n" + output);
-     write("\n[Hit enter to continue]");
+     tell_me("\n" + output);
+     tell_me("\n[Hit enter to continue]");
      input_to("i_cnDisMenu", tp);
      return 1;
 }
@@ -374,14 +374,14 @@ int i_qGroup(string str, object tp) {
      string *arr;
 
      if(!str) {
-          write("\n");
+          tell_me("\n");
           i_MainMenu("1", tp);
           return 1;
      }
 
      if(!sizeof(groups[str])) {
-          write("\nError: Group '" + str + "' doesn't exist.\n");
-          write("\n[Hit enter to continue]");
+          tell_me("\nError: Group '" + str + "' doesn't exist.\n");
+          tell_me("\n[Hit enter to continue]");
           input_to("i_cnDisMenu", tp);
           return 1;
      }
@@ -389,7 +389,7 @@ int i_qGroup(string str, object tp) {
      arr = groups[str];
      if(sizeof(arr) > 1) printf("\nThe following users are a member of the group '" + str + "':\n\t%s, and %s\n", implode(arr[0..(sizeof(arr)-2)], ", "), arr[sizeof(arr)-1]);
      else printf("\nThe following user is a member of the group '" + str + "':\n\t%s\n", arr[0]);
-     write("\n[Hit enter to continue]");
+     tell_me("\n[Hit enter to continue]");
      input_to("i_cnDisMenu", tp);
      return 1;
 
@@ -413,7 +413,7 @@ void write_gFile(int flag) {
           else if(sizeof(group_data) == 1) file += group_data[0] + "\n";
           else error("ERROR: Group '" + group_list[i] + "' has no members!");
      }
-     if(flag) write(file + "\n");
+     if(flag) tell_me(file + "\n");
      else parse_files();
 }
 
@@ -441,7 +441,7 @@ void write_aFile(int flag) {
           if(sizeof(arr) > 1) file += sprintf("%s%s\n",implode(arr[0..(sizeof(arr)-2)], ":"), ":" + arr[sizeof(arr)-1]);
           else file += arr[0] + "\n";
      }
-     if(flag) write(file + "\n");
+     if(flag) tell_me(file + "\n");
      else parse_files();
 }
 
@@ -487,8 +487,8 @@ void parse_group() {
           if(!arr[i]) continue;
 
           if(sscanf(arr[i], "(%s)%s", group, str) != 2) {
-               write("Error [security]: Invalid format of data in group data.\n");
-               write("Security alert: Ignoring group on line " + (i + 1) + "\n");
+               tell_me("Error [security]: Invalid format of data in group data.\n");
+               tell_me("Security alert: Ignoring group on line " + (i + 1) + "\n");
                continue;
           }
 
@@ -500,8 +500,8 @@ void parse_group() {
 
           for(n = 0; n < sizeof(members); n++) {
                if(!file_size(user_data_file(members[n])) && !sscanf(members[n], "[%*s]")) {
-                    write("Error [security]: Unknown user detected.\n");
-                    write("Security alert: User '" + members[n] + "' ignored for group '" + group + "'.\n");
+                    tell_me("Error [security]: Unknown user detected.\n");
+                    tell_me("Security alert: User '" + members[n] + "' ignored for group '" + group + "'.\n");
                     members -= ({ members[n] });
                     continue;
                }
@@ -535,12 +535,12 @@ void parse_access() {
           if(!arr[i]) continue;
 
           if(sscanf(arr[i], "(%s)%s", directory, str) != 2) {
-               write("Error [security]: Invalid format of data in access data.\n");
+               tell_me("Error [security]: Invalid format of data in access data.\n");
                error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
           }
 
           if(str[<1..< 1] == ":") {
-               write("Error [security]: Incomplete data in access data (trailing ':').\n");
+               tell_me("Error [security]: Incomplete data in access data (trailing ':').\n");
                error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
           }
 
@@ -555,7 +555,7 @@ void parse_access() {
           for(n = 0; n < sizeof(entries); n++) {
                string identity, permissions, *perm_array = allocate(8);
                if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2) {
-                    write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
+                    tell_me("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
                     error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
                }
 

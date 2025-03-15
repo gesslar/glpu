@@ -51,8 +51,8 @@ protected object connect(int port) {
   err = catch(login_ob = new(LOGIN_OB));
 
   if(err) {
-    write("I'm sorry, but it appears that mud is not functional at the moment.\n");
-    write(err);
+    tell_me("I'm sorry, but it appears that mud is not functional at the moment.\n");
+    tell_me(err);
     destruct(this_object());
   }
 
@@ -106,7 +106,7 @@ protected void log_error(string file, string message) {
 
     if(devp(this_body())) {
         if(this_body()->query_pref("error_output") != "off")
-          tell_object(this_body(), message);
+          tell_me(message);
       }
   }
 

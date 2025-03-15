@@ -7,7 +7,7 @@
  * @param {mixed[]} arr - An array of mixed types.
  * @return {mixed[]} - A new array with distinct elements from the input array.
  */
-mixed *distinct_array(mixed *arr, int same_order) {
+varargs mixed *distinct_array(mixed *arr, int same_order) {
   assert_arg(pointerp(arr), 1, "Array is required.");
 
   if(!!same_order) {
@@ -93,12 +93,12 @@ mixed *reverse_array(mixed *arr) {
  * Checks if all elements in the input array are of the specified
  * type. If the array is of size 0, it is considered uniform.
  *
- * @param {string} type - The type to check for.
  * @param {mixed*} arr - The array to check.
+ * @param {string} type - The type to check for.
  * @return {int} - Returns 1 if all elements are of the specified type, 0
- *                  otherwise.
+ *                 otherwise.
  */
-int uniform_array(string type, mixed *arr) {
+int uniform_array(mixed *arr, string type) {
   int sz = sizeof(arr);
 
   if(!sz)
@@ -265,7 +265,7 @@ varargs mixed *array_slice(mixed *arr, int start, int end) {
  * @return {mixed[]} - A new array with elements from both input arrays.
  */
 mixed *array_merge(mixed arrs...) {
-  if(!uniform_array("array", arrs))
+  if(!uniform_array(arrs, T_ARRAY))
     throw("Syntax error: array_merge must be called with only array arguments.");
 
   if(sizeof(arrs) == 1)

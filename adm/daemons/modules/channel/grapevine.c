@@ -47,10 +47,10 @@ int rec_msg(string chan, string usr, string msg) {
         ob = find_player(usr);
 
         if(!sizeof(history[chan]))
-            tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+            tell(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
         else
             foreach(string hist_line in history[chan][(sizeof(history[chan]) - num_lines)..(sizeof(history[chan]) - 1)])
-        tell_object(ob, hist_line);
+        tell(ob, hist_line);
         return 1;
     } else {
         switch(msg) { /* We could do some neat stuff here! */
@@ -58,10 +58,10 @@ int rec_msg(string chan, string usr, string msg) {
                     ob = find_player(usr);
 
                     if(!sizeof(history[chan]))
-                        tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+                        tell(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
                     else
                         foreach(string hist_line in history[chan][(sizeof(history[chan]) - 15)..(sizeof(history[chan]) - 1)])
-                    tell_object(ob, hist_line);
+                    tell(ob, hist_line);
                     return 1;
                     break;
                 }
@@ -69,10 +69,10 @@ int rec_msg(string chan, string usr, string msg) {
                     ob = find_player(usr);
 
                     if(!sizeof(history[chan]))
-                        tell_object(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
+                        tell(ob, "LocalNet: Channel " + chan + " has no history yet.\n");
                     else
                         foreach(string hist_line in history[chan][(sizeof(history[chan]) - 50)..(sizeof(history[chan]) - 1)])
-                    tell_object(ob, hist_line);
+                    tell(ob, hist_line);
                     return 1;
                     break;
                 }

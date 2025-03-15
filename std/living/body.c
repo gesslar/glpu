@@ -329,8 +329,8 @@ int command_hook(string arg) {
       err = catch(command = load_object(cmds[i]));
 
       if(err) {
-        write("Error: Command " + verb + " non-functional.\n");
-        write(err);
+        tell_me("Error: Command " + verb + " non-functional.\n");
+        tell_me(err);
         i++;
         continue;
       }

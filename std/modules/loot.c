@@ -9,7 +9,6 @@
  * 2024-08-05 - Gesslar - Created
  */
 
-#include <type.h>
 
 private nosave mixed *_loot_table = ({ });
 private nosave mixed *_coin_table = ({ });

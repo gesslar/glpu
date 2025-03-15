@@ -18,7 +18,6 @@ inherit M_LOG;
 
 #include <daemons.h>
 #include <localtime.h>
-#include <type.h>
 #include <http.h>
 
 protected nomask string url_encode(string str);

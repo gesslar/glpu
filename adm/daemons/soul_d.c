@@ -91,14 +91,14 @@ nomask varargs void do_emote(string emote, string mods, object target) {
     if(emote[<2..<1] == "/t") emote = emote[0..<3];
 
     if(!target) {
-        tell_object(this_body(), build_emote(msgs[0], emote, mods, 0, 0, 1) + "\n");
-        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, 0, 1, 0)
-             + "\n", this_body());
+        tell_me(build_emote(msgs[0], emote, mods, 0, 0, 1) + "\n");
+        tell_them(build_emote(msgs[1], emote, mods, 0, 1, 0) + "\n", this_body());
     } else {
-        tell_object(this_body(), build_emote(msgs[0], emote, mods, target, 0, 1) + "\n");
-        tell_room(environment(this_body()), build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_body(), target }));
+        tell_me(build_emote(msgs[0], emote, mods, target, 0, 1) + "\n");
+        tell_them(build_emote(msgs[1], emote, mods, target, 1, 0) + "\n", ({ this_body(), target }));
 
-        if(target != this_body()) tell_object(target, build_emote(msgs[2], emote, mods, target, 1, 2) + "\n");
+        if(target != this_body())
+          tell(target, build_emote(msgs[2], emote, mods, target, 1, 2) + "\n");
     }//END ELSE
 }
 

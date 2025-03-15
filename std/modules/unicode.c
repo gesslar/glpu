@@ -19,7 +19,7 @@ Original Lima header:
 **
 ** This module returns nicely formatted ANSI/xterm type widgets that can be
 ** reused all over the MUD. The string return are not sprintf() compatible, so
-** you need to write() or out() them.
+** you need to tell_me() or out() them.
 **
 */
 

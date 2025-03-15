@@ -92,8 +92,8 @@ void net_dead() {
 }
 
 void reconnect() {
-    tell(this_object(), "Success: Reconnected.\n");
-    if(environment()) tell_room(environment(), query_name() + " brigtens.\n", this_body());
+    tell("Success: Reconnected.\n");
+    if(environment()) tell_them(query_name() + " brigtens.\n");
     remove_extra_short("link_dead");
 }
 
@@ -103,7 +103,7 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query_last_login()) > 3600) {
                 if(environment())
-                    tell_room(environment(), query_name() + " fades out of existance.\n");
+                    tell_them(query_name() + " fades out of existance.\n");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 remove();
                 return;

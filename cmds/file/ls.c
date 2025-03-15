@@ -129,7 +129,7 @@ mixed main(object caller, string arg) {
                             always_show_path=1;
                             break;
                         default:
-                            write("\nBad option: "+tokens[0][i]+"\n");
+                            tell_me("\nBad option: "+tokens[0][i]+"\n");
                             return 1;
                 }
                 break;
@@ -145,7 +145,7 @@ mixed main(object caller, string arg) {
                         classify=1;
                         break;
                     default:
-                        write("\nBad option: "+tokens[0][i]+"\n");
+                        tell_me("\nBad option: "+tokens[0][i]+"\n");
                         return 1;
                 }
                 break;
@@ -173,7 +173,7 @@ mixed main(object caller, string arg) {
                 output_files=get_dir(__Path, -1);
                 break;
             case -1:
-                write("\nRead error\n");
+                tell_me("\nRead error\n");
                 return 1;
             default:
                 output_files=get_dir(__Path, -1);
@@ -183,7 +183,7 @@ mixed main(object caller, string arg) {
         }
 
         if(!output_files) {
-            write("Invalid path: "+__Path+"\n");
+            tell_me("Invalid path: "+__Path+"\n");
             return 1;
         }
 
@@ -270,7 +270,7 @@ mixed main(object caller, string arg) {
 
     }//End foreach around paths
 
-    write(output_str);
+    tell_me(output_str);
     return 1;
 }
 

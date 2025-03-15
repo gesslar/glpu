@@ -109,10 +109,10 @@ int start_mail(string arg) {
 }//END start_mail
 
 protected void main_menu() {
-    write("\n\t" + mud_name() + " Mailer\n\n");
-    write(" 1: Read mail" + (has_new_mail() ? " (unread mail)\n" : "\n"));
-    write(" 2: Send new mail\n");
-    write(" 3: Exit mailer\n");
+    tell_me("\n\t" + mud_name() + " Mailer\n\n");
+    tell_me(" 1: Read mail" + (has_new_mail() ? " (unread mail)\n" : "\n"));
+    tell_me(" 2: Send new mail\n");
+    tell_me(" 3: Exit mailer\n");
     input_to("i_MainMenu");
 }
 
@@ -124,10 +124,10 @@ protected varargs void i_MainMenu(string arg, int flag, int forward) {
 
     switch(arg) {
         case "1": {
-                write("\n\t" + mud_name() + " Mailer\n\n");
-                write(" 1: Inbox" + (has_new_mail() ? " (unread mail) \n" : "\n"));
-                write(" 2: Outbox\n");
-                write(" 3: Main menu\n");
+                tell_me("\n\t" + mud_name() + " Mailer\n\n");
+                tell_me(" 1: Inbox" + (has_new_mail() ? " (unread mail) \n" : "\n"));
+                tell_me(" 2: Outbox\n");
+                tell_me(" 3: Main menu\n");
                 input_to("i_InboxOutbox");
                 return;
             }
@@ -139,14 +139,14 @@ protected varargs void i_MainMenu(string arg, int flag, int forward) {
             case "q" :
             case "quit" :
             case "3": {
-                    write("\nExiting " + mud_name() + " Mailer\n");
+                    tell_me("\nExiting " + mud_name() + " Mailer\n");
                     save_mailbox();
                     remove();
                     return;
                 }
 
             default: {
-                    write("\nError [mail]: Invalid option\n");
+                    tell_me("\nError [mail]: Invalid option\n");
                     main_menu();
                     return;
                 }
@@ -180,7 +180,7 @@ protected void i_InboxOutbox(string arg) {
             }
 
         default: {
-                write("\nError [mail]: Invalid option\n");
+                tell_me("\nError [mail]: Invalid option\n");
                 i_MainMenu("1");
                 return;
             }
@@ -198,7 +198,7 @@ protected varargs void do_read_mail() {
         msg_keys = keys(outbox);
 
         if(!msg_keys || !sizeof(msg_keys)) {
-            write("\nYou have no messages in your outbox.\n");
+            tell_me("\nYou have no messages in your outbox.\n");
             i_MainMenu("1");
             return;
         }
@@ -217,7 +217,7 @@ protected varargs void do_read_mail() {
 
         printf("%5s%4s%4s%-20s  %-30s %s\n", "Curr ", "New ", "Num ", "To", "Date", "Subject");
 
-        write("_______________________________________________________________________________\n\n");
+        tell_me("_______________________________________________________________________________\n\n");
 
         for(i = out_start_index; i <= out_end_index; i++) {
                 tmp_recipients = implode(outbox[i]["TO"], ", ");
@@ -232,12 +232,12 @@ protected varargs void do_read_mail() {
                 );
         }
 
-        write("\n Displaying " + out_start_index + " to " + out_end_index + " of " + sizeof(outbox) + ".\n");
+        tell_me("\n Displaying " + out_start_index + " to " + out_end_index + " of " + sizeof(outbox) + ".\n");
     } else {
         msg_keys = keys(inbox);
 
         if(!msg_keys || !sizeof(msg_keys)) {
-            write("\nYou have no messages in your inbox.\n");
+            tell_me("\nYou have no messages in your inbox.\n");
             i_MainMenu("1");
             return;
         }
@@ -256,7 +256,7 @@ protected varargs void do_read_mail() {
 
         printf("%5s%4s%4s%-20s  %-30s %s\n", "Curr ", "New ", "Num ", "From", "Date", "Subject");
 
-        write("_______________________________________________________________________________\n\n");
+        tell_me("_______________________________________________________________________________\n\n");
 
         for(i = in_start_index; i <= in_end_index; i++) {
             printf("   %s %-4s%-4d%-20s  %-30s %s\n",
@@ -269,15 +269,15 @@ protected varargs void do_read_mail() {
             );
         }
 
-        write("\n Displaying " + in_start_index + " to " + in_end_index + " of " + sizeof(inbox) + ".\n");
+        tell_me("\n Displaying " + in_start_index + " to " + in_end_index + " of " + sizeof(inbox) + ".\n");
     }
 
-    write("\n\n");
+    tell_me("\n\n");
     prompt();
 }//END do_read_mail
 
 protected void prompt() {
-    write("Enter selection ('h' for help): ");
+    tell_me("Enter selection ('h' for help): ");
     input_to("parse_mailcmd");
 }
 
@@ -296,7 +296,7 @@ protected varargs void parse_mailcmd(string arg) {
     arg = lower_case(arg);
 
     if(num1 < 0 || (in_outbox && num1 > sizeof(outbox)) || (!in_outbox && num1 > sizeof(inbox))) {
-        write("\nError [mail]: Invalid message number\n\n");
+        tell_me("\nError [mail]: Invalid message number\n\n");
         do_read_mail();
         return;
     }
@@ -352,7 +352,7 @@ protected varargs void parse_mailcmd(string arg) {
                     else inbox[num1]["READ"] = 0;
                 }
 
-                write("\nSuccess [mail]: Message " + num1 + " marked as unread\n\n");
+                tell_me("\nSuccess [mail]: Message " + num1 + " marked as unread\n\n");
                 save_mailbox();
                 prompt();
                 return;
@@ -363,12 +363,12 @@ protected varargs void parse_mailcmd(string arg) {
                 err = MAIL_D->delete_message(owner, num1, num2, in_outbox, curr_msg);
 
                 if(stringp(err)) {
-                    write("\nError [mail]: " + capitalize(err) + "\n\n");
+                    tell_me("\nError [mail]: " + capitalize(err) + "\n\n");
                     resync_mailbox();
                     prompt();
                     return;
                 } else {
-                    write("Success [mail]: Message successfully deleted\n\n");
+                    tell_me("Success [mail]: Message successfully deleted\n\n");
                     resync_mailbox();
                     prompt();
                     return;
@@ -378,7 +378,7 @@ protected varargs void parse_mailcmd(string arg) {
         case "n":
         case "next": {
                 if((curr_msg+1) > max_msgs) {
-                    write("\nError [mail]: You have no more messages\n\n");
+                    tell_me("\nError [mail]: You have no more messages\n\n");
                     do_read_mail();
                     return;
                 }
@@ -391,7 +391,7 @@ protected varargs void parse_mailcmd(string arg) {
         case "prev":
         case "previous": {
                 if((curr_msg - 1) < 1) {
-                    write("\nError [mail]: There are no previous messages\n\n");
+                    tell_me("\nError [mail]: There are no previous messages\n\n");
                     do_read_mail();
                     return;
                 }
@@ -415,7 +415,7 @@ protected varargs void parse_mailcmd(string arg) {
         case "reply": {
                 in_outbox ? curr_out_msg = num1 : curr_in_msg = num1;
                 greply = num1;
-                write("\nCC: ");
+                tell_me("\nCC: ");
                 input_to("get_cc", 0, 0);
                 return;
             }
@@ -425,7 +425,7 @@ protected varargs void parse_mailcmd(string arg) {
                 if(in_outbox) curr_out_msg = num1;
                 else curr_in_msg = num1;
 
-                write("\nEnter the recipient/s of your mail.\n" +
+                tell_me("\nEnter the recipient/s of your mail.\n" +
                         "Seperate multiple names with a comma: ");
                 input_to("get_recipient", 0, num1);
                 return;
@@ -439,7 +439,7 @@ protected varargs void parse_mailcmd(string arg) {
 
         case "q":
         case "quit": {
-                write("\nExiting " + mud_name() + " Mailer\n");
+                tell_me("\nExiting " + mud_name() + " Mailer\n");
                 save_mailbox();
                 remove();
                 return;
@@ -453,7 +453,7 @@ protected varargs void parse_mailcmd(string arg) {
             }
 
         default: {
-                write("\nError [mail]: Invalid option\n\n");
+                tell_me("\nError [mail]: Invalid option\n\n");
                 do_read_mail();
                 return;
             }
@@ -461,7 +461,7 @@ protected varargs void parse_mailcmd(string arg) {
 }//END parse_mailcmd
 
 protected varargs void do_save(int num1, int num2) {
-    write("Please enter destination: ");
+    tell_me("Please enter destination: ");
     input_to("i_SaveDir", 0, num1, num2);
 }//END do_save
 
@@ -472,19 +472,19 @@ protected varargs void i_SaveDir(string arg, int num1, int num2) {
     int i;
 
     if(!arg || arg == "") {
-        write("\nError [mail]: No save file specified\n\n");
+        tell_me("\nError [mail]: No save file specified\n\n");
         do_read_mail();
         return;
     }
 
     if(arg[<1] == '/') {
-        write("\nError [mail]: You must specify a full path including filename\n\n");
+        tell_me("\nError [mail]: You must specify a full path including filename\n\n");
         do_read_mail();
         return;
     }
 
     else if(file_size(arg) == -2) {
-        write("\nError [mail]: You cannot save there, that is a directory name.\n\n");
+        tell_me("\nError [mail]: You cannot save there, that is a directory name.\n\n");
         do_read_mail();
         return;
     }
@@ -493,7 +493,7 @@ protected varargs void i_SaveDir(string arg, int num1, int num2) {
     else path = find_player(owner)->query_env("cwd") + "/" + arg;
 
     if(file_exists(path)) {
-        write("\nThat file already exists... would you like to overwrite it: ");
+        tell_me("\nThat file already exists... would you like to overwrite it: ");
         input_to("i_Overwrite", 0, path, num1, num2);
         return;
     }
@@ -525,11 +525,11 @@ protected varargs void i_SaveDir(string arg, int num1, int num2) {
     err = save_message(path, message);
 
     if(stringp(err)) {
-        write("\nError [mail]: " + capitalize(err) + "\n\n");
+        tell_me("\nError [mail]: " + capitalize(err) + "\n\n");
         do_read_mail();
         return;
     } else {
-        write("\nSuccess [mail]: Message successfully saved to " + path + "\n\n");
+        tell_me("\nSuccess [mail]: Message successfully saved to " + path + "\n\n");
         do_read_mail();
         return;
     }
@@ -541,7 +541,7 @@ protected varargs void i_Overwrite(string arg, string path, int num1, int num2) 
     int i;
 
     if(member_array(lower_case(arg), ({ "y", "n", "yes", "no" })) == -1) {
-        write("Please enter yes or no: ");
+        tell_me("Please enter yes or no: ");
         input_to("i_Overwrite", 0, path, num1, num2);
         return;
     }
@@ -572,16 +572,16 @@ protected varargs void i_Overwrite(string arg, string path, int num1, int num2) 
         err = save_message(path, message);
 
         if(stringp(err)) {
-            write("\nError [mail]: " + capitalize(err) + "\n\n");
+            tell_me("\nError [mail]: " + capitalize(err) + "\n\n");
             do_read_mail();
             return;
         } else {
-            write("\nSuccess [mail]: Message successfully saved to " + path + "\n\n");
+            tell_me("\nSuccess [mail]: Message successfully saved to " + path + "\n\n");
             do_read_mail();
             return;
         }
     } else {
-        write("\nMessage save was cancelled\n");
+        tell_me("\nMessage save was cancelled\n");
         do_read_mail();
         return;
     }
@@ -622,13 +622,13 @@ protected void read_message(int num) {
 }
 
 void done_reading() {
-    write("\n\n");
+    tell_me("\n\n");
     prompt();
     return;
 }
 
 protected varargs void do_help() {
-    write("\n\t" + mud_name() + " Mailer Help\n\n");
+    tell_me("\n\t" + mud_name() + " Mailer Help\n\n");
     printf("%-23s- %s\n", "[<num>]", "Read the current message or message num.");
     printf("%-23s- %s\n", "(r)eply [<num>]", "Reply to the current message or message num.");
     printf("%-23s- %s\n", "(n)ext", "Read the next message.");
@@ -644,7 +644,7 @@ protected varargs void do_help() {
     printf("%-23s- %s\n", "(l)ist", "Relist your messages.");
     printf("%-23s- %s\n", "(m)ain", "Back to the menu.");
     printf("%-23s- %s\n", "(q)uit", "Exit the mailer.");
-    write("\n\n");
+    tell_me("\n\n");
     prompt();
 }
 
@@ -653,7 +653,7 @@ protected varargs void do_mail(string arg, int flag, int forward) {
     string *recipients_tmp;
 
     if(!arg || arg == "") {
-        write("\nEnter the recipient/s of your mail.\nSeperate multiple names with a comma: ");
+        tell_me("\nEnter the recipient/s of your mail.\nSeperate multiple names with a comma: ");
         input_to("get_recipient", 0, flag, forward);
         return;
     }
@@ -675,11 +675,11 @@ protected varargs void do_mail(string arg, int flag, int forward) {
     recipients = recipients_tmp;
 
     if(!recipients || sizeof(recipients) == 0) {
-        write("\nError [mail]: No valid recipients\n");
+        tell_me("\nError [mail]: No valid recipients\n");
         return;
     }
 
-    write("\nPlease enter the subject line: ");
+    tell_me("\nPlease enter the subject line: ");
     input_to("get_subject", 0, flag, forward);
 }//END do_mail
 
@@ -688,7 +688,7 @@ protected void get_recipient(string arg, int flag, int forward) {
     string *recipients_tmp;
 
     if(!arg || arg == "") {
-        write("\nError [mail]: No recipient/s specified\n");
+        tell_me("\nError [mail]: No recipient/s specified\n");
         main_menu();
         return;
     }
@@ -710,14 +710,14 @@ protected void get_recipient(string arg, int flag, int forward) {
     recipients = recipients_tmp;
 
     if(!recipients || sizeof(recipients) == 0) {
-        write("\nError [mail]: No valid recipients\n");
+        tell_me("\nError [mail]: No valid recipients\n");
         main_menu();
         return;
     }
 
     if(forward) get_subject(0, flag, forward);
     else {
-        write("\nPlease enter the subject line: ");
+        tell_me("\nPlease enter the subject line: ");
         input_to("get_subject", 0, flag, forward);
     }
 }//END get_recipient
@@ -729,7 +729,7 @@ void get_subject(string arg, int flag, int forward) {
         else subject = "<no subject>";
     } else {
         if(strlen(arg) > MAX_SUBJECT_SIZE) {
-            write("\nSubject size must not exceed " + MAX_SUBJECT_SIZE+ " characters\n\nSubject: ");
+            tell_me("\nSubject size must not exceed " + MAX_SUBJECT_SIZE+ " characters\n\nSubject: ");
             input_to("get_subject", 0, flag);
             return;
         }
@@ -738,7 +738,7 @@ void get_subject(string arg, int flag, int forward) {
 
     if(!subject) subject = "<no subject>";
 
-    write("\nCC: ");
+    tell_me("\nCC: ");
     input_to("get_cc", 0, flag, forward);
 }//END get_subject
 
@@ -775,27 +775,27 @@ protected varargs void get_cc(string arg, int flag, int forward) {
 
     if(greply) {
         if(in_outbox) {
-            write("\nFROM:    " + capitalize(owner) + "\n");
-            write("TO:      " + outbox[greply]["FROM"] + "\n");
-            write("SUBJECT: " + "RE: " + outbox[greply]["SUBJECT"] + "\n");
-            write("DATE:    " + date + "\n");
-            write("CC:      " + implode(cc, ", ") + "\n");
-            write("____________________________________________________________\n");
+            tell_me("\nFROM:    " + capitalize(owner) + "\n");
+            tell_me("TO:      " + outbox[greply]["FROM"] + "\n");
+            tell_me("SUBJECT: " + "RE: " + outbox[greply]["SUBJECT"] + "\n");
+            tell_me("DATE:    " + date + "\n");
+            tell_me("CC:      " + implode(cc, ", ") + "\n");
+            tell_me("____________________________________________________________\n");
         } else {
-            write("\nFROM:    " + capitalize(owner) + "\n");
-            write("TO:      " + inbox[greply]["FROM"] + "\n");
-            write("SUBJECT: " + "RE: " + inbox[greply]["SUBJECT"] + "\n");
-            write("DATE:    " + date + "\n");
-            write("CC:      " + implode(cc, ", ") + "\n");
-            write("____________________________________________________________\n");
+            tell_me("\nFROM:    " + capitalize(owner) + "\n");
+            tell_me("TO:      " + inbox[greply]["FROM"] + "\n");
+            tell_me("SUBJECT: " + "RE: " + inbox[greply]["SUBJECT"] + "\n");
+            tell_me("DATE:    " + date + "\n");
+            tell_me("CC:      " + implode(cc, ", ") + "\n");
+            tell_me("____________________________________________________________\n");
         }
     } else {
-        write("\nFROM:    " + capitalize(owner) + "\n");
-        write("TO:      " + implode(recipients, ", ") + "\n");
-        write("SUBJECT: " + subject + "\n");
-        write("DATE:    " + date + "\n");
-        write("CC:      " + implode(cc, ", ") + "\n");
-        write("____________________________________________________________\n");
+        tell_me("\nFROM:    " + capitalize(owner) + "\n");
+        tell_me("TO:      " + implode(recipients, ", ") + "\n");
+        tell_me("SUBJECT: " + subject + "\n");
+        tell_me("DATE:    " + date + "\n");
+        tell_me("CC:      " + implode(cc, ", ") + "\n");
+        tell_me("____________________________________________________________\n");
     }
 
     current_file = "/tmp/" + random(9999999) + "." + this_body()->query_real_name();
@@ -841,7 +841,7 @@ void callback_exit() {
     }
 
     if(!body || !did_write) {
-        write("\nSend new mail aborted\n");
+        tell_me("\nSend new mail aborted\n");
         rm(current_file);
 
         if(gflag) {
@@ -873,9 +873,9 @@ void callback_exit() {
 
     err = MAIL_D->send_message(newmsg, owner, curr_in_msg, curr_out_msg);
 
-    if(stringp(err)) write("\nError [mail]: " + capitalize(err) + "\n");
+    if(stringp(err)) tell_me("\nError [mail]: " + capitalize(err) + "\n");
     else {
-        write("\nSuccess [mail]: Mail successfully sent\n");
+        tell_me("\nSuccess [mail]: Mail successfully sent\n");
         resync_mailbox();
     }
 

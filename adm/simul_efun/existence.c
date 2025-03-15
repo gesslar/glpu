@@ -21,7 +21,7 @@
  * @returns {int} 1 if directory exists, 0 otherwise
  * @example
  * if(directory_exists("/d/wizards/" + name)) {
- *     write("Wizard directory exists.\n");
+ *     tell_me("Wizard directory exists.\n");
  * }
  */
 int directory_exists(string dirname) {
@@ -83,7 +83,7 @@ int ofile_exists(string file) {
  * @returns {int} 1 if user data exists, 0 otherwise
  * @example
  * if(user_exists("alice")) {
- *     write("User account exists.\n");
+ *     tell_me("User account exists.\n");
  * }
  */
 int user_exists(string user) {

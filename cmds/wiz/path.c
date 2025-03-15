@@ -17,7 +17,7 @@ mixed main(object caller, string str) {
         for(i = 0; i < sizeof(path); i++)
             ret += path[i][0..<2] + ":";
 
-        write("Current path: " + ret[0..<2] + "\n");
+        tell_me("Current path: " + ret[0..<2] + "\n");
         return 1;
     }
 
@@ -34,7 +34,7 @@ mixed main(object caller, string str) {
             break;
 
         default :
-            write("Syntax: path [-add || -remove <path>]\n");
+            tell_me("Syntax: path [-add || -remove <path>]\n");
             break;
     }
 
@@ -44,7 +44,7 @@ mixed main(object caller, string str) {
         ret += path[i][0..<2] + ":";
     }
 
-    write("New path: " + ret[0..<2] + "\n");
+    tell_me("New path: " + ret[0..<2] + "\n");
 
     return 1;
 }

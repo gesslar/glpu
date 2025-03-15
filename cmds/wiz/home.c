@@ -29,7 +29,7 @@ mixed main(object tp, string str) {
 
                 tell_down(room, capitalize(tmp) + "\n", 0, tp);
             } else {
-                tell_room(environment(tp), tp->query_name() + " teleports home.\n", ({tp}));
+                tell_them(tp->query_name() + " teleports home.\n");
             }
 
             tp->move_living(home_path(tp->query_real_name()) + "workroom.c", "SILENT", "SILENT");

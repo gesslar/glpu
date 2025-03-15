@@ -48,9 +48,9 @@ mixed main(object caller, string arg) {
         return 1;
     }// END IF
 
-    write("You emote: " + capitalize(this_body()->query_name()) + " " +
+    tell_me("You emote: " + capitalize(this_body()->query_name()) + " " +
         arg + "\n");
-    say (capitalize(this_body()->query_name()) + " " + arg + "\n");
+    tell_them(capitalize(this_body()->query_name()) + " " + arg + "\n");
     return 1;
 }
 
@@ -157,7 +157,7 @@ void print_emotes_to_targets(string arg, object *targets_to_print_to) {
     if(tmp_emote2[<1..<1] != "." && tmp_emote2[<1..<1] != "!" && tmp_emote2[<1..<1] != "?")
     tmp_emote2 += ".";
 
-    write("You emote: " + TPQCN + " " + tmp_emote2 + "\n");
+    tell_me("You emote: " + TPQCN + " " + tmp_emote2 + "\n");
 
 
     for(i = 0; i < sizeof(targets_to_print_to); i++) {
@@ -183,7 +183,7 @@ void print_emotes_to_targets(string arg, object *targets_to_print_to) {
         if(tmp_emote2[<1..<1] != "." && tmp_emote2[<1..<1] != "!" && tmp_emote2[<1..<1] != "?")
             tmp_emote2 += ".";
 
-        tell_object(curr_target, TPQCN + " " + tmp_emote2 + "\n");
+        tell(curr_target, TPQCN + " " + tmp_emote2 + "\n");
     }// END FOR
 
     tmp_emote2 = tmp_emote;
@@ -193,7 +193,7 @@ void print_emotes_to_targets(string arg, object *targets_to_print_to) {
 
     exclude_list = targets_to_print_to + ({ TP });
 
-    tell_room(environment(TP), TPQCN + " " + tmp_emote + "\n", exclude_list);
+    tell_them(TPQCN + " " + tmp_emote + "\n", exclude_list);
 
     return;
 }
