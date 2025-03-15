@@ -95,7 +95,7 @@ mixed main(object tp, string str) {
 void prompt_colour_result(string result, object tp, string variable) {
   switch(result) {
     case "cancel":
-      _ok("You opt not to set this value at this time.");
+      _ok(tp, "You opt not to set this value at this time.");
       return;
     case "plain":
       tp->set_pref(variable, "");
@@ -105,11 +105,12 @@ void prompt_colour_result(string result, object tp, string variable) {
       string colour;
 
       result = COLOUR_D->substitute_too_dark(result);
-      colour = sprintf("{{0%s}}", result);
-      tp->set_pref(variable, result);
+      sscanf(result, "{{%s}}", colour);
+
+      tp->set_pref(variable, colour);
       _ok(tp, "You have selected %s%s{{res}} for `%s`.",
-        colour,
         result,
+        colour,
         variable
       );
       return;

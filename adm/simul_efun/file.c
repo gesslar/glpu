@@ -88,7 +88,7 @@ string file_owner(string file) {
  * @returns {string} Requested lines with proper newline formatting
  * @errors If file path is null or invalid
  * @example
- * write(tail("/log/system.log", 10));  // Shows last 10 log entries
+ * tell_me(tail("/log/system.log", 10));  // Shows last 10 log entries
  */
 varargs string tail(string path, int line_count) {
   int chunk_size = 80 * 5; // Chunk size for each read operation

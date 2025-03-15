@@ -2,7 +2,6 @@
 
 #include <commands.h>
 #include <daemons.h>
-#include <type.h>
 
 //overrides.c
 
@@ -49,8 +48,6 @@ void set_privs(object ob, string privs) {
   if(name == privs)
     efun::set_privs(ob, privs);
 }
-
-
 
 void write(string msg) {
   error("Use tell.");

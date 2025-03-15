@@ -10,9 +10,11 @@
 
 // FG: <#000> - <#fff> | BG: [#000] - [#fff]
 // FG: <#000000> - <#ffffff> | BG: [#000000] - [#ffffff]
-#define TRUE_COLOUR_REGEX           \
-"\\{\\{([a-fA-F0-9]{6})\\}\\}"  "|" \
-"\\{\\{([a-fA-F0-9]{3})\\}\\}"
+#define TRUE_COLOUR_REGEX    \
+"\\{\\{((?:"                  \
+"[a-fA-F0-9]{6}"       "|" \
+"[a-fA-F0-9]{3}"           \
+"))\\}\\}"                    \
 
 #define COLOUR_REGEX      \
 RESET_REGEX           "|" \

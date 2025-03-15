@@ -9,8 +9,6 @@
  * 2024-08-05 - Gesslar - Created
  */
 
-#include <type.h>
-
 inherit STD_DAEMON;
 inherit M_LOG;
 

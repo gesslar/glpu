@@ -74,6 +74,7 @@ void prompt_password(object body, int attempts, mixed *cb) {
  */
 varargs void prompt_colour(object body, mixed *cb, string prompt) {
   string mess;
+  mixed *base = COLOUR_D->base_colours();
 
   if(nullp(body) || !userp(body))
     error("Bad argument 1 to prompt_colour(): expected body object, got " + typeof(body) + ".");
@@ -89,7 +90,7 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) {
   mess = append(mess, "\n");
   mess += "\n";
 
-  mess += reduce(COLOUR_D->base_colours(), function(string acc, string *colours, int index) {
+  mess += reduce(base, function(string acc, string *colours, int index) {
     if(index && !(index % 4))
       acc += "\n";
     if(index && !(index % 8))
@@ -105,36 +106,16 @@ varargs void prompt_colour(object body, mixed *cb, string prompt) {
 
   tell(body, mess);
 
-  input_to("_prompt_colour", I_NOESC, mess, body, cb);
+  input_to("_prompt_colour", I_NOESC, mess, body, base, cb);
 }
 
-private nosave mapping _colour_list = ([
-  "black"         : "000",
-  "red"           : "001",
-  "green"         : "002",
-  "orange"        : "003",
-  "blue"          : "004",
-  "magenta"       : "005",
-  "cyan"          : "006",
-  "white"         : "007",
-  "bright black"  : "008",
-  "bright red"    : "009",
-  "bright green"  : "010",
-  "bright orange" : "011",
-  "bright blue"   : "012",
-  "bright magenta": "013",
-  "bright cyan"   : "014",
-  "bright white"  : "015"
-]);
-
-private void _prompt_colour(string input, string prompt, object body, mixed *cb) {
+private void _prompt_colour(string input, string prompt, object body, mixed *base, mixed *cb) {
   string *colours;
-  int i;
 
   if(!input || input == "") {
     _error(body, "Invalid selection.");
     tell(body, prompt);
-    input_to("_prompt_colour", I_NOESC, prompt, body, cb);
+    input_to("_prompt_colour", I_NOESC, prompt, body, base, cb);
     return;
   }
 
@@ -150,7 +131,7 @@ private void _prompt_colour(string input, string prompt, object body, mixed *cb)
 
     tell(body, prompt);
 
-    input_to("_prompt_256", 0, body, cb, prompt);
+    input_to("_prompt_colour", I_NOESC, prompt, body, base, cb);
     return;
   }
 
@@ -164,58 +145,29 @@ private void _prompt_colour(string input, string prompt, object body, mixed *cb)
     return;
   }
 
-  i = to_int(input);
-  if(!nullp(i)) {
-    if(i < 0 || i > 255) {
+  if(input[0] == '#') {
+    input = "{{"+input[1..]+"}}";
+
+    if(!colourp(input)) {
       _error(body, "Invalid selection.");
       tell(body, prompt);
-      input_to("_prompt_colour", I_NOESC, prompt, body, cb);
+      input_to("_prompt_colour", I_NOESC, prompt, body, base, cb);
       return;
     }
   } else {
-    if(of(input, _colour_list)) {
-      input = _colour_list[input];
+    string *found;
+
+    found = find(base, (: $1[1] == $(input) :));
+
+    if(found) {
+      input = found[0];
     } else {
       _error(body, "Invalid selection.");
       tell(body, prompt);
-      input_to("_prompt_colour", I_NOESC, prompt, body, cb);
+      input_to("_prompt_colour", I_NOESC, prompt, body, base, cb);
       return;
     }
   }
 
   call_back(cb, input);
-}
-
-private void _prompt_256(string input, object body, mixed *cb, string prompt) {
-    string *colours;
-    int i;
-
-    if(!input || input == "") {
-        _error(body, "Invalid selection.");
-        tell(body, prompt);
-        input_to("_prompt_256", I_NOESC, body, cb, prompt);
-        return;
-    }
-
-    if(input == "plain") {
-        body->set_env("prompt_colour", 0);
-        call_back(cb, input);
-        return;
-    }
-
-    if(input == "q" || input == "quit") {
-        call_back(cb, "cancel");
-        return;
-    }
-
-    i = to_int(input);
-
-    if(i < 0 || i > 255) {
-        _error(body, "Invalid selection.");
-        tell(body, prompt);
-        input_to("_prompt_256", I_NOESC, body, cb, prompt);
-        return;
-    }
-
-    call_back(cb, sprintf("%03d", i));
 }

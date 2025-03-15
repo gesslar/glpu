@@ -1,5 +1,4 @@
 #include <simul_efun.h>
-#include <type.h>
 
 // gently stolen from atari2600tim
 // https://github.com/atari2600tim/LPCsnippets/blob/master/uuid.c

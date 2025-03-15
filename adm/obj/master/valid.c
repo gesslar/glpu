@@ -53,8 +53,8 @@ void parse_group() {
         if(!arr[i]) continue;
 
         if(sscanf(arr[i], "(%s)%s", group, str) != 2) {
-            write("Error [security]: Invalid format of data in group data.\n");
-            write("Security alert: Ignoring group on line " + (i + 1) + "\n");
+            tell_me("Error [security]: Invalid format of data in group data.\n");
+            tell_me("Security alert: Ignoring group on line " + (i + 1) + "\n");
             continue;
         }
 
@@ -68,8 +68,8 @@ void parse_group() {
 
         for(n = 0, sz_members = sizeof(members); n < sz_members; n++) {
             if(!file_size(user_data_file(members[n])) && !sscanf(members[n], "[%*s]")) {
-                write("Error [security]: Unknown user detected.\n");
-                write("Security alert: User '" + members[n] + "' ignored for group '" + group + "'.\n");
+                tell_me("Error [security]: Unknown user detected.\n");
+                tell_me("Security alert: User '" + members[n] + "' ignored for group '" + group + "'.\n");
                 members -= ({ members[n] });
                 continue;
             }
@@ -107,12 +107,12 @@ void parse_access() {
         if(!arr[i]) continue;
 
         if(sscanf(arr[i], "(%s)%s", directory, str) != 2) {
-            write("Error [security]: Invalid format of data in access data.\n");
+            tell_me("Error [security]: Invalid format of data in access data.\n");
             error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
         }
 
         if(str[<1..< 1] == ":") {
-            write("Error [security]: Incomplete data in access data (trailing ':').\n");
+            tell_me("Error [security]: Incomplete data in access data (trailing ':').\n");
             error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
         }
 
@@ -127,7 +127,7 @@ void parse_access() {
         for(n = 0, sz_entries = sizeof(entries); n < sz_entries; n++) {
             string identity, permissions, *perm_array = allocate(8);
             if(sscanf(entries[n], "%s[%s]", identity, permissions) != 2) {
-                write("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
+                tell_me("Error [security]: Invalid entry(" + n + ") data format in access data.\n");
                 error("Security alert: Fatal error parsing access data on line " + (i + 1) + "\n");
             }
 

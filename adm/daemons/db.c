@@ -6,8 +6,6 @@
 //
 // 2024/02/27: Gesslar - Created
 
-#include <type.h>
-
 inherit STD_DAEMON;
 
 #ifndef __PACKAGE_DB__

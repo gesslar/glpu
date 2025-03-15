@@ -14,6 +14,6 @@ inherit STD_ACT;
 mixed main(object tp, string str) {
   object ob;
 
-  write("\a");
+  tell_me("\a");
   return 1;
 }

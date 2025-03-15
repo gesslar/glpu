@@ -1,5 +1,4 @@
 #include <simul_efun.h>
-#include <type.h>
 
 /**
  * @simul_efun append
@@ -522,6 +521,7 @@ string all_caps(string str) {
   int len;
 
   len = strlen(str);
+
   while(len--)
     str[len..len] = capitalize(str[len..len]);
 

@@ -57,11 +57,11 @@ mixed main(object tp, string str) {
         else {
             if(custom) {
                 if(env == room)
-                    tell_room(environment(tp), capitalize(tmp) + "\n", tp);
+                    tell_them(capitalize(tmp) + "\n");
                 return _ok("Destructed %s.", short);
             } else {
                 if(env == room)
-                    tell_room(environment(tp), name + " destructs " + short + ".\n", tp);
+                    tell_them(name + " destructs " + short + ".\n");
                 return _ok("Destructed %s.", short);
             }
         }

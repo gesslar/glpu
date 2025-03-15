@@ -12,7 +12,7 @@ inherit STD_CMD;
 
 mixed main(object caller, string arg) {
      previous_object()->exit_world();
-     write("Thank you for visiting " + mud_name() + "\n");
+     tell_me("Thank you for visiting " + mud_name() + "\n");
      previous_object()->save_body();
      log_file(LOG_LOGIN, capitalize(previous_object()->query_real_name()) + " logged out from " +
      query_ip_number(previous_object()) + " on " + ctime(time()) + "\n");

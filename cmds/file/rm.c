@@ -42,7 +42,7 @@ mixed main(object tp, string str) {
 
         dir_tree += ({ dir });
 
-        write("Are you sure you about that? ");
+        tell_me("Are you sure you about that? ");
         input_to("confirm_recursive_delete", tp);
 
         return 1;

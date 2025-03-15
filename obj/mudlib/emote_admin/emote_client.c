@@ -31,14 +31,14 @@ void create() {
 }
 
 int main_menu() {
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "1. Add new emote\n");
-    tell_object(this_body(), "2. Remove existing emote\n");
-    tell_object(this_body(), "3. See message syntax for specific emote\n");
-    tell_object(this_body(), "4. See all available emotes\n");
-    tell_object(this_body(), "5. Remove all emotes (CAREFUL)\n");
-    tell_object(this_body(), "\nType 'q' to exit.\n");
-    tell_object(this_body(), "\n" + PROMPT);
+    tell_me("\n");
+    tell_me("1. Add new emote\n");
+    tell_me("2. Remove existing emote\n");
+    tell_me("3. See message syntax for specific emote\n");
+    tell_me("4. See all available emotes\n");
+    tell_me("5. Remove all emotes (CAREFUL)\n");
+    tell_me("\nType 'q' to exit.\n");
+    tell_me("\n" + PROMPT);
 
     input_to("menu_selection");
     return 1;
@@ -46,44 +46,44 @@ int main_menu() {
 
 int menu_selection(string arg) {
     if(lower_case(arg) == "q" || lower_case(arg) == "quit") {
-        tell_object(this_body(), "Exiting emote editor.\n");
+        tell_me("Exiting emote editor.\n");
         remove();
         return 1;
     }
 
     switch(arg) {
         case "1":
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Please enter the command word for the new emote.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
+            tell_me("\n");
+            tell_me("Please enter the command word for the new emote.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
             input_to("get_emote_name");
             break;
         case "2":
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Which emote would you like to delete?\nOr type 'q' to return to the main menu.\n\n" + PROMPT);
+            tell_me("\n");
+            tell_me("Which emote would you like to delete?\nOr type 'q' to return to the main menu.\n\n" + PROMPT);
             input_to("remove_emote");
             break;
         case "3":
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Which emote would you like to see messages for?\nOr type 'q' to return to the main menu.\n"+
+            tell_me("\n");
+            tell_me("Which emote would you like to see messages for?\nOr type 'q' to return to the main menu.\n"+
             "(NOTE: if you wish to see messages for the targeted version, add a '/t' to the end of the emote)\n\n"+
             PROMPT);
             input_to("get_emote_msgs");
             break;
         case "4":
-            tell_object(this_body(), "\n");
+            tell_me("\n");
             print_all_emotes();
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+            tell_me("\n");
+            tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
             input_to("main_or_quit");
             break;
         case "5":
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Are you sure you wish to delete all emotes from the system? (y/n)\n\n" + PROMPT);
+            tell_me("\n");
+            tell_me("Are you sure you wish to delete all emotes from the system? (y/n)\n\n" + PROMPT);
             input_to("confirm_delete_all");
             break;
         default:
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Please make a selection from the menu or type 'q' or 'quit' to exit.\n\n"+PROMPT);
+            tell_me("\n");
+            tell_me("Please make a selection from the menu or type 'q' or 'quit' to exit.\n\n"+PROMPT);
             main_menu();
             break;
     }//END SWITCH
@@ -93,14 +93,14 @@ int menu_selection(string arg) {
 
 nomask void get_emote_name(string arg) {
     if(!arg || arg == "") {
-        tell_object(this_body(), "\nPlease enter the command word for the new emote.\n"+
+        tell_me("\nPlease enter the command word for the new emote.\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("get_emote_name");
         return;
     }//END IF
 
     if(sizeof(explode(arg, " ")) > 1) {
-        tell_object(this_body(), "\nThe emote command must be only one word. Please try again.\n"+
+        tell_me("\nThe emote command must be only one word. Please try again.\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("get_emote_name");
         return;
@@ -114,7 +114,7 @@ nomask void get_emote_name(string arg) {
     tmp_emote_untargeted_name = arg;
     tmp_emote_targeted_name = arg+"/t";
 
-    tell_object(this_body(), "\nWill this emote be (t)argeted, (u)ntargeted or (b)oth?\n"+
+    tell_me("\nWill this emote be (t)argeted, (u)ntargeted or (b)oth?\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
 
     input_to("targeted_or_not");
@@ -126,7 +126,7 @@ nomask void targeted_or_not(string arg) {
     string existing_emotes = soul_d->query_emotes();
 
     if(!arg || arg == "") {
-        tell_object(this_body(), "\nPlease enter 't', 'u' or 'b'.\n"+
+        tell_me("\nPlease enter 't', 'u' or 'b'.\n"+
         "Will this emote be (t)argeted, (u)ntargeted or (b)oth?\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("targeted_or_not");
@@ -139,7 +139,7 @@ nomask void targeted_or_not(string arg) {
     }//END IF
 
     if(member_array(lower_case(arg), ({ "b", "t", "u" })) == -1) {
-        tell_object(this_body(), "\nPlease enter 't', 'u' or 'b'.\n"+
+        tell_me("\nPlease enter 't', 'u' or 'b'.\n"+
         "Will this emote be (t)argeted, (u)ntargeted or (b)oth?\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("targeted_or_not");
@@ -147,12 +147,12 @@ nomask void targeted_or_not(string arg) {
     }//END IF
 
     if(((lower_case(arg) == "t") || (lower_case(arg) == "b")) && (member_array(tmp_emote_targeted_name, existing_emotes) != -1)) {
-        tell_object(this_body(), "\nThere is already a targeted emote of that name. Please try another.\n"+
+        tell_me("\nThere is already a targeted emote of that name. Please try another.\n"+
         "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("get_emote_name");
         return;
     } else if(((lower_case(arg) == "u") || (lower_case(arg) == "b")) && (member_array(tmp_emote_untargeted_name, existing_emotes) != -1)) {
-        tell_object(this_body(), "\nThere is already an untargeted emote of that name. Please try another.\n"+
+        tell_me("\nThere is already an untargeted emote of that name. Please try another.\n"+
             "Or type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("get_emote_name");
         return;
@@ -162,13 +162,13 @@ nomask void targeted_or_not(string arg) {
         if(tmp_emote_targeted_msgs)
         tmp_emote_targeted_msgs = ({});
 
-        tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is no target.\n"+
+        tell_me("\nPlease enter the message printed to the emoter if there is no target.\n"+
         "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
         for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-        tell_object(this_body(), tmp + "\n"+PROMPT);
+        tell_me(tmp + "\n"+PROMPT);
 
         input_to("get_player_msg", 0, 1);
         return;
@@ -176,13 +176,13 @@ nomask void targeted_or_not(string arg) {
         if(tmp_emote_untargeted_msgs)
             tmp_emote_untargeted_msgs = ({});
 
-        tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is a target.\n"+
+        tell_me("\nPlease enter the message printed to the emoter if there is a target.\n"+
         "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
         for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-        tell_object(this_body(), tmp + "\n"+PROMPT);
+        tell_me(tmp + "\n"+PROMPT);
 
         input_to("get_player_msg", 0, 2);
         return;
@@ -193,13 +193,13 @@ nomask void targeted_or_not(string arg) {
         if(tmp_emote_targeted_msgs)
             tmp_emote_targeted_msgs = ({});
 
-        tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is no target.\n"+
+        tell_me("\nPlease enter the message printed to the emoter if there is no target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
         for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-        tell_object(this_body(), tmp + "\n"+PROMPT);
+        tell_me(tmp + "\n"+PROMPT);
 
         input_to("get_player_msg", 0, 3);
         return;
@@ -218,13 +218,13 @@ nomask void get_player_msg(string arg, int flag) {
     switch(flag) {
         case 1:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is no target.\n"+
+                tell_me("\nPlease enter the message printed to the emoter if there is no target.\n"+
                     "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_player_msg", 0, 1);
                 return;
@@ -233,26 +233,26 @@ nomask void get_player_msg(string arg, int flag) {
 
             tmp_emote_untargeted_msgs = ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the message printed to the room if there is no target.\n"+
+            tell_me("\nPlease enter the message printed to the room if there is no target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
             for(i = 0; i < sizeof(MARKERS); i++)
                 tmp += MARKERS[i]+"\n";
 
-            tell_object(this_body(), tmp + "\n"+PROMPT);
+            tell_me(tmp + "\n"+PROMPT);
 
             input_to("get_room_msg", 0, 1);
             return;
             break;
         case 2:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is a target.\n"+
+                tell_me("\nPlease enter the message printed to the emoter if there is a target.\n"+
                 "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_player_msg", 0, 2);
                 return;
@@ -261,26 +261,26 @@ nomask void get_player_msg(string arg, int flag) {
 
             tmp_emote_targeted_msgs = ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the message printed to the room if there is a target.\n"+
+            tell_me("\nPlease enter the message printed to the room if there is a target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the folowing wherever you like in the string:\n");
 
             for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-            tell_object(this_body(), tmp + "\n"+PROMPT);
+            tell_me(tmp + "\n"+PROMPT);
 
             input_to("get_room_msg", 0, 2);
             return;
             break;
         case 3:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is no target.\n"+
+                tell_me("\nPlease enter the message printed to the emoter if there is no target.\n"+
                     "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_player_msg", 0, 3);
                 return;
@@ -289,13 +289,13 @@ nomask void get_player_msg(string arg, int flag) {
 
             tmp_emote_untargeted_msgs = ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the message printed to the room if there is no target.\n"+
+            tell_me("\nPlease enter the message printed to the room if there is no target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
             for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-            tell_object(this_body(), tmp + "\n"+PROMPT);
+            tell_me(tmp + "\n"+PROMPT);
 
             input_to("get_room_msg", 0, 3);
             return;
@@ -315,13 +315,13 @@ nomask void get_room_msg(string arg, int flag) {
     switch(flag) {
         case 1:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the room if there is no target.\n"+
+                tell_me("\nPlease enter the message printed to the room if there is no target.\n"+
                     "Or type 'q' to return to the main menu.\n\nSubstitue the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_room_msg", 0, 1);
                 return;
@@ -330,7 +330,7 @@ nomask void get_room_msg(string arg, int flag) {
 
             tmp_emote_untargeted_msgs += ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the default mod to the UNTARGETED emote. Such as 'happily',\n"+
+            tell_me("\nPlease enter the default mod to the UNTARGETED emote. Such as 'happily',\n"+
             "or 'haphazardly'. If you do not wish to have a default, then press enter.\nOr press 'q'"+
             "to return to the main menu.\n\n"+PROMPT);
 
@@ -339,13 +339,13 @@ nomask void get_room_msg(string arg, int flag) {
             break;
         case 2:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the room if there is a target.\n"+
+                tell_me("\nPlease enter the message printed to the room if there is a target.\n"+
                     "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_room_msg", 0, 2);
                 return;
@@ -354,26 +354,26 @@ nomask void get_room_msg(string arg, int flag) {
 
             tmp_emote_targeted_msgs += ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the message to print to the target.\n"+
+            tell_me("\nPlease enter the message to print to the target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
             for(i = 0; i < sizeof(MARKERS); i++)
                 tmp += MARKERS[i]+"\n";
 
-            tell_object(this_body(), tmp + "\n"+PROMPT);
+            tell_me(tmp + "\n"+PROMPT);
 
             input_to("get_target_msg");
             return;
             break;
         case 3:
             if(!arg || arg == "") {
-                tell_object(this_body(), "\nPlease enter the message printed to the room if there is no target.\n"+
+                tell_me("\nPlease enter the message printed to the room if there is no target.\n"+
                     "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
                 for(i = 0; i < sizeof(MARKERS); i++)
                     tmp += MARKERS[i]+"\n";
 
-                tell_object(this_body(), tmp + "\n"+PROMPT);
+                tell_me(tmp + "\n"+PROMPT);
 
                 input_to("get_room_msg", 0, 3);
                 return;
@@ -382,7 +382,7 @@ nomask void get_room_msg(string arg, int flag) {
 
             tmp_emote_untargeted_msgs += ({ arg });
 
-            tell_object(this_body(), "\nPlease enter the default mod to the UNTARGETED emote. Such as 'happily',\n"+
+            tell_me("\nPlease enter the default mod to the UNTARGETED emote. Such as 'happily',\n"+
             "or 'haphazardly'. If you do not wish to have a default, then press enter.\nOr press 'q'"+
             "to return to the main menu.\n\n"+PROMPT);
 
@@ -402,13 +402,13 @@ nomask void get_target_msg(string arg) {
     }
 
     if(!arg || arg == "") {
-        tell_object(this_body(), "\nPlease enter the message printed to the target.\n"+
+        tell_me("\nPlease enter the message printed to the target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitue the following wherever you like in the string:\n");
 
         for(i = 0; i < sizeof(MARKERS); i++)
             tmp += MARKERS[i]+"\n";
 
-        tell_object(this_body(), tmp + "\n"+PROMPT);
+        tell_me(tmp + "\n"+PROMPT);
 
         input_to("get_target_msg");
         return;
@@ -416,7 +416,7 @@ nomask void get_target_msg(string arg) {
 
     tmp_emote_targeted_msgs += ({ arg });
 
-    tell_object(this_body(), "\nPlease enter the default mod to the TARGETED emote. Such as 'happily',\n"+
+    tell_me("\nPlease enter the default mod to the TARGETED emote. Such as 'happily',\n"+
         "or 'haphazardly'. If you do not wish to have a default, then press enter.\nOr press 'q' "+
         "to return to the main menu.\n\n"+PROMPT);
 
@@ -439,10 +439,10 @@ nomask void get_mods(string arg, int flag) {
 
             soul_d->set_emote(tmp_emote_untargeted_name, tmp_emote_untargeted_msgs);
 
-            tell_object(this_body(), "\nNew untargeted emote '"+tmp_emote_untargeted_name+"' added.\n");
+            tell_me("\nNew untargeted emote '"+tmp_emote_untargeted_name+"' added.\n");
 
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+            tell_me("\n");
+            tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
             input_to("main_or_quit");
             return;
             break;
@@ -454,10 +454,10 @@ nomask void get_mods(string arg, int flag) {
 
             soul_d->set_emote(tmp_emote_targeted_name, tmp_emote_targeted_msgs);
 
-            tell_object(this_body(), "\nNew targeted emote '"+tmp_emote_targeted_name[0..<3]+"' added.\n");
+            tell_me("\nNew targeted emote '"+tmp_emote_targeted_name[0..<3]+"' added.\n");
 
-            tell_object(this_body(), "\n");
-            tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+            tell_me("\n");
+            tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
             input_to("main_or_quit");
             return;
             break;
@@ -469,15 +469,15 @@ nomask void get_mods(string arg, int flag) {
 
             soul_d->set_emote(tmp_emote_untargeted_name, tmp_emote_untargeted_msgs);
 
-            tell_object(this_body(), "\nNew untargeted emote '"+tmp_emote_untargeted_name+"' added.\n");
+            tell_me("\nNew untargeted emote '"+tmp_emote_untargeted_name+"' added.\n");
 
-            tell_object(this_body(), "\nPlease enter the message printed to the emoter if there is a target.\n"+
+            tell_me("\nPlease enter the message printed to the emoter if there is a target.\n"+
             "Or type 'q' to return to the main menu.\n\nSubstitute the following wherever you like in the string:\n");
 
             for(i = 0; i < sizeof(MARKERS); i++)
                 tmp += MARKERS[i]+"\n";
 
-            tell_object(this_body(), tmp + "\n"+PROMPT);
+            tell_me(tmp + "\n"+PROMPT);
 
             input_to("get_player_msg", 0, 2);
             return;
@@ -494,19 +494,19 @@ nomask void remove_emote(string emote) {
     }
 
     if(!(existing_emotes = soul_d->query_emotes())) {
-        tell_object(this_body(), "There is no emote by that name. Please try another.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
+        tell_me("There is no emote by that name. Please try another.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
             input_to("remove_emote");
         return;
     }//END IF
 
     if((member_array(emote, existing_emotes) == -1) && (member_array(emote+"/t", existing_emotes) == -1)) {
-        tell_object(this_body(), "There is no emote by that name. Please try another.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
+        tell_me("There is no emote by that name. Please try another.\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
         input_to("remove_emote");
         return;
     }//END IF
 
     if((member_array(emote, existing_emotes) != -1) && (member_array(emote+"/t", existing_emotes) != -1)) {
-        tell_object(this_body(), "\nBoth a targeted version and an untargeted version of this emote exists\n"+
+        tell_me("\nBoth a targeted version and an untargeted version of this emote exists\n"+
         "exists. Would you like to delete the (t)argeted version, the (u)ntargeted\n"+
         "version or (b)oth?\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
 
@@ -519,11 +519,11 @@ nomask void remove_emote(string emote) {
     else
         soul_d->delete_emote(emote+"/t");
 
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "Emote '"+emote+"' deleted.\n");
+    tell_me("\n");
+    tell_me("Emote '"+emote+"' deleted.\n");
 
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+    tell_me("\n");
+    tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
     input_to("main_or_quit");
 }
 
@@ -534,7 +534,7 @@ nomask void which_to_delete(string arg, string emote, string targeted_emote) {
     }
 
     if(!arg || arg == "") {
-        tell_object(this_body(), "\nBoth a targeted version and an untargeted version of "
+        tell_me("\nBoth a targeted version and an untargeted version of "
             "this emote exists exists.\n"
             "Would you like to delete the (t)argeted version, the (u)ntargeted\n" +
             "version or (b)oth?\nOr type 'q' to return to the main menu.\n\n"+PROMPT);
@@ -546,39 +546,39 @@ nomask void which_to_delete(string arg, string emote, string targeted_emote) {
     switch(arg) {
         case "t":
             soul_d->delete_emote(targeted_emote);
-            tell_object(this_body(), "\nTargeted emote '"+emote+"' deleted.\n");
+            tell_me("\nTargeted emote '"+emote+"' deleted.\n");
             break;
         case "u":
             soul_d->delete_emote(emote);
-            tell_object(this_body(), "\nUntargeted emote '"+emote+"' deleted.\n");
+            tell_me("\nUntargeted emote '"+emote+"' deleted.\n");
             break;
         case "b":
             soul_d->delete_emote(targeted_emote);
             soul_d->delete_emote(emote);
-            tell_object(this_body(), "\nTargeted emote '"+emote+"' deleted.\n");
-            tell_object(this_body(), "Untargeted emote '"+emote+"' deleted.\n");
+            tell_me("\nTargeted emote '"+emote+"' deleted.\n");
+            tell_me("Untargeted emote '"+emote+"' deleted.\n");
             break;
     }//END SWITCH
 
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+    tell_me("\n");
+    tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
     input_to("main_or_quit");
 }
 
 int confirm_delete_all(string arg) {
     if(!arg || arg == "")
-        tell_object(this_body(), "\nDeletion of all emotes cancelled.\n");
+        tell_me("\nDeletion of all emotes cancelled.\n");
     else if(lower_case(arg) == "y" || lower_case(arg) == "yes") {
         soul_d->reset_emotes();
-        tell_object(this_body(), "\nAll emotes have been deleted.\n");
+        tell_me("\nAll emotes have been deleted.\n");
     } else if(lower_case(arg) == "n" || lower_case(arg) == "no") {
-        tell_object(this_body(), "\n");
-        tell_object(this_body(), "Deletion of all emotes cancelled.\n");
+        tell_me("\n");
+        tell_me("Deletion of all emotes cancelled.\n");
     } else
-        tell_object(this_body(), "\nDeletion of all emotes cancelled.\n");
+        tell_me("\nDeletion of all emotes cancelled.\n");
 
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n"
+    tell_me("\n");
+    tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n"
         + PROMPT);
     input_to("main_or_quit");
     return 1;
@@ -596,31 +596,31 @@ int get_emote_msgs(string arg) {
     msgs = soul_d->query_emote_msgs(arg);
 
     if(!msgs)
-        tell_object(this_body(), "That emote does not exist, or has no output.\n");
+        tell_me("That emote does not exist, or has no output.\n");
     else {
         for(i = 0; i < sizeof(msgs); i++) {
             if(i == 0)
-                tell_object(this_body(), "Message to emoter: " + msgs[i] + "\n");
+                tell_me("Message to emoter: " + msgs[i] + "\n");
             if(i == 1)
-                tell_object(this_body(), "Message to room: " + msgs[i] + "\n");
+                tell_me("Message to room: " + msgs[i] + "\n");
             if(i == 2 && sizeof(msgs) == 3)
-                tell_object(this_body(), "Default modifier: " + msgs[i] + "\n");
+                tell_me("Default modifier: " + msgs[i] + "\n");
             else if(i == 2 && sizeof(msgs) == 4)
-                tell_object(this_body(), "Message to target: " + msgs[i] + "\n");
+                tell_me("Message to target: " + msgs[i] + "\n");
             if(i == 3)
-                tell_object(this_body(), "Default modifier: " + msgs[i] + "\n");
+                tell_me("Default modifier: " + msgs[i] + "\n");
         }
     }
 
-    tell_object(this_body(), "\n");
-    tell_object(this_body(), "Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
+    tell_me("\n");
+    tell_me("Hit enter to go back to the main menu or type 'q' to quit.\n\n" + PROMPT);
     input_to("main_or_quit");
     return 1;
 }
 
 int main_or_quit(string arg) {
     if(lower_case(arg) == "q" || lower_case(arg) == "quit") {
-        tell_object(this_body(), "Exiting emote editor.\n");
+        tell_me("Exiting emote editor.\n");
         remove();
         return 1;
     }
@@ -636,12 +636,12 @@ int print_all_emotes() {
     emotes = soul_d->query_emotes();
 
     if(!emotes)
-        tell_object(this_body(), "There are no emotes to list.\n");
+        tell_me("There are no emotes to list.\n");
     else {
         emotes = sort_array(emotes, 1);
 
         for(i = 0; i < sizeof(emotes); i++)
-            tell_object(this_body(), emotes[i]+"\n");
+            tell_me(emotes[i]+"\n");
     }
 
     return 1;

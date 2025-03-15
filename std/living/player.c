@@ -67,8 +67,8 @@ void enter_world(int reconnecting) {
     };
 
     set_last_login(time());
-    tell(this_object(), "\n");
-    say(capitalize(query_name()) + " has entered.\n");
+    tell_me("\n");
+    tell_them(capitalize(query_name()) + " has entered.\n");
 
     if(!reconnecting) {
         restore_inventory();
@@ -91,7 +91,7 @@ void exit_world() {
     set_last_login(time());
 
     if(environment())
-        say(query_name()+ " leaves " + mud_name() + ".\n");
+      tell_them(query_name()+ " leaves " + mud_name() + ".\n");
 
     save_body();
 }
@@ -126,8 +126,8 @@ void net_dead() {
 void reconnect() {
     restore_body();
     set_last_login(time());
-    tell(this_object(), "You have reconnected to your body.\n");
-    if(environment()) tell_room(environment(), query_name() + " has reconnected.\n", this_body());
+    tell("You have reconnected to your body.\n");
+    if(environment()) tell_them(query_name() + " has reconnected.\n");
     remove_extra_short("link_dead");
     /* reconnection logged in login object */
 }
@@ -298,7 +298,7 @@ void restore_inventory() {
         };
 
         if(e) {
-            write("Error [restore_inventory]: Unable to restore inventory data.\n");
+            tell_me("Error [restore_inventory]: Unable to restore inventory data.\n");
         }
     }
 

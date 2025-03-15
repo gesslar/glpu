@@ -104,6 +104,9 @@ varargs string call_trace(int colour) {
       }, "", programs, lines, functions, origins, colours);
   }
 
+  if(!colour)
+    res = replace_string(res, "{{res}}", "");
+
   return res;
 }
 

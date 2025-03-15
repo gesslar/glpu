@@ -90,7 +90,7 @@ void heart_beat() {
         if(!interactive(this_object())) {
             if((time() - query_last_login()) > 3600) {
                 if(environment())
-                    tell_room(environment(), query_name() + " fades out of existance.\n");
+                    tell_them(query_name() + " fades out of existance.\n");
                 log_file(LOG_LOGIN, query_real_name() + " auto-quit after 1 hour of net-dead at " + ctime(time()) + ".\n");
                 destruct(this_object());
             }

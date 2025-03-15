@@ -55,7 +55,7 @@ mixed main(object tp, string a) {
     for(i = 0 ; i < s ; i++) {
         if(stringp(objs[i])) ob = get_objects(objs[i],0,1);
         else if(objectp(objs[i])) ob = objs[i];
-        if(!ob) write("Can't identify " + identify(objs[i]) + " as an object.\n");
+        if(!ob) tell_me("Can't identify " + identify(objs[i]) + " as an object.\n");
         else tmp += ({ ob });
     }
     if(!sizeof(tmp)) return 1;
@@ -67,7 +67,7 @@ mixed main(object tp, string a) {
     s = sizeof(funcs);
     for(i = 0 ; i < s ; i ++) {
         if(stringp(funcs[i])) tmp += ({ funcs[i] });
-        else write("Can't identify " + identify(funcs[i])+" as a string.\n");
+        else tell_me("Can't identify " + identify(funcs[i])+" as a string.\n");
     }
     if(!sizeof(tmp)) return 1;
     funcs = tmp;
@@ -87,7 +87,7 @@ mixed main(object tp, string a) {
             if(fs == 1) str = str + ret[1];
             else str += (fi?"":"\n") + ret[1];
         }
-        write(str + "\n");
+        tell_me(str + "\n");
     }
     switch(sizeof(rets)) {
         case 0: rets = 0; break;
@@ -133,7 +133,7 @@ private mixed do_call(object ob, string func, mixed args) {
 
 string help(object caller) {
 
-    write(@text
+    tell_me(@text
 USAGE:	call [-<uid>] <object>;<function>;<arg>;<arg>
 
 Calls the function <function> in object <object> passing as many arguments

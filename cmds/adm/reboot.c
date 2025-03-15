@@ -20,8 +20,8 @@ mixed main(object caller, string arg) {
      if(!adminp(previous_object())) return notify_fail("Error [reboot]: Access denied.\n");
 
      if(!arg) {
-          if(status) write("Shutdown: " + status);
-          else write("There is no shutdown or reboot currently in progress.\n");
+          if(status) tell_me("Shutdown: " + status);
+          else tell_me("There is no shutdown or reboot currently in progress.\n");
           return 1;
      }
 

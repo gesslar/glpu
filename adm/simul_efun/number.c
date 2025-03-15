@@ -40,6 +40,14 @@ float clamp(float val, float min, float max) {
   return val;
 }
 
+int clamped(float val, float min, float max) {
+  return val >= min && val <= max;
+}
+
+int between(float val, float min, float max) {
+  return val > min && val < max;
+}
+
 /**
  * Calculates the remainder of `a` divided by `b`.
  *

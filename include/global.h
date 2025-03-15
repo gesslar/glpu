@@ -14,6 +14,7 @@
 #include <objects.h>
 #include <runtime_config.h>
 #include <signal.h>
+#include <type.h>
 
 #define SIMUL_OB     "/adm/obj/simul_efun"
 #define LOGIN_OB     "/adm/obj/login"

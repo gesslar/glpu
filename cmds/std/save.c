@@ -10,7 +10,7 @@ inherit STD_CMD;
 
 mixed main(object caller, string args) {
     caller->save_body();
-    write("Successful [save]: User saved.\n");
+    tell_me("Successful [save]: User saved.\n");
     return 1;
 }
 

@@ -517,8 +517,8 @@ void print_row(int y) {
     string terrain = determine_room_type(0, y, x);
     string symbol = symbols_map[terrain];
     string colour = sprintf("{{re1}}{{%'0'4d}}", colour_map[terrain]);
-    write(sprintf("%s%s{{res}}", colour, symbol));
+    tell_me(sprintf("%s%s{{res}}", colour, symbol));
   }
 
-  write("\n");
+  tell_me("\n");
 }

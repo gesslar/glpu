@@ -331,7 +331,7 @@ void rec_msg(string channel, string user, string msg) {
         continue;
       }
 
-      tell_object(ob, msg);
+      tell(ob, msg);
       GMCP_D->send_gmcp(ob, GMCP_PKG_COMM_CHANNEL_TEXT, payload);
     }
   }

@@ -18,31 +18,29 @@ inherit STD_DAEMON;
 inherit DM_CSS;
 
 // Forward declarations
-string substitute_colour(string text, string mode);
-string wrap(string str, int wrap_at, int indent_at);
-int colourp(string text);
-void resync();
-int is_too_dark_hex(string hex);
-varargs int is_too_dark_rgb(int r, int g, int b);
-string substitute_too_dark(string hex);
+int *hex_to_rgb(string hex);
 int colour_to_greyscale(int colour_code);
-string body_colour_replace(object body, string text, int message_type);
-varargs int get_luminance(int r, int g, int b);
+int colourp(string text);
 private int too_dark_check();
-varargs int get_luminance(int r, int g, int b);
-public int *colour_to_rgb(int colour_code);
-varargs int hex_check(string hex, int three_or_six);
+private string cached(string tag);
 private void normalize_hex(string ref hex);
-varargs public string rgb_to_hex(int *rgb);
+public int *colour_to_rgb(int colour_code);
 public int rgb_to_colour(int r, int g, int b);
 public string rgb_to_sequence(int *rgb, int mode);
-string hex_to_sequence(string hex);
-int *hex_to_rgb(string hex);
 string ansi256_to_3hex(int ansi);
-private string cached(string tag);
+string body_colour_replace(object body, string text, int message_type);
+string hex_to_sequence(string hex);
+string substitute_colour(string text, string mode);
+string substitute_too_dark(string hex);
+string wrap(string str, int wrap_at, int indent_at);
+int get_luminance(int *rgb);
+float get_accessible_luminance_multiplier(int *rgb);
+public string rgb_to_hex(int *rgb);
 void cache_256();
 void cache_attributes();
+void resync();
 
+private nosave float minimum_luminance;
 private nosave mapping attributes = ([ ]);
 private nosave mapping cache = ([]);
 
@@ -61,6 +59,8 @@ private nosave mixed *ansi_rgb = ({
 void setup() {
   cache_attributes();
   cache_256();
+
+  minimum_luminance = mud_config("COLOUR_MININUM_LUMINANCE") || 50.0;
 }
 
 /**
@@ -70,7 +70,8 @@ void setup() {
  * @private
  */
 private int too_dark_check() {
-  return mud_config("COLOUR_TOO_DARK") == "on";
+  return 1;
+  // return mud_config("COLOUR_TOO_DARK") == "on";
 }
 
 /**
@@ -378,37 +379,27 @@ string ansi256_to_3hex(int ansi) {
   return sprintf("%X%X%X", rgb[0] / 17, rgb[1] / 17, rgb[2] / 17); // Convert to 3-hex
 }
 
-varargs int get_luminance(int r, int g, int b) {
-  assert_arg(!nullp(r) && intp(r), 1, "Invalid value.");
-  assert_arg(!nullp(g) && intp(g), 1, "Invalid value.");
-  assert_arg(!nullp(b) && intp(b), 1, "Invalid value.");
+int get_luminance(int *rgb) {
+  assert_arg(uniform_array(rgb, T_INT), 1, "Invalid value.");
+  assert_arg(every(rgb, (: !nullp($1) && clamped($1, 0, 255) :)), 1, "Invalid value.");
 
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
 }
 
 /**
  * Checks if a colour value is considered too dark for display.
  *
  * Tests colour values against the mud's dark colour configuration.
- * Only processes valid colour codes in the range 0-255.
  *
- * @param {string} colour - The colour code to check
+ * @param {int*} rgb - The colour code to check
  * @returns {int} 1 if the colour is too dark, 0 otherwise
  */
-int is_too_dark_hex(string hex) {
-  int *rgb;
+float get_accessible_luminance_multiplier(int *rgb) {
+  float lum = get_luminance(rgb);
 
-  if(!too_dark_check())
-    return 0;
-
-  rgb = hex_to_rgb(hex);
-
-  return is_too_dark_rgb(rgb...);
+  return lum >= minimum_luminance ? 1.0 : minimum_luminance / lum;
 }
 
-varargs int is_too_dark_rgb(int r, int g, int b) {
-  return get_luminance(r, g, b) < 50;
-}
 
 /**
  * Substitutes dark colours with more visible alternatives.
@@ -421,47 +412,37 @@ varargs int is_too_dark_rgb(int r, int g, int b) {
  */
 string substitute_too_dark(string hex) {
   int *rgb;
+  int max_distance;
+  float scale;
 
-  if(!too_dark_check())
+  if(find_index(base_colours(), (: $1[0] == $(hex) :)) > -1)
     return hex;
 
-  normalize_hex(ref hex);
   rgb = hex_to_rgb(hex);
 
-  // Increase brightness (adjust +50 as needed)
-  rgb[0] = clamp(0, 255, rgb[0] + 50);
-  rgb[1] = clamp(0, 255, rgb[1] + 50);
-  rgb[2] = clamp(0, 255, rgb[2] + 50);
+  scale = get_accessible_luminance_multiplier(rgb);
+  if(scale == 1.0)
+    return hex;
 
-  return rgb_to_hex(rgb...);
-}
+  rgb[0] = clamp(to_int(rgb[0] * scale), 0, 255);
+  rgb[1] = clamp(to_int(rgb[1] * scale), 0, 255);
+  rgb[2] = clamp(to_int(rgb[2] * scale), 0, 255);
 
-varargs int hex_check(string hex) {
-  string *new_hex;
-
-  if(pcre_match(hex, HEX_CHECK))
-    return 1;
-
-  return sizeof(new_hex = pcre_extract(hex, TRUE_COLOUR_REGEX));
+  return sprintf("{{%s}}", rgb_to_hex(rgb));
 }
 
 private void normalize_hex(string ref hex) {
   int r, g, b;
   string *match;
 
-  assert_arg(hex_check(hex), 1, "Invalid hex value.");
-
   hex = all_caps(hex);
 
-  // Nope. But, frankly, we shouldn't even have arrived here.
-  if(!sizeof(match = pcre_extract(hex, TRUE_COLOUR_REGEX)))
+  match = pcre_extract(hex, TRUE_COLOUR_REGEX);
+
+  if(!sizeof(match))
     return;
 
-  hex = strlen(match[0])
-    ? match[0]
-    : strlen(match[1])
-      ? match[1]
-      : "";
+  hex = match[0];
 
   // We good!
   if(strlen(hex) == 6)
@@ -475,7 +456,7 @@ private void normalize_hex(string ref hex) {
   g *= 17;
   b *= 17;
 
-  hex = sprintf("%2x%2x%2x", r, g, b);
+  hex = sprintf("%02x%02x%02x", r, g, b);
 }
 
 /**
