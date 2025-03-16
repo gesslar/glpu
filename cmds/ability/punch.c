@@ -12,22 +12,22 @@
 inherit STD_ABILITY;
 
 void setup() {
-    set_name("punch");
+  set_name("punch");
 
-    aggressive = true;
-    target_current = true;
-    mp_cost = 5.0;
+  aggressive = true;
+  target_current = true;
+  mp_cost = 5.0;
 
-    cooldowns = ([
-        "punch" : ({ "", 10 }),
-    ]);
+  cooldowns = ([
+      "punch" : ({ "", 10 }),
+  ]);
 
-    usage_text = "punch <target>";
-    help_text = sprintf(
+  usage_text = "punch <target>";
+  help_text = sprintf(
 "Use your fist to punch a target. This ability costs %.1f MP and has a "
 "cooldown of %d seconds.",
-    evaluate(mp_cost), evaluate(cooldowns["punch"][1])
-    );
+  evaluate(mp_cost), evaluate(cooldowns["punch"][1])
+  );
 }
 
 void finish_punch(object tp, object victim);
