@@ -22,6 +22,7 @@
 #define M_PERSIST_DATA  DIR_STD_MODULES "persist_data"
 #define M_SHOP          DIR_STD_MODULES "shop"
 #define M_SHOP_MENU     DIR_STD_MODULES "shop_menu"
+#define M_STATE         DIR_STD_MODULES "state"
 #define M_UNICODE       DIR_STD_MODULES "unicode"
 #define M_USES          DIR_STD_MODULES "uses"
 

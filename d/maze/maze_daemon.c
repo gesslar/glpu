@@ -4,7 +4,6 @@ private void init_maze() ; // Added forward declaration
 private void setup_dimensions();
 private void setup_shorts();
 private void setup_longs();
-private void generate_maze() ; // Added forward declaration
 protected mixed *generate_map();
 private void generate_layer(int z);
 private void display_maze();
@@ -46,7 +45,7 @@ private nosave string default_long_description;
 // The first element is the minimum size and is added to the result of the
 // prandom function applied to the second element to get the actual size.
 // It is in the order of z, y, x.
-private nosave mixed *dimension_config = ({ ({ 5, 1 }), ({ 10, 5 }), ({ 10, 5 }),  });
+private nosave mixed *dimension_config = ({ ({ 25, 5 }), ({ 25, 5 }), ({ 25, 5 }),  });
 private nosave int *dimensions;
 
 // Some constants
@@ -544,7 +543,7 @@ private nosave string wastes_daemon = "/d/wastes/wastes_daemon";
 // exits and entrances for the maze by finding a valid entrance from the
 // forest and a valid entrance from the wastes.
 void determine_exits_and_entrances() {
-  int *possible, steps, selected;
+  int *possible, state_steps, selected;
   mixed *result;
   int start, height, wastes_height;
   int minimum, size;
@@ -577,12 +576,12 @@ void determine_exits_and_entrances() {
 
     // This is the difference between the last room x coordinate in the forest
     // to the x coordinate of the selected room.
-    steps = last - selected;
+    state_steps = last - selected;
     // printf("Sizeof external_entrances: %d\n", sizeof(external_entrances));
     external_entrances[FOREST] = ({ 0, 11, selected });
 
     // Now let's carve out an exit path from the maze to the forest.
-    hole = dimensions[WIDTH]-1-steps;
+    hole = dimensions[WIDTH]-1-state_steps;
     exits_out[FOREST] = ({ 0, 0, hole});
 
     step = 0;
@@ -691,7 +690,7 @@ private void connect_to_neighbour_path(int *curr, mixed *neighbours) {
 mixed *find_neighbour_path(int z, int y, int x, int source) {
   int *neighbour;
   int *current = ({ z, y, x });
-  int steps, coord;
+  int state_steps, coord;
   int max_steps = 5;
                       // North,           East,          South,         West
   int *directions = ({ ({ 0, -1, 0 }), ({ 0, 0, 1 }), ({ 0, 1, 0 }), ({ 0, 0, -1 }) });
@@ -701,9 +700,9 @@ mixed *find_neighbour_path(int z, int y, int x, int source) {
   result = allocate(2);
   if(source != FOREST) {
     result[0] = directions[NORTH];
-    steps = 0;
-    while(steps++ < max_steps) {
-      coord = y-(steps*1);
+    state_steps = 0;
+    while(state_steps++ < max_steps) {
+      coord = y-(state_steps*1);
       if(coord < 0)
         break;
 
@@ -718,9 +717,9 @@ mixed *find_neighbour_path(int z, int y, int x, int source) {
   // South
   result = allocate(2);
   result[0] = directions[SOUTH];
-  steps = 0;
-  while(steps++ < max_steps) {
-    coord = y+(1*steps);
+  state_steps = 0;
+  while(state_steps++ < max_steps) {
+    coord = y+(1*state_steps);
     if(coord >= dimensions[HEIGHT])
       break;
 
@@ -734,9 +733,9 @@ mixed *find_neighbour_path(int z, int y, int x, int source) {
   // West
   result = allocate(2);
   result[0] = directions[WEST];
-  steps = 0;
-  while(steps++ < max_steps) {
-    coord = x-(1*steps);
+  state_steps = 0;
+  while(state_steps++ < max_steps) {
+    coord = x-(1*state_steps);
     if(coord < 0)
       break;
 
@@ -751,9 +750,9 @@ mixed *find_neighbour_path(int z, int y, int x, int source) {
   result = allocate(2);
   if(source != WASTES) {
     result[0] = directions[EAST];
-    steps = 0;
-    while(steps++ < max_steps) {
-      coord = x+(1*steps);
+    state_steps = 0;
+    while(state_steps++ < max_steps) {
+      coord = x+(1*state_steps);
       if(coord >= dimensions[WIDTH])
         break;
 

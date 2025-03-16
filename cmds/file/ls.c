@@ -85,16 +85,16 @@ mixed main(object caller, string arg) {
     string* paths=({});
     int c;
 
-#define T_NOMATCH  0
-#define T_SHORTOPT 1
-#define T_LONGOPT  2
-#define T_STRING   3
-#define T_WHITESP  4
+#define T_NOMATCH       0
+#define T_SHORTOPT      1
+#define T_LONGOPT       2
+#define T_STRING_VALUE  3
+#define T_WHITESP       4
 
     tokens=reg_assoc(
         arg||"",
         ({"-[a-zA-Z]+", "--[a-zA-Z]+", "[^ \t]+", "[ \t]+"}),
-        ({T_SHORTOPT, T_LONGOPT, T_STRING, T_WHITESP}),
+        ({T_SHORTOPT, T_LONGOPT, T_STRING_VALUE, T_WHITESP}),
         T_NOMATCH
     );
 
@@ -149,7 +149,7 @@ mixed main(object caller, string arg) {
                         return 1;
                 }
                 break;
-            case T_STRING:
+            case T_STRING_VALUE:
                 paths+=({tokens[0][i]});
                 break;
         }

@@ -24,6 +24,7 @@ varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index);
 varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning);
 varargs mixed find(mixed *arr, function fun, mixed extra...);
 varargs mixed reduce(mixed *arr, function fun, mixed init);
+int in_range(int index, mixed *arr);
 
 // File: base64.c
 string base64_encode(mixed source_str);

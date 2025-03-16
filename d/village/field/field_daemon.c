@@ -71,7 +71,7 @@ void setup_short(object room, string file) {
   room->set_short(element_of(field_shorts) + " ("+query_file_name(room)+")");
 }
 
-private nosave int rot = 0;
+private nosave int rotation = 0;
 private nosave string *field_longs;
 
 string setup_field_longs() {
@@ -111,8 +111,8 @@ string setup_field_longs() {
   });
 }
 void setup_long(object room, string file) {
-  room->set_long(field_longs[rot]);
+  room->set_long(field_longs[rotation]);
 
-  if(++rot == sizeof(field_longs))
-    rot = 0;
+  if(++rotation == sizeof(field_longs))
+    rotation = 0;
 }

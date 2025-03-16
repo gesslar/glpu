@@ -392,7 +392,6 @@ mapping get_mud_stats() {
   return MSSP_D->get_mud_stats();
 }
 
-
 string *get_include_path(string object_path) {
   string *DEFAULT_PATH = ({ ":DEFAULT:" });
   string *parts = explode(object_path, "/");

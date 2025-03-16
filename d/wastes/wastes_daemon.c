@@ -86,8 +86,8 @@ protected mixed *generate_map() {
 // This function uses simplex noise to generate the terrain.
 private mixed *generate_terrain() {
   mixed map;
-  int center_x = dimensions[WIDTH] / 2;
-  int center_y = dimensions[HEIGHT] / 2;
+  int centre_x = dimensions[WIDTH] / 2;
+  int centre_y = dimensions[HEIGHT] / 2;
 
   // Create the map. Generate a 3D array, however, we only have one layer.
   // This is stored in the inherited map_data variable, which expects a 3D
@@ -102,7 +102,7 @@ private mixed *generate_terrain() {
         float noise_value;
 
         // Dampening function to make the terrain more natural.
-        float distance = sqrt(pow(x - center_x, 2) + pow(y - center_y, 2));
+        float distance = sqrt(pow(x - centre_x, 2) + pow(y - centre_y, 2));
         // Adjust the 0.05 value to control strength
         float dampening_factor = 1.0 / (1.0 + distance * 0.05);
 
@@ -142,7 +142,7 @@ private mixed *generate_river(mixed map) {
   int river_start_x = dimensions[WIDTH] - (river_width * 3);
   int river_end_x = river_start_x + river_width;
   int river_start_y = 0;
-  int center_y = dimensions[HEIGHT] / 2;
+  int centre_y = dimensions[HEIGHT] / 2;
   mapping counts = ([
     "shallow water": 0,
     "water": 0,
@@ -153,7 +153,7 @@ private mixed *generate_river(mixed map) {
   for(int y = 0; y < river_height; y++) {
     for(int x = 0; x < river_width; x++) {
       float river_noise_value = simplex2(to_float(x) / 10.0, to_float(y) / 20.0);
-      float bias = (to_float(y) - center_y) * 0.05;  // Bias toward a more vertical flow
+      float bias = (to_float(y) - centre_y) * 0.05;  // Bias toward a more vertical flow
       float river_threshold = 1.0 + river_noise_value + bias;
 
       // The river has three levels of depth, shallow, regular, and deep and

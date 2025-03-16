@@ -1,8 +1,12 @@
+#include "include/index.h"
+
 inherit STD_VIRTUAL_MAP;
 
 // Forward declarations
 private void setup_cavern_shorts();
 private void setup_cavern_longs();
+public string setup_room_type(object room);
+public string setup_room_subtype(object room);
 private mixed *generate_map();
 private int surrounding_cells_are_walls(int z, int y, int x, int px, int py);
 private int any_surrounding_cell_is_a_path(int z, int y, int x);
@@ -29,6 +33,7 @@ private int oob(int z, int y, int x);
 private void determine_exit_and_entrance();
 int *find_a_path(int z);
 int *find_a_wall(int z);
+
 
 // Constants
 private nosave int DEPTH = 0, HEIGHT = 1, WIDTH = 2;
@@ -787,4 +792,25 @@ int *find_a_wall(int z) {
   i = result[1];
 
   return ({ z, all_walls[z][i]... });
+}
+
+/**
+ * Sets the room's type. Called from CAVERN_BASE
+ *
+ * @param {STD_ROOM} room - The cavern room to set the type
+ * @returns {string} If successful, returns the same value that was set, or
+ *  the value that it is currently.
+ */
+public string setup_room_type(object room) {
+  return room->set_room_type("cavern");
+}
+
+/**
+ *
+ * @param {STD_ROOM} room - The cavern room to set the subtype
+ * @returns {string} If successful, returns the same value that was set, or
+ *  the value that it is currently.
+ */
+public string setup_room_subtype(object room) {
+  return room->set_room_subtype("cavern"); // 🤷🏻
 }

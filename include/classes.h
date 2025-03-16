@@ -3,12 +3,13 @@
 
 #include <dirs.h>
 
-#define CLASS_ACT            DIR_CLASSES "act.c"
-#define CLASS_ALARM          DIR_CLASSES "alarm.c"
-#define CLASS_DOOR           DIR_CLASSES "door.c"
-#define CLASS_GMCP           DIR_CLASSES "gmcp.c"
-#define CLASS_MENU           DIR_CLASSES "menu.c"
-#define CLASS_ROOMINFO       DIR_CLASSES "roominfo.c"
-#define CLASS_STORAGE        DIR_CLASSES "storage.c"
+#define CLASS_ACT           DIR_CLASSES "act"
+#define CLASS_ALARM         DIR_CLASSES "alarm"
+#define CLASS_DOOR          DIR_CLASSES "door"
+#define CLASS_GMCP          DIR_CLASSES "gmcp"
+#define CLASS_MENU          DIR_CLASSES "menu"
+#define CLASS_ROOMINFO      DIR_CLASSES "roominfo"
+#define CLASS_STATE         DIR_CLASSES "state"
+#define CLASS_STORAGE       DIR_CLASSES "storage"
 
 #endif // __CLASSES_H__

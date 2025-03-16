@@ -16,7 +16,7 @@ void setup() {
   set_short("A Conservatory");
   set_long("The conservatory is filled with exotic plants, each more bizarre "
   "than the last. Brightly coloured flowers bloom in abundance, and the air is "
-  "thick with humidity. A fountain in the center, adorned with goldfish, "
+  "thick with humidity. A fountain in the centre, adorned with goldfish, "
   "bubbles softly, while a collection of mismatched garden furniture "
   "surrounds it. The glass ceiling allows sunlight to pour in, creating a "
   "greenhouse effect that feels both tropical and overwhelming.");

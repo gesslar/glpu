@@ -15,7 +15,7 @@ void setup() {
   set_short("The Kitchen");
   set_long("The kitchen is a flamboyant display of culinary excess. "
   "Brightly coloured appliances stand out against the gaudy wallpaper, "
-  "which features oversized fruit patterns. A large island in the center "
+  "which features oversized fruit patterns. A large island in the centre "
   "is cluttered with an array of mismatched utensils and gadgets, while a "
   "collection of cookbooks, each with a different cover, spills off the "
   "shelves. The air is filled with the scent of spices, making it feel "

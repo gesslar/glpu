@@ -14,17 +14,17 @@ inherit __DIR__ "village_base";
 void setup() {
   set_short("A Path Through the Village");
   set_long(
-"South from the village square, a meticulously laid brick path veers into a "
-"realm of conspicuous opulence. Lined with extravagantly pruned hedges and "
-"interspersed with statues of dubious taste, this route unmistakably leads to "
-"an overly ostentatious manor. The manor, a sprawling edifice with gaudy "
-"embellishments and towering spires, seems almost to compete with the sun for "
-"brilliance. Gold leaf accents catch the light, and flamboyant banners "
-"flutter from the rooftop, proclaiming the wealth (and perhaps the "
-"questionable taste) of the occupants. This path, distinctly less worn than "
-"those leading to more modest dwellings, guides visitors to a world of "
-"excess, where the line between affluence and extravagance is not just "
-"crossed but obliterated.");
+  "South from the village square, a meticulously laid brick path veers into "
+  "a realm of conspicuous opulence. Lined with extravagantly pruned hedges "
+  "and interspersed with statues of dubious taste, this route unmistakably "
+  "leads to an overly ostentatious manor. The manor, a sprawling edifice with "
+  "gaudy embellishments and towering spires, seems almost to compete with the "
+  "sun for brilliance. Gold leaf accents catch the light, and flamboyant "
+  "banners flutter from the rooftop, proclaiming the wealth (and perhaps the "
+  "questionable taste) of the occupants. This path, distinctly less worn "
+  "than those leading to more modest dwellings, guides visitors to a world of "
+  "excess, where the line between affluence and extravagance is not just "
+  "crossed but obliterated.");
 
   set_exits(([
     "south": "manor/porch",

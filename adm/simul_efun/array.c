@@ -4,8 +4,8 @@
  * Returns a new array containing the distinct elements of the input
  * array.
  *
- * @param {mixed[]} arr - An array of mixed types.
- * @return {mixed[]} - A new array with distinct elements from the input array.
+ * @param {mixed*} arr - An array of mixed types.
+ * @returns {mixed*} A new array with distinct elements from the input array.
  */
 varargs mixed *distinct_array(mixed *arr, int same_order) {
   assert_arg(pointerp(arr), 1, "Array is required.");
@@ -31,11 +31,11 @@ varargs mixed *distinct_array(mixed *arr, int same_order) {
  * array. If start is greater than end, the new array will contain
  * all the elements of the input array.
  *
- * @param {mixed[]} arr - The input array.
+ * @param {mixed*} arr - The input array.
  * @param {int} start - The starting index of elements to be removed.
  * @param {int} end - The ending index of elements to be removed. Defaults to
  *                      start if not specified.
- * @return {mixed[]} - A new array with specified elements removed.
+ * @returns {mixed*} A new array with specified elements removed.
  */
 varargs mixed *remove_array_element(mixed *arr, int start, int end) {
   if(!end) end = start;
@@ -48,7 +48,7 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) {
  * and/or adding new elements. Returns a new array with the
  * modifications.
  *
- * @param {mixed[]} arr - The array from which elements will be removed and to
+ * @param {mixed*} arr - The array from which elements will be removed and to
  *                        which new elements may be added.
  * @param {int} start - The zero-based index at which to start changing the
  *                      array. If negative, it will begin that many elements
@@ -56,10 +56,10 @@ varargs mixed *remove_array_element(mixed *arr, int start, int end) {
  * @param {int} delete_count - The number of elements to remove from the array,
  *                             starting from the index specified by start. If
  *                             delete_count is 0, no elements are removed.
- * @param {mixed[]} items_to_add - An array of elements to add to the array at
+ * @param {mixed*} items_to_add - An array of elements to add to the array at
  *                                   the start index. Can be omitted or passed as
  *                                   null if no elements are to be added.
- * @return {mixed[]} - A new array reflecting the desired modifications.
+ * @returns {mixed*} A new array reflecting the desired modifications.
  */
 varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_add) {
   mixed *before, *after;
@@ -76,8 +76,8 @@ varargs mixed *splice(mixed *arr, int start, int delete_count, mixed *items_to_a
  * Returns a new array with the elements of the input array in
  * reverse order.
  *
- * @param {mixed[]} arr - The input array.
- * @return {mixed[]} - A new array with elements in reverse order.
+ * @param {mixed*} arr - The input array.
+ * @returns {mixed*} A new array with elements in reverse order.
  */
 mixed *reverse_array(mixed *arr) {
   int i, j, sz;
@@ -95,7 +95,7 @@ mixed *reverse_array(mixed *arr) {
  *
  * @param {mixed*} arr - The array to check.
  * @param {string} type - The type to check for.
- * @return {int} - Returns 1 if all elements are of the specified type, 0
+ * @returns {int} Returns 1 if all elements are of the specified type, 0
  *                 otherwise.
  */
 int uniform_array(mixed *arr, string type) {
@@ -116,7 +116,7 @@ int uniform_array(mixed *arr, string type) {
  * @param {mixed*} arr - The array to fill.
  * @param {mixed} value - The value to fill the array with.
  * @param {int} start_index - The index at which to start filling the array. (optional)
- * @return {mixed} - The filled array.
+ * @returns {mixed} The filled array.
  */
 varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
   mixed *work;
@@ -153,7 +153,7 @@ varargs mixed array_fill(mixed *arr, mixed value, int size, int start_index) {
  * @param {int} size - The size of the array to create.
  * @param {mixed} value - The value to fill the array with.
  * @param {int} beginning - Whether to fill the array from the beginning. (optional)
- * @return {mixed} - The padded array.
+ * @returns {mixed} The padded array.
  */
 varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) {
   mixed *work;
@@ -185,8 +185,8 @@ varargs mixed array_pad(mixed *arr, int size, mixed value, int beginning) {
 /**
  * Removes and returns the last element of the array.
  *
- * @param {mixed[]} arr - The array from which to pop an element.
- * @return {mixed} - The last element of the array.
+ * @param {mixed*} arr - The array from which to pop an element.
+ * @returns {mixed} The last element of the array.
  */
 mixed pop(mixed ref *arr) {
   mixed ret;
@@ -201,9 +201,9 @@ mixed pop(mixed ref *arr) {
  * Adds a new element to the end of the array and returns the new
  * size of the array.
  *
- * @param {mixed[]} arr - The array to which to push an element.
+ * @param {mixed*} arr - The array to which to push an element.
  * @param {mixed} value - The element to push onto the array.
- * @return {int} - The new size of the array.
+ * @returns {int} The new size of the array.
  */
 int push(mixed ref *arr, mixed value) {
   arr += ({ value });
@@ -213,8 +213,8 @@ int push(mixed ref *arr, mixed value) {
 /**
  * Removes and returns the first element of the array.
  *
- * @param {mixed[]} arr - The array from which to shift an element.
- * @return {mixed} - The first element of the array.
+ * @param {mixed*} arr - The array from which to shift an element.
+ * @returns {mixed} The first element of the array.
  */
 mixed shift(mixed ref *arr) {
   mixed ret;
@@ -229,9 +229,9 @@ mixed shift(mixed ref *arr) {
  * Adds a new element to the beginning of the array and returns
  * the new size of the array.
  *
- * @param {mixed[]} arr - The array to which to unshift an element.
+ * @param {mixed*} arr - The array to which to unshift an element.
  * @param {mixed} value - The element to unshift onto the array.
- * @return {int} - The new size of the array.
+ * @returns {int} The new size of the array.
  */
 int unshift(mixed ref *arr, mixed value) {
   arr = ({ value }) + arr;
@@ -243,10 +243,10 @@ int unshift(mixed ref *arr, mixed value) {
  * from the start index to the end index. If the end index is
  * negative, it will start from the end of the array.
  *
- * @param {mixed[]} arr - The array to slice.
+ * @param {mixed*} arr - The array to slice.
  * @param {int} start - The starting index of the slice.
  * @param {int} end - The ending index of the slice.
- * @return {mixed[]} - A new array with the specified elements.
+ * @returns {mixed*} A new array with the specified elements.
  */
 varargs mixed *array_slice(mixed *arr, int start, int end) {
   if(nullp(arr))
@@ -261,8 +261,8 @@ varargs mixed *array_slice(mixed *arr, int start, int end) {
 /**
  * Merges arrays into a single array.
  *
- * @param {mixed[]} arrs - Comma separated arguments of arrays
- * @return {mixed[]} - A new array with elements from both input arrays.
+ * @param {mixed*} arrs - Comma separated arguments of arrays
+ * @returns {mixed*} A new array with elements from both input arrays.
  */
 mixed *array_merge(mixed arrs...) {
   if(!uniform_array(arrs, T_ARRAY))
@@ -281,7 +281,7 @@ mixed *array_merge(mixed arrs...) {
  * @param {mixed*} arr Array to reduce
  * @param {function} fun Function taking (accumulator, currentValue, index, array)
  * @param {mixed} [init=arr[0]] Initial value for accumulator
- * @return {mixed} Final accumulated value
+ * @returns {mixed} Final accumulated value
  *
  * @example
  * ```c
@@ -430,4 +430,11 @@ varargs mixed find(mixed *arr, function fun, mixed extra...) {
   index = find_index(arr, fun, extra...);
 
   return index != -1 ? arr[index] : null;
+}
+
+int in_range(int index, mixed *arr) {
+  if(!sizeof(arr))
+    return 0;
+
+  return clamped(index, 0, sizeof(arr)-1);
 }
