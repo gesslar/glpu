@@ -9,7 +9,7 @@ int some(mixed *arr, function fun);
 int uniform_array(mixed *arr, string type);
 int unshift(mixed ref *arr, mixed value);
 varargs mixed *distinct_array(mixed *arr, int same_order);
-mixed *eject(mixed ref *arr, int index);
+mixed eject(mixed ref *arr, int index);
 mixed *flatten(mixed *arr);
 mixed *insert(mixed ref *arr, mixed value, int index);
 mixed *reverse_array(mixed *arr);
@@ -59,6 +59,7 @@ string subjective(mixed ob);
 varargs string article(string str, int definite);
 varargs string add_article(string str, int definite);
 string remove_article(string str);
+string number_word(int num);
 
 // File: existence.c
 int directory_exists(string dirname);

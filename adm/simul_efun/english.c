@@ -292,3 +292,25 @@ string remove_article(string str) {
 
   return str;
 }
+
+private mapping _number_words = ([
+  0: "no",   1: "one", 2: "two",   3: "three", 4: "four",
+  5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine",
+]);
+
+/**
+ * Converts a number to its English word representation.
+ *
+ * Returns word form for numbers 0-9, string representation for larger numbers.
+ * Follows common English style guidelines for number usage in text.
+ *
+ * @param {int} num - The number to convert
+ * @returns {string} Word form for 0-9 ("one", "two", etc) or string for larger numbers
+ * @example
+ * number_word(1);    // Returns "one"
+ * number_word(5);    // Returns "five"
+ * number_word(10);   // Returns "10"
+ */
+string number_word(int num) {
+  return _number_words[num] || ""+num;
+}

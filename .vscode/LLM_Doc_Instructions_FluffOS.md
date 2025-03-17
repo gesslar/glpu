@@ -228,6 +228,7 @@ This is often handled with default values inside the function.
 ### Tuples
 
 Tuples are represented as arrays with the member types within:
+
 ```c
 ({ string, int, float })
 ```

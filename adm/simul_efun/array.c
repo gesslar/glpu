@@ -320,6 +320,16 @@ varargs mixed reduce(mixed *arr, function fun, mixed init, mixed arg...) {
   return result;
 }
 
+/**
+ * Checks if every element in the array satisfies the testing function.
+ *
+ * @param {mixed*} arr - Array to test
+ * @param {function} fun - Function to test each element
+ * @returns {int} 1 if all elements pass the test, 0 if any fail
+ * @errors If arguments are invalid types
+ * @example
+ * int all_positive = every(({1,2,3}), (: $1 > 0 :));
+ */
 int every(mixed *arr, function fun) {
   assert_arg(pointerp(arr), 1, "Array is required");
   assert_arg(valid_function(fun), 2, "Function is required");
@@ -331,7 +341,16 @@ int every(mixed *arr, function fun) {
   return 1;
 }
 
+/**
+ * Checks if an array includes a specific element.
+ *
+ * @param {mixed*} arr - Array to search
+ * @param {mixed} elem - Element to find
+ * @returns {int} 1 if element is found, 0 if not
+ */
 int includes(mixed *arr, mixed elem) {
+  if(!sizeof(arr))
+    return 0;  // Nothing can be in an empty array!
   return of(elem, arr, (: $1 == $2 :));
 }
 
@@ -348,14 +367,44 @@ private int same_array_exact(mixed *one, mixed *two) {
   return 1;
 }
 
+/**
+ * Checks if two arrays contain the same elements.
+ *
+ * @param {mixed*} one - First array to compare
+ * @param {mixed*} two - Second array to compare
+ * @param {int} [exact=0] - If 1, checks for exact match including order
+ * @returns {int} 1 if arrays match, 0 if not
+ */
 varargs int same_array(mixed *one, mixed *two, int exact) {
+  int sz_one, sz_two;
+
+  // Quick size check first - if sizes differ, arrays can't be equal
+  sz_one = sizeof(one);
+  sz_two = sizeof(two);
+  if(sz_one != sz_two)
+    return 0;
+
+  // No elements = arrays are equal
+  if(!sz_one)
+    return 1;
+
   if(!!exact)
     return same_array_exact(one, two);
 
-  return every(one, (: includes($(two), $1) :)) &&
-         every(two, (: includes($(one), $1) :));
+  // Check each element exists in both arrays
+  return every(one, (: includes($(two), $1) :));
 }
 
+/**
+ * Tests whether at least one element in the array passes the test.
+ *
+ * @param {mixed*} arr - Array to test
+ * @param {function} fun - Function to test each element
+ * @returns {int} 1 if any element passes, 0 if none do
+ * @errors If arguments are invalid types
+ * @example
+ * int has_negative = some(({1,-2,3}), (: $1 < 0 :));
+ */
 int some(mixed *arr, function fun) {
   assert_arg(pointerp(arr), 1, "Array is required");
   assert_arg(valid_function(fun), 2, "Function is required");
@@ -367,7 +416,14 @@ int some(mixed *arr, function fun) {
   return 0;
 }
 
-mixed *eject(mixed ref *arr, int index) {
+/**
+ * Removes and returns an element at a specific index.
+ *
+ * @param {mixed*} arr - Array to modify
+ * @param {int} index - Index of element to remove
+ * @returns {mixed} The removed element
+ */
+mixed eject(mixed ref *arr, int index) {
   mixed ret;
 
   ret = arr[index];
@@ -381,6 +437,14 @@ mixed *eject(mixed ref *arr, int index) {
   return ret;
 }
 
+/**
+ * Inserts an element at a specific index.
+ *
+ * @param {mixed*} arr - Array to modify
+ * @param {mixed} value - Value to insert
+ * @param {int} index - Index where to insert
+ * @returns {int} New size of array
+ */
 mixed insert(mixed ref *arr, mixed value, int index) {
   if(index == 0)
     return unshift(ref arr, value);
@@ -392,6 +456,13 @@ mixed insert(mixed ref *arr, mixed value, int index) {
   return sizeof(arr);
 }
 
+/**
+ * Flattens a nested array into a single-level array.
+ *
+ * @param {mixed*} arr - Array to flatten
+ * @returns {mixed*} Flattened array
+ * @errors If argument is not an array
+ */
 mixed *flatten(mixed *arr) {
   int i = 0;
 
@@ -408,6 +479,15 @@ mixed *flatten(mixed *arr) {
   return arr;
 }
 
+/**
+ * Returns the index of the first element that passes the test function.
+ *
+ * @param {mixed*} arr - Array to search
+ * @param {function} fun - Test function
+ * @param {mixed} extra... - Additional arguments to pass to test function
+ * @returns {int} Index of first matching element or -1 if none found
+ * @errors If arguments are invalid types
+ */
 varargs int find_index(mixed *arr, function fun, mixed extra...) {
   int i, sz;
 
@@ -421,6 +501,15 @@ varargs int find_index(mixed *arr, function fun, mixed extra...) {
   return -1;
 }
 
+/**
+ * Returns the first element that passes the test function.
+ *
+ * @param {mixed*} arr - Array to search
+ * @param {function} fun - Test function
+ * @param {mixed} extra... - Additional arguments to pass to test function
+ * @returns {mixed} First matching element or null if none found
+ * @errors If arguments are invalid types
+ */
 varargs mixed find(mixed *arr, function fun, mixed extra...) {
   int index;
 
@@ -432,6 +521,13 @@ varargs mixed find(mixed *arr, function fun, mixed extra...) {
   return index != -1 ? arr[index] : null;
 }
 
+/**
+ * Checks if an index is within the valid range of an array.
+ *
+ * @param {int} index - Index to check
+ * @param {mixed*} arr - Array to check against
+ * @returns {int} 1 if index is valid, 0 if not
+ */
 int in_range(int index, mixed *arr) {
   if(!sizeof(arr))
     return 0;
