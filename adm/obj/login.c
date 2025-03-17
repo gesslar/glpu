@@ -30,20 +30,20 @@ private nosave mapping account = null;
 void get_account(string str);
 void get_password(string str, int i);
 void verify_password(string str, int i);
-void new_account(string str, string name);
+void new_account(string str, string _name);
 void auto_destruct();
-void reconnect(string str, string name);
+void reconnect(string str, string _name);
 void setup_new();
-void enter_world(string name, int reconnecting);
+void enter_world(string _name, int reconnecting);
 void idle_email(string str);
-object create_body(string name);
+object create_body(string _name);
 string parse_tokens(string text);
 void greet();
 void character_menu();
 void character_menu_input(string str, string prompt);
 void first_admin_login();
 
-string name, character;
+string _name, character;
 
 object body;
 
@@ -80,7 +80,7 @@ void greet(int gmcp_auth) {
   input_to("get_account");
 }
 
-void gmcp_authenticated(string name, string char) {
+void gmcp_authenticated(string _name, string char) {
   int reconnecting = 0;
   object old_body;
 
@@ -121,20 +121,20 @@ void get_account(string str) {
     return dest_me();
   }
 
-  if(sscanf(str, "%s@%s", character, name) != 2)
-    name = str;
+  if(sscanf(str, "%s@%s", character, _name) != 2)
+    _name = str;
 
-  if(LOCKDOWN_D->query_dev_lock() && wizardp(name) && !adminp(name)) {
+  if(LOCKDOWN_D->query_dev_lock() && wizardp(_name) && !adminp(_name)) {
     _error(LOCKDOWN_D->query_dev_lock_msg());
     return dest_me();
   }
 
-  if(LOCKDOWN_D->query_player_lock() && (!adminp(name) && !wizardp(name))) {
+  if(LOCKDOWN_D->query_player_lock() && (!adminp(_name) && !wizardp(_name))) {
     _error(LOCKDOWN_D->query_player_lock_msg());
     return dest_me();
   }
 
-  if(LOCKDOWN_D->query_vip_lock() && (!adminp(name) && !wizardp(name) && (member_array(name, LOCKDOWN_D->query_play_testers()) == -1))) {
+  if(LOCKDOWN_D->query_vip_lock() && (!adminp(_name) && !wizardp(_name) && (member_array(_name, LOCKDOWN_D->query_play_testers()) == -1))) {
     _error(LOCKDOWN_D->query_vip_lock_msg());
     return dest_me();
   }
@@ -157,16 +157,16 @@ void get_account(string str) {
   }
 #endif
 
-  account = ACCOUNT_D->load_account(name);
+  account = ACCOUNT_D->load_account(_name);
   if(!account) {
     if(LOCKDOWN_D->query_player_lock()) {
       _error(LOCKDOWN_D->query_player_lock_msg());
       return dest_me();
     }
 
-    _info("The account %s does not exist.", name);
+    _info("The account %s does not exist.", _name);
     _question("Would you like to create it? ");
-    input_to("new_account", name);
+    input_to("new_account", _name);
     return;
   }
 
@@ -388,7 +388,7 @@ void new_character(string str) {
     return;
   }
 
-  if(!ACCOUNT_D->add_character(name, str)) {
+  if(!ACCOUNT_D->add_character(_name, str)) {
     _error("There was a problem creating your character.");
     return dest_me();
   }
@@ -433,7 +433,7 @@ void first_admin_login() {
   }
 }
 
-void reconnect(string str, string name) {
+void reconnect(string str, string _name) {
   str = lower_case(str);
 
   if(str == "y" || str == "yes" || str == "yup" || str == "sure" || str == "indeed") {
@@ -446,30 +446,30 @@ void reconnect(string str, string name) {
     }
 
     body->reconnect();
-    enter_world(name, 1);
+    enter_world(_name, 1);
     return;
   } else {
     body->remove();
     tell(this_object(), "You have chosen not to reconnect to your old body.\n");
     write_file(log_dir() + LOG_LOGIN, capitalize(str) + " ("+getoid(body)+") logged in from " +
       query_ip_number(this_object()) + " on " + ctime(time()) + "\n");
-    enter_world(name, 0);
+    enter_world(_name, 0);
     return;
   }
 }
 
-void enter_world(string name, int reconnecting) {
+void enter_world(string _name, int reconnecting) {
   string loc;
   string e;
   object room;
   int result;
 
   if(!objectp(body))
-    body = BODY_D->create_body(name);
+    body = BODY_D->create_body(_name);
 
   if(body->is_dead()) {
     body->remove();
-    body = BODY_D->create_ghost(name);
+    body = BODY_D->create_ghost(_name);
   }
 
   exec(body, this_object());
@@ -477,7 +477,7 @@ void enter_world(string name, int reconnecting) {
   if(reconnecting)
     body->reconnect();
 
-  body->setup_body(name);
+  body->setup_body(_name);
   body->clear_gmcp_data();
   body->set_gmcp_client(login_gmcp_data["client"]);
   body->set_gmcp_supports(login_gmcp_data["supports"]);
@@ -549,13 +549,13 @@ void enter_world(string name, int reconnecting) {
   remove();
 }
 
-object create_body(string name) {
+object create_body(string _name) {
   string err;
 
   if(origin() != ORIGIN_LOCAL)
     return 0;
 
-  err = catch(body = BODY_D->create_body(name));
+  err = catch(body = BODY_D->create_body(_name));
   if(err || !body) {
     receive("\nThere was a problem creating your body.\n");
     dest_me();

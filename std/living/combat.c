@@ -161,7 +161,7 @@ public int can_strike(object enemy, mixed weapon) {
   float lvl = query_effective_level();
   float vlvl = enemy->query_effective_level();
   float result;
-  string name, vname;
+  string _name, vname;
   object env;
   string *messes, mess;
   string skill_name, *skill_parts;

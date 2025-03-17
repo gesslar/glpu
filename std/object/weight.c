@@ -1,22 +1,42 @@
 /**
  * @file /std/object/weight.c
- * @description Handles mass of objects
+ * @description Handles mass and weight mechanics for objects in the game.
  *
  * @created 2024-02-18 - Gesslar
- * @last_modified 2024-02-18 - Gesslar
+ * @last_modified 2025-03-16 - GitHub Copilot
  *
  * @history
  * 2024-02-18 - Gesslar - Created
+ * 2025-03-16 - GitHub Copilot - Added documentation
  */
 
 #include <weight.h>
 
+/**
+ * The mass of this object in standard units.
+ *
+ * @type {int}
+ */
 int _mass;
 
+/**
+ * Returns the current mass of the object.
+ *
+ * @returns {int} The mass in standard units
+ */
 int query_mass() {
   return _mass;
 }
 
+/**
+ * Sets the mass of the object to a new absolute value.
+ *
+ * Updates the environment's mass tracking if applicable.
+ * Will not allow setting negative mass values.
+ *
+ * @param {int} new_mass - The new mass value to set
+ * @returns {int} 1 if successful, 0 if failed
+ */
 int set_mass(int new_mass) {
   int delta;
 
@@ -29,6 +49,16 @@ int set_mass(int new_mass) {
   return adjust_mass(delta);
 }
 
+/**
+ * Adjusts the mass of the object by a relative amount.
+ *
+ * Updates the environment's mass and capacity tracking when required.
+ * Verifies that the environment can accommodate the change.
+ * Has no effect if USE_MASS mud configuration is disabled.
+ *
+ * @param {int} delta - The amount to adjust by (positive or negative)
+ * @returns {int} 1 if adjustment succeeded, 0 if failed
+ */
 int adjust_mass(int delta) {
   object env;
 

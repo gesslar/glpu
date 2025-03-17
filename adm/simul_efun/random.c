@@ -271,13 +271,13 @@ mixed *prandom_clamp(mixed seed, int min, int max) {
  */
 mixed *pelement_of_weighted(mixed seed, mapping weights) {
   float total = 0.0;
-  mixed *items = keys(weights);
+  mixed *_items = keys(weights);
   mixed *float_result;
   float roll;
   mixed *result = allocate(2);
 
   // If the mapping is empty, return 0
-  if(!sizeof(items))
+  if(!sizeof(_items))
     return 0;
 
   total = sum(map(values(weights), (: to_float :)));

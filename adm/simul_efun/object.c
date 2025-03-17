@@ -435,14 +435,14 @@ object *get_livings(mixed ids, object room) {
 /**
  * Locates a player object by the specified name within the specified room.
  *
- * @param {string} name - The name of the player to locate.
+ * @param {string} _name - The name of the player to locate.
  * @param {object} room - The room to search for the player in.
  * @returns {object STD_PLAYER|0} The located player object, or 0 if not found.
  */
-object get_player(string name, object room) {
+object get_player(string _name, object room) {
   object ob;
 
-  ob = get_living(name, room);
+  ob = get_living(_name, room);
 
   if(ob && userp(ob))
     return ob;

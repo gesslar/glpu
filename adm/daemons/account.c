@@ -12,12 +12,12 @@
 inherit STD_DAEMON;
 
 // Forward declarations
-int create_account(string name, string password);
-mapping load_account(string name);
-string write_account(string name, string key, mixed data);
-mixed read_account(string name, string key);
-int valid_manip(string name);
-int remove_account(string name);
+int create_account(string _name, string password);
+mapping load_account(string _name);
+string write_account(string _name, string key, mixed data);
+mixed read_account(string _name, string key);
+int valid_manip(string _name);
+int remove_account(string _name);
 int add_character(string account_name, string str);
 int remove_character(string account_name, string str);
 string character_account(string str);
@@ -34,36 +34,36 @@ void setup() {
 /**
  * @daemon_function create_account
  * @description Creates a new account with the given name and password.
- * @param {string} name - The name for the new account.
+ * @param {string} _name - The name for the new account.
  * @param {string} password - The password for the new account.
  * @returns {int} 1 if the account was created successfully, 0 otherwise.
  */
-int create_account(string name, string password) {
+int create_account(string _name, string password) {
     mapping account;
 
-    if(!valid_manip(name))
+    if(!valid_manip(_name))
         return 0;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return 0;
 
     if(!password || !stringp(password))
         return 0;
 
-    if(valid_account(name))
+    if(valid_account(_name))
         return 0;
 
     if(password[0..2] != "$6$")
         return 0;
 
-    name = lower_case(name);
+    _name = lower_case(_name);
 
     account = ([
         "password" : password,
         "characters" : ({})
     ]);
 
-    accounts[name] = account;
+    accounts[_name] = account;
 
     save_data();
 
@@ -73,48 +73,48 @@ int create_account(string name, string password) {
 /**
  * @daemon_function load_account
  * @description Loads an account from the database or memory.
- * @param {string} name - The name of the account to load.
+ * @param {string} _name - The name of the account to load.
  * @returns {mapping} The account data if found, null otherwise.
  */
-mapping load_account(string name) {
+mapping load_account(string _name) {
     string file;
 
-    if(!valid_manip(name))
+    if(!valid_manip(_name))
         return null;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return null;
 
-    if(!accounts[name]) {
-        file = account_file(name);
+    if(!accounts[_name]) {
+        file = account_file(_name);
 
         if(!file_exists(file))
             return null;
 
-        accounts[name] = from_string(read_file(file));
-        reverse[file] = name;
+        accounts[_name] = from_string(read_file(file));
+        reverse[file] = _name;
 
         rm(file);
     }
 
-    return accounts[name];
+    return accounts[_name];
 }
 
 /**
  * @daemon_function write_account
  * @description Writes a specific key-value pair to an account.
- * @param {string} name - The name of the account to modify.
+ * @param {string} _name - The name of the account to modify.
  * @param {string} key - The key to write.
  * @param {mixed} data - The data to write.
  * @returns {string} The written data if successful, 0 otherwise.
  */
-string write_account(string name, string key, mixed data) {
+string write_account(string _name, string key, mixed data) {
     mapping account;
 
-    if(!valid_manip(name))
+    if(!valid_manip(_name))
         return 0;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return 0;
 
     if(!key || !stringp(key))
@@ -123,14 +123,14 @@ string write_account(string name, string key, mixed data) {
     if(!data)
         return 0;
 
-    account = load_account(name);
+    account = load_account(_name);
 
     if(!account)
         return 0;
 
     account[key] = data;
 
-    write_file(account_file(name), pretty_map(account));
+    write_file(account_file(_name), pretty_map(account));
 
     save_data();
 
@@ -140,23 +140,23 @@ string write_account(string name, string key, mixed data) {
 /**
  * @daemon_function read_account
  * @description Reads a specific key from an account.
- * @param {string} name - The name of the account to read from.
+ * @param {string} _name - The name of the account to read from.
  * @param {string} key - The key to read.
  * @returns {mixed} The value of the key if found, 0 otherwise.
  */
-mixed read_account(string name, string key) {
+mixed read_account(string _name, string key) {
     mapping account;
 
-    if(!valid_manip(name))
+    if(!valid_manip(_name))
         return 0;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return 0;
 
     if(!key || !stringp(key))
         return 0;
 
-    account = load_account(name);
+    account = load_account(_name);
 
     if(!account)
         return 0;
@@ -167,10 +167,10 @@ mixed read_account(string name, string key) {
 /**
  * @daemon_function valid_manip
  * @description Checks if the current object has permission to manipulate the account.
- * @param {string} name - The name of the account to check.
+ * @param {string} _name - The name of the account to check.
  * @returns {int} 1 if manipulation is allowed, 0 otherwise.
  */
-int valid_manip(string name) {
+int valid_manip(string _name) {
     object prev = previous_object();
     object caller = this_caller();
 
@@ -178,9 +178,9 @@ int valid_manip(string name) {
         return 0;
 
     if(!is_member(query_privs(prev), "admin") &&
-       query_privs(prev) != name &&
+       query_privs(prev) != _name &&
        base_name(previous_object()) != "/std/modules/gmcp/Char" &&
-       (caller && query_privs(caller)) != name)
+       (caller && query_privs(caller)) != _name)
         return 0;
 
     return 1;
@@ -189,22 +189,22 @@ int valid_manip(string name) {
 /**
  * @daemon_function remove_account
  * @description Removes an account from the database.
- * @param {string} name - The name of the account to remove.
+ * @param {string} _name - The name of the account to remove.
  * @returns {int} 1 if the account was removed successfully, 0 otherwise.
  */
-int remove_account(string name) {
-    if(!valid_manip(name))
+int remove_account(string _name) {
+    if(!valid_manip(_name))
         return 0;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return 0;
 
-    if(!valid_account(name))
+    if(!valid_account(_name))
         return 0;
 
-    map_delete(accounts, name);
+    map_delete(accounts, _name);
     foreach(string key, string value in reverse) {
-        if(value == name)
+        if(value == _name)
             map_delete(reverse, key);
     }
 

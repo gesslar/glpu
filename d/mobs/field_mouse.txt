@@ -1,20 +1,20 @@
 ([
-    "type" : "rodent",
-    "name": "field mouse",
-    "short" : "field mouse",
-    "long" : "A small field mouse scurries about, searching for seeds and grains.",
-    "id" : ({ "field mouse", "mouse" }),
-    "weapon_name" : "teeth",
-    "weapon_type" : "piercing",
-    "level" : ({ 1, 1 }),
-    "gender" : ({ "male", "female" }),
-    "loot" : ({
-        "/obj/food/cheese.food",
-        "/obj/loot/small_bone.loot",
-        "/obj/loot/insect_wing.loot"
-    }),
-    "loot_chance" : 50.0,
-    "coins" : ([
-        "copper" : ({ 1, 25.0 })
-    ])
+  "type" : "rodent",
+  "name": "field mouse",
+  "short" : "field mouse",
+  "long" : "A small field mouse scurries about, searching for seeds and grains.",
+  "id" : ({ "field mouse", "mouse" }),
+  "weapon_name" : "teeth",
+  "weapon_type" : "piercing",
+  "level" : ({ 1, 1 }),
+  "gender" : ({ "male", "female" }),
+  "loot" : ({
+    "/obj/food/cheese.food",
+    "/obj/loot/small_bone.loot",
+    "/obj/loot/insect_wing.loot"
+  }),
+  "loot_chance" : 50.0,
+  "coins" : ([
+      "copper" : ({ 1, 25.0 })
+  ])
 ])

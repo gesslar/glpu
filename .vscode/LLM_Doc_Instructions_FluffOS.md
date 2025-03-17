@@ -20,6 +20,7 @@ and follow this structure:
 ```
 
 Key points:
+
 - Start with `/**` and end with `*/`
 - Each line within the comment begins with ` * ` (space, asterisk, space)
 - Leave an empty line (with just ` * `) between the description and tags
@@ -28,12 +29,14 @@ Key points:
 ## Function Documentation
 
 For functions, document:
+
 1. Purpose/behavior of the function
 2. Each parameter
 3. Return value
 4. Any errors/exceptions
 
 Example:
+
 ```c
 /**
  * Calculates the total damage based on attack power and defense.
@@ -51,10 +54,12 @@ int calculate_damage(int attack, int defense) {
 ## Variable Documentation
 
 For variables, document:
+
 1. Purpose/use of the variable
 2. Type information
 
 Example:
+
 ```c
 /**
  * Maximum health points allowed for any player character.
@@ -67,20 +72,26 @@ int MAX_PLAYER_HP = 100;
 ## Essential Tags
 
 ### `@param`
+
 Documents a function parameter.
-```
+
+```c
 @param {type} name - Description
 ```
 
 ### `@returns`
+
 Documents the function's return value.
-```
+
+```c
 @returns {type} Description
 ```
 
 ### `@throws`
+
 Documents what condition(s) result(s) in a throw().
-```
+
+```c
 @throws Condition that causes a throw
 ```
 
@@ -88,8 +99,10 @@ This will be evident by the appearance of the throw() function within the
 function body.
 
 ### `@errors`
+
 Documents what condition(s) result(s) in an error().
-```
+
+```c
 @errors Condition that causes an error
 ```
 
@@ -97,14 +110,18 @@ This will be evident by the appearance of the error() function within the
 function body.
 
 ### `@type`
+
 Documents a variable's type.
-```
+
+```c
 @type {type}
 ```
 
 ### `@example`
+
 Provides example usage.
-```
+
+```c
 @example
 code_example_here
 ```
@@ -112,6 +129,7 @@ code_example_here
 ## Types Reference
 
 ### Primitive Types
+
 - `int` - Integer
 - `string` - Text string
 - `float` - Floating-point number
@@ -123,65 +141,88 @@ code_example_here
 - `void` - No return value
 
 ### Named Objects
+
 For objects of specific types:
-```
+
+```c
 {"/path/to/object.c"}
 ```
+
 Example: `{"/std/player.c"}`
 
 ### Arrays
+
 For arrays of a specific type:
-```
+
+```c
 {type*}
 ```
+
 Example: `{string*}` for string array
 
 ### Mappings
+
 For mappings with specific key/value types:
-```
+
+```c
 {([ keytype: valuetype ])}
+
 ```
+
 Example: `{([ string: int ])}` for string->int mapping
 
 ### Union Types
+
 For values that could be multiple types:
-```
+
+```c
 {type1 | type2}
 ```
+
 Example: `{int | string}` for int or string
 
 ### Function Types
+
 For function references with signature:
-```
+
+```c
 {function(paramtype1, paramtype2): returntype}
 ```
+
 Example: `{function(int, int): int}`
 
 ### Special Notations
 
 ### Optional Parameters
+
 For optional parameters:
-```
+
+```c
 @param {type} [name] - Description
 ```
 
 With default values:
-```
+
+```c
 @param {type} [name=default] - Description
 ```
 
 ### Undefined Values
+
 For return values that might be undefined:
-```
+
+```c
 @returns {type | undefined} Description
 ```
 
 ### Undefined Parameters
 
 Parameters may be undefined when not provided:
+
 ```c
 @param {type | undefined} name - Description
 ```
+
 This is often handled with default values inside the function.
 
 ### Tuples
@@ -242,6 +283,7 @@ class ClassName {
 ```
 
 Key points for class documentation:
+
 - Document each property with @property tags
 - Include property types in curly braces
 - Add descriptions for both class and properties
@@ -250,6 +292,7 @@ Key points for class documentation:
 ## Additional Considerations
 
 ### Documentation Order
+
 1. Visibility tags (@public, @protected, @private) should always come first
 2. Other tags should follow in this order:
    - @override (if applicable)
@@ -262,12 +305,15 @@ Key points for class documentation:
    - Any other tags
 
 ### Line Length
+
 - All documentation lines should wrap at 79 characters
 - Maintain proper indentation when wrapping
 - Use complete sentences even when wrapping
 
 ### What Not to Document
+
 Unless specifically instructed, do not document:
+
 1. Forward declarations
 2. Standard setup functions:
    - void setup()
@@ -281,6 +327,7 @@ Unless specifically instructed, do not document:
 5. Global variables (unless specifically required)
 
 ### Additional Information
+
 - Overridden lfuns may be documented with an @override tag
 - Driver applies may use the tag @apply before its params
 - Nested data structures should document the expected structure as precisely as
@@ -288,8 +335,10 @@ Unless specifically instructed, do not document:
 - If you see assert() or assert_arg() these are @errors, and not @throws
 
 ### Header Documentation
+
 Header documentation should be converted to this format:
-```
+
+```c
 /**
 * @file /d/clan/abode/warroom_inherit.c
 *
@@ -316,3 +365,7 @@ Do not touch the code. For documentation purposes, we only need comments. There
 will be no reason to opine on things like parens placement, semicolon changes,
 etc., by updating the code sections of a file. Restrict activities to only
 documentation.
+
+### Language
+
+In all cases, please use Canadian English spelling for documentation.

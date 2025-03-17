@@ -167,18 +167,18 @@ string *parse(string *arr) {
 }
 
 int valid_shadow(object ob) {
-    string location, name;
+    string location, _name;
     location = base_name(ob);
-    name = query_privs(ob);
+    _name = query_privs(ob);
     if(ob == this_object() || ob == master()) return 0;
-    if(query_access(location, name, 4) && !ob->disallow_shadow(ob)) return 1;
+    if(query_access(location, _name, 4) && !ob->disallow_shadow(ob)) return 1;
     return 0;
 }
 
 int valid_bind(object obj, object owner, object victim) {
-    string name;
-    name = query_privs(previous_object());
-    if(query_access(base_name(owner), name, 7) && query_access(base_name(victim), name, 7)) return 1;
+    string _name;
+    _name = query_privs(previous_object());
+    if(query_access(base_name(owner), _name, 7) && query_access(base_name(victim), _name, 7)) return 1;
     return 0;
 }
 
@@ -191,24 +191,24 @@ int valid_hide(object ob) {
 }
 
 int valid_link(string from, string to) {
-    string name;
+    string _name;
 
-    if(this_interactive()) name = query_privs(this_interactive());
-    else name = query_privs(previous_object());
-    if(query_access(from, name, 5) && query_access(to, name, 5))
+    if(this_interactive()) _name = query_privs(this_interactive());
+    else _name = query_privs(previous_object());
+    if(query_access(from, _name, 5) && query_access(to, _name, 5))
         return 1;
     return 0;
 }
 
 int valid_object(object ob) {
-    string location, name;
+    string location, _name;
 
     location = file_name(ob);
-    if(this_interactive()) name = query_privs(this_interactive());
-    else name = query_privs(previous_object());
-    if(!name) name = "noname";
+    if(this_interactive()) _name = query_privs(this_interactive());
+    else _name = query_privs(previous_object());
+    if(!_name) _name = "noname";
     if(file_name(ob) == "/adm/daemons/login") return 1;
-    if(query_access(location, name, 6)) return 1;
+    if(query_access(location, _name, 6)) return 1;
     return 0;
 }
 
@@ -235,16 +235,16 @@ int valid_socket(object caller, string func, mixed *info) {
 }
 
 int valid_read(string file, object user, string func) {
-    string name, tmp, tmp2;
+    string _name, tmp, tmp2;
 
     if(this_interactive() && query_privs(user) != "[daemon]")
-        name = query_privs(this_interactive());
+        _name = query_privs(this_interactive());
 
-    else name = query_privs(user);
-    if(!name) name = "noname";
+    else _name = query_privs(user);
+    if(!_name) _name = "noname";
 
-    if(strlen(file) > strlen(user_data_directory(name))) {
-        if(file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name))
+    if(strlen(file) > strlen(user_data_directory(_name))) {
+        if(file[0..(strlen(user_data_directory(_name))-1)] == user_data_directory(_name))
             return 1;
     }
 
@@ -252,45 +252,45 @@ int valid_read(string file, object user, string func) {
     if(func == "restore_object" && member_array(find_object("/adm/daemons/finger_d.c"), all_previous_objects()) != -1) return 1;
 
     if(file && sscanf(file, "/home/%*s/%s/%s", tmp, tmp2)) {
-        if(name == tmp || name == "[home_" + tmp + "]") return 1;
+        if(_name == tmp || _name == "[home_" + tmp + "]") return 1;
         if(tmp2 && tmp2[0..5] == "public") return 1;
-        if(tmp2 && tmp2[0..6] == "private" && name == tmp) return 1;
-        if(tmp2 && tmp2[0..6] == "private" && name != tmp && !is_member(name, "admin")) return 0;
+        if(tmp2 && tmp2[0..6] == "private" && _name == tmp) return 1;
+        if(tmp2 && tmp2[0..6] == "private" && _name != tmp && !is_member(_name, "admin")) return 0;
     }
 
 #ifdef DEBUG
     write_file("/log/security", "Debug [valid_read]: File: " + file + " Name: " + name + "\n");
 #endif
 
-    if(query_access(file, name, 1)) return 1;
+    if(query_access(file, _name, 1)) return 1;
     return 0;
 }
 
 int valid_write(string file, object user, string func) {
-    string name, tmp, tmp2;
+    string _name, tmp, tmp2;
     if(this_interactive() && query_privs(user) != "[daemon]")
-    name = query_privs(this_interactive());
-    else name = query_privs(user);
-    if(!name) name = "noname";
+    _name = query_privs(this_interactive());
+    else _name = query_privs(user);
+    if(!_name) _name = "noname";
 
     if(user == this_object() || user == master()) return 1;
 
-    if(strlen(file) > strlen(user_data_directory(name))) {
-        if(file[0..(strlen(user_data_directory(name))-1)] == user_data_directory(name)) return 1;
+    if(strlen(file) > strlen(user_data_directory(_name))) {
+        if(file[0..(strlen(user_data_directory(_name))-1)] == user_data_directory(_name)) return 1;
     }
 
 
     if(file && sscanf(file, "/home/%*s/%s/%s", tmp, tmp2)) {
-        if(name == tmp || name == "[home_" + tmp + "]") return 1;
+        if(_name == tmp || _name == "[home_" + tmp + "]") return 1;
         if(tmp2 && tmp2[0..6] == "public/" && tmp2 != "public/") return 1;
-        if(tmp2 && tmp2[0..6] == "private" && name == tmp) return 1;
+        if(tmp2 && tmp2[0..6] == "private" && _name == tmp) return 1;
     }
 
 
 #ifdef DEBUG
     write_file("/log/security", "Debug [valid_write]: File: " + file + " Name: " + name + "\n");
 #endif
-    if(query_access(file, name, 2)) return 1;
+    if(query_access(file, _name, 2)) return 1;
     return 0;
 }
 

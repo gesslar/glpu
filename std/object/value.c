@@ -1,24 +1,33 @@
 /**
  * @file /std/object/value.c
- * @description Handles the value of an object.
+ * @description Handles monetary value tracking for physical objects.
  *
  * @created 2024-08-01 - Gesslar
- * @last_modified 2024-08-08 - Gesslar
+ * @last_modified 2025-03-16 - GitHub Copilot
  *
  * @history
  * 2024-08-01 - Gesslar - Created
  * 2024-08-08 - Gesslar - Added save_var()
- * 2024-08-08 - Gesslar - Changed to singular value without currency type.
+ * 2024-08-08 - Gesslar - Changed to singular value without currency type
+ * 2025-03-16 - GitHub Copilot - Updated documentation format
  */
 
 #include <persist.h>
 
-protected nosave int _value = null;
 /**
- * @object_function set_value
- * @description Set the value of the object. The value is stored as an integer
- *              representing the value in the lowest denomination of currency.
- * @param {int} value - The value to set.
+ * Value of the object in the lowest denomination of currency.
+ *
+ * @type {int}
+ */
+protected nosave int _value = null;
+
+/**
+ * Sets the value of the object.
+ *
+ * The value is stored as an integer representing the cost in the lowest
+ * denomination of currency.
+ *
+ * @param {int} value - The value to set
  */
 void set_value(int value) {
   save_var("_value");
@@ -27,22 +36,18 @@ void set_value(int value) {
 }
 
 /**
- * @object_function query_value
- * @description Query the value of the object. The value is returned as an
- *              integer representing the value in the lowest denomination of
- *              currency.
- * @returns {int} - The value of the object.
+ * Returns the value of the object.
+ *
+ * @returns {int} The object's value in the lowest denomination of currency
  */
 int query_value() {
   return _value;
 }
 
 /**
- * @object_function adjust_value
- * @description Add to the value of the object. The value is added as an
- *              integer representing the value in the lowest denomination of
- *              currency.
- * @param {int} value - The value to add.
+ * Adjusts the value of the object by a relative amount.
+ *
+ * @param {int} value - The amount to add (or subtract if negative)
  */
 void adjust_value(int value) {
   _value += value;

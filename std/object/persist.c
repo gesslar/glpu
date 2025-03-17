@@ -1,17 +1,18 @@
 /* Do not remove the headers from this file! see /USAGE for more info. */
 
-/*
-** Inheritable for persistance.
-** Beek for nightmare, ported by Rust.
-** could use helper funs that save directly to
-** a file, and some security (when programatic security arrives)
-** save() and restore() or save_to_file(), etc....
-**
-** Beek - protected a bunch of things which shouldn't be called externally
-*/
-
-//:MODULE
-//This module implements persistence
+/**
+ * @file /std/object/persist.c
+ * @description Provides persistence capabilities allowing objects to save and
+ *              restore their state to/from strings or files.
+ *
+ * @created Unknown - Beek (Nightmare)
+ * @last_modified 2025-03-16 - GitHub Copilot
+ *
+ * @history
+ * Unknown date - Beek - Original implementation for Nightmare
+ * Unknown date - Rust - Ported to current system
+ * 2025-03-16 - GitHub Copilot - Added documentation
+ */
 
 #include <item.h>
 #include <object.h>
@@ -20,23 +21,43 @@
 private nosave int save_recurse;
 private nosave mixed *saved_vars = ({ });
 
-//:FUNCTION save_var
-//Mark a variable as one that gets saved.
+/**
+ * Marks variables to be included when the object is saved.
+ *
+ * Variables must be explicitly marked for saving using this function.
+ *
+ * @param {mixed*} vars - Variable names to mark for saving
+ */
 protected void save_var(mixed *vars...) {
   saved_vars = distinct_array(({ saved_vars..., vars... }));
 }
 
-//###Security problem here - Beek. What is it used for anyway?
-//:FUNCTION get_saved_vars
-//returns the *of variables that get saved.
+// ###Security problem here - Beek. What is it used for anyway?
+/**
+ * Returns the list of variables that will be saved.
+ *
+ * @returns {string*} Array of variable names marked for saving
+ */
 public string *get_saved_vars() { return copy(saved_vars); }
 
-//:FUNCTION set_save_recurse
-//sets whether or not a save is recursive.
+/**
+ * Sets whether saving should recursively include inventory items.
+ *
+ * @param {int} flag - 1 to enable recursive saving, 0 to disable
+ */
 protected void set_save_recurse(int flag) { save_recurse = flag; }
 
-//:FUNCTION save_to_string
-//saves an object into a string representation.
+/**
+ * Saves object state to a string representation.
+ *
+ * Creates a mapping with special keys:
+ * - #vars#: Contains all saved variables and their values
+ * - #base_name#: The object's base name
+ * - #inventory#: Inventory objects (if recursep is true)
+ *
+ * @param {int} recursep - Whether to recursively save inventory objects
+ * @returns {string} Serialized object state
+ */
 varargs string save_to_string(int recursep) {
   string *elements, element;
   mapping map = ([]);
@@ -65,8 +86,16 @@ varargs string save_to_string(int recursep) {
   return save_variable(map);
 }
 
-//:FUNCTION load_from_string
-//loads an object from a string representation.
+/**
+ * Loads object state from a string representation.
+ *
+ * Restores variables, creates inventory items, and moves them
+ * into the appropriate containers.
+ *
+ * @param {mixed} value - String representation or mapping of object state
+ * @param {int} recurse - Recursion level (used internally)
+ * @throws If object creation fails
+ */
 void load_from_string(mixed value, int recurse) {
   mixed data;
   mixed *tmpsaved_vars;
@@ -123,5 +152,5 @@ void load_from_string(mixed value, int recurse) {
     }
   }
 
-  event(({ this_object() }), "restored");
+  event(({this_object()}), "restored");
 }

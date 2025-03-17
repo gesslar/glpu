@@ -2,8 +2,8 @@
 #define __BOON_H__
 
 public nomask void init_boon() ;
-public nomask int boon(string name, string cl, string type, int amt, int dur) ;
-public nomask int curse(string name, string cl, string type, int amt, int dur) ;
+public nomask int boon(string _name, string cl, string type, int amt, int dur) ;
+public nomask int curse(string _name, string cl, string type, int amt, int dur) ;
 public nomask int query_boon(string cl, string type) ;
 public mapping query_boon_data() ;
 public nomask int query_curse(string cl, string type) ;

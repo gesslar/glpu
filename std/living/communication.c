@@ -29,8 +29,8 @@ void add_tell(string text) {
     _tells = _tells[_comm_limit..];
 }
 
-void set_tell_reply(string name) {
-    _tell_reply = lower_case(name);
+void set_tell_reply(string _name) {
+    _tell_reply = lower_case(_name);
 }
 
 string query_tell_reply() { return _tell_reply ; }
@@ -40,8 +40,8 @@ void add_whisper(string text) {
     _whispers = _whispers[_comm_limit..];
 }
 
-void set_whisper_reply(string name) {
-    _whisper_reply = lower_case(name);
+void set_whisper_reply(string _name) {
+    _whisper_reply = lower_case(_name);
 }
 
 string query_whisper_reply() { return _whisper_reply ; }

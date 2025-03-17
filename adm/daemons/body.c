@@ -16,28 +16,28 @@ object create_body(object user);
 mixed create_ghost(object user);
 mixed revive(object ghost, object user);
 
-object create_body(string name) {
+object create_body(string _name) {
     object body;
     string err;
     string type;
     string dest;
 
-    if(!name)
+    if(!_name)
         return 0;
 
-    name = lower_case(name);
+    _name = lower_case(_name);
 
-    if(!user_exists(name))
+    if(!user_exists(_name))
         return 0;
 
-    if(adminp(name))
+    if(adminp(_name))
         type = "admin";
-    else if(devp(name))
+    else if(devp(_name))
         type = "dev";
     else
         type = "player";
 
-    dest = sprintf("/%s/%s", type, name);
+    dest = sprintf("/%s/%s", type, _name);
 
     err = catch(body = load_object(dest));
 
@@ -47,30 +47,30 @@ object create_body(string name) {
     if(!body)
         return 0;
 
-    body->set_name(name);
-    set_privs(body, name);
+    body->set_name(_name);
+    set_privs(body, _name);
     body->restore_body();
 
     return body;
 }
 
-mixed create_ghost(string name) {
+mixed create_ghost(string _name) {
     string err;
     object ghost;
 
-    if(!name)
+    if(!_name)
         return 0;
 
-    name = lower_case(name);
+    _name = lower_case(_name);
 
-    err = catch(ghost = load_object(sprintf("/ghost/%s", name)));
+    err = catch(ghost = load_object(sprintf("/ghost/%s", _name)));
     if(err) {
         log_file("ghost", err);
         return err;
     }
 
-    ghost->set_name(name);
-    set_privs(ghost, name);
+    ghost->set_name(_name);
+    set_privs(ghost, _name);
 
     return ghost;
 }

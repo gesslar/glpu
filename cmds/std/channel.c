@@ -15,17 +15,17 @@ inherit STD_CMD;
 private string format_channel_list(string *channels);
 private void display_channels_by_module(object tp);
 private void display_channel_members(object tp, string channel);
-private void display_tuned_channels(object tp, string name);
-public varargs int tune(string channel, string name, int in_out, int silent);
+private void display_tuned_channels(object tp, string _name);
+public varargs int tune(string channel, string _name, int in_out, int silent);
 
 mixed main(object tp, string args) {
     string cmd, arg;
-    string name;
+    string _name;
 
-    name = query_privs(tp);
+    _name = query_privs(tp);
 
     if(!args) {
-        display_tuned_channels(tp, name);
+        display_tuned_channels(tp, _name);
         return 1;
     }
 
@@ -49,11 +49,11 @@ mixed main(object tp, string args) {
                 return "Syntax: channel tune <in/out> <channel/network/all>\n";
             if(sscanf(arg, "%s %s", direction, channel) != 2)
                 return "Syntax: channel tune <in/out> <channel/network/all>\n";
-            tune(channel, name, direction == "in", 0);
+            tune(channel, _name, direction == "in", 0);
             return 1;
         }
         case "tuned":
-            display_tuned_channels(tp, arg || name);
+            display_tuned_channels(tp, arg || _name);
             return 1;
 
         default:
@@ -77,13 +77,13 @@ private void display_channels_by_module(object tp) {
     string *modules;
     string output;
     int i;
-    string name = query_privs(tp);
+    string _name = query_privs(tp);
 
     modules = sort_array(CHAN_D->get_modules(), 1);
     output = "Channels by module:\n";
 
     for(i = 0; i < sizeof(modules); i++) {
-        string *channels = sort_array(CHAN_D->get_channels(modules[i], name), 1);
+        string *channels = sort_array(CHAN_D->get_channels(modules[i], _name), 1);
         if(sizeof(channels) > 0) {
             output += sprintf("%s - %s\n", modules[i], implode(channels, ", "));
         }
@@ -109,46 +109,46 @@ private void display_channel_members(object tp, string channel) {
 }
 
 // Displays all channels a user is tuned into
-private void display_tuned_channels(object tp, string name) {
+private void display_tuned_channels(object tp, string _name) {
     string *all_channels, *tuned_channels;
     int i;
 
-    if(name != query_privs(tp) && !wizardp(tp)) {
-        name = query_privs(tp);
+    if(_name != query_privs(tp) && !wizardp(tp)) {
+        _name = query_privs(tp);
     }
 
-    all_channels = CHAN_D->get_channels("all", name);
+    all_channels = CHAN_D->get_channels("all", _name);
     tuned_channels = ({});
 
     for(i = 0; i < sizeof(all_channels); i++) {
         string *members = CHAN_D->get_tuned(all_channels[i]);
-        if(member_array(name, members) != -1) {
+        if(member_array(_name, members) != -1) {
             tuned_channels += ({ all_channels[i] });
         }
     }
 
     if(sizeof(tuned_channels) > 0) {
         tell(tp, sprintf("%s currently tuned into:\n\t%s\n",
-            (name == query_privs(tp) ? "You are" : capitalize(name) + " is"),
+            (_name == query_privs(tp) ? "You are" : capitalize(_name) + " is"),
             format_channel_list(tuned_channels)));
     } else {
         tell(tp, sprintf("%s not currently tuned into any channels.\n",
-            (name == query_privs(tp) ? "You are" : capitalize(name) + " is")));
+            (_name == query_privs(tp) ? "You are" : capitalize(_name) + " is")));
     }
 }
 
 // Tunes a user in or out of a channel
-public varargs int tune(string channel, string name, int in_out, int silent) {
+public varargs int tune(string channel, string _name, int in_out, int silent) {
     string *channels;
     int result, i;
 
-    if(nullp(channel) || !stringp(channel) || nullp(name) || !stringp(name))
+    if(nullp(channel) || !stringp(channel) || nullp(_name) || !stringp(_name))
         return 0;
 
     result = 1;
 
     if(channel == "all") {
-        channels = CHAN_D->get_channels("all", name);
+        channels = CHAN_D->get_channels("all", _name);
         if(sizeof(channels) == 0) {
             if(!silent)
                 tell(this_player(), "No channels available to tune.\n");
@@ -161,7 +161,7 @@ public varargs int tune(string channel, string name, int in_out, int silent) {
     for(i = 0; i < sizeof(channels); i++) {
         int tune_result;
 
-        tune_result = CHAN_D->tune(channels[i], name, in_out);
+        tune_result = CHAN_D->tune(channels[i], _name, in_out);
         if(!silent) {
             if(tune_result)
                 tell(this_player(), sprintf("%s channel tuned %s.\n",

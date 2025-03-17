@@ -30,19 +30,19 @@ void mudlib_setup() {
 void restore_body() {}
 void save_body() {}
 
-string set_name(string name) {
+string set_name(string _name) {
     string result;
 
-    if(!name || !stringp(name))
+    if(!_name || !stringp(_name))
         return;
 
-    result = ::set_name(name);
+    result = ::set_name(_name);
 
     if(!result)
         return result;
 
-    name = lower_case(name);
-    set_living_name(name);
+    _name = lower_case(_name);
+    set_living_name(_name);
 
     return result;
 }

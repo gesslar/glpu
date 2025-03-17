@@ -25,10 +25,10 @@ string guest_lock_msg = "", player_creation_msg = "";
 /**************/
 
 string *query_banned_users();
-mixed add_banned_user(string name);
-mixed remove_banned_user(string name);
-mixed add_play_tester(string name);
-mixed remove_play_tester(string name);
+mixed add_banned_user(string _name);
+mixed remove_banned_user(string _name);
+mixed add_play_tester(string _name);
+mixed remove_play_tester(string _name);
 string *query_play_testers();
 int remove_all_banned_users();
 int remove_all_play_testers();
@@ -223,25 +223,25 @@ string *query_play_testers() {
 /* USER BAN FUNCTIONS */
 /**********************/
 
-mixed add_banned_user(string name) {
-    if((member_array(name, users_banned) != -1))
+mixed add_banned_user(string _name) {
+    if((member_array(_name, users_banned) != -1))
         return "That user has already been banned.";
 
     if(!users_banned)
-        users_banned = ({ name });
+        users_banned = ({ _name });
     else
-        users_banned += ({ name });
+        users_banned += ({ _name });
 
     save_data();
 
     return 1;
 }
 
-mixed remove_banned_user(string name) {
-    if((member_array(name, users_banned) == -1))
+mixed remove_banned_user(string _name) {
+    if((member_array(_name, users_banned) == -1))
         return "That user is not currently banned.";
 
-    users_banned -= ({ name });
+    users_banned -= ({ _name });
 
     save_data();
 
@@ -261,25 +261,25 @@ int remove_all_banned_users() {
 /* VIP FUNCTIONS */
 /*****************/
 
-mixed add_play_tester(string name) {
-    if((member_array(name, play_testers) != -1))
+mixed add_play_tester(string _name) {
+    if((member_array(_name, play_testers) != -1))
     return "That user has already been banned.";
 
     if(!play_testers)
-        play_testers = ({ name });
+        play_testers = ({ _name });
     else
-        play_testers += ({ name });
+        play_testers += ({ _name });
 
     save_data();
 
     return 1;
 }
 
-mixed remove_play_tester(string name) {
-    if((member_array(name, play_testers) == -1))
+mixed remove_play_tester(string _name) {
+    if((member_array(_name, play_testers) == -1))
         return "That user is not currently banned.";
 
-    play_testers -= ({ name });
+    play_testers -= ({ _name });
 
     save_data();
 

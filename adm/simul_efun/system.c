@@ -97,13 +97,13 @@ object simul_efun() {
  */
 string driver_version() {
   string version = __VERSION__;
-  string name, rest;
+  string _name, rest;
 
-  sscanf(version, "%s %s", name, rest);
+  sscanf(version, "%s %s", _name, rest);
   if(strsrch(rest, "uncommited") != -1)
     sscanf(rest, "%s-uncommited", rest);
 
-  return sprintf("%s %s", name, rest);
+  return sprintf("%s %s", _name, rest);
 }
 
 /**
@@ -257,6 +257,29 @@ private varargs class SystemMessage constructMessageFromArgs(string type, mixed 
     : 0;
 }
 
+private int _feedback(string type, mixed args...) {
+  class SystemMessage result;
+  object tp;
+  string str;
+  string mess;
+
+  result = constructMessageFromArgs(type, args...);
+  if(!result)
+    return 0;
+
+  tp = objectp(args[0])
+    ? args[0]
+    : this_body()
+  ;
+
+  if(tp)
+    tell(tp, append(result.message, "\n"));
+  else
+    debug(mess);
+
+  return 1;
+}
+
 /**
  * Sends a message to a player using accessible notation to indicate
  * that it is a confirmation/success system message.
@@ -273,26 +296,7 @@ private varargs class SystemMessage constructMessageFromArgs(string type, mixed 
  * @returns {int} Always returns 1, unless there is no previous object.
  */
 varargs int _ok(mixed args...) {
-  class SystemMessage result;
-  object tp;
-  string str;
-  string mess;
-
-  result = constructMessageFromArgs("ok", args...);
-  if(!result)
-    return 0;
-
-  tp = objectp(args[0])
-    ? args[0]
-    : this_body()
-;
-
-  if(tp)
-    tell(tp, append(result.message, "\n"));
-  else
-    debug(mess);
-
-  return 1;
+  return _feedback("ok", args...);
 }
 
 /**
@@ -311,37 +315,7 @@ varargs int _ok(mixed args...) {
  * @returns {int} Always returns 1, unless there is no previous object.
  */
 varargs int _error(mixed args...) {
-  object tp;
-  string str;
-  string mess;
-
-  if(!sizeof(args))
-    return 0;
-
-  if(objectp(args[0])) {
-    tp = args[0];
-    str = args[1];
-    args = args[2..];
-  } else if(stringp(args[0])) {
-    str = args[0];
-    args = args[1..];
-  } else {
-    return 0;
-  }
-
-  if(!tp)
-    tp = this_body();
-
-  mess = _format_message("error", str, args...);
-  if(nullp(mess))
-    return 0;
-
-  if(tp)
-    tell(tp, mess + "\n");
-  else
-    debug(mess);
-
-  return 1;
+  return _feedback("error", args...);
 }
 
 /**
@@ -357,37 +331,7 @@ varargs int _error(mixed args...) {
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
 varargs int _warn(mixed args...) {
-    object tp;
-    string str;
-    string mess;
-
-    if(!sizeof(args))
-        return 0;
-
-    if(objectp(args[0])) {
-        tp = args[0];
-        str = args[1];
-        args = args[2..];
-    } else if(stringp(args[0])) {
-        str = args[0];
-        args = args[1..];
-    } else {
-        return 0;
-    }
-
-    if(!tp)
-        tp = this_body();
-
-    mess = _format_message("warn", str, args...);
-    if(nullp(mess))
-        return 0;
-
-    if(tp)
-        tell(tp, mess + "\n");
-    else
-        debug(mess);
-
-    return 1;
+  return _feedback("warn", args...);
 }
 
 /**
@@ -403,37 +347,7 @@ varargs int _warn(mixed args...) {
  * @returns {int} - Always returns 1, unless there is no previous object.
  */
 varargs int _info(mixed args...) {
-    object tp;
-    string str;
-    string mess;
-
-    if(!sizeof(args))
-        return 0;
-
-    if(objectp(args[0])) {
-        tp = args[0];
-        str = args[1];
-        args = args[2..];
-    } else if(stringp(args[0])) {
-        str = args[0];
-        args = args[1..];
-    } else {
-        return 0;
-    }
-
-    if(!tp)
-        tp = this_body();
-
-    mess = _format_message("info", str, args...);
-    if(nullp(mess))
-        return 0;
-
-    if(tp)
-        tell(tp, mess + "\n");
-    else
-        debug(mess);
-
-    return 1;
+  return _feedback("info", args...);
 }
 
 /**
@@ -449,36 +363,7 @@ varargs int _info(mixed args...) {
  * @returns {int} - Always returns 1, unless there is no body object.
  */
 varargs int _question(mixed args...) {
-    object tp;
-    string str;
-    string mess;
-
-    if(!sizeof(args))
-        return 0;
-
-    if(objectp(args[0])) {
-        tp = args[0];
-        str = args[1];
-        args = args[2..];
-    } else if(stringp(args[0])) {
-        str = args[0];
-        args = args[1..];
-    } else {
-        return 0;
-    }
-
-    if(!tp)
-        tp = this_body();
-    if(!tp)
-        return 0;
-
-    mess = _format_message("question", str, args...);
-    if(nullp(mess))
-        return 0;
-
-    tell(tp, mess);
-
-    return 1;
+  return _feedback("question", args...);
 }
 
 /**
@@ -488,5 +373,5 @@ varargs int _question(mixed args...) {
  * @returns {int} - The current boot number.
  */
 int boot_number() {
-    return BOOT_D->query_boot_number();
+  return BOOT_D->query_boot_number();
 }

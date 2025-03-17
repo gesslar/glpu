@@ -134,8 +134,8 @@ object *present_clones(string file, object room);
 object *present_livings(object room);
 object *present_players(object room);
 object *present_npcs(object room);
-object get_living(string name, object room);
-object get_player(string name, object room);
+object get_living(string _name, object room);
+object get_player(string _name, object room);
 object this_body();
 object top_environment(object ob);
 varargs mixed get_objects(string str, object player, int no_arr);
@@ -233,13 +233,13 @@ int time_ms();
 float time_frac(int nanoseconds);
 
 // File: user.c
-string user_data_file(string name);
-string user_mob_data(string name);
+string user_data_file(string _name);
+string user_mob_data(string _name);
 string user_data_directory(string priv);
-string home_path(string name);
-string account_path(string name);
-string account_file(string name);
-int valid_account(string name);
+string home_path(string _name);
+string account_path(string _name);
+string account_file(string _name);
+int valid_account(string _name);
 int ghostp(object user);
 int linkp(object user);
 varargs int valid_user(mixed user);
@@ -247,5 +247,7 @@ varargs int valid_user(mixed user);
 // File: util.c
 string generate_uuid();
 int of(mixed needle, mixed haystack);
+int truthy(mixed val);
+int falsy(mixed val);
 
 #endif // __SIMUL_EFUN_H__

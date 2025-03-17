@@ -1,13 +1,14 @@
 /**
  * @file /std/object/item.c
- *
- * Actual objects, whereas object is the base of everything
+ * @description Base implementation for physical game items that can be
+ *              manipulated, carried, and moved between containers.
  *
  * @created 2024-07-27 - Gesslar
- * @last_modified 2024-07-27 - Gesslar
+ * @last_modified 2025-03-16 - GitHub Copilot
  *
  * @history
  * 2024-07-27 - Gesslar - Created
+ * 2025-03-16 - GitHub Copilot - Added documentation
  */
 
 #include <gmcp_defines.h>
@@ -15,24 +16,57 @@
 inherit STD_OBJECT;
 inherit STD_VALUE;
 
-private nosave mapping spawn_info = ([]);
+private nosave mapping _spawn_info = ([]);
 
+/**
+ * Sets the spawn information for this item.
+ *
+ * This records details about when and where the item was created.
+ *
+ * @param {mapping} info - Mapping of spawn information
+ */
 void set_spawn_info(mapping info) {
-  spawn_info = info;
+  _spawn_info = info;
 }
 
+/**
+ * Adds a single piece of spawn information.
+ *
+ * @param {string} key - The information identifier
+ * @param {mixed} value - The information value
+ */
 void add_spawn_info(string key, mixed value) {
-  spawn_info[key] = value;
+  _spawn_info[key] = value;
 }
 
+/**
+ * Retrieves a specific piece of spawn information.
+ *
+ * @param {string} key - The information identifier
+ * @returns {mixed} The requested spawn information
+ */
 mixed query_spawn_info(string key) {
-  return spawn_info[key];
+  return _spawn_info[key];
 }
 
+/**
+ * Returns a copy of all spawn information.
+ *
+ * @returns {mapping} Copy of the spawn information mapping
+ */
 mapping query_all_spawn_info() {
-  return copy(spawn_info);
+  return copy(_spawn_info);
 }
 
+/**
+ * Determines if the item can be moved to a destination.
+ *
+ * Performs checks for destination validity, capacity constraints,
+ * and container permissions.
+ *
+ * @param {object|string} dest - Destination object or filename
+ * @returns {int} Move result code (MOVE_OK or an error code)
+ */
 int allow_move(mixed dest) {
   /** @type {STD_CONTAINER} */
   object ob;
@@ -65,6 +99,13 @@ int allow_move(mixed dest) {
   return MOVE_OK;
 }
 
+/**
+ * Reverts mass and fill adjustments when a move fails.
+ *
+ * Used internally to maintain consistency in container capacities.
+ *
+ * @param {mixed*} rollback - Array of rollback information
+ */
 private void roll_back(mixed *rollback) {
   int i = sizeof(rollback);
 
@@ -77,8 +118,13 @@ private void roll_back(mixed *rollback) {
 }
 
 /**
+ * Moves this item to a new container or environment.
  *
- * @param {string|object STD_CONTAINER} dest - The destination to move to.
+ * Handles mass tracking, capacity limits, and related events.
+ * Sends GMCP updates when appropriate.
+ *
+ * @param {object|string} dest - Destination object or filename
+ * @returns {int} Move result code (MOVE_OK or an error code)
  */
 int move(mixed dest) {
   int result;

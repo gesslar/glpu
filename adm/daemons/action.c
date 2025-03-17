@@ -38,7 +38,7 @@ string _the_short(mixed x) {
 
 mixed *handle_obs(mixed *obs, string res, mapping has) {
     string *ret = ({});
-    mapping items = ([]);
+    mapping _items = ([]);
     string t_short;
 
     if(objectp(obs[0]) && has[obs]) {
@@ -46,38 +46,38 @@ mixed *handle_obs(mixed *obs, string res, mapping has) {
     } else {
         foreach(mixed ob in obs) {
             t_short = SHORT(ob);
-            if(member_array(t_short, keys(items)) < 0) items += ([ t_short : 1 ]);
-            else items[t_short] ++;
+            if(member_array(t_short, keys(_items)) < 0) _items += ([ t_short : 1 ]);
+            else _items[t_short] ++;
         }
-        obs = keys(items);
+        obs = keys(_items);
 
         if(res[<2..<1]=="a ") {
             res = res[0..<3];
             foreach(mixed ob in obs) {
-                if(items[ob]>1) ret += ({ items[ob] + " " + pluralize(SHORT(ob)) });
+                if(_items[ob]>1) ret += ({ _items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret +=  ({ _a_short(ob) });
             }
         } else if(res[<4..<1] == "the ") {
             res = res[0..<5];
             foreach(mixed ob in obs) {
-                if(items[ob]>1) ret += ({ "the " + items[ob] + " " + pluralize(SHORT(ob)) });
+                if(_items[ob]>1) ret += ({ "the " + _items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ _the_short(ob) });
             }
         } else if(res[<2..<1] == "A ") {
             res = res[0..<3];
             foreach(mixed ob in obs) {
-                if(items[ob]>1) ret += ({ items[ob] + " " + pluralize(SHORT(ob)) });
+                if(_items[ob]>1) ret += ({ _items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ capitalize(_a_short(ob)) });
             }
         } else if(res[<4..<1] == "The ") {
             res = res[0..<5];
             foreach(mixed ob in obs) {
-                if(items[ob]>1) ret += ({ "the " + items[ob] + " " + pluralize(SHORT(ob)) });
+                if(_items[ob]>1) ret += ({ "the " + _items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ capitalize(_the_short(ob)) });
             }
         } else {
             foreach(mixed ob in obs) {
-                if(items[ob]>1) ret += ({ items[ob] + " " + pluralize(SHORT(ob)) });
+                if(_items[ob]>1) ret += ({ _items[ob] + " " + pluralize(SHORT(ob)) });
                 else ret += ({ SHORT(ob) });
             }
         }

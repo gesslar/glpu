@@ -36,9 +36,10 @@ void virtual_setup(mixed args...) {
 
   mob_files = ({
     "/mob/deer",
-    "/mob/squirrel",
-    "/mob/bird",
-    "/mob/fox",
+    "/mob/doe",
+    "/mob/giant_red_squirrel",
+    "/mob/crimson_fox",
+    "/mob/monstrous_wasp",
   });
 }
 
