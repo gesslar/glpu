@@ -1,0 +1,8 @@
+---
+description: This rule applies to LPCDoc when creating function documentation.
+globs: .vscode/LLM_Doc_Instructions_FluffOS.md
+alwaysApply: false
+---
+Please follow as strictly as possible to the LLM Doc Instructions when documenting functions.
+
+If there is any ambiguity in the task, please ensure you ask for clarification.

@@ -1,6 +1,15 @@
 /**
  * @file /adm/daemons/signal.c
- * @description Signal daemon for handling system-wide event notifications
+ *
+ * Signal daemon that provides a system-wide event notification system.
+ * Manages registration, dispatch, and cleanup of signal handlers (slots).
+ *
+ * Signal slots are managed pairs of objects and functions that respond
+ * to specific signal types. The system ensures:
+ * - Only valid objects and functions can register
+ * - Automatic cleanup of invalid slots
+ * - Safe dispatch of signals to all registered handlers
+ * - Persistence across reboots via swap daemon
  *
  * @created 2024-07-21 - Gesslar
  * @last_modified 2024-07-21 - Gesslar
@@ -11,6 +20,7 @@
 
 inherit STD_DAEMON;
 
+// Forward declarations
 private nomask void invalidate_slots();
 public nomask int register_slot(int sig, object ob, string func);
 public nomask int unregister_slot(int sig, object ob);
@@ -18,6 +28,12 @@ public nomask void dispatch_signal(int sig, mixed arg...);
 
 private nosave mapping slots = ([]);
 
+/**
+ * Initializes the signal daemon.
+ *
+ * Loads persisted slots from swap daemon, starts periodic cleanup,
+ * and performs initial slot validation.
+ */
 void setup() {
   set_no_clean(1);
 
@@ -28,6 +44,14 @@ void setup() {
   invalidate_slots();
 }
 
+/**
+ * Registers an object's function to receive a specific signal.
+ *
+ * @param {int} sig - The signal type to register for
+ * @param {object} ob - The object to receive the signal
+ * @param {string} func - The function to call when signal is received
+ * @returns {int} Status code indicating success or failure reason
+ */
 public nomask int register_slot(int sig, object ob, string func) {
   if(previous_object() != simul_efun())
     return SIG_SLOT_INVALID_CALLER;
@@ -55,6 +79,13 @@ public nomask int register_slot(int sig, object ob, string func) {
   return SIG_SLOT_OK;
 }
 
+/**
+ * Unregisters an object from receiving a specific signal.
+ *
+ * @param {int} sig - The signal type to unregister from
+ * @param {object} ob - The object to unregister
+ * @returns {int} Status code indicating success or failure reason
+ */
 public nomask int unregister_slot(int sig, object ob) {
   mapping sig_slot;
 
@@ -82,6 +113,13 @@ public nomask int unregister_slot(int sig, object ob) {
   return SIG_SLOT_OK;
 }
 
+/**
+ * Removes invalid slots from the signal system.
+ *
+ * A slot is considered invalid if:
+ * - The object no longer exists
+ * - The function no longer exists in the object
+ */
 private nomask void invalidate_slots() {
   mapping new_slots = ([ ]);
 
@@ -102,6 +140,16 @@ private nomask void invalidate_slots() {
   slots = new_slots;
 }
 
+/**
+ * Dispatches a signal to all registered handlers.
+ *
+ * Safely calls each registered function with the provided arguments.
+ * Errors in individual handlers are caught and logged without affecting
+ * other handlers.
+ *
+ * @param {int} sig - The signal to dispatch
+ * @param {mixed} arg... - Arguments to pass to the signal handlers
+ */
 public nomask void dispatch_signal(int sig, mixed arg...) {
   mapping sig_slot = slots[sig];
 
@@ -123,10 +171,18 @@ public nomask void dispatch_signal(int sig, mixed arg...) {
   }
 }
 
+/**
+ * Periodic cleanup of invalid slots.
+ */
 void heart_beat() {
   invalidate_slots();
 }
 
+/**
+ * Cleanup handler that persists slots before shutdown.
+ *
+ * Validates slots one final time and saves them to the swap daemon.
+ */
 void unsetup() {
   invalidate_slots();
   SWAP_D->swap_in("signal", slots);
