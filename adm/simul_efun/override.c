@@ -38,14 +38,14 @@ object shutdown_d() {
 }
 
 void set_privs(object ob, string privs) {
-  string _name;
+  string name;
 
   if(is_member(query_privs(previous_object()), "admin") || ob = master())
     efun::set_privs(ob, privs);
 
-  sscanf(file_name(ob), "/home/%*s/%s/%*s", _name);
+  sscanf(file_name(ob), "/home/%*s/%s/%*s", name);
 
-  if(_name == privs)
+  if(name == privs)
     efun::set_privs(ob, privs);
 }
 

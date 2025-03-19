@@ -15,18 +15,20 @@ private nosave nomask function *actions;
 
 void setup() {
   actions = ({
-    (: destruct(find_object(SIMUL_OB)) :),
-    (: load_object(SIMUL_OB) :),
-    (: destruct(master()) :),
-    (: destruct(find_object("/adm/obj/master/valid")) :),
-    (: load_object("/adm/obj/master/valid") :),
-    (: load_object("/adm/obj/master") :),
-    (: CONFIG_D->rehash_config() :),
+    ({"Destruct simul_efun object",(: destruct(find_object(SIMUL_OB)) :)}),
+    ({"Load simul_efun object",(: load_object(SIMUL_OB) :)}),
+    ({"Destruct master object",(: destruct(master()) :)}),
+    ({"Destruct master/valid",(: destruct(find_object("/adm/obj/master/valid")) :)}),
+    ({"Destruct master/parse",(: destruct(find_object("/adm/obj/master/parse")) :)}),
+    ({"Load master/valid",(: load_object("/adm/obj/master/valid") :)}),
+    ({"Load master/parse",(: load_object("/adm/obj/master/parse") :)}),
+    ({"Load master object",(: load_object("/adm/obj/master") :)}),
+    ({"Rehash system configuration",(: CONFIG_D->rehash_config() :)}),
   });
 }
 
 mixed main(object caller, string arguments) {
-  function action;
+  mixed *action;
   string err = "";
 
   if(!adminp(previous_object()))
@@ -35,7 +37,9 @@ mixed main(object caller, string arguments) {
   foreach(action in actions) {
     mixed result;
 
-    result = catch((*action)());
+    _info(action[0]);
+
+    result = catch((*action[1])());
     if(result)
       err += result;
   }

@@ -110,13 +110,16 @@ string no_ansi(string str) {
  * @returns {string} - The simple list string.
  */
 varargs string simple_list(string *arr, string conjunction) {
-    if(!arr) error("simple_list: Missing argument 1 for simpple_list");
-    if(!conjunction) conjunction = "and";
+  assert_arg(pointerp(arr) && uniform_array(arr, T_STRING), 1, "Invalid or missing array.");
 
-    if(sizeof(arr) == 0) error("simple_list: Argument 1 for simple_list is empty");
-    else if(sizeof(arr) == 1) return arr[0];
-    else if(sizeof(arr) == 2) return arr[0] + " " + conjunction + " " + arr[1];
-    else return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
+  conjunction = conjunction || "and";
+
+  if(sizeof(arr) == 1)
+    return arr[0];
+  else if(sizeof(arr) == 2)
+    return arr[0] + " " + conjunction + " " + arr[1];
+  else
+    return implode(arr[0..<2], ", ") + ", " + conjunction + " " + arr[<1];
 }
 
 /**

@@ -16,7 +16,7 @@ private nosave mapping modules = ([]);
 varargs object add_module(string module, mixed args...) {
     object ob;
     string path;
-    string _name;
+    string name;
     string e;
 
     if(!module || module == "") error("Invalid module name.\n");
@@ -36,9 +36,9 @@ varargs object add_module(string module, mixed args...) {
         return 0;
     }
 
-    _name = ob->query_name();
+    name = ob->query_name();
 
-    modules[_name] = ob;
+    modules[name] = ob;
 
     return ob;
 }

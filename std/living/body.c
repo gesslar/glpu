@@ -14,6 +14,7 @@
 #include <env.h>
 #include <player.h>
 #include <gmcp_defines.h>
+#include <driver/origin.h>
 
 inherit STD_CONTAINER;
 inherit STD_ITEM;
@@ -40,17 +41,21 @@ inherit __DIR__ "wealth";
 inherit M_ACTION;
 inherit M_LOG;
 
-/* Global Variables */
-string *path;
-nosave string *command_history = ({});
-
 /** @type {STD_BODY} */ object su_body;
 
 /* Prototypes */
 
 void mudlib_setup() {
+  if(!clonep() &&
+     origin() != ORIGIN_LOCAL &&
+     previous_object() != body_d())
+    return;
+
   enable_commands();
-  path = ({"/cmds/std/","/cmds/ability/", "/cmds/spell/"});
+  add_standard_paths();
+  if(wizardp())
+    add_wizard_paths();
+
   if(!query_pref("prompt"))
     set_pref("prompt", ">");
   set_log_level(0);
@@ -193,180 +198,8 @@ void event_remove(object prev) {
   }
 }
 
-/* User path functions */
-
-string *query_path() {
-  return copy(path);
-}
-
-int add_path(string str) {
-  if(!adminp(previous_object()) && this_body() != this_object())
-    return 0;
-
-  if(member_array(str, path) != -1)
-    return 0;
-
-  str = append(str, "/");
-
-  if(!directory_exists(str))
-    return 0;
-
-  path += ({str});
-
-  return 1;
-}
-
-int rem_path(string str) {
-  if(!adminp(previous_object()) && this_body() != this_object())
-    return 0;
-
-  if(member_array(str, path) == -1)
-    return 0;
-
-  path -= ({str});
-  return 1;
-}
-
 void receive_message(string type, string msg) {
   do_receive(msg, DIRECT_MSG);
-}
-
-string process_input(string arg) {
-  return arg;
-}
-
-nomask varargs string *query_command_history(int index, int range) {
-  if(this_body() != this_object() && !adminp(previous_object()))
-    return ({});
-
-  if(!index)
-    return command_history + ({});
-
-  else if(range)
-    return command_history[index..range] + ({});
-
-  else
-    return ({ command_history[index] });
-}
-
-int command_hook(string arg) {
-  string verb, err, *cmds = ({});
-  string custom, tmp;
-  object
-  /** @type {STD_PLAYER} @type {STD_NPC}*/ caller,
-  /** @type {STD_CMD} */ command,
-  /** @type {STD_ITEM} @type {STD_OBJECT} */ ob,
-  /** @type {STD_ITEM}* @type {STD_OBJECT}* */ *obs;
-  int i;
-  mixed result;
-
-  caller = this_body();
-
-  if(interactive(caller))
-    if(caller != this_object())
-      return 0;
-
-  verb = query_verb();
-
-  if(sscanf(alias_parse(verb, arg), "%s %s", verb, arg) != 2)
-    verb = alias_parse(verb, arg);
-
-  if(arg == "")
-    arg = 0;
-
-  verb = lower_case(verb);
-
-  // First let's check in our immediate inventory
-  obs = all_inventory();
-  foreach(ob in obs) {
-    result = ob->evaluate_command(this_object(), verb, arg);
-    result = evaluate_result(result);
-    if(result == 1)
-      return 1;
-  }
-
-  // Now let's check in our environment
-  if(environment()) {
-    obs = ({ environment() }) + all_inventory(environment()) - ({ this_object() });
-    foreach(ob in obs) {
-      result = ob->evaluate_command(this_object(), verb, arg);
-      result = evaluate_result(result);
-      if(result == 1)
-        return 1;
-    }
-  }
-
-  if(arg)
-    command_history += ({ verb + " " + arg });
-  else
-    command_history += ({ verb });
-
-  if(environment() && environment()->valid_exit(verb)) {
-    arg = verb;
-    verb = "go";
-  }
-
-  // Communication checks
-  catch {
-    if(environment())
-      if(SOUL_D->request_emote(verb, arg)) return 1;
-
-    err = catch(load_object(CHAN_D));
-    if(!err)
-      if(CHAN_D->chat(verb, query_privs(), arg))
-        return 1;
-  };
-
-  for(i = 0; i < sizeof(path); i ++)
-    if(file_exists(path[i] + verb + ".c"))
-      cmds += ({ path[i] + verb });
-
-  if(sizeof(cmds) > 0) {
-    mixed return_value;
-
-    i = 0;
-    while(return_value <= 0 && i < sizeof(cmds)) {
-      err = catch(command = load_object(cmds[i]));
-
-      if(err) {
-        tell_me("Error: Command " + verb + " non-functional.\n");
-        tell_me(err);
-        i++;
-        continue;
-      }
-
-      return_value = command->main(caller, arg);
-      i++;
-      result = evaluate_result(return_value);
-      if(result == 1)
-        return 1;
-    }
-
-    return return_value;
-  }
-
-  return 0;
-}
-
-private nomask int evaluate_result(mixed result) {
-  if(stringp(result)) {
-    if(!strlen(result))
-      return 0;
-    else {
-      result = append(result, "\n");
-      page(result);
-      return 1;
-    }
-  } else if(pointerp(result)) {
-    if(!sizeof(result))
-      return 0;
-    else {
-      page(result);
-      return 1;
-    }
-  }
-
-  return result;
 }
 
 varargs int move_living(mixed dest, string dir, string depart_message, string arrive_message) {

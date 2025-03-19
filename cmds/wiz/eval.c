@@ -23,13 +23,13 @@ mixed main(object caller, string arg) {
   _info(caller, "Evaluating: %s", arg);
   file = home_path(caller->query_real_name()) + "tmp_eval_file.c";
   if(file_size(file) != -1)
-      rm(file);
+    rm(file);
 
   if(ob = find_object(file))
     destruct(ob);
 
   write_file(file,"mixed eval() { "+arg+"; }\n");
-  printf("Evaluating.."+read_file(file));
+
   if(err = catch(ob = load_object(file))) {
     rm(file);
     return _error("Error loading file %s\n%s", file, err);

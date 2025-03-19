@@ -15,7 +15,7 @@ inherit STD_DAEMON;
 
 /* Last modified by Tacitus on July 5th, 2006 */
 
-int register_module(string _name, string path);
+int register_module(string name, string path);
 int register_channel(string module_name, string channel_name);
 int remove_module(string module_name);
 int remove_channel(string channel_name);
@@ -24,7 +24,7 @@ int valid_channel(string channel_name);
 int valid_module(string module_name);
 int chat(string channel, string user, string msg);
 void grapevine_chat(mapping data);
-varargs int filter_listing(string element, string _name);
+varargs int filter_listing(string element, string name);
 string *get_channels(string module_name);
 string *get_modules();
 string *get_tuned(string argument);
@@ -66,26 +66,26 @@ void setup() {
   set_no_clean(1);
 }
 
-int register_module(string _name, string path) {
+int register_module(string name, string path) {
   string *keys;
 
   keys = keys(modules);
-  if(!_name || !path)
+  if(!name || !path)
     return 0;
 
-  if(member_array(_name, keys) != -1) {
-    if(modules[_name] == path)  {
-      debug("  > Module %s already registered to path %s", _name, path);
+  if(member_array(name, keys) != -1) {
+    if(modules[name] == path)  {
+      debug("  > Module %s already registered to path %s", name, path);
       return 1;
     } else {
-      debug("  > Module %s already registered to path %s", _name, modules[_name]);
+      debug("  > Module %s already registered to path %s", name, modules[name]);
       return -1;
     }
   }
 
-  modules[_name] = path;
+  modules[name] = path;
 
-  debug("  > Module %s registered to path %s", _name, path);
+  debug("  > Module %s registered to path %s", name, path);
 
   return 1;
 }
@@ -229,7 +229,7 @@ void grapevine_chat(mapping payload) {
   return call_if(mod_obj, "rec_grapevine_msg", channel, user, msg, game);
 }
 
-string *get_channels(string module_name, string _name) {
+string *get_channels(string module_name, string name) {
   string *ret = ({}), *keys;
   int i;
 
@@ -242,7 +242,7 @@ string *get_channels(string module_name, string _name) {
     if(channels[keys[i]]["module"] == module_name) ret += ({keys[i]});
   }
 
-  ret = filter_array(ret, "filter_listing", this_object(), _name);
+  ret = filter_array(ret, "filter_listing", this_object(), name);
   ret = sort_array(ret, 1);
 
   return ret;
@@ -259,32 +259,32 @@ string *get_tuned(string argument) {
 
   ret = channels[argument]["listeners"];
 
-  foreach(string _name in ret)
-    if(find_living(_name))
-      if(!interactive(find_living(_name)))
-        ret -= ({ _name });
+  foreach(string name in ret)
+    if(find_living(name))
+      if(!interactive(find_living(name)))
+        ret -= ({ name });
 
   return ret;
 }
 
-varargs int filter_listing(string element, string _name) {
+varargs int filter_listing(string element, string name) {
   object mod_obj;
 
   if(!element)
     return 0;
 
-  if(!_name) {
+  if(!name) {
     if(!this_body())
       return 0;
     else
-      _name = query_privs(this_body());
+      name = query_privs(this_body());
   }
 
   catch(mod_obj = load_object(modules[channels[element]["module"]]));
 
   if(!mod_obj)
     return 0;
-  if(mod_obj->is_allowed(element, _name))
+  if(mod_obj->is_allowed(element, name))
     return 1;
 
   return 0;
@@ -317,8 +317,6 @@ void rec_msg(string channel, string user, string msg) {
     "talker" : user,
     "text" : msg,
   ]);
-
-  debug("PAYLOAD: %O", payload);
 
   listeners = channels[channel]["listeners"];
   listeners -= ({ 0 });

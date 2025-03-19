@@ -234,6 +234,7 @@ int move(mixed dest) {
     return MOVE_OK;
   else {
     roll_back(rollback);
+
     return MOVE_DESTRUCTED;
   }
 }

@@ -14,6 +14,7 @@
 #include "/adm/simul_efun/base64.c"
 #include "/adm/simul_efun/colour.c"
 #include "/adm/simul_efun/data.c"
+#include "/adm/simul_efun/daemon.c"
 #include "/adm/simul_efun/description.c"
 #include "/adm/simul_efun/directory.c"
 #include "/adm/simul_efun/english.c"

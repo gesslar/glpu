@@ -44,6 +44,7 @@
 #define STD_STORAGE_OBJECT  DIR_STD "container/storage_object"
 #define STD_STORAGE_ROOM    DIR_STD "room/storage"
 #define STD_VALUE           DIR_STD "object/value"
+#define STD_VERB            DIR_STD_CMD "verb"
 #define STD_VIRTUAL_MAP     DIR_STD "daemon/virtual_map"
 #define STD_VIRTUAL_SERVER  DIR_STD "daemon/virtual_server"
 #define STD_WEAPON          DIR_STD "equip/weapon"

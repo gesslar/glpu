@@ -16,28 +16,29 @@ object create_body(object user);
 mixed create_ghost(object user);
 mixed revive(object ghost, object user);
 
-object create_body(string _name) {
+object create_body(string name) {
+    /** @type {STD_PLAYER} */
     object body;
     string err;
     string type;
     string dest;
 
-    if(!_name)
+    if(!name)
         return 0;
 
-    _name = lower_case(_name);
+    name = lower_case(name);
 
-    if(!user_exists(_name))
+    if(!user_exists(name))
         return 0;
 
-    if(adminp(_name))
+    if(adminp(name))
         type = "admin";
-    else if(devp(_name))
+    else if(devp(name))
         type = "dev";
     else
         type = "player";
 
-    dest = sprintf("/%s/%s", type, _name);
+    dest = sprintf("/%s/%s", type, name);
 
     err = catch(body = load_object(dest));
 
@@ -47,30 +48,31 @@ object create_body(string _name) {
     if(!body)
         return 0;
 
-    body->set_name(_name);
-    set_privs(body, _name);
+    body->set_name(name);
+    set_privs(body, name);
     body->restore_body();
+    body->mudlib_setup();
 
     return body;
 }
 
-mixed create_ghost(string _name) {
+mixed create_ghost(string name) {
     string err;
     object ghost;
 
-    if(!_name)
+    if(!name)
         return 0;
 
-    _name = lower_case(_name);
+    name = lower_case(name);
 
-    err = catch(ghost = load_object(sprintf("/ghost/%s", _name)));
+    err = catch(ghost = load_object(sprintf("/ghost/%s", name)));
     if(err) {
         log_file("ghost", err);
         return err;
     }
 
-    ghost->set_name(_name);
-    set_privs(ghost, _name);
+    ghost->set_name(name);
+    set_privs(ghost, name);
 
     return ghost;
 }

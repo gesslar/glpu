@@ -435,14 +435,14 @@ object *get_livings(mixed ids, object room) {
 /**
  * Locates a player object by the specified name within the specified room.
  *
- * @param {string} _name - The name of the player to locate.
+ * @param {string} name - The name of the player to locate.
  * @param {object} room - The room to search for the player in.
  * @returns {object STD_PLAYER|0} The located player object, or 0 if not found.
  */
-object get_player(string _name, object room) {
+object get_player(string name, object room) {
   object ob;
 
-  ob = get_living(_name, room);
+  ob = get_living(name, room);
 
   if(ob && userp(ob))
     return ob;
@@ -714,4 +714,81 @@ varargs object *clones(mixed file, int env_only) {
   obs = filter(obs, (: clonep :));
 
   return obs;
+}
+
+/**
+ * Retrieves a nested array of objects that can be reached within a container.
+ *
+ * This function checks the accessibility of objects within a container from
+ * the perspective of another object, including nested containers.
+ *
+ * @param {STD_CONTAINER} container - The container object we are checking
+ * @param {STD_ITEM} [pov] - The perspective object doing the checking.
+ * @returns {mixed*} A nested array of objects that can be reached in the container.
+ */
+varargs mixed *accessible_objects(object container, object pov) {
+  mixed  *result;
+  object *contents, content;
+  object *nested_contents;
+
+  assert_arg(objectp(container), 1, "Invalid object.");
+  assert_arg(nullp(pov) || objectp(pov), 2, "Invalid object.");
+
+  if(!container->inventory_accessible())
+    return 0;
+  // if(!container->is_container() || !container->is_content_accessible(pov))
+  //   return 0;
+
+  if(!sizeof(contents = all_inventory(container)))
+    return 0;
+
+  result = ({container});
+
+  foreach(content in contents) {
+    nested_contents = accessible_objects(content, pov);
+
+    if(nested_contents == 0)
+      result += ({content});
+    else
+      result += ({content,nested_contents});
+  }
+
+  return result;
+}
+
+// mixed accessible_objects(object ob)
+// {
+//    mixed ret = ({});
+//    object *inv;
+//    object *next_inv;
+
+//    if (!ob->inventory_accessible())
+//       return 0;
+//    inv = all_inventory(ob);
+//    if (!sizeof(inv))
+//       return 0;
+//    foreach (object item in inv)
+//    {
+//       next_inv = accessible_objects(item);
+//       if (!next_inv)
+//          ret += ({item});
+//       else
+//          ret += ({item, next_inv});
+//    }
+//    return ret;
+// }
+
+/**
+ * Retrieves a flat array of objects that can be reached within a container.
+ *
+ * This function checks the accessibility of objects within a container from
+ * the perspective of another object, including nested containers, and returns
+ * a flat array of all reachable objects.
+ *
+ * @param {STD_CONTAINER} container - The container object we are checking
+ * @param {STD_ITEM} [pov] - The perspective object doing the checking.
+ * @returns {STD_ITEM*} An array of objects that can be reached in the container.
+ */
+varargs object *accessible_objects_flat(object container, object pov) {
+  return flatten(accessible_objects(container, pov));
 }

@@ -39,6 +39,9 @@ varargs void data_write(string file, string key, mixed data...);
 varargs int data_inc(string file, string key, int inc);
 int data_del(string file, string key);
 
+// File: daemon.c
+object body_d();
+
 // File: description.c
 string get_short(object ob);
 string get_long(object ob);
@@ -135,8 +138,8 @@ object *present_clones(string file, object room);
 object *present_livings(object room);
 object *present_players(object room);
 object *present_npcs(object room);
-object get_living(string _name, object room);
-object get_player(string _name, object room);
+object get_living(string name, object room);
+object get_player(string name, object room);
 object this_body();
 object top_environment(object ob);
 varargs mixed get_objects(string str, object player, int no_arr);
@@ -145,6 +148,8 @@ varargs object get_object(string str, object player);
 varargs object find_targets(object tp, string str, object env, function f);
 varargs object find_target(object tp, string str, object env, function f);
 varargs object *clones(mixed file, int env_only);
+varargs mixed *accessible_objects(object container, object pov);
+varargs object *accessible_objects_flat(object container, object pov);
 
 // File: prompt.c
 varargs void prompt_colour(object body, mixed *cb, string prompt);
@@ -234,13 +239,13 @@ int time_ms();
 float time_frac(int nanoseconds);
 
 // File: user.c
-string user_data_file(string _name);
-string user_mob_data(string _name);
+string user_data_file(string name);
+string user_mob_data(string name);
 string user_data_directory(string priv);
-string home_path(string _name);
-string account_path(string _name);
-string account_file(string _name);
-int valid_account(string _name);
+string home_path(string name);
+string account_path(string name);
+string account_file(string name);
+int valid_account(string name);
 int ghostp(object user);
 int linkp(object user);
 varargs int valid_user(mixed user);

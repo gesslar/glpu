@@ -306,23 +306,23 @@ varargs int delay_act(string act, float delay, mixed *cb) {
  * Enhanced assertion checking with custom error messages and evaluation
  * of complex conditions.
  *
- * @param {mixed} statement - Condition to verify
+ * @param {mixed} condition - Condition to verify
  * @param {string} [message="Assertion failed"] - Error message if condition fails
  * @throws If statement evaluates to false or null
  * @example
  * assert(hp > 0, "Health cannot be negative");
  */
-varargs void assert(mixed statement, string message) {
+varargs void assert(mixed condition, string message) {
   mixed result;
   string err;
 
-  if(nullp(statement))
+  if(nullp(condition))
     error("Missing argument 1 to assert()");
 
   if(!stringp(message))
     message = "Assertion failed";
 
-  err = catch(result = evaluate(statement));
+  err = catch(result = evaluate(condition));
 
   if(stringp(err)) {
     message = append(message, "\n");

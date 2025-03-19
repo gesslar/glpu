@@ -22,6 +22,51 @@ private nosave int _locked = 0;
 private nosave int _opaque = 1;
 
 /**
+ * Checks if the inventory of this object is accessible from the perspective
+ * of another object.
+ *
+ * An inventory is considered accessible (within reach), if:
+ *
+ *  - it is not closed
+ *  - it is in the same environment as this object (like a chest in a room)
+ *  - it is in this object's inventory (like a player in a room)
+ *
+ * This function is merely about technicality. It only checks for closed
+ * status and proximity. It doesn't check for any other conditions. You
+ * will need to accommodate for those. For example, a living's access to
+ * another living's inventory.
+ *
+ * A note about "it is not closed" condition. What this means is that
+ * the container must be closed AND closeable. Containers that are not
+ * closeable are considered to be open; therefore, it must pass both
+ * conditions.
+ *
+ * @param {STD_ITEM} pov The object trying go access the inventory.
+ * @returns {int} 1 if accessible, otherwise 0.
+ */
+varargs int is_content_accessible(object pov) {
+  int result;
+  object env, env_pov;
+
+  if(is_closeable() && is_closed())
+    return 0;
+
+  if(!pov)
+    return 1;
+
+  // If we are open, anything outside can reach us,
+  // and anything in the same environment as us can
+  // reach us.
+  env = environment();
+
+  return objectp(present(pov, this_object())) ||
+         objectp(present(pov, env));
+}
+
+int inventory_accessible() { return is_content_accessible(); }
+int inventory_visible() { return is_content_accessible(); }
+
+/**
  * Checks if an object can be received into this container.
  *
  * This function can be overridden by inheriting objects to add
@@ -121,7 +166,7 @@ void set_closeable(int i) {
  *
  * @returns {int} 1 if closeable, 0 if not closeable
  */
-int closeable() {
+int is_closeable() {
   return _closeable;
 }
 
@@ -139,7 +184,7 @@ void set_lockable(int i) {
  *
  * @returns {int} 1 if lockable, 0 if not lockable
  */
-int lockable() {
+int is_lockable() {
   return _lockable;
 }
 
@@ -204,4 +249,4 @@ int is_opaque() {
  *
  * @returns {int} Always returns 1
  */
-int is_container() { return 1 ; }
+int is_container() { return 1; }

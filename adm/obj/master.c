@@ -15,7 +15,8 @@
 
 /* inherits */
 
-inherit "/adm/obj/master/valid";
+inherit __DIR__ "master/valid";
+inherit __DIR__ "master/parse";
 
 /* Functions */
 
@@ -26,10 +27,15 @@ void create() {
   parse_group();
   parse_access();
 
-  // Set privs to master
-  call_out_walltime((: set_privs, this_object(), "[master]" :), 0.01);
-  // Tune into error channel
-  // call_out_walltime("tune_into_error", 0.02);
+  call_out_walltime(function() {
+    set_privs(this_object(), "[master]");
+    slot(SIG_PLAYER_REVIVED, "refresh_parse_info");
+    slot(SIG_USER_LINKDEAD, "refresh_parse_info");
+    slot(SIG_USER_LOGIN, "refresh_parse_info");
+    slot(SIG_USER_LOGOUT, "refresh_parse_info");
+    slot(SIG_USER_LINKDEAD, "refresh_parse_info");
+    slot(SIG_USER_LINK_RESTORE, "refresh_parse_info");
+  }, 0.01);
 }
 
 void flag(string str) {

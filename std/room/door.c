@@ -1,13 +1,16 @@
 /**
  * @file /std/room/door.c
- * @description Doors are properties that can be opened and closed.
+ *
+ * Room door management system that handles door states, synchronization between
+ * connected rooms, and player interactions. Uses the Door class to track door
+ * properties and state.
  *
  * @created 2024-09-13 - Gesslar
  * @last_modified 2025-03-16 - GitHub Copilot
  *
  * @history
  * 2024-09-13 - Gesslar - Created
- * 2025-03-16 - GitHub Copilot - Added documentation
+ * 2025-03-16 - GitHub Copilot - Enhanced documentation
  */
 
 #include <classes.h>
@@ -22,11 +25,15 @@ private nosave mapping _doors = ([ ]);
 /**
  * Adds a door to a room in the specified direction.
  *
- * This will automatically populate missing values with sensible defaults
- * and ensure door IDs are unique.
+ * Validates the door configuration and sets sensible defaults for missing values.
+ * Door IDs must be unique and the direction must be a valid exit.
  *
- * @param {class Door} door - The door object to add
- * @returns {int} 1 on success, 0 on failure
+ * @param {class Door} door - Door configuration object
+ * @returns {int} 1 on success, null if:
+ *   - Door lacks required direction
+ *   - Direction isn't a valid room exit
+ *   - Direction already has a door
+ *   - Door ID is neither null, pointer nor string
  */
 int add_door(class Door door) {
   // Absolutely necessary in order to be able to add a door to a room.
@@ -82,7 +89,9 @@ int valid_door(string direction) {
 /**
  * Removes a door from the specified direction.
  *
- * @param {string} direction - The direction of the door to remove
+ * Updates GMCP room info after removing the door.
+ *
+ * @param {string} direction - The direction of door to remove
  * @returns {int} 1 on success, null if door doesn't exist
  */
 int remove_door(string direction) {
@@ -99,7 +108,7 @@ int remove_door(string direction) {
 }
 
 /**
- * Sets a door's open status.
+ * Sets a door's open status and broadcasts the change.
  *
  * @param {string} direction - The direction of the door
  * @param {int} bool - 1 to open door, 0 to close door
@@ -125,6 +134,7 @@ varargs int set_door_open(string direction, int bool, int silent) {
       sprintf("The %s is now %s.\n", door.name, door.status));
 
   GMCP_D->broadcast_gmcp(this_object(), GMCP_PKG_ROOM_INFO, this_object());
+
   return bool;
 }
 
@@ -144,9 +154,9 @@ int query_door_open(string direction) {
 }
 
 /**
- * Sets a door's locked status.
+ * Sets a door's lock status.
  *
- * Cannot lock an open door.
+ * Cannot lock an open door. Updates GMCP room info after state change.
  *
  * @param {string} direction - The direction of the door
  * @param {int} bool - 1 to lock door, 0 to unlock door
@@ -350,20 +360,18 @@ string query_door_name(string direction) {
  * @returns {string*} Array of directions with doors matching the ID
  */
 string *id_door(string id) {
-  string *doors = ({ });
-
-  foreach(string dir, class Door door in _doors)
-    if(of(id, door.id))
-      doors += ({ dir });
-
-  return doors;
+  return map(
+    filter(values(_doors), (: includes($1.id, $(id)) :)),
+    (: $1.direction :)
+  );
 }
 
 /**
- * Synchronizes door states with the doors in connected rooms.
+ * Synchronizes door states with connected rooms.
  *
- * This ensures doors have the same state on both sides of an exit.
- * Removes doors if their exit no longer exists.
+ * Ensures doors have the same state on both sides of an exit.
+ * Removes doors if their exit no longer exists. Should be called
+ * during room reset.
  */
 void reset_doors() {
   string *exits = query_exit_ids();
@@ -423,4 +431,93 @@ varargs mixed query_door_status(string direction, int as_number) {
   }
 
   return door.status;
+}
+
+/**
+ * Handles attempted door opening commands.
+ *
+ * Provides user-friendly messages for various door states and handles
+ * cases where multiple doors exist in a room.
+ *
+ * @param {string} direction - The direction or "door" for auto-detection
+ * @returns {mixed} 1 if can open, error message string if not
+ */
+mixed can_open_door(string direction) {
+  if(!stringp(direction) || falsy(direction))
+    return 0;
+
+  if(direction == "door") {
+    if(sizeof(_doors) > 1)
+      return "Which door?";
+
+    direction = keys(_doors)[0];
+  }
+
+  switch(query_door_status(direction)) {
+    case "open":
+      return "That door is already open.";
+    case "closed":
+      return 1;
+    case "locked":
+      return "That door is locked.";
+    default:
+      return 0;
+  }
+}
+
+/**
+ * Handles attempted door closing commands.
+ *
+ * @param {string} direction - The direction or "door" for auto-detection
+ * @returns {mixed} 1 if can close, error message string if not
+ */
+mixed can_close_door(string direction) {
+  if(!stringp(direction) || falsy(direction))
+    return 0;
+
+  if(direction == "door") {
+    if(sizeof(_doors) > 1)
+      return "Which door?";
+
+    direction = keys(_doors)[0];
+  }
+
+  switch(query_door_status(direction)) {
+    case "open":
+      return 1;
+    case "closed":
+    case "locked":
+      return "That door is already closed.";
+    default:
+      return 0;
+  }
+}
+
+/**
+ * Handles attempted door locking commands.
+ *
+ * @param {string} direction - The direction or "door" for auto-detection
+ * @returns {mixed} 1 if can lock, error message string if not
+ */
+mixed can_lock_door(string direction) {
+  if(!stringp(direction) || falsy(direction))
+    return 0;
+
+  if(direction == "door") {
+    if(sizeof(_doors) > 1)
+      return "Which door?";
+
+    direction = keys(_doors)[0];
+  }
+
+  switch(query_door_status(direction)) {
+    case "open":
+      return "You consider the futility of locking an open door.";
+    case "closed":
+      return 1;
+    case "locked":
+      return "That door is already locked.";
+    default:
+      return 0;
+  }
 }

@@ -334,10 +334,10 @@ int every(mixed *arr, function fun) {
   assert_arg(pointerp(arr), 1, "Array is required");
   assert_arg(valid_function(fun), 2, "Function is required");
 
+  // Only gets here if all args valid
   foreach(mixed elem in arr)
     if(!(*fun)(elem))
       return 0;
-
   return 1;
 }
 
@@ -409,6 +409,7 @@ int some(mixed *arr, function fun) {
   assert_arg(pointerp(arr), 1, "Array is required");
   assert_arg(valid_function(fun), 2, "Function is required");
 
+  // Only gets here if all args valid
   foreach(mixed elem in arr)
     if((*fun)(elem))
       return 1;
