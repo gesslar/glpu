@@ -238,3 +238,19 @@ int move(mixed dest) {
     return MOVE_DESTRUCTED;
   }
 }
+
+mixed direct_put_obj_in_obj(object ob, object container, string arg1, string arg2) {
+  if(!container)
+    return 1;
+
+  if(environment() != previous_object())
+    return "#You must be holding something to put it somewhere.";
+
+  if(call_if(ob, "prevent_put"))
+    return "#" + get_short(ob) + " cannot be put down.";
+
+  if(call_if(ob, "prevent_drop"))
+    return "#" + get_short(ob) + " cannot be dropped.";
+
+  return 1 ;
+}

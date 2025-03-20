@@ -256,6 +256,34 @@ varargs string article(string str, int definite) {
 }
 
 /**
+ * Extracts the leading article from a string if present.
+ *
+ * Identifies and returns any article ("the", "a", or "an") that appears at the
+ * beginning of the provided string.
+ *
+ * @param {string} str - The string to extract an article from
+ * @returns {string} The extracted article or empty string if none found
+ * @errors If str is not a string or is empty
+ * @example
+ * article_of("the book");  // Returns "the"
+ * article_of("an apple");  // Returns "an"
+ * article_of("bear");      // Returns ""
+ */
+string article_of(string str) {
+  string article, *matches;
+
+  assert_arg(stringp(str) && truthy(str), 1, "Invalid string.");
+
+  if(sizeof(matches = pcre_extract(lower_case(str), "^(the|a|an)\\s"))) {
+    int len = sizeof(matches[0]);
+
+    return str[0..len-1];
+  }
+
+  return "";
+}
+
+/**
  * Adds appropriate article to start of string.
  *
  * @param {string} str - String to add article to
@@ -266,7 +294,12 @@ varargs string article(string str, int definite) {
  * add_article("bear", 1);      // Returns "the bear"
  */
 varargs string add_article(string str, int definite) {
-  string art = article(str, definite);
+  string art;
+
+  if(strlen(article_of(str)))
+    return str;
+
+  art = article(str, definite);
 
   if(!strlen(art))
     return str;
@@ -307,9 +340,9 @@ private mapping _number_words = ([
  * @param {int} num - The number to convert
  * @returns {string} Word form for 0-9 ("one", "two", etc) or string for larger numbers
  * @example
- * number_word(1);    // Returns "one"
- * number_word(5);    // Returns "five"
- * number_word(10);   // Returns "10"
+ * number_word(1);   // Returns "one"
+ * number_word(5);   // Returns "five"
+ * number_word(10);  // Returns "10"
  */
 string number_word(int num) {
   return _number_words[num] || ""+num;

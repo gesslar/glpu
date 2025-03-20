@@ -78,3 +78,10 @@ void decay(string *corpse_shorts) {
 }
 
 int is_corpse() { return 1; }
+
+mixed direct_dispose_obj(object ob, string arg) {
+  if(!is_corpse())
+    return "#You cannot dispose of that." ;
+
+  return 1 ;
+}

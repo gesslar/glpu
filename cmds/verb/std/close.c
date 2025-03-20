@@ -33,6 +33,10 @@ mixed can_close_str(mixed direction) {
   return result;
 }
 
+mixed can_close_obj(object ob, string arg) {
+  return 1;
+}
+
 mixed do_close_str(mixed direction) {
   /** @type {STD_PLAYER} */
   object user = this_body();
@@ -80,4 +84,15 @@ private string resolve_direction(string direction) {
     return 0;
 
   return directions[0];
+}
+
+mixed do_close_obj(object ob, string arg) {
+  ob->set_closed(1);
+
+  if(environment(ob) == previous_object())
+    previous_object()->simple_action("$N $vclose $p $o.", get_short(ob));
+  else
+    previous_object()->simple_action("$N $vclose $o.", get_short(ob));
+
+  return 1;
 }

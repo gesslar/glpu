@@ -142,13 +142,18 @@ int adjust_fill(int x) {
  * @returns {int} 1 if the object can be held, 0 if not
  */
 int can_hold_object(object ob) {
-  int use_mass = mud_config("USE_MASS");
-  int mass = ob->query_mass();
+  int use_mass;
+  int mass;
 
-  if(use_mass)
+  use_mass = mud_config("USE_MASS");
+
+  if(use_mass) {
+    mass = ob->query_mass();
+
     return can_hold_mass(mass);
-  else
-    return 1;
+  }
+
+  return 1;
 }
 
 /**

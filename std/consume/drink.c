@@ -76,4 +76,4 @@ string consume_message() {
   return mess;
 }
 
-int is_drink() { return 1 ; }
+int is_drink() { return 1; }

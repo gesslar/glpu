@@ -33,6 +33,10 @@ mixed can_open_str(mixed direction) {
   return result;
 }
 
+mixed can_open_obj(object ob, string arg) {
+  return 1;
+}
+
 mixed do_open_str(mixed direction) {
   /** @type {STD_PLAYER} */
   object user = this_body();
@@ -80,4 +84,15 @@ private string resolve_direction(string direction) {
     return 0;
 
   return directions[0];
+}
+
+mixed do_open_obj(object ob, string arg) {
+  ob->set_closed(0);
+
+  if(environment(ob) == previous_object())
+    previous_object()->simple_action("$N $vopen $p $o.", get_short(ob));
+  else
+    previous_object()->simple_action("$N $vopen the $o.", get_short(ob));
+
+  return 1;
 }

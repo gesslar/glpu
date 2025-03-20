@@ -59,6 +59,7 @@ string possessive(mixed ob);
 string reflexive(mixed ob);
 string objective(mixed ob);
 string subjective(mixed ob);
+string article_of(string str);
 varargs string article(string str, int definite);
 varargs string add_article(string str, int definite);
 string remove_article(string str);

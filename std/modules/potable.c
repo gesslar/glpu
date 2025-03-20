@@ -122,3 +122,13 @@ int sip(object tp, int amount) {
 void reset_potable() {
     reset_uses();
 }
+
+mixed try_to_drink(object ob, string arg) {
+  if(environment() != previous_object())
+    return "#You must be holding something to drink it." ;
+
+  return 1 ;
+}
+
+mixed direct_drink_obj(object ob, string arg) { return try_to_drink(ob, arg) ; }
+mixed direct_sip_obj(object ob, string arg) { return try_to_drink(ob, arg) ; }

@@ -242,6 +242,92 @@ int is_opaque() {
   return _opaque;
 }
 
+private nosave string _key_id;
+
+public void set_key_id(string str) {
+  assert_arg(stringp(str) && truthy(str), 1, "Invalid key id.");
+
+  _key_id = str;
+}
+
+public string query_key_id() {
+  return _key_id;
+}
+
+mixed indirect_put_obj_in_obj(object ob, object container, string arg1, string arg2) {
+  if(!ob)
+    return 1;
+
+  if(ob == container)
+    return "#You cannot put " + get_short(ob) + " in itself.";
+
+  if(is_closeable() && is_closed())
+    return "#" + get_short() + " is closed.";
+
+  if(!can_receive(ob))
+    return "#" + get_short() + " cannot hold " + get_short(ob) + ".";
+
+  if(!can_hold_object(ob))
+    return "#" + get_short() + " cannot hold " + get_short(ob) + ".";
+
+  if(ob->is_container())
+    return "#You cannot put a container inside another container.";
+
+  return 1;
+}
+
+mixed direct_open_obj(object ob, string arg1) {
+  if(!is_closeable())
+    return 0;
+
+  if(!is_closed())
+    return "#" + get_short() + " is already open.";
+
+  if(is_locked())
+    return "#" + get_short() + " appears to be locked.";
+
+  return 1;
+}
+
+mixed direct_close_obj(object ob, string arg1) {
+  if(!is_closeable())
+    return 0;
+
+  if(is_closed())
+    return "#" + get_short() + " is already closed.";
+
+  return 1;
+}
+
+/**
+ *
+ * @param {STD_CONTAINER} container The container to be unlocked.
+ * @param {OBJ_KEY} key The key to unlock the container.
+ * @param {string} arg1 The container string supplied by the user.
+ * @param {string} arg2 The key string supplied by the user.
+ */
+mixed direct_unlock_obj_with_obj(object container, object key, string arg1, string arg2) {
+  if(!is_closeable())
+    return 0;
+
+  if(!container || !key)
+    return 1;
+
+  if(!container->is_container() || !key->is_key())
+    return 0;
+
+  if(container->query_key_id() != key->query_key_id())
+    return "#That key does not turn this lock.";
+
+  if(!is_closed())
+    return "#" + get_short() + " is already open.";
+
+  if(!is_locked())
+    return "#" + get_short() + " does not appear to be locked.";
+
+  return 1;
+}
+
 /**
  * Identifies this object as a container.
  *
