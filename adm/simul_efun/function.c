@@ -42,6 +42,7 @@ private nosave string *traceColours = ({
   "#ff33cc",
   "#ff6600",
   "#33cccc",
+  "#ffcc33",
 });
 
 /**
@@ -82,16 +83,21 @@ varargs string call_trace(int colour) {
   });
 
   n = sizeof(programs);
-  // We don't want to include the call_trace() function itself
 
   if(colour || !colour) {
+    object source = this_body();
+    function match_body = (: $(source) && objectp($(source)) && living($(source)) && $(source) == $1 :);
+
+    colours = map(colours, (:"{{"+$1[1..]+"}}":));
+
+    // We don't want to include the call_trace() function itself
     res += reduce(objects[1..],
       function(string acc, object obj, int index, object *objs,
-        string *programs, string *lines, string *functions, string *origins, string *cols) {
-          return sprintf("%s[%s%O{{res}}] %s%s{{res}}:%s%s{{res}}::%s%s{{res}}() (%s%s{{res}})\n",
+        string *programs, string *lines, string *functions, string *origins, string *cols, function match_body) {
+          return sprintf("%s[%s%s{{res}}] %s%s{{res}}:%s%s{{res}}->%s%s{{res}}() (%s%s{{res}})\n",
             acc,
-            cols[0],
-            obj,
+            (*match_body)(obj) ? cols[5] : cols[0],
+            (*match_body)(obj) ? sprintf("%s", file_name(obj)) : sprintf("%O", obj),
             cols[1],
             programs[index+1],
             cols[2],
@@ -101,7 +107,7 @@ varargs string call_trace(int colour) {
             cols[4],
             origins[index+1]
           );
-      }, "", programs, lines, functions, origins, colours);
+      }, "", programs, lines, functions, origins, colours, match_body);
   }
 
   if(!colour)
